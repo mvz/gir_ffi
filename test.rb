@@ -7,20 +7,21 @@ module Gtk
   attach_function :gtk_init, [:pointer, :pointer], :void
   attach_function :gtk_main, [], :void
 
-  enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
-  attach_function :gtk_window_new, [:GtkWindowType], :pointer
-  attach_function :gtk_widget_show, [:pointer], :pointer
-
   def self.init
     gtk_init nil, nil
   end
 
   class Window
+    extend FFI::Library
+    enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
+    attach_function :gtk_window_new, [:GtkWindowType], :pointer
+    attach_function :gtk_widget_show, [:pointer], :pointer
+
     def initialize type
-      @gobj = Gtk.gtk_window_new(type)
+      @gobj = gtk_window_new(type)
     end
     def show
-      Gtk.gtk_widget_show(@gobj)
+      gtk_widget_show(@gobj)
     end
   end
 end
