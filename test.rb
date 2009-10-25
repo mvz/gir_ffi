@@ -11,17 +11,23 @@ module Gtk
     gtk_init nil, nil
   end
 
-  class Window
+  class Widget
     extend FFI::Library
+    attach_function :gtk_widget_show, [:pointer], :pointer
+    def show
+      gtk_widget_show(@gobj)
+    end
+    private
+    def initialize
+    end
+  end
+
+  class Window < Widget
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
-    attach_function :gtk_widget_show, [:pointer], :pointer
 
     def initialize type
       @gobj = gtk_window_new(type)
-    end
-    def show
-      gtk_widget_show(@gobj)
     end
   end
 end
