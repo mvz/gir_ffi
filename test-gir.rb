@@ -1,27 +1,33 @@
 require 'ffi'
 
 module GLib
-  extend FFI::Library
-
-  class GType
+  private
+  module Lib
     extend FFI::Library
     ffi_lib "gobject-2.0"
     attach_function :g_type_init, [], :void
-    def self.init; g_type_init; end
+  end
+
+  public
+  class GType
+    def self.init; Lib::g_type_init; end
   end
 end
-module GObjectIntrospection
-  extend FFI::Library
+module GI
+  private
 
-  ffi_lib "girepository-1.0"
+  module Lib
+    extend FFI::Library
+    ffi_lib "girepository-1.0"
+    attach_function :g_irepository_get_default, [], :pointer
+  end
+
+  public
 
   class Repository
-    extend FFI::Library
-
-    attach_function :g_irepository_get_default, [], :pointer
 
     def self.get_default
-      @@singleton ||= Repository.new(g_irepository_get_default)
+      @@singleton ||= Repository.new(Lib::g_irepository_get_default)
     end
 
     private
@@ -34,5 +40,5 @@ end
 
 GLib::GType.init
 
-gir = GObjectIntrospection::Repository.get_default
+gir = GI::Repository.get_default
 p gir
