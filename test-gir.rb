@@ -19,6 +19,7 @@ module GI
   module Lib
     extend FFI::Library
     ffi_lib "girepository-1.0"
+
     enum :GIRepositoryLoadFlags, [:LAZY, (1<<0)]
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_require,
@@ -28,9 +29,32 @@ module GI
     attach_function :g_irepository_get_info,
       [:pointer, :string, :int], :pointer
 
+    enum :GIInfoType, [
+      :INVALID,
+      :FUNCTION,
+      :CALLBACK,
+      :STRUCT,
+      :BOXED,
+      :ENUM,
+      :FLAGS,
+      :OBJECT,
+      :INTERFACE,
+      :CONSTANT,
+      :ERROR_DOMAIN,
+      :UNION,
+      :VALUE,
+      :SIGNAL,
+      :VFUNC,
+      :PROPERTY,
+      :FIELD,
+      :ARG,
+      :TYPE,
+      :UNRESOLVED
+    ]
+
     # g_base_info
     attach_function :g_base_info_get_name, [:pointer], :string
-    attach_function :g_base_info_get_type, [:pointer], :int
+    attach_function :g_base_info_get_type, [:pointer], :GIInfoType
   end
 
   public
