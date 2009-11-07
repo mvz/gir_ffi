@@ -53,8 +53,10 @@ module GI
     ]
 
     # g_base_info
-    attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_type, [:pointer], :GIInfoType
+    attach_function :g_base_info_get_name, [:pointer], :string
+    attach_function :g_base_info_get_namespace, [:pointer], :string
+    attach_function :g_base_info_is_deprecated, [:pointer], :int
   end
 
   public
@@ -98,6 +100,8 @@ module GI
     end
     def name; Lib.g_base_info_get_name @gobj; end
     def type; Lib.g_base_info_get_type @gobj; end
+    def namespace; Lib.g_base_info_get_namespace @gobj; end
+    def deprecated?; Lib.g_base_info_is_deprecated @gobj; end
   end
 end
 
@@ -112,7 +116,7 @@ module Main
     puts "Infos for Gtk: #{n}"
     (0..(n-1)).each do |i|
       info = gir.get_info "Gtk", i
-      puts "Info: #{info.name}; #{info.type}."
+      puts "Info: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
     end
   end
 end
