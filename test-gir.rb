@@ -118,16 +118,12 @@ module GI
 end
 
 module Main
-  def self.run
-    GLib::GType.init
-
-    gir = GI::Repository.get_default
-    p gir
-    gir.require "Gtk", nil
-    n = gir.get_n_infos 'Gtk'
-    puts "Infos for Gtk: #{n}"
+  def self.infos_for gir, lib
+    gir.require lib, nil
+    n = gir.get_n_infos lib
+    puts "Infos for #{lib}: #{n}"
     (0..(n-1)).each do |i|
-      info = gir.get_info "Gtk", i
+      info = gir.get_info lib, i
       case info.type
       when :FUNCTION
 	puts "FunctionInfo: #{info.name}; #{info.namespace}; #{info.deprecated?}; #{info.symbol}"
@@ -135,6 +131,14 @@ module Main
 	puts "Info: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
       end
     end
+  end
+
+  def self.run
+    GLib::GType.init
+
+    gir = GI::Repository.get_default
+    p gir
+    self.infos_for gir, 'Gtk'
   end
 end
 
