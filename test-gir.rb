@@ -29,6 +29,7 @@ module GI
     attach_function :g_irepository_get_info,
       [:pointer, :string, :int], :pointer
 
+    # g_base_info
     enum :GIInfoType, [
       :INVALID,
       :FUNCTION,
@@ -52,11 +53,13 @@ module GI
       :UNRESOLVED
     ]
 
-    # g_base_info
     attach_function :g_base_info_get_type, [:pointer], :GIInfoType
     attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_namespace, [:pointer], :string
     attach_function :g_base_info_is_deprecated, [:pointer], :int
+
+    # g_function_info
+    attach_function :g_function_info_get_symbol, [:pointer], :string
   end
 
   public
@@ -83,7 +86,12 @@ module GI
 
     def get_info namespace, i
       ptr = Lib.g_irepository_get_info @gobj, namespace, i
-      return BaseInfo.new(ptr)
+      case Lib.g_base_info_get_type ptr
+      when :FUNCTION
+	return FunctionInfo.new(ptr)
+      else
+	return BaseInfo.new(ptr)
+      end
     end
 
     private
@@ -95,13 +103,17 @@ module GI
 
   class BaseInfo
     def initialize gobj=nil
-      raise "BaseInfo creation not implemeted" if gobj.nil?
+      raise "#{self.class} creation not implemeted" if gobj.nil?
       @gobj = gobj
     end
     def name; Lib.g_base_info_get_name @gobj; end
     def type; Lib.g_base_info_get_type @gobj; end
     def namespace; Lib.g_base_info_get_namespace @gobj; end
     def deprecated?; (Lib.g_base_info_is_deprecated @gobj) != 0; end
+  end
+
+  class FunctionInfo < BaseInfo
+    def symbol; Lib.g_function_info_get_symbol @gobj; end
   end
 end
 
@@ -116,7 +128,12 @@ module Main
     puts "Infos for Gtk: #{n}"
     (0..(n-1)).each do |i|
       info = gir.get_info "Gtk", i
-      puts "Info: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
+      case info.type
+      when :FUNCTION
+	puts "FunctionInfo: #{info.name}; #{info.namespace}; #{info.deprecated?}; #{info.symbol}"
+      else
+	puts "Info: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
+      end
     end
   end
 end
