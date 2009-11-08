@@ -57,10 +57,12 @@ module GIRepository
     attach_function :g_base_info_get_type, [:pointer], :GIInfoType
     attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_namespace, [:pointer], :string
-    attach_function :g_base_info_is_deprecated, [:pointer], :int
+    attach_function :g_base_info_is_deprecated, [:pointer], :bool
 
     # g_function_info
     attach_function :g_function_info_get_symbol, [:pointer], :string
+    # TODO: return type is bitwise-or-ed enum
+    attach_function :g_function_info_get_flags, [:pointer], :int
   end
 
   public
@@ -110,11 +112,30 @@ module GIRepository
     def name; Lib.g_base_info_get_name @gobj; end
     def type; Lib.g_base_info_get_type @gobj; end
     def namespace; Lib.g_base_info_get_namespace @gobj; end
-    def deprecated?; (Lib.g_base_info_is_deprecated @gobj) != 0; end
+    def deprecated?; Lib.g_base_info_is_deprecated @gobj; end
+    def to_s
+      s = "BaseInfo: #{name}; #{type}"
+      s << " DEPRECATED" if deprecated? 
+      s
+    end
   end
 
   class IFunctionInfo < IBaseInfo
     def symbol; Lib.g_function_info_get_symbol @gobj; end
+    def flags; Lib.g_function_info_get_flags @gobj; end
+    def to_s
+      f = flags
+      s = "Function: #{name}; #{symbol}; "
+      s << " IS_METHOD" if f & (1 << 0) != 0
+      s << " IS_CONSTRUCTOR" if f & (1 << 1) != 0
+      s << " IS_GETTER" if f & (1 << 2) != 0
+      s << " IS_SETTER" if f & (1 << 3) != 0
+      s << " WRAPS_VFUNC" if f & (1 << 4) != 0
+      s << " THROWS" if f & (1 << 5) != 0
+
+      s << " DEPRECATED" if deprecated? 
+      s
+    end
   end
 end
 
@@ -125,12 +146,7 @@ module Main
     puts "Infos for #{lib}: #{n}"
     (0..(n-1)).each do |i|
       info = gir.get_info lib, i
-      case info.type
-      when :FUNCTION
-	puts "IFunctionInfo: #{info.name}; #{info.namespace}; #{info.deprecated?}; #{info.symbol}"
-      else
-	puts "IBaseInfo: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
-      end
+      puts info
     end
   end
 
