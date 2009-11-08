@@ -9,11 +9,12 @@ module GLib
   end
 
   public
-  class GType
+  module GType
     def self.init; Lib::g_type_init; end
   end
 end
-module GI
+
+module GIRepository
   private
 
   module Lib
@@ -64,10 +65,10 @@ module GI
 
   public
 
-  class Repository
+  class IRepository
 
     def self.get_default
-      @@singleton ||= Repository.new(Lib::g_irepository_get_default)
+      @@singleton ||= IRepository.new(Lib::g_irepository_get_default)
     end
 
     def get_n_infos namespace
@@ -88,9 +89,9 @@ module GI
       ptr = Lib.g_irepository_get_info @gobj, namespace, i
       case Lib.g_base_info_get_type ptr
       when :FUNCTION
-	return FunctionInfo.new(ptr)
+	return IFunctionInfo.new(ptr)
       else
-	return BaseInfo.new(ptr)
+	return IBaseInfo.new(ptr)
       end
     end
 
@@ -101,7 +102,7 @@ module GI
     end
   end
 
-  class BaseInfo
+  class IBaseInfo
     def initialize gobj=nil
       raise "#{self.class} creation not implemeted" if gobj.nil?
       @gobj = gobj
@@ -112,7 +113,7 @@ module GI
     def deprecated?; (Lib.g_base_info_is_deprecated @gobj) != 0; end
   end
 
-  class FunctionInfo < BaseInfo
+  class IFunctionInfo < IBaseInfo
     def symbol; Lib.g_function_info_get_symbol @gobj; end
   end
 end
@@ -126,9 +127,9 @@ module Main
       info = gir.get_info lib, i
       case info.type
       when :FUNCTION
-	puts "FunctionInfo: #{info.name}; #{info.namespace}; #{info.deprecated?}; #{info.symbol}"
+	puts "IFunctionInfo: #{info.name}; #{info.namespace}; #{info.deprecated?}; #{info.symbol}"
       else
-	puts "Info: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
+	puts "IBaseInfo: #{info.name}; #{info.type}; #{info.namespace}; #{info.deprecated?}."
       end
     end
   end
@@ -136,7 +137,7 @@ module Main
   def self.run
     GLib::GType.init
 
-    gir = GI::Repository.get_default
+    gir = GIRepository::IRepository.get_default
     p gir
     self.infos_for gir, 'Gtk'
   end
