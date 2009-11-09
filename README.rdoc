@@ -1,0 +1,34 @@
+gir-ffi
+    by Matijs van Zuijlen
+    http://www.github.com/mvz/ruby-gir-ffi
+
+== DESCRIPTION:
+
+Ruby-FFI-based binding of the GObject Introspection Repository
+
+== FEATURES/PROBLEMS:
+
+* Create bindings to GObject-based libraries at runtime
+* Not done yet
+
+== SYNOPSIS:
+
+  require 'gir-ffi'
+  GirFFI.load 'Gtk'
+
+== REQUIREMENTS:
+
+* Ruby-FFI of course
+* gobject-introspection installed with some introspection data
+
+== INSTALL:
+
+* sudo gem install gir-ffi
+
+== LICENSE:
+
+Copyright (c) 2009 Matijs van Zuijlen
+
+Gir-FFI is free software, distributed under the terms of the GNU Lesser
+General Public License, version 2.1 or later. See the file COPYING.LIB for
+more information.
