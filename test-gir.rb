@@ -1,18 +1,5 @@
 require 'ffi'
-
-module GLib
-  private
-  module Lib
-    extend FFI::Library
-    ffi_lib "gobject-2.0"
-    attach_function :g_type_init, [], :void
-  end
-
-  public
-  module GType
-    def self.init; Lib::g_type_init; end
-  end
-end
+require 'lib/girepository.rb'
 
 module GIRepository
   private
@@ -294,7 +281,7 @@ module Main
   end
 
   def self.run
-    GLib::GType.init
+    GIRepository::Helper::GType.init
 
     gir = GIRepository::IRepository.get_default
     self.infos_for gir, 'Gtk'
