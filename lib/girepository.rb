@@ -1,5 +1,5 @@
 
-module GirFFI
+module GIRepository
 
   # :stopdoc:
   VERSION = '0.0.1'
@@ -44,6 +44,6 @@ module GirFFI
 
 end  # module GirFfi
 
-GirFFI.require_all_libs_relative_to(__FILE__)
+GIRepository.require_all_libs_relative_to(__FILE__)
 
 # EOF
