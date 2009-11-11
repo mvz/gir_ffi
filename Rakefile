@@ -25,4 +25,7 @@ PROJ.url = 'http://www.github.com/mvz/ruby-gir-ffi'
 PROJ.version = GIRepository::VERSION
 PROJ.readme_file = 'README.rdoc'
 
+PROJ.gem.dependencies << ['ffi', '~> 0.5.0']
+PROJ.gem.development_dependencies << ['shoulda', '~> 2.10.2']
+
 # EOF
