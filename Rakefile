@@ -28,4 +28,5 @@ PROJ.readme_file = 'README.rdoc'
 PROJ.gem.dependencies << ['ffi', '~> 0.5.0']
 PROJ.gem.development_dependencies << ['shoulda', '~> 2.10.2']
 
+PROJ.rcov.opts << '--exclude /var/lib/gems'
 # EOF
