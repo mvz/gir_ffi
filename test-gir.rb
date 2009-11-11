@@ -155,9 +155,7 @@ module Main
   end
 
   def self.run
-    GIRepository::Helper::GType.init
-
-    gir = GIRepository::IRepository.get_default
+    gir = GIRepository::IRepository.default
     self.infos_for gir, 'Gtk'
   end
 end
