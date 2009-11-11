@@ -2,30 +2,6 @@ require 'ffi'
 require 'lib/girepository.rb'
 
 module GIRepository
-  class IBaseInfo
-    def self.build_array_method elementname, plural = nil
-      plural ||= "#{elementname}s"
-      define_method "#{plural}" do
-	(0..((send "n_#{plural}") - 1)).map do |i|
-	  send elementname, i
-	end
-      end
-    end
-
-    def initialize gobj=nil
-      raise "#{self.class} creation not implemeted" if gobj.nil?
-      @gobj = gobj
-    end
-    def name; Lib.g_base_info_get_name @gobj; end
-    def type; Lib.g_base_info_get_type @gobj; end
-    def namespace; Lib.g_base_info_get_namespace @gobj; end
-    def deprecated?; Lib.g_base_info_is_deprecated @gobj; end
-    def to_s
-      s = "#{type} #{name}"
-      s << ", DEPRECATED" if deprecated? 
-      s
-    end
-  end
 
   class IStructInfo < IBaseInfo
     def n_fields; Lib.g_struct_info_get_n_fields @gobj; end
@@ -132,12 +108,12 @@ module GIRepository
       s = super
       s << ", type_name: #{type_name}, type_init: #{type_init}, abstract: #{abstract?}"
       s << "\n\tInterfaces: " << interfaces.map {|e| e.name}.join(", ") if n_interfaces > 0
-      s << "\n\tFields: " << fields.map {|e| e.name}.join(", ") if n_fields > 0
+      fields.each {|e| s << "\nFIELD for #{self.name}: #{e}"} if n_fields > 0
       s << "\n\tProperties: " << properties.map {|e| e.name}.join(", ") if n_properties > 0
-      s << "\n\tMethods: " << methods.map {|e| e.name}.join(", ") if n_methods > 0
       s << "\n\tSignals: " << signals.map {|e| e.name}.join(", ") if n_signals > 0
       s << "\n\tVFuncs: " << vfuncs.map {|e| e.name}.join(", ") if n_vfuncs > 0
       s << "\n\tConstants: " << constants.map {|e| e.name}.join(", ") if n_constants > 0
+      methods.each {|e| s << "\nMETHOD for #{self.name}: #{e}"} if n_methods > 0
       s
     end
   end
@@ -156,7 +132,7 @@ module Main
 
   def self.run
     gir = GIRepository::IRepository.default
-    self.infos_for gir, 'Gtk'
+    self.infos_for gir, 'GIRepository'
   end
 end
 
