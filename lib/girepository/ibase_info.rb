@@ -17,10 +17,5 @@ module GIRepository
     def type; Lib.g_base_info_get_type @gobj; end
     def namespace; Lib.g_base_info_get_namespace @gobj; end
     def deprecated?; Lib.g_base_info_is_deprecated @gobj; end
-    def to_s
-      s = "#{type} #{name}"
-      s << ", DEPRECATED" if deprecated? 
-      s
-    end
   end
 end

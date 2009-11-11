@@ -2,6 +2,13 @@ require 'ffi'
 require 'lib/girepository.rb'
 
 module GIRepository
+  class IBaseInfo
+    def to_s
+      s = "#{type} #{name}"
+      s << ", DEPRECATED" if deprecated? 
+      s
+    end
+  end
 
   class IStructInfo < IBaseInfo
     def n_fields; Lib.g_struct_info_get_n_fields @gobj; end
