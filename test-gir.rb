@@ -129,10 +129,10 @@ end
 module Main
   def self.infos_for gir, lib
     gir.require lib, nil
-    n = gir.get_n_infos lib
+    n = gir.n_infos lib
     puts "Infos for #{lib}: #{n}"
     (0..(n-1)).each do |i|
-      info = gir.get_info lib, i
+      info = gir.info lib, i
       puts info
     end
   end

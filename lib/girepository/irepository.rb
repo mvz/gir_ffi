@@ -10,7 +10,7 @@ module GIRepository
       @@singleton
     end
 
-    def get_n_infos namespace
+    def n_infos namespace
       Lib.g_irepository_get_n_infos @gobj, namespace
     end
 
@@ -23,7 +23,7 @@ module GIRepository
       end
     end
 
-    def get_info namespace, i
+    def info namespace, i
       ptr = Lib.g_irepository_get_info @gobj, namespace, i
       case Lib.g_base_info_get_type ptr
       when :OBJECT
