@@ -2,8 +2,6 @@ require 'ffi'
 require 'lib/girepository.rb'
 
 module GIRepository
-  private
-
   module Lib
     extend FFI::Library
     ffi_lib "girepository-1.0"
@@ -85,12 +83,9 @@ module GIRepository
     attach_function :g_object_info_get_class_struct, [:pointer], :pointer
   end
 
-  public
-
   class IRepository
-
     def self.get_default
-      @@singleton ||= IRepository.new(Lib::g_irepository_get_default)
+      @@singleton ||= new(Lib::g_irepository_get_default)
     end
 
     def get_n_infos namespace
@@ -120,7 +115,7 @@ module GIRepository
       end
     end
 
-    private
+    private_class_method :new
 
     def initialize(gobject)
       @gobj = gobject
@@ -167,7 +162,6 @@ module GIRepository
     def size; Lib.g_struct_info_get_size @gobj; end
     def alignment; Lib.g_struct_info_get_alignment @gobj; end
     def gtype_struct?; Lib.g_struct_info_is_gtype_struct @gobj; end
-
 
     def to_s
       s = super

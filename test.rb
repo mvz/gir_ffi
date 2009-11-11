@@ -31,9 +31,6 @@ module Gtk
       @@callbacks << prc
       g_signal_connect_data @gobj, signal, prc, data, nil, 0
     end
-    private
-    def initialize
-    end
   end
 
   class Window < Widget
