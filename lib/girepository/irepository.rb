@@ -1,7 +1,13 @@
 module GIRepository
   class IRepository
+    @@singleton = nil
+
     def self.default
-      @@singleton ||= new(Lib::g_irepository_get_default)
+      if @@singleton.nil?
+	Helper::GType.init
+	@@singleton = new(Lib::g_irepository_get_default)
+      end
+      @@singleton
     end
 
     def get_n_infos namespace
