@@ -1,12 +1,12 @@
 module GIRepository
   class IStructInfo < IBaseInfo
     def n_fields; Lib.g_struct_info_get_n_fields @gobj; end
-    def field i; IFieldInfo.new(Lib.g_struct_info_get_field @gobj, i); end
+    def field i; IFieldInfo.wrap(Lib.g_struct_info_get_field @gobj, i); end
 
     build_array_method :field
 
     def n_methods; Lib.g_struct_info_get_n_methods @gobj; end
-    def method i; IFunctionInfo.new(Lib.g_struct_info_get_method @gobj, i); end
+    def method i; IFunctionInfo.wrap(Lib.g_struct_info_get_method @gobj, i); end
 
     build_array_method :method
 

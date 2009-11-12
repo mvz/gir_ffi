@@ -42,6 +42,7 @@ module GIRepository
     private
 
     def info_from_pointer ptr
+      return nil if ptr.null?
       case Lib.g_base_info_get_type ptr
       when :OBJECT
 	return IObjectInfo.new(ptr)
