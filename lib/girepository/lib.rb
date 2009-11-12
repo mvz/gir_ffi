@@ -17,26 +17,26 @@ module GIRepository
 
     # g_base_info
     enum :GIInfoType, [
-      :INVALID,
-      :FUNCTION,
-      :CALLBACK,
-      :STRUCT,
-      :BOXED,
-      :ENUM,
-      :FLAGS,
-      :OBJECT,
-      :INTERFACE,
-      :CONSTANT,
-      :ERROR_DOMAIN,
-      :UNION,
-      :VALUE,
-      :SIGNAL,
-      :VFUNC,
-      :PROPERTY,
-      :FIELD,
-      :ARG,
-      :TYPE,
-      :UNRESOLVED
+      :invalid,
+      :function,
+      :callback,
+      :struct,
+      :boxed,
+      :enum,
+      :flags,
+      :object,
+      :interface,
+      :constant,
+      :error_domain,
+      :union,
+      :value,
+      :signal,
+      :vfunc,
+      :property,
+      :field,
+      :arg,
+      :type,
+      :unresolved
     ]
 
     attach_function :g_base_info_get_type, [:pointer], :GIInfoType
@@ -51,9 +51,9 @@ module GIRepository
 
     # g_callable_info
     enum :GITransfer, [
-      :NOTHING,
-      :CONTAINER,
-      :EVERYTHING
+      :nothing,
+      :container,
+      :everything
     ]
 
     attach_function :g_callable_info_get_return_type, [:pointer], :pointer
@@ -64,16 +64,16 @@ module GIRepository
 
     # g_arg_info 
     enum :GIDirection, [
-      :IN,
-      :OUT,
-      :INOUT
+      :in,
+      :out,
+      :inout
     ]
 
     enum :GIScopeType, [
-      :INVALID,
-      :CALL,
-      :ASYNC,
-      :NOTIFIED
+      :invalid,
+      :call,
+      :async,
+      :notified
     ]
 
     attach_function :g_arg_info_get_direction, [:pointer], :GIDirection 

@@ -44,11 +44,11 @@ module GIRepository
     def info_from_pointer ptr
       return nil if ptr.null?
       case Lib.g_base_info_get_type ptr
-      when :OBJECT
+      when :object
 	return IObjectInfo.new(ptr)
-      when :FUNCTION
+      when :function
 	return IFunctionInfo.new(ptr)
-      when :STRUCT
+      when :struct
 	return IStructInfo.new(ptr)
       else
 	return IBaseInfo.new(ptr)
