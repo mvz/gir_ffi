@@ -23,6 +23,16 @@ module GIRepository
     end
   end
 
+  class ICallableInfo
+    def to_s
+      s = super
+      s << ", caller owns #{caller_owns}"
+      s << ", may return null" if may_return_null?
+      s << "\n ARGS: " << args.map {|e| e.name}.join(", ") if n_args > 0
+      s
+    end
+  end
+
   class IFunctionInfo
     def to_s
       s = super
