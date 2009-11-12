@@ -25,6 +25,23 @@ module GIRepository
 
     def info namespace, i
       ptr = Lib.g_irepository_get_info @gobj, namespace, i
+      return info_from_pointer ptr
+    end
+
+    def find_by_name namespace, name
+      ptr = Lib.g_irepository_find_by_name @gobj, namespace, name
+      return info_from_pointer ptr
+    end
+
+    private_class_method :new
+
+    def initialize(gobject)
+      @gobj = gobject
+    end
+
+    private
+
+    def info_from_pointer ptr
       case Lib.g_base_info_get_type ptr
       when :OBJECT
 	return IObjectInfo.new(ptr)
@@ -35,12 +52,6 @@ module GIRepository
       else
 	return IBaseInfo.new(ptr)
       end
-    end
-
-    private_class_method :new
-
-    def initialize(gobject)
-      @gobj = gobject
     end
   end
 end

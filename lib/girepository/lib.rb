@@ -3,6 +3,7 @@ module GIRepository
     extend FFI::Library
     ffi_lib "girepository-1.0"
 
+    # g_irepository
     enum :GIRepositoryLoadFlags, [:LAZY, (1<<0)]
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_require,
@@ -11,6 +12,8 @@ module GIRepository
     attach_function :g_irepository_get_n_infos, [:pointer, :string], :int
     attach_function :g_irepository_get_info,
       [:pointer, :string, :int], :pointer
+    attach_function :g_irepository_find_by_name,
+      [:pointer, :string, :string], :pointer
 
     # g_base_info
     enum :GIInfoType, [

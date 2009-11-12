@@ -60,13 +60,15 @@ module Main
     puts "Infos for #{lib}: #{n}"
     (0..(n-1)).each do |i|
       info = gir.info lib, i
-      puts info
+      puts info if info.type == :OBJECT
     end
   end
 
   def self.run
     gir = GIRepository::IRepository.default
-    self.infos_for gir, 'GIRepository'
+    #self.infos_for gir, 'Gtk'
+    gir.require 'Gtk', nil
+    puts gir.find_by_name 'Gtk', 'Window'
   end
 end
 
