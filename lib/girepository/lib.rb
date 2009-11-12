@@ -46,8 +46,46 @@ module GIRepository
 
     # g_function_info
     attach_function :g_function_info_get_symbol, [:pointer], :string
-    # TODO: return type is bitwise-or-ed enum
+    # TODO: return type is bitfield
     attach_function :g_function_info_get_flags, [:pointer], :int
+
+    # g_callable_info
+    enum :GITransfer, [
+      :NOTHING,
+      :CONTAINER,
+      :EVERYTHING
+    ]
+
+    attach_function :g_callable_info_get_return_type, [:pointer], :pointer
+    attach_function :g_callable_info_get_caller_owns, [:pointer], :GITransfer 
+    attach_function :g_callable_info_may_return_null, [:pointer], :bool 
+    attach_function :g_callable_info_get_n_args, [:pointer], :int
+    attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
+
+    # g_arg_info 
+    enum :GIDirection, [
+      :IN,
+      :OUT,
+      :INOUT
+    ]
+
+    enum :GIScopeType, [
+      :INVALID,
+      :CALL,
+      :ASYNC,
+      :NOTIFIED
+    ]
+
+    attach_function :g_arg_info_get_direction, [:pointer], :GIDirection 
+    attach_function :g_arg_info_is_dipper, [:pointer], :bool 
+    attach_function :g_arg_info_is_return_value, [:pointer], :bool 
+    attach_function :g_arg_info_is_optional, [:pointer], :bool 
+    attach_function :g_arg_info_may_be_null, [:pointer], :bool 
+    attach_function :g_arg_info_get_ownership_transfer, [:pointer], :GITransfer 
+    attach_function :g_arg_info_get_scope, [:pointer], :GIScopeType 
+    attach_function :g_arg_info_get_closure, [:pointer], :int 
+    attach_function :g_arg_info_get_destroy, [:pointer], :int 
+    attach_function :g_arg_info_get_type, [:pointer], :pointer
 
     # IStructInfo
     attach_function :g_struct_info_get_n_fields, [:pointer], :int
