@@ -42,11 +42,11 @@ module GIRepository
       end
 
       should "yield more than one object" do
-	assert_operator @gir.get_n_infos('Gtk'), :>, 0
+	assert_operator @gir.n_infos('Gtk'), :>, 0
       end
 
       should "yield IBaseInfo objects" do
-	assert_kind_of IBaseInfo, @gir.get_info('Gtk', 0)
+	assert_kind_of IBaseInfo, @gir.info('Gtk', 0)
       end
     end
   end
