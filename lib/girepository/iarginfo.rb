@@ -10,6 +10,6 @@ module GIRepository
     def scope; g_arg_info_get_scope @gobj; end
     def closure; g_arg_info_get_closure @gobj; end
     def destroy; g_arg_info_get_destroy @gobj; end
-    def type; GITypeInfo.wrap(g_arg_info_get_type @gobj); end
+    def type; ITypeInfo.wrap(g_arg_info_get_type @gobj); end
   end
 end
