@@ -52,6 +52,7 @@ module GIRepository
       s << ", throws" if f & (1 << 5) != 0
       s
     end
+
     def generate
       f = flags
       s = "\n  # #{symbol}"
@@ -66,6 +67,8 @@ module GIRepository
 
       s << "\n  def #{name}"
       s << " " << args.map(&:name).join(", ") if n_args > 0
+      s << "\n    "
+      s << "Lib.#{symbol} " + (["@gobj"] + args.map(&:name)).join(", ")
       s << "\n  end"
       #aliases.each {|a| s << "\n  alias #{a} #{nm}"}
       
@@ -113,25 +116,30 @@ module GIRepository
   end
 end
 
-module Main
-  def self.infos_for gir, lib
-    gir.require lib, nil
-    n = gir.n_infos lib
-    puts "Infos for #{lib}: #{n}"
-    (0..(n-1)).each do |i|
-      info = gir.info lib, i
-      puts info if info.type == :OBJECT
+class Main
+  def initialize
+    @gir = GIRepository::IRepository.default
+  end
+
+  def infos_for lib, object = nil
+    @gir.require lib, nil
+    if object.nil?
+      n = @gir.n_infos lib
+      puts "Infos for #{lib}: #{n}"
+      (0..(n-1)).each do |i|
+	info = @gir.info lib, i
+	puts info if info.type == :OBJECT
+      end
+    else
+      go = @gir.find_by_name lib, object
+      puts go
+      puts go.generate
     end
   end
 
-  def self.run
-    gir = GIRepository::IRepository.default
-    #self.infos_for gir, 'Gtk'
-    gir.require 'GObject', nil
-    go = gir.find_by_name 'GObject', 'Object'
-    puts go
-    puts go.generate
+  def run
+    infos_for 'GIRepository', 'IRepository'
   end
 end
 
-Main.run
+Main.new.run
