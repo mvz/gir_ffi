@@ -5,6 +5,7 @@ module GIRepository
   class BuilderTest < Test::Unit::TestCase
     context "A Builder" do
       setup do
+	@builder ||= nil
 	return if @builder
 	@builder = GIRepository::Builder.new
 	@builder.build_object 'GObject', 'Object', 'NS1'
