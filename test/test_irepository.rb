@@ -1,4 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require 'girepository/irepository'
 
 module GIRepository
   class IRepositoryTest < Test::Unit::TestCase

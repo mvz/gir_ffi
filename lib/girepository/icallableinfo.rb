@@ -1,3 +1,6 @@
+require 'girepository/ibaseinfo'
+require 'girepository/iarginfo'
+
 module GIRepository
   class ICallableInfo < IBaseInfo
     def return_type; ITypeInfo.wrap( Lib.g_callable_info_get_return_type @gobj); end

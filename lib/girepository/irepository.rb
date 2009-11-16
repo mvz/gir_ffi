@@ -1,3 +1,10 @@
+require 'girepository/lib'
+require 'girepository/helper/gtype'
+require 'girepository/ibaseinfo'
+require 'girepository/iobjectinfo'
+require 'girepository/icallableinfo'
+require 'girepository/ifunctioninfo'
+
 module GIRepository
   class IRepository
     @@singleton = nil
