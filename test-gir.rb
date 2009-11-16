@@ -62,27 +62,25 @@ module GIRepository
       s << ", wraps_vfunc" if f & (1 << 4) != 0
       s << ", throws" if f & (1 << 5) != 0
 
-      aliases = []
-      case name
-      when /^get_(.*)/:
-	aliases << $~[1]
-      when /^set_(.*)/:
-	aliases << "#{$~[1]}="
-	aliases << name
-      when /^is_(.*)/:
-	aliases << $~[1]
-	aliases << name
-      else
-	aliases << name
-      end
+      #aliases = []
 
-      nm = aliases.shift
-      s << "\n  def #{nm}"
+      s << "\n  def #{name}"
       s << " " << args.map(&:name).join(", ") if n_args > 0
       s << "\n  end"
-      aliases.each {|a| s << "\n  alias #{a} #{nm}"}
+      #aliases.each {|a| s << "\n  alias #{a} #{nm}"}
       
       s
+    end
+
+    def short_name
+#      # setter: 1 arg, no return type
+#      if name =~ /^get_(.*)/
+#	aliases << $~[1]
+#      when /^set_(.*)/:
+#	aliases << "#{$~[1]}="
+#      when /^is_(.*)/:
+#	aliases << $~[1]
+#      end
     end
   end
 
@@ -132,7 +130,7 @@ module Main
     gir.require 'GObject', nil
     go = gir.find_by_name 'GObject', 'Object'
     puts go
-    #puts go.generate
+    puts go.generate
   end
 end
 
