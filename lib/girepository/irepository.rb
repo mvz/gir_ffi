@@ -4,6 +4,7 @@ require 'girepository/ibaseinfo'
 require 'girepository/iobjectinfo'
 require 'girepository/icallableinfo'
 require 'girepository/ifunctioninfo'
+require 'girepository/iconstantinfo'
 
 module GIRepository
   class IRepository
@@ -50,14 +51,18 @@ module GIRepository
 
     def info_from_pointer ptr
       return nil if ptr.null?
-      case Lib.g_base_info_get_type ptr
+      type = Lib.g_base_info_get_type ptr
+      case type
       when :object
 	return IObjectInfo.new(ptr)
       when :function
 	return IFunctionInfo.new(ptr)
       when :struct
 	return IStructInfo.new(ptr)
+      when :constant
+	return IConstantInfo.new(ptr)
       else
+	puts "Returning base info object for #{type}"
 	return IBaseInfo.new(ptr)
       end
     end
