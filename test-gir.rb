@@ -34,6 +34,7 @@ module GIRepository
       s = super
       s << ", caller owns #{caller_owns}"
       s << ", may return null" if may_return_null?
+      s << "\n RETURN TYPE: " << return_type.to_s
       s << "\n ARGS: " << args.map(&:name).join(", ") if n_args > 0
       s
     end
@@ -65,6 +66,7 @@ module GIRepository
 
       #aliases = []
 
+      rt = return_type
       s << "\n  def #{name}"
       s << " " << args.map(&:name).join(", ") if n_args > 0
       s << "\n    "
@@ -85,6 +87,7 @@ module GIRepository
 #	aliases << $~[1]
 #      end
     end
+
   end
 
   class IObjectInfo
@@ -114,6 +117,15 @@ module GIRepository
       s
     end
   end
+
+  class ITypeInfo
+    def to_s
+      s = "TYPE: "
+      s << "pointer to " if pointer?
+      s << GIRepository::IRepository.type_tag_to_string(tag)
+      s
+    end
+  end
 end
 
 class Main
@@ -133,12 +145,13 @@ class Main
     else
       go = @gir.find_by_name lib, object
       puts go
-      puts go.generate
+      #puts go.generate
     end
   end
 
   def run
     infos_for 'GIRepository', 'IRepository'
+    #infos_for 'Gtk', 'Window'
   end
 end
 

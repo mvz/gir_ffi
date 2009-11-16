@@ -121,5 +121,53 @@ module GIRepository
     attach_function :g_object_info_get_n_constants, [:pointer], :int
     attach_function :g_object_info_get_constant, [:pointer, :int], :pointer
     attach_function :g_object_info_get_class_struct, [:pointer], :pointer
+
+    enum :GITypeTag, [
+      :void,  0,
+      :boolean,  1,
+      :int8,  2,
+      :uint8,  3,
+      :int16,  4,
+      :uint16,  5,  
+      :int32,  6,
+      :uint32,  7,
+      :int64,  8,
+      :uint64,  9,
+      :short, 10,
+      :ushort, 11,
+      :int, 12,
+      :uint, 13,
+      :long, 14,
+      :ulong, 15,
+      :ssize, 16,
+      :size, 17,
+      :float, 18,
+      :double, 19,
+      :time_t, 20,
+      :gtype, 21,
+      :utf8, 22,
+      :filename, 23,
+      :array, 24,
+      :interface, 25,
+      :glist, 26,
+      :gslist, 27,
+      :ghash, 28,
+      :error, 29
+    ]
+
+    #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
+
+    attach_function :g_type_tag_to_string, [:GITypeTag], :string
+
+    attach_function :g_type_info_is_pointer, [:pointer], :bool
+    attach_function :g_type_info_get_tag, [:pointer], :GITypeTag
+    attach_function :g_type_info_get_param_type, [:pointer, :int], :pointer
+    attach_function :g_type_info_get_interface, [:pointer], :pointer
+    attach_function :g_type_info_get_array_length, [:pointer], :int
+    attach_function :g_type_info_get_array_fixed_size, [:pointer], :int
+    attach_function :g_type_info_is_zero_terminated, [:pointer], :bool
+    attach_function :g_type_info_get_n_error_domains, [:pointer], :int
+    attach_function :g_type_info_get_error_domain, [:pointer, :int], :pointer
+
   end
 end

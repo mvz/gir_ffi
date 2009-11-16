@@ -1,10 +1,15 @@
 require 'girepository/lib'
 require 'girepository/helper/gtype'
 require 'girepository/ibaseinfo'
-require 'girepository/iobjectinfo'
 require 'girepository/icallableinfo'
 require 'girepository/ifunctioninfo'
 require 'girepository/iconstantinfo'
+require 'girepository/ifieldinfo'
+require 'girepository/iinterfaceinfo'
+require 'girepository/ipropertyinfo'
+require 'girepository/ivfuncinfo'
+require 'girepository/isignalinfo'
+require 'girepository/iobjectinfo'
 
 module GIRepository
   class IRepository
@@ -16,6 +21,10 @@ module GIRepository
 	@@singleton = new(Lib::g_irepository_get_default)
       end
       @@singleton
+    end
+
+    def self.type_tag_to_string type
+      Lib.g_type_tag_to_string type
     end
 
     def n_infos namespace

@@ -1,7 +1,3 @@
-require 'girepository/ibaseinfo'
-require 'girepository/ifieldinfo'
-require 'girepository/ivfuncinfo'
-
 module GIRepository
   class IObjectInfo < IBaseInfo
     def type_name; Lib.g_object_info_get_type_name @gobj; end
