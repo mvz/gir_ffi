@@ -10,6 +10,10 @@ require 'girepository/ipropertyinfo'
 require 'girepository/ivfuncinfo'
 require 'girepository/isignalinfo'
 require 'girepository/iobjectinfo'
+require 'girepository/istructinfo'
+require 'girepository/iunioninfo'
+require 'girepository/ienuminfo'
+require 'girepository/iflagsinfo'
 
 module GIRepository
   class IRepository
@@ -70,8 +74,14 @@ module GIRepository
 	return IStructInfo.new(ptr)
       when :constant
 	return IConstantInfo.new(ptr)
+      when :union
+	return IUnionInfo.new(ptr)
+      when :enum
+	return IEnumInfo.new(ptr)
+      when :flags
+	return IFlagsInfo.new(ptr)
       else
-	puts "Returning base info object for #{type}"
+	raise "Returning base info object for #{type}"
 	return IBaseInfo.new(ptr)
       end
     end
