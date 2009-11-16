@@ -1,6 +1,8 @@
-gir-ffi
-    by Matijs van Zuijlen
-    http://www.github.com/mvz/ruby-gir-ffi
+= Gir-FFI
+
+by Matijs van Zuijlen
+
+http://www.github.com/mvz/ruby-gir-ffi
 
 == DESCRIPTION:
 

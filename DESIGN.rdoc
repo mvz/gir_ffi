@@ -1,0 +1,42 @@
+= Design of Gir-FFI
+
+== Basic Idea
+
+Gir-FFI uses FFI to read information from the GObject Introspection
+Repository. Based on that it creates bindings for the information read.
+
+== Options
+
+* Create classes and all of their methods at runtime.
+* Create classes and add method_missing to them at runtime to generate
+  methods when required. This is possibly faster. Basic method loading code
+  will be the same though.
+* Allow offline creation of ruby source generated from the GIR.
+
+== Method Naming
+
+Probably, get_x/set_x pairs should become x and x= to be more Ruby-like.
+This should be done either by defining them as such directly, or by
+aliasing. Blindly going by the name leads to weird results thoough, like
+having x, x= and x_full= as a set. Also, some get_ or set_ methods take
+extra arguments. These probably shouldn't become accessors either.
+
+Boolean-valued methods could get a ? at the end.
+
+== Ruby-GNOME Compatibility
+
+Full Ruby-GNOME compatibility cannot be achieved automatically, since its
+object hierarchy differs from that of standard GObject: It puts Object in
+the GLib namespace, and defines signal_connect and friends as methods of
+GLib::Instantiable; In standard GObject they are functions.
+
+Possibly, compatibility enhancing code can be added for these specific
+exceptions.
+
+== Bootstrapping Class Design
+
+The interface to the GObject Introspection Repository itself is also
+introspectable. The interface is specified in terms of structs and
+functions rather than objects and methods. For now, the hard-coded Ruby
+bindings for this don't follow the introspected specification: Gir-FFI
+cannot bootstrap itself.
