@@ -1,3 +1,5 @@
+require 'ffi'
+
 module GIRepository
   module Lib
     extend FFI::Library
