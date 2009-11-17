@@ -35,7 +35,11 @@ module GIRepository
       s << ", caller owns #{caller_owns}"
       s << ", may return null" if may_return_null?
       s << "\n RETURN TYPE: " << return_type.to_s
-      s << "\n ARGS: " << args.map(&:name).join(", ") if n_args > 0
+      if n_args > 0
+	s << "\n ARGS: " << args.map { |a|
+	  "#{a.name}: #{a.type}"
+	}.join(", ")
+      end
       s
     end
   end
@@ -103,8 +107,12 @@ module GIRepository
       methods.each {|e| s << "\nMETHOD for #{self.name}: #{e}"} if n_methods > 0
       s
     end
+
     def generate
       s = "class #{namespace}::#{name}"
+      if parent
+	s << " < #{parent.namespace}::#{parent.name}"
+      end
       s << "\n  # type_name: #{type_name}, type_init: #{type_init}, abstract: #{abstract?}"
       s << "\n  # Interfaces: " << interfaces.map(&:name).join(", ") if n_interfaces > 0
       fields.each {|e| s << "\n  # FIELD: #{e}"} if n_fields > 0
@@ -123,6 +131,9 @@ module GIRepository
       s = "TYPE: "
       s << "pointer to " if pointer?
       s << GIRepository::IRepository.type_tag_to_string(tag)
+      if tag == :interface
+	s << ": " << "#{interface.namespace}::#{interface.name}"
+      end
       s
     end
   end
@@ -140,18 +151,19 @@ class Main
       puts "Infos for #{lib}: #{n}"
       (0..(n-1)).each do |i|
 	info = @gir.info lib, i
-	puts info if info.type == :OBJECT
+	puts info #if info.type == :OBJECT
       end
     else
       go = @gir.find_by_name lib, object
       puts go
-      #puts go.generate
+      puts go.generate
     end
   end
 
   def run
-    infos_for 'GIRepository', 'IRepository'
-    #infos_for 'Gtk', 'Window'
+    #infos_for 'GIRepository' #, 'IObjectInfo'
+    infos_for 'Gtk', 'Window'
+    #infos_for 'GObject', 'Object'
   end
 end
 
