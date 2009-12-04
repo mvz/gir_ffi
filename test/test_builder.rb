@@ -3,7 +3,7 @@ require 'girepository/builder'
 
 module GIRepository
   class BuilderTest < Test::Unit::TestCase
-    context "A Builder" do
+    context "A Builder building GObject::Object" do
       setup do
 	@builder ||= nil
 	return if @builder
