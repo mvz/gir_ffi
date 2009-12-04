@@ -81,7 +81,7 @@ module GIRepository
       when :flags
 	return IFlagsInfo.new(ptr)
       else
-	raise "Returning base info object for #{type}"
+	#raise "Returning base info object for #{type}"
 	return IBaseInfo.new(ptr)
       end
     end
