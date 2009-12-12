@@ -1,5 +1,5 @@
-require 'girepository/ibaseinfo'
-module GIRepository
+require 'girffi/ibaseinfo'
+module GirFFI
   class IArgInfo < IBaseInfo
     def direction; Lib.g_arg_info_get_direction @gobj; end
     def dipper?; Lib.g_arg_info_is_dipper @gobj; end

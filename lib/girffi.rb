@@ -1,5 +1,5 @@
 
-module GIRepository
+module GirFFI
 
   # :stopdoc:
   VERSION = '0.0.1'
@@ -31,6 +31,6 @@ module GIRepository
 
 end  # module GirFfi
 
-require 'girepository/irepository'
+require 'girffi/irepository'
 
 # EOF

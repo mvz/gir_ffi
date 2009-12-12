@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class IConstantInfo < IBaseInfo
     # TODO: Implementation
   end

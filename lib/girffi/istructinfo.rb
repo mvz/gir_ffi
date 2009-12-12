@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class IStructInfo < IBaseInfo
     def n_fields; Lib.g_struct_info_get_n_fields @gobj; end
     def field i; IFieldInfo.wrap(Lib.g_struct_info_get_field @gobj, i); end

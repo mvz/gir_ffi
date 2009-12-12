@@ -1,21 +1,21 @@
-require 'girepository/lib'
-require 'girepository/helper/gtype'
-require 'girepository/ibaseinfo'
-require 'girepository/icallableinfo'
-require 'girepository/ifunctioninfo'
-require 'girepository/iconstantinfo'
-require 'girepository/ifieldinfo'
-require 'girepository/iinterfaceinfo'
-require 'girepository/ipropertyinfo'
-require 'girepository/ivfuncinfo'
-require 'girepository/isignalinfo'
-require 'girepository/iobjectinfo'
-require 'girepository/istructinfo'
-require 'girepository/iunioninfo'
-require 'girepository/ienuminfo'
-require 'girepository/iflagsinfo'
+require 'girffi/lib'
+require 'girffi/helper/gtype'
+require 'girffi/ibaseinfo'
+require 'girffi/icallableinfo'
+require 'girffi/ifunctioninfo'
+require 'girffi/iconstantinfo'
+require 'girffi/ifieldinfo'
+require 'girffi/iinterfaceinfo'
+require 'girffi/ipropertyinfo'
+require 'girffi/ivfuncinfo'
+require 'girffi/isignalinfo'
+require 'girffi/iobjectinfo'
+require 'girffi/istructinfo'
+require 'girffi/iunioninfo'
+require 'girffi/ienuminfo'
+require 'girffi/iflagsinfo'
 
-module GIRepository
+module GirFFI
   class IRepository
     @@singleton = nil
 

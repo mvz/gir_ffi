@@ -5,13 +5,13 @@
 #
 
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'lib')
-require 'girepository'
+require 'girffi'
 
-module GIRepository
+module GirFFI
   class ITypeInfo
     def to_ffi
       return :pointer if pointer?
-      return GIRepository::IRepository.type_tag_to_string(tag).to_sym
+      return GirFFI::IRepository.type_tag_to_string(tag).to_sym
     end
   end
 end
@@ -20,7 +20,7 @@ module Gtk
   extend FFI::Library
 
   ffi_lib "gtk-x11-2.0"
-  @@gir = GIRepository::IRepository.default
+  @@gir = GirFFI::IRepository.default
   @@gir.require "Gtk", nil
   def self.method_missing method, *arguments
     go = @@gir.find_by_name "Gtk", method.to_s

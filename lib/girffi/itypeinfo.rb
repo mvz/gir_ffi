@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class ITypeInfo < IBaseInfo
     def pointer?; Lib.g_type_info_is_pointer @gobj; end
     def tag; Lib.g_type_info_get_tag @gobj; end

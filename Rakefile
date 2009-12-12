@@ -14,7 +14,7 @@ rescue LoadError
 end
 
 ensure_in_path 'lib'
-require 'girepository'
+require 'girffi'
 
 task :default => 'test:run'
 
@@ -22,7 +22,7 @@ PROJ.name = 'gir-ffi'
 PROJ.authors = 'Matijs van Zuijlen'
 PROJ.email = 'matijs@matijs.net'
 PROJ.url = 'http://www.github.com/mvz/ruby-gir-ffi'
-PROJ.version = GIRepository::VERSION
+PROJ.version = GirFFI::VERSION
 PROJ.readme_file = 'README.rdoc'
 
 PROJ.gem.dependencies << ['ffi', '~> 0.5.0']

@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girepository/irepository'
+require 'girffi/irepository'
 
-module GIRepository
+module GirFFI
   class IRepositoryTest < Test::Unit::TestCase
     context "An IRepository object" do
       should "not be created by calling new()" do

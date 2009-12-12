@@ -1,6 +1,6 @@
 require 'ffi'
 
-module GIRepository
+module GirFFI
   module Helper
     module GType
       def self.init; Lib::g_type_init; end

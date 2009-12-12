@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class IPropertyInfo < IBaseInfo
   end
 end

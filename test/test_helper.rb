@@ -1,3 +1,3 @@
 require 'shoulda'
-require File.expand_path('../lib/girepository.rb', File.dirname(__FILE__))
+require File.expand_path('../lib/girffi.rb', File.dirname(__FILE__))
 

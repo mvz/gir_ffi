@@ -1,13 +1,13 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girepository/builder'
+require 'girffi/builder'
 
-module GIRepository
+module GirFFI
   class BuilderTest < Test::Unit::TestCase
     context "A Builder building GObject::Object" do
       setup do
 	@builder ||= nil
 	return if @builder
-	@builder = GIRepository::Builder.new
+	@builder = GirFFI::Builder.new
 	@builder.build_object 'GObject', 'Object', 'NS1'
       end
 

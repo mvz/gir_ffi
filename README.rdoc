@@ -16,7 +16,7 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 == SYNOPSIS:
 
   require 'gir-ffi'
-  GIRepository::RubyClassBuilder.load 'Gtk'
+  GirFFI::RubyClassBuilder.load 'Gtk'
 
 == REQUIREMENTS:
 

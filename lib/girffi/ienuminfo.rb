@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class IEnumInfo < IBaseInfo
     # TODO: Implementation
   end

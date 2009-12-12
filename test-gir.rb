@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'lib')
 require 'ffi'
-require 'girepository'
+require 'girffi'
 
 class Symbol
   def to_proc
@@ -8,7 +8,7 @@ class Symbol
   end
 end
 
-module GIRepository
+module GirFFI
   class IBaseInfo
     def to_s
       s = "#{type} #{name}"
@@ -130,7 +130,7 @@ module GIRepository
     def to_s
       s = "TYPE: "
       s << "pointer to " if pointer?
-      s << GIRepository::IRepository.type_tag_to_string(tag)
+      s << GirFFI::IRepository.type_tag_to_string(tag)
       if tag == :interface
 	s << ": " << "#{interface.namespace}::#{interface.name}"
       end
@@ -141,7 +141,7 @@ end
 
 class Main
   def initialize
-    @gir = GIRepository::IRepository.default
+    @gir = GirFFI::IRepository.default
   end
 
   def infos_for lib, object = nil
@@ -161,7 +161,7 @@ class Main
   end
 
   def run
-    #infos_for 'GIRepository' #, 'IObjectInfo'
+    #infos_for 'GirFFI' #, 'IObjectInfo'
     infos_for 'Gtk', 'Window'
     #infos_for 'GObject', 'Object'
   end

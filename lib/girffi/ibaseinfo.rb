@@ -1,4 +1,4 @@
-module GIRepository
+module GirFFI
   class IBaseInfo
     def self.build_array_method elementname, plural = nil
       plural ||= "#{elementname}s"

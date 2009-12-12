@@ -1,8 +1,8 @@
-require 'girepository/ibaseinfo'
-require 'girepository/itypeinfo'
-require 'girepository/iarginfo'
+require 'girffi/ibaseinfo'
+require 'girffi/itypeinfo'
+require 'girffi/iarginfo'
 
-module GIRepository
+module GirFFI
   class ICallableInfo < IBaseInfo
     def return_type; ITypeInfo.wrap(Lib.g_callable_info_get_return_type @gobj); end
     def caller_owns; Lib.g_callable_info_get_caller_owns @gobj; end
