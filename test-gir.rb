@@ -82,6 +82,7 @@ module GirFFI
     end
 
     def short_name
+      # FIXME: Think about getter and setter method names later.
 #      # setter: 1 arg, no return type
 #      if name =~ /^get_(.*)/
 #	aliases << $~[1]
@@ -161,8 +162,8 @@ class Main
   end
 
   def run
-    #infos_for 'GirFFI' #, 'IObjectInfo'
-    infos_for 'Gtk', 'Window'
+    #infos_for 'GIRepository' #, 'IObjectInfo'
+    infos_for 'Gtk' #, 'Window'
     #infos_for 'GObject', 'Object'
   end
 end

@@ -29,19 +29,22 @@ module Gtk
     super if go.type != :function
 
     sym = go.symbol
-    args = go.args.map {|a| a.type.to_ffi}
+    argtypes = go.args.map {|a| a.type.to_ffi}
+    argnames = go.args.map {|a| a.name}
     rt = go.return_type.to_ffi
 
-    puts "attach_function :#{sym}, [#{args.map {|a| ":#{a}"}.join ", "}], :#{rt}"
+    puts "attach_function :#{sym}, [#{argtypes.map {|a| ":#{a}"}.join ", "}], :#{rt}"
     Gtk.module_eval do
-      attach_function sym, args, rt
+      attach_function sym, argtypes, rt
       eigenclass = class << self; self; end
-      eigenclass.class_eval <<-CODE
-	def #{method} *a
-	  puts "would have sent #{sym} \#{a.map.join(", ")}"
-	  self.#{sym} *a
+      code = <<-CODE
+	def #{method} #{argnames.join(', ')}
+	  puts "Calling #{sym} #{argnames.map{|n| "\#{#{n}}"}.join(', ')}"
+	  self.#{sym} #{argnames.join(', ')}
 	end
       CODE
+      puts code
+      eigenclass.class_eval code
     end
 
     #puts Gtk.public_methods - Module.public_methods
