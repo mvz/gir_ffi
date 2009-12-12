@@ -3,11 +3,11 @@ module Gtk
   extend FFI::Library
 
   ffi_lib "gtk-x11-2.0"
-  attach_function :gtk_init, [:pointer, :pointer], :void
+  attach_function :gtk_init, [:int, :pointer], :void
   attach_function :gtk_main, [], :void
   attach_function :gtk_main_quit, [], :void
 
-  def self.init; gtk_init nil, nil; end
+  def self.init; gtk_init 0, nil; end
   def self.main; gtk_main; end
   def self.main_quit; gtk_main_quit; end
 
