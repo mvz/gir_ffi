@@ -2,11 +2,13 @@ module GirFFI
   class IBaseInfo
     def self.build_array_method elementname, plural = nil
       plural ||= "#{elementname}s"
-      define_method "#{plural}" do
-	(0..((send "n_#{plural}") - 1)).map do |i|
-	  send elementname, i
+      self.class_eval <<-CODE
+	def #{plural}
+	  (0..(n_#{plural} - 1)).map do |i|
+	    #{elementname} i
+	  end
 	end
-      end
+      CODE
     end
 
     def initialize gobj=nil

@@ -36,12 +36,12 @@ module Gtk
     Gtk.module_eval do
       attach_function sym, args, rt
       eigenclass = class << self; self; end
-      eigenclass.class_eval do
-	define_method(method) do |*a|
-	  puts "would have sent #{sym} #{a.map.join(", ")}"
-	  self.send sym, *a
+      eigenclass.class_eval <<-CODE
+	def #{method} *a
+	  puts "would have sent #{sym} \#{a.map.join(", ")}"
+	  self.#{sym} *a
 	end
-      end
+      CODE
     end
 
     #puts Gtk.public_methods - Module.public_methods

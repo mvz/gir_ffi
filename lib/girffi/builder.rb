@@ -9,9 +9,9 @@ module GirFFI
       gir.require namespace, nil
       info = gir.find_by_name namespace, classname
       info.methods.each do |m|
-	klass.class_eval {
-	  define_method(m.name) {}
-	}
+	klass.class_eval <<-CODE
+	  def #{m.name}; end
+	CODE
       end
     end
   end
