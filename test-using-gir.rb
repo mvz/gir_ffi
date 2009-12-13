@@ -27,12 +27,12 @@ module Gtk
     "Gtk"
   end
 
-  @@gir = GirFFI::IRepository.default
-  @@gir.require self.g_namespace, nil
-  @@builder = GirFFI::Builder.new
+  private_class_method :g_namespace
 
   def self.method_missing method, *arguments
-    go = @@gir.find_by_name self.g_namespace, method.to_s
+    @@builder ||= GirFFI::Builder.new
+
+    go = @@builder.function_introspection_data g_namespace, method.to_s
 
     # TODO: Unwind stack of raised NoMethodError to get correct error
     # message.
@@ -49,7 +49,7 @@ module Gtk
       attach_function sym, argtypes, rt
     end
 
-    code = @@builder.function_definition self.g_namespace, method.to_s
+    code = @@builder.function_definition go
     puts code
 
     eigenclass = class << self; self; end
