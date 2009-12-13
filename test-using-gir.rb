@@ -17,9 +17,11 @@ module GirFFI
 end
 
 module Gtk
-  extend FFI::Library
+  module Lib
+    extend FFI::Library
+    ffi_lib "gtk-x11-2.0"
+  end
 
-  ffi_lib "gtk-x11-2.0"
   @@gir = GirFFI::IRepository.default
   @@gir.require "Gtk", nil
   def self.method_missing method, *arguments
@@ -37,12 +39,14 @@ module Gtk
 
     puts "attach_function :#{sym}, [#{argtypes.map {|a| ":#{a}"}.join ", "}], :#{rt}"
     Gtk.module_eval do
-      attach_function sym, argtypes, rt
+      Lib.module_eval do
+	attach_function sym, argtypes, rt
+      end
       eigenclass = class << self; self; end
       code = <<-CODE
 	def #{method} #{argnames.join(', ')}
 	  puts "Calling #{sym} #{argnames.map{|n| "\#{#{n}}"}.join(', ')}"
-	  self.#{sym} #{argnames.join(', ')}
+	  Lib.#{sym} #{argnames.join(', ')}
 	end
       CODE
       puts code
@@ -54,5 +58,6 @@ module Gtk
   end
 end
 
+Gtk.init 0, nil
 Gtk.init 0, nil
 Gtk.flub
