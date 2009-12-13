@@ -27,13 +27,11 @@ require 'girffi/builder'
 
   context "A Builder" do
     setup do
-      @builder ||= nil
-      return if @builder
       @builder = GirFFI::Builder.new
     end
     should "build correct definition of Gtk.main" do
       code = @builder.function_definition 'Gtk', 'main'
-      assert_equal "def main\nLib.main\nend", code
+      assert_equal "def main\nLib.gtk_main\nend", code
     end
   end
   end
