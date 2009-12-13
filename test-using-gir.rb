@@ -8,15 +8,6 @@ $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'lib')
 require 'girffi'
 require 'girffi/builder'
 
-module GirFFI
-  class ITypeInfo
-    def to_ffi
-      return :pointer if pointer?
-      return GirFFI::IRepository.type_tag_to_string(tag).to_sym
-    end
-  end
-end
-
 module Gtk
   module Lib
     extend FFI::Library
@@ -39,15 +30,7 @@ module Gtk
     return super if go.nil?
     return super if go.type != :function
 
-    sym = go.symbol
-    argtypes = go.args.map {|a| a.type.to_ffi}
-    rt = go.return_type.to_ffi
-
-    puts "attach_function :#{sym}, [#{argtypes.map {|a| ":#{a}"}.join ", "}], :#{rt}"
-
-    Lib.module_eval do
-      attach_function sym, argtypes, rt
-    end
+    @@builder.attach_ffi_function self, go
 
     code = @@builder.function_definition go
     puts code
