@@ -25,5 +25,11 @@ module GirFFI
       return nil if ptr.null?
       return self.new ptr
     end
+
+    def == other
+      self.name == other.name and
+      self.type == other.type and
+      self.namespace == other.namespace
+    end
   end
 end

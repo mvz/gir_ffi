@@ -29,10 +29,22 @@ require 'girffi/builder'
     setup do
       @builder = GirFFI::Builder.new
     end
+
+    # TODO: function_introspection_data should not return introspection data if not a function.
+    should "find correct introspection data for Gtk.main" do
+      gir = GirFFI::IRepository.default
+      gir.require "Gtk", nil
+      go1 = gir.find_by_name "Gtk", "main"
+      go2 = @builder.function_introspection_data 'Gtk', 'main'
+      assert_equal go1, go2
+    end
+
     should "build correct definition of Gtk.main" do
-      code = @builder.function_definition 'Gtk', 'main'
+      go = @builder.function_introspection_data 'Gtk', 'main'
+      code = @builder.function_definition go
       assert_equal "def main\nLib.gtk_main\nend", code
     end
+
   end
   end
 #end
