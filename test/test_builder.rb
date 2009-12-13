@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'girffi/builder'
 
-module GirFFI
+#module GirFFI
   class BuilderTest < Test::Unit::TestCase
     context "A Builder building GObject::Object" do
       setup do
@@ -24,7 +24,19 @@ module GirFFI
 	end
       end
     end
+
+  context "A Builder" do
+    setup do
+      @builder ||= nil
+      return if @builder
+      @builder = GirFFI::Builder.new
+    end
+    should "build correct definition of Gtk.main" do
+      code = @builder.function_definition 'Gtk', 'main'
+      assert_equal "def main\nLib.main\nend", code
+    end
   end
-end
+  end
+#end
 
 

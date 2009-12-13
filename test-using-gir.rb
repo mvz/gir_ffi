@@ -25,8 +25,10 @@ module Gtk
   def self.method_missing method, *arguments
     go = @@gir.find_by_name "Gtk", method.to_s
 
-    super if go.nil?
-    super if go.type != :function
+    # TODO: Unwind stack of raised NoMethodError to get correct error
+    # message.
+    return super if go.nil?
+    return super if go.type != :function
 
     sym = go.symbol
     argtypes = go.args.map {|a| a.type.to_ffi}
