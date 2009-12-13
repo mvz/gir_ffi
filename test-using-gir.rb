@@ -6,6 +6,7 @@
 
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'lib')
 require 'girffi'
+require 'girffi/builder'
 
 module GirFFI
   class ITypeInfo
@@ -22,10 +23,16 @@ module Gtk
     ffi_lib "gtk-x11-2.0"
   end
 
+  def self.g_namespace
+    "Gtk"
+  end
+
   @@gir = GirFFI::IRepository.default
-  @@gir.require "Gtk", nil
+  @@gir.require self.g_namespace, nil
+  @@builder = GirFFI::Builder.new
+
   def self.method_missing method, *arguments
-    go = @@gir.find_by_name "Gtk", method.to_s
+    go = @@gir.find_by_name self.g_namespace, method.to_s
 
     # TODO: Unwind stack of raised NoMethodError to get correct error
     # message.
@@ -34,30 +41,24 @@ module Gtk
 
     sym = go.symbol
     argtypes = go.args.map {|a| a.type.to_ffi}
-    argnames = go.args.map {|a| a.name}
     rt = go.return_type.to_ffi
 
     puts "attach_function :#{sym}, [#{argtypes.map {|a| ":#{a}"}.join ", "}], :#{rt}"
-    Gtk.module_eval do
-      Lib.module_eval do
-	attach_function sym, argtypes, rt
-      end
-      eigenclass = class << self; self; end
-      code = <<-CODE
-	def #{method} #{argnames.join(', ')}
-	  puts "Calling #{sym} #{argnames.map{|n| "\#{#{n}}"}.join(', ')}"
-	  Lib.#{sym} #{argnames.join(', ')}
-	end
-      CODE
-      puts code
-      eigenclass.class_eval code
+
+    Lib.module_eval do
+      attach_function sym, argtypes, rt
     end
 
-    #puts Gtk.public_methods - Module.public_methods
+    code = @@builder.function_definition self.g_namespace, method.to_s
+    puts code
+
+    eigenclass = class << self; self; end
+    eigenclass.class_eval code
+
+    puts self.public_methods - Module.public_methods - ['method_missing']
     self.send method, *arguments
   end
 end
 
-Gtk.init 0, nil
 Gtk.init 0, nil
 Gtk.flub
