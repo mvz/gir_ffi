@@ -9,22 +9,26 @@ module Gtk
   attach_function :gtk_main_quit, [], :void
 
   def self.init arguments
+    size = arguments.length
+
     strptrs = arguments.map {|a| FFI::MemoryPointer.from_string(a)}
-    block = FFI::MemoryPointer.new(:pointer, strptrs.length)
+    block = FFI::MemoryPointer.new(:pointer, size)
     strptrs.each_with_index do |p, i|
       block[i].write_pointer p
     end
+
     argv = FFI::MemoryPointer.new(:pointer)
     argv.write_pointer block
 
     argc = FFI::MemoryPointer.new(:int)
-    argc.write_int strptrs.length
+    argc.write_int size
 
     gtk_init argc, argv
 
-    leftover = argc.read_int
-    leftblock = argv.read_pointer
-    return_ptrs = leftblock.read_array_of_pointer(leftover)
+    outsize = argc.read_int
+    outblock = argv.read_pointer
+
+    return_ptrs = outblock.read_array_of_pointer(outsize)
     return return_ptrs.map {|p| p.read_string}
   end
 
