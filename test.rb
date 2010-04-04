@@ -21,6 +21,11 @@ module Gtk
     argc.put_int(0, strptrs.length)
 
     gtk_init argc, argv
+
+    leftover = argc.get_int(0)
+    leftblock = argv.get_pointer(0)
+    return_ptrs = leftblock.read_array_of_pointer(leftover)
+    return return_ptrs.map {|p| p.read_string}
   end
 
   def self.main; gtk_main; end
@@ -62,8 +67,9 @@ module Gtk
 end
 
 #Gtk.gtk_init nil, nil
-Gtk.init ARGV
+my_args = Gtk.init ARGV
+p my_args
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
 win.show
 win.signal_connect("destroy", nil) { Gtk.main_quit }
-#Gtk.main
+Gtk.main
