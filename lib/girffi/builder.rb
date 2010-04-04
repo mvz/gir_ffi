@@ -19,12 +19,11 @@ module GirFFI
       sym = info.symbol
       argnames = info.args.map {|a| a.name}
 
-      code = <<-CODE
+      return <<-CODE
 	def #{info.name} #{argnames.join(', ')}
 	  Lib.#{sym} #{argnames.join(', ')}
 	end
       CODE
-      return code.gsub(/(^\s*|\s*$)/, "")
     end
 
     def function_introspection_data namespace, function

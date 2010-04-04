@@ -43,7 +43,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "build correct definition of Gtk.main" do
 	code = @builder.function_definition @go
-	assert_equal "def main\nLib.gtk_main\nend", code
+	assert_equal "def main\nLib.gtk_main\nend", code.gsub(/(^\s*|\s*$)/, "")
       end
 
       should "attach function to Whatever::Lib" do
