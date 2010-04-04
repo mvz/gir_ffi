@@ -8,13 +8,10 @@ module Gtk
   attach_function :gtk_main, [], :void
   attach_function :gtk_main_quit, [], :void
 
-  def self.init arguments
-    size = arguments.length
-
-    strptrs = arguments.map {|a| FFI::MemoryPointer.from_string(a)}
-    block = FFI::MemoryPointer.new(:pointer, size)
-    block.write_array_of_pointer strptrs
-
+  def self.init size, ary
+    ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
+    block = FFI::MemoryPointer.new(:pointer, ptrs.length)
+    block.write_array_of_pointer ptrs
     argv = FFI::MemoryPointer.new(:pointer)
     argv.write_pointer block
 
@@ -24,10 +21,12 @@ module Gtk
     gtk_init argc, argv
 
     outsize = argc.read_int
-    outblock = argv.read_pointer
 
-    outptrs = outblock.read_array_of_pointer(outsize)
-    return outptrs.map {|p| p.read_string}
+    outblock = argv.read_pointer
+    outptrs = outblock.read_array_of_pointer(size)
+    outary = outptrs.map {|p| p.null? ? nil : p.read_string}
+
+    return outsize, outary
   end
 
   def self.main; gtk_main; end
@@ -68,9 +67,8 @@ module Gtk
   end
 end
 
-#Gtk.gtk_init nil, nil
-my_args = Gtk.init ARGV
-p my_args
+(my_len, my_args) = Gtk.init ARGV.length, ARGV
+p my_len, my_args
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
 win.show
 win.signal_connect("destroy", nil) { Gtk.main_quit }
