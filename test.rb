@@ -1,18 +1,35 @@
+require 'rubygems'
 require 'ffi'
 module Gtk
   extend FFI::Library
 
   ffi_lib "gtk-x11-2.0"
-  attach_function :gtk_init, [:int, :pointer], :void
+  attach_function :gtk_init, [:pointer, :pointer], :void
   attach_function :gtk_main, [], :void
   attach_function :gtk_main_quit, [], :void
 
-  def self.init; gtk_init 0, nil; end
+  def self.init arguments
+    strptrs = arguments.map {|a| FFI::MemoryPointer.from_string(a)}
+    block = FFI::MemoryPointer.new(:pointer, strptrs.length)
+    strptrs.each_with_index do |p, i|
+      block[i].put_pointer(0, p)
+    end
+    argv = FFI::MemoryPointer.new(:pointer)
+    argv.put_pointer(0, block)
+
+    argc = FFI::MemoryPointer.new(:int)
+    argc.put_int(0, strptrs.length)
+
+    gtk_init argc, argv
+  end
+
   def self.main; gtk_main; end
   def self.main_quit; gtk_main_quit; end
 
   class Widget
     extend FFI::Library
+
+    ffi_lib "gtk-x11-2.0"
     attach_function :gtk_widget_show, [:pointer], :pointer
 
     callback :GCallback, [], :void
@@ -34,6 +51,7 @@ module Gtk
   end
 
   class Window < Widget
+    ffi_lib "gtk-x11-2.0"
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
 
@@ -44,8 +62,8 @@ module Gtk
 end
 
 #Gtk.gtk_init nil, nil
-Gtk.init
+Gtk.init ARGV
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
 win.show
 win.signal_connect("destroy", nil) { Gtk.main_quit }
-Gtk.main
+#Gtk.main
