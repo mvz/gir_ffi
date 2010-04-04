@@ -12,18 +12,18 @@ module Gtk
     strptrs = arguments.map {|a| FFI::MemoryPointer.from_string(a)}
     block = FFI::MemoryPointer.new(:pointer, strptrs.length)
     strptrs.each_with_index do |p, i|
-      block[i].put_pointer(0, p)
+      block[i].write_pointer p
     end
     argv = FFI::MemoryPointer.new(:pointer)
-    argv.put_pointer(0, block)
+    argv.write_pointer block
 
     argc = FFI::MemoryPointer.new(:int)
-    argc.put_int(0, strptrs.length)
+    argc.write_int strptrs.length
 
     gtk_init argc, argv
 
-    leftover = argc.get_int(0)
-    leftblock = argv.get_pointer(0)
+    leftover = argc.read_int
+    leftblock = argv.read_pointer
     return_ptrs = leftblock.read_array_of_pointer(leftover)
     return return_ptrs.map {|p| p.read_string}
   end
