@@ -8,24 +8,40 @@ module Gtk
   attach_function :gtk_main_quit, [], :void
 
   def self.init size, ary
+    argv = self.string_array_to_inoutptr ary
+    argc = self.int_to_inoutptr(size)
+
+    gtk_init argc, argv
+
+    outsize = self.outptr_to_int argc
+    outary = self.outptr_to_string_array argv, ary.size
+
+    return outsize, outary
+  end
+
+  def self.int_to_inoutptr val
+    ptr = FFI::MemoryPointer.new(:int)
+    ptr.write_int val
+    return ptr
+  end
+
+  def self.string_array_to_inoutptr ary
     ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
     block = FFI::MemoryPointer.new(:pointer, ptrs.length)
     block.write_array_of_pointer ptrs
     argv = FFI::MemoryPointer.new(:pointer)
     argv.write_pointer block
+    argv
+  end
 
-    argc = FFI::MemoryPointer.new(:int)
-    argc.write_int size
+  def self.outptr_to_int ptr
+    return ptr.read_int
+  end
 
-    gtk_init argc, argv
-
-    outsize = argc.read_int
-
-    outblock = argv.read_pointer
-    outptrs = outblock.read_array_of_pointer(size)
-    outary = outptrs.map {|p| p.null? ? nil : p.read_string}
-
-    return outsize, outary
+  def self.outptr_to_string_array ptr, size
+    block = ptr.read_pointer
+    ptrs = block.read_array_of_pointer(size)
+    return ptrs.map {|p| p.null? ? nil : p.read_string}
   end
 
   def self.main; gtk_main; end
