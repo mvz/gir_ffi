@@ -1,4 +1,4 @@
-require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('helper.rb', File.dirname(__FILE__))
 require 'girffi/builder'
 
 class BuilderTest < Test::Unit::TestCase
@@ -56,6 +56,28 @@ class BuilderTest < Test::Unit::TestCase
 
 	@builder.attach_ffi_function mod, @go
 	assert_contains libmod.public_methods, "gtk_main"
+      end
+    end
+    context "looking at Gtk.init" do
+      setup do
+	@go = @builder.function_introspection_data 'Gtk', 'init'
+      end
+
+      should "build correct definition of Gtk.init" do
+	code = @builder.function_definition @go
+
+	expected = "
+	  def init argc, argv
+	    _v1 = GirFF::Helper::Arg.int_to_inoutptr argc
+	    _v2 = GirFF::Helper::Arg.string_array_to_inoutptr argv
+	    Lib.gtk_init _v1, _v2
+	    _v3 = GirFF::Helper::Arg.outptr_to_int _v1
+	    _v4 = GirFF::Helper::Arg.outptr_to_string_array _v2, argv.size
+	    return _v3, _v4
+	  end
+	  "
+
+	assert_equal cws(expected), cws(code)
       end
     end
   end
