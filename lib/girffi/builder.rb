@@ -59,12 +59,13 @@ module GirFFI
 	end
       end
 
+      post << "return #{retvals.join(', ')}" unless retvals.empty?
+
       return <<-CODE
 	def #{info.name} #{inargs.join(', ')}
 	  #{pre.join("\n")}
 	  Lib.#{sym} #{callargs.join(', ')}
 	  #{post.join("\n")}
-	  return #{retvals.join(', ')}
 	end
       CODE
     end
