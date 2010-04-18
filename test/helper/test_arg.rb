@@ -16,19 +16,26 @@ class HelperArgTest < Test::Unit::TestCase
     end
   end
 
-  context "The string_array_to_inoutptr method's return value" do
-    setup do
-      @result = GirFFI::Helper::Arg.string_array_to_inoutptr ["foo", "bar", "baz"]
-    end
+  context "The string_array_to_inoutptr method" do
+    context "when called with an array of strings" do
+      setup do
+	@result = GirFFI::Helper::Arg.string_array_to_inoutptr ["foo", "bar", "baz"]
+      end
 
-    should "be a FFI::MemoryPointer" do
-      assert_equal "FFI::MemoryPointer", @result.class.to_s
-    end
+      should "return a FFI::MemoryPointer" do
+	assert_equal "FFI::MemoryPointer", @result.class.to_s
+      end
 
-    should "hold a pointer to an array of pointers to strings" do
-      ptr = @result.read_pointer
-      ary = ptr.read_array_of_pointer(3)
-      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+      should "return a pointer to an array of pointers to strings" do
+	ptr = @result.read_pointer
+	ary = ptr.read_array_of_pointer(3)
+	assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+      end
+    end
+    context "when called with nil" do
+      should "return nil" do
+	assert_nil GirFFI::Helper::Arg.string_array_to_inoutptr nil
+      end
     end
   end
 
@@ -44,17 +51,25 @@ class HelperArgTest < Test::Unit::TestCase
   end
 
   context "The outptr_to_string_array method" do
-    setup do
-      p = FFI::MemoryPointer.new(:pointer, 2)
-      p.write_array_of_pointer ["one", "two"].map {|a|
-	FFI::MemoryPointer.from_string a }
-      @ptr = FFI::MemoryPointer.new(:pointer)
-      @ptr.write_pointer p
+    context "when called with a pointer to a string array" do
+      setup do
+	p = FFI::MemoryPointer.new(:pointer, 2)
+	p.write_array_of_pointer ["one", "two"].map {|a|
+	  FFI::MemoryPointer.from_string a }
+	@ptr = FFI::MemoryPointer.new(:pointer)
+	@ptr.write_pointer p
+      end
+
+      should "return the string array" do
+	assert_equal ["one", "two"],
+	  GirFFI::Helper::Arg.outptr_to_string_array(@ptr, 2)
+      end
     end
 
-    should "retrieve the correct string array" do
-      assert_equal ["one", "two"],
-	GirFFI::Helper::Arg.outptr_to_string_array(@ptr, 2)
+    context "when called with nil" do
+      should "return nil" do
+	assert_nil GirFFI::Helper::Arg.outptr_to_string_array(nil, 0)
+      end
     end
   end
 end
