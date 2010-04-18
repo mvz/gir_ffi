@@ -35,12 +35,14 @@ module GirFFI
       s << ", caller owns #{caller_owns}"
       s << ", may return null" if may_return_null?
       s << "\n RETURN TYPE: " << return_type.to_s
-      if n_args > 0
-	s << "\n ARGS: " << args.map { |a|
-	  "#{a.name}: #{a.type}"
-	}.join(", ")
-      end
+      args.each {|e| s << "\n ARG: #{e}"} if n_args > 0
       s
+    end
+  end
+
+  class IArgInfo
+    def to_s
+      "#{self.type} #{self.name}, #{self.direction}, #{self.return_value?}"
     end
   end
 
