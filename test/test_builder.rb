@@ -68,12 +68,12 @@ class BuilderTest < Test::Unit::TestCase
 
 	expected = "
 	  def init argc, argv
-	    _v1 = GirFF::Helper::Arg.int_to_inoutptr argc
-	    _v2 = GirFF::Helper::Arg.string_array_to_inoutptr argv
-	    Lib.gtk_init _v1, _v2
-	    _v3 = GirFF::Helper::Arg.outptr_to_int _v1
-	    _v4 = GirFF::Helper::Arg.outptr_to_string_array _v2, argv.size
-	    return _v3, _v4
+	    _v1 = GirFFI::Helper::Arg.int_to_inoutptr argc
+	    _v3 = GirFFI::Helper::Arg.string_array_to_inoutptr argv
+	    Lib.gtk_init _v1, _v3
+	    _v2 = GirFFI::Helper::Arg.outptr_to_int _v1
+	    _v4 = GirFFI::Helper::Arg.outptr_to_string_array _v3, argv.size
+	    return _v2, _v4
 	  end
 	  "
 

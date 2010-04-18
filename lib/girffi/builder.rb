@@ -19,9 +19,52 @@ module GirFFI
       sym = info.symbol
       argnames = info.args.map {|a| a.name}
 
+      varno = 1
+
+      inargs = []
+      callargs = []
+      retvals = []
+
+      pre = []
+      post = []
+
+      info.args.each do |a|
+	inargs << a.name if [:in, :inout].include? a.direction
+	case a.direction
+	when :inout
+	  prevar = "_v#{varno}"
+	  postvar = "_v#{varno+1}"
+	  case a.type.tag 
+	  when :int
+	    pre << "#{prevar} = GirFFI::Helper::Arg.int_to_inoutptr #{a.name}"
+	    post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_int #{prevar}"
+	  when :array
+	    case a.type.param_type(0).tag
+	    when :utf8
+	      pre << "#{prevar} = GirFFI::Helper::Arg.string_array_to_inoutptr #{a.name}"
+	      post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_string_array #{prevar}, #{a.name}.size"
+	    else
+	      raise NotImplementedError
+	    end
+	  else
+	    raise NotImplementedError
+	  end
+	  callargs << prevar
+	  retvals << postvar
+	  varno += 2
+	when :in
+	  callargs << a.name
+	else
+	  raise NotImplementedError
+	end
+      end
+
       return <<-CODE
-	def #{info.name} #{argnames.join(', ')}
-	  Lib.#{sym} #{argnames.join(', ')}
+	def #{info.name} #{inargs.join(', ')}
+	  #{pre.join("\n")}
+	  Lib.#{sym} #{callargs.join(', ')}
+	  #{post.join("\n")}
+	  return #{retvals.join(', ')}
 	end
       CODE
     end
