@@ -1,3 +1,4 @@
+require 'girffi/helper/arg'
 module GirFFI
   class Builder
     def build_object namespace, classname, box
