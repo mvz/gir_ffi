@@ -8,6 +8,7 @@ module GirFFI
       end
 
       def self.string_array_to_inoutptr ary
+	return nil if ary.nil?
 	ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
 	block = FFI::MemoryPointer.new(:pointer, ptrs.length)
 	block.write_array_of_pointer ptrs
@@ -21,6 +22,7 @@ module GirFFI
       end
 
       def self.outptr_to_string_array ptr, size
+	return nil if ptr.nil?
 	block = ptr.read_pointer
 	ptrs = block.read_array_of_pointer(size)
 	return ptrs.map {|p| p.null? ? nil : p.read_string}
