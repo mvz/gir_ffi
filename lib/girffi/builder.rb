@@ -89,7 +89,7 @@ module GirFFI
     end
 
     def ffi_function_argument_types info
-      info.args.map {|a| itypeinfo_to_ffitype a.type}
+      info.args.map {|a| iarginfo_to_ffitype a}
     end
 
     def ffi_function_return_type info
@@ -99,6 +99,11 @@ module GirFFI
     def itypeinfo_to_ffitype info
       return :pointer if info.pointer?
       return IRepository.type_tag_to_string(info.tag).to_sym
+    end
+
+    def iarginfo_to_ffitype info
+      return :pointer if info.direction == :inout
+      return itypeinfo_to_ffitype info.type
     end
   end
 end
