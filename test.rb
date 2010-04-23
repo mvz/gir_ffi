@@ -14,7 +14,7 @@ module Gtk
     gtk_init argc, argv
 
     outsize = self.outptr_to_int argc
-    outary = self.outptr_to_string_array argv, ary.size
+    outary = self.outptr_to_string_array argv, ary.nil? ? 0 : ary.size
 
     return outsize, outary
   end

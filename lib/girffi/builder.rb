@@ -44,7 +44,7 @@ module GirFFI
 	    case a.type.param_type(0).tag
 	    when :utf8
 	      pre << "#{prevar} = GirFFI::Helper::Arg.string_array_to_inoutptr #{a.name}"
-	      post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_string_array #{prevar}, #{a.name}.size"
+	      post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_string_array #{prevar}, #{a.name}.nil? ? 0 : #{a.name}.size"
 	    else
 	      raise NotImplementedError
 	    end

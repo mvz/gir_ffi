@@ -73,7 +73,7 @@ class BuilderTest < Test::Unit::TestCase
 	    _v3 = GirFFI::Helper::Arg.string_array_to_inoutptr argv
 	    Lib.gtk_init _v1, _v3
 	    _v2 = GirFFI::Helper::Arg.outptr_to_int _v1
-	    _v4 = GirFFI::Helper::Arg.outptr_to_string_array _v3, argv.size
+	    _v4 = GirFFI::Helper::Arg.outptr_to_string_array _v3, argv.nil? ? 0 : argv.size
 	    return _v2, _v4
 	  end
 	  "
