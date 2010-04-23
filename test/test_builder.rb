@@ -58,6 +58,7 @@ class BuilderTest < Test::Unit::TestCase
 	assert_contains libmod.public_methods, "gtk_main"
       end
     end
+
     context "looking at Gtk.init" do
       setup do
 	@go = @builder.function_introspection_data 'Gtk', 'init'
@@ -78,6 +79,16 @@ class BuilderTest < Test::Unit::TestCase
 	  "
 
 	assert_equal cws(expected), cws(code)
+      end
+
+      should "have :pointer, :pointer as types of the arguments for the attached function" do
+	# FIXME: Ideally, we attach the function and test that it requires
+	# the correct argument types.
+	assert_equal [:pointer, :pointer], @builder.ffi_function_argument_types(@go)
+      end
+
+      should "have :void as return type for the attached function" do
+	assert_equal :void, @builder.ffi_function_return_type(@go)
       end
     end
   end
