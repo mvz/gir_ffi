@@ -16,6 +16,7 @@ module GirFFI
       end
     end
 
+    # FIXME: Methods that follow should be private
     def function_definition info
       sym = info.symbol
       argnames = info.args.map {|a| a.name}
@@ -79,12 +80,20 @@ module GirFFI
 
     def attach_ffi_function klass, info
       sym = info.symbol
-      argtypes = info.args.map {|a| itypeinfo_to_ffitype a.type}
-      rt = itypeinfo_to_ffitype info.return_type
+      argtypes = ffi_function_argument_types info
+      rt = ffi_function_return_type info
 
       klass.const_get(:Lib).module_eval do
 	attach_function sym, argtypes, rt
       end
+    end
+
+    def ffi_function_argument_types info
+      info.args.map {|a| itypeinfo_to_ffitype a.type}
+    end
+
+    def ffi_function_return_type info
+      itypeinfo_to_ffitype info.return_type
     end
 
     def itypeinfo_to_ffitype info
