@@ -33,15 +33,15 @@ module Gtk
     @@builder.attach_ffi_function self, go
 
     code = @@builder.function_definition go
-    puts code
 
     eigenclass = class << self; self; end
     eigenclass.class_eval code
 
-    puts self.public_methods - Module.public_methods - ['method_missing']
     self.send method, *arguments
   end
 end
 
-Gtk.init 0, nil
+(my_len, my_args) = Gtk.init ARGV.length, ARGV
+puts Gtk.public_methods - Module.public_methods - ['method_missing']
+p my_len, my_args
 Gtk.flub
