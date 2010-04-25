@@ -19,8 +19,9 @@ module GirFFI
 
     def n_methods; Lib.g_object_info_get_n_methods @gobj; end
     def method i; IFunctionInfo.wrap(Lib.g_object_info_get_method @gobj, i); end
-    def find_method; IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj); end
     build_array_method :method
+
+    def find_method m; IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj, m); end
 
     def n_signals; Lib.g_object_info_get_n_signals @gobj; end
     def signal i; ISignalInfo.wrap(Lib.g_object_info_get_signal @gobj, i); end
