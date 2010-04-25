@@ -43,7 +43,7 @@ module GirFFI
       modul.const_set :Lib, lb = Module.new
       lb.extend FFI::Library
       libs = gir.shared_library(namespace).split(/,/)
-      lb.ffi_lib *libs
+      lb.ffi_lib(*libs)
     end
 
     # FIXME: Methods that follow should be private
