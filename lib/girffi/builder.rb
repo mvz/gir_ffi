@@ -1,19 +1,24 @@
 require 'girffi/helper/arg'
 module GirFFI
+  # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder
     def build_object namespace, classname, box
       boxm = get_or_define_module ::Object, box.to_s
       namespacem = get_or_define_module boxm, namespace.to_s
       klass = get_or_define_class namespacem, classname.to_s
 
+      klass.class_eval <<-CODE
+	def method_missing method, *arguments
+	end
+      CODE
+
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
-      info = gir.find_by_name namespace, classname
-      info.methods.each do |m|
-	klass.class_eval <<-CODE
-	  def #{m.name}; end
-	CODE
-      end
+
+      lb = get_or_define_module namespacem, :Lib
+      lb.extend FFI::Library
+      libs = gir.shared_library(namespace).split(/,/)
+      lb.ffi_lib(*libs)
     end
 
     def build_module namespace, box

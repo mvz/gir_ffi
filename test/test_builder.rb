@@ -8,17 +8,15 @@ class BuilderTest < Test::Unit::TestCase
       @builder.build_object 'GObject', 'Object', 'NS1'
     end
 
-    should "create the correct set of methods for the object" do
+    should "create a method_missing method for the class" do
       ms = NS1::GObject::Object.instance_methods(false)
-      [ "add_toggle_ref", "add_weak_pointer", "force_floating",
-	"freeze_notify", "get_data", "get_property", "get_qdata", "notify",
-	"remove_toggle_ref", "remove_weak_pointer", "run_dispose",
-	"set_data", "set_data_full", "set_property", "set_qdata",
-	"set_qdata_full", "steal_data", "steal_qdata", "thaw_notify",
-	"watch_closure", "weak_ref", "weak_unref"
-      ].each do |m|
-	assert_contains ms, m
-      end
+      assert_contains ms, "method_missing"
+    end
+
+    should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
+      gir = GirFFI::IRepository.default
+      expected = gir.shared_library 'GObject'
+      assert_equal [expected], NS1::GObject::Lib.ffi_libraries.map(&:name).sort
     end
 
     should "not replace existing classes" do
@@ -34,11 +32,8 @@ class BuilderTest < Test::Unit::TestCase
       @builder.build_module 'Gtk', 'NS2'
     end
 
-    should "create the correct set of methods for the module" do
-      ms = NS2::Gtk.public_methods(false)
-      [ "method_missing" ].each do |m|
-	assert_contains ms, m
-      end
+    should "create a method_missing method for the module" do
+      assert_contains (NS2::Gtk.public_methods - Module.public_methods), "method_missing"
     end
 
     should "create a Lib module ready to attach functions from gtk-x11-2.0" do
