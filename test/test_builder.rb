@@ -4,8 +4,6 @@ require 'girffi/builder'
 class BuilderTest < Test::Unit::TestCase
   context "A Builder building GObject::Object" do
     setup do
-      @builder ||= nil
-      return if @builder
       @builder = GirFFI::Builder.new
       @builder.build_object 'GObject', 'Object', 'NS1'
     end
@@ -22,12 +20,16 @@ class BuilderTest < Test::Unit::TestCase
 	assert_contains ms, m
       end
     end
+
+    should "not replace existing classes" do
+      oldclass = NS1::GObject::Object
+      @builder.build_object 'GObject', 'Object', 'NS1'
+      assert_equal oldclass, NS1::GObject::Object
+    end
   end
 
   context "A Builder building Gtk" do
     setup do
-      @builder ||= nil
-      return if @builder
       @builder = GirFFI::Builder.new
       @builder.build_module 'Gtk', 'NS2'
     end
@@ -44,6 +46,18 @@ class BuilderTest < Test::Unit::TestCase
       gir = GirFFI::IRepository.default
       expected = (gir.shared_library 'Gtk').split(',').sort
       assert_equal expected, NS2::Gtk::Lib.ffi_libraries.map(&:name).sort
+    end
+
+    should "not replace existing module" do
+      oldmodule = NS2::Gtk
+      @builder.build_module 'Gtk', 'NS2'
+      assert_equal oldmodule, NS2::Gtk
+    end
+
+    should "not replace existing Lib module" do
+      oldmodule = NS2::Gtk::Lib
+      @builder.build_module 'Gtk', 'NS2'
+      assert_equal oldmodule, NS2::Gtk::Lib
     end
   end
 

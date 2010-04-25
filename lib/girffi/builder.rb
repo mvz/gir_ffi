@@ -2,9 +2,9 @@ require 'girffi/helper/arg'
 module GirFFI
   class Builder
     def build_object namespace, classname, box
-      ::Object.const_set box.to_s, boxm = Module.new
-      boxm.const_set namespace.to_s, namespacem = Module.new
-      namespacem.const_set classname.to_s, klass = Class.new
+      boxm = get_or_define_module ::Object, box.to_s
+      namespacem = get_or_define_module boxm, namespace.to_s
+      klass = get_or_define_class namespacem, classname.to_s
 
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
@@ -17,8 +17,8 @@ module GirFFI
     end
 
     def build_module namespace, box
-      ::Object.const_set box.to_s, boxm = Module.new
-      boxm.const_set namespace.to_s, modul = Module.new
+      boxm = get_or_define_module ::Object, box.to_s
+      modul = get_or_define_module boxm, namespace.to_s
 
       modul.class_eval <<-CODE
 	def self.method_missing method, *arguments
@@ -40,7 +40,7 @@ module GirFFI
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
 
-      modul.const_set :Lib, lb = Module.new
+      lb = get_or_define_module modul, :Lib
       lb.extend FFI::Library
       libs = gir.shared_library(namespace).split(/,/)
       lb.ffi_lib(*libs)
@@ -126,6 +126,8 @@ module GirFFI
       itypeinfo_to_ffitype info.return_type
     end
 
+    private
+
     def itypeinfo_to_ffitype info
       return :pointer if info.pointer?
       return IRepository.type_tag_to_string(info.tag).to_sym
@@ -134,6 +136,20 @@ module GirFFI
     def iarginfo_to_ffitype info
       return :pointer if info.direction == :inout
       return itypeinfo_to_ffitype info.type
+    end
+
+    def get_or_define_module parent, name
+      unless parent.const_defined? name
+	parent.const_set name, Module.new
+      end
+      parent.const_get name
+    end
+
+    def get_or_define_class parent, name
+      unless parent.const_defined? name
+	parent.const_set name, Class.new
+      end
+      parent.const_get name
     end
   end
 end
