@@ -34,7 +34,7 @@ module GirFFI
 	  return super if go.nil?
 	  return super if go.type != :function
 
-	  @@builder.attach_ffi_function self, go
+	  @@builder.attach_ffi_function Lib, go
 
 	  (class << self; self; end).class_eval @@builder.function_definition(go)
 
@@ -54,9 +54,6 @@ module GirFFI
     # FIXME: Methods that follow should be private
     def function_definition info
       sym = info.symbol
-      argnames = info.args.map {|a| a.name}
-
-      varno = 1
 
       inargs = []
       callargs = []
@@ -65,6 +62,7 @@ module GirFFI
       pre = []
       post = []
 
+      varno = 1
       info.args.each do |a|
 	inargs << a.name if [:in, :inout].include? a.direction
 	case a.direction
@@ -120,14 +118,12 @@ module GirFFI
       return objectinfo.find_method method
     end
 
-    def attach_ffi_function klass, info
+    def attach_ffi_function modul, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
       rt = ffi_function_return_type info
 
-      klass.const_get(:Lib).module_eval do
-	attach_function sym, argtypes, rt
-      end
+      modul.attach_function sym, argtypes, rt
     end
 
     def ffi_function_argument_types info

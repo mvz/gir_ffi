@@ -86,7 +86,7 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	@builder.attach_ffi_function mod, @go
+	@builder.attach_ffi_function libmod, @go
 	assert_contains libmod.public_methods, "gtk_main"
       end
     end
