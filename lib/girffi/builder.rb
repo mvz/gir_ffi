@@ -63,6 +63,7 @@ module GirFFI
       post = []
 
       varno = 1
+
       info.args.each do |a|
 	inargs << a.name if [:in, :inout].include? a.direction
 	case a.direction
@@ -95,6 +96,10 @@ module GirFFI
       end
 
       post << "return #{retvals.join(', ')}" unless retvals.empty?
+
+      if info.method?
+	callargs.unshift "@gobj"
+      end
 
       return <<-CODE
 	def #{info.name} #{inargs.join(', ')}

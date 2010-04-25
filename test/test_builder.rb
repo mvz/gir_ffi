@@ -123,5 +123,23 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal :void, @builder.ffi_function_return_type(@go)
       end
     end
+
+    context "looking at Gtk::Widget#show" do
+      setup do
+	@go = @builder.method_introspection_data 'Gtk', 'Widget', 'show'
+      end
+
+      should "build correct definition of Gtk::Widget.show" do
+	code = @builder.function_definition @go
+
+	expected = "
+	  def show
+	    Lib.gtk_widget_show @gobj
+	  end
+	  "
+
+	assert_equal cws(expected), cws(code)
+      end
+    end
   end
 end
