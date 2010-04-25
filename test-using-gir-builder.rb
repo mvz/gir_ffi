@@ -1,5 +1,6 @@
 # Test program using actual builder
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), 'lib')
+require 'girffi'
 require 'girffi/builder'
 
 builder = GirFFI::Builder.new
