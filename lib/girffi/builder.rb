@@ -113,6 +113,13 @@ module GirFFI
       return gir.find_by_name namespace, function.to_s
     end
 
+    def method_introspection_data namespace, object, method
+      gir = GirFFI::IRepository.default
+      gir.require namespace.to_s, nil
+      objectinfo = gir.find_by_name namespace, object.to_s
+      return objectinfo.find_method method
+    end
+
     def attach_ffi_function klass, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
