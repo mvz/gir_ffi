@@ -14,16 +14,9 @@ module Gtk
     ffi_lib "gtk-x11-2.0"
   end
 
-  def self.g_namespace
-    "Gtk"
-  end
-
-  private_class_method :g_namespace
-
   def self.method_missing method, *arguments
     @@builder ||= GirFFI::Builder.new
-
-    go = @@builder.function_introspection_data g_namespace, method.to_s
+    go = @@builder.function_introspection_data "Gtk", method.to_s
 
     # TODO: Unwind stack of raised NoMethodError to get correct error
     # message.

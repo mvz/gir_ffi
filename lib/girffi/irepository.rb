@@ -54,6 +54,10 @@ module GirFFI
       return info_from_pointer ptr
     end
 
+    def shared_library namespace
+      Lib.g_irepository_get_shared_library @gobj, namespace
+    end
+
     private_class_method :new
 
     def initialize(gobject)

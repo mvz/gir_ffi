@@ -24,6 +24,29 @@ class BuilderTest < Test::Unit::TestCase
     end
   end
 
+  context "A Builder building Gtk" do
+    setup do
+      @builder ||= nil
+      return if @builder
+      @builder = GirFFI::Builder.new
+      @builder.build_module 'Gtk', 'NS2'
+    end
+
+    should "create the correct set of methods for the module" do
+      ms = NS2::Gtk.public_methods(false)
+      [ "method_missing" ].each do |m|
+	assert_contains ms, m
+      end
+    end
+
+    should "create a Lib module ready to attach functions from gtk-x11-2.0" do
+      # The Gtk module has more than one library on my current machine.
+      gir = GirFFI::IRepository.default
+      expected = (gir.shared_library 'Gtk').split(',').sort
+      assert_equal expected, NS2::Gtk::Lib.ffi_libraries.map(&:name).sort
+    end
+  end
+
   context "A Builder" do
     setup do
       @builder = GirFFI::Builder.new

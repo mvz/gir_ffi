@@ -16,6 +16,36 @@ module GirFFI
       end
     end
 
+    def build_module namespace, box
+      ::Object.const_set box.to_s, boxm = Module.new
+      boxm.const_set namespace.to_s, modul = Module.new
+
+      modul.class_eval <<-CODE
+	def self.method_missing method, *arguments
+	  @@builder ||= GirFFI::Builder.new
+
+	  go = @@builder.function_introspection_data "#{namespace}", method.to_s
+
+	  return super if go.nil?
+	  return super if go.type != :function
+
+	  @@builder.attach_ffi_function self, go
+
+	  (class << self; self; end).class_eval @@builder.function_definition(go)
+
+	  self.send method, *arguments
+	end
+      CODE
+
+      gir = GirFFI::IRepository.default
+      gir.require namespace, nil
+
+      modul.const_set :Lib, lb = Module.new
+      lb.extend FFI::Library
+      libs = gir.shared_library(namespace).split(/,/)
+      lb.ffi_lib *libs
+    end
+
     # FIXME: Methods that follow should be private
     def function_definition info
       sym = info.symbol
