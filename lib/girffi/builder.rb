@@ -132,7 +132,11 @@ module GirFFI
     end
 
     def ffi_function_argument_types info
-      info.args.map {|a| iarginfo_to_ffitype a}
+      tps = info.args.map {|a| iarginfo_to_ffitype a}
+      if info.method?
+	tps.unshift :pointer
+      end
+      tps
     end
 
     def ffi_function_return_type info

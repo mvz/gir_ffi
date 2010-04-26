@@ -12,6 +12,8 @@ module Gtk
   module Lib
     extend FFI::Library
     ffi_lib "gtk-x11-2.0"
+    enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
+    attach_function :gtk_window_new, [:GtkWindowType], :pointer
   end
 
   def self.method_missing method, *arguments
@@ -23,18 +25,61 @@ module Gtk
     return super if go.nil?
     return super if go.type != :function
 
-    @@builder.attach_ffi_function self, go
+    @@builder.attach_ffi_function Lib, go
 
     code = @@builder.function_definition go
 
-    eigenclass = class << self; self; end
-    eigenclass.class_eval code
+    (class << self; self; end).class_eval code
 
     self.send method, *arguments
+  end
+
+  class Widget
+    def method_missing method, *arguments
+      @@builder ||= GirFFI::Builder.new
+      go = @@builder.method_introspection_data "Gtk", "Widget", method.to_s
+
+      puts "Here2 for #{method}: #{go}"
+      return super if go.nil?
+      return super if go.type != :function
+
+      @@builder.attach_ffi_function Lib, go
+
+      code = @@builder.function_definition go
+      puts code
+
+      (class << self; self; end).class_eval code
+
+      self.send method, *arguments
+    end
+  end
+
+  class Window < Widget
+    def initialize type
+      @gobj = Lib.gtk_window_new(type)
+    end
+    def method_missing method, *arguments
+      @@builder ||= GirFFI::Builder.new
+      go = @@builder.method_introspection_data "Gtk", "Window", method.to_s
+
+      puts "Here for #{method}: #{go}"
+      return super if go.nil?
+      return super if go.type != :function
+
+      @@builder.attach_ffi_function Lib, go
+
+      code = @@builder.function_definition go
+
+      (class << self; self; end).class_eval code
+
+      self.send method, *arguments
+    end
   end
 end
 
 (my_len, my_args) = Gtk.init ARGV.length, ARGV
-puts Gtk.public_methods - Module.public_methods - ['method_missing']
 p my_len, my_args
+win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
+win.show
+Gtk.main
 Gtk.flub
