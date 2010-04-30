@@ -39,7 +39,6 @@ module Gtk
       @@builder ||= GirFFI::Builder.new
       go = @@builder.method_introspection_data "Gtk", "Widget", method.to_s
 
-      puts "Here2 for #{method}: #{go}"
       return super if go.nil?
       return super if go.type != :function
 
@@ -62,7 +61,6 @@ module Gtk
       @@builder ||= GirFFI::Builder.new
       go = @@builder.method_introspection_data "Gtk", "Window", method.to_s
 
-      puts "Here for #{method}: #{go}"
       return super if go.nil?
       return super if go.type != :function
 
