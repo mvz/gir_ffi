@@ -8,8 +8,7 @@ require 'find'
 
 class OpenStruct; undef :gem if defined? :gem; end 
 
-# TODO: make my own openstruct type object that includes descriptions
-# TODO: use the descriptions to output help on the available bones options
+# TODO: Clean up bones' task set to remove unwanted parts.
 
 PROJ = OpenStruct.new(
   # Project Defaults
@@ -107,7 +106,7 @@ PROJ = OpenStruct.new(
 
   # Test::Unit
   :test => OpenStruct.new(
-    :files => FileList['test/**/test_*.rb'],
+    :files => FileList['test/**/*_test.rb'],
     :file  => 'test/all.rb',
     :opts  => []
   )
