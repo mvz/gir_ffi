@@ -1,5 +1,5 @@
 require 'shoulda'
-require File.expand_path('../lib/girffi.rb', File.dirname(__FILE__))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 class Test::Unit::TestCase
   def cws code
