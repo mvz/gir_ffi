@@ -1,4 +1,24 @@
 require 'ffi'
+module GObject
+  @@callbacks = []
+
+  module Lib
+    extend FFI::Library
+    ffi_lib "gobject-2.0"
+    callback :GCallback, [], :void
+    enum :GConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
+
+    attach_function :g_signal_connect_data, [:pointer, :string, :GCallback,
+      :pointer, :pointer, :GConnectFlags], :ulong
+  end
+
+  def self.signal_connect_data gobject, signal, data, destroy_data, connect_flags, &block
+    prc = block.to_proc
+    @@callbacks << prc
+    Lib.g_signal_connect_data gobject.to_ptr, signal, prc, data, destroy_data, connect_flags
+  end
+end
+
 module Gtk
   module Lib
     extend FFI::Library
@@ -9,11 +29,6 @@ module Gtk
     attach_function :gtk_main_quit, [], :void
 
     attach_function :gtk_widget_show, [:pointer], :pointer
-
-    callback :GCallback, [], :void
-    enum :GConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
-    attach_function :g_signal_connect_data, [:pointer, :string, :GCallback,
-      :pointer, :pointer, :GConnectFlags], :ulong
 
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
@@ -60,21 +75,15 @@ module Gtk
   def self.main_quit; Lib.gtk_main_quit; end
 
   class Widget
-    @@callbacks = []
-
     def show
       Lib.gtk_widget_show(@gobj)
     end
-
-    def signal_connect signal, data, &block
-      prc = block.to_proc
-      @@callbacks << prc
-      Lib.g_signal_connect_data @gobj, signal, prc, data, nil, 0
+    def to_ptr
+      @gobj
     end
   end
 
   class Window < Widget
-
     def initialize type
       @gobj = Lib.gtk_window_new(type)
     end
@@ -85,5 +94,5 @@ end
 p my_len, my_args
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
 win.show
-win.signal_connect("destroy", nil) { Gtk.main_quit }
+GObject.signal_connect_data(win, "destroy", nil, nil, 0) { Gtk.main_quit }
 Gtk.main
