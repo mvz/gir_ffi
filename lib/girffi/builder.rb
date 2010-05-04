@@ -146,7 +146,10 @@ module GirFFI
     private
 
     def itypeinfo_to_ffitype info
-      return :pointer if info.pointer?
+      if info.pointer?
+	return :string if info.tag == :utf8
+	return :pointer
+      end
       return IRepository.type_tag_to_string(info.tag).to_sym
     end
 
