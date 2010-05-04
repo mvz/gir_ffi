@@ -146,5 +146,16 @@ class BuilderTest < Test::Unit::TestCase
       end
 
     end
+
+    context "looking at GObject.signal_connect_data" do
+      setup do
+	@go = @builder.function_introspection_data 'GObject', 'signal_connect_data'
+      end
+
+      should "have the correct types of the arguments for the attached function" do
+	assert_equal [:pointer, :string, :GCallback, :pointer, :pointer,
+	  :GConnectFlags], @builder.ffi_function_argument_types(@go)
+      end
+    end
   end
 end
