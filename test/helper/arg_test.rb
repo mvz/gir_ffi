@@ -1,4 +1,4 @@
-require File.expand_path('../helper.rb', File.dirname(__FILE__))
+require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 require 'girffi/helper/arg'
 
 class HelperArgTest < Test::Unit::TestCase
