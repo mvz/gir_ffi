@@ -13,12 +13,13 @@ module GObject
     extend FFI::Library
     ffi_lib "gobject-2.0"
     # TODO: Genereate these
+    CALLBACKS = []
     callback :Callback, [], :void
     callback :ClosureNotify, [:pointer, :pointer], :void
     enum :ConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
   end
 
-  def self.method_missing method, *arguments
+  def self.method_missing method, *arguments, &block
     @@builder ||= GirFFI::Builder.new
     go = @@builder.function_introspection_data "GObject", method.to_s
 
@@ -33,7 +34,11 @@ module GObject
 
     (class << self; self; end).class_eval code
 
-    self.send method, *arguments
+    if block.nil?
+      self.send method, *arguments
+    else
+      self.send method, *arguments, &block
+    end
   end
 end
 
