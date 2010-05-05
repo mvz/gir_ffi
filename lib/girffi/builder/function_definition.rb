@@ -34,7 +34,7 @@ module GirFFI
 	@pre = []
 	@post = []
 
-	@varno = 1
+	@varno = 0
       end
 
       def process_arg a
@@ -50,8 +50,8 @@ module GirFFI
 
       def process_inout_arg a
 	@inargs << a.name
-	prevar = "_v#{@varno}"
-	postvar = "_v#{@varno+1}"
+	prevar = new_var
+	postvar = new_var
 	case a.type.tag 
 	when :int
 	  @pre << "#{prevar} = GirFFI::Helper::Arg.int_to_inoutptr #{a.name}"
@@ -69,7 +69,6 @@ module GirFFI
 	end
 	@callargs << prevar
 	@retvals << postvar
-	@varno += 2
       end
 
       def process_in_arg a
@@ -78,11 +77,10 @@ module GirFFI
 	  if a.type.interface.type == :callback and @blockarg.nil?
 	    # TODO: What if @blockarg is taken?
 	    @blockarg = a.name
-	    prevar = "_v#{@varno}"
+	    prevar = new_var
 	    @pre << "#{prevar} = #{a.name}.to_proc"
 	    @pre << "Lib::CALLBACKS << #{prevar}"
 	    @callargs << prevar
-	    @varno += 1
 	  else
 	    @inargs << a.name
 	    @callargs << a.name
@@ -90,10 +88,9 @@ module GirFFI
 	when :void
 	  if a.type.pointer?
 	    @inargs << a.name
-	    prevar = "_v#{@varno}"
+	    prevar = new_var
 	    @pre << "#{prevar} = GirFFI::Helper::Arg.object_to_inptr #{a.name}"
 	    @callargs << prevar
-	    @varno += 1
 	  else
 	    raise NotImplementedError
 	  end
@@ -122,6 +119,10 @@ module GirFFI
 	CODE
       end
 
+      def new_var
+	@varno += 1
+	"_v#{@varno}"
+      end
     end
   end
 end
