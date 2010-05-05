@@ -46,12 +46,12 @@ module GirFFI
 
     def info namespace, i
       ptr = Lib.g_irepository_get_info @gobj, namespace, i
-      return info_from_pointer ptr
+      return wrap ptr
     end
 
     def find_by_name namespace, name
       ptr = Lib.g_irepository_find_by_name @gobj, namespace, name
-      return info_from_pointer ptr
+      return wrap ptr
     end
 
     def shared_library namespace
@@ -64,9 +64,7 @@ module GirFFI
       @gobj = gobject
     end
 
-    private
-
-    def info_from_pointer ptr
+    def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
       type = Lib.g_base_info_get_type ptr
       case type
@@ -85,9 +83,15 @@ module GirFFI
       when :flags
 	return IFlagsInfo.new(ptr)
       else
-	#raise "Returning base info object for #{type}"
+	raise "Returning base info object for #{type}"
 	return IBaseInfo.new(ptr)
       end
+    end
+
+    private
+
+    def wrap ptr
+      IRepository.wrap_ibaseinfo_pointer ptr
     end
   end
 end
