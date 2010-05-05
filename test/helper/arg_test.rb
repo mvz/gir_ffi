@@ -72,4 +72,20 @@ class HelperArgTest < Test::Unit::TestCase
       end
     end
   end
+
+  context "The object_to_inptr method" do
+    context "when called with an object implementing to_ptr" do
+      should "return the result of to_ptr" do
+	obj = Object.new
+	def obj.to_ptr; :test_value; end
+	assert_equal :test_value, GirFFI::Helper::Arg.object_to_inptr(obj)
+      end
+    end
+
+    context "when called with nil" do
+      should "return nil" do
+	assert_equal nil, GirFFI::Helper::Arg.object_to_inptr(nil)
+      end
+    end
+  end
 end
