@@ -16,6 +16,8 @@ PROJ.url = 'http://www.github.com/mvz/ruby-gir-ffi'
 PROJ.version = GirFFI::VERSION
 PROJ.readme_file = 'README.rdoc'
 
+PROJ.exclude << ["^tmp/", "\\.swp$", "^.gitignore$"]
+
 PROJ.gem.dependencies << ['ffi', '~> 0.5.0']
 PROJ.gem.development_dependencies << ['shoulda', '~> 2.10.2']
 
