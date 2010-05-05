@@ -150,6 +150,9 @@ module GirFFI
 	return :string if info.tag == :utf8
 	return :pointer
       end
+      if info.tag == :interface
+	return info.interface.name.to_sym
+      end
       return IRepository.type_tag_to_string(info.tag).to_sym
     end
 

@@ -153,8 +153,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have the correct types of the arguments for the attached function" do
-	assert_equal [:pointer, :string, :GCallback, :pointer, :pointer,
-	  :GConnectFlags], @builder.ffi_function_argument_types(@go)
+	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
+	  @builder.ffi_function_argument_types(@go)
       end
     end
   end
