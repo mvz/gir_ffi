@@ -2,8 +2,12 @@ require 'girffi/helper/arg'
 module GirFFI
   # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder
-    def build_object namespace, classname, box
-      boxm = get_or_define_module ::Object, box.to_s
+    def build_object namespace, classname, box=nil
+      if box.nil?
+	boxm = ::Object
+      else
+	boxm = get_or_define_module ::Object, box.to_s
+      end
       namespacem = get_or_define_module boxm, namespace.to_s
       klass = get_or_define_class namespacem, classname.to_s
 
@@ -21,8 +25,12 @@ module GirFFI
       lb.ffi_lib(*libs)
     end
 
-    def build_module namespace, box
-      boxm = get_or_define_module ::Object, box.to_s
+    def build_module namespace, box=nil
+      if box.nil?
+	boxm = ::Object
+      else
+	boxm = get_or_define_module ::Object, box.to_s
+      end
       modul = get_or_define_module boxm, namespace.to_s
 
       modul.class_eval <<-CODE
