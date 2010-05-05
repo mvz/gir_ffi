@@ -33,7 +33,7 @@ class BuilderTest < Test::Unit::TestCase
     end
 
     should "create a method_missing method for the module" do
-      assert_contains (NS2::Gtk.public_methods - Module.public_methods), "method_missing"
+      assert_contains NS2::Gtk.public_methods - Module.public_methods, "method_missing"
     end
 
     should "create a Lib module ready to attach functions from gtk-x11-2.0" do
