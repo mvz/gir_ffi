@@ -15,21 +15,35 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 
 == SYNOPSIS:
 
-  require 'gir-ffi'
-  GirFFI::RubyClassBuilder.load 'Gtk'
+  require 'girffi'
+  require 'girffi/builder'
+
+  builder = GirFFI::Builder.new
+  builder.build_module 'Gtk'
+  (my_len, my_args) = Gtk.init ARGV.length, ARGV
+  p my_len, my_args
 
 == REQUIREMENTS:
 
 * Ruby-FFI of course
 * gobject-introspection installed with some introspection data
 
+== HACKING:
+
+This is still very much a work in progress. You can start exploring by
+running the test programs in the project's base directory. Some illustrate
+what works, some are a test bed for how things should work. Have a look at
+rake -T.
+
 == INSTALL:
+
+This doesn't actually work yet, since the gem hasn't been published.
 
 * sudo gem install gir-ffi
 
 == LICENSE:
 
-Copyright (c) 2009 Matijs van Zuijlen
+Copyright (c) 2009--2010 Matijs van Zuijlen
 
 Gir-FFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
