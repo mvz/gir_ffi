@@ -81,23 +81,18 @@ module GirFFI
 	    @pre << "#{prevar} = #{a.name}.to_proc"
 	    @pre << "Lib::CALLBACKS << #{prevar}"
 	    @callargs << prevar
-	  else
-	    @inargs << a.name
-	    @callargs << a.name
+	    return
 	  end
 	when :void
-	  if a.type.pointer?
-	    @inargs << a.name
-	    prevar = new_var
-	    @pre << "#{prevar} = GirFFI::Helper::Arg.object_to_inptr #{a.name}"
-	    @callargs << prevar
-	  else
-	    raise NotImplementedError
-	  end
-	else
+	  raise NotImplementedError unless a.type.pointer?
 	  @inargs << a.name
-	  @callargs << a.name
+	  prevar = new_var
+	  @pre << "#{prevar} = GirFFI::Helper::Arg.object_to_inptr #{a.name}"
+	  @callargs << prevar
+	  return
 	end
+	@inargs << a.name
+	@callargs << a.name
       end
 
       def adjust_accumulators
