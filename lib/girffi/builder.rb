@@ -1,4 +1,6 @@
 require 'girffi/helper/arg'
+require 'girffi/builder/function_definition'
+
 module GirFFI
   # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder

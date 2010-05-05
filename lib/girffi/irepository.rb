@@ -76,6 +76,8 @@ module GirFFI
 	return IFunctionInfo.new(ptr)
       when :callback
 	return ICallbackInfo.new(ptr)
+      when :interface
+	return IInterfaceInfo.new(ptr)
       when :struct
 	return IStructInfo.new(ptr)
       when :constant
