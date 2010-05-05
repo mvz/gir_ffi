@@ -1,6 +1,12 @@
 module GirFFI
   module Helper
     module Arg
+      def self.object_to_inptr obj
+	return nil if obj.nil?
+	return obj.to_ptr if obj.respond_to? :to_ptr
+	raise NotImplementedError
+      end
+
       def self.int_to_inoutptr val
 	ptr = FFI::MemoryPointer.new(:int)
 	ptr.write_int val
