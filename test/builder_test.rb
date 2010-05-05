@@ -160,9 +160,11 @@ class BuilderTest < Test::Unit::TestCase
 
 	expected = "
 	  def signal_connect_data instance, detailed_signal, data, destroy_data, connect_flags, &c_handler
-	    _v1 = c_handler.to_proc
-	    Lib::CALLBACKS << _v1
-	    Lib.g_signal_connect_data instance.to_ptr, detailed_signal, _v1, data, destroy_data, connect_flags
+	    _v1 = GirFFI::Helper::Arg.object_to_inptr instance
+	    _v2 = c_handler.to_proc
+	    Lib::CALLBACKS << _v2
+	    _v3 = GirFFI::Helper::Arg.object_to_inptr data
+	    Lib.g_signal_connect_data _v1, detailed_signal, _v2, _v3, destroy_data, connect_flags
 	  end
 	  "
 
