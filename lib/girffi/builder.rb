@@ -3,12 +3,7 @@ module GirFFI
   # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder
     def build_object namespace, classname, box=nil
-      if box.nil?
-	boxm = ::Object
-      else
-	boxm = get_or_define_module ::Object, box.to_s
-      end
-      namespacem = get_or_define_module boxm, namespace.to_s
+      namespacem = setup_module namespace, box
       klass = get_or_define_class namespacem, classname.to_s
 
       klass.class_eval <<-CODE
@@ -26,12 +21,7 @@ module GirFFI
     end
 
     def build_module namespace, box=nil
-      if box.nil?
-	boxm = ::Object
-      else
-	boxm = get_or_define_module ::Object, box.to_s
-      end
-      modul = get_or_define_module boxm, namespace.to_s
+      modul = setup_module namespace, box
 
       modul.class_eval <<-CODE
 	def self.method_missing method, *arguments
@@ -61,91 +51,8 @@ module GirFFI
 
     # FIXME: Methods that follow should be private
     def function_definition info
-      sym = info.symbol
-
-      inargs = []
-      callargs = []
-      retvals = []
-
-      blockarg = nil
-
-      pre = []
-      post = []
-
-      varno = 1
-
-      info.args.each do |a|
-	case a.direction
-	when :inout
-	  inargs << a.name
-	  prevar = "_v#{varno}"
-	  postvar = "_v#{varno+1}"
-	  case a.type.tag 
-	  when :int
-	    pre << "#{prevar} = GirFFI::Helper::Arg.int_to_inoutptr #{a.name}"
-	    post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_int #{prevar}"
-	  when :array
-	    case a.type.param_type(0).tag
-	    when :utf8
-	      pre << "#{prevar} = GirFFI::Helper::Arg.string_array_to_inoutptr #{a.name}"
-	      post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_string_array #{prevar}, #{a.name}.nil? ? 0 : #{a.name}.size"
-	    else
-	      raise NotImplementedError
-	    end
-	  else
-	    raise NotImplementedError
-	  end
-	  callargs << prevar
-	  retvals << postvar
-	  varno += 2
-	when :in
-	  case a.type.tag
-	  when :interface
-	    if a.type.interface.type == :callback and blockarg.nil?
-	      # TODO: What if blockarg is taken?
-	      blockarg = a.name
-	      prevar = "_v#{varno}"
-	      pre << "#{prevar} = #{a.name}.to_proc"
-	      pre << "Lib::CALLBACKS << #{prevar}"
-	      callargs << prevar
-	      varno += 1
-	    else
-	      inargs << a.name
-	      callargs << a.name
-	    end
-	  when :void
-	    if a.type.pointer?
-	      inargs << a.name
-	      prevar = "_v#{varno}"
-	      pre << "#{prevar} = GirFFI::Helper::Arg.object_to_inptr #{a.name}"
-	      callargs << prevar
-	      varno += 1
-	    else
-	      raise NotImplementedError
-	    end
-	  else
-	    inargs << a.name
-	    callargs << a.name
-	  end
-	else
-	  raise NotImplementedError
-	end
-      end
-
-      inargs << "&#{blockarg}" unless blockarg.nil?
-      post << "return #{retvals.join(', ')}" unless retvals.empty?
-
-      if info.method?
-	callargs.unshift "@gobj"
-      end
-
-      return <<-CODE
-	def #{info.name} #{inargs.join(', ')}
-	  #{pre.join("\n")}
-	  Lib.#{sym} #{callargs.join(', ')}
-	  #{post.join("\n")}
-	end
-      CODE
+      fdbuilder = FunctionDefinition.new info
+      fdbuilder.generate
     end
 
     def function_introspection_data namespace, function
@@ -211,6 +118,15 @@ module GirFFI
 	parent.const_set name, Class.new
       end
       parent.const_get name
+    end
+
+    def setup_module namespace, box=nil
+      if box.nil?
+	boxm = ::Object
+      else
+	boxm = get_or_define_module ::Object, box.to_s
+      end
+      return get_or_define_module boxm, namespace.to_s
     end
   end
 end
