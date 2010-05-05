@@ -87,6 +87,9 @@ module Gtk
 
       self.send method, *arguments
     end
+    def to_ptr
+      @gobj
+    end
   end
 
   class Window < Widget
