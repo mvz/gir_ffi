@@ -2,6 +2,7 @@ require 'girffi/lib'
 require 'girffi/helper/gtype'
 require 'girffi/ibaseinfo'
 require 'girffi/icallableinfo'
+require 'girffi/icallbackinfo'
 require 'girffi/ifunctioninfo'
 require 'girffi/iconstantinfo'
 require 'girffi/ifieldinfo'
@@ -67,11 +68,14 @@ module GirFFI
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
       type = Lib.g_base_info_get_type ptr
+      # TODO: Perhaps use a hash or something as a typemap.
       case type
       when :object
 	return IObjectInfo.new(ptr)
       when :function
 	return IFunctionInfo.new(ptr)
+      when :callback
+	return ICallbackInfo.new(ptr)
       when :struct
 	return IStructInfo.new(ptr)
       when :constant
