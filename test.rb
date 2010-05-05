@@ -1,9 +1,9 @@
 require 'ffi'
 module GObject
-  @@callbacks = []
 
   module Lib
     extend FFI::Library
+    CALLBACKS = []
     ffi_lib "gobject-2.0"
     callback :GCallback, [], :void
     enum :GConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
@@ -14,7 +14,7 @@ module GObject
 
   def self.signal_connect_data gobject, signal, data, destroy_data, connect_flags, &block
     prc = block.to_proc
-    @@callbacks << prc
+    Lib::CALLBACKS << prc
     Lib.g_signal_connect_data gobject.to_ptr, signal, prc, data, destroy_data, connect_flags
   end
 end
