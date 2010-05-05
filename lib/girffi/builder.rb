@@ -67,15 +67,17 @@ module GirFFI
       callargs = []
       retvals = []
 
+      blockarg = nil
+
       pre = []
       post = []
 
       varno = 1
 
       info.args.each do |a|
-	inargs << a.name if [:in, :inout].include? a.direction
 	case a.direction
 	when :inout
+	  inargs << a.name
 	  prevar = "_v#{varno}"
 	  postvar = "_v#{varno+1}"
 	  case a.type.tag 
@@ -97,12 +99,24 @@ module GirFFI
 	  retvals << postvar
 	  varno += 2
 	when :in
-	  callargs << a.name
+	  if a.type.tag == :interface and
+	    a.type.interface.type == :callback and
+	    blockarg.nil?
+	    blockarg = a.name
+	    prevar = "_v#{varno}"
+	    pre << "#{prevar} = #{a.name}.to_proc"
+	    pre << "Lib::CALLBACKS << #{prevar}"
+	    varno += 1
+	  else
+	    inargs << a.name
+	    callargs << a.name
+	  end
 	else
 	  raise NotImplementedError
 	end
       end
 
+      inargs << "&#{blockarg}" unless blockarg.nil?
       post << "return #{retvals.join(', ')}" unless retvals.empty?
 
       if info.method?
