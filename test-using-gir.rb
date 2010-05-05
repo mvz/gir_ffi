@@ -12,6 +12,10 @@ module GObject
   module Lib
     extend FFI::Library
     ffi_lib "gobject-2.0"
+    # TODO: Genereate these
+    callback :Callback, [], :void
+    callback :ClosureNotify, [:pointer, :pointer], :void
+    enum :ConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
   end
 
   def self.method_missing method, *arguments
@@ -38,6 +42,7 @@ module Gtk
   module Lib
     extend FFI::Library
     ffi_lib "gtk-x11-2.0"
+    # TODO: Genereate these
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
   end
@@ -107,4 +112,3 @@ win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
 win.show
 GObject.signal_connect_data(win, "destroy", nil, nil, 0) { Gtk.main_quit }
 Gtk.main
-Gtk.flub
