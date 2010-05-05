@@ -75,7 +75,10 @@ class BuilderTest < Test::Unit::TestCase
 
       should "build correct definition of Gtk.main" do
 	code = @builder.function_definition @go
-	assert_equal "def main\nLib.gtk_main\nend", code.gsub(/(^\s*|\s*$)/, "")
+
+	expected = "def main\nLib.gtk_main\nend"
+
+	assert_equal cws(expected), cws(code)
       end
 
       should "attach function to Whatever::Lib" do
@@ -152,6 +155,19 @@ class BuilderTest < Test::Unit::TestCase
 	@go = @builder.function_introspection_data 'GObject', 'signal_connect_data'
       end
 
+      should "build correct definition of GObject.signal_connect_data" do
+	code = @builder.function_definition @go
+
+	expected = "
+	  def signal_connect_data instance, detailed_signal, data, destroy_data, connect_flags, &c_handler
+	    _v1 = c_handler.to_proc
+	    Lib::CALLBACKS << _v1
+	    Lib.g_signal_connect_data instance.to_ptr, detailed_signal, _v1, data, destroy_data, connect_flags
+	  end
+	  "
+
+	assert_equal cws(expected), cws(code)
+      end
       should "have the correct types of the arguments for the attached function" do
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
 	  @builder.ffi_function_argument_types(@go)
