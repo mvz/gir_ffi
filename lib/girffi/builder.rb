@@ -106,6 +106,7 @@ module GirFFI
 	    prevar = "_v#{varno}"
 	    pre << "#{prevar} = #{a.name}.to_proc"
 	    pre << "Lib::CALLBACKS << #{prevar}"
+	    callargs << prevar
 	    varno += 1
 	  else
 	    inargs << a.name
