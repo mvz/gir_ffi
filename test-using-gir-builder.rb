@@ -4,8 +4,8 @@ require 'girffi'
 require 'girffi/builder'
 
 builder = GirFFI::Builder.new
-builder.build_module 'Gtk', 'Foo'
-(my_len, my_args) = Foo::Gtk.init ARGV.length, ARGV
+builder.build_module 'Gtk'
+(my_len, my_args) = Gtk.init ARGV.length, ARGV
 p my_len, my_args
-Foo::Gtk.flub
+Gtk.flub
 

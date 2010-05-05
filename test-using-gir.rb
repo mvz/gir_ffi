@@ -12,7 +12,7 @@ module GObject
   module Lib
     extend FFI::Library
     ffi_lib "gobject-2.0"
-    # TODO: Genereate these
+    # TODO: Generate these
     CALLBACKS = []
     callback :Callback, [], :void
     callback :ClosureNotify, [:pointer, :pointer], :void
@@ -81,7 +81,6 @@ module Gtk
       @@builder.attach_ffi_function Lib, go
 
       code = @@builder.function_definition go
-      puts code
 
       (class << self; self; end).class_eval code
 
