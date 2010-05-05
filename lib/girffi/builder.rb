@@ -99,15 +99,30 @@ module GirFFI
 	  retvals << postvar
 	  varno += 2
 	when :in
-	  if a.type.tag == :interface and
-	    a.type.interface.type == :callback and
-	    blockarg.nil?
-	    blockarg = a.name
-	    prevar = "_v#{varno}"
-	    pre << "#{prevar} = #{a.name}.to_proc"
-	    pre << "Lib::CALLBACKS << #{prevar}"
-	    callargs << prevar
-	    varno += 1
+	  case a.type.tag
+	  when :interface
+	    if a.type.interface.type == :callback and blockarg.nil?
+	      # TODO: What if blockarg is taken?
+	      blockarg = a.name
+	      prevar = "_v#{varno}"
+	      pre << "#{prevar} = #{a.name}.to_proc"
+	      pre << "Lib::CALLBACKS << #{prevar}"
+	      callargs << prevar
+	      varno += 1
+	    else
+	      inargs << a.name
+	      callargs << a.name
+	    end
+	  when :void
+	    if a.type.pointer?
+	      inargs << a.name
+	      prevar = "_v#{varno}"
+	      pre << "#{prevar} = GirFFI::Helper::Arg.object_to_inptr #{a.name}"
+	      callargs << prevar
+	      varno += 1
+	    else
+	      raise NotImplementedError
+	    end
 	  else
 	    inargs << a.name
 	    callargs << a.name
