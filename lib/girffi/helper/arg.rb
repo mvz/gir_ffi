@@ -1,6 +1,7 @@
 module GirFFI
   module Helper
     module Arg
+      # FIXME: Use FFI::AutoPointer or NiceFFI::OpaqueStruct instead.
       def self.object_to_inptr obj
 	return nil if obj.nil?
 	return obj.to_ptr if obj.respond_to? :to_ptr
@@ -13,6 +14,7 @@ module GirFFI
 	return ptr
       end
 
+      # FIXME: This implementation dumps core if GC runs before using argv.
       def self.string_array_to_inoutptr ary
 	return nil if ary.nil?
 	ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}

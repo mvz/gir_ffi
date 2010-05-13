@@ -170,6 +170,7 @@ class BuilderTest < Test::Unit::TestCase
 
 	assert_equal cws(expected), cws(code)
       end
+
       should "have the correct types of the arguments for the attached function" do
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
 	  @builder.ffi_function_argument_types(@go)

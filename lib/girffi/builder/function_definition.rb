@@ -59,6 +59,7 @@ module GirFFI
 	when :array
 	  case a.type.param_type(0).tag
 	  when :utf8
+	    # FIXME: Will need to take transfer-ownership GIR property into account.
 	    @pre << "#{prevar} = GirFFI::Helper::Arg.string_array_to_inoutptr #{a.name}"
 	    @post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_string_array #{prevar}, #{a.name}.nil? ? 0 : #{a.name}.size"
 	  else

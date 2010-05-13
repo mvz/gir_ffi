@@ -23,8 +23,6 @@ module GObject
     @@builder ||= GirFFI::Builder.new
     go = @@builder.function_introspection_data "GObject", method.to_s
 
-    # TODO: Unwind stack of raised NoMethodError to get correct error
-    # message.
     return super if go.nil?
     return super if go.type != :function
 
@@ -47,7 +45,7 @@ module Gtk
   module Lib
     extend FFI::Library
     ffi_lib "gtk-x11-2.0"
-    # TODO: Genereate these
+    # TODO: Generate these
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
   end
@@ -56,8 +54,6 @@ module Gtk
     @@builder ||= GirFFI::Builder.new
     go = @@builder.function_introspection_data "Gtk", method.to_s
 
-    # TODO: Unwind stack of raised NoMethodError to get correct error
-    # message.
     return super if go.nil?
     return super if go.type != :function
 
