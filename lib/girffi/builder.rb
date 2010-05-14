@@ -20,6 +20,8 @@ module GirFFI
       lb.extend FFI::Library
       libs = gir.shared_library(namespace).split(/,/)
       lb.ffi_lib(*libs)
+
+      optionally_define_constant lb, :CALLBACKS, []
     end
 
     def build_module namespace, box=nil
@@ -46,9 +48,13 @@ module GirFFI
       gir.require namespace, nil
 
       lb = get_or_define_module modul, :Lib
+
+      # TODO: Don't extend etc. if already done.
       lb.extend FFI::Library
       libs = gir.shared_library(namespace).split(/,/)
       lb.ffi_lib(*libs)
+
+      optionally_define_constant lb, :CALLBACKS, []
     end
 
     # FIXME: Methods that follow should be private
@@ -120,6 +126,12 @@ module GirFFI
 	parent.const_set name, Class.new
       end
       parent.const_get name
+    end
+
+    def optionally_define_constant parent, name, value
+      unless parent.const_defined? name
+	parent.const_set name, value
+      end
     end
 
     def setup_module namespace, box=nil

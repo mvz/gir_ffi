@@ -19,6 +19,10 @@ class BuilderTest < Test::Unit::TestCase
       assert_equal [expected], NS1::GObject::Lib.ffi_libraries.map(&:name).sort
     end
 
+    should "create an array CALLBACKS inside the GObject::Lib module" do
+      assert_equal [], NS1::GObject::Lib::CALLBACKS
+    end
+
     should "not replace existing classes" do
       oldclass = NS1::GObject::Object
       @builder.build_object 'GObject', 'Object', 'NS1'
@@ -41,6 +45,10 @@ class BuilderTest < Test::Unit::TestCase
       gir = GirFFI::IRepository.default
       expected = (gir.shared_library 'Gtk').split(',').sort
       assert_equal expected, NS2::Gtk::Lib.ffi_libraries.map(&:name).sort
+    end
+
+    should "create an array CALLBACKS inside the Gtk::Lib module" do
+      assert_equal [], NS2::Gtk::Lib::CALLBACKS
     end
 
     should "not replace existing module" do

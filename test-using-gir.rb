@@ -12,8 +12,8 @@ module GObject
   module Lib
     extend FFI::Library
     ffi_lib "gobject-2.0"
-    # TODO: Generate these
     CALLBACKS = []
+    # TODO: Generate these
     callback :Callback, [], :void
     callback :ClosureNotify, [:pointer, :pointer], :void
     enum :ConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
