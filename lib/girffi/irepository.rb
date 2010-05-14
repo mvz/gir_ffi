@@ -45,8 +45,8 @@ module GirFFI
       end
     end
 
-    def info namespace, i
-      ptr = Lib.g_irepository_get_info @gobj, namespace, i
+    def info namespace, index
+      ptr = Lib.g_irepository_get_info @gobj, namespace, index
       return wrap ptr
     end
 
