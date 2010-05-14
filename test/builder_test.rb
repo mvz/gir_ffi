@@ -183,6 +183,31 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
 	  @builder.ffi_function_argument_types(@go)
       end
+
+      should "define ffi callback types :Callback and :ClosureNotify" do
+	lb = Module.new
+	lb.extend FFI::Library
+
+	assert_raises(TypeError) { lb.find_type :Callback }
+	assert_raises(TypeError) { lb.find_type :ClosureNotify }
+
+	@builder.define_callbacks lb, @go
+
+	cb = lb.find_type :Callback
+	cn = lb.find_type :ClosureNotify
+
+	assert_equal FFI.find_type :void, cb.return_type
+	assert_equal FFI.find_type :void, cn.return_type
+	assert_equal [], cb.param_types
+	assert_equal [FFI.find_type(:pointer), FFI.find_type(:pointer)], cn.param_types
+      end
+
+      should "define ffi enum type :ConnectFlags" do
+	lb = Module.new
+	lb.extend FFI::Library
+	@builder.define_enums lb, @go
+	assert_equal({:AFTER => 1, :SWAPPED => 2}, lb.find_type(:ConnectFlags).to_h)
+      end
     end
   end
 end
