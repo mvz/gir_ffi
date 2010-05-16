@@ -5,7 +5,7 @@ module GirFFI
     extend FFI::Library
     ffi_lib "girepository-1.0"
 
-    # g_irepository
+    # IRepository
     enum :GIRepositoryLoadFlags, [:LAZY, (1<<0)]
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_require,
@@ -18,9 +18,9 @@ module GirFFI
       [:pointer, :string, :string], :pointer
     attach_function :g_irepository_get_shared_library,
       [:pointer, :string], :string
-    
 
-    # g_base_info
+
+    # IBaseInfo
     enum :GIInfoType, [
       :invalid,
       :function,
@@ -49,12 +49,12 @@ module GirFFI
     attach_function :g_base_info_get_namespace, [:pointer], :string
     attach_function :g_base_info_is_deprecated, [:pointer], :bool
 
-    # g_function_info
+    # IFunctionInfo
     attach_function :g_function_info_get_symbol, [:pointer], :string
     # TODO: return type is bitfield
     attach_function :g_function_info_get_flags, [:pointer], :int
 
-    # g_callable_info
+    # ICallableInfo
     enum :GITransfer, [
       :nothing,
       :container,
@@ -62,12 +62,12 @@ module GirFFI
     ]
 
     attach_function :g_callable_info_get_return_type, [:pointer], :pointer
-    attach_function :g_callable_info_get_caller_owns, [:pointer], :GITransfer 
-    attach_function :g_callable_info_may_return_null, [:pointer], :bool 
+    attach_function :g_callable_info_get_caller_owns, [:pointer], :GITransfer
+    attach_function :g_callable_info_may_return_null, [:pointer], :bool
     attach_function :g_callable_info_get_n_args, [:pointer], :int
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
 
-    # g_arg_info 
+    # IArgInfo
     enum :GIDirection, [
       :in,
       :out,
@@ -81,15 +81,15 @@ module GirFFI
       :notified
     ]
 
-    attach_function :g_arg_info_get_direction, [:pointer], :GIDirection 
-    attach_function :g_arg_info_is_dipper, [:pointer], :bool 
-    attach_function :g_arg_info_is_return_value, [:pointer], :bool 
-    attach_function :g_arg_info_is_optional, [:pointer], :bool 
-    attach_function :g_arg_info_may_be_null, [:pointer], :bool 
-    attach_function :g_arg_info_get_ownership_transfer, [:pointer], :GITransfer 
-    attach_function :g_arg_info_get_scope, [:pointer], :GIScopeType 
-    attach_function :g_arg_info_get_closure, [:pointer], :int 
-    attach_function :g_arg_info_get_destroy, [:pointer], :int 
+    attach_function :g_arg_info_get_direction, [:pointer], :GIDirection
+    attach_function :g_arg_info_is_dipper, [:pointer], :bool
+    attach_function :g_arg_info_is_return_value, [:pointer], :bool
+    attach_function :g_arg_info_is_optional, [:pointer], :bool
+    attach_function :g_arg_info_may_be_null, [:pointer], :bool
+    attach_function :g_arg_info_get_ownership_transfer, [:pointer], :GITransfer
+    attach_function :g_arg_info_get_scope, [:pointer], :GIScopeType
+    attach_function :g_arg_info_get_closure, [:pointer], :int
+    attach_function :g_arg_info_get_destroy, [:pointer], :int
     attach_function :g_arg_info_get_type, [:pointer], :pointer
 
     enum :GITypeTag, [
@@ -98,7 +98,7 @@ module GirFFI
       :int8,  2,
       :uint8,  3,
       :int16,  4,
-      :uint16,  5,  
+      :uint16,  5,
       :int32,  6,
       :uint32,  7,
       :int64,  8,
@@ -161,7 +161,7 @@ module GirFFI
     attach_function :g_enum_info_get_storage_type, [:pointer], :GITypeTag
     attach_function :g_enum_info_get_n_values, [:pointer], :int
     attach_function :g_enum_info_get_value, [:pointer, :int], :pointer
- 
+
     # IObjectInfo
     attach_function :g_object_info_get_type_name, [:pointer], :string
     attach_function :g_object_info_get_type_init, [:pointer], :string

@@ -31,7 +31,7 @@ module GirFFI
       end
 
       lb = get_or_define_module namespacem, :Lib
- 
+
       # TODO: Don't extend etc. if already done.
       lb.extend FFI::Library
       libs = gir.shared_library(namespace).split(/,/)

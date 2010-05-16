@@ -52,7 +52,7 @@ module GirFFI
 	@inargs << a.name
 	prevar = new_var
 	postvar = new_var
-	case a.type.tag 
+	case a.type.tag
 	when :int
 	  @pre << "#{prevar} = GirFFI::Helper::Arg.int_to_inoutptr #{a.name}"
 	  @post << "#{postvar} = GirFFI::Helper::Arg.outptr_to_int #{prevar}"
