@@ -196,8 +196,8 @@ class BuilderTest < Test::Unit::TestCase
 	cb = lb.find_type :Callback
 	cn = lb.find_type :ClosureNotify
 
-	assert_equal FFI.find_type :void, cb.return_type
-	assert_equal FFI.find_type :void, cn.return_type
+	assert_equal FFI.find_type(:void), cb.result_type
+	assert_equal FFI.find_type(:void), cn.result_type
 	assert_equal [], cb.param_types
 	assert_equal [FFI.find_type(:pointer), FFI.find_type(:pointer)], cn.param_types
       end

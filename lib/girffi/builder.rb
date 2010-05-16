@@ -1,3 +1,4 @@
+require 'girffi'
 require 'girffi/helper/arg'
 require 'girffi/builder/function_definition'
 
@@ -85,15 +86,27 @@ module GirFFI
     end
 
     def ffi_function_argument_types info
-      tps = info.args.map {|a| iarginfo_to_ffitype a}
-      if info.method?
-	tps.unshift :pointer
+      types = info.args.map do |a|
+	iarginfo_to_ffitype a
       end
-      tps
+      if info.type == :function
+	types.unshift :pointer if info.method?
+      end
+      types
     end
 
     def ffi_function_return_type info
       itypeinfo_to_ffitype info.return_type
+    end
+
+    def define_ffi_types modul, info
+      info.args.each do |a|
+	type = iarginfo_to_ffitype a
+	# FIXME: Rescue is ugly here.
+	ft = modul.find_type type rescue nil
+	next unless ft.nil?
+	define_single_ffi_type modul, a.type
+      end
     end
 
     private
@@ -112,6 +125,18 @@ module GirFFI
     def iarginfo_to_ffitype info
       return :pointer if info.direction == :inout
       return itypeinfo_to_ffitype info.type
+    end
+
+    def define_single_ffi_type modul, typeinfo
+      typeinfo.tag == :interface or raise NotImplementedError
+      interface = typeinfo.interface
+      case interface.type
+      when :callback
+	sym = interface.name.to_sym
+	args = ffi_function_argument_types interface
+	ret = ffi_function_return_type interface
+	modul.callback sym, args, ret
+      end
     end
 
     def get_or_define_module parent, name
