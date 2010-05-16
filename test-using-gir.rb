@@ -13,10 +13,6 @@ module GObject
     extend FFI::Library
     ffi_lib "gobject-2.0"
     CALLBACKS = []
-    # TODO: Generate these
-    callback :Callback, [], :void
-    callback :ClosureNotify, [:pointer, :pointer], :void
-    enum :ConnectFlags, [:after, (1<<0), :swapped, (1<<1)]
   end
 
   def self.method_missing method, *arguments, &block
@@ -26,6 +22,7 @@ module GObject
     return super if go.nil?
     return super if go.type != :function
 
+    @@builder.define_ffi_types Lib, go
     @@builder.attach_ffi_function Lib, go
 
     code = @@builder.function_definition go
