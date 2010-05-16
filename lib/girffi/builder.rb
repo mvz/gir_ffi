@@ -6,23 +6,23 @@ require 'girffi/constructor_definition_builder'
 module GirFFI
   # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder
-    def build_object namespace, classname, box=nil
-      namespacem = setup_module namespace, box
-      klass = get_or_define_class namespacem, classname.to_s
-
-      klass.class_eval <<-CODE
-	def method_missing method, *arguments
-	end
-      CODE
-
+    def build_class namespace, classname, box=nil
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
 
       info = gir.find_by_name namespace, classname
       parent = info.parent
       if parent
-	build_object parent.namespace, parent.name, box
+	superclass = build_class parent.namespace, parent.name, box
       end
+
+      namespacem = setup_module namespace, box
+      klass = get_or_define_class namespacem, classname.to_s, superclass
+
+      klass.class_eval <<-CODE
+	def method_missing method, *arguments
+	end
+      CODE
 
       klass.class_exec do
 	def to_ptr
@@ -47,6 +47,7 @@ module GirFFI
 	  klass.class_eval constructor_definition ctor
 	end
       end
+      klass
     end
 
     def build_module namespace, box=nil
@@ -85,6 +86,7 @@ module GirFFI
       lb.ffi_lib(*libs)
 
       optionally_define_constant lb, :CALLBACKS, []
+      modul
     end
 
     # FIXME: Methods that follow should be private
@@ -187,11 +189,16 @@ module GirFFI
       parent.const_get name
     end
 
-    def get_or_define_class parent, name
-      unless parent.const_defined? name
-	parent.const_set name, Class.new
+    def get_or_define_class namespace, name, parent
+      unless namespace.const_defined? name
+	if parent.nil?
+	  klass = Class.new
+	else
+	  klass = Class.new parent
+	end
+	namespace.const_set name, klass
       end
-      parent.const_get name
+      namespace.const_get name
     end
 
     def optionally_define_constant parent, name, value

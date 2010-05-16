@@ -9,7 +9,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building GObject::Object" do
       setup do
-	@builder.build_object 'GObject', 'Object', 'NS1'
+	@builder.build_class 'GObject', 'Object', 'NS1'
       end
 
       should "create a method_missing method for the class" do
@@ -29,14 +29,14 @@ class BuilderTest < Test::Unit::TestCase
 
       should "not replace existing classes" do
 	oldclass = NS1::GObject::Object
-	@builder.build_object 'GObject', 'Object', 'NS1'
+	@builder.build_class 'GObject', 'Object', 'NS1'
 	assert_equal oldclass, NS1::GObject::Object
       end
     end
 
     context "building Gtk::Window" do
       setup do
-	@builder.build_object 'Gtk', 'Window', 'NS3'
+	@builder.build_class 'Gtk', 'Window', 'NS3'
       end
 
       should "build parent classes also" do
@@ -48,9 +48,17 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "set up inheritence chain" do
-	assert_equal [NS3::Gtk::Window, NS3::Gtk::Object,
-	  NS3::GObject::InitiallyUnowned, NS3::GObject::Object,
-	  Object, Kernel], NS3::Gtk::Window.ancestors
+	assert_equal [
+	  NS3::Gtk::Window,
+	  NS3::Gtk::Bin,
+	  NS3::Gtk::Container,
+	  NS3::Gtk::Widget,
+	  NS3::Gtk::Object,
+	  NS3::GObject::InitiallyUnowned,
+	  NS3::GObject::Object,
+	  Object,
+	  Kernel
+	], NS3::Gtk::Window.ancestors
       end
 
       should "create a Gtk::Window#to_ptr method" do
