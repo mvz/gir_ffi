@@ -24,9 +24,11 @@ module GirFFI
 	end
       CODE
 
-      klass.class_exec do
-	def to_ptr
-	  @gobj
+      unless parent
+	klass.class_exec do
+	  def to_ptr
+	    @gobj
+	  end
 	end
       end
 
