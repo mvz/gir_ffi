@@ -1,3 +1,4 @@
+# Hard-code FFI-based Gtk+ test program. Nothing is generated here.
 require 'ffi'
 module GObject
 

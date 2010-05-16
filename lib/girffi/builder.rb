@@ -29,7 +29,7 @@ module GirFFI
       modul = setup_module namespace, box
 
       modul.class_eval <<-CODE
-	def self.method_missing method, *arguments
+	def self.method_missing method, *arguments, &block
 	  @@builder ||= GirFFI::Builder.new
 
 	  go = @@builder.function_introspection_data "#{namespace}", method.to_s
@@ -37,11 +37,16 @@ module GirFFI
 	  return super if go.nil?
 	  return super if go.type != :function
 
+	  @@builder.define_ffi_types Lib, go
 	  @@builder.attach_ffi_function Lib, go
 
 	  (class << self; self; end).class_eval @@builder.function_definition(go)
 
-	  self.send method, *arguments
+	  if block.nil?
+	    self.send method, *arguments
+	  else
+	    self.send method, *arguments, &block
+	  end
 	end
       CODE
 
