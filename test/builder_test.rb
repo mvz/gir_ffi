@@ -47,6 +47,12 @@ class BuilderTest < Test::Unit::TestCase
 	assert NS3::GObject.const_defined? :Object
       end
 
+      should "set up inheritence chain" do
+	assert_equal [NS3::Gtk::Window, NS3::Gtk::Object,
+	  NS3::GObject::InitiallyUnowned, NS3::GObject::Object,
+	  Object, Kernel], NS3::Gtk::Window.ancestors
+      end
+
       should "create a Gtk::Window#to_ptr method" do
 	assert NS3::Gtk::Window.instance_methods.include? "to_ptr"
       end
