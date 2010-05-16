@@ -34,6 +34,28 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+    context "building Gtk::Window" do
+      setup do
+	@builder.build_object 'Gtk', 'Window', 'NS3'
+      end
+
+      should "build parent classes also" do
+	assert NS3::Gtk.const_defined? :Widget
+	assert NS3::Gtk.const_defined? :Object
+	assert NS3.const_defined? :GObject
+	assert NS3::GObject.const_defined? :InitiallyUnowned
+	assert NS3::GObject.const_defined? :Object
+      end
+
+      should "create a Gtk::Window#to_ptr method" do
+	assert NS3::Gtk::Window.instance_methods.include? "to_ptr"
+      end
+
+      should "attach gtk_window_new to Gtk::Lib" do
+	assert NS3::Gtk::Lib.respond_to? :gtk_window_new
+      end
+    end
+
     context "building Gtk" do
       setup do
 	@builder.build_module 'Gtk', 'NS2'
