@@ -1,6 +1,7 @@
 require 'girffi'
 require 'girffi/helper/arg'
 require 'girffi/builder/function_definition'
+require 'girffi/constructor_definition_builder'
 
 module GirFFI
   # FIXME: No sign of state here yet. Perhaps this should be a module.
@@ -23,6 +24,12 @@ module GirFFI
 	build_object parent.namespace, parent.name, box
       end
 
+      klass.class_exec do
+	def to_ptr
+	  @gobj
+	end
+      end
+
       lb = get_or_define_module namespacem, :Lib
  
       # TODO: Don't extend etc. if already done.
@@ -31,6 +38,15 @@ module GirFFI
       lb.ffi_lib(*libs)
 
       optionally_define_constant lb, :CALLBACKS, []
+
+      unless info.abstract?
+	ctor = info.find_method 'new'
+	if ctor.constructor?
+	  define_ffi_types lb, ctor
+	  attach_ffi_function lb, ctor
+	  klass.class_eval constructor_definition ctor
+	end
+      end
     end
 
     def build_module namespace, box=nil
@@ -74,6 +90,11 @@ module GirFFI
     # FIXME: Methods that follow should be private
     def function_definition info
       fdbuilder = FunctionDefinition.new info
+      fdbuilder.generate
+    end
+
+    def constructor_definition info
+      fdbuilder = ConstructorDefinitionBuilder.new info
       fdbuilder.generate
     end
 
