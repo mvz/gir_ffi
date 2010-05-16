@@ -129,13 +129,20 @@ module GirFFI
 
     def define_single_ffi_type modul, typeinfo
       typeinfo.tag == :interface or raise NotImplementedError
+
       interface = typeinfo.interface
+      sym = interface.name.to_sym
+
       case interface.type
       when :callback
-	sym = interface.name.to_sym
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
 	modul.callback sym, args, ret
+      when :enum, :flags
+	vals = interface.values.map {|v| [v.name.to_sym, v.value]}.flatten
+	modul.enum sym, vals
+      else
+	raise NotImplementedError
       end
     end
 

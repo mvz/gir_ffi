@@ -16,7 +16,7 @@ module GObject
     # TODO: Generate these
     callback :Callback, [], :void
     callback :ClosureNotify, [:pointer, :pointer], :void
-    enum :ConnectFlags, [:AFTER, (1<<0), :SWAPPED, (1<<1)]
+    enum :ConnectFlags, [:after, (1<<0), :swapped, (1<<1)]
   end
 
   def self.method_missing method, *arguments, &block

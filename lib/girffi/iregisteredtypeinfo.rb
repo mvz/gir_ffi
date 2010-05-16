@@ -1,5 +1,6 @@
 module GirFFI
-  class IFlagsInfo < IEnumInfo
+  class IRegisteredTypeInfo < IBaseInfo
     # TODO: Implementation
   end
 end
+

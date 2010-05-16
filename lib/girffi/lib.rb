@@ -92,39 +92,6 @@ module GirFFI
     attach_function :g_arg_info_get_destroy, [:pointer], :int 
     attach_function :g_arg_info_get_type, [:pointer], :pointer
 
-    # IStructInfo
-    attach_function :g_struct_info_get_n_fields, [:pointer], :int
-    attach_function :g_struct_info_get_field, [:pointer, :int], :pointer
-    attach_function :g_struct_info_get_n_methods, [:pointer], :int
-    attach_function :g_struct_info_get_method, [:pointer, :int], :pointer
-    attach_function :g_struct_info_find_method, [:pointer, :string], :pointer
-    attach_function :g_struct_info_get_size, [:pointer], :int
-    attach_function :g_struct_info_get_alignment, [:pointer], :int
-    attach_function :g_struct_info_is_gtype_struct, [:pointer], :bool
-
-    # IObjectInfo
-    attach_function :g_object_info_get_type_name, [:pointer], :string
-    attach_function :g_object_info_get_type_init, [:pointer], :string
-    attach_function :g_object_info_get_abstract, [:pointer], :bool
-    attach_function :g_object_info_get_parent, [:pointer], :pointer
-    attach_function :g_object_info_get_n_interfaces, [:pointer], :int
-    attach_function :g_object_info_get_interface, [:pointer, :int], :pointer
-    attach_function :g_object_info_get_n_fields, [:pointer], :int
-    attach_function :g_object_info_get_field, [:pointer, :int], :pointer
-    attach_function :g_object_info_get_n_properties, [:pointer], :int
-    attach_function :g_object_info_get_property, [:pointer, :int], :pointer
-    attach_function :g_object_info_get_n_methods, [:pointer], :int
-    attach_function :g_object_info_get_method, [:pointer, :int], :pointer
-    attach_function :g_object_info_find_method, [:pointer, :string], :pointer
-    attach_function :g_object_info_get_n_signals, [:pointer], :int
-    attach_function :g_object_info_get_signal, [:pointer, :int], :pointer
-    attach_function :g_object_info_get_n_vfuncs, [:pointer], :int
-    attach_function :g_object_info_get_vfunc, [:pointer, :int], :pointer
-    attach_function :g_object_info_find_vfunc, [:pointer, :string], :pointer
-    attach_function :g_object_info_get_n_constants, [:pointer], :int
-    attach_function :g_object_info_get_constant, [:pointer, :int], :pointer
-    attach_function :g_object_info_get_class_struct, [:pointer], :pointer
-
     enum :GITypeTag, [
       :void,  0,
       :boolean,  1,
@@ -171,6 +138,52 @@ module GirFFI
     attach_function :g_type_info_is_zero_terminated, [:pointer], :bool
     attach_function :g_type_info_get_n_error_domains, [:pointer], :int
     attach_function :g_type_info_get_error_domain, [:pointer, :int], :pointer
+
+    # IStructInfo
+    attach_function :g_struct_info_get_n_fields, [:pointer], :int
+    attach_function :g_struct_info_get_field, [:pointer, :int], :pointer
+    attach_function :g_struct_info_get_n_methods, [:pointer], :int
+    attach_function :g_struct_info_get_method, [:pointer, :int], :pointer
+    attach_function :g_struct_info_find_method, [:pointer, :string], :pointer
+    attach_function :g_struct_info_get_size, [:pointer], :int
+    attach_function :g_struct_info_get_alignment, [:pointer], :int
+    attach_function :g_struct_info_is_gtype_struct, [:pointer], :bool
+
+    # IValueInfo
+    attach_function :g_value_info_get_value, [:pointer], :long
+
+    # TODO: IFieldInfo
+    # TODO: IUnionInfo
+    # TODO: IStructInfo
+    # TODO: IRegisteredTypeInfo
+
+    # IEnumInfo
+    attach_function :g_enum_info_get_storage_type, [:pointer], :GITypeTag
+    attach_function :g_enum_info_get_n_values, [:pointer], :int
+    attach_function :g_enum_info_get_value, [:pointer, :int], :pointer
+ 
+    # IObjectInfo
+    attach_function :g_object_info_get_type_name, [:pointer], :string
+    attach_function :g_object_info_get_type_init, [:pointer], :string
+    attach_function :g_object_info_get_abstract, [:pointer], :bool
+    attach_function :g_object_info_get_parent, [:pointer], :pointer
+    attach_function :g_object_info_get_n_interfaces, [:pointer], :int
+    attach_function :g_object_info_get_interface, [:pointer, :int], :pointer
+    attach_function :g_object_info_get_n_fields, [:pointer], :int
+    attach_function :g_object_info_get_field, [:pointer, :int], :pointer
+    attach_function :g_object_info_get_n_properties, [:pointer], :int
+    attach_function :g_object_info_get_property, [:pointer, :int], :pointer
+    attach_function :g_object_info_get_n_methods, [:pointer], :int
+    attach_function :g_object_info_get_method, [:pointer, :int], :pointer
+    attach_function :g_object_info_find_method, [:pointer, :string], :pointer
+    attach_function :g_object_info_get_n_signals, [:pointer], :int
+    attach_function :g_object_info_get_signal, [:pointer, :int], :pointer
+    attach_function :g_object_info_get_n_vfuncs, [:pointer], :int
+    attach_function :g_object_info_get_vfunc, [:pointer, :int], :pointer
+    attach_function :g_object_info_find_vfunc, [:pointer, :string], :pointer
+    attach_function :g_object_info_get_n_constants, [:pointer], :int
+    attach_function :g_object_info_get_constant, [:pointer, :int], :pointer
+    attach_function :g_object_info_get_class_struct, [:pointer], :pointer
 
   end
 end

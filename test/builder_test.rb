@@ -206,7 +206,7 @@ class BuilderTest < Test::Unit::TestCase
 	lb = Module.new
 	lb.extend FFI::Library
 	@builder.define_ffi_types lb, @go
-	assert_equal({:AFTER => 1, :SWAPPED => 2}, lb.find_type(:ConnectFlags).to_h)
+	assert_equal({:after => 1, :swapped => 2}, lb.find_type(:ConnectFlags).to_h)
       end
     end
   end
