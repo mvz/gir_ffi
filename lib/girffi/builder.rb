@@ -17,10 +17,27 @@ module GirFFI
       end
 
       namespacem = setup_module namespace, box
-      klass = get_or_define_class namespacem, classname.to_s, superclass
+      klass = get_or_define_class namespacem, classname, superclass
 
       klass.class_eval <<-CODE
 	def method_missing method, *arguments
+	  @@builder ||= GirFFI::Builder.new
+
+	  go = @@builder.method_introspection_data "#{namespace}", "#{classname}", method.to_s
+
+	  return super if go.nil?
+	  return super if go.type != :function
+
+	  @@builder.define_ffi_types Lib, go
+	  @@builder.attach_ffi_function Lib, go
+
+	  (class << self; self; end).class_eval @@builder.function_definition(go)
+
+	  if block.nil?
+	    self.send method, *arguments
+	  else
+	    self.send method, *arguments, &block
+	  end
 	end
       CODE
 
