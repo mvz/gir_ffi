@@ -1,5 +1,5 @@
 module GirFFI
-  class IObjectInfo < IBaseInfo
+  class IObjectInfo < IRegisteredTypeInfo
     def type_name; Lib.g_object_info_get_type_name @gobj; end
     def type_init; Lib.g_object_info_get_type_init @gobj; end
     def abstract?; Lib.g_object_info_get_abstract @gobj; end

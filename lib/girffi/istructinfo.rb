@@ -1,5 +1,5 @@
 module GirFFI
-  class IStructInfo < IBaseInfo
+  class IStructInfo < IRegisteredTypeInfo
     def n_fields; Lib.g_struct_info_get_n_fields @gobj; end
     def field i; IFieldInfo.wrap(Lib.g_struct_info_get_field @gobj, i); end
 

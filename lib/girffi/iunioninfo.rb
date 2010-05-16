@@ -1,5 +1,5 @@
 module GirFFI
-  class IUnionInfo < IBaseInfo
+  class IUnionInfo < IRegisteredTypeInfo
     # TODO: Implementation
   end
 end

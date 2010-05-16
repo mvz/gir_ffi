@@ -1,4 +1,4 @@
 module GirFFI
-  class IInterfaceInfo < IBaseInfo
+  class IInterfaceInfo < IRegisteredTypeInfo
   end
 end
