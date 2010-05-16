@@ -191,7 +191,7 @@ class BuilderTest < Test::Unit::TestCase
 	assert_raises(TypeError) { lb.find_type :Callback }
 	assert_raises(TypeError) { lb.find_type :ClosureNotify }
 
-	@builder.define_callbacks lb, @go
+	@builder.define_ffi_types lb, @go
 
 	cb = lb.find_type :Callback
 	cn = lb.find_type :ClosureNotify
@@ -205,7 +205,7 @@ class BuilderTest < Test::Unit::TestCase
       should "define ffi enum type :ConnectFlags" do
 	lb = Module.new
 	lb.extend FFI::Library
-	@builder.define_enums lb, @go
+	@builder.define_ffi_types lb, @go
 	assert_equal({:AFTER => 1, :SWAPPED => 2}, lb.find_type(:ConnectFlags).to_h)
       end
     end
