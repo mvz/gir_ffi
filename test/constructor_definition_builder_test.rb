@@ -14,7 +14,7 @@ class ConstructorDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def initialize type
-	  @gobj = Lib.gtk_window_new(type)
+	  @gobj = Lib.gtk_window_new type
 	end"
 
       assert_equal cws(expected), cws(code)
