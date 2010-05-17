@@ -19,8 +19,17 @@ module GirFFI
       namespacem = setup_module namespace, box
       klass = get_or_define_class namespacem, classname, superclass
 
+      lb = get_or_define_module namespacem, :Lib
+
+      # TODO: Don't extend etc. if already done.
+      lb.extend FFI::Library
+      libs = gir.shared_library(namespace).split(/,/)
+      lb.ffi_lib(*libs)
+
+      optionally_define_constant lb, :CALLBACKS, []
+
       klass.class_eval <<-CODE
-	def method_missing method, *arguments
+	def method_missing method, *arguments, &block
 	  @@builder ||= GirFFI::Builder.new
 
 	  go = @@builder.method_introspection_data "#{namespace}", "#{classname}", method.to_s
@@ -28,10 +37,10 @@ module GirFFI
 	  return super if go.nil?
 	  return super if go.type != :function
 
-	  @@builder.define_ffi_types Lib, go
-	  @@builder.attach_ffi_function Lib, go
+	  @@builder.define_ffi_types #{lb}, go
+	  @@builder.attach_ffi_function #{lb}, go
 
-	  (class << self; self; end).class_eval @@builder.function_definition(go)
+	  (class << self; self; end).class_eval @@builder.function_definition(go, #{lb})
 
 	  if block.nil?
 	    self.send method, *arguments
@@ -49,21 +58,12 @@ module GirFFI
 	end
       end
 
-      lb = get_or_define_module namespacem, :Lib
-
-      # TODO: Don't extend etc. if already done.
-      lb.extend FFI::Library
-      libs = gir.shared_library(namespace).split(/,/)
-      lb.ffi_lib(*libs)
-
-      optionally_define_constant lb, :CALLBACKS, []
-
       unless info.abstract?
 	ctor = info.find_method 'new'
 	if ctor.constructor?
 	  define_ffi_types lb, ctor
 	  attach_ffi_function lb, ctor
-	  klass.class_eval constructor_definition ctor
+	  klass.class_eval constructor_definition ctor, lb
 	end
       end
       klass
@@ -84,7 +84,7 @@ module GirFFI
 	  @@builder.define_ffi_types Lib, go
 	  @@builder.attach_ffi_function Lib, go
 
-	  (class << self; self; end).class_eval @@builder.function_definition(go)
+	  (class << self; self; end).class_eval @@builder.function_definition(go, Lib)
 
 	  if block.nil?
 	    self.send method, *arguments
@@ -109,13 +109,13 @@ module GirFFI
     end
 
     # FIXME: Methods that follow should be private
-    def function_definition info
-      fdbuilder = FunctionDefinition.new info
+    def function_definition info, libmodule
+      fdbuilder = FunctionDefinition.new info, libmodule
       fdbuilder.generate
     end
 
-    def constructor_definition info
-      fdbuilder = ConstructorDefinitionBuilder.new info
+    def constructor_definition info, libmodule
+      fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
       fdbuilder.generate
     end
 

@@ -56,9 +56,8 @@ class BuilderTest < Test::Unit::TestCase
 	  NS3::Gtk::Object,
 	  NS3::GObject::InitiallyUnowned,
 	  NS3::GObject::Object,
-	  Object,
-	  Kernel
-	], NS3::Gtk::Window.ancestors
+	  Object
+	], NS3::Gtk::Window.ancestors[0..7]
       end
 
       should "create a Gtk::Window#to_ptr method" do
@@ -120,7 +119,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of Gtk.main" do
-	code = @builder.function_definition @go
+	code = @builder.function_definition @go, Lib
 
 	expected = "def main\nLib.gtk_main\nend"
 
@@ -146,7 +145,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of Gtk.init" do
-	code = @builder.function_definition @go
+	code = @builder.function_definition @go, Lib
 
 	expected =
 	  "def init argc, argv
@@ -178,7 +177,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of Gtk::Widget.show" do
-	code = @builder.function_definition @go
+	code = @builder.function_definition @go, Lib
 
 	expected =
 	  "def show
@@ -200,7 +199,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of GObject.signal_connect_data" do
-	code = @builder.function_definition @go
+	code = @builder.function_definition @go, Lib
 
 	expected =
 	  "def signal_connect_data instance, detailed_signal, data, destroy_data, connect_flags, &c_handler

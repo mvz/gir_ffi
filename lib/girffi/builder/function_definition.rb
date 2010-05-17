@@ -1,8 +1,9 @@
 module GirFFI
   class Builder
     class FunctionDefinition
-      def initialize info
+      def initialize info, libmodule
 	@info = info
+	@libmodule = libmodule
 	@generated = false
       end
 
@@ -80,7 +81,7 @@ module GirFFI
 	    @blockarg = a.name
 	    prevar = new_var
 	    @pre << "#{prevar} = #{a.name}.to_proc"
-	    @pre << "Lib::CALLBACKS << #{prevar}"
+	    @pre << "#{@libmodule}::CALLBACKS << #{prevar}"
 	    @callargs << prevar
 	    return
 	  end
@@ -109,7 +110,7 @@ module GirFFI
 	return <<-CODE
 	  def #{@info.name} #{@inargs.join(', ')}
 	    #{@pre.join("\n")}
-	    Lib.#{@info.symbol} #{@callargs.join(', ')}
+	    #{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	    #{@post.join("\n")}
 	  end
 	CODE

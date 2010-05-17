@@ -9,7 +9,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
 
     should "build correct definition of Gtk.init" do
       go = @builder.function_introspection_data 'Gtk', 'init'
-      fbuilder = GirFFI::Builder::FunctionDefinition.new go
+      fbuilder = GirFFI::Builder::FunctionDefinition.new go, Lib
       code = fbuilder.generate
 
       expected = "
@@ -28,7 +28,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
 
     should "build correct definition of Gtk::Widget.show" do
       go = @builder.method_introspection_data 'Gtk', 'Widget', 'show'
-      fbuilder = GirFFI::Builder::FunctionDefinition.new go
+      fbuilder = GirFFI::Builder::FunctionDefinition.new go, Lib
       code = fbuilder.generate
 
       expected = "
@@ -42,7 +42,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
 
     should "build correct definition of GObject.signal_connect_data" do
       go = @builder.function_introspection_data 'GObject', 'signal_connect_data'
-      fbuilder = GirFFI::Builder::FunctionDefinition.new go
+      fbuilder = GirFFI::Builder::FunctionDefinition.new go, Lib
       code = fbuilder.generate
 
       expected = "

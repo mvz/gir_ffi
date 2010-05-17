@@ -5,7 +5,7 @@ module GirFFI
       return <<-CODE
 	def initialize #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
-	  @gobj = Lib.#{@info.symbol} #{@callargs.join(', ')}
+	  @gobj = #{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
 	end
       CODE

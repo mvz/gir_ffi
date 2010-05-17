@@ -9,7 +9,7 @@ class ConstructorDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Gtk::Window#initialize" do
       go = @builder.method_introspection_data 'Gtk', 'Window', 'new'
-      cbuilder = GirFFI::ConstructorDefinitionBuilder.new go
+      cbuilder = GirFFI::ConstructorDefinitionBuilder.new go, Lib
       code = cbuilder.generate
 
       expected =
