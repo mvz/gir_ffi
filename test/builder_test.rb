@@ -68,6 +68,10 @@ class BuilderTest < Test::Unit::TestCase
       should "attach gtk_window_new to Gtk::Lib" do
 	assert NS3::Gtk::Lib.respond_to? :gtk_window_new
       end
+
+      should "result in Gtk::Window.new to succeed" do
+	assert_nothing_raised {NS3::Gtk::Window.new(:toplevel)}
+      end
     end
 
     context "building Gtk" do
