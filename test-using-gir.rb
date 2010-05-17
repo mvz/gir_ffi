@@ -11,60 +11,11 @@ require 'girffi/builder'
 builder = GirFFI::Builder.new
 builder.build_module 'GObject'
 builder.build_module 'Gtk'
-
-module Gtk
-  module Lib
-    # TODO: Generate these
-    enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
-    attach_function :gtk_window_new, [:GtkWindowType], :pointer
-  end
-
-  class Widget
-    def method_missing method, *arguments
-      @@builder ||= GirFFI::Builder.new
-      go = @@builder.method_introspection_data "Gtk", "Widget", method.to_s
-
-      return super if go.nil?
-      return super if go.type != :function
-
-      @@builder.attach_ffi_function Lib, go
-
-      code = @@builder.function_definition go
-
-      (class << self; self; end).class_eval code
-
-      self.send method, *arguments
-    end
-    def to_ptr
-      @gobj
-    end
-  end
-
-  class Window < Widget
-    def initialize type
-      @gobj = Lib.gtk_window_new(type)
-    end
-    def method_missing method, *arguments
-      @@builder ||= GirFFI::Builder.new
-      go = @@builder.method_introspection_data "Gtk", "Window", method.to_s
-
-      return super if go.nil?
-      return super if go.type != :function
-
-      @@builder.attach_ffi_function Lib, go
-
-      code = @@builder.function_definition go
-
-      (class << self; self; end).class_eval code
-
-      self.send method, *arguments
-    end
-  end
-end
+builder.build_class 'Gtk', 'Window'
 
 (my_len, my_args) = Gtk.init ARGV.length, ARGV
 p my_len, my_args
-win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
+win = Gtk::Window.new(:toplevel)
 win.show
 GObject.signal_connect_data(win, "destroy", nil, nil, 0) { Gtk.main_quit }
 Gtk.main
