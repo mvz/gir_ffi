@@ -28,7 +28,9 @@ module GirFFI
 
       optionally_define_constant lb, :CALLBACKS, []
 
-      klass.class_eval method_missing_definition lb, namespace, classname
+      unless klass.method_defined? :method_missing
+	klass.class_eval method_missing_definition lb, namespace, classname
+      end
 
       unless parent
 	klass.class_exec do
@@ -52,7 +54,9 @@ module GirFFI
     def build_module namespace, box=nil
       modul = setup_module namespace, box
 
-      modul.class_eval method_missing_definition "Lib", namespace
+      unless modul.respond_to? :method_missing
+	modul.class_eval method_missing_definition "Lib", namespace
+      end
 
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
