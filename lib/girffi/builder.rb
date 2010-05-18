@@ -32,7 +32,7 @@ module GirFFI
 	klass.class_eval method_missing_definition lb, namespace, classname
       end
 
-      unless parent
+      unless parent or klass.method_defined? :to_ptr
 	klass.class_exec do
 	  def to_ptr
 	    @gobj
