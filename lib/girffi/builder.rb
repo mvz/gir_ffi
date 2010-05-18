@@ -28,27 +28,7 @@ module GirFFI
 
       optionally_define_constant lb, :CALLBACKS, []
 
-      klass.class_eval <<-CODE
-	def method_missing method, *arguments, &block
-	  @@builder ||= GirFFI::Builder.new
-
-	  go = @@builder.method_introspection_data "#{namespace}", "#{classname}", method.to_s
-
-	  return super if go.nil?
-	  return super if go.type != :function
-
-	  @@builder.define_ffi_types #{lb}, go
-	  @@builder.attach_ffi_function #{lb}, go
-
-	  (class << self; self; end).class_eval @@builder.function_definition(go, #{lb})
-
-	  if block.nil?
-	    self.send method, *arguments
-	  else
-	    self.send method, *arguments, &block
-	  end
-	end
-      CODE
+      klass.class_eval method_missing_definition lb, namespace, classname
 
       unless parent
 	klass.class_exec do
@@ -72,27 +52,7 @@ module GirFFI
     def build_module namespace, box=nil
       modul = setup_module namespace, box
 
-      modul.class_eval <<-CODE
-	def self.method_missing method, *arguments, &block
-	  @@builder ||= GirFFI::Builder.new
-
-	  go = @@builder.function_introspection_data "#{namespace}", method.to_s
-
-	  return super if go.nil?
-	  return super if go.type != :function
-
-	  @@builder.define_ffi_types Lib, go
-	  @@builder.attach_ffi_function Lib, go
-
-	  (class << self; self; end).class_eval @@builder.function_definition(go, Lib)
-
-	  if block.nil?
-	    self.send method, *arguments
-	  else
-	    self.send method, *arguments, &block
-	  end
-	end
-      CODE
+      modul.class_eval method_missing_definition "Lib", namespace
 
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
@@ -233,6 +193,40 @@ module GirFFI
 	boxm = get_or_define_module ::Object, box.to_s
       end
       return get_or_define_module boxm, namespace.to_s
+    end
+
+    def method_missing_definition lib, namespace, classname=nil
+      if classname.nil?
+	slf = "self."
+	fn = "function_introspection_data"
+	args = ["\"#{namespace}\""]
+      else
+	slf = ""
+	fn = "method_introspection_data"
+	args = ["\"#{namespace}\"", "\"#{classname}\""]
+      end
+
+      return <<-CODE
+	def #{slf}method_missing method, *arguments, &block
+	  @@builder ||= GirFFI::Builder.new
+
+	  go = @@builder.#{fn} #{args.join ', '}, method.to_s
+
+	  return super if go.nil?
+	  return super if go.type != :function
+
+	  @@builder.define_ffi_types #{lib}, go
+	  @@builder.attach_ffi_function #{lib}, go
+
+	  (class << self; self; end).class_eval @@builder.function_definition(go, #{lib})
+
+	  if block.nil?
+	    self.send method, *arguments
+	  else
+	    self.send method, *arguments, &block
+	  end
+	end
+      CODE
     end
   end
 end
