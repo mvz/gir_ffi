@@ -28,11 +28,11 @@ module GirFFI
 
       optionally_define_constant lb, :CALLBACKS, []
 
-      unless klass.method_defined? :method_missing
+      unless klass.instance_methods(false).include? "method_missing"
 	klass.class_eval method_missing_definition lb, namespace, classname
       end
 
-      unless parent or klass.method_defined? :to_ptr
+      unless parent or klass.instance_methods(false).include? "to_ptr"
 	klass.class_exec do
 	  def to_ptr
 	    @gobj
