@@ -13,7 +13,7 @@ builder.build_module 'GObject'
 builder.build_module 'Gtk'
 builder.build_class 'Gtk', 'Window'
 
-(my_len, my_args) = Gtk.init ARGV.length, ARGV
+(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 p my_len, my_args
 win = Gtk::Window.new(:toplevel)
 win.show
