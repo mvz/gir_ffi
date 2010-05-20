@@ -78,6 +78,8 @@ class BuilderTest < Test::Unit::TestCase
 	@builder.build_module 'Gtk', 'NS2'
       end
 
+      # TODO: Should also create a const_missing method to autocreate all
+      # the classes in that namespace.
       should "create a method_missing method for the module" do
 	assert_contains NS2::Gtk.public_methods - Module.public_methods, "method_missing"
       end

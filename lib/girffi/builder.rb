@@ -40,7 +40,9 @@ module GirFFI
 	end
       end
 
+      # TODO: Don't redefine constructor if already done.
       unless info.abstract?
+	# TODO: Make other constructor types work as well.
 	ctor = info.find_method 'new'
 	if ctor.constructor?
 	  define_ffi_types lb, ctor
@@ -154,6 +156,8 @@ module GirFFI
 
       case interface.type
       when :callback
+	# TODO: A function may claim to take one kind of callback, but will
+	# cast it to a different type, sometimes based on context.
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
 	modul.callback sym, args, ret
