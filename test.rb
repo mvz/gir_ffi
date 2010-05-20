@@ -13,8 +13,7 @@ module GObject
       :pointer, :pointer, :GConnectFlags], :ulong
   end
 
-  def self.signal_connect_data gobject, signal, data, destroy_data, connect_flags, &block
-    prc = block.to_proc
+  def self.signal_connect_data gobject, signal, prc, data, destroy_data, connect_flags
     Lib::CALLBACKS << prc
     Lib.g_signal_connect_data gobject.to_ptr, signal, prc, data, destroy_data, connect_flags
   end
@@ -30,9 +29,13 @@ module Gtk
     attach_function :gtk_main_quit, [], :void
 
     attach_function :gtk_widget_show, [:pointer], :pointer
+    attach_function :gtk_widget_destroy, [:pointer], :void
+    attach_function :gtk_container_add, [:pointer, :pointer], :void
 
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
+    attach_function :gtk_button_new, [], :pointer
+    attach_function :gtk_label_new, [:string], :pointer
   end
 
   def self.init size, ary
@@ -79,21 +82,57 @@ module Gtk
     def show
       Lib.gtk_widget_show(@gobj)
     end
+    def destroy
+      Lib.gtk_widget_destroy(@gobj)
+    end
     def to_ptr
       @gobj
     end
   end
 
-  class Window < Widget
+  class Container < Widget
+    def add widget
+      Lib.gtk_container_add self.to_ptr, widget.to_ptr
+    end
+  end
+
+  class Window < Container
     def initialize type
       @gobj = Lib.gtk_window_new(type)
     end
   end
+
+  class Button < Container
+    def initialize
+      @gobj = Lib.gtk_button_new()
+    end
+  end
+
+  class Label < Widget
+    def initialize text
+      @gobj = Lib.gtk_label_new(text)
+    end
+  end
 end
 
-(my_len, my_args) = Gtk.init ARGV.length, ARGV
+(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 p my_len, my_args
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
+btn = Gtk::Button.new()
+lbl = Gtk::Label.new('Hello World')
+btn.add lbl
+win.add btn
+
+quit_prc = Proc.new { Gtk.main_quit }
+del_prc = Proc.new {
+  puts "delete event occured"
+  true
+}
+GObject.signal_connect_data(win, "destroy", quit_prc, nil, nil, 0)
+GObject.signal_connect_data(win, "delete-event", del_prc, nil, nil, 0)
+GObject.signal_connect_data(btn, "clicked", Proc.new { win.destroy }, nil, nil, :SWAPPED)
+
+lbl.show
+btn.show
 win.show
-GObject.signal_connect_data(win, "destroy", nil, nil, 0) { Gtk.main_quit }
 Gtk.main
