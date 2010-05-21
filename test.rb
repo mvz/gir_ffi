@@ -124,7 +124,7 @@ btn.add lbl
 win.add btn
 
 quit_prc = Proc.new { Gtk.main_quit }
-del_prc = Proc.new {
+del_prc = FFI::Function.new(:bool, [:pointer, :pointer]) {|a, b|
   puts "delete event occured"
   true
 }
