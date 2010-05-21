@@ -124,6 +124,9 @@ btn.add lbl
 win.add btn
 
 quit_prc = Proc.new { Gtk.main_quit }
+
+# We can create callbacks with a different signature by using FFI::Function
+# directly.
 del_prc = FFI::Function.new(:bool, [:pointer, :pointer]) {|a, b|
   puts "delete event occured"
   true
