@@ -79,10 +79,9 @@ module GirFFI
 	  if a.type.interface.type == :callback and @blockarg.nil?
 	    # TODO: What if @blockarg is taken?
 	    @blockarg = a.name
-	    prevar = new_var
-	    @pre << "#{prevar} = #{a.name}.to_proc"
-	    @pre << "#{@libmodule}::CALLBACKS << #{prevar}"
-	    @callargs << prevar
+	    @inargs << a.name
+	    @pre << "#{@libmodule}::CALLBACKS << #{a.name}"
+	    @callargs << a.name
 	    return
 	  end
 	when :void
@@ -98,7 +97,6 @@ module GirFFI
       end
 
       def adjust_accumulators
-	@inargs << "&#{@blockarg}" unless @blockarg.nil?
 	@post << "return #{@retvals.join(', ')}" unless @retvals.empty?
 
 	if @info.method?

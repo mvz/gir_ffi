@@ -7,6 +7,7 @@ class BuilderTest < Test::Unit::TestCase
       @builder = GirFFI::Builder.new
     end
 
+    # TODO: Use gir's sample Everything library for testing instead.
     context "building GObject::Object" do
       setup do
 	@builder.build_class 'GObject', 'Object', 'NS1'
@@ -200,16 +201,15 @@ class BuilderTest < Test::Unit::TestCase
 	@go = @builder.function_introspection_data 'GObject', 'signal_connect_data'
       end
 
-      should "build correct definition of GObject.signal_connect_data" do
+      should "build the correct definition" do
 	code = @builder.function_definition @go, Lib
 
 	expected =
-	  "def signal_connect_data instance, detailed_signal, data, destroy_data, connect_flags, &c_handler
+	  "def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	    _v1 = GirFFI::Helper::Arg.object_to_inptr instance
-	    _v2 = c_handler.to_proc
-	    Lib::CALLBACKS << _v2
-	    _v3 = GirFFI::Helper::Arg.object_to_inptr data
-	    Lib.g_signal_connect_data _v1, detailed_signal, _v2, _v3, destroy_data, connect_flags
+	    Lib::CALLBACKS << c_handler
+	    _v2 = GirFFI::Helper::Arg.object_to_inptr data
+	    Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
 	  end"
 
 	assert_equal cws(expected), cws(code)
