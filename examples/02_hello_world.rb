@@ -14,17 +14,17 @@ builder.build_class 'Gtk', 'Label'
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 
 win = Gtk::Window.new(:toplevel)
-GObject.signal_connect_data(win, "delete-event", nil, nil, 0) {
+GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:pointer, :pointer]) {
   puts "delete event occured"
-  # TODO: Return value is not passed on by ffi.
   true
-}
-GObject.signal_connect_data(win, "destroy", nil, nil, 0) { Gtk.main_quit }
+}, nil, nil, 0
+
+GObject.signal_connect_data win, "destroy", Proc.new { Gtk.main_quit }, nil, nil, 0
 win.set_border_width 10
 
 # TODO: Make new_with_label work.
 (but = Gtk::Button.new).add(lbl = Gtk::Label.new("Hello World"))
-GObject.signal_connect_data(but, "clicked", nil, nil, :swapped) { win.destroy }
+GObject.signal_connect_data but, "clicked", Proc.new { win.destroy }, nil, nil, :swapped
 
 win.add but
 
