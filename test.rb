@@ -35,6 +35,7 @@ module Gtk
     enum :GtkWindowType, [:GTK_WINDOW_TOPLEVEL, :GTK_WINDOW_POPUP]
     attach_function :gtk_window_new, [:GtkWindowType], :pointer
     attach_function :gtk_button_new, [], :pointer
+    attach_function :gtk_button_new_with_label, [:string], :pointer
     attach_function :gtk_label_new, [:string], :pointer
   end
 
@@ -103,14 +104,17 @@ module Gtk
   end
 
   class Button < Container
-    def initialize
-      @gobj = Lib.gtk_button_new()
+    def initialize ptr
+      @gobj = ptr
     end
-  end
-
-  class Label < Widget
-    def initialize text
-      @gobj = Lib.gtk_label_new(text)
+    class << self
+      alias :real_new :new
+    end
+    def self.new
+      self.real_new Lib.gtk_button_new()
+    end
+    def self.new_with_label text
+      self.real_new Lib.gtk_button_new_with_label(text)
     end
   end
 end
@@ -118,9 +122,7 @@ end
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 p my_len, my_args
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
-btn = Gtk::Button.new()
-lbl = Gtk::Label.new('Hello World')
-btn.add lbl
+btn = Gtk::Button.new_with_label('Hello World')
 win.add btn
 
 quit_prc = Proc.new { Gtk.main_quit }
@@ -135,7 +137,6 @@ GObject.signal_connect_data(win, "destroy", quit_prc, nil, nil, 0)
 GObject.signal_connect_data(win, "delete-event", del_prc, nil, nil, 0)
 GObject.signal_connect_data(btn, "clicked", Proc.new { win.destroy }, nil, nil, :SWAPPED)
 
-lbl.show
 btn.show
 win.show
 Gtk.main
