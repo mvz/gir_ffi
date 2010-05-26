@@ -245,5 +245,16 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal({:after => 1, :swapped => 2}, lb.find_type(:ConnectFlags).to_h)
       end
     end
+
+    context "setting up Everything::TestBoxed" do
+      setup do
+	@builder.build_class 'Everything', 'TestBoxed'
+      end
+
+      should "allow creation using #new" do
+	tb = Everything::TestBoxed.new
+	assert_instance_of Everything::TestBoxed, tb
+      end
+    end
   end
 end

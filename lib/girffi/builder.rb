@@ -11,7 +11,7 @@ module GirFFI
       gir.require namespace, nil
 
       info = gir.find_by_name namespace, classname
-      parent = info.parent
+      parent = info.parent rescue nil
       if parent
 	superclass = build_class parent.namespace, parent.name, box
       end
@@ -41,7 +41,7 @@ module GirFFI
       end
 
       # TODO: Don't redefine constructor if already done.
-      unless info.abstract?
+      unless (info.abstract? rescue false)
 	# TODO: Make other constructor types work as well.
 	ctor = info.find_method 'new'
 	if ctor.constructor?

@@ -165,7 +165,7 @@ class Main
 
   def run
     #infos_for 'GIRepository' #, 'IObjectInfo'
-    infos_for 'Gtk' #, 'Window'
+    infos_for 'Everything' #, 'Window'
     #infos_for 'GObject', 'Object'
   end
 end

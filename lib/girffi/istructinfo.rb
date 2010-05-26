@@ -10,7 +10,7 @@ module GirFFI
 
     build_array_method :method
 
-    def find_method name; Lib.g_struct_info_find_method @gobj, name; end
+    def find_method name; IFunctionInfo.wrap(Lib.g_struct_info_find_method @gobj, name); end
     def size; Lib.g_struct_info_get_size @gobj; end
     def alignment; Lib.g_struct_info_get_alignment @gobj; end
     def gtype_struct?; Lib.g_struct_info_is_gtype_struct @gobj; end
