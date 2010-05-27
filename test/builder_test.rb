@@ -255,6 +255,15 @@ class BuilderTest < Test::Unit::TestCase
 	tb = Everything::TestBoxed.new
 	assert_instance_of Everything::TestBoxed, tb
       end
+
+      should "allow creation using alternative constructors" do
+	tb = Everything::TestBoxed.new_alternative_constructor1 1
+	assert_instance_of Everything::TestBoxed, tb
+	tb = Everything::TestBoxed.new_alternative_constructor2 1, 2
+	assert_instance_of Everything::TestBoxed, tb
+	tb = Everything::TestBoxed.new_alternative_constructor3 "hello"
+	assert_instance_of Everything::TestBoxed, tb
+      end
     end
   end
 end
