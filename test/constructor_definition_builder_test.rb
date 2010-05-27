@@ -7,14 +7,14 @@ class ConstructorDefinitionBuilderTest < Test::Unit::TestCase
       @builder = GirFFI::Builder.new
     end
 
-    should "build correct definition of Gtk::Window#initialize" do
+    should "build correct definition of Gtk::Window#new" do
       go = @builder.method_introspection_data 'Gtk', 'Window', 'new'
       cbuilder = GirFFI::ConstructorDefinitionBuilder.new go, Lib
       code = cbuilder.generate
 
       expected =
-	"def initialize type
-	  @gobj = Lib.gtk_window_new type
+	"def new type
+	  _real_new Lib.gtk_window_new(type)
 	end"
 
       assert_equal cws(expected), cws(code)

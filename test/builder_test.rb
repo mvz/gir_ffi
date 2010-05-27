@@ -251,6 +251,10 @@ class BuilderTest < Test::Unit::TestCase
 	@builder.build_class 'Everything', 'TestBoxed'
       end
 
+      should "set up #_real_new as an alias to #new" do
+	assert Everything::TestBoxed.respond_to? "_real_new"
+      end
+
       should "allow creation using #new" do
 	tb = Everything::TestBoxed.new
 	assert_instance_of Everything::TestBoxed, tb
