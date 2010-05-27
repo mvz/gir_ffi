@@ -22,13 +22,11 @@ GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:poin
 GObject.signal_connect_data win, "destroy", Proc.new { Gtk.main_quit }, nil, nil, 0
 win.set_border_width 10
 
-# TODO: Make new_with_label work.
-(but = Gtk::Button.new).add(lbl = Gtk::Label.new("Hello World"))
+but = Gtk::Button.new_with_label("Hello World")
 GObject.signal_connect_data but, "clicked", Proc.new { win.destroy }, nil, nil, :swapped
 
 win.add but
 
-lbl.show
 but.show
 win.show
 
