@@ -3,9 +3,9 @@ module GirFFI
     private
     def filled_out_template
       return <<-CODE
-	def initialize #{@inargs.join(', ')}
+	def #{@info.name} #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
-	  @gobj = #{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
+	  _real_new #{@libmodule}.#{@info.symbol}(#{@callargs.join(', ')})
 	  #{@post.join("\n")}
 	end
       CODE

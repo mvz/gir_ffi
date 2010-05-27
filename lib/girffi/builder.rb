@@ -30,10 +30,17 @@ module GirFFI
 
       unless klass.instance_methods(false).include? "method_missing"
 	klass.class_eval method_missing_definition lb, namespace, classname
+	(class << klass; self; end).class_eval method_missing_definition lb, namespace, classname
       end
 
       unless parent or klass.instance_methods(false).include? "to_ptr"
 	klass.class_exec do
+	  def initialize ptr
+	    @gobj = ptr
+	  end
+	  class << self
+	    alias :_real_new :new
+	  end
 	  def to_ptr
 	    @gobj
 	  end
@@ -47,7 +54,7 @@ module GirFFI
 	if ctor.constructor?
 	  define_ffi_types lb, ctor
 	  attach_ffi_function lb, ctor
-	  klass.class_eval constructor_definition ctor, lb
+	  (class << klass; self; end).class_eval constructor_definition ctor, lb
 	end
       end
       klass
@@ -76,7 +83,11 @@ module GirFFI
 
     # FIXME: Methods that follow should be private
     def function_definition info, libmodule
-      fdbuilder = FunctionDefinition.new info, libmodule
+      if info.constructor?
+	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
+      else
+	fdbuilder = FunctionDefinition.new info, libmodule
+      end
       fdbuilder.generate
     end
 
