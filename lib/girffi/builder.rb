@@ -4,6 +4,10 @@ require 'girffi/builder/function_definition'
 require 'girffi/constructor_definition_builder'
 
 module GirFFI
+  # Builds modules and classes based on information found in the
+  # introspection repository. Call its build_module and build_class methods
+  # to create the modules and classes used in your program.
+  # --
   # FIXME: No sign of state here yet. Perhaps this should be a module.
   class Builder
     def build_class namespace, classname, box=nil

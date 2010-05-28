@@ -1,5 +1,16 @@
 module GirFFI
+  # Wraps GIBaseInfo struct, the base \type for all info types.
   class IBaseInfo
+    # This is a helper method to construct a method returning an array, out
+    # of the methods returning their number and the individual elements.
+    #
+    # For example, given the methods +n_foos+ and +foo+(+i+), this method
+    # will create an additional method +foos+ returning all args.
+    #
+    # Provide the second parameter if the plural is not trivially
+    # constructed by adding +s+ to the singular.
+    # --
+    # TODO: Use plural as the first argument, to help RDoc
     def self.build_array_method elementname, plural = nil
       plural ||= "#{elementname}s"
       self.class_eval <<-CODE
@@ -11,11 +22,13 @@ module GirFFI
       CODE
     end
 
+    # TODO: Perhaps make #new private.
     def initialize gobj=nil
       raise "#{self.class} creation not implemeted" if gobj.nil?
       raise "Null Pointer" if gobj.null?
       @gobj = gobj
     end
+
     def name; Lib.g_base_info_get_name @gobj; end
     def type; Lib.g_base_info_get_type @gobj; end
     def namespace; Lib.g_base_info_get_namespace @gobj; end

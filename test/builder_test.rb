@@ -269,5 +269,6 @@ class BuilderTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestBoxed, tb
       end
     end
+    # TODO: Should not allow functions to be called as methods, etc.
   end
 end

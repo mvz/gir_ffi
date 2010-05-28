@@ -1,4 +1,6 @@
 module GirFFI
+  # Wraps a GITypeInfo struct.
+  # Represents type information, direction, transfer etc.
   class ITypeInfo < IBaseInfo
     def pointer?; Lib.g_type_info_is_pointer @gobj; end
     def tag; Lib.g_type_info_get_tag @gobj; end

@@ -19,6 +19,9 @@ require 'girffi/ienuminfo'
 require 'girffi/iflagsinfo'
 
 module GirFFI
+  # The Gobject Introspection Repository. This class is the point of
+  # access to the introspection typelibs.
+  # This class wraps the GIRepository struct.
   class IRepository
     @@singleton = nil
 

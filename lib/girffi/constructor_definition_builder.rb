@@ -1,4 +1,6 @@
 module GirFFI
+  # Implements the creation of a Ruby constructor definition out of a GIR
+  # IFunctionInfo, if it represents a constructor.
   class ConstructorDefinitionBuilder < Builder::FunctionDefinition
     private
     def filled_out_template

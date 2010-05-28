@@ -1,5 +1,7 @@
 require 'girffi/ibaseinfo'
 module GirFFI
+  # Wraps a GIArgInfo struct.
+  # Represents an argument.
   class IArgInfo < IBaseInfo
     def direction; Lib.g_arg_info_get_direction @gobj; end
     def dipper?; Lib.g_arg_info_is_dipper @gobj; end

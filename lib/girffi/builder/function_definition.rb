@@ -1,5 +1,7 @@
 module GirFFI
   class Builder
+    # Implements the creation of a Ruby function definition out of a GIR
+    # IFunctionInfo.
     class FunctionDefinition
       def initialize info, libmodule
 	@info = info
