@@ -46,7 +46,7 @@ module GirFFI
 	  if ctor.constructor?
 	    define_ffi_types lb, ctor
 	    attach_ffi_function lb, ctor
-	    (class << klass; self; end).class_eval constructor_definition ctor, lb
+	    (class << klass; self; end).class_eval function_definition ctor, lb
 	  end
 	end
       end
@@ -70,11 +70,6 @@ module GirFFI
       else
 	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
       end
-      fdbuilder.generate
-    end
-
-    def self.constructor_definition info, libmodule
-      fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
       fdbuilder.generate
     end
 
