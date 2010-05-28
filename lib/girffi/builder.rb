@@ -9,7 +9,7 @@ module GirFFI
   # to create the modules and classes used in your program.
   module Builder
     def self.build_class namespace, classname, box=nil
-      gir = GirFFI::IRepository.default
+      gir = IRepository.default
       gir.require namespace, nil
 
       info = gir.find_by_name namespace, classname
@@ -21,14 +21,7 @@ module GirFFI
       namespacem = setup_module namespace, box
       klass = get_or_define_class namespacem, classname, superclass
 
-      lb = get_or_define_module namespacem, :Lib
-
-      # TODO: Don't extend etc. if already done.
-      lb.extend FFI::Library
-      libs = gir.shared_library(namespace).split(/,/)
-      lb.ffi_lib(*libs)
-
-      optionally_define_constant lb, :CALLBACKS, []
+      lb = setup_lib_for_ffi namespace, namespacem
 
       unless klass.instance_methods(false).include? "method_missing"
 	klass.class_eval method_missing_definition lb, namespace, classname
@@ -63,23 +56,12 @@ module GirFFI
     end
 
     def self.build_module namespace, box=nil
+      IRepository.default.require namespace, nil
       modul = setup_module namespace, box
-
+      lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
-	modul.class_eval method_missing_definition "Lib", namespace
+	modul.class_eval method_missing_definition lb, namespace
       end
-
-      gir = GirFFI::IRepository.default
-      gir.require namespace, nil
-
-      lb = get_or_define_module modul, :Lib
-
-      # TODO: Don't extend etc. if already done.
-      lb.extend FFI::Library
-      libs = gir.shared_library(namespace).split(/,/)
-      lb.ffi_lib(*libs)
-
-      optionally_define_constant lb, :CALLBACKS, []
       modul
     end
 
@@ -246,6 +228,18 @@ module GirFFI
 	  end
 	end
       CODE
+    end
+
+    def self.setup_lib_for_ffi namespace, modul
+      lb = get_or_define_module modul, :Lib
+
+      # TODO: Don't extend etc. if already done.
+      lb.extend FFI::Library
+      libs = IRepository.default.shared_library(namespace).split(/,/)
+      lb.ffi_lib(*libs)
+
+      optionally_define_constant lb, :CALLBACKS, []
+      return lb
     end
   end
 end
