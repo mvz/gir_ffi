@@ -9,18 +9,9 @@ module GirFFI
     end
 
     def generate
-      unless @generated
-	setup_accumulators
-
-	@info.args.each do |a|
-	  process_arg a
-	end
-
-	adjust_accumulators
-
-	@generated = true
-      end
-
+      setup_accumulators
+      @info.args.each {|a| process_arg a}
+      adjust_accumulators
       return filled_out_template
     end
 
