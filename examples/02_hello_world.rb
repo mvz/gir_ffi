@@ -4,12 +4,11 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'girffi/builder'
 
-builder = GirFFI::Builder.new
-builder.build_module 'GObject'
-builder.build_module 'Gtk'
-builder.build_class 'Gtk', 'Window'
-builder.build_class 'Gtk', 'Button'
-builder.build_class 'Gtk', 'Label'
+GirFFI::Builder.build_module 'GObject'
+GirFFI::Builder.build_module 'Gtk'
+GirFFI::Builder.build_class 'Gtk', 'Window'
+GirFFI::Builder.build_class 'Gtk', 'Button'
+GirFFI::Builder.build_class 'Gtk', 'Label'
 
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 

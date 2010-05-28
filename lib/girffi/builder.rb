@@ -7,10 +7,8 @@ module GirFFI
   # Builds modules and classes based on information found in the
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
-  # --
-  # FIXME: No sign of state here yet. Perhaps this should be a module.
-  class Builder
-    def build_class namespace, classname, box=nil
+  module Builder
+    def self.build_class namespace, classname, box=nil
       gir = GirFFI::IRepository.default
       gir.require namespace, nil
 
@@ -64,7 +62,7 @@ module GirFFI
       klass
     end
 
-    def build_module namespace, box=nil
+    def self.build_module namespace, box=nil
       modul = setup_module namespace, box
 
       unless modul.respond_to? :method_missing
@@ -86,7 +84,7 @@ module GirFFI
     end
 
     # FIXME: Methods that follow should be private
-    def function_definition info, libmodule
+    def self.function_definition info, libmodule
       if info.constructor?
 	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
       else
@@ -95,25 +93,25 @@ module GirFFI
       fdbuilder.generate
     end
 
-    def constructor_definition info, libmodule
+    def self.constructor_definition info, libmodule
       fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
       fdbuilder.generate
     end
 
-    def function_introspection_data namespace, function
+    def self.function_introspection_data namespace, function
       gir = GirFFI::IRepository.default
       gir.require namespace.to_s, nil
       return gir.find_by_name namespace, function.to_s
     end
 
-    def method_introspection_data namespace, object, method
+    def self.method_introspection_data namespace, object, method
       gir = GirFFI::IRepository.default
       gir.require namespace.to_s, nil
       objectinfo = gir.find_by_name namespace, object.to_s
       return objectinfo.find_method method
     end
 
-    def attach_ffi_function modul, info
+    def self.attach_ffi_function modul, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
       rt = ffi_function_return_type info
@@ -121,7 +119,7 @@ module GirFFI
       modul.attach_function sym, argtypes, rt
     end
 
-    def ffi_function_argument_types info
+    def self.ffi_function_argument_types info
       types = info.args.map do |a|
 	iarginfo_to_ffitype a
       end
@@ -131,11 +129,11 @@ module GirFFI
       types
     end
 
-    def ffi_function_return_type info
+    def self.ffi_function_return_type info
       itypeinfo_to_ffitype info.return_type
     end
 
-    def define_ffi_types modul, info
+    def self.define_ffi_types modul, info
       info.args.each do |arg|
 	type = iarginfo_to_ffitype arg
 	# FIXME: Rescue is ugly here.
@@ -147,7 +145,7 @@ module GirFFI
 
     private
 
-    def itypeinfo_to_ffitype info
+    def self.itypeinfo_to_ffitype info
       if info.pointer?
 	return :string if info.tag == :utf8
 	return :pointer
@@ -158,12 +156,12 @@ module GirFFI
       return IRepository.type_tag_to_string(info.tag).to_sym
     end
 
-    def iarginfo_to_ffitype info
+    def self.iarginfo_to_ffitype info
       return :pointer if info.direction == :inout
       return itypeinfo_to_ffitype info.type
     end
 
-    def define_single_ffi_type modul, typeinfo
+    def self.define_single_ffi_type modul, typeinfo
       typeinfo.tag == :interface or raise NotImplementedError
 
       interface = typeinfo.interface
@@ -184,14 +182,14 @@ module GirFFI
       end
     end
 
-    def get_or_define_module parent, name
+    def self.get_or_define_module parent, name
       unless parent.const_defined? name
 	parent.const_set name, Module.new
       end
       parent.const_get name
     end
 
-    def get_or_define_class namespace, name, parent
+    def self.get_or_define_class namespace, name, parent
       unless namespace.const_defined? name
 	if parent.nil?
 	  klass = Class.new
@@ -203,13 +201,13 @@ module GirFFI
       namespace.const_get name
     end
 
-    def optionally_define_constant parent, name, value
+    def self.optionally_define_constant parent, name, value
       unless parent.const_defined? name
 	parent.const_set name, value
       end
     end
 
-    def setup_module namespace, box=nil
+    def self.setup_module namespace, box=nil
       if box.nil?
 	boxm = ::Object
       else
@@ -218,7 +216,7 @@ module GirFFI
       return get_or_define_module boxm, namespace.to_s
     end
 
-    def method_missing_definition lib, namespace, classname=nil
+    def self.method_missing_definition lib, namespace, classname=nil
       if classname.nil?
 	slf = "self."
 	fn = "function_introspection_data"
@@ -231,17 +229,15 @@ module GirFFI
 
       return <<-CODE
 	def #{slf}method_missing method, *arguments, &block
-	  @@builder ||= GirFFI::Builder.new
-
-	  go = @@builder.#{fn} #{args.join ', '}, method.to_s
+	  go = GirFFI::Builder.#{fn} #{args.join ', '}, method.to_s
 
 	  return super if go.nil?
 	  return super if go.type != :function
 
-	  @@builder.define_ffi_types #{lib}, go
-	  @@builder.attach_ffi_function #{lib}, go
+	  GirFFI::Builder.define_ffi_types #{lib}, go
+	  GirFFI::Builder.attach_ffi_function #{lib}, go
 
-	  (class << self; self; end).class_eval @@builder.function_definition(go, #{lib})
+	  (class << self; self; end).class_eval GirFFI::Builder.function_definition(go, #{lib})
 
 	  if block.nil?
 	    self.send method, *arguments

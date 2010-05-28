@@ -2,15 +2,11 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'girffi/builder'
 
 class BuilderTest < Test::Unit::TestCase
-  context "A Builder instance" do
-    setup do
-      @builder = GirFFI::Builder.new
-    end
-
+  context "The GirFFI::Builder module" do
     # TODO: Use gir's sample Everything library for testing instead.
     context "building GObject::Object" do
       setup do
-	@builder.build_class 'GObject', 'Object', 'NS1'
+	GirFFI::Builder.build_class 'GObject', 'Object', 'NS1'
       end
 
       should "create a method_missing method for the class" do
@@ -30,14 +26,14 @@ class BuilderTest < Test::Unit::TestCase
 
       should "not replace existing classes" do
 	oldclass = NS1::GObject::Object
-	@builder.build_class 'GObject', 'Object', 'NS1'
+	GirFFI::Builder.build_class 'GObject', 'Object', 'NS1'
 	assert_equal oldclass, NS1::GObject::Object
       end
     end
 
     context "building Gtk::Window" do
       setup do
-	@builder.build_class 'Gtk', 'Window', 'NS3'
+	GirFFI::Builder.build_class 'Gtk', 'Window', 'NS3'
       end
 
       should "build parent classes also" do
@@ -76,7 +72,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building Gtk" do
       setup do
-	@builder.build_module 'Gtk', 'NS2'
+	GirFFI::Builder.build_module 'Gtk', 'NS2'
       end
 
       # TODO: Should also create a const_missing method to autocreate all
@@ -98,20 +94,20 @@ class BuilderTest < Test::Unit::TestCase
 
       should "not replace existing module" do
 	oldmodule = NS2::Gtk
-	@builder.build_module 'Gtk', 'NS2'
+	GirFFI::Builder.build_module 'Gtk', 'NS2'
 	assert_equal oldmodule, NS2::Gtk
       end
 
       should "not replace existing Lib module" do
 	oldmodule = NS2::Gtk::Lib
-	@builder.build_module 'Gtk', 'NS2'
+	GirFFI::Builder.build_module 'Gtk', 'NS2'
 	assert_equal oldmodule, NS2::Gtk::Lib
       end
     end
 
     context "looking at Gtk.main" do
       setup do
-	@go = @builder.function_introspection_data 'Gtk', 'main'
+	@go = GirFFI::Builder.function_introspection_data 'Gtk', 'main'
       end
       # TODO: function_introspection_data should not return introspection data if not a function.
       should "have correct introspection data" do
@@ -122,7 +118,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of Gtk.main" do
-	code = @builder.function_definition @go, Lib
+	code = GirFFI::Builder.function_definition @go, Lib
 
 	expected = "def main\nLib.gtk_main\nend"
 
@@ -137,18 +133,18 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	@builder.attach_ffi_function libmod, @go
+	GirFFI::Builder.attach_ffi_function libmod, @go
 	assert_contains libmod.public_methods, "gtk_main"
       end
     end
 
     context "looking at Gtk.init" do
       setup do
-	@go = @builder.function_introspection_data 'Gtk', 'init'
+	@go = GirFFI::Builder.function_introspection_data 'Gtk', 'init'
       end
 
       should "build correct definition of Gtk.init" do
-	code = @builder.function_definition @go, Lib
+	code = GirFFI::Builder.function_definition @go, Lib
 
 	expected =
 	  "def init argc, argv
@@ -166,21 +162,21 @@ class BuilderTest < Test::Unit::TestCase
       should "have :pointer, :pointer as types of the arguments for the attached function" do
 	# FIXME: Ideally, we attach the function and test that it requires
 	# the correct argument types.
-	assert_equal [:pointer, :pointer], @builder.ffi_function_argument_types(@go)
+	assert_equal [:pointer, :pointer], GirFFI::Builder.ffi_function_argument_types(@go)
       end
 
       should "have :void as return type for the attached function" do
-	assert_equal :void, @builder.ffi_function_return_type(@go)
+	assert_equal :void, GirFFI::Builder.ffi_function_return_type(@go)
       end
     end
 
     context "looking at Gtk::Widget#show" do
       setup do
-	@go = @builder.method_introspection_data 'Gtk', 'Widget', 'show'
+	@go = GirFFI::Builder.method_introspection_data 'Gtk', 'Widget', 'show'
       end
 
       should "build correct definition of Gtk::Widget.show" do
-	code = @builder.function_definition @go, Lib
+	code = GirFFI::Builder.function_definition @go, Lib
 
 	expected =
 	  "def show
@@ -191,18 +187,18 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :pointer as types of the arguments for the attached function" do
-	assert_equal [:pointer], @builder.ffi_function_argument_types(@go)
+	assert_equal [:pointer], GirFFI::Builder.ffi_function_argument_types(@go)
       end
 
     end
 
     context "looking at GObject.signal_connect_data" do
       setup do
-	@go = @builder.function_introspection_data 'GObject', 'signal_connect_data'
+	@go = GirFFI::Builder.function_introspection_data 'GObject', 'signal_connect_data'
       end
 
       should "build the correct definition" do
-	code = @builder.function_definition @go, Lib
+	code = GirFFI::Builder.function_definition @go, Lib
 
 	expected =
 	  "def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
@@ -217,7 +213,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "have the correct types of the arguments for the attached function" do
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
-	  @builder.ffi_function_argument_types(@go)
+	  GirFFI::Builder.ffi_function_argument_types(@go)
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
@@ -227,7 +223,7 @@ class BuilderTest < Test::Unit::TestCase
 	assert_raises(TypeError) { lb.find_type :Callback }
 	assert_raises(TypeError) { lb.find_type :ClosureNotify }
 
-	@builder.define_ffi_types lb, @go
+	GirFFI::Builder.define_ffi_types lb, @go
 
 	cb = lb.find_type :Callback
 	cn = lb.find_type :ClosureNotify
@@ -241,14 +237,14 @@ class BuilderTest < Test::Unit::TestCase
       should "define ffi enum type :ConnectFlags" do
 	lb = Module.new
 	lb.extend FFI::Library
-	@builder.define_ffi_types lb, @go
+	GirFFI::Builder.define_ffi_types lb, @go
 	assert_equal({:after => 1, :swapped => 2}, lb.find_type(:ConnectFlags).to_h)
       end
     end
 
     context "setting up Everything::TestBoxed" do
       setup do
-	@builder.build_class 'Everything', 'TestBoxed'
+	GirFFI::Builder.build_class 'Everything', 'TestBoxed'
       end
 
       should "set up #_real_new as an alias to #new" do
