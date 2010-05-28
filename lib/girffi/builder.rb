@@ -26,30 +26,28 @@ module GirFFI
       unless klass.instance_methods(false).include? "method_missing"
 	klass.class_eval method_missing_definition lb, namespace, classname
 	(class << klass; self; end).class_eval method_missing_definition lb, namespace, classname
-      end
 
-      unless parent or klass.instance_methods(false).include? "to_ptr"
-	klass.class_exec do
-	  def initialize ptr
-	    @gobj = ptr
-	  end
-	  class << self
-	    alias :_real_new :new
-	  end
-	  def to_ptr
-	    @gobj
+	unless parent
+	  klass.class_exec do
+	    def initialize ptr
+	      @gobj = ptr
+	    end
+	    class << self
+	      alias :_real_new :new
+	    end
+	    def to_ptr
+	      @gobj
+	    end
 	  end
 	end
-      end
 
-      # TODO: Don't redefine constructor if already done.
-      unless (info.abstract? rescue false)
-	# TODO: Make other constructor types work as well.
-	ctor = info.find_method 'new'
-	if ctor.constructor?
-	  define_ffi_types lb, ctor
-	  attach_ffi_function lb, ctor
-	  (class << klass; self; end).class_eval constructor_definition ctor, lb
+	unless (info.abstract? rescue false)
+	  ctor = info.find_method 'new'
+	  if ctor.constructor?
+	    define_ffi_types lb, ctor
+	    attach_ffi_function lb, ctor
+	    (class << klass; self; end).class_eval constructor_definition ctor, lb
+	  end
 	end
       end
       klass
