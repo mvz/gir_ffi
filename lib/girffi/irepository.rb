@@ -1,5 +1,5 @@
 require 'girffi/lib'
-require 'girffi/helper/gtype'
+require 'girffi/gtype'
 require 'girffi/ibaseinfo'
 require 'girffi/icallableinfo'
 require 'girffi/icallbackinfo'
@@ -27,7 +27,7 @@ module GirFFI
 
     def self.default
       if @@singleton.nil?
-	Helper::GType.init
+	GType.init
 	@@singleton = new(Lib::g_irepository_get_default)
       end
       @@singleton

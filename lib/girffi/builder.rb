@@ -1,6 +1,6 @@
 require 'girffi'
-require 'girffi/helper/arg'
-require 'girffi/builder/function_definition'
+require 'girffi/arg_helper'
+require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
 
 module GirFFI
@@ -90,7 +90,7 @@ module GirFFI
       if info.constructor?
 	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
       else
-	fdbuilder = FunctionDefinition.new info, libmodule
+	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
       end
       fdbuilder.generate
     end

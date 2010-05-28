@@ -152,11 +152,11 @@ class BuilderTest < Test::Unit::TestCase
 
 	expected =
 	  "def init argc, argv
-	    _v1 = GirFFI::Helper::Arg.int_to_inoutptr argc
-	    _v3 = GirFFI::Helper::Arg.string_array_to_inoutptr argv
+	    _v1 = GirFFI::ArgHelper.int_to_inoutptr argc
+	    _v3 = GirFFI::ArgHelper.string_array_to_inoutptr argv
 	    Lib.gtk_init _v1, _v3
-	    _v2 = GirFFI::Helper::Arg.outptr_to_int _v1
-	    _v4 = GirFFI::Helper::Arg.outptr_to_string_array _v3, argv.nil? ? 0 : argv.size
+	    _v2 = GirFFI::ArgHelper.outptr_to_int _v1
+	    _v4 = GirFFI::ArgHelper.outptr_to_string_array _v3, argv.nil? ? 0 : argv.size
 	    return _v2, _v4
 	  end"
 
@@ -206,9 +206,9 @@ class BuilderTest < Test::Unit::TestCase
 
 	expected =
 	  "def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
-	    _v1 = GirFFI::Helper::Arg.object_to_inptr instance
+	    _v1 = GirFFI::ArgHelper.object_to_inptr instance
 	    Lib::CALLBACKS << c_handler
-	    _v2 = GirFFI::Helper::Arg.object_to_inptr data
+	    _v2 = GirFFI::ArgHelper.object_to_inptr data
 	    Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
 	  end"
 

@@ -1,10 +1,10 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
-require 'girffi/helper/arg'
+require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require 'girffi/arg_helper'
 
 class HelperArgTest < Test::Unit::TestCase
   context "The int_to_inoutptr method's return value" do
     setup do
-      @result = GirFFI::Helper::Arg.int_to_inoutptr 24
+      @result = GirFFI::ArgHelper.int_to_inoutptr 24
     end
 
     should "be a FFI::MemoryPointer" do
@@ -19,7 +19,7 @@ class HelperArgTest < Test::Unit::TestCase
   context "The string_array_to_inoutptr method" do
     context "when called with an array of strings" do
       setup do
-	@result = GirFFI::Helper::Arg.string_array_to_inoutptr ["foo", "bar", "baz"]
+	@result = GirFFI::ArgHelper.string_array_to_inoutptr ["foo", "bar", "baz"]
       end
 
       should "return a FFI::MemoryPointer" do
@@ -34,7 +34,7 @@ class HelperArgTest < Test::Unit::TestCase
     end
     context "when called with nil" do
       should "return nil" do
-	assert_nil GirFFI::Helper::Arg.string_array_to_inoutptr nil
+	assert_nil GirFFI::ArgHelper.string_array_to_inoutptr nil
       end
     end
   end
@@ -46,7 +46,7 @@ class HelperArgTest < Test::Unit::TestCase
     end
 
     should "retrieve the correct integer value" do
-      assert_equal 342, GirFFI::Helper::Arg.outptr_to_int(@ptr)
+      assert_equal 342, GirFFI::ArgHelper.outptr_to_int(@ptr)
     end
   end
 
@@ -62,13 +62,13 @@ class HelperArgTest < Test::Unit::TestCase
 
       should "return the string array" do
 	assert_equal ["one", "two"],
-	  GirFFI::Helper::Arg.outptr_to_string_array(@ptr, 2)
+	  GirFFI::ArgHelper.outptr_to_string_array(@ptr, 2)
       end
     end
 
     context "when called with nil" do
       should "return nil" do
-	assert_nil GirFFI::Helper::Arg.outptr_to_string_array(nil, 0)
+	assert_nil GirFFI::ArgHelper.outptr_to_string_array(nil, 0)
       end
     end
   end
@@ -78,13 +78,13 @@ class HelperArgTest < Test::Unit::TestCase
       should "return the result of to_ptr" do
 	obj = Object.new
 	def obj.to_ptr; :test_value; end
-	assert_equal :test_value, GirFFI::Helper::Arg.object_to_inptr(obj)
+	assert_equal :test_value, GirFFI::ArgHelper.object_to_inptr(obj)
       end
     end
 
     context "when called with nil" do
       should "return nil" do
-	assert_equal nil, GirFFI::Helper::Arg.object_to_inptr(nil)
+	assert_equal nil, GirFFI::ArgHelper.object_to_inptr(nil)
       end
     end
   end
