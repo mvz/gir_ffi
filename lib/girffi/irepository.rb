@@ -1,3 +1,4 @@
+require 'singleton'
 require 'girffi/lib'
 require 'girffi/gtype'
 require 'girffi/ibaseinfo'
@@ -23,14 +24,15 @@ module GirFFI
   # access to the introspection typelibs.
   # This class wraps the GIRepository struct.
   class IRepository
-    @@singleton = nil
+    def initialize
+      GType.init
+      @gobj = Lib::g_irepository_get_default
+    end
+
+    include Singleton
 
     def self.default
-      if @@singleton.nil?
-	GType.init
-	@@singleton = new(Lib::g_irepository_get_default)
-      end
-      @@singleton
+      self.instance
     end
 
     def self.type_tag_to_string type
@@ -62,12 +64,6 @@ module GirFFI
 
     def shared_library namespace
       Lib.g_irepository_get_shared_library @gobj, namespace
-    end
-
-    private_class_method :new
-
-    def initialize(gobject)
-      @gobj = gobject
     end
 
     def self.wrap_ibaseinfo_pointer ptr
