@@ -51,7 +51,7 @@ class HelperArgTest < Test::Unit::TestCase
   end
 
   context "The outptr_to_string_array method" do
-    context "when called with a pointer to a string array" do
+    context "when called with a valid pointer to a string array" do
       setup do
 	p = FFI::MemoryPointer.new(:pointer, 2)
 	p.write_array_of_pointer ["one", "two"].map {|a|
@@ -63,6 +63,22 @@ class HelperArgTest < Test::Unit::TestCase
       should "return the string array" do
 	assert_equal ["one", "two"],
 	  GirFFI::ArgHelper.outptr_to_string_array(@ptr, 2)
+      end
+    end
+
+    context "when called with a pointer to a string array containing a null pointer" do
+      setup do
+	p = FFI::MemoryPointer.new(:pointer, 3)
+	ptrs = ["one", "two"].map {|a| FFI::MemoryPointer.from_string a }
+	ptrs << nil
+	p.write_array_of_pointer ptrs
+	@ptr = FFI::MemoryPointer.new(:pointer)
+	@ptr.write_pointer p
+      end
+
+      should "return render the null pointer as nil" do
+	assert_equal ["one", "two", nil],
+	  GirFFI::ArgHelper.outptr_to_string_array(@ptr, 3)
       end
     end
 
