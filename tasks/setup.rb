@@ -159,12 +159,6 @@ HAVE_SVN = (Dir.entries(Dir.pwd).include?('.svn') and
 HAVE_GIT = (Dir.entries(Dir.pwd).include?('.git') and
             system("git --version 2>&1 > #{DEV_NULL}"))
 
-# Add bones as a development dependency
-#
-if HAVE_BONES
-  PROJ.gem.development_dependencies << ['bones', ">= #{Bones::VERSION}"]
-end
-
 # Reads a file at +path+ and spits out an array of the +paragraphs+
 # specified.
 #
