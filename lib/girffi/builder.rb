@@ -136,12 +136,12 @@ module GirFFI
     end
 
     def define_ffi_types modul, info
-      info.args.each do |a|
-	type = iarginfo_to_ffitype a
+      info.args.each do |arg|
+	type = iarginfo_to_ffitype arg
 	# FIXME: Rescue is ugly here.
 	ft = modul.find_type type rescue nil
 	next unless ft.nil?
-	define_single_ffi_type modul, a.type
+	define_single_ffi_type modul, arg.type
       end
     end
 
