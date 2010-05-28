@@ -98,12 +98,12 @@ module GirFFI
 
     def filled_out_template
       return <<-CODE
-	  def #{@info.name} #{@inargs.join(', ')}
+	def #{@info.name} #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
 	  #{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
-	  end
-	  CODE
+	end
+      CODE
     end
 
     def new_var
