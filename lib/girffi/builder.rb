@@ -24,8 +24,8 @@ module GirFFI
       lb = setup_lib_for_ffi namespace, namespacem
 
       unless klass.instance_methods(false).include? "method_missing"
-	klass.class_eval method_missing_definition lb, namespace, classname
-	(class << klass; self; end).class_eval method_missing_definition lb, namespace, classname
+	klass.class_eval method_missing_definition :instance, lb, namespace, classname
+	klass.class_eval method_missing_definition :class, lb, namespace, classname
 
 	unless parent
 	  klass.class_exec do
@@ -58,7 +58,7 @@ module GirFFI
       modul = setup_module namespace, box
       lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
-	modul.class_eval method_missing_definition lb, namespace
+	modul.class_eval method_missing_definition :module, lb, namespace
       end
       modul
     end
@@ -191,13 +191,19 @@ module GirFFI
       return get_or_define_module boxm, namespace.to_s
     end
 
-    def self.method_missing_definition lib, namespace, classname=nil
-      if classname.nil?
+    def self.method_missing_definition type, lib, namespace, classname=nil
+      case type
+      when :module
+	raise ArgumentError unless classname.nil?
 	slf = "self."
 	fn = "function_introspection_data"
 	args = ["\"#{namespace}\""]
-      else
+      when :instance
 	slf = ""
+	fn = "method_introspection_data"
+	args = ["\"#{namespace}\"", "\"#{classname}\""]
+      when :class
+	slf = "self."
 	fn = "method_introspection_data"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
       end
