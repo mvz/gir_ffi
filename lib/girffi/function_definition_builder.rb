@@ -2,6 +2,14 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
+    KEYWORDS =  [
+      "alias", "and", "begin", "break", "case", "class", "def", "do",
+      "else", "elsif", "end", "ensure", "false", "for", "if", "in",
+      "module", "next", "nil", "not", "or", "redo", "rescue", "retry",
+      "return", "self", "super", "then", "true", "undef", "unless",
+      "until", "when", "while", "yield"
+    ]
+
     def initialize info, libmodule
       @info = info
       @libmodule = libmodule
@@ -39,19 +47,20 @@ module GirFFI
     end
 
     def process_inout_arg arg
-      @inargs << arg.name
+      name = safe arg.name
+      @inargs << name
       prevar = new_var
       postvar = new_var
       case arg.type.tag
       when :int
-	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr #{arg.name}"
+	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr #{name}"
 	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int #{prevar}"
       when :array
 	case arg.type.param_type(0).tag
 	when :utf8
 	  # FIXME: Will need to take transfer-ownership GIR property into account.
-	  @pre << "#{prevar} = GirFFI::ArgHelper.string_array_to_inoutptr #{arg.name}"
-	  @post << "#{postvar} = GirFFI::ArgHelper.outptr_to_string_array #{prevar}, #{arg.name}.nil? ? 0 : #{arg.name}.size"
+	  @pre << "#{prevar} = GirFFI::ArgHelper.string_array_to_inoutptr #{name}"
+	  @post << "#{postvar} = GirFFI::ArgHelper.outptr_to_string_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
 	else
 	  raise NotImplementedError
 	end
@@ -63,24 +72,25 @@ module GirFFI
     end
 
     def process_in_arg arg
+      name = safe arg.name
       case arg.type.tag
       when :interface
 	if arg.type.interface.type == :callback
-	  @inargs << arg.name
-	  @pre << "#{@libmodule}::CALLBACKS << #{arg.name}"
-	  @callargs << arg.name
+	  @inargs << name
+	  @pre << "#{@libmodule}::CALLBACKS << #{name}"
+	  @callargs << name
 	  return
 	end
       when :void
 	raise NotImplementedError unless arg.type.pointer?
-	@inargs << arg.name
+	@inargs << name
 	prevar = new_var
-	@pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{arg.name}"
+	@pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
 	@callargs << prevar
 	return
       end
-      @inargs << arg.name
-      @callargs << arg.name
+      @inargs << name
+      @callargs << name
     end
 
     def adjust_accumulators
@@ -104,6 +114,14 @@ module GirFFI
     def new_var
       @varno += 1
       "_v#{@varno}"
+    end
+
+    def safe name
+      if KEYWORDS.include? name
+	"#{name}_"
+      else
+	name
+      end
     end
   end
 end

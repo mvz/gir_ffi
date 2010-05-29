@@ -268,6 +268,17 @@ class BuilderTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestBoxed, tb
       end
     end
+
     # TODO: Should not allow functions to be called as methods, etc.
+
+    context "looking at Everything's functions" do
+      setup do
+	GirFFI::Builder.build_module 'Everything'
+      end
+      should "correctly handle test_boolean" do
+	assert_equal false, Everything.test_boolean(false)
+	assert_equal true, Everything.test_boolean(true)
+      end
+    end
   end
 end

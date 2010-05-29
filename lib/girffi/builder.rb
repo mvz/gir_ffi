@@ -13,6 +13,7 @@ module GirFFI
       gir.require namespace, nil
 
       info = gir.find_by_name namespace, classname
+      # FIXME: Rescue is ugly here.
       parent = info.parent rescue nil
       if parent
 	superclass = build_class parent.namespace, parent.name, box
@@ -41,6 +42,7 @@ module GirFFI
 	  end
 	end
 
+	# FIXME: Rescue is ugly here.
 	unless (info.abstract? rescue false)
 	  ctor = info.find_method 'new'
 	  if ctor.constructor?
@@ -125,10 +127,14 @@ module GirFFI
 	return :string if info.tag == :utf8
 	return :pointer
       end
-      if info.tag == :interface
+      case info.tag
+      when :interface
 	return info.interface.name.to_sym
+      when :boolean
+	return :bool
+      else
+	return info.tag
       end
-      return IRepository.type_tag_to_string(info.tag).to_sym
     end
 
     def self.iarginfo_to_ffitype info
@@ -137,7 +143,7 @@ module GirFFI
     end
 
     def self.define_single_ffi_type modul, typeinfo
-      typeinfo.tag == :interface or raise NotImplementedError
+      typeinfo.tag == :interface or raise NotImplementedError, "Don't know how to handle #{typeinfo.tag}"
 
       interface = typeinfo.interface
       sym = interface.name.to_sym
