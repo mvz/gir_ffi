@@ -144,8 +144,6 @@ module GirFFI
 
       case interface.type
       when :callback
-	# TODO: A function may claim to take one kind of callback, but will
-	# cast it to a different type, sometimes based on context.
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
 	modul.callback sym, args, ret
@@ -232,10 +230,11 @@ module GirFFI
     def self.setup_lib_for_ffi namespace, modul
       lb = get_or_define_module modul, :Lib
 
-      # TODO: Don't extend etc. if already done.
-      lb.extend FFI::Library
-      libs = IRepository.default.shared_library(namespace).split(/,/)
-      lb.ffi_lib(*libs)
+      unless (class << lb; self.include? FFI::Library; end)
+	lb.extend FFI::Library
+	libs = IRepository.default.shared_library(namespace).split(/,/)
+	lb.ffi_lib(*libs)
+      end
 
       optionally_define_constant lb, :CALLBACKS, []
       return lb
