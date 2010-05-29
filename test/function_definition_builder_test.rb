@@ -46,6 +46,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
 	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
 	  Lib::CALLBACKS << c_handler
 	  _v2 = GirFFI::ArgHelper.object_to_inptr data
+	  Lib::CALLBACKS << destroy_data
 	  Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
 	end"
 

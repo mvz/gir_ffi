@@ -197,6 +197,8 @@ class BuilderTest < Test::Unit::TestCase
 	@go = GirFFI::Builder.function_introspection_data 'GObject', 'signal_connect_data'
       end
 
+      # TODO: This is essentially the same test as for
+      # FunctionDefinitionBuilder. Test this only once.
       should "build the correct definition" do
 	code = GirFFI::Builder.function_definition @go, Lib
 
@@ -205,6 +207,7 @@ class BuilderTest < Test::Unit::TestCase
 	    _v1 = GirFFI::ArgHelper.object_to_inptr instance
 	    Lib::CALLBACKS << c_handler
 	    _v2 = GirFFI::ArgHelper.object_to_inptr data
+	    Lib::CALLBACKS << destroy_data
 	    Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
 	  end"
 

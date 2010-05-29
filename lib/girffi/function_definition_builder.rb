@@ -5,7 +5,6 @@ module GirFFI
     def initialize info, libmodule
       @info = info
       @libmodule = libmodule
-      @generated = false
     end
 
     def generate
@@ -21,8 +20,6 @@ module GirFFI
       @inargs = []
       @callargs = []
       @retvals = []
-
-      @blockarg = nil
 
       @pre = []
       @post = []
@@ -68,9 +65,7 @@ module GirFFI
     def process_in_arg arg
       case arg.type.tag
       when :interface
-	if arg.type.interface.type == :callback and @blockarg.nil?
-	  # TODO: What if @blockarg is taken?
-	  @blockarg = arg.name
+	if arg.type.interface.type == :callback
 	  @inargs << arg.name
 	  @pre << "#{@libmodule}::CALLBACKS << #{arg.name}"
 	  @callargs << arg.name
