@@ -11,10 +11,10 @@ GirFFI::Builder.build_class 'Gtk', 'Window'
 GirFFI::Builder.build_class 'Gtk', 'HBox'
 GirFFI::Builder.build_class 'Gtk', 'Button'
 
-# TODO: This is a little nasty, as we couldn't know from GIR that the
-# second argument is a string here.
-callback = FFI::Function.new(:void, [:pointer, :string]) do |widget, data|
-  puts "Hello again - #{data} was pressed"
+callback = FFI::Function.new(:void, [:pointer, :pointer]) do |widget, data|
+  # TODO: Don't want to need this.
+  str = data.read_string
+  puts "Hello again - #{str} was pressed"
 end
 
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
