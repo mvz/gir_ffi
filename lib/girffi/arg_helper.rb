@@ -1,10 +1,8 @@
 module GirFFI
   module ArgHelper
-    # FIXME: Use FFI::AutoPointer or NiceFFI::OpaqueStruct instead.
     def self.object_to_inptr obj
-      return nil if obj.nil?
       return obj.to_ptr if obj.respond_to? :to_ptr
-      raise NotImplementedError
+      obj
     end
 
     def self.int_to_inoutptr val
