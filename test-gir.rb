@@ -23,7 +23,9 @@ module GirFFI
       s << ", size = #{size}, alignment = #{alignment}"
       s << ", is #{'not ' unless gtype_struct?}a gtype struct"
       s << ", fields: #{n_fields}, methods: #{n_methods}"
-      s << "\n FIELDS: " << fields.map(&:name).join(", ") if n_fields > 0
+
+      fields.each {|f| s << "\n FIELD: #{f}"} #if n_fields > 0
+
       s << "\n METHODS: " << methods.map(&:name).join(", ") if n_methods > 0
       s
     end
@@ -43,6 +45,12 @@ module GirFFI
   class IArgInfo
     def to_s
       "#{self.type} #{self.name}, #{self.direction}, #{self.return_value?}"
+    end
+  end
+
+  class IFieldInfo
+    def to_s
+      "#{self.type} #{self.name}, offset=#{self.offset}, size=#{self.size}, flags=#{self.flags}"
     end
   end
 

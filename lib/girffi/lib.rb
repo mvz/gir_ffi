@@ -6,10 +6,11 @@ module GirFFI
     ffi_lib "girepository-1.0"
 
     # IRepository
-    enum :GIRepositoryLoadFlags, [:LAZY, (1<<0)]
+    enum :IRepositoryLoadFlags, [:LAZY, (1<<0)]
+
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_require,
-      [:pointer, :string, :string, :GIRepositoryLoadFlags, :pointer],
+      [:pointer, :string, :string, :IRepositoryLoadFlags, :pointer],
       :pointer
     attach_function :g_irepository_get_n_infos, [:pointer, :string], :int
     attach_function :g_irepository_get_info,
@@ -21,7 +22,7 @@ module GirFFI
 
 
     # IBaseInfo
-    enum :GIInfoType, [
+    enum :IInfoType, [
       :invalid,
       :function,
       :callback,
@@ -44,7 +45,7 @@ module GirFFI
       :unresolved
     ]
 
-    attach_function :g_base_info_get_type, [:pointer], :GIInfoType
+    attach_function :g_base_info_get_type, [:pointer], :IInfoType
     attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_namespace, [:pointer], :string
     attach_function :g_base_info_is_deprecated, [:pointer], :bool
@@ -55,44 +56,44 @@ module GirFFI
     attach_function :g_function_info_get_flags, [:pointer], :int
 
     # ICallableInfo
-    enum :GITransfer, [
+    enum :ITransfer, [
       :nothing,
       :container,
       :everything
     ]
 
     attach_function :g_callable_info_get_return_type, [:pointer], :pointer
-    attach_function :g_callable_info_get_caller_owns, [:pointer], :GITransfer
+    attach_function :g_callable_info_get_caller_owns, [:pointer], :ITransfer
     attach_function :g_callable_info_may_return_null, [:pointer], :bool
     attach_function :g_callable_info_get_n_args, [:pointer], :int
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
 
     # IArgInfo
-    enum :GIDirection, [
+    enum :IDirection, [
       :in,
       :out,
       :inout
     ]
 
-    enum :GIScopeType, [
+    enum :IScopeType, [
       :invalid,
       :call,
       :async,
       :notified
     ]
 
-    attach_function :g_arg_info_get_direction, [:pointer], :GIDirection
+    attach_function :g_arg_info_get_direction, [:pointer], :IDirection
     attach_function :g_arg_info_is_dipper, [:pointer], :bool
     attach_function :g_arg_info_is_return_value, [:pointer], :bool
     attach_function :g_arg_info_is_optional, [:pointer], :bool
     attach_function :g_arg_info_may_be_null, [:pointer], :bool
-    attach_function :g_arg_info_get_ownership_transfer, [:pointer], :GITransfer
-    attach_function :g_arg_info_get_scope, [:pointer], :GIScopeType
+    attach_function :g_arg_info_get_ownership_transfer, [:pointer], :ITransfer
+    attach_function :g_arg_info_get_scope, [:pointer], :IScopeType
     attach_function :g_arg_info_get_closure, [:pointer], :int
     attach_function :g_arg_info_get_destroy, [:pointer], :int
     attach_function :g_arg_info_get_type, [:pointer], :pointer
 
-    enum :GITypeTag, [
+    enum :ITypeTag, [
       :void,  0,
       :boolean,  1,
       :int8,  2,
@@ -127,10 +128,10 @@ module GirFFI
 
     #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
-    attach_function :g_type_tag_to_string, [:GITypeTag], :string
+    attach_function :g_type_tag_to_string, [:ITypeTag], :string
 
     attach_function :g_type_info_is_pointer, [:pointer], :bool
-    attach_function :g_type_info_get_tag, [:pointer], :GITypeTag
+    attach_function :g_type_info_get_tag, [:pointer], :ITypeTag
     attach_function :g_type_info_get_param_type, [:pointer, :int], :pointer
     attach_function :g_type_info_get_interface, [:pointer], :pointer
     attach_function :g_type_info_get_array_length, [:pointer], :int
@@ -152,13 +153,22 @@ module GirFFI
     # IValueInfo
     attach_function :g_value_info_get_value, [:pointer], :long
 
-    # TODO: IFieldInfo
-    # TODO: IUnionInfo
-    # TODO: IStructInfo
-    # TODO: IRegisteredTypeInfo
+    # IFieldInfo
+    enum :IFieldInfoFlags, [
+      :readable, (1 << 0),
+      :writable, (1 << 1)
+    ]
+    attach_function :g_field_info_get_flags, [:pointer], :IFieldInfoFlags
+    attach_function :g_field_info_get_size, [:pointer], :int
+    attach_function :g_field_info_get_offset, [:pointer], :int
+    attach_function :g_field_info_get_type, [:pointer], :pointer
+
+    # IUnionInfo
+    # IStructInfo
+    # IRegisteredTypeInfo
 
     # IEnumInfo
-    attach_function :g_enum_info_get_storage_type, [:pointer], :GITypeTag
+    attach_function :g_enum_info_get_storage_type, [:pointer], :ITypeTag
     attach_function :g_enum_info_get_n_values, [:pointer], :int
     attach_function :g_enum_info_get_value, [:pointer, :int], :pointer
 
