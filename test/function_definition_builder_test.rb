@@ -1,4 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require 'girffi/builder'
 require 'girffi/function_definition_builder'
 
 class FunctionDefinitionTest < Test::Unit::TestCase

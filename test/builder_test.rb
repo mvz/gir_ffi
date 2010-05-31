@@ -10,8 +10,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "create a method_missing method for the class" do
-	ms = NS1::GObject::Object.instance_methods(false)
-	assert_contains ms, "method_missing"
+	ms = NS1::GObject::Object.instance_methods(false).map &:to_sym
+	assert_contains ms, :method_missing
       end
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
@@ -58,7 +58,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "create a Gtk::Window#to_ptr method" do
-	assert NS3::Gtk::Window.instance_methods.include? "to_ptr"
+	assert_contains NS3::Gtk::Window.instance_methods.map(&:to_sym), :to_ptr
       end
 
       should "attach gtk_window_new to Gtk::Lib" do
@@ -78,7 +78,8 @@ class BuilderTest < Test::Unit::TestCase
       # TODO: Should also create a const_missing method to autocreate all
       # the classes in that namespace.
       should "create a method_missing method for the module" do
-	assert_contains NS2::Gtk.public_methods - Module.public_methods, "method_missing"
+	ms = (NS2::Gtk.public_methods - Module.public_methods).map &:to_sym
+	assert_contains ms, :method_missing
       end
 
       should "create a Lib module ready to attach functions from gtk-x11-2.0" do
@@ -134,7 +135,7 @@ class BuilderTest < Test::Unit::TestCase
 	end
 
 	GirFFI::Builder.attach_ffi_function libmod, @go
-	assert_contains libmod.public_methods, "gtk_main"
+	assert_contains libmod.public_methods.map(&:to_sym), :gtk_main
       end
     end
 

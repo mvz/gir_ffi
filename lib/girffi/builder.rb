@@ -162,14 +162,14 @@ module GirFFI
     end
 
     def self.get_or_define_module parent, name
-      unless parent.const_defined? name
+      unless parent.const_defined? name, false
 	parent.const_set name, Module.new
       end
       parent.const_get name
     end
 
     def self.get_or_define_class namespace, name, parent
-      unless namespace.const_defined? name
+      unless namespace.const_defined? name, false
 	if parent.nil?
 	  klass = Class.new
 	else
@@ -181,7 +181,7 @@ module GirFFI
     end
 
     def self.optionally_define_constant parent, name, value
-      unless parent.const_defined? name
+      unless parent.const_defined? name, false
 	parent.const_set name, value
       end
     end
