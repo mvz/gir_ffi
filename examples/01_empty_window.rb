@@ -3,10 +3,10 @@
 # http://library.gnome.org/devel/gtk-tutorial/2.90/c39.html
 #
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'girffi/builder'
+require 'girffi'
 
-GirFFI::Builder.build_module 'GObject'
-GirFFI::Builder.build_module 'Gtk'
+GirFFI.setup :GObject
+GirFFI.setup :Gtk
 GirFFI::Builder.build_class 'Gtk', 'Window'
 
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]

@@ -32,5 +32,11 @@ module GirFFI
 end  # module GirFfi
 
 require 'girffi/irepository'
+require 'girffi/builder'
 
+module GirFFI
+  def self.setup modul
+    GirFFI::Builder.build_module modul.to_s
+  end
+end
 # EOF
