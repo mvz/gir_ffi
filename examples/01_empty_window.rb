@@ -7,7 +7,6 @@ require 'girffi'
 
 GirFFI.setup :GObject
 GirFFI.setup :Gtk
-GirFFI::Builder.build_class 'Gtk', 'Window'
 
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
 win = Gtk::Window.new(:toplevel)

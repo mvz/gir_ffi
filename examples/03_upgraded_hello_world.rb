@@ -5,11 +5,8 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'girffi/builder'
 
-GirFFI::Builder.build_module 'GObject'
-GirFFI::Builder.build_module 'Gtk'
-GirFFI::Builder.build_class 'Gtk', 'Window'
-GirFFI::Builder.build_class 'Gtk', 'HBox'
-GirFFI::Builder.build_class 'Gtk', 'Button'
+GirFFI.setup :GObject
+GirFFI.setup :Gtk
 
 callback = FFI::Function.new(:void, [:pointer, :pointer]) do |widget, data|
   # TODO: Don't want to need this.
