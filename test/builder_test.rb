@@ -281,4 +281,14 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
   end
+  context "After building the Everything module" do
+    setup do
+      GirFFI::Builder.build_module 'Everything', 'NS4'
+    end
+    context "the TestObj class" do
+      should "be autocreated when calling its #new method" do
+	assert_nothing_raised {NS4::Everything::TestObj.new_from_file("foo")}
+      end
+    end
+  end
 end

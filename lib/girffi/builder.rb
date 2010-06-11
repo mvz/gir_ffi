@@ -46,7 +46,7 @@ module GirFFI
 	# FIXME: Rescue is ugly here.
 	unless (info.abstract? rescue false)
 	  ctor = info.find_method 'new'
-	  if ctor.constructor?
+	  if not ctor.nil? and ctor.constructor?
 	    define_ffi_types lb, ctor
 	    attach_ffi_function lb, ctor
 	    (class << klass; self; end).class_eval function_definition ctor, lb
@@ -62,6 +62,7 @@ module GirFFI
       lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
 	modul.class_eval method_missing_definition :module, lb, namespace
+	modul.class_eval const_missing_definition namespace, box
       end
       modul
     end
@@ -234,6 +235,16 @@ module GirFFI
       CODE
     end
 
+    def self.const_missing_definition namespace, box=nil
+      box = box.nil? ? "nil" : "\"#{box}\""
+      return <<-CODE
+	def self.const_missing classname
+	  info = IRepository.default.find_by_name "#{namespace}", classname.to_s
+	  return super if info.nil?
+	  return GirFFI::Builder.build_class "#{namespace}", classname.to_s, #{box}
+	end
+      CODE
+    end
     def self.setup_lib_for_ffi namespace, modul
       lb = get_or_define_module modul, :Lib
 
