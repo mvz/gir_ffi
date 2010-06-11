@@ -1,4 +1,5 @@
 require 'girffi'
+require 'girffi/class_base'
 require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
@@ -31,15 +32,8 @@ module GirFFI
 
 	unless parent
 	  klass.class_exec do
-	    def initialize ptr
-	      @gobj = ptr
-	    end
-	    class << self
-	      alias :_real_new :new
-	    end
-	    def to_ptr
-	      @gobj
-	    end
+	    include GirFFI::ClassBase
+	    class << self; alias :_real_new :new; end
 	  end
 	end
 

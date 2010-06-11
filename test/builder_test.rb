@@ -52,9 +52,8 @@ class BuilderTest < Test::Unit::TestCase
 	  NS3::Gtk::Widget,
 	  NS3::Gtk::Object,
 	  NS3::GObject::InitiallyUnowned,
-	  NS3::GObject::Object,
-	  Object
-	], NS3::Gtk::Window.ancestors[0..7]
+	  NS3::GObject::Object
+	], NS3::Gtk::Window.ancestors[0..6]
       end
 
       should "create a Gtk::Window#to_ptr method" do
