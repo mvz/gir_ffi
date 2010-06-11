@@ -30,10 +30,8 @@ module GirFFI
 	klass.class_eval method_missing_definition :class, lb, namespace, classname
 
 	unless parent
-	  klass.class_exec do
-	    include GirFFI::ClassBase
-	    class << self; alias :_real_new :new; end
-	  end
+	  klass.class_exec { include GirFFI::ClassBase }
+	  (class << klass; self; end).class_exec { alias_method :_real_new, :new }
 	end
 
 	unless info.type == :object and info.abstract?
@@ -71,13 +69,11 @@ module GirFFI
 
     def self.function_introspection_data namespace, function
       gir = GirFFI::IRepository.default
-      gir.require namespace.to_s, nil
       return gir.find_by_name namespace, function.to_s
     end
 
     def self.method_introspection_data namespace, object, method
       gir = GirFFI::IRepository.default
-      gir.require namespace.to_s, nil
       objectinfo = gir.find_by_name namespace, object.to_s
       return objectinfo.find_method method
     end
@@ -112,6 +108,18 @@ module GirFFI
 	next unless ft.nil?
 	define_single_ffi_type modul, arg.type
       end
+    end
+
+    def self.setup_method namespace, classname, lib, klass, method
+      go = self.method_introspection_data namespace, classname, method.to_s
+
+      setup_function_or_method klass, lib, go
+    end
+
+    def self.setup_function namespace, lib, klass, method
+      go = self.function_introspection_data namespace, method.to_s
+
+      setup_function_or_method klass, lib, go
     end
 
     private
@@ -194,30 +202,22 @@ module GirFFI
       when :module
 	raise ArgumentError unless classname.nil?
 	slf = "self."
-	fn = "function_introspection_data"
+	fn = "setup_function"
 	args = ["\"#{namespace}\""]
       when :instance
 	slf = ""
-	fn = "method_introspection_data"
+	fn = "setup_method"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
       when :class
 	slf = "self."
-	fn = "method_introspection_data"
+	fn = "setup_method"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
       end
 
       return <<-CODE
 	def #{slf}method_missing method, *arguments, &block
-	  go = GirFFI::Builder.#{fn} #{args.join ', '}, method.to_s
-
-	  return super if go.nil?
-	  return super if go.type != :function
-
-	  GirFFI::Builder.define_ffi_types #{lib}, go
-	  GirFFI::Builder.attach_ffi_function #{lib}, go
-
-	  (class << self; self; end).class_eval GirFFI::Builder.function_definition(go, #{lib})
-
+	  result = GirFFI::Builder.#{fn} #{args.join ', '}, #{lib}, self, method.to_s
+	  return super unless result
 	  if block.nil?
 	    self.send method, *arguments
 	  else
@@ -237,6 +237,7 @@ module GirFFI
 	end
       CODE
     end
+
     def self.setup_lib_for_ffi namespace, modul
       lb = get_or_define_module modul, :Lib
 
@@ -248,6 +249,17 @@ module GirFFI
 
       optionally_define_constant lb, :CALLBACKS, []
       return lb
+    end
+
+    def self.setup_function_or_method klass, lib, go
+      return false if go.nil?
+      return false if go.type != :function
+
+      define_ffi_types lib, go
+      attach_ffi_function lib, go
+
+      (class << klass; self; end).class_eval GirFFI::Builder.function_definition(go, lib)
+      true
     end
   end
 end
