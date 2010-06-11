@@ -25,7 +25,7 @@ module GirFFI
 
       lb = setup_lib_for_ffi namespace, namespacem
 
-      unless klass.instance_methods(false).include? "method_missing"
+      unless klass.instance_methods(false).include? :method_missing
 	klass.class_eval method_missing_definition :instance, lb, namespace, classname
 	klass.class_eval method_missing_definition :class, lb, namespace, classname
 
