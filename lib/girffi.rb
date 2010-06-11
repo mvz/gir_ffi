@@ -29,14 +29,18 @@ module GirFFI
     args.empty? ? PATH : ::File.join(PATH, args.flatten)
   end
 
-end  # module GirFfi
+end
 
 require 'girffi/irepository'
 require 'girffi/builder'
 
 module GirFFI
-  def self.setup modul
-    GirFFI::Builder.build_module modul.to_s
+  def self.setup module_name
+    GirFFI::Builder.build_module module_name.to_s
+    begin
+      require "girffi/overrides/#{module_name.to_s.downcase}"
+    rescue LoadError
+    end
   end
 end
 # EOF

@@ -8,8 +8,8 @@ require 'girffi'
 GirFFI.setup :GObject
 GirFFI.setup :Gtk
 
-(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
-win = Gtk::Window.new(:toplevel)
+Gtk.init
+win = Gtk::Window.new :toplevel
 win.show
 GObject.signal_connect_data win, "destroy", Proc.new { Gtk.main_quit }, nil, nil, 0
 Gtk.main

@@ -8,7 +8,7 @@ require 'girffi/builder'
 GirFFI.setup :GObject
 GirFFI.setup :Gtk
 
-(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
+Gtk.init
 
 win = Gtk::Window.new(:toplevel)
 GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:pointer, :pointer]) {

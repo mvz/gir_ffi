@@ -14,7 +14,7 @@ callback = FFI::Function.new(:void, [:pointer, :pointer]) do |widget, data|
   puts "Hello again - #{str} was pressed"
 end
 
-(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
+Gtk.init
 
 win = Gtk::Window.new(:toplevel)
 win.set_title "Hello Buttons!"
