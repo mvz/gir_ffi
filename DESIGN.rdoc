@@ -5,13 +5,22 @@
 Gir-FFI uses FFI to read information from the GObject Introspection
 Repository. Based on that it creates bindings for the information read.
 
-== Options
+== Class and method creation
 
-* Create classes and all of their methods at runtime.
-* Create classes and add method_missing to them at runtime to generate
-  methods when required. This is possibly faster. Basic method loading code
-  will be the same though.
-* Allow offline creation of ruby source generated from the GIR.
+GirFFI::Builder creates classes and modules at runtime and adds appropriate
+method_missing methods to them to generate methods and perhaps other
+classes when required.
+
+The following options were discarded, at least for now.
+
+* Create classes and all of their methods at runtime. This would be very
+  similar to the method chosen, but would concentrate all the overhead at
+  start-up, some of which would be used for creating methods that will
+  never get called.
+
+* Allow offline creation of ruby source generated from the GIR. This is
+  still in interesting idea, but off-line source code generation is not
+  really the Ruby way.
 
 == Method Naming
 
@@ -22,6 +31,9 @@ having x, x= and x_full= as a set. Also, some get_ or set_ methods take
 extra arguments. These probably shouldn't become accessors either.
 
 Boolean-valued methods could get a ? at the end.
+
+This requires a lot more thought. For now, the full method names as
+defined in the GIR are used.
 
 == Ruby-GNOME Compatibility
 

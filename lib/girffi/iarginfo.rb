@@ -4,7 +4,6 @@ module GirFFI
   # Represents an argument.
   class IArgInfo < IBaseInfo
     def direction; Lib.g_arg_info_get_direction @gobj; end
-    def dipper?; Lib.g_arg_info_is_dipper @gobj; end
     def return_value?; Lib.g_arg_info_is_return_value @gobj; end
     def optional?; Lib.g_arg_info_is_optional @gobj; end
     def may_be_null?; Lib.g_arg_info_may_be_null @gobj; end

@@ -13,6 +13,7 @@ module GirFFI
       gir.require namespace, nil
 
       info = gir.find_by_name namespace, classname
+      raise "Class #{classname} not found in namespace #{namespace}" if info.nil?
       # FIXME: Rescue is ugly here.
       parent = info.parent rescue nil
       if parent
