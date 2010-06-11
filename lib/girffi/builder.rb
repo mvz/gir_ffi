@@ -15,8 +15,7 @@ module GirFFI
 
       info = gir.find_by_name namespace, classname
       raise "Class #{classname} not found in namespace #{namespace}" if info.nil?
-      # FIXME: Rescue is ugly here.
-      parent = info.parent rescue nil
+      parent = info.type == :object ? info.parent : nil
       if parent
 	superclass = build_class parent.namespace, parent.name, box
       end
@@ -37,8 +36,7 @@ module GirFFI
 	  end
 	end
 
-	# FIXME: Rescue is ugly here.
-	unless (info.abstract? rescue false)
+	unless info.type == :object and info.abstract?
 	  ctor = info.find_method 'new'
 	  if not ctor.nil? and ctor.constructor?
 	    define_ffi_types lb, ctor
