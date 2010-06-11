@@ -75,12 +75,6 @@ class BuilderTest < Test::Unit::TestCase
 	GirFFI::Builder.build_module 'Gtk', 'NS2'
       end
 
-      # TODO: Should also create a const_missing method to autocreate all
-      # the classes in that namespace.
-      should "create a method_missing method for the module" do
-	assert_contains NS2::Gtk.public_methods - Module.public_methods, "method_missing"
-      end
-
       should "create a Lib module ready to attach functions from gtk-x11-2.0" do
 	# The Gtk module has more than one library on my current machine.
 	gir = GirFFI::IRepository.default
@@ -280,14 +274,19 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal true, Everything.test_boolean(true)
       end
     end
-  end
-  context "After building the Everything module" do
-    setup do
-      GirFFI::Builder.build_module 'Everything', 'NS4'
-    end
-    context "the TestObj class" do
-      should "be autocreated when calling its #new method" do
-	assert_nothing_raised {NS4::Everything::TestObj.new_from_file("foo")}
+    context "building the Everything module" do
+      setup do
+	GirFFI::Builder.build_module 'Everything', 'NS4'
+      end
+
+      should "create a method_missing method for the module" do
+	assert_contains NS4::Everything.public_methods - Module.public_methods, "method_missing"
+      end
+
+      should "cause the TestObj class to be autocreated" do
+	assert (not NS4::Everything.const_defined? :TestObj)
+	assert_nothing_raised {NS4::Everything::TestObj}
+	assert NS4::Everything.const_defined? :TestObj
       end
     end
   end
