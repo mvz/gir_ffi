@@ -73,24 +73,22 @@ module GirFFI
 
     def process_in_arg arg
       name = safe arg.name
-      case arg.type.tag
-      when :interface
-	if arg.type.interface.type == :callback
-	  @inargs << name
-	  @pre << "#{@libmodule}::CALLBACKS << #{name}"
-	  @callargs << name
-	  return
-	end
-      when :void
+      type = arg.type
+      tag = type.tag
+
+      @inargs << name
+
+      if tag == :interface and type.interface.type == :callback
+	@pre << "#{@libmodule}::CALLBACKS << #{name}"
+	@callargs << name
+      elsif tag == :void
 	raise NotImplementedError unless arg.type.pointer?
-	@inargs << name
 	prevar = new_var
 	@pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
 	@callargs << prevar
-	return
+      else
+	@callargs << name
       end
-      @inargs << name
-      @callargs << name
     end
 
     def adjust_accumulators

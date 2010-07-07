@@ -212,6 +212,8 @@ module GirFFI
 	slf = "self."
 	fn = "setup_method"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
+      else
+	raise ArgumentError
       end
 
       return <<-CODE

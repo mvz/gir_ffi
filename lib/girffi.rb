@@ -36,9 +36,10 @@ require 'girffi/builder'
 
 module GirFFI
   def self.setup module_name
-    GirFFI::Builder.build_module module_name.to_s
+    module_name = module_name.to_s
+    GirFFI::Builder.build_module module_name
     begin
-      require "girffi/overrides/#{module_name.to_s.downcase}"
+      require "girffi/overrides/#{module_name.downcase}"
     rescue LoadError
     end
   end
