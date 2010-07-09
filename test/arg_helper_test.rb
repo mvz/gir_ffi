@@ -22,8 +22,8 @@ class HelperArgTest < Test::Unit::TestCase
 	@result = GirFFI::ArgHelper.string_array_to_inoutptr ["foo", "bar", "baz"]
       end
 
-      should "return a FFI::MemoryPointer" do
-	assert_equal "FFI::MemoryPointer", @result.class.to_s
+      should "return a FFI::Pointer" do
+	assert_equal "FFI::Pointer", @result.class.to_s
       end
 
       should "return a pointer to an array of pointers to strings" do
