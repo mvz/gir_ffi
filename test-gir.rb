@@ -24,7 +24,7 @@ module GirFFI
       s << ", is #{'not ' unless gtype_struct?}a gtype struct"
       s << ", fields: #{n_fields}, methods: #{n_methods}"
 
-      fields.each {|f| s << "\n FIELD: #{f}"} #if n_fields > 0
+      fields.each {|f| s << "\n FIELD: #{f}"}
 
       s << "\n METHODS: " << methods.map(&:name).join(", ") if n_methods > 0
       s
@@ -37,7 +37,7 @@ module GirFFI
       s << ", caller owns #{caller_owns}"
       s << ", may return null" if may_return_null?
       s << "\n RETURN TYPE: " << return_type.to_s
-      args.each {|e| s << "\n ARG: #{e}"} if n_args > 0
+      args.each {|e| s << "\n ARG: #{e}"}
       s
     end
   end
@@ -110,12 +110,13 @@ module GirFFI
       s = super
       s << ", type_name: #{type_name}, type_init: #{type_init}, abstract: #{abstract?}"
       s << "\n\tInterfaces: " << interfaces.map(&:name).join(", ") if n_interfaces > 0
-      fields.each {|e| s << "\nFIELD for #{self.name}: #{e}"} if n_fields > 0
+      fields.each {|e| s << "\nFIELD for #{self.name}: #{e}"}
       s << "\n\tProperties: " << properties.map(&:name).join(", ") if n_properties > 0
       s << "\n\tSignals: " << signals.map(&:name).join(", ") if n_signals > 0
       s << "\n\tVFuncs: " << vfuncs.map(&:name).join(", ") if n_vfuncs > 0
       s << "\n\tConstants: " << constants.map(&:name).join(", ") if n_constants > 0
-      methods.each {|e| s << "\nMETHOD for #{self.name}: #{e}"} if n_methods > 0
+      methods.each {|e| s << "\nMETHOD for #{self.name}: #{e}"}
+      signals.each {|e| s << "\nSIGNAL for #{self.name}: #{e}"}
       s
     end
 
@@ -126,12 +127,12 @@ module GirFFI
       end
       s << "\n  # type_name: #{type_name}, type_init: #{type_init}, abstract: #{abstract?}"
       s << "\n  # Interfaces: " << interfaces.map(&:name).join(", ") if n_interfaces > 0
-      fields.each {|e| s << "\n  # FIELD: #{e}"} if n_fields > 0
+      fields.each {|e| s << "\n  # FIELD: #{e}"}
       s << "\n  # Properties: " << properties.map(&:name).join(", ") if n_properties > 0
       s << "\n  # Signals: " << signals.map(&:name).join(", ") if n_signals > 0
       s << "\n  # VFuncs: " << vfuncs.map(&:name).join(", ") if n_vfuncs > 0
       s << "\n  # Constants: " << constants.map(&:name).join(", ") if n_constants > 0
-      methods.each {|e| s << "\n" << e.generate} if n_methods > 0
+      methods.each {|e| s << "\n" << e.generate}
       s << "\nend"
       s
     end

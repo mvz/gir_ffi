@@ -52,9 +52,8 @@ class BuilderTest < Test::Unit::TestCase
 	  NS3::Gtk::Widget,
 	  NS3::Gtk::Object,
 	  NS3::GObject::InitiallyUnowned,
-	  NS3::GObject::Object,
-	  Object
-	], NS3::Gtk::Window.ancestors[0..7]
+	  NS3::GObject::Object
+	], NS3::Gtk::Window.ancestors[0..6]
       end
 
       should "create a Gtk::Window#to_ptr method" do
@@ -73,13 +72,6 @@ class BuilderTest < Test::Unit::TestCase
     context "building Gtk" do
       setup do
 	GirFFI::Builder.build_module 'Gtk', 'NS2'
-      end
-
-      # TODO: Should also create a const_missing method to autocreate all
-      # the classes in that namespace.
-      should "create a method_missing method for the module" do
-	ms = (NS2::Gtk.public_methods - Module.public_methods).map &:to_sym
-	assert_contains ms, :method_missing
       end
 
       should "create a Lib module ready to attach functions from gtk-x11-2.0" do
@@ -279,6 +271,22 @@ class BuilderTest < Test::Unit::TestCase
       should "correctly handle test_boolean" do
 	assert_equal false, Everything.test_boolean(false)
 	assert_equal true, Everything.test_boolean(true)
+      end
+    end
+    context "building the Everything module" do
+      setup do
+	GirFFI::Builder.build_module 'Everything', 'NS4'
+      end
+
+      should "create a method_missing method for the module" do
+	ms = (NS4::Everything.public_methods - Module.public_methods).map &:to_sym
+	assert_contains ms, :method_missing
+      end
+
+      should "cause the TestObj class to be autocreated" do
+	assert (not NS4::Everything.const_defined? :TestObj)
+	assert_nothing_raised {NS4::Everything::TestObj}
+	assert NS4::Everything.const_defined? :TestObj
       end
     end
   end

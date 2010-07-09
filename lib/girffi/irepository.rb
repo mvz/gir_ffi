@@ -24,6 +24,29 @@ module GirFFI
   # access to the introspection typelibs.
   # This class wraps the GIRepository struct.
   class IRepository
+    TYPEMAP = {
+      #:invalid,
+      :function => IFunctionInfo,
+      :callback => ICallbackInfo,
+      :struct => IStructInfo,
+      #:boxed => ,
+      :enum => IEnumInfo,
+      :flags => IFlagsInfo,
+      :object => IObjectInfo,
+      :interface => IInterfaceInfo,
+      :constant => IConstantInfo,
+      # :error_domain,
+      :union => IUnionInfo,
+      :value => IValueInfo,
+      :signal => ISignalInfo,
+      :vfunc => IVFuncInfo,
+      :property => IPropertyInfo,
+      :field => IFieldInfo,
+      :arg => IArgInfo,
+      :type => ITypeInfo,
+      #:unresolved
+    }
+
     def initialize
       GType.init
       @gobj = Lib::g_irepository_get_default
@@ -69,30 +92,12 @@ module GirFFI
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
       type = Lib.g_base_info_get_type ptr
-      # TODO: Perhaps use a hash or something as a typemap.
-      case type
-      when :object
-	return IObjectInfo.new(ptr)
-      when :function
-	return IFunctionInfo.new(ptr)
-      when :callback
-	return ICallbackInfo.new(ptr)
-      when :interface
-	return IInterfaceInfo.new(ptr)
-      when :struct
-	return IStructInfo.new(ptr)
-      when :constant
-	return IConstantInfo.new(ptr)
-      when :union
-	return IUnionInfo.new(ptr)
-      when :enum
-	return IEnumInfo.new(ptr)
-      when :flags
-	return IFlagsInfo.new(ptr)
-      else
-	raise "Returning base info object for #{type}"
-	return IBaseInfo.new(ptr)
+
+      if klass = TYPEMAP[type]
+	return klass.new(ptr)
       end
+
+      raise "No class found for type #{type}"
     end
 
     private

@@ -1,3 +1,5 @@
+require 'girffi/allocation_helper'
+
 module GirFFI
   module ArgHelper
     def self.object_to_inptr obj
@@ -6,31 +8,47 @@ module GirFFI
     end
 
     def self.int_to_inoutptr val
-      ptr = FFI::MemoryPointer.new(:int)
+      ptr = AllocationHelper.safe_malloc FFI.type_size(:int)
       ptr.write_int val
       return ptr
     end
 
-    # FIXME: This implementation dumps core if GC runs before using argv.
     def self.string_array_to_inoutptr ary
       return nil if ary.nil?
-      ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
-      block = FFI::MemoryPointer.new(:pointer, ptrs.length)
+      ptrs = ary.map {|str|
+	len = str.bytesize
+	AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
+      }
+      block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
       block.write_array_of_pointer ptrs
-      argv = FFI::MemoryPointer.new(:pointer)
+      argv = AllocationHelper.safe_malloc FFI.type_size(:pointer)
       argv.write_pointer block
       argv
     end
 
+    # Converts an outptr to an int, then frees the outptr.
     def self.outptr_to_int ptr
-      return ptr.read_int
+      value = ptr.read_int
+      LibC.free ptr
+      value
     end
 
+    # Converts an outptr to a string array, then frees the outptr.
     def self.outptr_to_string_array ptr, size
       return nil if ptr.nil?
+
       block = ptr.read_pointer
+      LibC.free ptr
+
+      return nil if block.null?
+
       ptrs = block.read_array_of_pointer(size)
-      return ptrs.map {|p| p.null? ? nil : p.read_string}
+      LibC.free block
+
+      ary = ptrs.map {|p| p.null? ? nil : p.read_string}
+      ptrs.each {|p| LibC.free p unless p.null? }
+
+      ary
     end
   end
 end

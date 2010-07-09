@@ -5,12 +5,10 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'girffi/builder'
 
-GirFFI::Builder.build_module 'GObject'
-GirFFI::Builder.build_module 'Gtk'
-GirFFI::Builder.build_class 'Gtk', 'Window'
-GirFFI::Builder.build_class 'Gtk', 'Button'
+GirFFI.setup :GObject
+GirFFI.setup :Gtk
 
-(my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
+Gtk.init
 
 win = Gtk::Window.new(:toplevel)
 GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:pointer, :pointer]) {

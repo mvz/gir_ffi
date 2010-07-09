@@ -1,4 +1,5 @@
 require 'girffi'
+require 'girffi/class_base'
 require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
@@ -14,8 +15,7 @@ module GirFFI
 
       info = gir.find_by_name namespace, classname
       raise "Class #{classname} not found in namespace #{namespace}" if info.nil?
-      # FIXME: Rescue is ugly here.
-      parent = info.parent rescue nil
+      parent = info.type == :object ? info.parent : nil
       if parent
 	superclass = build_class parent.namespace, parent.name, box
       end
@@ -30,23 +30,13 @@ module GirFFI
 	klass.class_eval method_missing_definition :class, lb, namespace, classname
 
 	unless parent
-	  klass.class_exec do
-	    def initialize ptr
-	      @gobj = ptr
-	    end
-	    class << self
-	      alias :_real_new :new
-	    end
-	    def to_ptr
-	      @gobj
-	    end
-	  end
+	  klass.class_exec { include GirFFI::ClassBase }
+	  (class << klass; self; end).class_exec { alias_method :_real_new, :new }
 	end
 
-	# FIXME: Rescue is ugly here.
-	unless (info.abstract? rescue false)
+	unless info.type == :object and info.abstract?
 	  ctor = info.find_method 'new'
-	  if ctor.constructor?
+	  if not ctor.nil? and ctor.constructor?
 	    define_ffi_types lb, ctor
 	    attach_ffi_function lb, ctor
 	    (class << klass; self; end).class_eval function_definition ctor, lb
@@ -62,6 +52,7 @@ module GirFFI
       lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
 	modul.class_eval method_missing_definition :module, lb, namespace
+	modul.class_eval const_missing_definition namespace, box
       end
       modul
     end
@@ -78,13 +69,11 @@ module GirFFI
 
     def self.function_introspection_data namespace, function
       gir = GirFFI::IRepository.default
-      gir.require namespace.to_s, nil
       return gir.find_by_name namespace, function.to_s
     end
 
     def self.method_introspection_data namespace, object, method
       gir = GirFFI::IRepository.default
-      gir.require namespace.to_s, nil
       objectinfo = gir.find_by_name namespace, object.to_s
       return objectinfo.find_method method
     end
@@ -119,6 +108,18 @@ module GirFFI
 	next unless ft.nil?
 	define_single_ffi_type modul, arg.type
       end
+    end
+
+    def self.setup_method namespace, classname, lib, klass, method
+      go = self.method_introspection_data namespace, classname, method.to_s
+
+      setup_function_or_method klass, lib, go
+    end
+
+    def self.setup_function namespace, lib, klass, method
+      go = self.function_introspection_data namespace, method.to_s
+
+      setup_function_or_method klass, lib, go
     end
 
     private
@@ -201,35 +202,40 @@ module GirFFI
       when :module
 	raise ArgumentError unless classname.nil?
 	slf = "self."
-	fn = "function_introspection_data"
+	fn = "setup_function"
 	args = ["\"#{namespace}\""]
       when :instance
 	slf = ""
-	fn = "method_introspection_data"
+	fn = "setup_method"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
       when :class
 	slf = "self."
-	fn = "method_introspection_data"
+	fn = "setup_method"
 	args = ["\"#{namespace}\"", "\"#{classname}\""]
+      else
+	raise ArgumentError
       end
 
       return <<-CODE
 	def #{slf}method_missing method, *arguments, &block
-	  go = GirFFI::Builder.#{fn} #{args.join ', '}, method.to_s
-
-	  return super if go.nil?
-	  return super if go.type != :function
-
-	  GirFFI::Builder.define_ffi_types #{lib}, go
-	  GirFFI::Builder.attach_ffi_function #{lib}, go
-
-	  (class << self; self; end).class_eval GirFFI::Builder.function_definition(go, #{lib})
-
+	  result = GirFFI::Builder.#{fn} #{args.join ', '}, #{lib}, self, method.to_s
+	  return super unless result
 	  if block.nil?
 	    self.send method, *arguments
 	  else
 	    self.send method, *arguments, &block
 	  end
+	end
+      CODE
+    end
+
+    def self.const_missing_definition namespace, box=nil
+      box = box.nil? ? "nil" : "\"#{box}\""
+      return <<-CODE
+	def self.const_missing classname
+	  info = IRepository.default.find_by_name "#{namespace}", classname.to_s
+	  return super if info.nil?
+	  return GirFFI::Builder.build_class "#{namespace}", classname.to_s, #{box}
 	end
       CODE
     end
@@ -245,6 +251,17 @@ module GirFFI
 
       optionally_define_constant lb, :CALLBACKS, []
       return lb
+    end
+
+    def self.setup_function_or_method klass, lib, go
+      return false if go.nil?
+      return false if go.type != :function
+
+      define_ffi_types lib, go
+      attach_ffi_function lib, go
+
+      (class << klass; self; end).class_eval GirFFI::Builder.function_definition(go, lib)
+      true
     end
   end
 end
