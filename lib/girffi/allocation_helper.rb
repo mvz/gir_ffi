@@ -1,14 +1,7 @@
-require 'ffi'
+require 'girffi/libc'
 
 module GirFFI
-  module LibC
-    extend FFI::Library
-    ffi_lib FFI::Library::LIBC
-    
-    attach_function :malloc, [:size_t], :pointer
-    attach_function :calloc, [:size_t], :pointer
-    attach_function :free, [:pointer], :void
-
+  module AllocationHelper
     def self.safe_calloc size
       ptr = LibC.calloc size
       raise NoMemoryError if ptr.null?
@@ -22,3 +15,4 @@ module GirFFI
     end
   end
 end
+

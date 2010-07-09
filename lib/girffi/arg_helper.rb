@@ -1,4 +1,4 @@
-require 'girffi/libc'
+require 'girffi/allocation_helper'
 
 module GirFFI
   module ArgHelper
@@ -8,7 +8,7 @@ module GirFFI
     end
 
     def self.int_to_inoutptr val
-      ptr = self.safe_malloc FFI.type_size(:int)
+      ptr = AllocationHelper.safe_malloc FFI.type_size(:int)
       ptr.write_int val
       return ptr
     end
@@ -17,11 +17,11 @@ module GirFFI
       return nil if ary.nil?
       ptrs = ary.map {|str|
 	# TODO: use malloc and write terminating null byte ourselves.
-	self.safe_calloc(str.bytesize + 1).write_string str
+	AllocationHelper.safe_calloc(str.bytesize + 1).write_string str
       }
-      block = self.safe_malloc FFI.type_size(:pointer) * ptrs.length
+      block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
       block.write_array_of_pointer ptrs
-      argv = self.safe_malloc FFI.type_size(:pointer)
+      argv = AllocationHelper.safe_malloc FFI.type_size(:pointer)
       argv.write_pointer block
       argv
     end
@@ -35,20 +35,6 @@ module GirFFI
       block = ptr.read_pointer
       ptrs = block.read_array_of_pointer(size)
       return ptrs.map {|p| p.null? ? nil : p.read_string}
-    end
-
-    private
-
-    def self.safe_calloc size
-      ptr = LibC.calloc size
-      raise NoMemoryError if ptr.null?
-      ptr
-    end
-
-    def self.safe_malloc size
-      ptr = LibC.malloc size
-      raise NoMemoryError if ptr.null?
-      ptr
     end
   end
 end
