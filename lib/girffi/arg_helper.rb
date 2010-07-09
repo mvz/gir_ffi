@@ -8,7 +8,7 @@ module GirFFI
     end
 
     def self.int_to_inoutptr val
-      ptr = FFI::MemoryPointer.new(:int)
+      ptr = self.safe_malloc FFI.type_size(:int)
       ptr.write_int val
       return ptr
     end

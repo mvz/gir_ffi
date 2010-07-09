@@ -7,8 +7,8 @@ class HelperArgTest < Test::Unit::TestCase
       @result = GirFFI::ArgHelper.int_to_inoutptr 24
     end
 
-    should "be a FFI::MemoryPointer" do
-      assert_equal "FFI::MemoryPointer", @result.class.to_s
+    should "be a FFI::Pointer" do
+      assert_equal "FFI::Pointer", @result.class.to_s
     end
 
     should "hold a pointer to the correct input value" do
