@@ -26,15 +26,29 @@ module GirFFI
       argv
     end
 
+    # Converts an outptr to an int, then frees the outptr.
     def self.outptr_to_int ptr
-      return ptr.read_int
+      value = ptr.read_int
+      LibC.free ptr
+      value
     end
 
+    # Converts an outptr to a string array, then frees the outptr.
     def self.outptr_to_string_array ptr, size
       return nil if ptr.nil?
+
       block = ptr.read_pointer
+      LibC.free ptr
+
+      return nil if block.null?
+
       ptrs = block.read_array_of_pointer(size)
-      return ptrs.map {|p| p.null? ? nil : p.read_string}
+      LibC.free block
+
+      ary = ptrs.map {|p| p.null? ? nil : p.read_string}
+      ptrs.each {|p| LibC.free p unless p.null? }
+
+      ary
     end
   end
 end
