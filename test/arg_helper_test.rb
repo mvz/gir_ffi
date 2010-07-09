@@ -41,7 +41,7 @@ class HelperArgTest < Test::Unit::TestCase
 
   context "The outptr_to_int method" do
     setup do
-      @ptr = FFI::MemoryPointer.new(:int)
+      @ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:int)
       @ptr.write_int 342
     end
 
@@ -53,10 +53,11 @@ class HelperArgTest < Test::Unit::TestCase
   context "The outptr_to_string_array method" do
     context "when called with a valid pointer to a string array" do
       setup do
-	p = FFI::MemoryPointer.new(:pointer, 2)
-	p.write_array_of_pointer ["one", "two"].map {|a|
-	  FFI::MemoryPointer.from_string a }
-	@ptr = FFI::MemoryPointer.new(:pointer)
+	p = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer) * 2
+	p.write_array_of_pointer ["one", "two"].map {|str|
+	  GirFFI::AllocationHelper.safe_calloc(str.bytesize + 1).write_string str
+	}
+	@ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer)
 	@ptr.write_pointer p
       end
 
@@ -68,11 +69,13 @@ class HelperArgTest < Test::Unit::TestCase
 
     context "when called with a pointer to a string array containing a null pointer" do
       setup do
-	p = FFI::MemoryPointer.new(:pointer, 3)
-	ptrs = ["one", "two"].map {|a| FFI::MemoryPointer.from_string a }
+	ptrs = ["one", "two"].map {|str|
+	  GirFFI::AllocationHelper.safe_calloc(str.bytesize + 1).write_string str
+	}
 	ptrs << nil
+	p = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer) * 3
 	p.write_array_of_pointer ptrs
-	@ptr = FFI::MemoryPointer.new(:pointer)
+	@ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer)
 	@ptr.write_pointer p
       end
 
