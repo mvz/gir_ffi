@@ -10,7 +10,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "create a method_missing method for the class" do
-	ms = NS1::GObject::Object.instance_methods(false).map &:to_sym
+	ms = NS1::GObject::Object.instance_methods(false).map(&:to_sym)
 	assert_contains ms, :method_missing
       end
 
@@ -279,7 +279,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "create a method_missing method for the module" do
-	ms = (NS4::Everything.public_methods - Module.public_methods).map &:to_sym
+	ms = (NS4::Everything.public_methods - Module.public_methods).map(&:to_sym)
 	assert_contains ms, :method_missing
       end
 
