@@ -283,7 +283,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "cause the TestObj class to be autocreated" do
-	assert (not NS4::Everything.const_defined? :TestObj)
+	assert !NS4::Everything.const_defined?(:TestObj)
 	assert_nothing_raised {NS4::Everything::TestObj}
 	assert NS4::Everything.const_defined? :TestObj
       end
