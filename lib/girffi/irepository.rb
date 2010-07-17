@@ -94,7 +94,7 @@ module GirFFI
       type = Lib.g_base_info_get_type ptr
 
       if klass = TYPEMAP[type]
-	return klass.new(ptr)
+	return klass.wrap(ptr)
       end
 
       raise "No class found for type #{type}"
