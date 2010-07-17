@@ -1,5 +1,6 @@
 module GirFFI
   # Wraps GIBaseInfo struct, the base \type for all info types.
+  # Decendant types will be implemented as needed.
   class IBaseInfo
     # This is a helper method to construct a method returning an array, out
     # of the methods returning their number and the individual elements.

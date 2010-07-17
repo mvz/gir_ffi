@@ -3,6 +3,5 @@ module GirFFI
   # Represents a property of an IObjectInfo or an IInterfaceInfo.
   # Not implemented yet.
   class IPropertyInfo < IBaseInfo
-    # TODO: Implementation.
   end
 end
