@@ -26,4 +26,12 @@ class Test::Unit::TestCase
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
   end
+
+  def get_function_introspection_data namespace, function
+    GirFFI::Builder.send :function_introspection_data, namespace, function
+  end
+
+  def get_method_introspection_data namespace, klass, function
+    GirFFI::Builder.send :method_introspection_data, namespace, klass, function
+  end
 end

@@ -100,7 +100,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "looking at Gtk.main" do
       setup do
-	@go = GirFFI::Builder.function_introspection_data 'Gtk', 'main'
+	@go = get_function_introspection_data 'Gtk', 'main'
       end
       # TODO: function_introspection_data should not return introspection data if not a function.
       should "have correct introspection data" do
@@ -111,7 +111,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "build correct definition of Gtk.main" do
-	code = GirFFI::Builder.function_definition @go, Lib
+	code = GirFFI::Builder.send :function_definition, @go, Lib
 
 	expected = "def main\nLib.gtk_main\nend"
 
@@ -126,18 +126,18 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	GirFFI::Builder.attach_ffi_function libmod, @go
+	GirFFI::Builder.send :attach_ffi_function, libmod, @go
 	assert_contains libmod.public_methods, "gtk_main"
       end
     end
 
     context "looking at Gtk.init" do
       setup do
-	@go = GirFFI::Builder.function_introspection_data 'Gtk', 'init'
+	@go = get_function_introspection_data 'Gtk', 'init'
       end
 
       should "build correct definition of Gtk.init" do
-	code = GirFFI::Builder.function_definition @go, Lib
+	code = GirFFI::Builder.send :function_definition, @go, Lib
 
 	expected =
 	  "def init argc, argv
@@ -155,21 +155,21 @@ class BuilderTest < Test::Unit::TestCase
       should "have :pointer, :pointer as types of the arguments for the attached function" do
 	# FIXME: Ideally, we attach the function and test that it requires
 	# the correct argument types.
-	assert_equal [:pointer, :pointer], GirFFI::Builder.ffi_function_argument_types(@go)
+	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
       end
 
       should "have :void as return type for the attached function" do
-	assert_equal :void, GirFFI::Builder.ffi_function_return_type(@go)
+	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, @go)
       end
     end
 
     context "looking at Gtk::Widget#show" do
       setup do
-	@go = GirFFI::Builder.method_introspection_data 'Gtk', 'Widget', 'show'
+	@go = get_method_introspection_data 'Gtk', 'Widget', 'show'
       end
 
       should "build correct definition of Gtk::Widget.show" do
-	code = GirFFI::Builder.function_definition @go, Lib
+	code = GirFFI::Builder.send :function_definition, @go, Lib
 
 	expected =
 	  "def show
@@ -180,20 +180,20 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :pointer as types of the arguments for the attached function" do
-	assert_equal [:pointer], GirFFI::Builder.ffi_function_argument_types(@go)
+	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
       end
 
     end
 
     context "looking at GObject.signal_connect_data" do
       setup do
-	@go = GirFFI::Builder.function_introspection_data 'GObject', 'signal_connect_data'
+	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
       end
 
       # TODO: This is essentially the same test as for
       # FunctionDefinitionBuilder. Test this only once.
       should "build the correct definition" do
-	code = GirFFI::Builder.function_definition @go, Lib
+	code = GirFFI::Builder.send :function_definition, @go, Lib
 
 	expected =
 	  "def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
@@ -209,7 +209,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "have the correct types of the arguments for the attached function" do
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
-	  GirFFI::Builder.ffi_function_argument_types(@go)
+	  GirFFI::Builder.send(:ffi_function_argument_types, @go)
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
@@ -219,7 +219,7 @@ class BuilderTest < Test::Unit::TestCase
 	assert_raises(TypeError) { lb.find_type :Callback }
 	assert_raises(TypeError) { lb.find_type :ClosureNotify }
 
-	GirFFI::Builder.define_ffi_types lb, @go
+	GirFFI::Builder.send :define_ffi_types, lb, @go
 
 	cb = lb.find_type :Callback
 	cn = lb.find_type :ClosureNotify
@@ -233,7 +233,7 @@ class BuilderTest < Test::Unit::TestCase
       should "define ffi enum type :ConnectFlags" do
 	lb = Module.new
 	lb.extend FFI::Library
-	GirFFI::Builder.define_ffi_types lb, @go
+	GirFFI::Builder.send :define_ffi_types, lb, @go
 	assert_equal({:after => 1, :swapped => 2}, lb.find_type(:ConnectFlags).to_h)
       end
     end

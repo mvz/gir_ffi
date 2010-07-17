@@ -4,7 +4,7 @@ require 'girffi/function_definition_builder'
 class FunctionDefinitionTest < Test::Unit::TestCase
   context "The FunctionDefinition builder" do
     should "build correct definition of Gtk.init" do
-      go = GirFFI::Builder.function_introspection_data 'Gtk', 'init'
+      go = get_function_introspection_data 'Gtk', 'init'
       fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
       code = fbuilder.generate
 
@@ -23,7 +23,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
     end
 
     should "build correct definition of Gtk::Widget.show" do
-      go = GirFFI::Builder.method_introspection_data 'Gtk', 'Widget', 'show'
+      go = get_method_introspection_data 'Gtk', 'Widget', 'show'
       fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
       code = fbuilder.generate
 
@@ -37,7 +37,7 @@ class FunctionDefinitionTest < Test::Unit::TestCase
     end
 
     should "build correct definition of GObject.signal_connect_data" do
-      go = GirFFI::Builder.function_introspection_data 'GObject', 'signal_connect_data'
+      go = get_function_introspection_data 'GObject', 'signal_connect_data'
       fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
       code = fbuilder.generate
 

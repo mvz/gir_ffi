@@ -4,7 +4,7 @@ require 'girffi/builder'
 class ConstructorDefinitionBuilderTest < Test::Unit::TestCase
   context "The ConstructorDefinitionBuilder" do
     should "build correct definition of Gtk::Window#new" do
-      go = GirFFI::Builder.method_introspection_data 'Gtk', 'Window', 'new'
+      go = get_method_introspection_data 'Gtk', 'Window', 'new'
       cbuilder = GirFFI::ConstructorDefinitionBuilder.new go, Lib
       code = cbuilder.generate
 
