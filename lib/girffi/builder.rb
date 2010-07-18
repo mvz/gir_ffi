@@ -26,8 +26,8 @@ module GirFFI
       lb = setup_lib_for_ffi namespace, namespacem
 
       unless klass.instance_methods(false).include? "method_missing"
-	klass.class_eval method_missing_definition :instance, lb, namespace, classname
-	klass.class_eval method_missing_definition :class, lb, namespace, classname
+	klass.class_eval instance_method_missing_definition lb, namespace, classname
+	klass.class_eval class_method_missing_definition lb, namespace, classname
 
 	unless parent
 	  klass.class_exec { include ClassBase }
@@ -51,7 +51,7 @@ module GirFFI
       modul = setup_module namespace, box
       lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
-	modul.class_eval method_missing_definition :module, lb, namespace
+	modul.class_eval module_method_missing_definition lb, namespace
 	modul.class_eval const_missing_definition namespace, box
       end
       modul
@@ -196,24 +196,38 @@ module GirFFI
       return get_or_define_module boxm, namespace.to_s
     end
 
+    def self.module_method_missing_definition lib, namespace
+      method_missing_definition :module, lib, namespace
+    end
+
+    def self.class_method_missing_definition lib, namespace, classname
+      method_missing_definition :class, lib, namespace, classname
+    end
+
+    def self.instance_method_missing_definition lib, namespace, classname
+      method_missing_definition :instance, lib, namespace, classname
+    end
+
     def self.method_missing_definition type, lib, namespace, classname=nil
+      args = [namespace]
+
       case type
       when :module
-	raise ArgumentError unless classname.nil?
 	slf = "self."
 	fn = "setup_function"
-	args = ["\"#{namespace}\""]
       when :instance
 	slf = ""
 	fn = "setup_method"
-	args = ["\"#{namespace}\"", "\"#{classname}\""]
+	args << classname
       when :class
 	slf = "self."
 	fn = "setup_method"
-	args = ["\"#{namespace}\"", "\"#{classname}\""]
+	args << classname
       else
 	raise ArgumentError
       end
+
+      args = args.map {|arg| "\"#{arg}\""}
 
       return <<-CODE
 	def #{slf}method_missing method, *arguments, &block
