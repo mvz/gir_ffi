@@ -30,7 +30,7 @@ module GirFFI
 	klass.class_eval method_missing_definition :class, lb, namespace, classname
 
 	unless parent
-	  klass.class_exec { include GirFFI::ClassBase }
+	  klass.class_exec { include ClassBase }
 	  (class << klass; self; end).class_exec { alias_method :_real_new, :new }
 	end
 
@@ -81,12 +81,12 @@ module GirFFI
     end
 
     def self.function_introspection_data namespace, function
-      gir = GirFFI::IRepository.default
+      gir = IRepository.default
       return gir.find_by_name namespace, function.to_s
     end
 
     def self.method_introspection_data namespace, object, method
-      gir = GirFFI::IRepository.default
+      gir = IRepository.default
       objectinfo = gir.find_by_name namespace, object.to_s
       return objectinfo.find_method method
     end

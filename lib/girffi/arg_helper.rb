@@ -15,12 +15,15 @@ module GirFFI
 
     def self.string_array_to_inoutptr ary
       return nil if ary.nil?
+
       ptrs = ary.map {|str|
 	len = str.bytesize
 	AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
       }
+
       block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
       block.write_array_of_pointer ptrs
+
       argv = AllocationHelper.safe_malloc FFI.type_size(:pointer)
       argv.write_pointer block
       argv
