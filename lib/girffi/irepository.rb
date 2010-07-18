@@ -1,6 +1,7 @@
 require 'singleton'
 require 'girffi/lib'
 require 'girffi/gtype'
+require 'girffi/gerror'
 require 'girffi/ibaseinfo'
 require 'girffi/icallableinfo'
 require 'girffi/icallbackinfo'
@@ -68,10 +69,11 @@ module GirFFI
 
     def require namespace, version
       err = FFI::MemoryPointer.new :pointer
+      err.write_pointer nil
       res = Lib.g_irepository_require @gobj, namespace, version, 0, err
       unless err.read_pointer.null?
-	# TODO: Interpret err.
-	raise "Unable to load namespace #{namespace}"
+	gerr = GError.new(err.read_pointer)
+	raise "Unable to load namespace #{namespace}: #{gerr[:message]}"
       end
     end
 
