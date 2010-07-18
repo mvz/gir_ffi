@@ -1,4 +1,5 @@
 module GirFFI
+  # Base class for builders of #method_missing definitions.
   class MethodMissingDefinitionBuilder
     def initialize lib, namespace
       @lib = lib
@@ -22,6 +23,9 @@ module GirFFI
     end
   end
 
+  # Builds a #method_missing for a module. This method_missing will be
+  # called for missing module methods; these modules are not meant for
+  # #include'ing.
   class ModuleMethodMissingDefinitionBuilder < MethodMissingDefinitionBuilder
     private
 
@@ -30,6 +34,7 @@ module GirFFI
     def arguments; [@namespace]; end
   end
 
+  # Builds a #method_missing for missing class methods.
   class ClassMethodMissingDefinitionBuilder < MethodMissingDefinitionBuilder
     def initialize lib, namespace, classname
       super lib, namespace
@@ -43,6 +48,7 @@ module GirFFI
     def arguments; [@namespace, @classname]; end
   end
 
+  # Builds a #method_missing for missing instance methods.
   class InstanceMethodMissingDefinitionBuilder < MethodMissingDefinitionBuilder
     def initialize lib, namespace, classname
       super lib, namespace
