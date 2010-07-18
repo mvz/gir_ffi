@@ -45,10 +45,7 @@ module GirFFI
       ptrs = block.read_array_of_pointer(size)
       LibC.free block
 
-      ary = ptrs.map {|p| p.null? ? nil : p.read_string}
-      ptrs.each {|p| LibC.free p unless p.null? }
-
-      ary
+      ptrs.map { |p| p.null? ? nil : (str = p.read_string; LibC.free p; str) }
     end
   end
 end
