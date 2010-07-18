@@ -3,6 +3,7 @@ require 'girffi/class_base'
 require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
+require 'girffi/method_missing_definition_builder'
 
 module GirFFI
   # Builds modules and classes based on information found in the
@@ -197,49 +198,15 @@ module GirFFI
     end
 
     def self.module_method_missing_definition lib, namespace
-      method_missing_definition :module, lib, namespace
+      ModuleMethodMissingDefinitionBuilder.new(lib, namespace).generate
     end
 
     def self.class_method_missing_definition lib, namespace, classname
-      method_missing_definition :class, lib, namespace, classname
+      ClassMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
     end
 
     def self.instance_method_missing_definition lib, namespace, classname
-      method_missing_definition :instance, lib, namespace, classname
-    end
-
-    def self.method_missing_definition type, lib, namespace, classname=nil
-      args = [namespace]
-
-      case type
-      when :module
-	slf = "self."
-	fn = "setup_function"
-      when :instance
-	slf = ""
-	fn = "setup_method"
-	args << classname
-      when :class
-	slf = "self."
-	fn = "setup_method"
-	args << classname
-      else
-	raise ArgumentError
-      end
-
-      args = args.map {|arg| "\"#{arg}\""}
-
-      return <<-CODE
-	def #{slf}method_missing method, *arguments, &block
-	  result = GirFFI::Builder.#{fn} #{args.join ', '}, #{lib}, self, method.to_s
-	  return super unless result
-	  if block.nil?
-	    self.send method, *arguments
-	  else
-	    self.send method, *arguments, &block
-	  end
-	end
-      CODE
+      InstanceMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
     end
 
     def self.const_missing_definition namespace, box=nil
