@@ -69,7 +69,7 @@ module GirFFI
     def require namespace, version
       err = FFI::MemoryPointer.new :pointer
       res = Lib.g_irepository_require @gobj, namespace, version, 0, err
-      unless err.get_pointer(0).address == 0
+      unless err.read_pointer.null?
 	# TODO: Interpret err.
 	raise "Unable to load namespace #{namespace}"
       end
@@ -94,6 +94,7 @@ module GirFFI
 
       type = Lib.g_base_info_get_type ptr
       klass = TYPEMAP[type]
+
       return klass.wrap(ptr)
     end
 
