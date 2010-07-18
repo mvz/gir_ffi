@@ -91,13 +91,10 @@ module GirFFI
 
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
+
       type = Lib.g_base_info_get_type ptr
-
-      if klass = TYPEMAP[type]
-	return klass.wrap(ptr)
-      end
-
-      raise "No class found for type #{type}"
+      klass = TYPEMAP[type]
+      return klass.wrap(ptr)
     end
 
     private
