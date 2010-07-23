@@ -16,12 +16,10 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 == SYNOPSIS:
 
   require 'girffi'
-  require 'girffi/builder'
 
-  builder = GirFFI::Builder.new
-  builder.build_module 'Gtk'
-  (my_len, my_args) = Gtk.init ARGV.length, ARGV
-  p my_len, my_args
+  GirFFI.setup :Gtk
+  Gtk.init
+  win = Gtk::Window.new :toplevel
 
 == REQUIREMENTS:
 
@@ -31,9 +29,9 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 == HACKING:
 
 This is still very much a work in progress. You can start exploring by
-running the test programs in the project's base directory. Some illustrate
-what works, some are a test bed for how things should work. Have a look at
-rake -T.
+running the test programs in the project's base directory, and the example
+programs in the examples/ folder. Some illustrate what works, some are a
+test bed for how things should work. Have a look at rake -T.
 
 == INSTALL:
 
