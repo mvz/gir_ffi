@@ -88,12 +88,6 @@ PROJ = OpenStruct.new(
     :name => "\000"
   ),
 
-  # Rspec
-  :spec => OpenStruct.new(
-    :files => FileList['spec/**/*_spec.rb'],
-    :opts => []
-  ),
-
   # Subversion Repository
   :svn => OpenStruct.new(
     :root => nil,
@@ -145,7 +139,7 @@ RCOV = "#{RUBY} -S rcov"
 RDOC = "#{RUBY} -S rdoc"
 GEM  = "#{RUBY} -S gem"
 
-%w(rcov spec/rake/spectask rubyforge bones facets/ansicode zentest).each do |lib|
+%w(rcov rubyforge facets/ansicode zentest).each do |lib|
   begin
     require lib
     Object.instance_eval {const_set "HAVE_#{lib.tr('/','_').upcase}", true}
