@@ -26,7 +26,7 @@ module GirFFI
 
       lb = setup_lib_for_ffi namespace, namespacem
 
-      unless klass.instance_methods(false).include? :method_missing
+      unless klass.instance_methods(false).map(&:to_sym).include? :method_missing
 	klass.class_eval instance_method_missing_definition lb, namespace, classname
 	klass.class_eval class_method_missing_definition lb, namespace, classname
 
@@ -177,8 +177,14 @@ module GirFFI
       end
     end
 
-    def self.const_defined_for parent, name
-      parent.const_defined? name, false
+    if RUBY_VERSION < "1.9"
+      def self.const_defined_for parent, name
+	parent.const_defined? name
+      end
+    else
+      def self.const_defined_for parent, name
+	parent.const_defined? name, false
+      end
     end
 
     def self.optionally_define_constant parent, name, value=nil
