@@ -136,19 +136,9 @@ class BuilderTest < Test::Unit::TestCase
 	@go = get_function_introspection_data 'Gtk', 'init'
       end
 
-      should "build correct definition of Gtk.init" do
+      should "delegate definition to FunctionDefinitionBuilder" do
 	code = GirFFI::Builder.send :function_definition, @go, Lib
-
-	expected =
-	  "def init argc, argv
-	    _v1 = GirFFI::ArgHelper.int_to_inoutptr argc
-	    _v3 = GirFFI::ArgHelper.string_array_to_inoutptr argv
-	    Lib.gtk_init _v1, _v3
-	    _v2 = GirFFI::ArgHelper.outptr_to_int _v1
-	    _v4 = GirFFI::ArgHelper.outptr_to_string_array _v3, argv.nil? ? 0 : argv.size
-	    return _v2, _v4
-	  end"
-
+	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
 	assert_equal cws(expected), cws(code)
       end
 
@@ -190,20 +180,9 @@ class BuilderTest < Test::Unit::TestCase
 	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
       end
 
-      # TODO: This is essentially the same test as for
-      # FunctionDefinitionBuilder. Test this only once.
-      should "build the correct definition" do
+      should "delegate definition to FunctionDefinitionBuilder" do
 	code = GirFFI::Builder.send :function_definition, @go, Lib
-
-	expected =
-	  "def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
-	    _v1 = GirFFI::ArgHelper.object_to_inptr instance
-	    Lib::CALLBACKS << c_handler
-	    _v2 = GirFFI::ArgHelper.object_to_inptr data
-	    Lib::CALLBACKS << destroy_data
-	    Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
-	  end"
-
+	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
 	assert_equal cws(expected), cws(code)
       end
 
@@ -268,11 +247,23 @@ class BuilderTest < Test::Unit::TestCase
       setup do
 	GirFFI::Builder.build_module 'Everything'
       end
+
       should "correctly handle test_boolean" do
 	assert_equal false, Everything.test_boolean(false)
 	assert_equal true, Everything.test_boolean(true)
       end
+
+      should "correctly handle test_callback_user_data" do
+	a = :foo
+	result = Everything.test_callback_user_data GirFFI::ArgHelper.mapped_callback_args {|u|
+	  a = u
+	  5
+	}, :bar
+	assert_equal :bar, a
+	assert_equal 5, result
+      end
     end
+
     context "building the Everything module" do
       setup do
 	GirFFI::Builder.build_module 'Everything', 'NS4'

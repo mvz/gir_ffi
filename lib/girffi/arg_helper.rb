@@ -4,7 +4,8 @@ module GirFFI
   module ArgHelper
     def self.object_to_inptr obj
       return obj.to_ptr if obj.respond_to? :to_ptr
-      obj
+      return nil if obj.nil?
+      FFI::Pointer.new(obj.object_id)
     end
 
     def self.int_to_inoutptr val
@@ -49,6 +50,23 @@ module GirFFI
       LibC.free block
 
       ptrs.map { |p| p.null? ? nil : (str = p.read_string; LibC.free p; str) }
+    end
+
+    def self.mapped_callback_args &block
+      return Proc.new do |*args|
+	mapped = args.map {|arg|
+	  if FFI::Pointer === arg
+	    begin
+	      ObjectSpace._id2ref arg.address
+	    rescue RangeError
+	      arg
+	    end
+	  else
+	    arg
+	  end
+	}
+	block.call(*mapped)
+      end
     end
   end
 end

@@ -8,11 +8,10 @@ require 'girffi/builder'
 GirFFI.setup :GObject
 GirFFI.setup :Gtk
 
-callback = FFI::Function.new(:void, [:pointer, :pointer]) do |widget, data|
-  # TODO: Don't want to need this.
-  str = data.read_string
-  puts "Hello again - #{str} was pressed"
-end
+callback = FFI::Function.new :void, [:pointer, :pointer],
+  &GirFFI::ArgHelper.mapped_callback_args { |widget, data|
+    puts "Hello again - #{data} was pressed"
+  }
 
 Gtk.init
 
