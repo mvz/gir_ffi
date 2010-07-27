@@ -1,4 +1,5 @@
 
+require 'rdoc'
 require 'rake/rdoctask'
 
 namespace :doc do
@@ -26,6 +27,7 @@ namespace :doc do
     title = "#{rf_name}'s " + title if rf_name.valid? and rf_name != name
 
     rd.options << "-t #{title}"
+    rd.options << "-H"
     rd.options.concat(rdoc.opts)
   end
 
