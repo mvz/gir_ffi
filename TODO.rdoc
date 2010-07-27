@@ -7,12 +7,23 @@ be possible to hand-code only part of it and use that to generate the rest.
 This would also integrate that properly with the rest of the GObject type
 system.
 
+Update: This has been tried, but the problem is that the GIRepository
+namespace is not object-oriented: The Info structs are not GObjects, and
+the methods that act upon them are just functions in the GIRepository
+namespace. Perhaps some custom method_missing can be implemented to handle
+this, though.
+
 == Handle passing of generic pointers
 
 Many GObject methods take a pointer to 'user data'. This means we should be
 able to pass any Ruby object. On the other hand, these cases cannot be
 distinguished, based on the GIR data, from methods that take a pointer to
 any GObject.
+
+I'm currently leaning towards passing the object id as the value of the
+'gpointer'. Special overrided will have to be used for the cases where the
+'gpointer' actually needs to be a GObject. I consider it an omission in
+GIRepository that these two cases are not distinguished.
 
 == See Also
 

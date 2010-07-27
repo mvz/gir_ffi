@@ -3,6 +3,5 @@ module GirFFI
   # Represents a virtual function.
   # Not implemented yet.
   class IVFuncInfo < IBaseInfo
-    # TODO: Implementation.
   end
 end

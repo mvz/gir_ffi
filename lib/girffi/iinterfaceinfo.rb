@@ -3,6 +3,5 @@ module GirFFI
   # Represents an interface.
   # Not implemented yet.
   class IInterfaceInfo < IRegisteredTypeInfo
-    # TODO: Implementation.
   end
 end

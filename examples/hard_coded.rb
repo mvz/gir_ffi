@@ -57,6 +57,8 @@ module Gtk
     return ptr
   end
 
+  # Note: This implementation would dump core if the garbage collector runs
+  # before the contents of the pointers is used.
   def self.string_array_to_inoutptr ary
     ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
     block = FFI::MemoryPointer.new(:pointer, ptrs.length)

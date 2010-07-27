@@ -3,6 +3,7 @@ require 'girffi/class_base'
 require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
+require 'girffi/method_missing_definition_builder'
 
 module GirFFI
   # Builds modules and classes based on information found in the
@@ -26,11 +27,11 @@ module GirFFI
       lb = setup_lib_for_ffi namespace, namespacem
 
       unless klass.instance_methods(false).include? :method_missing
-	klass.class_eval method_missing_definition :instance, lb, namespace, classname
-	klass.class_eval method_missing_definition :class, lb, namespace, classname
+	klass.class_eval instance_method_missing_definition lb, namespace, classname
+	klass.class_eval class_method_missing_definition lb, namespace, classname
 
 	unless parent
-	  klass.class_exec { include GirFFI::ClassBase }
+	  klass.class_exec { include ClassBase }
 	  (class << klass; self; end).class_exec { alias_method :_real_new, :new }
 	end
 
@@ -51,13 +52,26 @@ module GirFFI
       modul = setup_module namespace, box
       lb = setup_lib_for_ffi namespace, modul
       unless modul.respond_to? :method_missing
-	modul.class_eval method_missing_definition :module, lb, namespace
+	modul.class_eval module_method_missing_definition lb, namespace
 	modul.class_eval const_missing_definition namespace, box
       end
       modul
     end
 
-    # FIXME: Methods that follow should be private
+    def self.setup_method namespace, classname, lib, klass, method
+      go = method_introspection_data namespace, classname, method.to_s
+
+      setup_function_or_method klass, lib, go
+    end
+
+    def self.setup_function namespace, lib, klass, method
+      go = function_introspection_data namespace, method.to_s
+
+      setup_function_or_method klass, lib, go
+    end
+
+    # All methods below will be made private at the end.
+ 
     def self.function_definition info, libmodule
       if info.constructor?
 	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
@@ -68,12 +82,12 @@ module GirFFI
     end
 
     def self.function_introspection_data namespace, function
-      gir = GirFFI::IRepository.default
+      gir = IRepository.default
       return gir.find_by_name namespace, function.to_s
     end
 
     def self.method_introspection_data namespace, object, method
-      gir = GirFFI::IRepository.default
+      gir = IRepository.default
       objectinfo = gir.find_by_name namespace, object.to_s
       return objectinfo.find_method method
     end
@@ -109,20 +123,6 @@ module GirFFI
 	define_single_ffi_type modul, arg.type
       end
     end
-
-    def self.setup_method namespace, classname, lib, klass, method
-      go = self.method_introspection_data namespace, classname, method.to_s
-
-      setup_function_or_method klass, lib, go
-    end
-
-    def self.setup_function namespace, lib, klass, method
-      go = self.function_introspection_data namespace, method.to_s
-
-      setup_function_or_method klass, lib, go
-    end
-
-    private
 
     def self.itypeinfo_to_ffitype info
       if info.pointer?
@@ -197,36 +197,16 @@ module GirFFI
       return get_or_define_module boxm, namespace.to_s
     end
 
-    def self.method_missing_definition type, lib, namespace, classname=nil
-      case type
-      when :module
-	raise ArgumentError unless classname.nil?
-	slf = "self."
-	fn = "setup_function"
-	args = ["\"#{namespace}\""]
-      when :instance
-	slf = ""
-	fn = "setup_method"
-	args = ["\"#{namespace}\"", "\"#{classname}\""]
-      when :class
-	slf = "self."
-	fn = "setup_method"
-	args = ["\"#{namespace}\"", "\"#{classname}\""]
-      else
-	raise ArgumentError
-      end
+    def self.module_method_missing_definition lib, namespace
+      ModuleMethodMissingDefinitionBuilder.new(lib, namespace).generate
+    end
 
-      return <<-CODE
-	def #{slf}method_missing method, *arguments, &block
-	  result = GirFFI::Builder.#{fn} #{args.join ', '}, #{lib}, self, method.to_s
-	  return super unless result
-	  if block.nil?
-	    self.send method, *arguments
-	  else
-	    self.send method, *arguments, &block
-	  end
-	end
-      CODE
+    def self.class_method_missing_definition lib, namespace, classname
+      ClassMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
+    end
+
+    def self.instance_method_missing_definition lib, namespace, classname
+      InstanceMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
     end
 
     def self.const_missing_definition namespace, box=nil
@@ -260,8 +240,14 @@ module GirFFI
       define_ffi_types lib, go
       attach_ffi_function lib, go
 
-      (class << klass; self; end).class_eval GirFFI::Builder.function_definition(go, lib)
+      (class << klass; self; end).class_eval function_definition(go, lib)
       true
     end
+
+    # Set up method access.
+    (self.public_methods - Module.public_methods).each do |m|
+      private_class_method m.to_sym
+    end
+    public_class_method :build_module, :build_class, :setup_method, :setup_function
   end
 end

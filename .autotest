@@ -1,0 +1,5 @@
+Autotest.add_hook :initialize do |at|
+  at.add_mapping(/lib\/girffi\/(.*).rb/, true) do |filename, matchdata|
+    ["test/#{matchdata[1]}_test.rb"]
+  end
+end

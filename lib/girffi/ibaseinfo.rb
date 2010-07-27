@@ -1,5 +1,6 @@
 module GirFFI
   # Wraps GIBaseInfo struct, the base \type for all info types.
+  # Decendant types will be implemented as needed.
   class IBaseInfo
     # This is a helper method to construct a method returning an array, out
     # of the methods returning their number and the individual elements.
@@ -22,12 +23,10 @@ module GirFFI
       CODE
     end
 
-    # TODO: Perhaps make #new private.
-    def initialize gobj=nil
-      raise "#{self.class} creation not implemeted" if gobj.nil?
-      raise "Null Pointer" if gobj.null?
+    def initialize gobj
       @gobj = gobj
     end
+    private_class_method :new
 
     def name; Lib.g_base_info_get_name @gobj; end
     def type; Lib.g_base_info_get_type @gobj; end
@@ -36,7 +35,7 @@ module GirFFI
 
     def self.wrap ptr
       return nil if ptr.null?
-      return self.new ptr
+      return new ptr
     end
 
     def == other

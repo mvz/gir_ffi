@@ -1,6 +1,7 @@
 require 'singleton'
 require 'girffi/lib'
 require 'girffi/gtype'
+require 'girffi/gerror'
 require 'girffi/ibaseinfo'
 require 'girffi/icallableinfo'
 require 'girffi/icallbackinfo'
@@ -67,12 +68,12 @@ module GirFFI
     end
 
     def require namespace, version
-      err = FFI::MemoryPointer.new :pointer
-      res = Lib.g_irepository_require @gobj, namespace, version, 0, err
-      unless err.get_pointer(0).address == 0
-	# TODO: Interpret err.
-	raise "Unable to load namespace #{namespace}"
-      end
+      errpp = FFI::MemoryPointer.new(:pointer).write_pointer nil
+
+      Lib.g_irepository_require @gobj, namespace, version, 0, errpp
+
+      errp = errpp.read_pointer
+      raise GError.new(errp)[:message] unless errp.null?
     end
 
     def info namespace, index
@@ -91,13 +92,11 @@ module GirFFI
 
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
+
       type = Lib.g_base_info_get_type ptr
+      klass = TYPEMAP[type]
 
-      if klass = TYPEMAP[type]
-	return klass.new(ptr)
-      end
-
-      raise "No class found for type #{type}"
+      return klass.wrap(ptr)
     end
 
     private
