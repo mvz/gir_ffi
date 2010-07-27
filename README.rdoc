@@ -4,16 +4,16 @@ by Matijs van Zuijlen
 
 http://www.github.com/mvz/ruby-gir-ffi
 
-== DESCRIPTION:
+== Description
 
 Ruby-FFI-based binding of the GObject Introspection Repository
 
-== FEATURES/PROBLEMS:
+== Features/Problems
 
 * Create bindings to GObject-based libraries at runtime
 * Not done yet
 
-== SYNOPSIS:
+== Synopsis
 
   require 'girffi'
 
@@ -21,25 +21,25 @@ Ruby-FFI-based binding of the GObject Introspection Repository
   Gtk.init
   win = Gtk::Window.new :toplevel
 
-== REQUIREMENTS:
+== Requirements
 
 * Ruby-FFI of course
 * gobject-introspection installed with some introspection data
 
-== HACKING:
+== Hacking
 
 This is still very much a work in progress. You can start exploring by
 running the example programs in the examples/ folder. Some illustrate what
 works, some are a test bed for how things should work. Have a look at
-rake -T.
++rake+ +-T+.
 
-== INSTALL:
+== Install
 
 This doesn't actually work yet, since the gem hasn't been published.
 
 * sudo gem install gir-ffi
 
-== LICENSE:
+== License
 
 Copyright (c) 2009--2010 Matijs van Zuijlen
 

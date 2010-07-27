@@ -10,14 +10,13 @@ module GirFFI
     #
     # Provide the second parameter if the plural is not trivially
     # constructed by adding +s+ to the singular.
-    # --
-    # TODO: Use plural as the first argument, to help RDoc
-    def self.build_array_method elementname, plural = nil
-      plural ||= "#{elementname}s"
+    def self.build_array_method method, single = nil
+      single ||= method.to_s[0..-2]
+      count = "n_#{method}"
       self.class_eval <<-CODE
-	def #{plural}
-	  (0..(n_#{plural} - 1)).map do |i|
-	    #{elementname} i
+	def #{method}
+	  (0..(#{count} - 1)).map do |i|
+	    #{single} i
 	  end
 	end
       CODE
