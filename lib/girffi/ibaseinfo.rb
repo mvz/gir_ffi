@@ -39,9 +39,11 @@ module GirFFI
     end
 
     def == other
-      self.name == other.name and
-      self.type == other.type and
-      self.namespace == other.namespace
+      Lib.g_base_info_equal @gobj, other.to_ptr
+    end
+
+    def to_ptr
+      @gobj
     end
   end
 end

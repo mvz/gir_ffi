@@ -49,6 +49,7 @@ module GirFFI
     attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_namespace, [:pointer], :string
     attach_function :g_base_info_is_deprecated, [:pointer], :bool
+    attach_function :g_base_info_equal, [:pointer, :pointer], :bool
 
     # IFunctionInfo
     attach_function :g_function_info_get_symbol, [:pointer], :string
