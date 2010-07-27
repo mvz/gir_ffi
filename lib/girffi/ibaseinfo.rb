@@ -1,7 +1,11 @@
+require 'girffi/class_base'
+
 module GirFFI
   # Wraps GIBaseInfo struct, the base \type for all info types.
   # Decendant types will be implemented as needed.
   class IBaseInfo
+    include ClassBase
+
     # This is a helper method to construct a method returning an array, out
     # of the methods returning their number and the individual elements.
     #
@@ -22,9 +26,6 @@ module GirFFI
       CODE
     end
 
-    def initialize gobj
-      @gobj = gobj
-    end
     private_class_method :new
 
     def name; Lib.g_base_info_get_name @gobj; end
@@ -39,10 +40,6 @@ module GirFFI
 
     def == other
       Lib.g_base_info_equal @gobj, other.to_ptr
-    end
-
-    def to_ptr
-      @gobj
     end
   end
 end
