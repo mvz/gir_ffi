@@ -2,4 +2,10 @@ Autotest.add_hook :initialize do |at|
   at.add_mapping(/lib\/girffi\/(.*).rb/, true) do |filename, matchdata|
     ["test/#{matchdata[1]}_test.rb"]
   end
+  at.add_mapping(/lib\/girffi\/i(.*)info.rb/, true) do |filename, matchdata|
+    ["test/builder_test.rb"]
+  end
+  at.add_mapping(/lib\/girffi\/overrides\/(.*).rb/, true) do |filename, matchdata|
+    ["test/#{matchdata[1]}_overrides_test.rb"]
+  end
 end
