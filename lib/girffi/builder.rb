@@ -164,28 +164,32 @@ module GirFFI
     end
 
     def self.get_or_define_module parent, name
-      unless parent.const_defined? name, false
-	parent.const_set name, Module.new
-      end
-      parent.const_get name
+      optionally_define_constant(parent, name) { Module.new }
     end
 
     def self.get_or_define_class namespace, name, parent
-      unless namespace.const_defined? name, false
+      optionally_define_constant namespace, name do
 	if parent.nil?
 	  klass = Class.new
 	else
 	  klass = Class.new parent
 	end
-	namespace.const_set name, klass
       end
-      namespace.const_get name
     end
 
-    def self.optionally_define_constant parent, name, value
-      unless parent.const_defined? name, false
-	parent.const_set name, value
+    def self.const_defined_for parent, name
+      parent.const_defined? name, false
+    end
+
+    def self.optionally_define_constant parent, name, value=nil
+      unless const_defined_for parent, name
+	if block_given?
+	  parent.const_set name, yield
+	else
+	  parent.const_set name, value
+	end
       end
+      parent.const_get name
     end
 
     def self.setup_module namespace, box=nil
@@ -229,7 +233,8 @@ module GirFFI
 	lb.ffi_lib(*libs)
       end
 
-      optionally_define_constant lb, :CALLBACKS, []
+      optionally_define_constant(lb, :CALLBACKS) { [] }
+
       return lb
     end
 
