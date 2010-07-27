@@ -177,23 +177,17 @@ module GirFFI
       end
     end
 
-    if RUBY_VERSION < "1.9"
-      def self.const_defined_for parent, name
+    def self.const_defined_for parent, name
+      if RUBY_VERSION < "1.9"
 	parent.const_defined? name
-      end
-    else
-      def self.const_defined_for parent, name
+      else
 	parent.const_defined? name, false
       end
     end
 
-    def self.optionally_define_constant parent, name, value=nil
+    def self.optionally_define_constant parent, name
       unless const_defined_for parent, name
-	if block_given?
-	  parent.const_set name, yield
-	else
-	  parent.const_set name, value
-	end
+	parent.const_set name, yield
       end
       parent.const_get name
     end
