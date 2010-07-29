@@ -31,7 +31,7 @@ module GirFFI
 
 end
 
-require 'girffi/irepository'
+require 'girffi/i_repository'
 require 'girffi/builder'
 
 module GirFFI

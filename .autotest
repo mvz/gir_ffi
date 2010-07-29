@@ -1,18 +1,28 @@
+require 'autotest/restart'
 # Override autotest default magic to rerun all tests every time a
 # change is detected on the file system.
 class Autotest
-  
+
   def get_to_green
     begin
       rerun_all_tests
       wait_for_changes unless all_good
     end until all_good
   end
-                            
+
+  def path_to_classname(s)
+    sep = File::SEPARATOR
+    f = s.sub(/^test#{sep}/, '').sub(/\.rb$/, '').split(sep)
+    f = f.map { |path| path.split(/_|(\d+)/).map { |seg| seg.capitalize }.join }
+    f = f.map { |path| path.sub(/Girffi/, 'GirFFI') }
+
+    f.join('::')
+  end
+
 end
 
 Autotest.add_hook :initialize do |at|
-  at.add_mapping(/lib\/girffi\/(.*).rb/, true) do |filename, matchdata|
+  at.add_mapping(/lib\/(girffi\/)?(.*).rb/, true) do |filename, matchdata|
     ["test/#{matchdata[1]}_test.rb"]
   end
   at.add_mapping(/lib\/girffi\/i(.*)info.rb/, true) do |filename, matchdata|
@@ -20,5 +30,16 @@ Autotest.add_hook :initialize do |at|
   end
   at.add_mapping(/lib\/girffi\/overrides\/(.*).rb/, true) do |filename, matchdata|
     ["test/#{matchdata[1]}_overrides_test.rb"]
+  end
+  at.add_mapping(/^test.*\/.*_test\.rb$/) do |filename, _|
+    filename
+  end
+end
+
+# Ignore some files
+Autotest.add_hook :initialize do |autotest|
+  %w{.git .gitignore .bnsignore .*.swp tmp doc pkg tasks Rakefile
+      examples History.txt COPYING.LIB}.each do |exception|
+    autotest.add_exception(exception)
   end
 end

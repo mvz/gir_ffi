@@ -1,6 +1,6 @@
-require 'girffi/ibaseinfo'
-require 'girffi/itypeinfo'
-require 'girffi/iarginfo'
+require 'girffi/i_base_info'
+require 'girffi/i_type_info'
+require 'girffi/i_arg_info'
 
 module GirFFI
   # Wraps a GICallableInfo struct; represents a callable, either
