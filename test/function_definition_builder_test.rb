@@ -2,7 +2,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'girffi/builder'
 require 'girffi/function_definition_builder'
 
-class FunctionDefinitionTest < Test::Unit::TestCase
+class FunctionDefinitionBuilderTest < Test::Unit::TestCase
   context "The FunctionDefinition builder" do
     should "build correct definition of Gtk.init" do
       go = get_function_introspection_data 'Gtk', 'init'
@@ -45,10 +45,12 @@ class FunctionDefinitionTest < Test::Unit::TestCase
       expected =
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
-	  Lib::CALLBACKS << c_handler
-	  _v2 = GirFFI::ArgHelper.object_to_inptr data
-	  Lib::CALLBACKS << destroy_data
-	  Lib.g_signal_connect_data _v1, detailed_signal, c_handler, _v2, destroy_data, connect_flags
+	  _v2 = GirFFI::ArgHelper.mapped_callback_args c_handler
+	  Lib::CALLBACKS << _v2
+	  _v3 = GirFFI::ArgHelper.object_to_inptr data
+	  _v4 = GirFFI::ArgHelper.mapped_callback_args destroy_data
+	  Lib::CALLBACKS << _v4
+	  Lib.g_signal_connect_data _v1, detailed_signal, _v2, _v3, _v4, connect_flags
 	end"
 
       assert_equal cws(expected), cws(code)

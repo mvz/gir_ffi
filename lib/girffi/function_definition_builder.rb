@@ -81,8 +81,13 @@ module GirFFI
       @inargs << name
 
       if tag == :interface and type.interface.type == :callback
-	@pre << "#{@libmodule}::CALLBACKS << #{name}"
-	@callargs << name
+	# TODO: Use arg.scope to decide if this is needed.
+	procvar = new_var
+	@pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	@pre << "#{@libmodule}::CALLBACKS << #{procvar}"
+	@callargs << procvar
+	#@pre << "#{@libmodule}::CALLBACKS << #{name}"
+	#@callargs << name
       elsif tag == :void
 	raise NotImplementedError unless arg.type.pointer?
 	prevar = new_var

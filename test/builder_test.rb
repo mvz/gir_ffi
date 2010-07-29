@@ -255,7 +255,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "correctly handle test_callback_user_data" do
 	a = :foo
-	result = Everything.test_callback_user_data GirFFI::ArgHelper.mapped_callback_args {|u|
+	result = Everything.test_callback_user_data Proc.new {|u|
 	  a = u
 	  5
 	}, :bar

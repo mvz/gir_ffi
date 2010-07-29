@@ -52,7 +52,12 @@ module GirFFI
       ptrs.map { |p| p.null? ? nil : (str = p.read_string; LibC.free p; str) }
     end
 
-    def self.mapped_callback_args &block
+    def self.mapped_callback_args prc=nil, &block
+      return prc if FFI::Function === prc
+      if prc.nil?
+	return nil if block.nil?
+	prc = block
+      end
       return Proc.new do |*args|
 	mapped = args.map {|arg|
 	  if FFI::Pointer === arg
@@ -65,7 +70,7 @@ module GirFFI
 	    arg
 	  end
 	}
-	block.call(*mapped)
+	prc.call(*mapped)
       end
     end
   end
