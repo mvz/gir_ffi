@@ -147,6 +147,10 @@ GEM  = "#{RUBY} -S gem"
     Object.instance_eval {const_set "HAVE_#{lib.tr('/','_').upcase}", false}
   end
 end
+
+# Loading zentest -- just for checking its presence -- sets this to true :(.
+$TESTING = false
+
 HAVE_SVN = (Dir.entries(Dir.pwd).include?('.svn') and
             system("svn --version 2>&1 > #{DEV_NULL}"))
 HAVE_GIT = (Dir.entries(Dir.pwd).include?('.git') and
