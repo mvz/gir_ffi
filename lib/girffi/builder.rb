@@ -4,6 +4,8 @@ require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
 require 'girffi/constructor_definition_builder'
 require 'girffi/method_missing_definition_builder'
+require 'girffi/module_builder'
+require 'girffi/builder_helper'
 
 module GirFFI
   # Builds modules and classes based on information found in the
@@ -23,9 +25,9 @@ module GirFFI
 
       namespacem = build_module namespace, box
       klass = get_or_define_class namespacem, classname, superclass
-      lb = namespacem.const_get :Lib
 
       unless klass.instance_methods(false).map(&:to_sym).include? :method_missing
+	lb = namespacem.const_get :Lib
 	klass.class_eval instance_method_missing_definition lb, namespace, classname
 	klass.class_eval class_method_missing_definition lb, namespace, classname
 
@@ -47,14 +49,7 @@ module GirFFI
     end
 
     def self.build_module namespace, box=nil
-      IRepository.default.require namespace, nil
-      modul = setup_module namespace, box
-      lb = setup_lib_for_ffi namespace, modul
-      unless modul.respond_to? :method_missing
-	modul.class_eval module_method_missing_definition lb, namespace
-	modul.class_eval const_missing_definition namespace, box
-      end
-      modul
+      ModuleBuilder.new(namespace, box).generate
     end
 
     def self.setup_method namespace, classname, lib, klass, method
@@ -162,12 +157,8 @@ module GirFFI
       end
     end
 
-    def self.get_or_define_module parent, name
-      optionally_define_constant(parent, name) { Module.new }
-    end
-
     def self.get_or_define_class namespace, name, parent
-      optionally_define_constant namespace, name do
+      BuilderHelper.optionally_define_constant namespace, name do
 	if parent.nil?
 	  klass = Class.new
 	else
@@ -176,65 +167,12 @@ module GirFFI
       end
     end
 
-    def self.const_defined_for parent, name
-      if RUBY_VERSION < "1.9"
-	parent.const_defined? name
-      else
-	parent.const_defined? name, false
-      end
-    end
-
-    def self.optionally_define_constant parent, name
-      unless const_defined_for parent, name
-	parent.const_set name, yield
-      end
-      parent.const_get name
-    end
-
-    def self.setup_module namespace, box=nil
-      if box.nil?
-	boxm = ::Object
-      else
-	boxm = get_or_define_module ::Object, box.to_s
-      end
-      return get_or_define_module boxm, namespace.to_s
-    end
-
-    def self.module_method_missing_definition lib, namespace
-      ModuleMethodMissingDefinitionBuilder.new(lib, namespace).generate
-    end
-
     def self.class_method_missing_definition lib, namespace, classname
       ClassMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
     end
 
     def self.instance_method_missing_definition lib, namespace, classname
       InstanceMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
-    end
-
-    def self.const_missing_definition namespace, box=nil
-      box = box.nil? ? "nil" : "\"#{box}\""
-      return <<-CODE
-	def self.const_missing classname
-	  info = IRepository.default.find_by_name "#{namespace}", classname.to_s
-	  return super if info.nil?
-	  return GirFFI::Builder.build_class "#{namespace}", classname.to_s, #{box}
-	end
-      CODE
-    end
-
-    def self.setup_lib_for_ffi namespace, modul
-      lb = get_or_define_module modul, :Lib
-
-      unless (class << lb; self.include? FFI::Library; end)
-	lb.extend FFI::Library
-	libs = IRepository.default.shared_library(namespace).split(/,/)
-	lb.ffi_lib(*libs)
-      end
-
-      optionally_define_constant(lb, :CALLBACKS) { [] }
-
-      return lb
     end
 
     def self.setup_function_or_method klass, lib, go
