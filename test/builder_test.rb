@@ -36,6 +36,11 @@ class BuilderTest < Test::Unit::TestCase
 	GirFFI::Builder.build_class 'Gtk', 'Window', 'NS3'
       end
 
+      should "build Gtk namespace" do
+	assert NS3::Gtk.const_defined? :Lib
+	assert NS3::Gtk.respond_to? :method_missing
+      end
+
       should "build parent classes also" do
 	assert NS3::Gtk.const_defined? :Widget
 	assert NS3::Gtk.const_defined? :Object

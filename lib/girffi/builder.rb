@@ -21,10 +21,9 @@ module GirFFI
 	superclass = build_class parent.namespace, parent.name, box
       end
 
-      namespacem = setup_module namespace, box
+      namespacem = build_module namespace, box
       klass = get_or_define_class namespacem, classname, superclass
-
-      lb = setup_lib_for_ffi namespace, namespacem
+      lb = namespacem.const_get :Lib
 
       unless klass.instance_methods(false).map(&:to_sym).include? :method_missing
 	klass.class_eval instance_method_missing_definition lb, namespace, classname
