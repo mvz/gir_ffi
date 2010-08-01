@@ -163,14 +163,9 @@ class BuilderTest < Test::Unit::TestCase
 	@go = get_method_introspection_data 'Gtk', 'Widget', 'show'
       end
 
-      should "build correct definition of Gtk::Widget.show" do
+      should "delegate definition to FunctionDefinitionBuilder" do
 	code = GirFFI::Builder.send :function_definition, @go, Lib
-
-	expected =
-	  "def show
-	    Lib.gtk_widget_show @gobj
-	  end"
-
+	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
 	assert_equal cws(expected), cws(code)
       end
 
