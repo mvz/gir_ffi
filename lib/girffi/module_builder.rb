@@ -4,6 +4,7 @@ module GirFFI
   # Builds a module based on information found in the introspection
   # repository.
   class ModuleBuilder
+
     def initialize namespace, box
       @namespace = namespace
       @box = box
@@ -12,6 +13,8 @@ module GirFFI
     def generate
       build_module
     end
+
+    private
 
     def build_module
       IRepository.default.require @namespace, nil
