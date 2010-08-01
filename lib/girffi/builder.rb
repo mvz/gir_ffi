@@ -21,16 +21,18 @@ module GirFFI
       ModuleBuilder.new(namespace, box).generate
     end
 
-    def self.setup_method namespace, classname, lib, klass, method
+    # TODO: Make better interface
+    def self.setup_method namespace, classname, lib, modul, klass, method
       go = method_introspection_data namespace, classname, method.to_s
 
-      setup_function_or_method klass, lib, go
+      setup_function_or_method klass, modul, lib, go
     end
 
-    def self.setup_function namespace, lib, klass, method
+    # TODO: Make better interface
+    def self.setup_function namespace, lib, modul, method
       go = function_introspection_data namespace, method.to_s
 
-      setup_function_or_method klass, lib, go
+      setup_function_or_method modul, modul, lib, go
     end
 
     # All methods below will be made private at the end.
@@ -77,13 +79,13 @@ module GirFFI
       itypeinfo_to_ffitype info.return_type
     end
 
-    def self.define_ffi_types modul, info
+    def self.define_ffi_types modul, lib, info
       info.args.each do |arg|
 	type = iarginfo_to_ffitype arg
 	# FIXME: Rescue is ugly here.
-	ft = modul.find_type type rescue nil
+	ft = lib.find_type type rescue nil
 	next unless ft.nil?
-	define_single_ffi_type modul, arg.type
+	define_single_ffi_type modul, lib, arg.type
       end
     end
 
@@ -107,7 +109,7 @@ module GirFFI
       return itypeinfo_to_ffitype info.type
     end
 
-    def self.define_single_ffi_type modul, typeinfo
+    def self.define_single_ffi_type modul, lib, typeinfo
       typeinfo.tag == :interface or raise NotImplementedError, "Don't know how to handle #{typeinfo.tag}"
 
       interface = typeinfo.interface
@@ -117,20 +119,20 @@ module GirFFI
       when :callback
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
-	modul.callback sym, args, ret
+	lib.callback sym, args, ret
       when :enum, :flags
 	vals = interface.values.map {|v| [v.name.to_sym, v.value]}.flatten
-	modul.enum sym, vals
+	modul.const_set sym, lib.enum(sym, vals)
       else
 	raise NotImplementedError
       end
     end
 
-    def self.setup_function_or_method klass, lib, go
+    def self.setup_function_or_method klass, modul, lib, go
       return false if go.nil?
       return false if go.type != :function
 
-      define_ffi_types lib, go
+      define_ffi_types modul, lib, go
       attach_ffi_function lib, go
 
       (class << klass; self; end).class_eval function_definition(go, lib)

@@ -63,7 +63,7 @@ module GirFFI
       return if @info.type == :object and @info.abstract?
       ctor = @info.find_method 'new'
       if not ctor.nil? and ctor.constructor?
-	Builder.setup_function_or_method @klass, @lib, ctor
+	Builder.setup_function_or_method @klass, @module, @lib, ctor
       end
     end
 
@@ -79,11 +79,11 @@ module GirFFI
     end
 
     def instance_method_missing_definition
-      InstanceMethodMissingDefinitionBuilder.new(@lib, @namespace, @classname).generate
+      InstanceMethodMissingDefinitionBuilder.new(@lib, @module, @namespace, @classname).generate
     end
 
     def class_method_missing_definition
-      ClassMethodMissingDefinitionBuilder.new(@lib, @namespace, @classname).generate
+      ClassMethodMissingDefinitionBuilder.new(@lib, @module, @namespace, @classname).generate
     end
 
     def already_set_up

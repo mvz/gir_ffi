@@ -177,6 +177,8 @@ class BuilderTest < Test::Unit::TestCase
 
     context "looking at GObject.signal_connect_data" do
       setup do
+	GirFFI::Builder.build_module 'GObject', 'NS5'
+	GirFFI::Builder.setup_function 'GObject', NS5::GObject::Lib, NS5::GObject, 'signal_connect_data'
 	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
       end
 
@@ -192,16 +194,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	lb = Module.new
-	lb.extend FFI::Library
-
-	assert_raises(TypeError) { lb.find_type :Callback }
-	assert_raises(TypeError) { lb.find_type :ClosureNotify }
-
-	GirFFI::Builder.send :define_ffi_types, lb, @go
-
-	cb = lb.find_type :Callback
-	cn = lb.find_type :ClosureNotify
+	cb = NS5::GObject::Lib.find_type :Callback
+	cn = NS5::GObject::Lib.find_type :ClosureNotify
 
 	assert_equal FFI.find_type(:void), cb.result_type
 	assert_equal FFI.find_type(:void), cn.result_type
@@ -209,11 +203,8 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal [FFI.find_type(:pointer), FFI.find_type(:pointer)], cn.param_types
       end
 
-      should "define ffi enum type :ConnectFlags" do
-	lb = Module.new
-	lb.extend FFI::Library
-	GirFFI::Builder.send :define_ffi_types, lb, @go
-	assert_equal({:after => 1, :swapped => 2}, lb.find_type(:ConnectFlags).to_h)
+      should "define ffi enum type ConnectFlags" do
+	assert_equal({:after => 1, :swapped => 2}, NS5::GObject::ConnectFlags.to_h)
       end
     end
 
