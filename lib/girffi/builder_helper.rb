@@ -18,5 +18,15 @@ module GirFFI
     def self.get_or_define_module parent, name
       optionally_define_constant(parent, name) { Module.new }
     end
+
+    def self.get_or_define_class namespace, name, parent
+      BuilderHelper.optionally_define_constant namespace, name do
+	if parent.nil?
+	  klass = Class.new
+	else
+	  klass = Class.new parent
+	end
+      end
+    end
   end
 end
