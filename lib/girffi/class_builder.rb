@@ -33,6 +33,8 @@ module GirFFI
       @parent = @info.type == :object ? @info.parent : nil
       if @parent
 	@superclass = Builder.build_class @parent.namespace, @parent.name, @box
+      else
+	@superclass = FFI::Struct
       end
     end
 
@@ -46,13 +48,14 @@ module GirFFI
       @lib = @module.const_get :Lib
       setup_method_missing
       setup_base
+      setup_layout
       setup_constructor
     end
 
     def setup_base
-      unless @parent
-	@klass.class_exec { include ClassBase }
-	(class << @klass; self; end).class_exec { alias_method :_real_new, :new }
+      return if @parent
+      class << @klass
+	self.class_exec { alias_method :_real_new, :new }
       end
     end
 
@@ -67,6 +70,12 @@ module GirFFI
     def setup_method_missing
       @klass.class_eval instance_method_missing_definition
       @klass.class_eval class_method_missing_definition
+    end
+
+    def setup_layout
+      @klass.class_exec {
+	layout :a, :int
+      }
     end
 
     def instance_method_missing_definition
