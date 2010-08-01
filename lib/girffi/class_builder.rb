@@ -1,4 +1,6 @@
 module GirFFI
+  # Builds a class based on information found in the introspection
+  # repository.
   class ClassBuilder
     def initialize namespace, classname, box
       @namespace = namespace
@@ -7,29 +9,29 @@ module GirFFI
     end
 
     def generate
-      build_class @namespace, @classname, @box
+      build_class
     end
 
     private
 
-    def build_class namespace, classname, box=nil
+    def build_class
       gir = IRepository.default
-      gir.require namespace, nil
+      gir.require @namespace, nil
 
-      info = gir.find_by_name namespace, classname
-      raise "Class #{classname} not found in namespace #{namespace}" if info.nil?
+      info = gir.find_by_name @namespace, @classname
+      raise "Class #{@classname} not found in namespace #{@namespace}" if info.nil?
       parent = info.type == :object ? info.parent : nil
       if parent
-	superclass = Builder.build_class parent.namespace, parent.name, box
+	superclass = Builder.build_class parent.namespace, parent.name, @box
       end
 
-      namespacem = Builder.build_module namespace, box
-      klass = BuilderHelper.get_or_define_class namespacem, classname, superclass
+      namespacem = Builder.build_module @namespace, @box
+      klass = BuilderHelper.get_or_define_class namespacem, @classname, superclass
 
       unless klass.instance_methods(false).map(&:to_sym).include? :method_missing
-	lb = namespacem.const_get :Lib
-	klass.class_eval instance_method_missing_definition lb, namespace, classname
-	klass.class_eval class_method_missing_definition lb, namespace, classname
+	@lib = namespacem.const_get :Lib
+	klass.class_eval instance_method_missing_definition
+	klass.class_eval class_method_missing_definition
 
 	unless parent
 	  klass.class_exec { include ClassBase }
@@ -39,19 +41,19 @@ module GirFFI
 	unless info.type == :object and info.abstract?
 	  ctor = info.find_method 'new'
 	  if not ctor.nil? and ctor.constructor?
-	    Builder.setup_function_or_method klass, lb, ctor
+	    Builder.setup_function_or_method klass, @lib, ctor
 	  end
 	end
       end
       klass
     end
 
-    def instance_method_missing_definition lib, namespace, classname
-      InstanceMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
+    def instance_method_missing_definition
+      InstanceMethodMissingDefinitionBuilder.new(@lib, @namespace, @classname).generate
     end
 
-    def class_method_missing_definition lib, namespace, classname
-      ClassMethodMissingDefinitionBuilder.new(lib, namespace, classname).generate
+    def class_method_missing_definition
+      ClassMethodMissingDefinitionBuilder.new(@lib, @namespace, @classname).generate
     end
   end
 end
