@@ -1,3 +1,5 @@
+require 'girffi/builder_helper'
+
 module GirFFI
   class ModuleBuilder
     def initialize namespace, box
@@ -24,13 +26,13 @@ module GirFFI
       if @box.nil?
 	boxm = ::Object
       else
-	boxm = get_or_define_module ::Object, @box.to_s
+	boxm = BuilderHelper.get_or_define_module ::Object, @box.to_s
       end
-      @module = get_or_define_module boxm, @namespace.to_s
+      @module = BuilderHelper.get_or_define_module boxm, @namespace.to_s
     end
 
     def setup_lib_for_ffi
-      @lib = get_or_define_module @module, :Lib
+      @lib = BuilderHelper.get_or_define_module @module, :Lib
 
       unless (class << @lib; self.include? FFI::Library; end)
 	@lib.extend FFI::Library
@@ -38,7 +40,7 @@ module GirFFI
 	@lib.ffi_lib(*libs)
       end
 
-      GirFFI::BuilderHelper.optionally_define_constant(@lib, :CALLBACKS) { [] }
+      BuilderHelper.optionally_define_constant(@lib, :CALLBACKS) { [] }
     end
 
     def module_method_missing_definition
@@ -55,10 +57,5 @@ module GirFFI
 	end
       CODE
     end
-
-    def get_or_define_module parent, name
-      GirFFI::BuilderHelper.optionally_define_constant(parent, name) { Module.new }
-    end
-
   end
 end

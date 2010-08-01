@@ -14,5 +14,9 @@ module GirFFI
       end
       parent.const_get name
     end
+
+    def self.get_or_define_module parent, name
+      optionally_define_constant(parent, name) { Module.new }
+    end
   end
 end
