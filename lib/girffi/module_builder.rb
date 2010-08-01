@@ -1,6 +1,8 @@
 require 'girffi/builder_helper'
 
 module GirFFI
+  # Builds a module based on information found in the introspection
+  # repository.
   class ModuleBuilder
     def initialize namespace, box
       @namespace = namespace
