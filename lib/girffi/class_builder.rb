@@ -77,6 +77,7 @@ module GirFFI
       @info.fields.each do |f|
 	layoutspec << f.name.to_sym
 	layoutspec << :int
+	layoutspec << f.offset
       end
       @klass.class_exec { layout *layoutspec }
     end

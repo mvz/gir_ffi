@@ -217,6 +217,12 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal [:some_int, :some_int8, :some_double, :some_enum],
 	  Everything::TestStructA.members
       end
+
+      should "set up struct members with the correct offset" do
+	info = GirFFI::IRepository.default.find_by_name 'Everything', 'TestStructA'
+	assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
+	  Everything::TestStructA.offsets
+      end
     end
 
     context "setting up Everything::TestBoxed" do
