@@ -208,6 +208,17 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+    context "setting up Everything::TestStructA" do
+      setup do
+	GirFFI::Builder.build_class 'Everything', 'TestStructA'
+      end
+
+      should "set up the correct struct members" do
+	assert_equal [:some_int, :some_int8, :some_double, :some_enum],
+	  Everything::TestStructA.members
+      end
+    end
+
     context "setting up Everything::TestBoxed" do
       setup do
 	GirFFI::Builder.build_class 'Everything', 'TestBoxed'

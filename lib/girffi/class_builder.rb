@@ -73,9 +73,12 @@ module GirFFI
     end
 
     def setup_layout
-      @klass.class_exec {
-	layout :a, :int
-      }
+      layoutspec = []
+      @info.fields.each do |f|
+	layoutspec << f.name.to_sym
+	layoutspec << :int
+      end
+      @klass.class_exec { layout *layoutspec }
     end
 
     def instance_method_missing_definition
