@@ -16,8 +16,15 @@ module GirFFI
 
     def build_class
       get_gir_info
-      instantiate_module_and_class
-      setup_class unless already_set_up
+      instantiate_module
+      case @info.type
+	when :object, :struct
+	  instantiate_class
+	  setup_class unless already_set_up
+	when :enum
+	  @module.const_set @classname, @lib.enum([:a, 1])
+	  @klass = @module.const_get @classname
+      end
       @klass
     end
 
@@ -38,14 +45,17 @@ module GirFFI
       end
     end
 
-    def instantiate_module_and_class
-      get_superclass
+    def instantiate_module
       @module = Builder.build_module @namespace, @box
+      @lib = @module.const_get :Lib
+    end
+
+    def instantiate_class
+      get_superclass
       @klass = BuilderHelper.get_or_define_class @module, @classname, @superclass
     end
 
     def setup_class
-      @lib = @module.const_get :Lib
       setup_method_missing
       setup_base
       setup_layout
@@ -60,7 +70,6 @@ module GirFFI
     end
 
     def setup_constructor
-      return if @info.type == :object and @info.abstract?
       ctor = @info.find_method 'new'
       if not ctor.nil? and ctor.constructor?
 	Builder.setup_function_or_method @klass, @module, @lib, ctor

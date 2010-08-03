@@ -208,7 +208,7 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    context "setting up Everything::TestStructA" do
+    context "building Everything::TestStructA" do
       setup do
 	GirFFI::Builder.build_class 'Everything', 'TestStructA'
       end
@@ -225,7 +225,7 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    context "setting up Everything::TestBoxed" do
+    context "building Everything::TestBoxed" do
       setup do
 	GirFFI::Builder.build_class 'Everything', 'TestBoxed'
       end
@@ -246,6 +246,15 @@ class BuilderTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestBoxed, tb
 	tb = Everything::TestBoxed.new_alternative_constructor3 "hello"
 	assert_instance_of Everything::TestBoxed, tb
+      end
+    end
+
+    context "building Everything::TestEnum" do
+      setup do
+	GirFFI::Builder.build_class 'Everything', 'TestEnum'
+      end
+      should "create an object of type FFI::Enum" do
+	assert_instance_of FFI::Enum, Everything::TestEnum
       end
     end
 
