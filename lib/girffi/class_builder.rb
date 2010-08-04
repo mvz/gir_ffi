@@ -21,9 +21,11 @@ module GirFFI
 	when :object, :struct
 	  instantiate_class
 	  setup_class unless already_set_up
-	when :enum
-	  @module.const_set @classname, @lib.enum([:a, 1])
-	  @klass = @module.const_get @classname
+	when :enum, :flags
+	  @klass = BuilderHelper.optionally_define_constant @module, @classname do
+	    vals = @info.values.map {|v| [v.name.to_sym, v.value]}.flatten
+	    @lib.enum(@classname.to_sym, vals)
+	  end
       end
       @klass
     end
@@ -85,7 +87,21 @@ module GirFFI
       layoutspec = []
       @info.fields.each do |f|
 	layoutspec << f.name.to_sym
-	layoutspec << :int
+
+	ffitype = Builder.itypeinfo_to_ffitype f.type, @box
+	ft = @lib.find_type ffitype rescue nil
+	if ft.nil?
+	  Builder.define_single_ffi_type @module, @lib, f.type
+	end
+
+	if f.type.tag == :interface and
+	  ffitype != :pointer and
+	  [:enum, :struct, :object].include? f.type.interface.type
+	  layoutspec << ffitype
+	else
+	  layoutspec << ffitype
+	end
+
 	layoutspec << f.offset
       end
       @klass.class_exec { layout *layoutspec }

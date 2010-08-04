@@ -131,7 +131,7 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	GirFFI::Builder.send :attach_ffi_function, libmod, @go
+	GirFFI::Builder.send :attach_ffi_function, libmod, @go, nil
 	assert_contains libmod.public_methods.map(&:to_sym), :gtk_main
       end
     end
@@ -150,11 +150,11 @@ class BuilderTest < Test::Unit::TestCase
       should "have :pointer, :pointer as types of the arguments for the attached function" do
 	# FIXME: Ideally, we attach the function and test that it requires
 	# the correct argument types.
-	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
+	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go, nil)
       end
 
       should "have :void as return type for the attached function" do
-	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, @go)
+	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, @go, nil)
       end
     end
 
@@ -170,7 +170,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :pointer as types of the arguments for the attached function" do
-	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
+	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go, nil)
       end
 
     end
@@ -189,8 +189,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have the correct types of the arguments for the attached function" do
-	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, :ConnectFlags],
-	  GirFFI::Builder.send(:ffi_function_argument_types, @go)
+	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, NS5::GObject::ConnectFlags],
+	  GirFFI::Builder.send(:ffi_function_argument_types, @go, 'NS5')
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
@@ -222,6 +222,12 @@ class BuilderTest < Test::Unit::TestCase
 	info = GirFFI::IRepository.default.find_by_name 'Everything', 'TestStructA'
 	assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
 	  Everything::TestStructA.offsets
+      end
+
+      should "set up struct members with the correct types" do
+	tags = [:int, :int8, :double, Everything::TestEnum]
+	assert_equal tags.map {|t| FFI.find_type t},
+	  Everything::TestStructA.layout.fields.map(&:type)
       end
     end
 

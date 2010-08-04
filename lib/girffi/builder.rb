@@ -57,17 +57,17 @@ module GirFFI
       return objectinfo.find_method method
     end
 
-    def self.attach_ffi_function modul, info
+    def self.attach_ffi_function modul, info, box
       sym = info.symbol
-      argtypes = ffi_function_argument_types info
-      rt = ffi_function_return_type info
+      argtypes = ffi_function_argument_types info, box
+      rt = ffi_function_return_type info, box
 
       modul.attach_function sym, argtypes, rt
     end
 
-    def self.ffi_function_argument_types info
+    def self.ffi_function_argument_types info, box
       types = info.args.map do |a|
-	iarginfo_to_ffitype a
+	iarginfo_to_ffitype a, box
       end
       if info.type == :function
 	types.unshift :pointer if info.method?
@@ -75,13 +75,13 @@ module GirFFI
       types
     end
 
-    def self.ffi_function_return_type info
-      itypeinfo_to_ffitype info.return_type
+    def self.ffi_function_return_type info, box
+      itypeinfo_to_ffitype info.return_type, box
     end
 
-    def self.define_ffi_types modul, lib, info
+    def self.define_ffi_types modul, lib, info, box
       info.args.each do |arg|
-	type = iarginfo_to_ffitype arg
+	type = iarginfo_to_ffitype arg, box
 	# FIXME: Rescue is ugly here.
 	ft = lib.find_type type rescue nil
 	next unless ft.nil?
@@ -89,14 +89,20 @@ module GirFFI
       end
     end
 
-    def self.itypeinfo_to_ffitype info
+    def self.itypeinfo_to_ffitype info, box
       if info.pointer?
 	return :string if info.tag == :utf8
 	return :pointer
       end
       case info.tag
       when :interface
-	return info.interface.name.to_sym
+	iface = info.interface
+	case iface.type
+	when :object, :struct, :flags, :enum
+	  return build_class iface.namespace, iface.name, box
+	else
+	  return iface.name.to_sym
+	end
       when :boolean
 	return :bool
       else
@@ -104,9 +110,9 @@ module GirFFI
       end
     end
 
-    def self.iarginfo_to_ffitype info
+    def self.iarginfo_to_ffitype info, box
       return :pointer if info.direction == :inout
-      return itypeinfo_to_ffitype info.type
+      return itypeinfo_to_ffitype info.type, box
     end
 
     def self.define_single_ffi_type modul, lib, typeinfo
@@ -115,16 +121,25 @@ module GirFFI
       interface = typeinfo.interface
       sym = interface.name.to_sym
 
+      # TODO: This is a weird way to get back the box.
+      if modul.to_s =~ /::/
+	box = Kernel.const_get(modul.to_s.split('::')[0])
+      else
+	box = nil
+      end
+
       case interface.type
       when :callback
-	args = ffi_function_argument_types interface
-	ret = ffi_function_return_type interface
+	args = ffi_function_argument_types interface, box
+	ret = ffi_function_return_type interface, box
 	lib.callback sym, args, ret
       when :enum, :flags
 	vals = interface.values.map {|v| [v.name.to_sym, v.value]}.flatten
 	modul.const_set sym, lib.enum(sym, vals)
+      when :struct, :object
+	build_class interface.namespace, interface.name, box
       else
-	raise NotImplementedError
+	raise NotImplementedError, interface.type
       end
     end
 
@@ -132,8 +147,15 @@ module GirFFI
       return false if go.nil?
       return false if go.type != :function
 
-      define_ffi_types modul, lib, go
-      attach_ffi_function lib, go
+      # TODO: This is a weird way to get back the box.
+      if modul.to_s =~ /::/
+	box = Kernel.const_get(modul.to_s.split('::')[0])
+      else
+	box = nil
+      end
+
+      define_ffi_types modul, lib, go, box
+      attach_ffi_function lib, go, box
 
       (class << klass; self; end).class_eval function_definition(go, lib)
       true
@@ -144,5 +166,6 @@ module GirFFI
       private_class_method m.to_sym
     end
     public_class_method :build_module, :build_class, :setup_method, :setup_function, :setup_function_or_method
+    public_class_method :itypeinfo_to_ffitype, :define_single_ffi_type
   end
 end
