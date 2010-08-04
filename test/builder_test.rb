@@ -178,7 +178,6 @@ class BuilderTest < Test::Unit::TestCase
     context "looking at GObject.signal_connect_data" do
       setup do
 	GirFFI::Builder.build_module 'GObject', 'NS5'
-	GirFFI::Builder.setup_function 'GObject', NS5::GObject::Lib, NS5::GObject, 'signal_connect_data'
 	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
       end
 
@@ -194,6 +193,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
+	GirFFI::Builder.setup_function 'GObject', NS5::GObject::Lib, NS5::GObject, 'signal_connect_data'
 	cb = NS5::GObject::Lib.find_type :Callback
 	cn = NS5::GObject::Lib.find_type :ClosureNotify
 
