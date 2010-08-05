@@ -88,11 +88,7 @@ module GirFFI
       @info.fields.each do |f|
 	layoutspec << f.name.to_sym
 
-	ffitype = Builder.itypeinfo_to_ffitype f.type, @box
-	ft = @lib.find_type ffitype rescue nil
-	if ft.nil?
-	  Builder.define_single_ffi_type @module, @lib, f.type
-	end
+	ffitype = Builder.itypeinfo_to_ffitype @module, @lib, f.type, @box
 
 	layoutspec << ffitype
 

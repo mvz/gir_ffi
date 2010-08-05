@@ -131,7 +131,7 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	GirFFI::Builder.send :attach_ffi_function, libmod, @go, nil
+	GirFFI::Builder.send :attach_ffi_function, mod, libmod, @go, nil
 	assert_contains libmod.public_methods.map(&:to_sym), :gtk_main
       end
     end
@@ -150,11 +150,11 @@ class BuilderTest < Test::Unit::TestCase
       should "have :pointer, :pointer as types of the arguments for the attached function" do
 	# FIXME: Ideally, we attach the function and test that it requires
 	# the correct argument types.
-	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go, nil)
+	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, Gtk, Gtk::Lib, @go, nil)
       end
 
       should "have :void as return type for the attached function" do
-	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, @go, nil)
+	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, Gtk, Gtk::Lib, @go, nil)
       end
     end
 
@@ -170,7 +170,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :pointer as types of the arguments for the attached function" do
-	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go, nil)
+	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, Gtk, Gtk::Lib, @go, nil)
       end
 
     end
@@ -189,7 +189,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "have the correct types of the arguments for the attached function" do
 	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, NS5::GObject::ConnectFlags],
-	  GirFFI::Builder.send(:ffi_function_argument_types, @go, 'NS5')
+	  GirFFI::Builder.send(:ffi_function_argument_types, NS5::GObject, NS5::GObject::Lib, @go, 'NS5')
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
