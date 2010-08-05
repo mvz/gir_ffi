@@ -116,31 +116,23 @@ module GirFFI
     end
 
     def self.define_single_ffi_type modul, lib, typeinfo
-      typeinfo.tag == :interface or raise NotImplementedError, "Don't know how to handle #{typeinfo.tag}"
+      raise NotImplementedError unless typeinfo.tag == :interface
 
       interface = typeinfo.interface
+      raise NotImplementedError unless interface.type == :callback
+
       sym = interface.name.to_sym
 
       # TODO: This is a weird way to get back the box.
-      if modul.to_s =~ /::/
-	box = Kernel.const_get(modul.to_s.split('::')[0])
+      if modul =~ /::/
+	box = Kernel.const_get(modul.split('::')[0])
       else
 	box = nil
       end
 
-      case interface.type
-      when :callback
-	args = ffi_function_argument_types interface, box
-	ret = ffi_function_return_type interface, box
-	lib.callback sym, args, ret
-      when :enum, :flags
-	vals = interface.values.map {|v| [v.name.to_sym, v.value]}.flatten
-	modul.const_set sym, lib.enum(sym, vals)
-      when :struct, :object
-	build_class interface.namespace, interface.name, box
-      else
-	raise NotImplementedError, interface.type
-      end
+      args = ffi_function_argument_types interface, box
+      ret = ffi_function_return_type interface, box
+      lib.callback sym, args, ret
     end
 
     def self.setup_function_or_method klass, modul, lib, go
