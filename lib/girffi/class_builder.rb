@@ -94,13 +94,7 @@ module GirFFI
 	  Builder.define_single_ffi_type @module, @lib, f.type
 	end
 
-	if f.type.tag == :interface and
-	  ffitype != :pointer and
-	  [:enum, :struct, :object].include? f.type.interface.type
-	  layoutspec << ffitype
-	else
-	  layoutspec << ffitype
-	end
+	layoutspec << ffitype
 
 	layoutspec << f.offset
       end
