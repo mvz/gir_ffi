@@ -123,12 +123,7 @@ module GirFFI
 
       sym = interface.name.to_sym
 
-      # TODO: This is a weird way to get back the box.
-      if modul =~ /::/
-	box = Kernel.const_get(modul.split('::')[0])
-      else
-	box = nil
-      end
+      box = get_box modul
 
       args = ffi_function_argument_types interface, box
       ret = ffi_function_return_type interface, box
@@ -139,18 +134,23 @@ module GirFFI
       return false if go.nil?
       return false if go.type != :function
 
-      # TODO: This is a weird way to get back the box.
-      if modul.to_s =~ /::/
-	box = Kernel.const_get(modul.to_s.split('::')[0])
-      else
-	box = nil
-      end
+      box = get_box modul
 
       define_ffi_types modul, lib, go, box
       attach_ffi_function lib, go, box
 
       (class << klass; self; end).class_eval function_definition(go, lib)
       true
+    end
+
+    # TODO: This is a weird way to get back the box.
+    def self.get_box modul
+      name = modul.to_s
+      if name =~ /::/
+	return Kernel.const_get(name.split('::')[0])
+      else
+	return nil
+      end
     end
 
     # Set up method access.
