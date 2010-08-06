@@ -92,18 +92,12 @@ module GirFFI
       end
       case info.tag
       when :interface
-	iface = info.interface
-	case iface.type
+	interface = info.interface
+	case interface.type
 	when :object, :struct, :flags, :enum
-	  return build_class iface.namespace, iface.name, box
+	  return build_class interface.namespace, interface.name, box
 	when :callback
-	  sym = iface.name.to_sym
-	  # FIXME: Rescue is ugly here.
-	  ft = lib.find_type sym rescue nil
-	  if ft.nil?
-	    define_single_ffi_type modul, lib, info
-	  end
-	  return sym
+	  return build_callback modul, lib, interface, box
 	else
 	  raise NotImplementedError
 	end
@@ -119,16 +113,17 @@ module GirFFI
       return itypeinfo_to_ffitype modul, lib, info.type, box
     end
 
-    def self.define_single_ffi_type modul, lib, typeinfo
-      interface = typeinfo.interface
-
+    def self.build_callback modul, lib, interface, box
       sym = interface.name.to_sym
 
-      box = get_box modul
-
-      args = ffi_function_argument_types modul, lib, interface, box
-      ret = ffi_function_return_type modul, lib, interface, box
-      lib.callback sym, args, ret
+      # FIXME: Rescue is ugly here.
+      ft = lib.find_type sym rescue nil
+      if ft.nil?
+	args = ffi_function_argument_types modul, lib, interface, box
+	ret = ffi_function_return_type modul, lib, interface, box
+	lib.callback sym, args, ret
+      end
+      sym
     end
 
     def self.setup_function_or_method klass, modul, lib, go
