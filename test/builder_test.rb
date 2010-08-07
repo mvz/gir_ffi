@@ -138,6 +138,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "looking at Gtk.init" do
       setup do
+	GirFFI::Builder.build_module 'Gtk'
 	@go = get_function_introspection_data 'Gtk', 'init'
       end
 
