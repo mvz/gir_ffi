@@ -33,16 +33,13 @@ class Foo2
     layout :a, :int, :b, :int
   end
   def initialize(ptr=nil)
-    @struct = Struct.new(ptr)
+    @struct = self.class.const_get(:Struct).new(ptr)
   end
 end
 
 class Bar2 < Foo2
   class Struct < MyFFIStruct
     layout :p, Foo2, :c, :int
-  end
-  def initialize(ptr=nil)
-    @struct = Struct.new(ptr)
   end
 end
 
