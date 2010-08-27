@@ -5,8 +5,8 @@ module Blub
   class Struct < FFI::Struct
     class << self
       def find_type(type, mod = nil)
-	if type.kind_of?(Class) && type.const_defined?(:Struct)
-	  super type.const_get(:Struct), mod
+	if type.respond_to?(:ffi_structure)
+	  super type.ffi_structure, mod
 	else
 	  super type, mod
 	end
@@ -23,7 +23,17 @@ module Blub
     end
 
     def initialize(ptr=nil)
-      @struct = self.class.const_get(:Struct).new(ptr)
+      @struct = self.ffi_structure.new(ptr)
+    end
+
+    def ffi_structure
+      self.class.ffi_structure
+    end
+
+    class << self
+      def ffi_structure
+	self.const_get(:Struct)
+      end
     end
   end
 
