@@ -94,7 +94,7 @@ module GirFFI
 
 	layoutspec << f.offset
       end
-      @klass.class_eval { layout *layoutspec }
+      @klass.class_eval { layout(*layoutspec) }
     end
 
     def instance_method_missing_definition
