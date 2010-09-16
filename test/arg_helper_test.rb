@@ -55,7 +55,8 @@ class ArgHelperTest < Test::Unit::TestCase
       setup do
 	p = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer) * 2
 	p.write_array_of_pointer ["one", "two"].map {|str|
-	  GirFFI::AllocationHelper.safe_calloc(str.bytesize + 1).write_string str
+	  len = str.bytesize
+	  GirFFI::AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
 	}
 	@ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer)
 	@ptr.write_pointer p
@@ -70,7 +71,8 @@ class ArgHelperTest < Test::Unit::TestCase
     context "when called with a pointer to a string array containing a null pointer" do
       setup do
 	ptrs = ["one", "two"].map {|str|
-	  GirFFI::AllocationHelper.safe_calloc(str.bytesize + 1).write_string str
+	  len = str.bytesize
+	  GirFFI::AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
 	}
 	ptrs << nil
 	p = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer) * 3
