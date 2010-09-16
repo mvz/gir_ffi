@@ -67,7 +67,7 @@ module GirFFI
     def setup_base
       return if @parent
       class << @klass
-	self.class_exec { alias_method :_real_new, :new }
+	self.class_eval { alias_method :_real_new, :new }
       end
     end
 
@@ -94,7 +94,7 @@ module GirFFI
 
 	layoutspec << f.offset
       end
-      @klass.class_exec { layout *layoutspec }
+      @klass.class_eval { layout *layoutspec }
     end
 
     def instance_method_missing_definition
