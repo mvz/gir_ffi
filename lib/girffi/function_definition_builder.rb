@@ -17,6 +17,7 @@ module GirFFI
 
     def generate
       setup_accumulators
+      process_return_value
       @info.args.each {|a| process_arg a}
       adjust_accumulators
       return filled_out_template
@@ -31,6 +32,8 @@ module GirFFI
 
       @pre = []
       @post = []
+
+      @capture = ""
 
       @varno = 0
     end
@@ -86,8 +89,6 @@ module GirFFI
 	@pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
 	@pre << "#{@libmodule}::CALLBACKS << #{procvar}"
 	@callargs << procvar
-	#@pre << "#{@libmodule}::CALLBACKS << #{name}"
-	#@callargs << name
       elsif tag == :void
 	raise NotImplementedError unless arg.type.pointer?
 	prevar = new_var
@@ -95,6 +96,21 @@ module GirFFI
 	@callargs << prevar
       else
 	@callargs << name
+      end
+    end
+
+    def process_return_value
+      type = @info.return_type
+      tag = type.tag
+      return if tag == :void
+      retval = new_var
+      @capture = "#{retval} = "
+
+      if tag == :interface
+	interface = type.interface
+	@retvals << "#{interface.namespace}::#{interface.name}._real_new(#{retval})"
+      else
+	@retvals << retval
       end
     end
 
@@ -110,7 +126,7 @@ module GirFFI
       return <<-CODE
 	def #{@info.name} #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
-	  #{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
+	  #{@capture}#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
 	end
       CODE

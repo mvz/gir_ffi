@@ -265,6 +265,15 @@ class BuilderTest < Test::Unit::TestCase
 	tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
 	assert_equal true, tb.equals(tb2)
       end
+
+      should "make the copy method work" do
+	tb = Everything::TestBoxed.new_alternative_constructor1 123
+	tb2 = tb.copy
+	assert_instance_of Everything::TestBoxed, tb2
+	assert_equal 123, tb2[:some_int8], "fields copied"
+	tb2[:some_int8] = 89
+	assert_equal 123, tb[:some_int8], "is a true copy"
+      end
     end
 
     context "building Everything::TestEnum" do

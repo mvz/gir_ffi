@@ -44,13 +44,14 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
-	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
-	  _v2 = GirFFI::ArgHelper.mapped_callback_args c_handler
-	  Lib::CALLBACKS << _v2
-	  _v3 = GirFFI::ArgHelper.object_to_inptr data
-	  _v4 = GirFFI::ArgHelper.mapped_callback_args destroy_data
-	  Lib::CALLBACKS << _v4
-	  Lib.g_signal_connect_data _v1, detailed_signal, _v2, _v3, _v4, connect_flags
+	  _v2 = GirFFI::ArgHelper.object_to_inptr instance
+	  _v3 = GirFFI::ArgHelper.mapped_callback_args c_handler
+	  Lib::CALLBACKS << _v3
+	  _v4 = GirFFI::ArgHelper.object_to_inptr data
+	  _v5 = GirFFI::ArgHelper.mapped_callback_args destroy_data
+	  Lib::CALLBACKS << _v5
+	  _v1 = Lib.g_signal_connect_data _v2, detailed_signal, _v3, _v4, _v5, connect_flags
+	  return _v1
 	end"
 
       assert_equal cws(expected), cws(code)
