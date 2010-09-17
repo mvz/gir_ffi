@@ -30,7 +30,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected = "
 	def show
-	  Lib.gtk_widget_show @gobj
+	  Lib.gtk_widget_show self
 	end
       "
 

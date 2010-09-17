@@ -254,6 +254,12 @@ class BuilderTest < Test::Unit::TestCase
 	tb = Everything::TestBoxed.new_alternative_constructor3 "hello"
 	assert_instance_of Everything::TestBoxed, tb
       end
+
+      should "make the equals method work" do
+	tb = Everything::TestBoxed.new_alternative_constructor1 123
+	tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
+	assert_equal true, tb.equals(tb2)
+      end
     end
 
     context "building Everything::TestEnum" do

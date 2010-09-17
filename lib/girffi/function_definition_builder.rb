@@ -102,7 +102,7 @@ module GirFFI
       @post << "return #{@retvals.join(', ')}" unless @retvals.empty?
 
       if @info.method?
-	@callargs.unshift "@gobj"
+	@callargs.unshift "self"
       end
     end
 
