@@ -249,10 +249,15 @@ class BuilderTest < Test::Unit::TestCase
       should "allow creation using alternative constructors" do
 	tb = Everything::TestBoxed.new_alternative_constructor1 1
 	assert_instance_of Everything::TestBoxed, tb
+	assert_equal 1, tb[:some_int8]
+
 	tb = Everything::TestBoxed.new_alternative_constructor2 1, 2
 	assert_instance_of Everything::TestBoxed, tb
-	tb = Everything::TestBoxed.new_alternative_constructor3 "hello"
+	assert_equal 1 + 2, tb[:some_int8]
+
+	tb = Everything::TestBoxed.new_alternative_constructor3 "54"
 	assert_instance_of Everything::TestBoxed, tb
+	assert_equal 54, tb[:some_int8]
       end
 
       should "make the equals method work" do
