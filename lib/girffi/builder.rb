@@ -1,4 +1,3 @@
-require 'girffi'
 require 'girffi/class_base'
 require 'girffi/arg_helper'
 require 'girffi/function_definition_builder'
