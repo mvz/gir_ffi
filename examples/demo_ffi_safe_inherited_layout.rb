@@ -6,40 +6,38 @@
 require 'ffi'
 require 'forwardable'
 
-module Blub
-  class Foo
-    extend Forwardable
-    def_delegators :@struct, :[], :to_ptr
+class Foo
+  extend Forwardable
+  def_delegators :@struct, :[], :to_ptr
 
-    class Struct < FFI::Struct
-      layout :a, :int, :b, :int
-    end
-
-    def initialize(ptr=nil)
-      @struct = ptr.nil? ?
-	self.ffi_structure.new :
-	self.ffi_structure.new(ptr)
-    end
-
-    def ffi_structure
-      self.class.ffi_structure
-    end
-
-    class << self
-      def ffi_structure
-	self.const_get(:Struct)
-      end
-    end
+  class Struct < FFI::Struct
+    layout :a, :int, :b, :int
   end
 
-  class Bar < Foo
-    class Struct < FFI::Struct
-      layout :p, Foo.ffi_structure, :c, :int
+  def initialize(ptr=nil)
+    @struct = ptr.nil? ?
+      self.ffi_structure.new :
+      self.ffi_structure.new(ptr)
+  end
+
+  def ffi_structure
+    self.class.ffi_structure
+  end
+
+  class << self
+    def ffi_structure
+      self.const_get(:Struct)
     end
   end
 end
 
-bar = Blub::Bar.new
+class Bar < Foo
+  class Struct < FFI::Struct
+    layout :p, Foo.ffi_structure, :c, :int
+  end
+end
+
+bar = Bar.new
 bar[:p][:a] = 20
-foo = Blub::Foo.new(bar.to_ptr)
+foo = Foo.new(bar.to_ptr)
 puts foo[:a]
