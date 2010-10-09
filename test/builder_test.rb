@@ -216,19 +216,19 @@ class BuilderTest < Test::Unit::TestCase
 
       should "set up the correct struct members" do
 	assert_equal [:some_int, :some_int8, :some_double, :some_enum],
-	  Everything::TestStructA.members
+	  Everything::TestStructA::Struct.members
       end
 
       should "set up struct members with the correct offset" do
 	info = GirFFI::IRepository.default.find_by_name 'Everything', 'TestStructA'
 	assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
-	  Everything::TestStructA.offsets
+	  Everything::TestStructA::Struct.offsets
       end
 
       should "set up struct members with the correct types" do
 	tags = [:int, :int8, :double, Everything::TestEnum]
 	assert_equal tags.map {|t| FFI.find_type t},
-	  Everything::TestStructA.layout.fields.map(&:type)
+	  Everything::TestStructA::Struct.layout.fields.map(&:type)
       end
     end
 

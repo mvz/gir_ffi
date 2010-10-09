@@ -43,7 +43,7 @@ module GirFFI
       if @parent
 	@superclass = Builder.build_class @parent.namespace, @parent.name, @box
       else
-	@superclass = FFI::Struct
+	@superclass = GirFFI::Base
       end
     end
 
@@ -55,6 +55,7 @@ module GirFFI
     def instantiate_class
       get_superclass
       @klass = BuilderHelper.get_or_define_class @module, @classname, @superclass
+      @structklass = BuilderHelper.get_or_define_class @klass, :Struct, FFI::Struct
     end
 
     def setup_class
@@ -89,12 +90,15 @@ module GirFFI
 	layoutspec << f.name.to_sym
 
 	ffitype = Builder.itypeinfo_to_ffitype @module, @lib, f.type, @box
+	if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
+	  ffitype = ffitype.const_get :Struct
+	end
 
 	layoutspec << ffitype
 
 	layoutspec << f.offset
       end
-      @klass.class_eval { layout(*layoutspec) }
+      @structklass.class_eval { layout(*layoutspec) }
     end
 
     def instance_method_missing_definition
