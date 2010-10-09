@@ -1,3 +1,9 @@
+# Demonstration program for FFI functionality.
+#
+# Show what happens if we call layout again in a subclass. This works in
+# JRuby, but not in MRI (gives warnings with ffi 0.6.3, is explicitely
+# forbidden later).
+#
 require 'ffi'
 
 class Foo < FFI::Struct

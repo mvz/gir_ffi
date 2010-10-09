@@ -1,3 +1,8 @@
+# Demonstrate safe inheritance with layout.
+#
+# Uses nested Struct class to separate inheritance from FFI::Struct from
+# main inheritance structure. Works with MRI and JRuby, without warnings.
+
 require 'ffi'
 require 'forwardable'
 
