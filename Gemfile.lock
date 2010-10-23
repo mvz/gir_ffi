@@ -1,0 +1,21 @@
+PATH
+  remote: .
+  specs:
+    gir_ffi (0.0.1)
+      ffi (~> 0.6.3)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    ffi (0.6.3)
+      rake (>= 0.8.7)
+    rake (0.8.7)
+    shoulda (2.11.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ffi (~> 0.6.3)
+  gir_ffi!
+  shoulda (~> 2.11.3)
