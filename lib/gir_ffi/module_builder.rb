@@ -1,4 +1,4 @@
-require 'girffi/builder_helper'
+require 'gir_ffi/builder_helper'
 
 module GirFFI
   # Builds a module based on information found in the introspection

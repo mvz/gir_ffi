@@ -1,12 +1,12 @@
-require 'girffi/class_base'
-require 'girffi/arg_helper'
-require 'girffi/function_definition_builder'
-require 'girffi/constructor_definition_builder'
-require 'girffi/method_missing_definition_builder'
-require 'girffi/base'
-require 'girffi/class_builder'
-require 'girffi/module_builder'
-require 'girffi/builder_helper'
+require 'gir_ffi/class_base'
+require 'gir_ffi/arg_helper'
+require 'gir_ffi/function_definition_builder'
+require 'gir_ffi/constructor_definition_builder'
+require 'gir_ffi/method_missing_definition_builder'
+require 'gir_ffi/base'
+require 'gir_ffi/class_builder'
+require 'gir_ffi/module_builder'
+require 'gir_ffi/builder_helper'
 
 module GirFFI
   # Builds modules and classes based on information found in the

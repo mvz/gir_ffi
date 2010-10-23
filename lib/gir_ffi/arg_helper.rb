@@ -1,4 +1,4 @@
-require 'girffi/allocation_helper'
+require 'gir_ffi/allocation_helper'
 
 module GirFFI
   module ArgHelper

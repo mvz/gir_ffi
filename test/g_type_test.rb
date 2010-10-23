@@ -1,5 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girffi/g_type'
+require 'gir_ffi/g_type'
 
 class HelperGTypeTest < Test::Unit::TestCase
   context "The GType module" do

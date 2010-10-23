@@ -1,4 +1,4 @@
-require 'girffi/lib_c'
+require 'gir_ffi/lib_c'
 
 module GirFFI
   module AllocationHelper

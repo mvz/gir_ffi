@@ -1,5 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girffi'
+require 'gir_ffi'
 GirFFI.setup :Gtk
 
 class GtkOverridesTest < Test::Unit::TestCase

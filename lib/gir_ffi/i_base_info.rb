@@ -1,4 +1,4 @@
-require 'girffi/class_base'
+require 'gir_ffi/class_base'
 
 module GirFFI
   # Wraps GIBaseInfo struct, the base \type for all info types.

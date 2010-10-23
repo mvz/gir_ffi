@@ -1,5 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girffi/builder'
+require 'gir_ffi/builder'
 
 class BuilderTest < Test::Unit::TestCase
   context "The GirFFI::Builder module" do

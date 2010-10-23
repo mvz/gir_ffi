@@ -15,7 +15,7 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 
 == Synopsis
 
-  require 'girffi'
+  require 'gir_ffi'
 
   GirFFI.setup :Gtk
   Gtk.init
@@ -37,7 +37,7 @@ works, some are a test bed for how things should work. Have a look at
 
 This doesn't actually work yet, since the gem hasn't been published.
 
-* sudo gem install gir-ffi
+* sudo gem install gir_ffi
 
 == License
 

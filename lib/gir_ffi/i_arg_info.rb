@@ -1,4 +1,4 @@
-require 'girffi/i_base_info'
+require 'gir_ffi/i_base_info'
 module GirFFI
   # Wraps a GIArgInfo struct.
   # Represents an argument.

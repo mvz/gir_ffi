@@ -1,5 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'girffi/i_repository'
+require 'gir_ffi/i_repository'
 
 module GirFFI
   class IRepositoryTest < Test::Unit::TestCase
