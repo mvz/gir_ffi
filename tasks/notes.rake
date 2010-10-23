@@ -64,7 +64,7 @@ class AnnotationExtractor
     exclude = if project.notes.exclude.empty? then nil
               else Regexp.new(project.notes.exclude.join('|')) end
 
-    project.gem.files.each do |fn|
+    manifest.each do |fn|
       next if exclude && exclude =~ fn
       next unless extensions.include? File.extname(fn)
       results.update(extract_annotations_from(fn, rgxp))
