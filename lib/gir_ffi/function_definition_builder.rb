@@ -58,7 +58,7 @@ module GirFFI
 
       @inargs << name
       case arg.type.tag
-      when :int
+      when :int, :int32
 	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr #{name}"
 	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int #{prevar}"
       when :array
