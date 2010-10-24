@@ -20,7 +20,6 @@ module GirFFI
     attach_function :g_irepository_get_shared_library,
       [:pointer, :string], :string
 
-
     # IBaseInfo
     enum :IInfoType, [
       :invalid,
@@ -93,42 +92,18 @@ module GirFFI
     attach_function :g_arg_info_get_destroy, [:pointer], :int
     attach_function :g_arg_info_get_type, [:pointer], :pointer
 
-    enum :ITypeTag, [
-      :void,  0,
-      :boolean,  1,
-      :int8,  2,
-      :uint8,  3,
-      :int16,  4,
-      :uint16,  5,
-      :int32,  6,
-      :uint32,  7,
-      :int64,  8,
-      :uint64,  9,
-      :short, 10,
-      :ushort, 11,
-      :int, 12,
-      :uint, 13,
-      :long, 14,
-      :ulong, 15,
-      :ssize, 16,
-      :size, 17,
-      :float, 18,
-      :double, 19,
-      :time_t, 20,
-      :gtype, 21,
-      :utf8, 22,
-      :filename, 23,
-      :array, 24,
-      :interface, 25,
-      :glist, 26,
-      :gslist, 27,
-      :ghash, 28,
-      :error, 29
-    ]
+    # The values of ITypeTag were changed in an incompatible way between
+    # gobject-introspection version 0.9.0 and 0.9.1. Therefore, we need to
+    # retrieve the correct values before declaring the ITypeTag enum.
+    attach_function :tmp_type_tag_to_string, :g_type_tag_to_string, [:int], :string
+    arr = (0..31).map { |i| [tmp_type_tag_to_string(i).to_sym, i] }.flatten
+    enum :ITypeTag, arr
+
+    # Now, attach g_type_tag_to_string again under its own name with an
+    # improved signature.
+    attach_function :g_type_tag_to_string, [:ITypeTag], :string
 
     #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
-
-    attach_function :g_type_tag_to_string, [:ITypeTag], :string
 
     attach_function :g_type_info_is_pointer, [:pointer], :bool
     attach_function :g_type_info_get_tag, [:pointer], :ITypeTag
