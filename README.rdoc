@@ -1,4 +1,4 @@
-= Gir-FFI
+= GirFFI
 
 by Matijs van Zuijlen
 
@@ -25,6 +25,19 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 
 * Ruby-FFI of course
 * gobject-introspection installed with some introspection data
+
+The current implementation needs the actual libraries to be available under
+the name ending in just `.so`. On Debian and Ubuntu at least, this means
+you have to install the -dev packages of any library you may want to
+access.
+
+On Ubuntu, the following set of packages should do the trick:
+`libffi-ruby`, `libgirepository1.0-dev`, `libgtk2.0-dev`,
+`libshoulda-ruby`, `gir1.0-everything-1.0`.
+
+On Debian it's the same, but the `gir1.0-everything-1.0` package is only
+available in experimental. You can take one of the patches attached to bug
+550478 and recompile `gobject-introspection` to get the files GirFFI needs.
 
 == Hacking
 
