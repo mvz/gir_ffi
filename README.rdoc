@@ -48,14 +48,12 @@ works, some are a test bed for how things should work. Have a look at
 
 == Install
 
-This doesn't actually work yet, since the gem hasn't been published.
-
 * sudo gem install gir_ffi
 
 == License
 
 Copyright (c) 2009--2010 Matijs van Zuijlen
 
-Gir-FFI is free software, distributed under the terms of the GNU Lesser
+GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
 more information.
