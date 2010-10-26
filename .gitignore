@@ -2,3 +2,5 @@
 /doc
 /tmp
 /pkg
+gir_ffi*.gem
+*.rbc
