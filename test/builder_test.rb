@@ -240,78 +240,9 @@ class BuilderTest < Test::Unit::TestCase
       should "set up #_real_new as an alias to #new" do
 	assert Everything::TestBoxed.respond_to? "_real_new"
       end
-
-      should "allow creation using #new" do
-	tb = Everything::TestBoxed.new
-	assert_instance_of Everything::TestBoxed, tb
-      end
-
-      should "allow creation using alternative constructors" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 1
-	assert_instance_of Everything::TestBoxed, tb
-	assert_equal 1, tb[:some_int8]
-
-	tb = Everything::TestBoxed.new_alternative_constructor2 1, 2
-	assert_instance_of Everything::TestBoxed, tb
-	assert_equal 1 + 2, tb[:some_int8]
-
-	tb = Everything::TestBoxed.new_alternative_constructor3 "54"
-	assert_instance_of Everything::TestBoxed, tb
-	assert_equal 54, tb[:some_int8]
-      end
-
-      should "make the equals method work" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 123
-	tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
-	assert_equal true, tb.equals(tb2)
-      end
-
-      should "make the copy method work" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 123
-	tb2 = tb.copy
-	assert_instance_of Everything::TestBoxed, tb2
-	assert_equal 123, tb2[:some_int8], "fields copied"
-	tb2[:some_int8] = 89
-	assert_equal 123, tb[:some_int8], "is a true copy"
-      end
-    end
-
-    context "building Everything::TestEnum" do
-      setup do
-	GirFFI::Builder.build_class 'Everything', 'TestEnum'
-      end
-      should "create an object of type FFI::Enum" do
-	assert_instance_of FFI::Enum, Everything::TestEnum
-      end
     end
 
     # TODO: Should not allow functions to be called as methods, etc.
-
-    context "looking at Everything's functions" do
-      setup do
-	GirFFI::Builder.build_module 'Everything'
-      end
-
-      should "correctly handle test_boolean" do
-	assert_equal false, Everything.test_boolean(false)
-	assert_equal true, Everything.test_boolean(true)
-      end
-
-      should "correctly handle test_callback_user_data" do
-	a = :foo
-	result = Everything.test_callback_user_data Proc.new {|u|
-	  a = u
-	  5
-	}, :bar
-	assert_equal :bar, a
-	assert_equal 5, result
-      end
-
-      should "correctly handle test_gtype" do
-	result = Everything.test_gtype 23
-	assert_equal 23, result
-      end
-    end
 
     context "building the Everything module" do
       setup do
