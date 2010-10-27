@@ -306,6 +306,11 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal :bar, a
 	assert_equal 5, result
       end
+
+      should "correctly handle test_gtype" do
+	result = Everything.test_gtype 23
+	assert_equal 23, result
+      end
     end
 
     context "building the Everything module" do

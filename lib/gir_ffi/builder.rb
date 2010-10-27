@@ -103,6 +103,8 @@ module GirFFI
 	end
       when :boolean
 	return :bool
+      when :GType
+	return :int32
       else
 	return info.tag
       end
