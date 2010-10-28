@@ -28,6 +28,11 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 23, result
     end
 
+    should "have correct test_value_return" do
+      result = Everything.test_value_return 3423
+      assert_equal 3423, result.get_int
+    end
+
     context "the Everything::TestBoxed class" do
       should "create an instance using #new" do
 	tb = Everything::TestBoxed.new
