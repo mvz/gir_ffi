@@ -1,4 +1,3 @@
-require 'gir_ffi/class_base'
 require 'gir_ffi/arg_helper'
 require 'gir_ffi/function_definition_builder'
 require 'gir_ffi/constructor_definition_builder'
