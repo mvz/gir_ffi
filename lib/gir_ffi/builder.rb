@@ -79,12 +79,6 @@ module GirFFI
       itypeinfo_to_ffitype modul, lib, info.return_type, box
     end
 
-    def self.define_ffi_types modul, lib, info, box
-      info.args.each do |arg|
-	type = iarginfo_to_ffitype modul, lib, arg, box
-      end
-    end
-
     def self.itypeinfo_to_ffitype modul, lib, info, box
       if info.pointer?
 	return :string if info.tag == :utf8
@@ -134,7 +128,6 @@ module GirFFI
 
       box = get_box modul
 
-      define_ffi_types modul, lib, go, box
       attach_ffi_function modul, lib, go, box
 
       (class << klass; self; end).class_eval function_definition(go, lib)
