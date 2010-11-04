@@ -37,7 +37,7 @@ module GirFFI
       value
     end
 
-    # Converts an outptr to a string array, then frees the outptr.
+    # Converts an outptr to a string array, then frees pointers.
     def self.outptr_to_string_array ptr, size
       return nil if ptr.nil?
 
@@ -49,7 +49,13 @@ module GirFFI
       ptrs = block.read_array_of_pointer(size)
       LibC.free block
 
-      ptrs.map { |p| p.null? ? nil : (str = p.read_string; LibC.free p; str) }
+      ptrs.map do |p|
+	if p.null?
+	  nil
+	else
+	  p.read_string.tap { LibC.free p }
+	end
+      end
     end
 
     def self.mapped_callback_args prc=nil, &block
