@@ -6,10 +6,8 @@ module GirFFI
     extend Forwardable
     def_delegators :@struct, :[], :[]=, :to_ptr
 
-    def initialize(ptr=nil)
-      @struct = ptr.nil? ?
-	self.ffi_structure.new :
-	self.ffi_structure.new(ptr)
+    def initialize(*args)
+      @struct = ffi_structure.new(*args)
     end
 
     def ffi_structure
