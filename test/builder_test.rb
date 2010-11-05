@@ -261,18 +261,32 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+    # TODO: Turn this into full test of instance method creation, including
+    # inheritance issues.
     context "built Everything::TestObj" do
       setup do
-	GirFFI::Builder.build_class 'Everything', 'TestObj'
+	GirFFI::Builder.build_class 'Everything', 'TestObj', 'NS5'
       end
 
       should "make autocreated instance method available to all instances" do
-	o1 = Everything::TestObj.new
-	o2 = Everything::TestObj.new
+	o1 = NS5::Everything::TestObj.new
+	o2 = NS5::Everything::TestObj.new
 	assert !o2.respond_to?(:instance_method)
 	o1.instance_method
 	assert o1.respond_to?(:instance_method)
 	assert o2.respond_to?(:instance_method)
+      end
+    end
+
+    context "built Everything::TestSubObj" do
+      setup do
+	GirFFI::Builder.build_class 'Everything', 'TestSubObj', 'NS6'
+      end
+
+      should "autocreate parent class' set_bare" do
+	o1 = NS6::Everything::TestSubObj.new
+	assert !o1.respond_to?(:set_bare)
+	assert_nothing_raised {o1.set_bare(nil)}
       end
     end
   end
