@@ -129,7 +129,12 @@ module GirFFI
 
       attach_ffi_function modul, lib, go, box
 
-      (class << klass; self; end).class_eval function_definition(go, lib)
+      if Class === klass
+	meta = (class << klass; self; end)
+      else
+	meta = klass.class
+      end
+      meta.class_eval function_definition(go, lib)
       true
     end
 
