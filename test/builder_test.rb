@@ -283,10 +283,12 @@ class BuilderTest < Test::Unit::TestCase
 	GirFFI::Builder.build_class 'Everything', 'TestSubObj', 'NS6'
       end
 
-      should "autocreate parent class' set_bare" do
+      should "autocreate parent class' set_bare inside the parent class" do
 	o1 = NS6::Everything::TestSubObj.new
 	assert !o1.respond_to?(:set_bare)
 	assert_nothing_raised {o1.set_bare(nil)}
+	o2 = NS6::Everything::TestObj.new
+	assert o2.respond_to?(:set_bare)
       end
     end
   end

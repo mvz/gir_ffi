@@ -34,6 +34,21 @@ module GirFFI
       setup_function_or_method modul, modul, lib, go
     end
 
+    def self.setup_instance_method namespace, classname, lib, modul, klass, method
+      box = get_box modul
+      k2 = build_class namespace, classname, box
+      go = method_introspection_data namespace, classname, method.to_s
+
+      return false if go.nil?
+      return false if go.type != :function
+
+      box = get_box modul
+
+      attach_ffi_function modul, lib, go, box
+
+      k2.class_eval function_definition(go, lib)
+      true
+    end
     # All methods below will be made private at the end.
  
     def self.function_definition info, libmodule
@@ -152,7 +167,9 @@ module GirFFI
     (self.public_methods - Module.public_methods).each do |m|
       private_class_method m.to_sym
     end
-    public_class_method :build_module, :build_class, :setup_method, :setup_function, :setup_function_or_method
+    public_class_method :build_module, :build_class
+    public_class_method :setup_method, :setup_function, :setup_instance_method
+    public_class_method :setup_function_or_method
     public_class_method :itypeinfo_to_ffitype
   end
 end

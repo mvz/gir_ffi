@@ -46,7 +46,7 @@ module GirFFI
     private
 
     def slf; ""; end
-    def fn; "setup_method"; end
+    def fn; "setup_instance_method"; end
     def arguments; [@namespace, @classname]; end
     def libs; [@lib, @module]; end
   end
@@ -56,6 +56,7 @@ module GirFFI
     private
 
     def slf; "self."; end
+    def fn; "setup_method"; end
   end
 
 end
