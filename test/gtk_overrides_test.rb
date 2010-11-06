@@ -1,13 +1,18 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi'
-GirFFI.setup :Gtk
 
 class GtkOverridesTest < Test::Unit::TestCase
   context "The Gtk.init function" do
+    setup do
+      cleanup_module :Gtk
+      GirFFI.setup :Gtk
+    end
+
     should "not take any arguments" do
       assert_raises(ArgumentError) { Gtk.init 1, ["foo"] }
       assert_nothing_raised { Gtk.init }
     end
+
     # FIXME: The following test doesn't actually work.
     # In practice however, the Gtk.init function does exactly this.
     if false

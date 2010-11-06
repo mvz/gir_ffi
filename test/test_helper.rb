@@ -36,4 +36,10 @@ class Test::Unit::TestCase
     GirFFI::IRepository.default.require namespace, nil
     GirFFI::Builder.send :method_introspection_data, namespace, klass, function
   end
+
+  def cleanup_module name
+    if Object.const_defined? name
+      Object.send(:remove_const, name)
+    end
+  end
 end

@@ -6,100 +6,104 @@ class BuilderTest < Test::Unit::TestCase
     # TODO: Use gir's sample Everything library for testing instead.
     context "building GObject::Object" do
       setup do
-	GirFFI::Builder.build_class 'GObject', 'Object', 'NS1'
+	cleanup_module :GObject
+	GirFFI::Builder.build_class 'GObject', 'Object'
       end
 
       should "create a method_missing method for the class" do
-	ms = NS1::GObject::Object.instance_methods(false).map(&:to_sym)
+	ms = GObject::Object.instance_methods(false).map(&:to_sym)
 	assert_contains ms, :method_missing
       end
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
 	gir = GirFFI::IRepository.default
 	expected = gir.shared_library 'GObject'
-	assert_same_elements [*expected], NS1::GObject::Lib.ffi_libraries.map(&:name)
+	assert_same_elements [*expected], GObject::Lib.ffi_libraries.map(&:name)
       end
 
       should "create an array CALLBACKS inside the GObject::Lib module" do
-	assert_equal [], NS1::GObject::Lib::CALLBACKS
+	assert_equal [], GObject::Lib::CALLBACKS
       end
 
       should "not replace existing classes" do
-	oldclass = NS1::GObject::Object
-	GirFFI::Builder.build_class 'GObject', 'Object', 'NS1'
-	assert_equal oldclass, NS1::GObject::Object
+	oldclass = GObject::Object
+	GirFFI::Builder.build_class 'GObject', 'Object'
+	assert_equal oldclass, GObject::Object
       end
     end
 
     context "building Gtk::Window" do
       setup do
-	GirFFI::Builder.build_class 'Gtk', 'Window', 'NS3'
+	cleanup_module :Gtk
+	cleanup_module :GObject
+	GirFFI::Builder.build_class 'Gtk', 'Window'
       end
 
       should "build Gtk namespace" do
-	assert NS3::Gtk.const_defined? :Lib
-	assert NS3::Gtk.respond_to? :method_missing
+	assert Gtk.const_defined? :Lib
+	assert Gtk.respond_to? :method_missing
       end
 
       should "build parent classes also" do
-	assert NS3::Gtk.const_defined? :Widget
-	assert NS3::Gtk.const_defined? :Object
-	assert NS3.const_defined? :GObject
-	assert NS3::GObject.const_defined? :InitiallyUnowned
-	assert NS3::GObject.const_defined? :Object
+	assert Gtk.const_defined? :Widget
+	assert Gtk.const_defined? :Object
+	assert Object.const_defined? :GObject
+	assert GObject.const_defined? :InitiallyUnowned
+	assert GObject.const_defined? :Object
       end
 
       should "set up inheritence chain" do
 	assert_equal [
-	  NS3::Gtk::Window,
-	  NS3::Gtk::Bin,
-	  NS3::Gtk::Container,
-	  NS3::Gtk::Widget,
-	  NS3::Gtk::Object,
-	  NS3::GObject::InitiallyUnowned,
-	  NS3::GObject::Object
-	], NS3::Gtk::Window.ancestors[0..6]
+	  Gtk::Window,
+	  Gtk::Bin,
+	  Gtk::Container,
+	  Gtk::Widget,
+	  Gtk::Object,
+	  GObject::InitiallyUnowned,
+	  GObject::Object
+	], Gtk::Window.ancestors[0..6]
       end
 
       should "create a Gtk::Window#to_ptr method" do
-	assert_contains NS3::Gtk::Window.instance_methods.map(&:to_sym), :to_ptr
+	assert_contains Gtk::Window.instance_methods.map(&:to_sym), :to_ptr
       end
 
       should "attach gtk_window_new to Gtk::Lib" do
-	assert NS3::Gtk::Lib.respond_to? :gtk_window_new
+	assert Gtk::Lib.respond_to? :gtk_window_new
       end
 
       should "result in Gtk::Window.new to succeed" do
-	assert_nothing_raised {NS3::Gtk::Window.new(:toplevel)}
+	assert_nothing_raised {Gtk::Window.new(:toplevel)}
       end
     end
 
     context "building Gtk" do
       setup do
-	GirFFI::Builder.build_module 'Gtk', 'NS2'
+	cleanup_module :Gtk
+	GirFFI::Builder.build_module 'Gtk'
       end
 
       should "create a Lib module ready to attach functions from gtk-x11-2.0" do
 	# The Gtk module has more than one library on my current machine.
 	gir = GirFFI::IRepository.default
 	expected = (gir.shared_library 'Gtk').split(',')
-	assert_same_elements expected, NS2::Gtk::Lib.ffi_libraries.map(&:name)
+	assert_same_elements expected, Gtk::Lib.ffi_libraries.map(&:name)
       end
 
       should "create an array CALLBACKS inside the Gtk::Lib module" do
-	assert_equal [], NS2::Gtk::Lib::CALLBACKS
+	assert_equal [], Gtk::Lib::CALLBACKS
       end
 
       should "not replace existing module" do
-	oldmodule = NS2::Gtk
-	GirFFI::Builder.build_module 'Gtk', 'NS2'
-	assert_equal oldmodule, NS2::Gtk
+	oldmodule = Gtk
+	GirFFI::Builder.build_module 'Gtk'
+	assert_equal oldmodule, Gtk
       end
 
       should "not replace existing Lib module" do
-	oldmodule = NS2::Gtk::Lib
-	GirFFI::Builder.build_module 'Gtk', 'NS2'
-	assert_equal oldmodule, NS2::Gtk::Lib
+	oldmodule = Gtk::Lib
+	GirFFI::Builder.build_module 'Gtk'
+	assert_equal oldmodule, Gtk::Lib
       end
     end
 
@@ -178,7 +182,8 @@ class BuilderTest < Test::Unit::TestCase
 
     context "looking at GObject.signal_connect_data" do
       setup do
-	GirFFI::Builder.build_module 'GObject', 'NS5'
+	cleanup_module :GObject
+	GirFFI::Builder.build_module 'GObject'
 	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
       end
 
@@ -189,14 +194,14 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have the correct types of the arguments for the attached function" do
-	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, NS5::GObject::ConnectFlags],
-	  GirFFI::Builder.send(:ffi_function_argument_types, NS5::GObject, NS5::GObject::Lib, @go, 'NS5')
+	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, GObject::ConnectFlags],
+	  GirFFI::Builder.send(:ffi_function_argument_types, GObject, GObject::Lib, @go, nil)
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	GirFFI::Builder.setup_function 'GObject', NS5::GObject::Lib, NS5::GObject, 'signal_connect_data'
-	cb = NS5::GObject::Lib.find_type :Callback
-	cn = NS5::GObject::Lib.find_type :ClosureNotify
+	GirFFI::Builder.setup_function 'GObject', GObject::Lib, GObject, 'signal_connect_data'
+	cb = GObject::Lib.find_type :Callback
+	cn = GObject::Lib.find_type :ClosureNotify
 
 	assert_equal FFI.find_type(:void), cb.result_type
 	assert_equal FFI.find_type(:void), cn.result_type
@@ -205,7 +210,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "define ffi enum type ConnectFlags" do
-	assert_equal({:after => 1, :swapped => 2}, NS5::GObject::ConnectFlags.to_h)
+	assert_equal({:after => 1, :swapped => 2}, GObject::ConnectFlags.to_h)
       end
     end
 
@@ -246,18 +251,19 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building the Everything module" do
       setup do
-	GirFFI::Builder.build_module 'Everything', 'NS4'
+	cleanup_module :Everything
+	GirFFI::Builder.build_module 'Everything'
       end
 
       should "create a method_missing method for the module" do
-	ms = (NS4::Everything.public_methods - Module.public_methods).map(&:to_sym)
+	ms = (Everything.public_methods - Module.public_methods).map(&:to_sym)
 	assert_contains ms, :method_missing
       end
 
       should "cause the TestObj class to be autocreated" do
-	assert !NS4::Everything.const_defined?(:TestObj)
-	assert_nothing_raised {NS4::Everything::TestObj}
-	assert NS4::Everything.const_defined? :TestObj
+	assert !Everything.const_defined?(:TestObj)
+	assert_nothing_raised {Everything::TestObj}
+	assert Everything.const_defined? :TestObj
       end
     end
 
@@ -265,12 +271,13 @@ class BuilderTest < Test::Unit::TestCase
     # inheritance issues.
     context "built Everything::TestObj" do
       setup do
-	GirFFI::Builder.build_class 'Everything', 'TestObj', 'NS5'
+	cleanup_module :Everything
+	GirFFI::Builder.build_class 'Everything', 'TestObj'
       end
 
       should "make autocreated instance method available to all instances" do
-	o1 = NS5::Everything::TestObj.new
-	o2 = NS5::Everything::TestObj.new
+	o1 = Everything::TestObj.new
+	o2 = Everything::TestObj.new
 	assert !o2.respond_to?(:instance_method)
 	o1.instance_method
 	assert o1.respond_to?(:instance_method)
@@ -280,14 +287,15 @@ class BuilderTest < Test::Unit::TestCase
 
     context "built Everything::TestSubObj" do
       setup do
-	GirFFI::Builder.build_class 'Everything', 'TestSubObj', 'NS6'
+	cleanup_module :Everything
+	GirFFI::Builder.build_class 'Everything', 'TestSubObj'
       end
 
       should "autocreate parent class' set_bare inside the parent class" do
-	o1 = NS6::Everything::TestSubObj.new
+	o1 = Everything::TestSubObj.new
 	assert !o1.respond_to?(:set_bare)
 	assert_nothing_raised {o1.set_bare(nil)}
-	o2 = NS6::Everything::TestObj.new
+	o2 = Everything::TestObj.new
 	assert o2.respond_to?(:set_bare)
       end
     end
