@@ -5,9 +5,8 @@ module GirFFI
   # repository.
   class ModuleBuilder
 
-    def initialize namespace, box
+    def initialize namespace
       @namespace = namespace
-      @box = box
     end
 
     def generate
@@ -28,12 +27,7 @@ module GirFFI
     end
 
     def setup_module
-      if @box.nil?
-	boxm = ::Object
-      else
-	boxm = BuilderHelper.get_or_define_module ::Object, @box.to_s
-      end
-      @module = BuilderHelper.get_or_define_module boxm, @namespace.to_s
+      @module = BuilderHelper.get_or_define_module ::Object, @namespace.to_s
     end
 
     def setup_lib_for_ffi
@@ -53,7 +47,6 @@ module GirFFI
     end
 
     def const_missing_definition
-      box = @box.nil? ? "nil" : "\"#{@box}\""
       return <<-CODE
 	def self.const_missing classname
 	  info = IRepository.default.find_by_name "#{@namespace}", classname.to_s

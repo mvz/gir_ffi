@@ -17,7 +17,7 @@ module GirFFI
     end
 
     def self.build_module namespace
-      ModuleBuilder.new(namespace, nil).generate
+      ModuleBuilder.new(namespace).generate
     end
 
     # TODO: Make better interface
