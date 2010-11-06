@@ -68,10 +68,6 @@ class BuilderTest < Test::Unit::TestCase
 	assert_contains Gtk::Window.instance_methods.map(&:to_sym), :to_ptr
       end
 
-      should "attach gtk_window_new to Gtk::Lib" do
-	assert Gtk::Lib.respond_to? :gtk_window_new
-      end
-
       should "result in Gtk::Window.new to succeed" do
 	assert_nothing_raised {Gtk::Window.new(:toplevel)}
       end
@@ -282,6 +278,12 @@ class BuilderTest < Test::Unit::TestCase
 	o1.instance_method
 	assert o1.respond_to?(:instance_method)
 	assert o2.respond_to?(:instance_method)
+      end
+
+      should "attach C functions to Everything::Lib" do
+	o = Everything::TestObj.new
+	o.instance_method
+	assert Everything::Lib.respond_to? :test_obj_instance_method
       end
     end
 
