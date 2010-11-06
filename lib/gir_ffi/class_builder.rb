@@ -48,7 +48,7 @@ module GirFFI
     end
 
     def instantiate_module
-      @module = Builder.build_module @namespace, @box
+      @module = Builder.build_module @namespace
       @lib = @module.const_get :Lib
     end
 

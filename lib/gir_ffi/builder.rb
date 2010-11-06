@@ -16,8 +16,8 @@ module GirFFI
       ClassBuilder.new(namespace, classname, nil).generate
     end
 
-    def self.build_module namespace, box=nil
-      ModuleBuilder.new(namespace, box).generate
+    def self.build_module namespace
+      ModuleBuilder.new(namespace, nil).generate
     end
 
     # TODO: Make better interface
@@ -37,7 +37,7 @@ module GirFFI
     def self.setup_instance_method namespace, classname, lib, modul, klass, method
       box = get_box modul
       k2 = build_class namespace, classname
-      m2 = build_module namespace, box
+      m2 = build_module namespace
       l2 = m2.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
