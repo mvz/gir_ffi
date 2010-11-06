@@ -30,7 +30,7 @@ module GirFFI
       modul = build_module namespace
       lib = modul.const_get(:Lib)
 
-      attach_ffi_function modul, lib, go
+      attach_ffi_function lib, go
 
       meta = (class << klass; self; end)
       meta.class_eval function_definition(go, lib)
@@ -47,7 +47,7 @@ module GirFFI
       modul = build_module namespace
       lib = modul.const_get(:Lib)
 
-      attach_ffi_function modul, lib, go
+      attach_ffi_function lib, go
 
       meta = (class << modul; self; end)
       meta.class_eval function_definition(go, lib)
@@ -65,7 +65,7 @@ module GirFFI
       modul = build_module namespace
       lib = modul.const_get(:Lib)
 
-      attach_ffi_function modul, lib, go
+      attach_ffi_function lib, go
 
       klass.class_eval function_definition(go, lib)
 
@@ -94,17 +94,17 @@ module GirFFI
       return objectinfo.find_method method
     end
 
-    def self.attach_ffi_function modul, lib, info
+    def self.attach_ffi_function lib, info
       sym = info.symbol
-      argtypes = ffi_function_argument_types modul, lib, info
-      rt = ffi_function_return_type modul, lib, info
+      argtypes = ffi_function_argument_types info
+      rt = ffi_function_return_type info
 
       lib.attach_function sym, argtypes, rt
     end
 
-    def self.ffi_function_argument_types modul, lib, info
+    def self.ffi_function_argument_types info
       types = info.args.map do |a|
-	iarginfo_to_ffitype modul, lib, a
+	iarginfo_to_ffitype a
       end
       if info.type == :function
 	types.unshift :pointer if info.method?
@@ -112,12 +112,11 @@ module GirFFI
       types
     end
 
-    def self.ffi_function_return_type modul, lib, info
-      itypeinfo_to_ffitype modul, lib, info.return_type
+    def self.ffi_function_return_type info
+      itypeinfo_to_ffitype info.return_type
     end
 
-    def self.itypeinfo_to_ffitype modul, lib, info
-      modul = nil
+    def self.itypeinfo_to_ffitype info
       if info.pointer?
 	return :string if info.tag == :utf8
 	return :pointer
@@ -129,7 +128,7 @@ module GirFFI
 	when :object, :struct, :flags, :enum
 	  return build_class interface.namespace, interface.name
 	when :callback
-	  return build_callback modul, lib, interface
+	  return build_callback interface
 	else
 	  raise NotImplementedError
 	end
@@ -142,19 +141,22 @@ module GirFFI
       end
     end
 
-    def self.iarginfo_to_ffitype modul, lib, info
+    def self.iarginfo_to_ffitype info
       return :pointer if info.direction == :inout
-      return itypeinfo_to_ffitype modul, lib, info.type
+      return itypeinfo_to_ffitype info.type
     end
 
-    def self.build_callback modul, lib, interface
+    def self.build_callback interface
+      modul = build_module interface.namespace
+      lib = modul.const_get(:Lib)
+
       sym = interface.name.to_sym
 
       # FIXME: Rescue is ugly here.
       ft = lib.find_type sym rescue nil
       if ft.nil?
-	args = ffi_function_argument_types modul, lib, interface
-	ret = ffi_function_return_type modul, lib, interface
+	args = ffi_function_argument_types interface
+	ret = ffi_function_return_type interface
 	lib.callback sym, args, ret
       end
       sym
