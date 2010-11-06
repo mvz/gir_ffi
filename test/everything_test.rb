@@ -1,13 +1,11 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi'
 
+GirFFI.setup :Everything
+
 # Tests generated methods and functions in the Everything namespace.
 class EverythingTest < Test::Unit::TestCase
   context "The generated Everything module" do
-    setup do
-      GirFFI.setup :Everything
-    end
-
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)
