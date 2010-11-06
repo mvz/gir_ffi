@@ -21,48 +21,54 @@ module GirFFI
     end
 
     def self.setup_method namespace, classname, method
-      klass = build_class namespace, classname
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
       return false if go.nil?
       return false if go.type != :function
+
+      klass = build_class namespace, classname
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
 
       attach_ffi_function modul, lib, go
 
       meta = (class << klass; self; end)
       meta.class_eval function_definition(go, lib)
+
       true
     end
 
     def self.setup_function namespace, method
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
       go = function_introspection_data namespace, method.to_s
 
       return false if go.nil?
       return false if go.type != :function
 
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
+
       attach_ffi_function modul, lib, go
 
       meta = (class << modul; self; end)
       meta.class_eval function_definition(go, lib)
+
       true
     end
 
     def self.setup_instance_method namespace, classname, method
-      klass = build_class namespace, classname
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
       return false if go.nil?
       return false if go.type != :function
 
+      klass = build_class namespace, classname
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
+
       attach_ffi_function modul, lib, go
 
       klass.class_eval function_definition(go, lib)
+
       true
     end
 
