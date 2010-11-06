@@ -35,7 +35,6 @@ module GirFFI
     end
 
     def self.setup_instance_method namespace, classname, lib, modul, klass, method
-      box = get_box modul
       k2 = build_class namespace, classname
       m2 = build_module namespace
       l2 = m2.const_get(:Lib)
@@ -141,8 +140,6 @@ module GirFFI
       return false if go.nil?
       return false if go.type != :function
 
-      box = get_box modul
-
       attach_ffi_function modul, lib, go
 
       if Class === klass
@@ -152,16 +149,6 @@ module GirFFI
       end
       meta.class_eval function_definition(go, lib)
       true
-    end
-
-    # TODO: This is a weird way to get back the box.
-    def self.get_box modul
-      name = modul.to_s
-      if name =~ /::/
-	return Kernel.const_get(name.split('::')[0])
-      else
-	return nil
-      end
     end
 
     # Set up method access.
