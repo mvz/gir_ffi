@@ -162,7 +162,6 @@ module GirFFI
     end
     public_class_method :build_module, :build_class
     public_class_method :setup_method, :setup_function, :setup_instance_method
-    public_class_method :setup_function_or_method
     public_class_method :itypeinfo_to_ffitype
   end
 end
