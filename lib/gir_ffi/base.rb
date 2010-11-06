@@ -18,6 +18,8 @@ module GirFFI
       def ffi_structure
 	self.const_get(:Struct)
       end
+      alias_method :_real_new, :new
+      undef new
     end
   end
 end

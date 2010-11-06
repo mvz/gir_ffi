@@ -59,18 +59,7 @@ module GirFFI
 
     def setup_class
       setup_method_missing
-      setup_base
       setup_layout
-    end
-
-    def setup_base
-      return if @parent
-      class << @klass
-	self.class_eval {
-	  alias_method :_real_new, :new
-	  undef new
-	}
-      end
     end
 
     def setup_method_missing
