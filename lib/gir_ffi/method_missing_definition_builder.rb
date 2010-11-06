@@ -11,7 +11,7 @@ module GirFFI
 
       return <<-CODE
 	def #{slf}method_missing method, *arguments, &block
-	  result = GirFFI::Builder.#{fn} #{args.join ', '}, #{libs.join ', '}, self, method.to_s
+	  result = GirFFI::Builder.#{fn} #{args.join ', '}, method.to_s
 	  return super unless result
 	  if block.nil?
 	    self.send method, *arguments

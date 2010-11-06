@@ -21,31 +21,36 @@ module GirFFI
     end
 
     # TODO: Make better interface
-    def self.setup_method namespace, classname, lib, modul, klass, method
+    def self.setup_method namespace, classname, method
+      klass = build_class namespace, classname
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
       setup_function_or_method klass, modul, lib, go
     end
 
     # TODO: Make better interface
-    def self.setup_function namespace, lib, modul, method
+    def self.setup_function namespace, method
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
       go = function_introspection_data namespace, method.to_s
 
       setup_function_or_method modul, modul, lib, go
     end
 
-    def self.setup_instance_method namespace, classname, lib, modul, klass, method
-      k2 = build_class namespace, classname
-      m2 = build_module namespace
-      l2 = m2.const_get(:Lib)
+    def self.setup_instance_method namespace, classname, method
+      klass = build_class namespace, classname
+      modul = build_module namespace
+      lib = modul.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
       return false if go.nil?
       return false if go.type != :function
 
-      attach_ffi_function m2, l2, go
+      attach_ffi_function modul, lib, go
 
-      k2.class_eval function_definition(go, l2)
+      klass.class_eval function_definition(go, lib)
       true
     end
     # All methods below will be made private at the end.

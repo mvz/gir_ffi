@@ -1,4 +1,4 @@
-GirFFI::Builder.setup_function "Gtk", Gtk::Lib, Gtk, "init"
+GirFFI::Builder.setup_function "Gtk", "init"
 module Gtk
   class << self
     alias _base_init init
