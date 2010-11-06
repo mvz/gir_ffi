@@ -20,23 +20,35 @@ module GirFFI
       ModuleBuilder.new(namespace).generate
     end
 
-    # TODO: Make better interface
     def self.setup_method namespace, classname, method
       klass = build_class namespace, classname
       modul = build_module namespace
       lib = modul.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
-      setup_function_or_method klass, modul, lib, go
+      return false if go.nil?
+      return false if go.type != :function
+
+      attach_ffi_function modul, lib, go
+
+      meta = (class << klass; self; end)
+      meta.class_eval function_definition(go, lib)
+      true
     end
 
-    # TODO: Make better interface
     def self.setup_function namespace, method
       modul = build_module namespace
       lib = modul.const_get(:Lib)
       go = function_introspection_data namespace, method.to_s
 
-      setup_function_or_method modul, modul, lib, go
+      return false if go.nil?
+      return false if go.type != :function
+
+      attach_ffi_function modul, lib, go
+
+      meta = (class << modul; self; end)
+      meta.class_eval function_definition(go, lib)
+      true
     end
 
     def self.setup_instance_method namespace, classname, method
@@ -53,6 +65,7 @@ module GirFFI
       klass.class_eval function_definition(go, lib)
       true
     end
+
     # All methods below will be made private at the end.
  
     def self.function_definition info, libmodule
@@ -139,21 +152,6 @@ module GirFFI
 	lib.callback sym, args, ret
       end
       sym
-    end
-
-    def self.setup_function_or_method klass, modul, lib, go
-      return false if go.nil?
-      return false if go.type != :function
-
-      attach_ffi_function modul, lib, go
-
-      if Class === klass
-	meta = (class << klass; self; end)
-      else
-	meta = klass.class
-      end
-      meta.class_eval function_definition(go, lib)
-      true
     end
 
     # Set up method access.
