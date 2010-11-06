@@ -61,7 +61,6 @@ module GirFFI
       setup_method_missing
       setup_base
       setup_layout
-      setup_constructor
     end
 
     def setup_base
@@ -71,13 +70,6 @@ module GirFFI
 	  alias_method :_real_new, :new
 	  undef new
 	}
-      end
-    end
-
-    def setup_constructor
-      ctor = @info.find_method 'new'
-      if not ctor.nil? and ctor.constructor?
-	Builder.setup_function_or_method @klass, @module, @lib, ctor
       end
     end
 
