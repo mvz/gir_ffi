@@ -272,8 +272,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "make autocreated instance method available to all instances" do
-	o1 = Everything::TestObj.new
-	o2 = Everything::TestObj.new
+	o1 = Everything::TestObj.new_from_file("foo")
+	o2 = Everything::TestObj.new_from_file("foo")
 	assert !o2.respond_to?(:instance_method)
 	o1.instance_method
 	assert o1.respond_to?(:instance_method)
@@ -281,9 +281,13 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "attach C functions to Everything::Lib" do
-	o = Everything::TestObj.new
+	o = Everything::TestObj.new_from_file("foo")
 	o.instance_method
 	assert Everything::Lib.respond_to? :test_obj_instance_method
+      end
+
+      should "not have regular #new as a constructor" do
+	assert_raises(NoMethodError) { Everything::TestObj.new }
       end
     end
 
@@ -297,7 +301,7 @@ class BuilderTest < Test::Unit::TestCase
 	o1 = Everything::TestSubObj.new
 	assert !o1.respond_to?(:set_bare)
 	assert_nothing_raised {o1.set_bare(nil)}
-	o2 = Everything::TestObj.new
+	o2 = Everything::TestObj.new_from_file("foo")
 	assert o2.respond_to?(:set_bare)
       end
     end

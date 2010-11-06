@@ -67,7 +67,10 @@ module GirFFI
     def setup_base
       return if @parent
       class << @klass
-	self.class_eval { alias_method :_real_new, :new }
+	self.class_eval {
+	  alias_method :_real_new, :new
+	  undef new
+	}
       end
     end
 

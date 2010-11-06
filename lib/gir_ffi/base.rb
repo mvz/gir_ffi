@@ -1,6 +1,6 @@
 require 'forwardable'
 module GirFFI
-  # Base class for all generated classes. COntains code for dealing with
+  # Base class for all generated classes. Contains code for dealing with
   # the generated Struct classes.
   class Base
     extend Forwardable
