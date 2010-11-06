@@ -2,10 +2,9 @@ module GirFFI
   # Builds a class based on information found in the introspection
   # repository.
   class ClassBuilder
-    def initialize namespace, classname, box
+    def initialize namespace, classname
       @namespace = namespace
       @classname = classname
-      @box = box
     end
 
     def generate

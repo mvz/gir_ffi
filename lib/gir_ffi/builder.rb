@@ -13,7 +13,7 @@ module GirFFI
   # to create the modules and classes used in your program.
   module Builder
     def self.build_class namespace, classname
-      ClassBuilder.new(namespace, classname, nil).generate
+      ClassBuilder.new(namespace, classname).generate
     end
 
     def self.build_module namespace
