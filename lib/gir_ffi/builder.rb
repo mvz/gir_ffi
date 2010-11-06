@@ -73,15 +73,15 @@ module GirFFI
 
     def self.attach_ffi_function modul, lib, info
       sym = info.symbol
-      argtypes = ffi_function_argument_types modul, lib, info, nil
+      argtypes = ffi_function_argument_types modul, lib, info
       rt = ffi_function_return_type modul, lib, info, nil
 
       lib.attach_function sym, argtypes, rt
     end
 
-    def self.ffi_function_argument_types modul, lib, info, box
+    def self.ffi_function_argument_types modul, lib, info
       types = info.args.map do |a|
-	iarginfo_to_ffitype modul, lib, a, box
+	iarginfo_to_ffitype modul, lib, a, nil
       end
       if info.type == :function
 	types.unshift :pointer if info.method?
@@ -130,7 +130,7 @@ module GirFFI
       # FIXME: Rescue is ugly here.
       ft = lib.find_type sym rescue nil
       if ft.nil?
-	args = ffi_function_argument_types modul, lib, interface, box
+	args = ffi_function_argument_types modul, lib, interface
 	ret = ffi_function_return_type modul, lib, interface, box
 	lib.callback sym, args, ret
       end
