@@ -135,7 +135,7 @@ class BuilderTest < Test::Unit::TestCase
 	  ffi_lib "gtk-x11-2.0"
 	end
 
-	GirFFI::Builder.send :attach_ffi_function, mod, libmod, @go, nil
+	GirFFI::Builder.send :attach_ffi_function, mod, libmod, @go
 	assert_contains libmod.public_methods.map(&:to_sym), :gtk_main
       end
     end

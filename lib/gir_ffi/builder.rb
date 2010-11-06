@@ -44,7 +44,7 @@ module GirFFI
       return false if go.nil?
       return false if go.type != :function
 
-      attach_ffi_function m2, l2, go, box
+      attach_ffi_function m2, l2, go
 
       k2.class_eval function_definition(go, l2)
       true
@@ -71,10 +71,10 @@ module GirFFI
       return objectinfo.find_method method
     end
 
-    def self.attach_ffi_function modul, lib, info, box
+    def self.attach_ffi_function modul, lib, info
       sym = info.symbol
-      argtypes = ffi_function_argument_types modul, lib, info, box
-      rt = ffi_function_return_type modul, lib, info, box
+      argtypes = ffi_function_argument_types modul, lib, info, nil
+      rt = ffi_function_return_type modul, lib, info, nil
 
       lib.attach_function sym, argtypes, rt
     end
@@ -143,7 +143,7 @@ module GirFFI
 
       box = get_box modul
 
-      attach_ffi_function modul, lib, go, box
+      attach_ffi_function modul, lib, go
 
       if Class === klass
 	meta = (class << klass; self; end)
