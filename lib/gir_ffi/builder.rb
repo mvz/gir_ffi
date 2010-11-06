@@ -12,8 +12,8 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
-    def self.build_class namespace, classname, box=nil
-      ClassBuilder.new(namespace, classname, box).generate
+    def self.build_class namespace, classname
+      ClassBuilder.new(namespace, classname, nil).generate
     end
 
     def self.build_module namespace, box=nil
@@ -36,17 +36,17 @@ module GirFFI
 
     def self.setup_instance_method namespace, classname, lib, modul, klass, method
       box = get_box modul
-      k2 = build_class namespace, classname, box
+      k2 = build_class namespace, classname
+      m2 = build_module namespace, box
+      l2 = m2.const_get(:Lib)
       go = method_introspection_data namespace, classname, method.to_s
 
       return false if go.nil?
       return false if go.type != :function
 
-      box = get_box modul
+      attach_ffi_function m2, l2, go, box
 
-      attach_ffi_function modul, lib, go, box
-
-      k2.class_eval function_definition(go, lib)
+      k2.class_eval function_definition(go, l2)
       true
     end
     # All methods below will be made private at the end.
@@ -94,6 +94,7 @@ module GirFFI
     end
 
     def self.itypeinfo_to_ffitype modul, lib, info, box
+      modul = nil
       if info.pointer?
 	return :string if info.tag == :utf8
 	return :pointer
@@ -103,7 +104,7 @@ module GirFFI
 	interface = info.interface
 	case interface.type
 	when :object, :struct, :flags, :enum
-	  return build_class interface.namespace, interface.name, box
+	  return build_class interface.namespace, interface.name
 	when :callback
 	  return build_callback modul, lib, interface, box
 	else

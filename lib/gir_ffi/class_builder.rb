@@ -41,7 +41,7 @@ module GirFFI
     def get_superclass
       @parent = @info.type == :object ? @info.parent : nil
       if @parent
-	@superclass = Builder.build_class @parent.namespace, @parent.name, @box
+	@superclass = Builder.build_class @parent.namespace, @parent.name
       else
 	@superclass = GirFFI::Base
       end

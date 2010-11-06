@@ -58,7 +58,7 @@ module GirFFI
 	def self.const_missing classname
 	  info = IRepository.default.find_by_name "#{@namespace}", classname.to_s
 	  return super if info.nil?
-	  return GirFFI::Builder.build_class "#{@namespace}", classname.to_s, #{box}
+	  return GirFFI::Builder.build_class "#{@namespace}", classname.to_s
 	end
       CODE
     end
