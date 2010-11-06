@@ -74,7 +74,7 @@ module GirFFI
     def self.attach_ffi_function modul, lib, info
       sym = info.symbol
       argtypes = ffi_function_argument_types modul, lib, info
-      rt = ffi_function_return_type modul, lib, info, nil
+      rt = ffi_function_return_type modul, lib, info
 
       lib.attach_function sym, argtypes, rt
     end
@@ -89,8 +89,8 @@ module GirFFI
       types
     end
 
-    def self.ffi_function_return_type modul, lib, info, box
-      itypeinfo_to_ffitype modul, lib, info.return_type, box
+    def self.ffi_function_return_type modul, lib, info
+      itypeinfo_to_ffitype modul, lib, info.return_type, nil
     end
 
     def self.itypeinfo_to_ffitype modul, lib, info, box
@@ -131,7 +131,7 @@ module GirFFI
       ft = lib.find_type sym rescue nil
       if ft.nil?
 	args = ffi_function_argument_types modul, lib, interface
-	ret = ffi_function_return_type modul, lib, interface, box
+	ret = ffi_function_return_type modul, lib, interface
 	lib.callback sym, args, ret
       end
       sym

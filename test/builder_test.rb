@@ -159,7 +159,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :void as return type for the attached function" do
-	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, Gtk, Gtk::Lib, @go, nil)
+	assert_equal :void, GirFFI::Builder.send(:ffi_function_return_type, Gtk, Gtk::Lib, @go)
       end
     end
 
