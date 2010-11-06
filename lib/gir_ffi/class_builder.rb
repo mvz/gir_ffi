@@ -89,7 +89,7 @@ module GirFFI
       @info.fields.each do |f|
 	layoutspec << f.name.to_sym
 
-	ffitype = Builder.itypeinfo_to_ffitype @module, @lib, f.type, @box
+	ffitype = Builder.itypeinfo_to_ffitype @module, @lib, f.type
 	if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
 	  ffitype = ffitype.const_get :Struct
 	end

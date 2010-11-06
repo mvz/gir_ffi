@@ -81,7 +81,7 @@ module GirFFI
 
     def self.ffi_function_argument_types modul, lib, info
       types = info.args.map do |a|
-	iarginfo_to_ffitype modul, lib, a, nil
+	iarginfo_to_ffitype modul, lib, a
       end
       if info.type == :function
 	types.unshift :pointer if info.method?
@@ -90,10 +90,10 @@ module GirFFI
     end
 
     def self.ffi_function_return_type modul, lib, info
-      itypeinfo_to_ffitype modul, lib, info.return_type, nil
+      itypeinfo_to_ffitype modul, lib, info.return_type
     end
 
-    def self.itypeinfo_to_ffitype modul, lib, info, box
+    def self.itypeinfo_to_ffitype modul, lib, info
       modul = nil
       if info.pointer?
 	return :string if info.tag == :utf8
@@ -106,7 +106,7 @@ module GirFFI
 	when :object, :struct, :flags, :enum
 	  return build_class interface.namespace, interface.name
 	when :callback
-	  return build_callback modul, lib, interface, box
+	  return build_callback modul, lib, interface
 	else
 	  raise NotImplementedError
 	end
@@ -119,12 +119,12 @@ module GirFFI
       end
     end
 
-    def self.iarginfo_to_ffitype modul, lib, info, box
+    def self.iarginfo_to_ffitype modul, lib, info
       return :pointer if info.direction == :inout
-      return itypeinfo_to_ffitype modul, lib, info.type, box
+      return itypeinfo_to_ffitype modul, lib, info.type
     end
 
-    def self.build_callback modul, lib, interface, box
+    def self.build_callback modul, lib, interface
       sym = interface.name.to_sym
 
       # FIXME: Rescue is ugly here.
