@@ -1,6 +1,5 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'gir_ffi/builder'
-require 'gir_ffi/function_definition_builder'
+require 'gir_ffi'
 
 class FunctionDefinitionBuilderTest < Test::Unit::TestCase
   context "The FunctionDefinition builder" do
