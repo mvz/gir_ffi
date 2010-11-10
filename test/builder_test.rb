@@ -300,12 +300,14 @@ class BuilderTest < Test::Unit::TestCase
 
       should "autocreate parent class' set_bare inside the parent class" do
 	o1 = Everything::TestSubObj.new
+	o2 = Everything::TestObj.new_from_file("foo")
+
 	assert_nothing_raised {o1.set_bare(nil)}
 
 	Everything::TestObj.class_eval do
 	  undef method_missing
 	end
-	o2 = Everything::TestObj.new_from_file("foo")
+
 	assert_nothing_raised {o2.set_bare(nil)}
       end
 
