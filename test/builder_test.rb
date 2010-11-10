@@ -274,10 +274,11 @@ class BuilderTest < Test::Unit::TestCase
       should "make autocreated instance method available to all instances" do
 	o1 = Everything::TestObj.new_from_file("foo")
 	o2 = Everything::TestObj.new_from_file("foo")
-	assert !o2.respond_to?(:instance_method)
 	o1.instance_method
-	assert o1.respond_to?(:instance_method)
-	assert o2.respond_to?(:instance_method)
+	Everything::TestObj.class_eval do
+	  undef method_missing
+	end
+	assert_nothing_raised { o2.instance_method }
       end
 
       should "attach C functions to Everything::Lib" do
@@ -299,10 +300,20 @@ class BuilderTest < Test::Unit::TestCase
 
       should "autocreate parent class' set_bare inside the parent class" do
 	o1 = Everything::TestSubObj.new
-	assert !o1.respond_to?(:set_bare)
 	assert_nothing_raised {o1.set_bare(nil)}
+
+	Everything::TestObj.class_eval do
+	  undef method_missing
+	end
 	o2 = Everything::TestObj.new_from_file("foo")
-	assert o2.respond_to?(:set_bare)
+	assert_nothing_raised {o2.set_bare(nil)}
+      end
+
+      should "use its own version of instance_method when parent's version has been created" do
+	obj = Everything::TestObj.new_from_file("foo")
+	assert_equal(-1, obj.instance_method)
+	subobj = Everything::TestSubObj.new
+	assert_equal 0, subobj.instance_method
       end
     end
   end

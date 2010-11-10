@@ -60,6 +60,7 @@ module GirFFI
     def setup_class
       setup_method_missing
       setup_layout
+      alias_instance_methods
     end
 
     def setup_method_missing
@@ -82,6 +83,14 @@ module GirFFI
 	layoutspec << f.offset
       end
       @structklass.class_eval { layout(*layoutspec) }
+    end
+
+    def alias_instance_methods
+      @info.methods.each do |m|
+	@klass.class_eval do
+	  alias_method m.name.to_sym, :_fake_missing
+	end
+      end
     end
 
     def instance_method_missing_definition
