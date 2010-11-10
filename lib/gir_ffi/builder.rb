@@ -67,6 +67,7 @@ module GirFFI
 
       attach_ffi_function lib, go
 
+      klass.class_eval "undef #{method}"
       klass.class_eval function_definition(go, lib)
 
       true
