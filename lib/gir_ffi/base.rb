@@ -14,10 +14,6 @@ module GirFFI
       self.class.ffi_structure
     end
 
-    def _fake_missing *args, &block
-      method_missing method_name.to_sym, *args, &block
-    end
-
     private
 
     def method_name
