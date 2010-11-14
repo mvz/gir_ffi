@@ -14,12 +14,6 @@ module GirFFI
       self.class.ffi_structure
     end
 
-    private
-
-    def method_name
-      caller[0].gsub(/.*`(.*)'/, '\1')
-    end
-
     class << self
       def ffi_structure
 	self.const_get(:Struct)

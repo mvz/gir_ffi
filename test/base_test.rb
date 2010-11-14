@@ -10,14 +10,5 @@ class BaseTest < Test::Unit::TestCase
 	def self.new; self._real_new; end
       end
     end
-
-    should "be able to use method_name to get the names of its methods" do
-      @klass.class_eval do
-	def this_is_my_name
-	  method_name
-	end
-      end
-      assert_equal "this_is_my_name", @klass.new.this_is_my_name
-    end
   end
 end

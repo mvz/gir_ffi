@@ -89,7 +89,7 @@ module GirFFI
       @info.methods.each do |m|
 	@klass.class_eval "
 	  def #{m.name} *args, &block
-	    method_missing method_name.to_sym, *args, &block
+	    method_missing :#{m.name}, *args, &block
 	  end
 	"
       end
