@@ -87,9 +87,11 @@ module GirFFI
 
     def alias_instance_methods
       @info.methods.each do |m|
-	@klass.class_eval do
-	  alias_method m.name.to_sym, :_fake_missing
-	end
+	@klass.class_eval "
+	  def #{m.name} *args, &block
+	    method_missing method_name.to_sym, *args, &block
+	  end
+	"
       end
     end
 
