@@ -55,5 +55,21 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       assert_equal cws(expected), cws(code)
     end
+
+    should "build correct definition of Everything::TestObj#new_from_file" do
+      go = get_method_introspection_data 'Everything', 'TestObj', 'new_from_file'
+      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      code = fbuilder.generate
+
+      expected =
+	"def new_from_file x
+	  _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+	  _v1 = Lib.test_obj_new_from_file x, _v2
+	  GirFFI::ArgHelper.check_error(_v2)
+	  return Everything::TestObj._real_new(_v1)
+	end"
+
+      assert_equal cws(expected), cws(code)
+    end
   end
 end

@@ -109,6 +109,7 @@ module GirFFI
       end
       if info.type == :function
 	types.unshift :pointer if info.method?
+	types << :pointer if info.throws?
       end
       types
     end

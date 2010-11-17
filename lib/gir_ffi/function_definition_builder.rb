@@ -116,6 +116,13 @@ module GirFFI
     end
 
     def adjust_accumulators
+      if @info.throws?
+	errvar = new_var
+	@pre << "#{errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
+	@post << "GirFFI::ArgHelper.check_error(#{errvar})"
+	@callargs << errvar
+      end
+
       @post << "return #{@retvals.join(', ')}" unless @retvals.empty?
 
       if @info.method?
