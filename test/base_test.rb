@@ -10,5 +10,9 @@ class BaseTest < Test::Unit::TestCase
 	def self.new; self._real_new; end
       end
     end
+    # TODO: See if we can test some part of Base again.
+    should "pass" do
+      assert true
+    end
   end
 end
