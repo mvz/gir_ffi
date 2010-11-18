@@ -63,10 +63,6 @@ module GirFFI
       Lib.g_type_tag_to_string type
     end
 
-    def n_infos namespace
-      Lib.g_irepository_get_n_infos @gobj, namespace
-    end
-
     def require namespace, version
       errpp = FFI::MemoryPointer.new(:pointer).write_pointer nil
 
@@ -76,9 +72,20 @@ module GirFFI
       raise GError.new(errp)[:message] unless errp.null?
     end
 
+    def n_infos namespace
+      Lib.g_irepository_get_n_infos @gobj, namespace
+    end
+
     def info namespace, index
       ptr = Lib.g_irepository_get_info @gobj, namespace, index
       return wrap ptr
+    end
+
+    # Utility method
+    def infos namespace
+      (0..(n_infos(namespace) - 1)).map do |i|
+	info namespace, i
+      end
     end
 
     def find_by_name namespace, name
