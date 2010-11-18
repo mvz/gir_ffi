@@ -19,24 +19,27 @@ require 'gir_ffi/i_value_info'
 require 'gir_ffi/i_union_info'
 require 'gir_ffi/i_enum_info'
 require 'gir_ffi/i_flags_info'
+require 'gir_ffi/i_error_domain_info'
 
 module GirFFI
   # The Gobject Introspection Repository. This class is the point of
   # access to the introspection typelibs.
   # This class wraps the GIRepository struct.
   class IRepository
+    # Map info type to class. Default is IBaseInfo.
     TYPEMAP = {
-      #:invalid,
+      :invalid => IBaseInfo,
       :function => IFunctionInfo,
       :callback => ICallbackInfo,
       :struct => IStructInfo,
-      #:boxed => ,
+      # TODO: There's no GIBoxedInfo, so what does :boxed mean?
+      :boxed => IBaseInfo,
       :enum => IEnumInfo,
       :flags => IFlagsInfo,
       :object => IObjectInfo,
       :interface => IInterfaceInfo,
       :constant => IConstantInfo,
-      # :error_domain,
+      :error_domain => IErrorDomainInfo,
       :union => IUnionInfo,
       :value => IValueInfo,
       :signal => ISignalInfo,
@@ -45,7 +48,7 @@ module GirFFI
       :field => IFieldInfo,
       :arg => IArgInfo,
       :type => ITypeInfo,
-      #:unresolved
+      :unresolved => IBaseInfo
     }
 
     def initialize
