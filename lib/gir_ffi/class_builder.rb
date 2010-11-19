@@ -69,20 +69,25 @@ module GirFFI
     end
 
     def setup_layout
-      layoutspec = []
+      spec = layout_specification
+      @structklass.class_eval { layout(*spec) }
+    end
+
+    def layout_specification
+      spec = []
       @info.fields.each do |f|
-	layoutspec << f.name.to_sym
+	spec << f.name.to_sym
 
 	ffitype = Builder.itypeinfo_to_ffitype f.type
 	if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
 	  ffitype = ffitype.const_get :Struct
 	end
 
-	layoutspec << ffitype
+	spec << ffitype
 
-	layoutspec << f.offset
+	spec << f.offset
       end
-      @structklass.class_eval { layout(*layoutspec) }
+      spec
     end
 
     def alias_instance_methods
