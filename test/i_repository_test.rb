@@ -31,7 +31,13 @@ module GirFFI
 
       should "allow version to be nil" do
 	assert_nothing_raised do
-	  IRepository.default.require 'Gtk', nil
+	  IRepository.default.require 'Everything', nil
+	end
+      end
+
+      should "allow version to be left out" do
+	assert_nothing_raised do
+	  IRepository.default.require 'Everything'
 	end
       end
     end

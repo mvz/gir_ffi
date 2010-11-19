@@ -66,7 +66,7 @@ module GirFFI
       Lib.g_type_tag_to_string type
     end
 
-    def require namespace, version
+    def require namespace, version=nil
       errpp = FFI::MemoryPointer.new(:pointer).write_pointer nil
 
       Lib.g_irepository_require @gobj, namespace, version, 0, errpp
