@@ -1,3 +1,9 @@
+== 0.0.3 / 2010-11-19
+
+* Update to restore Ruby 1.9 support.
+* Handle functions with the 'throws' property set.
+* Handle classes without specified fields.
+
 == 0.0.2 / 2010-11-14
 
 * Several fixes to method creation.
