@@ -1,4 +1,5 @@
 require 'shoulda'
+require 'rr'
 require 'ffi'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
@@ -23,6 +24,7 @@ module Lib
 end
 
 class Test::Unit::TestCase
+  include RR::Adapters::TestUnit
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
   end

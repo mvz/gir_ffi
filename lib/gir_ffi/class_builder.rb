@@ -74,20 +74,26 @@ module GirFFI
     end
 
     def layout_specification
+      if @info.fields.empty?
+	if @parent
+	  return [:parent, @superclass.const_get(:Struct), 0]
+	end
+      end
       spec = []
       @info.fields.each do |f|
 	spec << f.name.to_sym
-
-	ffitype = Builder.itypeinfo_to_ffitype f.type
-	if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
-	  ffitype = ffitype.const_get :Struct
-	end
-
-	spec << ffitype
-
+	spec << itypeinfo_to_ffitype_for_struct(f.type)
 	spec << f.offset
       end
       spec
+    end
+
+    def itypeinfo_to_ffitype_for_struct typeinfo
+      ffitype = Builder.itypeinfo_to_ffitype typeinfo
+      if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
+	ffitype = ffitype.const_get :Struct
+      end
+      ffitype
     end
 
     def alias_instance_methods
