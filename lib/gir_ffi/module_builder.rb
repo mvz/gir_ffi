@@ -22,6 +22,11 @@ module GirFFI
       unless @module.respond_to? :method_missing
 	@module.class_eval module_method_missing_definition
 	@module.class_eval const_missing_definition
+	begin
+	  require "gir_ffi/overrides/#{@namespace.downcase}"
+	  @module.class_eval "include GirFFI::Overrides::#{@namespace}"
+	rescue LoadError
+	end
       end
       @module
     end

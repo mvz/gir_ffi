@@ -38,10 +38,6 @@ module GirFFI
   def self.setup module_name
     module_name = module_name.to_s
     GirFFI::Builder.build_module module_name
-    begin
-      require "gir_ffi/overrides/#{module_name.downcase}"
-    rescue LoadError
-    end
   end
 end
 # EOF
