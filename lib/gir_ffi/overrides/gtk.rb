@@ -4,24 +4,26 @@ module GirFFI
 
       def self.included(base)
 	GirFFI::Builder.setup_function "Gtk", "init"
+	base.extend ClassMethods
 	base.class_eval do
 
 	  class << self
-
-	    alias _base_init init
-
-	    def init
-	      (my_len, my_args) = _base_init ARGV.length + 1, [$0, *ARGV]
-	      my_args.shift
-	      ARGV.replace my_args
-	    end
-
-	    private :_base_init
+	    alias init_without_auto_argv init
+	    alias init init_with_auto_argv
 	  end
 
 	end
       end
 
+      module ClassMethods
+
+	def init_with_auto_argv
+	  (my_len, my_args) = init_without_auto_argv ARGV.length + 1, [$0, *ARGV]
+	  my_args.shift
+	  ARGV.replace my_args
+	end
+
+      end
     end
   end
 end
