@@ -37,28 +37,6 @@ module GirFFI
       find_signal_for_info info, signalname
     end
 
-    # All methods below will be made private at the end.
- 
-    def self.function_definition info, libmodule
-      if info.constructor?
-	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
-      else
-	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
-      end
-      fdbuilder.generate
-    end
-
-    def self.function_introspection_data namespace, function
-      gir = IRepository.default
-      return gir.find_by_name namespace, function.to_s
-    end
-
-    def self.method_introspection_data namespace, object, method
-      gir = IRepository.default
-      objectinfo = gir.find_by_name namespace, object.to_s
-      return objectinfo.find_method method
-    end
-
     def self.attach_ffi_function lib, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
@@ -67,6 +45,8 @@ module GirFFI
       lib.attach_function sym, argtypes, rt
     end
 
+    # All methods below will be made private at the end.
+ 
     def self.ffi_function_argument_types info
       types = info.args.map do |a|
 	iarginfo_to_ffitype a

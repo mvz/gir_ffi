@@ -115,14 +115,6 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal go2, @go
       end
 
-      should "build correct definition of Gtk.main" do
-	code = GirFFI::Builder.send :function_definition, @go, Lib
-
-	expected = "def main\nLib.gtk_main\nend"
-
-	assert_equal cws(expected), cws(code)
-      end
-
       should "attach function to Whatever::Lib" do
 	mod = Module.new
 	mod.const_set :Lib, libmod = Module.new
@@ -142,12 +134,6 @@ class BuilderTest < Test::Unit::TestCase
 	@go = get_function_introspection_data 'Gtk', 'init'
       end
 
-      should "delegate definition to FunctionDefinitionBuilder" do
-	code = GirFFI::Builder.send :function_definition, @go, Lib
-	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
-	assert_equal cws(expected), cws(code)
-      end
-
       should "have :pointer, :pointer as types of the arguments for the attached function" do
 	# FIXME: Ideally, we attach the function and test that it requires
 	# the correct argument types.
@@ -164,12 +150,6 @@ class BuilderTest < Test::Unit::TestCase
 	@go = get_method_introspection_data 'Gtk', 'Widget', 'show'
       end
 
-      should "delegate definition to FunctionDefinitionBuilder" do
-	code = GirFFI::Builder.send :function_definition, @go, Lib
-	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
-	assert_equal cws(expected), cws(code)
-      end
-
       should "have :pointer as types of the arguments for the attached function" do
 	assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
       end
@@ -181,12 +161,6 @@ class BuilderTest < Test::Unit::TestCase
 	cleanup_module :GObject
 	GirFFI::Builder.build_module 'GObject'
 	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
-      end
-
-      should "delegate definition to FunctionDefinitionBuilder" do
-	code = GirFFI::Builder.send :function_definition, @go, Lib
-	expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
-	assert_equal cws(expected), cws(code)
       end
 
       should "have the correct types of the arguments for the attached function" do

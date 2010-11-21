@@ -30,13 +30,15 @@ class Test::Unit::TestCase
   end
 
   def get_function_introspection_data namespace, function
-    GirFFI::IRepository.default.require namespace, nil
-    GirFFI::Builder.send :function_introspection_data, namespace, function
+    gir = GirFFI::IRepository.default
+    gir.require namespace, nil
+    gir.find_by_name namespace, function
   end
 
   def get_method_introspection_data namespace, klass, function
-    GirFFI::IRepository.default.require namespace, nil
-    GirFFI::Builder.send :method_introspection_data, namespace, klass, function
+    gir = GirFFI::IRepository.default
+    gir.require namespace, nil
+    gir.find_by_name(namespace, klass).find_method function
   end
 
   def cleanup_module name
