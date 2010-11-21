@@ -39,20 +39,7 @@ module GirFFI
     end
 
     def self.setup_function namespace, method
-      go = function_introspection_data namespace, method.to_s
-
-      return false if go.nil?
-      return false if go.type != :function
-
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
-
-      attach_ffi_function lib, go
-
-      meta = (class << modul; self; end)
-      meta.class_eval function_definition(go, lib)
-
-      true
+      ModuleBuilder.new(namespace).setup_function(method)
     end
 
     def self.setup_instance_method namespace, classname, method
@@ -188,5 +175,6 @@ module GirFFI
     public_class_method :setup_method, :setup_function, :setup_instance_method
     public_class_method :find_signal
     public_class_method :itypeinfo_to_ffitype
+    public_class_method :attach_ffi_function
   end
 end

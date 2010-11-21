@@ -13,6 +13,23 @@ module GirFFI
       build_module
     end
 
+    def setup_function method
+      go = function_introspection_data method.to_s
+
+      return false if go.nil?
+      return false if go.type != :function
+
+      modul = build_module
+      lib = modul.const_get(:Lib)
+
+      GirFFI::Builder.attach_ffi_function lib, go
+
+      meta = (class << modul; self; end)
+      meta.class_eval function_definition(go, lib)
+
+      true
+    end
+
     private
 
     def build_module
@@ -60,5 +77,15 @@ module GirFFI
 	end
       CODE
     end
+
+    def function_introspection_data function
+      gir = IRepository.default
+      return gir.find_by_name @namespace, function.to_s
+    end
+
+    def function_definition info, libmodule
+      FunctionDefinitionBuilder.new(info, libmodule).generate
+    end
+
   end
 end
