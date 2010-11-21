@@ -60,6 +60,7 @@ module GirFFI
     def setup_class
       setup_method_missing
       setup_layout
+      setup_constants
       alias_instance_methods
     end
 
@@ -104,6 +105,10 @@ module GirFFI
 	  end
 	"
       end
+    end
+
+    def setup_constants
+      @klass.const_set :GIR_INFO, @info
     end
 
     def instance_method_missing_definition

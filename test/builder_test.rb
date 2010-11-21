@@ -290,6 +290,10 @@ class BuilderTest < Test::Unit::TestCase
       should "not have regular #new as a constructor" do
 	assert_raises(NoMethodError) { Everything::TestObj.new }
       end
+
+      should "know its own GIR info" do
+	assert_equal 'TestObj', Everything::TestObj.gir_info.name
+      end
     end
 
     context "built Everything::TestSubObj" do
