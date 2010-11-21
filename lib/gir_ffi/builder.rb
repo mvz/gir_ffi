@@ -73,6 +73,14 @@ module GirFFI
       true
     end
 
+    def self.find_signal namespace, classname, signalname
+      info = IRepository.default.find_by_name namespace, classname
+      info.signals.each do |s|
+	return s if s.name == signalname
+      end
+      nil
+    end
+
     # All methods below will be made private at the end.
  
     def self.function_definition info, libmodule
@@ -170,6 +178,7 @@ module GirFFI
     end
     public_class_method :build_module, :build_class
     public_class_method :setup_method, :setup_function, :setup_instance_method
+    public_class_method :find_signal
     public_class_method :itypeinfo_to_ffitype
   end
 end
