@@ -11,6 +11,42 @@ module GirFFI
       build_class
     end
 
+    def setup_method method
+      go = method_introspection_data method.to_s
+
+      return false if go.nil?
+      return false if go.type != :function
+
+      klass = build_class
+      modul = @module
+      lib = modul.const_get(:Lib)
+
+      Builder.attach_ffi_function lib, go
+
+      meta = (class << klass; self; end)
+      meta.class_eval function_definition(go, lib)
+
+      true
+    end
+
+    def setup_instance_method method
+      go = method_introspection_data method.to_s
+
+      return false if go.nil?
+      return false if go.type != :function
+
+      klass = build_class
+      modul = @module
+      lib = modul.const_get(:Lib)
+
+      Builder.attach_ffi_function lib, go
+
+      klass.class_eval "undef #{method}"
+      klass.class_eval function_definition(go, lib)
+
+      true
+    end
+
     private
 
     def build_class
@@ -122,5 +158,21 @@ module GirFFI
     def already_set_up
       @klass.instance_methods(false).map(&:to_sym).include? :method_missing
     end
+
+    def method_introspection_data method
+      gir = IRepository.default
+      objectinfo = gir.find_by_name @namespace, @classname
+      return objectinfo.find_method method
+    end
+
+    def function_definition info, libmodule
+      if info.constructor?
+	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
+      else
+	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
+      end
+      fdbuilder.generate
+    end
+
   end
 end

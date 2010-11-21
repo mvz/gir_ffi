@@ -21,21 +21,7 @@ module GirFFI
     end
 
     def self.setup_method namespace, classname, method
-      go = method_introspection_data namespace, classname, method.to_s
-
-      return false if go.nil?
-      return false if go.type != :function
-
-      klass = build_class namespace, classname
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
-
-      attach_ffi_function lib, go
-
-      meta = (class << klass; self; end)
-      meta.class_eval function_definition(go, lib)
-
-      true
+      ClassBuilder.new(namespace, classname).setup_method method
     end
 
     def self.setup_function namespace, method
@@ -43,21 +29,7 @@ module GirFFI
     end
 
     def self.setup_instance_method namespace, classname, method
-      go = method_introspection_data namespace, classname, method.to_s
-
-      return false if go.nil?
-      return false if go.type != :function
-
-      klass = build_class namespace, classname
-      modul = build_module namespace
-      lib = modul.const_get(:Lib)
-
-      attach_ffi_function lib, go
-
-      klass.class_eval "undef #{method}"
-      klass.class_eval function_definition(go, lib)
-
-      true
+      ClassBuilder.new(namespace, classname).setup_instance_method method
     end
 
     def self.find_signal namespace, classname, signalname
