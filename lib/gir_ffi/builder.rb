@@ -75,10 +75,7 @@ module GirFFI
 
     def self.find_signal namespace, classname, signalname
       info = IRepository.default.find_by_name namespace, classname
-      info.signals.each do |s|
-	return s if s.name == signalname
-      end
-      nil
+      find_signal_for_info info, signalname
     end
 
     # All methods below will be made private at the end.
@@ -170,6 +167,17 @@ module GirFFI
 	lib.callback sym, args, ret
       end
       sym
+    end
+
+    def self.find_signal_for_info info, signalname
+      info.signals.each do |s|
+	return s if s.name == signalname
+      end
+      if info.parent
+	find_signal_for_info info.parent, signalname
+      else
+	nil
+      end
     end
 
     # Set up method access.

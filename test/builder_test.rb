@@ -324,6 +324,10 @@ class BuilderTest < Test::Unit::TestCase
 	sig = GirFFI::Builder.find_signal 'Everything', 'TestObj', 'test'
 	assert_equal 'test', sig.name
       end
+      should 'find the signal "test" for TestSubObj' do
+	sig = GirFFI::Builder.find_signal 'Everything', 'TestSubObj', 'test'
+	assert_equal 'test', sig.name
+      end
     end
   end
 end
