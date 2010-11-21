@@ -219,21 +219,25 @@ class BuilderTest < Test::Unit::TestCase
 
     # TODO: Should not allow functions to be called as methods, etc.
 
-    context "building the Everything module" do
+    context "built Everything module" do
       setup do
 	cleanup_module :Everything
 	GirFFI::Builder.build_module 'Everything'
       end
 
-      should "create a method_missing method for the module" do
+      should "have a method_missing method" do
 	ms = (Everything.public_methods - Module.public_methods).map(&:to_sym)
 	assert_contains ms, :method_missing
       end
 
-      should "cause the TestObj class to be autocreated" do
+      should "autocreate the TestObj class" do
 	assert !Everything.const_defined?(:TestObj)
 	assert_nothing_raised {Everything::TestObj}
 	assert Everything.const_defined? :TestObj
+      end
+
+      should "know its own module builder" do
+	assert GirFFI::ModuleBuilder === Everything.gir_ffi_builder
       end
     end
 
@@ -267,6 +271,10 @@ class BuilderTest < Test::Unit::TestCase
 
       should "know its own GIR info" do
 	assert_equal 'TestObj', Everything::TestObj.gir_info.name
+      end
+
+      should "know its own class builder" do
+	assert GirFFI::ClassBuilder === Everything::TestObj.gir_ffi_builder
       end
     end
 

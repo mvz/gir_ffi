@@ -145,6 +145,7 @@ module GirFFI
 
     def setup_constants
       @klass.const_set :GIR_INFO, @info
+      @klass.const_set :GIR_FFI_BUILDER, self
     end
 
     def instance_method_missing_definition

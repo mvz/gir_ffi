@@ -39,6 +39,12 @@ module GirFFI
       unless @module.respond_to? :method_missing
 	@module.class_eval module_method_missing_definition
 	@module.class_eval const_missing_definition
+	@module.const_set :GIR_FFI_BUILDER, self
+	@module.class_eval do
+	  def self.gir_ffi_builder
+	    self.const_get :GIR_FFI_BUILDER
+	  end
+	end
 	begin
 	  require "gir_ffi/overrides/#{@namespace.downcase}"
 	  @module.class_eval "include GirFFI::Overrides::#{@namespace}"

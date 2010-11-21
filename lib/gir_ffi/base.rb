@@ -14,13 +14,23 @@ module GirFFI
       self.class.ffi_structure
     end
 
+    def gir_ffi_builder
+      self.class.gir_ffi_builder
+    end
+
     class << self
       def ffi_structure
 	self.const_get(:Struct)
       end
+
       def gir_info
 	self.const_get :GIR_INFO
       end
+
+      def gir_ffi_builder
+	self.const_get :GIR_FFI_BUILDER
+      end
+
       alias_method :_real_new, :new
       undef new
     end
