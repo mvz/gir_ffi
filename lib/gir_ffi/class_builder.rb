@@ -12,37 +12,31 @@ module GirFFI
     end
 
     def setup_method method
-      go = method_introspection_data method.to_s
+      definition = prepare_method method.to_s
 
-      return false if go.nil?
-      return false if go.type != :function
+      return false if definition.nil?
 
       klass = build_class
-      modul = @module
-      lib = modul.const_get(:Lib)
-
-      Builder.attach_ffi_function lib, go
-
       meta = (class << klass; self; end)
-      meta.class_eval function_definition(go, lib)
+      meta.class_eval definition
 
       true
     end
 
     def setup_instance_method method
-      go = method_introspection_data method.to_s
-
-      return false if go.nil?
-      return false if go.type != :function
-
       klass = build_class
-      modul = @module
-      lib = modul.const_get(:Lib)
+      definition = prepare_method method.to_s
 
-      Builder.attach_ffi_function lib, go
+      if definition.nil?
+	if @info.parent
+	  return klass.superclass.gir_ffi_builder.setup_instance_method method
+	else
+	  return false
+	end
+      end
 
       klass.class_eval "undef #{method}"
-      klass.class_eval function_definition(go, lib)
+      klass.class_eval definition
 
       true
     end
@@ -173,6 +167,20 @@ module GirFFI
 	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
       end
       fdbuilder.generate
+    end
+
+    def prepare_method method
+      go = method_introspection_data method
+
+      return nil if go.nil?
+      return nil if go.type != :function
+
+      klass = build_class
+      modul = @module
+      lib = modul.const_get(:Lib)
+
+      Builder.attach_ffi_function lib, go
+      function_definition(go, lib)
     end
 
   end
