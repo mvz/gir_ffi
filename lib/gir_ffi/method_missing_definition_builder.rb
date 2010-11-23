@@ -39,6 +39,13 @@ module GirFFI
       @module = modul
     end
 
+    def generate;
+      return <<-CODE
+	def #{slf}method_missing method, *arguments, &block
+	  super
+	end
+      CODE
+    end
     private
 
     def slf; ""; end

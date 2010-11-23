@@ -18,6 +18,18 @@ module GirFFI
       self.class.gir_ffi_builder
     end
 
+    def method_missing method, *arguments, &block
+      result = gir_ffi_builder.setup_instance_method method.to_s
+      return super unless result
+      self.send method, *arguments, &block
+    end
+
+    def self.method_missing method, *arguments, &block
+      result = gir_ffi_builder.setup_method method.to_s
+      return super unless result
+      self.send method, *arguments, &block
+    end
+
     class << self
       def ffi_structure
 	self.const_get(:Struct)
