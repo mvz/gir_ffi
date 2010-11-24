@@ -88,15 +88,9 @@ module GirFFI
     end
 
     def setup_class
-      setup_method_missing
       setup_layout
       setup_constants
       alias_instance_methods
-    end
-
-    def setup_method_missing
-      @klass.class_eval instance_method_missing_definition
-      @klass.class_eval class_method_missing_definition
     end
 
     def setup_layout
@@ -151,7 +145,7 @@ module GirFFI
     end
 
     def already_set_up
-      @klass.instance_methods(false).map(&:to_sym).include? :method_missing
+      @klass.const_defined? :GIR_FFI_BUILDER
     end
 
     def method_introspection_data method

@@ -10,11 +10,6 @@ class BuilderTest < Test::Unit::TestCase
 	GirFFI::Builder.build_class 'GObject', 'Object'
       end
 
-      should "create a method_missing method for the class" do
-	ms = GObject::Object.instance_methods(false).map(&:to_sym)
-	assert_contains ms, :method_missing
-      end
-
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
 	gir = GirFFI::IRepository.default
 	expected = gir.shared_library 'GObject'
