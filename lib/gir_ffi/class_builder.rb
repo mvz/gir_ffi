@@ -72,7 +72,7 @@ module GirFFI
       if @parent
 	@superclass = Builder.build_class @parent.namespace, @parent.name
       else
-	@superclass = GirFFI::Base
+	@superclass = GirFFI::ClassBase
       end
     end
 
