@@ -136,14 +136,6 @@ module GirFFI
       @klass.const_set :GIR_FFI_BUILDER, self
     end
 
-    def instance_method_missing_definition
-      InstanceMethodMissingDefinitionBuilder.new(@lib, @module, @namespace, @classname).generate
-    end
-
-    def class_method_missing_definition
-      ClassMethodMissingDefinitionBuilder.new(@lib, @module, @namespace, @classname).generate
-    end
-
     def already_set_up
       @klass.const_defined? :GIR_FFI_BUILDER
     end
