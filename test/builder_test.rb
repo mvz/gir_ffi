@@ -169,7 +169,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	GirFFI::Builder.setup_function 'GObject', 'signal_connect_data'
+	GObject.gir_ffi_builder.setup_function 'signal_connect_data'
 	cb = GObject::Lib.find_type :Callback
 	cn = GObject::Lib.find_type :ClosureNotify
 

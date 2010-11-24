@@ -3,7 +3,7 @@ module GirFFI
     module Gtk
 
       def self.included(base)
-	GirFFI::Builder.setup_function "Gtk", "init"
+	base.gir_ffi_builder.setup_function "init"
 	base.extend ClassMethods
 	base.class_eval do
 

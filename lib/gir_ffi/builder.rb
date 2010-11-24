@@ -20,18 +20,6 @@ module GirFFI
       ModuleBuilder.new(namespace).generate
     end
 
-    def self.setup_method namespace, classname, method
-      ClassBuilder.new(namespace, classname).setup_method method
-    end
-
-    def self.setup_function namespace, method
-      ModuleBuilder.new(namespace).setup_function(method)
-    end
-
-    def self.setup_instance_method namespace, classname, method
-      ClassBuilder.new(namespace, classname).setup_instance_method method
-    end
-
     def self.find_signal namespace, classname, signalname
       info = IRepository.default.find_by_name namespace, classname
       find_signal_for_info info, signalname
@@ -124,7 +112,6 @@ module GirFFI
       private_class_method m.to_sym
     end
     public_class_method :build_module, :build_class
-    public_class_method :setup_method, :setup_function, :setup_instance_method
     public_class_method :find_signal
     public_class_method :itypeinfo_to_ffitype
     public_class_method :attach_ffi_function
