@@ -1,4 +1,5 @@
 require 'gir_ffi/builder_helper'
+require 'gir_ffi/module_base'
 
 module GirFFI
   # Builds a module based on information found in the introspection
@@ -37,7 +38,7 @@ module GirFFI
       setup_module
       setup_lib_for_ffi
       unless @module.respond_to? :method_missing
-	@module.class_eval module_method_missing_definition
+	@module.extend ModuleBase
 	@module.class_eval const_missing_definition
 	@module.const_set :GIR_FFI_BUILDER, self
 	@module.class_eval do
