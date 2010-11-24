@@ -19,18 +19,6 @@ module GirFFI
     end
   end
 
-  # Builds a #method_missing for a module. This method_missing will be
-  # called for missing module methods; these modules are not meant for
-  # #include'ing.
-  class ModuleMethodMissingDefinitionBuilder < MethodMissingDefinitionBuilder
-    private
-
-    def slf; "self."; end
-    def fn; "setup_function"; end
-    def arguments; [@namespace]; end
-    def libs; [@lib]; end
-  end
-
   # Builds a #method_missing for missing instance methods.
   class InstanceMethodMissingDefinitionBuilder < MethodMissingDefinitionBuilder
     def initialize lib, modul, namespace, classname

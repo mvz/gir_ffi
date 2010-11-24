@@ -71,10 +71,6 @@ module GirFFI
       BuilderHelper.optionally_define_constant(@lib, :CALLBACKS) { [] }
     end
 
-    def module_method_missing_definition
-      ModuleMethodMissingDefinitionBuilder.new(@lib, @namespace).generate
-    end
-
     def const_missing_definition
       return <<-CODE
 	def self.const_missing classname
