@@ -159,11 +159,11 @@ module GirFFI
       return objectinfo.find_method method
     end
 
-    def function_definition info, libmodule
-      if info.constructor?
-	fdbuilder = ConstructorDefinitionBuilder.new info, libmodule
+    def function_definition go
+      if go.constructor?
+	fdbuilder = ConstructorDefinitionBuilder.new go, lib
       else
-	fdbuilder = FunctionDefinitionBuilder.new info, libmodule
+	fdbuilder = FunctionDefinitionBuilder.new go, lib
       end
       fdbuilder.generate
     end
@@ -175,7 +175,7 @@ module GirFFI
       return nil if go.type != :function
 
       Builder.attach_ffi_function lib, go
-      function_definition(go, lib)
+      function_definition go
     end
 
     def gir

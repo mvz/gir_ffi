@@ -31,8 +31,8 @@ class ClassBuilderTest < Test::Unit::TestCase
 	end
 
 	should "delegate definition to FunctionDefinitionBuilder" do
-	  code = @cbuilder.send :function_definition, @go, Lib
-	  expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
+	  code = @cbuilder.send :function_definition, @go
+	  expected = GirFFI::FunctionDefinitionBuilder.new(@go, Gtk::Lib).generate
 	  assert_equal cws(expected), cws(code)
 	end
 
