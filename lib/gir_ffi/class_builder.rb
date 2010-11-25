@@ -95,8 +95,8 @@ module GirFFI
     end
 
     def instantiate_class
-      @klass = BuilderHelper.get_or_define_class namespace_module, @classname, superclass
-      @structklass = BuilderHelper.get_or_define_class @klass, :Struct, FFI::Struct
+      @klass = get_or_define_class namespace_module, @classname, superclass
+      @structklass = get_or_define_class @klass, :Struct, FFI::Struct
     end
 
     def setup_class
@@ -184,5 +184,10 @@ module GirFFI
       @gir
     end
 
+    def get_or_define_class namespace, name, parent
+      BuilderHelper.optionally_define_constant(namespace, name) {
+	Class.new parent
+      }
+    end
   end
 end

@@ -56,11 +56,11 @@ module GirFFI
     end
 
     def setup_module
-      @module = BuilderHelper.get_or_define_module ::Object, @namespace.to_s
+      @module = get_or_define_module ::Object, @namespace.to_s
     end
 
     def setup_lib_for_ffi
-      @lib = BuilderHelper.get_or_define_module @module, :Lib
+      @lib = get_or_define_module @module, :Lib
 
       unless (class << @lib; self.include? FFI::Library; end)
 	@lib.extend FFI::Library
@@ -88,6 +88,10 @@ module GirFFI
 
     def function_definition info, libmodule
       FunctionDefinitionBuilder.new(info, libmodule).generate
+    end
+
+    def get_or_define_module parent, name
+      BuilderHelper.optionally_define_constant(parent, name) { Module.new }
     end
 
   end
