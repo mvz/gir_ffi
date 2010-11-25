@@ -7,14 +7,12 @@ class ClassBuilderTest < Test::Unit::TestCase
       @gir = GirFFI::IRepository.default
       @gir.require 'GObject', nil
 
-      @classbuilder = GirFFI::ClassBuilder.new 'Foo', 'Bar'
-
       stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }
       stub(info).fields { [] }
+      stub(info).type { :object }
 
+      @classbuilder = GirFFI::ClassBuilder.new 'Foo', 'Bar'
       @classbuilder.instance_eval { @info = info }
-      @classbuilder.instance_eval { @parent = info.parent }
-      @classbuilder.instance_eval { @superclass = GObject::Object }
 
       spec = @classbuilder.send :layout_specification
       assert_equal [:parent, GObject::Object::Struct, 0], spec
