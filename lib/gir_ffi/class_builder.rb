@@ -1,7 +1,9 @@
+require 'gir_ffi/builder_helper'
 module GirFFI
   # Builds a class based on information found in the introspection
   # repository.
   class ClassBuilder
+    include BuilderHelper
     def initialize namespace, classname
       @namespace = namespace
       @classname = classname
@@ -50,7 +52,7 @@ module GirFFI
 	    instantiate_class
 	    setup_class unless already_set_up
 	  when :enum, :flags
-	    @klass = BuilderHelper.optionally_define_constant namespace_module, @classname do
+	    @klass = optionally_define_constant namespace_module, @classname do
 	      vals = info.values.map {|v| [v.name.to_sym, v.value]}.flatten
 	      lib.enum(@classname.to_sym, vals)
 	    end
@@ -127,7 +129,7 @@ module GirFFI
 
     def itypeinfo_to_ffitype_for_struct typeinfo
       ffitype = Builder.itypeinfo_to_ffitype typeinfo
-      if ffitype.kind_of?(Class) and BuilderHelper.const_defined_for ffitype, :Struct
+      if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct
 	ffitype = ffitype.const_get :Struct
       end
       ffitype
@@ -185,7 +187,7 @@ module GirFFI
     end
 
     def get_or_define_class namespace, name, parent
-      BuilderHelper.optionally_define_constant(namespace, name) {
+      optionally_define_constant(namespace, name) {
 	Class.new parent
       }
     end
