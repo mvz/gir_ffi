@@ -5,6 +5,7 @@ module GirFFI
   # Builds a module based on information found in the introspection
   # repository.
   class ModuleBuilder
+    include BuilderHelper
 
     def initialize namespace
       @namespace = namespace
@@ -56,11 +57,11 @@ module GirFFI
     end
 
     def setup_module
-      @module = BuilderHelper.get_or_define_module ::Object, @namespace.to_s
+      @module = get_or_define_module ::Object, @namespace.to_s
     end
 
     def setup_lib_for_ffi
-      @lib = BuilderHelper.get_or_define_module @module, :Lib
+      @lib = get_or_define_module @module, :Lib
 
       unless (class << @lib; self.include? FFI::Library; end)
 	@lib.extend FFI::Library
@@ -68,7 +69,7 @@ module GirFFI
 	@lib.ffi_lib(*libs)
       end
 
-      BuilderHelper.optionally_define_constant(@lib, :CALLBACKS) { [] }
+      optionally_define_constant(@lib, :CALLBACKS) { [] }
     end
 
     def const_missing_definition
@@ -88,6 +89,10 @@ module GirFFI
 
     def function_definition info, libmodule
       FunctionDefinitionBuilder.new(info, libmodule).generate
+    end
+
+    def get_or_define_module parent, name
+      optionally_define_constant(parent, name) { Module.new }
     end
 
   end

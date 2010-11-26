@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gir_ffi (0.0.1)
+    gir_ffi (0.0.3)
       ffi (~> 0.6.3)
 
 GEM
@@ -10,6 +10,7 @@ GEM
     ffi (0.6.3)
       rake (>= 0.8.7)
     rake (0.8.7)
+    rr (1.0.2)
     shoulda (2.11.3)
 
 PLATFORMS
@@ -18,4 +19,5 @@ PLATFORMS
 DEPENDENCIES
   ffi (~> 0.6.3)
   gir_ffi!
+  rr (~> 1.0.2)
   shoulda (~> 2.11.3)

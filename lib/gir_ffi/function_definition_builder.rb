@@ -108,8 +108,10 @@ module GirFFI
 
       if tag == :interface
 	interface = type.interface
-	GirFFI::Builder.build_class interface.namespace, interface.name
-	@retvals << "#{interface.namespace}::#{interface.name}._real_new(#{retval})"
+	namespace = interface.namespace
+	name = interface.name
+	GirFFI::Builder.build_class namespace, name
+	@retvals << "#{namespace}::#{name}._real_new(#{retval})"
       else
 	@retvals << retval
       end
