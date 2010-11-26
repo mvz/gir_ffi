@@ -22,10 +22,11 @@ module GirFFI
 	AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
       }
 
-      block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
+      ptr_size = FFI.type_size(:pointer)
+      block = AllocationHelper.safe_malloc ptr_size * ptrs.length
       block.write_array_of_pointer ptrs
 
-      argv = AllocationHelper.safe_malloc FFI.type_size(:pointer)
+      argv = AllocationHelper.safe_malloc ptr_size
       argv.write_pointer block
       argv
     end

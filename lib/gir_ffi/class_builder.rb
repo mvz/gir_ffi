@@ -113,18 +113,19 @@ module GirFFI
     end
 
     def layout_specification
-      if info.fields.empty?
+      fields = info.fields
+
+      if fields.empty?
 	if parent
 	  return [:parent, superclass.const_get(:Struct), 0]
 	end
       end
-      spec = []
-      info.fields.each do |f|
-	spec << f.name.to_sym
-	spec << itypeinfo_to_ffitype_for_struct(f.type)
-	spec << f.offset
-      end
-      spec
+
+      fields.map do |f|
+	[ f.name.to_sym,
+	  itypeinfo_to_ffitype_for_struct(f.type),
+	  f.offset ]
+      end.flatten
     end
 
     def itypeinfo_to_ffitype_for_struct typeinfo
@@ -160,12 +161,12 @@ module GirFFI
     end
 
     def function_definition go
-      if go.constructor?
-	fdbuilder = ConstructorDefinitionBuilder.new go, lib
-      else
-	fdbuilder = FunctionDefinitionBuilder.new go, lib
-      end
-      fdbuilder.generate
+      fdbuilder = if go.constructor?
+		    ConstructorDefinitionBuilder
+		  else
+		    FunctionDefinitionBuilder
+		  end
+      fdbuilder.new(go, lib).generate
     end
 
     def prepare_method method

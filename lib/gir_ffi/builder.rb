@@ -50,11 +50,14 @@ module GirFFI
     end
 
     def self.itypeinfo_to_ffitype info
+      tag = info.tag
+
       if info.pointer?
-	return :string if info.tag == :utf8
+	return :string if tag == :utf8
 	return :pointer
       end
-      case info.tag
+
+      case tag
       when :interface
 	interface = info.interface
 	case interface.type
@@ -70,7 +73,7 @@ module GirFFI
       when :GType
 	return :int32
       else
-	return info.tag
+	return tag
       end
     end
 
@@ -99,11 +102,8 @@ module GirFFI
       info.signals.each do |s|
 	return s if s.name == signalname
       end
-      if info.parent
-	find_signal_for_info info.parent, signalname
-      else
-	nil
-      end
+      parent = info.parent
+      find_signal_for_info parent, signalname if parent
     end
 
     # Set up method access.
