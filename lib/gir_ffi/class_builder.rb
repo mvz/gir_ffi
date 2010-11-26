@@ -145,7 +145,7 @@ module GirFFI
     end
 
     def already_set_up
-      @klass.const_defined? :GIR_FFI_BUILDER
+      BuilderHelper.const_defined_for @klass, :GIR_FFI_BUILDER
     end
 
     def method_introspection_data method
