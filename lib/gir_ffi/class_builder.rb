@@ -105,6 +105,12 @@ module GirFFI
       setup_layout
       setup_constants
       alias_instance_methods
+
+      if info.type == :struct
+	(class << @klass; self; end).class_eval {
+	  alias_method :new, :_real_new
+	}
+      end
     end
 
     def setup_layout

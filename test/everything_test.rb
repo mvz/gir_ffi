@@ -75,6 +75,16 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    context "the Everything::TestSimpleBoxedA class" do
+      setup do
+	GirFFI::Builder.build_class 'Everything', 'TestSimpleBoxedA'
+      end
+
+      should "set have a working new method" do
+	assert Everything::TestSimpleBoxedA.respond_to? "new"
+      end
+    end
+
   end
 
 end
