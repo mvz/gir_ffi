@@ -139,7 +139,14 @@ module GirFFI
     attach_function :g_field_info_get_type, [:pointer], :pointer
 
     # IUnionInfo
-    # IStructInfo
+    attach_function :g_union_info_get_n_fields, [:pointer], :int
+    attach_function :g_union_info_get_field, [:pointer, :int], :pointer
+    attach_function :g_union_info_get_n_methods, [:pointer], :int
+    attach_function :g_union_info_get_method, [:pointer, :int], :pointer
+    attach_function :g_union_info_find_method, [:pointer, :string], :pointer
+    attach_function :g_union_info_get_size, [:pointer], :int
+    attach_function :g_union_info_get_alignment, [:pointer], :int
+ 
     # IRegisteredTypeInfo
     attach_function :g_registered_type_info_get_type_name, [:pointer], :string
     attach_function :g_registered_type_info_get_type_init, [:pointer], :string
