@@ -20,20 +20,17 @@ able to pass any Ruby object. On the other hand, these cases cannot be
 distinguished, based on the GIR data, from methods that take a pointer to
 any GObject.
 
-I'm currently leaning towards passing the object id as the value of the
-'gpointer'. Special overrided will have to be used for the cases where the
-'gpointer' actually needs to be a GObject. I consider it an omission in
-GIRepository that these two cases are not distinguished.
+I'm currently passing the object id as the value of the 'gpointer'. Special
+overrided will have to be used for the cases where the 'gpointer' actually
+needs to be a GObject. I consider it an omission in GIRepository that these
+two cases are not distinguished.
 
 == Compatibility with all implementations.
 
 Currently, there are the following incompatibilities:
 
-* The MRI implementation does not allow invoking layout more than once. In
-  particular, this means you cannot subclass a struct and change (augment)
-  the layout. This *not* a problem in JRuby.
-
-* JRuby disables ObjectSpace by default, so using _id2ref is not ideal.
+* JRuby disables ObjectSpace by default, so using _id2ref for handling the
+  passing of generic pointers is not ideal.
 
 == See Also
 
