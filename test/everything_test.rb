@@ -55,26 +55,33 @@ class EverythingTest < Test::Unit::TestCase
     end
 
     context "the Everything::TestObj class" do
-      setup do
-	@o = Everything::TestObj.new_from_file("foo")
+      should "create an instance using #new_from_file" do
+	o = Everything::TestObj.new_from_file("foo")
+	assert_instance_of Everything::TestObj, o
       end
 
-      should "have a working #torture_signature_0 method" do
-	y, z, q = @o.torture_signature_0(-21, "hello", 13)
-	assert_equal [-21, 2 * -21, "hello".length + 13],
-	  [y, z, q]
-      end
-
-      context "its #torture_signature_1 method" do
-	should "work for m even" do
-	  ret, y, z, q = @o.torture_signature_1(-21, "hello", 12)
-	  assert_equal [true, -21, 2 * -21, "hello".length + 12],
-	    [ret, y, z, q]
+      context "an instance" do
+	setup do
+	  @o = Everything::TestObj.new_from_file("foo")
 	end
 
-	should "throw an exception for m odd" do
-	  assert_raises RuntimeError do
-	    @o.torture_signature_1(-21, "hello", 11)
+	should "have a working #torture_signature_0 method" do
+	  y, z, q = @o.torture_signature_0(-21, "hello", 13)
+	  assert_equal [-21, 2 * -21, "hello".length + 13],
+	    [y, z, q]
+	end
+
+	context "its #torture_signature_1 method" do
+	  should "work for m even" do
+	    ret, y, z, q = @o.torture_signature_1(-21, "hello", 12)
+	    assert_equal [true, -21, 2 * -21, "hello".length + 12],
+	      [ret, y, z, q]
+	  end
+
+	  should "throw an exception for m odd" do
+	    assert_raises RuntimeError do
+	      @o.torture_signature_1(-21, "hello", 11)
+	    end
 	  end
 	end
       end
