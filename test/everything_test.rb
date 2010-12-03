@@ -136,12 +136,51 @@ class EverythingTest < Test::Unit::TestCase
     end
 
     context "the Everything::TestSimpleBoxedA class" do
-      setup do
-	GirFFI::Builder.build_class 'Everything', 'TestSimpleBoxedA'
+      should "create an instance using #new" do
+	obj = Everything::TestSimpleBoxedA.new
+	assert_instance_of Everything::TestSimpleBoxedA, obj
       end
 
-      should "set have a working new method" do
-	assert Everything::TestSimpleBoxedA.respond_to? "new"
+      context "an instance" do
+	setup do
+	  @obj = Everything::TestSimpleBoxedA.new
+	  @obj[:some_int] = 4236
+	  @obj[:some_int8] = 36
+	  @obj[:some_double] = 23.53
+	  @obj[:some_enum] = :value2
+	end
+
+	should "have a working equals method" do
+	  ob2 = Everything::TestSimpleBoxedA.new
+	  ob2[:some_int] = 4236
+	  ob2[:some_int8] = 36
+	  ob2[:some_double] = 23.53
+	  ob2[:some_enum] = :value2
+
+	  assert_equal true, @obj.equals(ob2)
+	end
+
+	context "its copy method" do
+	  setup do
+	    @ob2 = @obj.copy
+	  end
+
+	  should "return an instance of TestSimpleBoxedA" do
+	    assert_instance_of Everything::TestSimpleBoxedA, @ob2
+	  end
+
+	  should "copy fields" do
+	    assert_equal 4236, @ob2[:some_int]
+	    assert_equal 36, @ob2[:some_int8]
+	    assert_equal 23.53, @ob2[:some_double]
+	    assert_equal :value2, @ob2[:some_enum]
+	  end
+
+	  should "create a true copy" do
+	    @obj[:some_int8] = 89
+	    assert_equal 36, @ob2[:some_int8]
+	  end
+	end
       end
     end
 
