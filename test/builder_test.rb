@@ -271,6 +271,15 @@ class BuilderTest < Test::Unit::TestCase
       should "know its own class builder" do
 	assert GirFFI::ClassBuilder === Everything::TestObj.gir_ffi_builder
       end
+
+      context "its #torture_signature_0 method" do
+	should "have the correct types of the arguments for the attached function" do
+	  info = get_method_introspection_data 'Everything', 'TestObj',
+	    'torture_signature_0'
+	  assert_equal [:pointer, :int, :pointer, :pointer, :string, :pointer, :uint],
+	    GirFFI::Builder.send(:ffi_function_argument_types, info)
+	end
+      end
     end
 
     context "built Everything::TestSubObj" do
