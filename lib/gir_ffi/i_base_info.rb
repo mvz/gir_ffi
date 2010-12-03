@@ -32,10 +32,18 @@ module GirFFI
 
     private_class_method :new
 
-    def name; Lib.g_base_info_get_name @gobj; end
-    def type; Lib.g_base_info_get_type @gobj; end
-    def namespace; Lib.g_base_info_get_namespace @gobj; end
-    def deprecated?; Lib.g_base_info_is_deprecated @gobj; end
+    def name
+      Lib.g_base_info_get_name @gobj
+    end
+    def type
+      Lib.g_base_info_get_type @gobj
+    end
+    def namespace
+      Lib.g_base_info_get_namespace @gobj
+    end
+    def deprecated?
+      Lib.g_base_info_is_deprecated @gobj
+    end
 
     def self.wrap ptr
       return nil if ptr.null?
