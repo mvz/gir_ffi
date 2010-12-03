@@ -162,7 +162,7 @@ module GirFFI
     end
 
     def method_introspection_data method
-      return info.find_method method
+      info.find_method method
     end
 
     def function_definition go
@@ -178,7 +178,6 @@ module GirFFI
       go = method_introspection_data method
 
       return nil if go.nil?
-      return nil if go.type != :function
 
       Builder.attach_ffi_function lib, go
       function_definition go
