@@ -96,6 +96,11 @@ class EverythingTest < Test::Unit::TestCase
 	  @o = Everything::TestObj.new_from_file("foo")
 	end
 
+	should "have a working (virtual) #matrix method" do
+	  rv = @o.matrix "bar"
+	  assert_equal 42, rv
+	end
+
 	should "have a working #torture_signature_0 method" do
 	  y, z, q = @o.torture_signature_0(-21, "hello", 13)
 	  assert_equal [-21, 2 * -21, "hello".length + 13],
