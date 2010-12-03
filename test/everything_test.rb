@@ -32,19 +32,34 @@ class EverythingTest < Test::Unit::TestCase
 	assert_equal 54, tb[:some_int8]
       end
 
-      should "have a working equals method" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 123
-	tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
-	assert_equal true, tb.equals(tb2)
-      end
+      context "an instance" do
+	setup do
+	  @tb = Everything::TestBoxed.new_alternative_constructor1 123
+	end
 
-      should "have a working copy method" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 123
-	tb2 = tb.copy
-	assert_instance_of Everything::TestBoxed, tb2
-	assert_equal 123, tb2[:some_int8], "fields copied"
-	tb2[:some_int8] = 89
-	assert_equal 123, tb[:some_int8], "is a true copy"
+	should "have a working equals method" do
+	  tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
+	  assert_equal true, @tb.equals(tb2)
+	end
+
+	context "its copy method" do
+	  setup do
+	    @tb2 = @tb.copy
+	  end
+
+	  should "return an instance of TestBoxed" do
+	    assert_instance_of Everything::TestBoxed, @tb2
+	  end
+
+	  should "copy fields" do
+	    assert_equal 123, @tb2[:some_int8]
+	  end
+
+	  should "create a true copy" do
+	    @tb[:some_int8] = 89
+	    assert_equal 123, @tb2[:some_int8]
+	  end
+	end
       end
     end
 
