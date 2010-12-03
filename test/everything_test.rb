@@ -80,6 +80,17 @@ class EverythingTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestObj, o
       end
 
+      should "have a working #static_method" do
+	rv = Everything::TestObj.static_method 623
+	assert_equal 623.0, rv
+      end
+
+      should "have a working #static_method_callback" do
+	a = 1
+	Everything::TestObj.static_method_callback Proc.new { a = 2 }
+	assert_equal 2, a
+      end
+
       context "an instance" do
 	setup do
 	  @o = Everything::TestObj.new_from_file("foo")
