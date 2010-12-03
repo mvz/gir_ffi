@@ -93,5 +93,10 @@ module GirFFI
 	prc.call(*mapped)
       end
     end
+
+    def self.check_error errpp
+      errp = errpp.read_pointer
+      raise GError.new(errp)[:message] unless errp.null?
+    end
   end
 end

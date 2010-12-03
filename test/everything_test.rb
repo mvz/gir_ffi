@@ -79,6 +79,20 @@ class EverythingTest < Test::Unit::TestCase
 	assert_equal [-21, 2 * -21, "hello".length + 13],
 	  [y, z, q]
       end
+
+      context "its #torture_signature_1 method" do
+	should "work for m even" do
+	  ret, y, z, q = @o.torture_signature_1(-21, "hello", 12)
+	  assert_equal [true, -21, 2 * -21, "hello".length + 12],
+	    [ret, y, z, q]
+	end
+
+	should "throw an exception for m odd" do
+	  assert_raises RuntimeError do
+	    @o.torture_signature_1(-21, "hello", 11)
+	  end
+	end
+      end
     end
 
     context "the Everything::TestEnum type" do
