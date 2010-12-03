@@ -101,6 +101,13 @@ class EverythingTest < Test::Unit::TestCase
 	  assert_equal 42, rv
 	end
 
+	should "have a working #set_bare method" do
+	  obj = Everything::TestObj.new_from_file("bar")
+	  rv = @o.set_bare obj
+	  # TODO: What is the correct value to retrieve from the fields?
+	  assert_equal obj.to_ptr, @o[:bare]
+	end
+
 	should "have a working #torture_signature_0 method" do
 	  y, z, q = @o.torture_signature_0(-21, "hello", 13)
 	  assert_equal [-21, 2 * -21, "hello".length + 13],
