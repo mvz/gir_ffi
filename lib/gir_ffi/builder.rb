@@ -94,9 +94,11 @@ module GirFFI
       if ft.nil?
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
-	lib.callback sym, args, ret
+	ft = lib.callback sym, args, ret
+	# TODO: Use set constant as getter as well.
+	modul.const_set(sym, ft)
       end
-      sym
+      ft
     end
 
     def self.find_signal_for_info info, signalname

@@ -159,8 +159,9 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have the correct types of the arguments for the attached function" do
-	assert_equal [:pointer, :string, :Callback, :pointer, :ClosureNotify, GObject::ConnectFlags],
-	  GirFFI::Builder.send(:ffi_function_argument_types, @go)
+	argtypes = GirFFI::Builder.send(:ffi_function_argument_types, @go)
+	assert_equal [:pointer, :string, GObject::Callback, :pointer, GObject::ClosureNotify, GObject::ConnectFlags],
+	  argtypes
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do

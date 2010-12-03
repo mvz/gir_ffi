@@ -75,6 +75,11 @@ class EverythingTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestObj, o
       end
 
+      should "create an instance using #new_callback" do
+	o = Everything::TestObj.new_callback Proc.new { }, nil, nil
+	assert_instance_of Everything::TestObj, o
+      end
+
       context "an instance" do
 	setup do
 	  @o = Everything::TestObj.new_from_file("foo")
