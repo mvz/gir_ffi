@@ -44,8 +44,10 @@ module GirFFI
 	process_inout_arg arg
       when :in
 	process_in_arg arg
+      when :out
+	process_out_arg arg
       else
-	raise NotImplementedError
+	raise ArgumentError
       end
     end
 
@@ -71,6 +73,27 @@ module GirFFI
 	end
       else
 	raise NotImplementedError
+      end
+      @callargs << prevar
+      @retvals << postvar
+    end
+
+    def process_out_arg arg
+      raise NotImplementedError unless arg.ownership_transfer == :everything
+
+      prevar = new_var
+      postvar = new_var
+
+      case arg.type.tag
+      when :int, :int32
+	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr 0"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int #{prevar}"
+      when :double
+	@pre << "#{prevar} = GirFFI::ArgHelper.double_to_inoutptr 0"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_double #{prevar}"
+      else
+	raise NotImplementedError,
+	  "Don't know what to do with argument type #{arg.type.tag}"
       end
       @callargs << prevar
       @retvals << postvar

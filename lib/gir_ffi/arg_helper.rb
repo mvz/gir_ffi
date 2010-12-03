@@ -31,6 +31,12 @@ module GirFFI
       argv
     end
 
+    def self.double_to_inoutptr val
+      ptr = AllocationHelper.safe_malloc FFI.type_size(:double)
+      ptr.put_double 0, val
+      return ptr
+    end
+
     # Converts an outptr to an int, then frees the outptr.
     def self.outptr_to_int ptr
       value = ptr.read_int
@@ -57,6 +63,13 @@ module GirFFI
 	  p.read_string.tap { LibC.free p }
 	end
       end
+    end
+
+    # Converts an outptr to a double, then frees the outptr.
+    def self.outptr_to_double ptr
+      value = ptr.get_double 0
+      LibC.free ptr
+      value
     end
 
     def self.mapped_callback_args prc=nil, &block
