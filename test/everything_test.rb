@@ -108,6 +108,11 @@ class EverythingTest < Test::Unit::TestCase
 	  assert_equal obj.to_ptr, @o[:bare]
 	end
 
+	should "have a working #instance_method method" do
+	  rv = @o.instance_method
+	  assert_equal(-1, rv)
+	end
+
 	should "have a working #torture_signature_0 method" do
 	  y, z, q = @o.torture_signature_0(-21, "hello", 13)
 	  assert_equal [-21, 2 * -21, "hello".length + 13],
