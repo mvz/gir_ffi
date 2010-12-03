@@ -33,7 +33,7 @@ module GirFFI
     end
 
     # All methods below will be made private at the end.
- 
+
     def self.ffi_function_argument_types info
       types = info.args.map do |a|
 	iarginfo_to_ffitype a

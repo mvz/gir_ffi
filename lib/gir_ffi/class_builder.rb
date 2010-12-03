@@ -104,8 +104,10 @@ module GirFFI
     def setup_class
       setup_layout
       setup_constants
-      alias_instance_methods
+      setup_instance_methods
+      setup_vfunc_invokers if info.type == :object
 
+      # FIXME: Perhaps do this the other way round?
       if info.type == :struct
 	(class << @klass; self; end).class_eval {
 	  alias_method :new, :_real_new
@@ -142,11 +144,25 @@ module GirFFI
       ffitype
     end
 
-    def alias_instance_methods
+    def setup_instance_methods
       info.methods.each do |m|
 	@klass.class_eval "
 	  def #{m.name} *args, &block
 	    method_missing :#{m.name}, *args, &block
+	  end
+	"
+      end
+    end
+
+    def setup_vfunc_invokers
+      info.vfuncs.each do |v|
+	invoker = v.invoker
+	next if invoker.nil?
+	next if invoker.name == v.name
+
+	@klass.class_eval "
+	  def #{v.name} *args, &block
+	    #{invoker.name}(*args, &block)
 	  end
 	"
       end
