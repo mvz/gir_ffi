@@ -162,8 +162,7 @@ module GirFFI
     end
 
     def method_introspection_data method
-      objectinfo = gir.find_by_name @namespace, @classname
-      return objectinfo.find_method method
+      return info.find_method method
     end
 
     def function_definition go
