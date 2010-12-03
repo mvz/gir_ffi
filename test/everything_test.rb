@@ -69,6 +69,18 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    context "the Everything::TestObj class" do
+      setup do
+	@o = Everything::TestObj.new_from_file("foo")
+      end
+
+      should "have a working #torture_signature_0 method" do
+	y, z, q = @o.torture_signature_0(-21, "hello", 13)
+	assert_equal [-21, 2 * -21, "hello".length + 13],
+	  [y, z, q]
+      end
+    end
+
     context "the Everything::TestEnum type" do
       should "be of type FFI::Enum" do
 	assert_instance_of FFI::Enum, Everything::TestEnum
