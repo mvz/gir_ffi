@@ -70,8 +70,8 @@ module GirFFI
     def vfunc(index)
       IVFuncInfo.wrap(Lib.g_object_info_get_vfunc @gobj, index)
     end
-    def find_vfunc
-      IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj)
+    def find_vfunc name
+      IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj, name)
     end
     ##
     build_array_method :vfuncs
