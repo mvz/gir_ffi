@@ -39,15 +39,19 @@ class EverythingTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestBoxed, tb
       end
 
-      should "allow creating an instance using alternative constructors" do
+      should "create an instance using #new_alternative_constructor1" do
 	tb = Everything::TestBoxed.new_alternative_constructor1 1
 	assert_instance_of Everything::TestBoxed, tb
 	assert_equal 1, tb[:some_int8]
+      end
 
+      should "create an instance using #new_alternative_constructor2" do
 	tb = Everything::TestBoxed.new_alternative_constructor2 1, 2
 	assert_instance_of Everything::TestBoxed, tb
 	assert_equal 1 + 2, tb[:some_int8]
+      end
 
+      should "create an instance using #new_alternative_constructor3" do
 	tb = Everything::TestBoxed.new_alternative_constructor3 "54"
 	assert_instance_of Everything::TestBoxed, tb
 	assert_equal 54, tb[:some_int8]
