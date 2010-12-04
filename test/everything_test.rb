@@ -156,14 +156,28 @@ class EverythingTest < Test::Unit::TestCase
 	  @obj[:some_enum] = :value2
 	end
 
-	should "have a working equals method" do
-	  ob2 = Everything::TestSimpleBoxedA.new
-	  ob2[:some_int] = 4236
-	  ob2[:some_int8] = 36
-	  ob2[:some_double] = 23.53
-	  ob2[:some_enum] = :value2
+	context "its equals method" do
+	  setup do
+	    @ob2 = Everything::TestSimpleBoxedA.new
+	    @ob2[:some_int] = 4236
+	    @ob2[:some_int8] = 36
+	    @ob2[:some_double] = 23.53
+	    @ob2[:some_enum] = :value2
+	  end
 
-	  assert_equal true, @obj.equals(ob2)
+	  should "return true if values are the same" do
+	    assert_equal true, @obj.equals(@ob2)
+	  end
+
+	  should "return true if enum values differ" do
+	    @ob2[:some_enum] = :value3
+	    assert_equal true, @obj.equals(@ob2)
+	  end
+
+	  should "return false if other values differ" do
+	    @ob2[:some_int] = 1
+	    assert_equal false, @obj.equals(@ob2)
+	  end
 	end
 
 	context "its copy method" do
