@@ -59,6 +59,17 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	rv = GObject.signal_emit s, "incoming"
 	assert_equal true, rv.get_boolean
       end
+
+      should "handle extra signal arguments" do
+	a = 1
+	o = Everything::TestSubObj.new
+	GObject.signal_connect(o, "test-with-static-scope-arg", 2) { |i, object, d|
+	  a = d
+	}
+	GObject.signal_emit o, "test-with-static-scope-arg"
+	assert_equal 2, a
+      end
+
     end
 
   end

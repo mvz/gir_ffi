@@ -48,7 +48,9 @@ module GirFFI
 
 	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
 
-	  callback = FFI::Function.new rettype, [:pointer, :pointer],
+	  argtypes = [:pointer] + sig.args.map {|a| :pointer} + [:pointer]
+
+	  callback = FFI::Function.new rettype, argtypes,
 	    &GirFFI::ArgHelper.mapped_callback_args(&block)
 
 	  signal_connect_data object, signal, callback, data, nil, 0
