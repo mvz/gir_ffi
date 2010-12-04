@@ -115,6 +115,7 @@ module GirFFI
     end
     public_class_method :build_module, :build_class
     public_class_method :find_signal
+    public_class_method :find_signal_for_info
     public_class_method :itypeinfo_to_ffitype
     public_class_method :attach_ffi_function
   end

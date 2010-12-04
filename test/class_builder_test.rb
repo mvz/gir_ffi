@@ -37,6 +37,19 @@ class ClassBuilderTest < Test::Unit::TestCase
       end
     end
 
+    context 'the find_signal method' do
+      should 'find the signal "test" for TestObj' do
+	builder = GirFFI::ClassBuilder.new 'Everything', 'TestObj'
+	sig = builder.find_signal 'test'
+	assert_equal 'test', sig.name
+      end
+
+      should 'find the signal "test" for TestSubObj' do
+	builder = GirFFI::ClassBuilder.new 'Everything', 'TestSubObj'
+	sig = builder.find_signal 'test'
+	assert_equal 'test', sig.name
+      end
+    end
   end
 end
 

@@ -43,6 +43,10 @@ module GirFFI
       true
     end
 
+    def find_signal detailed_signal
+      GirFFI::Builder.find_signal_for_info info, detailed_signal
+    end
+
     private
 
     def build_class
