@@ -11,6 +11,7 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
+    extend BuilderHelper
     def self.build_class namespace, classname
       ClassBuilder.new(namespace, classname).generate
     end
@@ -84,16 +85,11 @@ module GirFFI
 
       sym = interface.name.to_sym
 
-      # FIXME: Rescue is ugly here.
-      ft = lib.find_type sym rescue nil
-      if ft.nil?
+      optionally_define_constant modul, sym do
 	args = ffi_function_argument_types interface
 	ret = ffi_function_return_type interface
-	ft = lib.callback sym, args, ret
-	# TODO: Use set constant as getter as well.
-	modul.const_set(sym, ft)
+	lib.callback sym, args, ret
       end
-      ft
     end
 
     # Set up method access.
