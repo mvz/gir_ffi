@@ -79,8 +79,6 @@ module GirFFI
     end
 
     def process_out_arg arg
-      raise NotImplementedError unless arg.ownership_transfer == :everything
-
       prevar = new_var
       postvar = new_var
 
@@ -91,6 +89,15 @@ module GirFFI
       when :double
 	@pre << "#{prevar} = GirFFI::ArgHelper.double_to_inoutptr 0"
 	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_double #{prevar}"
+      when :interface
+	iface = arg.type.interface
+	if iface.type == :struct
+	  @pre << "#{prevar} = #{iface.namespace}::#{iface.name}.new"
+	  @post << "#{postvar} = #{prevar}"
+	else
+	  raise NotImplementedError,
+	    "Don't know what to do with interface type #{iface.type}"
+	end
       else
 	raise NotImplementedError,
 	  "Don't know what to do with argument type #{arg.type.tag}"

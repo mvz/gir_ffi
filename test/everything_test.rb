@@ -204,6 +204,25 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    context "the Everything::TestStructA class" do
+      context "an instance" do
+	should "have a working clone method" do
+	  a = Everything::TestStructA.new
+	  a[:some_int] = 2556
+	  a[:some_int8] = -10
+	  a[:some_double] = 1.03455e20
+	  a[:some_enum] = :value2
+
+	  b = a.clone
+
+	  assert_equal 2556, b[:some_int]
+	  assert_equal -10, b[:some_int8]
+	  assert_equal 1.03455e20, b[:some_double]
+	  assert_equal :value2, b[:some_enum]
+	end
+      end
+    end
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)
