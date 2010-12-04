@@ -7,15 +7,37 @@ module GirFFI
       end
 
       module ClassMethods
-	def signal_emit object, signal
-	  base = ::GObject::TypeInstance.new object.to_ptr
+	def type_from_instance instance
+	  base = ::GObject::TypeInstance.new instance.to_ptr
 	  kls = ::GObject::TypeClass.new(base[:g_class])
-	  type = kls[:g_type]
+	  kls[:g_type]
+	end
+
+	def signal_emit object, signal
+	  type = type_from_instance object
+
 	  id = signal_lookup signal, type
+
 	  val = ::GObject::Value.new
 	  val.init type
 	  val.set_instance object
-	  signal_emitv val, id, 0, nil
+
+	  q = ::GObject::SignalQuery.new
+	  signal_query id, q
+
+	  use_ret = (q[:return_type] != ::GObject.type_from_name("void"))
+	  if use_ret
+	    rval = ::GObject::Value.new
+	    rval.init q[:return_type]
+	  end
+
+	  signal_emitv val, id, 0, rval
+
+	  if use_ret
+	    rval
+	  else
+	    nil
+	  end
 	end
 
 	def signal_connect object, signal, data=nil, &block

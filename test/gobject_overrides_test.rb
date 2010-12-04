@@ -6,6 +6,27 @@ class GObjectOverridesTest < Test::Unit::TestCase
     setup do
       GirFFI.setup :GObject
       GirFFI.setup :Everything
+      GirFFI.setup :Gio
+    end
+
+    context "the signal_emit function" do
+      should "emit a signal" do
+	a = 1
+	o = Everything::TestSubObj.new
+	GObject.signal_connect_data o, "test", Proc.new { a = 2 }, nil, nil, 0
+	GObject.signal_emit o, "test"
+	assert_equal 2, a
+      end
+
+      should "handle return values" do
+	s = Gio::SocketService.new
+
+	argtypes = [:pointer, :pointer, :pointer, :pointer]
+	callback = FFI::Function.new(:bool, argtypes) { |a,b,c,d| true }
+	GObject.signal_connect_data s, "incoming", callback, nil, nil, 0
+	rv = GObject.signal_emit s, "incoming"
+	assert_equal true, rv.get_boolean
+      end
     end
 
     context "the signal_connect function" do
@@ -33,15 +54,6 @@ class GObjectOverridesTest < Test::Unit::TestCase
       end
     end
 
-    context "the signal_emit function" do
-      should "emit a signal" do
-	a = 1
-	o = Everything::TestSubObj.new
-	GObject.signal_connect_data o, "test", Proc.new { a = 2 }, nil, nil, 0
-	GObject.signal_emit o, "test"
-	assert_equal 2, a
-      end
-    end
   end
 end
 
