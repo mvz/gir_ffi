@@ -46,7 +46,9 @@ module GirFFI
 	    raise "Signal #{signal} is invalid for #{object}"
 	  end
 
-	  callback = FFI::Function.new :void, [:pointer, :pointer],
+	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
+
+	  callback = FFI::Function.new rettype, [:pointer, :pointer],
 	    &GirFFI::ArgHelper.mapped_callback_args(&block)
 
 	  signal_connect_data object, signal, callback, data, nil, 0

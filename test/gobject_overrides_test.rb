@@ -52,6 +52,13 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	  GObject.signal_connect(o, "not-really-a-signal") {}
 	end
       end
+
+      should "handle return values" do
+	s = Gio::SocketService.new
+	GObject.signal_connect(s, "incoming") { true }
+	rv = GObject.signal_emit s, "incoming"
+	assert_equal true, rv.get_boolean
+      end
     end
 
   end
