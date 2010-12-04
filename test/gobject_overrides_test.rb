@@ -16,6 +16,14 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	GObject.signal_emit o, "test"
 	assert_equal 2, a
       end
+
+      should "pass user data to handler" do
+	a = 1
+	o = Everything::TestSubObj.new
+	GObject.signal_connect(o, "test", 2) { |i, d| a = d }
+	GObject.signal_emit o, "test"
+	assert_equal 2, a
+      end
     end
 
     context "the signal_emit function" do

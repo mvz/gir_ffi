@@ -18,9 +18,10 @@ module GirFFI
 	  signal_emitv val, id, 0, nil
 	end
 
-	def signal_connect object, signal, &block
-	  callback = Proc.new(&block)
-	  signal_connect_data object, signal, callback, nil, nil, 0
+	def signal_connect object, signal, data=nil, &block
+	  callback = FFI::Function.new :void, [:pointer, :pointer],
+	    &GirFFI::ArgHelper.mapped_callback_args(&block)
+	  signal_connect_data object, signal, callback, data, nil, 0
 	end
       end
 
