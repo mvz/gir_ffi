@@ -17,10 +17,10 @@ Gtk.init
 win = Gtk::Window.new(:toplevel)
 win.set_title "Hello Buttons!"
 
-GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:pointer, :pointer]) {
+GObject.signal_connect win, "delete-event" do
   Gtk.main_quit
   false
-}, nil, nil, 0
+end
 
 win.set_border_width 10
 

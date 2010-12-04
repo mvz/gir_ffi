@@ -11,10 +11,10 @@ GirFFI.setup :Gtk
 Gtk.init
 
 win = Gtk::Window.new(:toplevel)
-GObject.signal_connect_data win, "delete-event", FFI::Function.new(:bool, [:pointer, :pointer]) {
+GObject.signal_connect win, "delete-event" do
   puts "delete event occured"
   true
-}, nil, nil, 0
+end
 
 GObject.signal_connect(win, "destroy") { Gtk.main_quit }
 win.set_border_width 10
