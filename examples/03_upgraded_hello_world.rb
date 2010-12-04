@@ -8,10 +8,9 @@ require 'gir_ffi'
 GirFFI.setup :GObject
 GirFFI.setup :Gtk
 
-callback = FFI::Function.new :void, [:pointer, :pointer],
-  &GirFFI::ArgHelper.mapped_callback_args { |widget, data|
-    puts "Hello again - #{data} was pressed"
-  }
+callback = lambda { |widget, data|
+  puts "Hello again - #{data} was pressed"
+}
 
 Gtk.init
 
@@ -29,12 +28,12 @@ box = Gtk::HBox.new(false, 0)
 win.add box
 
 button = Gtk::Button.new_with_label("Button 1")
-GObject.signal_connect_data button, "clicked", callback, "button 1", nil, 0
+GObject.signal_connect button, "clicked", "button 1", &callback
 box.pack_start button, true, true, 0
 button.show
 
 button = Gtk::Button.new_with_label("Button 2")
-GObject.signal_connect_data button, "clicked", callback, "button 2", nil, 0
+GObject.signal_connect button, "clicked", "button 2", &callback
 box.pack_start button, true, true, 0
 button.show
 

@@ -11,5 +11,5 @@ GirFFI.setup :Gtk
 Gtk.init
 win = Gtk::Window.new :toplevel
 win.show
-GObject.signal_connect_data win, "destroy", Proc.new { Gtk.main_quit }, nil, nil, 0
+GObject.signal_connect(win, "destroy") { Gtk.main_quit }
 Gtk.main
