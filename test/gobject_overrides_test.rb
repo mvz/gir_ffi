@@ -9,8 +9,12 @@ class GObjectOverridesTest < Test::Unit::TestCase
     end
 
     context "the signal_connect function" do
-      should "pass" do
-	assert true
+      should "install a signal handler" do
+	a = 1
+	o = Everything::TestSubObj.new
+	GObject.signal_connect(o, "test") { a = 2 }
+	GObject.signal_emit o, "test"
+	assert_equal 2, a
       end
     end
 

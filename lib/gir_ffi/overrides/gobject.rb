@@ -17,6 +17,11 @@ module GirFFI
 	  val.set_instance object
 	  signal_emitv val, id, 0, nil
 	end
+
+	def signal_connect object, signal, &block
+	  callback = Proc.new(&block)
+	  signal_connect_data object, signal, callback, nil, nil, 0
+	end
       end
 
     end

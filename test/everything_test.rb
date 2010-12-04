@@ -216,7 +216,7 @@ class EverythingTest < Test::Unit::TestCase
 	  b = a.clone
 
 	  assert_equal 2556, b[:some_int]
-	  assert_equal -10, b[:some_int8]
+	  assert_equal(-10, b[:some_int8])
 	  assert_equal 1.03455e20, b[:some_double]
 	  assert_equal :value2, b[:some_enum]
 	end
