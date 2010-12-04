@@ -24,6 +24,13 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	GObject.signal_emit o, "test"
 	assert_equal 2, a
       end
+
+      should "not allow connecting an invalid signal" do
+	o = Everything::TestSubObj.new
+	assert_raises RuntimeError do
+	  GObject.signal_connect(o, "not-really-a-signal") {}
+	end
+      end
     end
 
     context "the signal_emit function" do

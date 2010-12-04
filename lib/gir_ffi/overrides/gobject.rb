@@ -19,8 +19,14 @@ module GirFFI
 	end
 
 	def signal_connect object, signal, data=nil, &block
+	  sig = object.class.gir_ffi_builder.find_signal signal
+	  if sig.nil?
+	    raise "Signal #{signal} is invalid for #{object}"
+	  end
+
 	  callback = FFI::Function.new :void, [:pointer, :pointer],
 	    &GirFFI::ArgHelper.mapped_callback_args(&block)
+
 	  signal_connect_data object, signal, callback, data, nil, 0
 	end
       end
