@@ -43,8 +43,13 @@ module GirFFI
       true
     end
 
-    def find_signal detailed_signal
-      GirFFI::Builder.find_signal_for_info info, detailed_signal
+    def find_signal signal_name
+      info.signals.each do |s|
+	return s if s.name == signal_name
+      end
+      if info.parent
+	return superclass.gir_ffi_builder.find_signal signal_name
+      end
     end
 
     private
@@ -216,5 +221,14 @@ module GirFFI
 	Class.new parent
       }
     end
+
+    def find_signal_for_info info, signalname
+      info.signals.each do |s|
+	return s if s.name == signalname
+      end
+      parent = info.parent
+      find_signal_for_info parent, signalname if parent
+    end
+
   end
 end

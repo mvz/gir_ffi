@@ -19,11 +19,6 @@ module GirFFI
       ModuleBuilder.new(namespace).generate
     end
 
-    def self.find_signal namespace, classname, signalname
-      info = IRepository.default.find_by_name namespace, classname
-      find_signal_for_info info, signalname
-    end
-
     def self.attach_ffi_function lib, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
@@ -101,21 +96,11 @@ module GirFFI
       ft
     end
 
-    def self.find_signal_for_info info, signalname
-      info.signals.each do |s|
-	return s if s.name == signalname
-      end
-      parent = info.parent
-      find_signal_for_info parent, signalname if parent
-    end
-
     # Set up method access.
     (self.public_methods - Module.public_methods).each do |m|
       private_class_method m.to_sym
     end
     public_class_method :build_module, :build_class
-    public_class_method :find_signal
-    public_class_method :find_signal_for_info
     public_class_method :itypeinfo_to_ffitype
     public_class_method :attach_ffi_function
   end
