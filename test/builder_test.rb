@@ -203,6 +203,16 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+
+    context "building GObject::ValueArray" do
+      should "use provided constructor if present" do
+	GirFFI::Builder.build_class 'GObject', 'ValueArray'
+	assert_nothing_raised {
+	  GObject::ValueArray.new 2
+	}
+      end
+    end
+
     context "building Everything::TestBoxed" do
       setup do
 	GirFFI::Builder.build_class 'Everything', 'TestBoxed'

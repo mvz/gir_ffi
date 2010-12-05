@@ -117,7 +117,7 @@ module GirFFI
       setup_vfunc_invokers if info.type == :object
 
       # FIXME: Perhaps do this the other way round?
-      if info.type == :struct
+      if info.type == :struct and not info.find_method 'new'
 	(class << @klass; self; end).class_eval {
 	  alias_method :new, :_real_new
 	}
