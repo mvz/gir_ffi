@@ -113,13 +113,9 @@ module GirFFI
       setup_layout
       setup_constants
       setup_instance_methods
-      setup_vfunc_invokers if info.type == :object
 
-      if info.type == :struct and not info.find_method 'new'
-	(class << @klass; self; end).class_eval {
-	  alias_method :new, :_real_new
-	}
-      end
+      setup_vfunc_invokers if info.type == :object
+      provide_struct_constructor if info.type == :struct
     end
 
     def setup_layout
@@ -173,6 +169,14 @@ module GirFFI
 	  end
 	"
       end
+    end
+
+    def provide_struct_constructor
+      return if info.find_method 'new'
+
+      (class << @klass; self; end).class_eval {
+	alias_method :new, :_real_new
+      }
     end
 
     def setup_constants
