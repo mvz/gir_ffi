@@ -79,7 +79,6 @@ module GirFFI
     end
 
     def parent
-      # FIXME: This does not work without this cacheing .. very odd!
       unless defined? @parent
 	@parent = info.type == :object ? info.parent : nil
       end
@@ -116,7 +115,6 @@ module GirFFI
       setup_instance_methods
       setup_vfunc_invokers if info.type == :object
 
-      # FIXME: Perhaps do this the other way round?
       if info.type == :struct and not info.find_method 'new'
 	(class << @klass; self; end).class_eval {
 	  alias_method :new, :_real_new
@@ -221,14 +219,5 @@ module GirFFI
 	Class.new parent
       }
     end
-
-    def find_signal_for_info info, signalname
-      info.signals.each do |s|
-	return s if s.name == signalname
-      end
-      parent = info.parent
-      find_signal_for_info parent, signalname if parent
-    end
-
   end
 end
