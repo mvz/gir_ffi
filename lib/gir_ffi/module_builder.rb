@@ -23,7 +23,7 @@ module GirFFI
       modul = build_module
       lib = modul.const_get(:Lib)
 
-      GirFFI::Builder.attach_ffi_function lib, go
+      Builder.attach_ffi_function lib, go
 
       meta = (class << modul; self; end)
       meta.class_eval function_definition(go, lib)
@@ -32,7 +32,7 @@ module GirFFI
     end
 
     def build_class classname
-      GirFFI::Builder.build_class @namespace, classname.to_s
+      Builder.build_class @namespace, classname.to_s
     end
 
     private
