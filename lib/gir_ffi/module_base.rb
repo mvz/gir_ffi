@@ -6,6 +6,12 @@ module GirFFI
       self.send method, *arguments, &block
     end
 
+    def const_missing classname
+      klass = gir_ffi_builder.build_class classname.to_s
+      return super if klass.nil?
+      klass
+    end
+
     def gir_ffi_builder
       self.const_get :GIR_FFI_BUILDER
     end

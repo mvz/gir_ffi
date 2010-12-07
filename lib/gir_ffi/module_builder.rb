@@ -31,6 +31,10 @@ module GirFFI
       true
     end
 
+    def build_class classname
+      GirFFI::Builder.build_class @namespace, classname.to_s
+    end
+
     private
 
     def build_module
@@ -48,7 +52,6 @@ module GirFFI
 
     def setup_module
       @module.extend ModuleBase
-      @module.class_eval const_missing_definition
       @module.const_set :GIR_FFI_BUILDER, self
       begin
 	require "gir_ffi/overrides/#{@namespace.downcase}"
@@ -71,16 +74,6 @@ module GirFFI
       end
 
       optionally_define_constant(@lib, :CALLBACKS) { [] }
-    end
-
-    def const_missing_definition
-      return <<-CODE
-	def self.const_missing classname
-	  klass = GirFFI::Builder.build_class "#{@namespace}", classname.to_s
-	  return super if klass.nil?
-	  klass
-	end
-      CODE
     end
 
     def function_introspection_data function
