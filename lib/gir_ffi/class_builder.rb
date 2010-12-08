@@ -65,6 +65,8 @@ module GirFFI
 	      vals = info.values.map {|v| [v.name.to_sym, v.value]}.flatten
 	      lib.enum(@classname.to_sym, vals)
 	    end
+	  else
+	    raise NotImplementedError, "Cannot build classes of type #{info.type}"
 	end
       end
       @klass
