@@ -12,7 +12,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	def init argc, argv
 	  _v1 = GirFFI::ArgHelper.int_to_inoutptr argc
 	  _v3 = GirFFI::ArgHelper.string_array_to_inoutptr argv
-	  Lib.gtk_init _v1, _v3
+	  ::Lib.gtk_init _v1, _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_int _v1
 	  _v4 = GirFFI::ArgHelper.outptr_to_string_array _v3, argv.nil? ? 0 : argv.size
 	  return _v2, _v4
@@ -29,7 +29,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected = "
 	def show
-	  Lib.gtk_widget_show self
+	  ::Lib.gtk_widget_show self
 	end
       "
 
@@ -45,11 +45,11 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	  _v2 = GirFFI::ArgHelper.object_to_inptr instance
 	  _v3 = GirFFI::ArgHelper.mapped_callback_args c_handler
-	  Lib::CALLBACKS << _v3
+	  ::Lib::CALLBACKS << _v3
 	  _v4 = GirFFI::ArgHelper.object_to_inptr data
 	  _v5 = GirFFI::ArgHelper.mapped_callback_args destroy_data
-	  Lib::CALLBACKS << _v5
-	  _v1 = Lib.g_signal_connect_data _v2, detailed_signal, _v3, _v4, _v5, connect_flags
+	  ::Lib::CALLBACKS << _v5
+	  _v1 = ::Lib.g_signal_connect_data _v2, detailed_signal, _v3, _v4, _v5, connect_flags
 	  return _v1
 	end"
 
@@ -64,9 +64,9 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
       expected =
 	"def new_from_file x
 	  _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
-	  _v1 = Lib.test_obj_new_from_file x, _v2
+	  _v1 = ::Lib.test_obj_new_from_file x, _v2
 	  GirFFI::ArgHelper.check_error(_v2)
-	  return Everything::TestObj._real_new(_v1)
+	  return ::Everything::TestObj._real_new(_v1)
 	end"
 
       assert_equal cws(expected), cws(code)

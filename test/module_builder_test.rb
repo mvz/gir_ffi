@@ -15,7 +15,7 @@ class ModuleBuilderTest < Test::Unit::TestCase
 
 	should "build correct definition of Gtk.main" do
 	  code = @mbuilder.send :function_definition, @go, Lib
-	  expected = "def main\nLib.gtk_main\nend"
+	  expected = "def main\n::Lib.gtk_main\nend"
 	  assert_equal cws(expected), cws(code)
 	end
       end

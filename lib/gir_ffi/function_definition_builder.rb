@@ -117,7 +117,7 @@ module GirFFI
 	# TODO: Use arg.scope to decide if this is needed.
 	procvar = new_var
 	@pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
-	@pre << "#{@libmodule}::CALLBACKS << #{procvar}"
+	@pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
 	@callargs << procvar
       elsif tag == :void
 	raise NotImplementedError unless arg.type.pointer?
@@ -141,7 +141,7 @@ module GirFFI
 	namespace = interface.namespace
 	name = interface.name
 	GirFFI::Builder.build_class namespace, name
-	@retvals << "#{namespace}::#{name}._real_new(#{retval})"
+	@retvals << "::#{namespace}::#{name}._real_new(#{retval})"
       else
 	@retvals << retval
       end
@@ -166,7 +166,7 @@ module GirFFI
       return <<-CODE
 	def #{@info.name} #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
-	  #{@capture}#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
+	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
 	end
       CODE

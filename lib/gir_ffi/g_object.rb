@@ -1,8 +1,8 @@
 require 'ffi'
 
 module GirFFI
-  module GType
-    def self.init
+  module GObject
+    def self.type_init
       Lib::g_type_init
     end
 
