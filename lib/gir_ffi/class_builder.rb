@@ -195,12 +195,7 @@ module GirFFI
     end
 
     def function_definition go
-      fdbuilder = if go.constructor?
-		    ConstructorDefinitionBuilder
-		  else
-		    FunctionDefinitionBuilder
-		  end
-      fdbuilder.new(go, lib).generate
+      FunctionDefinitionBuilder.new(go, lib).generate
     end
 
     def prepare_method method
