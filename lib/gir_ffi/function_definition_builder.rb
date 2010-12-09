@@ -144,7 +144,7 @@ module GirFFI
 	retval = new_var
 	@post << "#{retval} = ::#{namespace}::#{name}._real_new(#{cvar})"
 	if interface.type == :object
-	  @post << "GirFFI::GObject.object_ref_sink(#{retval}) if GirFFI::GObject.object_is_floating(#{retval})"
+	  @post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	end
 	@retvals << retval
       else

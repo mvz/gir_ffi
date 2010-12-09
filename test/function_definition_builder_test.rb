@@ -67,7 +67,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	  _v1 = ::Lib.test_obj_new_from_file x, _v3
 	  GirFFI::ArgHelper.check_error(_v3)
 	  _v2 = ::Everything::TestObj._real_new(_v1)
-	  GirFFI::GObject.object_ref_sink(_v2) if GirFFI::GObject.object_is_floating(_v2)
+	  GirFFI::ArgHelper.sink_if_floating(_v2)
 	  return _v2
 	end"
 

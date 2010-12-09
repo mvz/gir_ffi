@@ -98,5 +98,11 @@ module GirFFI
       errp = errpp.read_pointer
       raise GError.new(errp)[:message] unless errp.null?
     end
+
+    def self.sink_if_floating gobject
+      if GirFFI::GObject.object_is_floating(gobject)
+	GirFFI::GObject.object_ref_sink(gobject)
+      end
+    end
   end
 end
