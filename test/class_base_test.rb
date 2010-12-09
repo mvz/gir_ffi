@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi/class_base'
 
-class CkassBaseTest < Test::Unit::TestCase
+class ClassBaseTest < Test::Unit::TestCase
   context "A class derived from GirFFI::Base" do
     setup do
       @klass = Class.new(GirFFI::ClassBase) do
