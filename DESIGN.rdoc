@@ -45,6 +45,15 @@ GLib::Instantiable; In standard GObject they are functions.
 Possibly, compatibility enhancing code can be added for these specific
 exceptions.
 
+== Reference Counting
+
+Because we can always make sure GObjects are unref'd when the Ruby object
+is GC'd, the mechanism of floating references actually gets in the way a
+bit. Therefore, when floating GObjects are constructed, GirFFI will sink
+them. All GObjects can then safely be unref'd using a Ruby finalizer.
+GObjects obtained through other mechanisms than with a constructor will be
+ref'd once when wrapping them in a ruby object.
+
 == Bootstrapping Class Design
 
 The interface to the GObject Introspection Repository itself is also

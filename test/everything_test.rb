@@ -3,6 +3,14 @@ require 'gir_ffi'
 
 # Tests generated methods and functions in the Everything namespace.
 class EverythingTest < Test::Unit::TestCase
+  def ref_count object
+    GObject::Object::Struct.new(object.to_ptr)[:ref_count]
+  end
+
+  def is_floating? object
+    (GObject::Object::Struct.new(object.to_ptr)[:qdata].address & 2) == 2
+  end
+
   context "The generated Everything module" do
     setup do
       GirFFI.setup :Everything
@@ -69,6 +77,24 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    # TestFlags
+
+    context "the Everything::TestFloating class" do
+      context "an instance" do
+	setup do
+	  @o = Everything::TestFloating.new
+	end
+
+	should "have a reference count of 1" do
+	  assert_equal 1, ref_count(@o)
+	end
+
+	should "have been sunk" do
+	  assert !is_floating?(@o)
+	end
+      end
+    end
+
     context "the Everything::TestObj class" do
       should "create an instance using #new_from_file" do
 	o = Everything::TestObj.new_from_file("foo")
@@ -94,6 +120,14 @@ class EverythingTest < Test::Unit::TestCase
       context "an instance" do
 	setup do
 	  @o = Everything::TestObj.new_from_file("foo")
+	end
+
+	should "have a reference count of 1" do
+	  assert_equal 1, ref_count(@o)
+	end
+
+	should "not float" do
+	  assert !is_floating?(@o)
 	end
 
 	should "have a working (virtual) #matrix method" do
