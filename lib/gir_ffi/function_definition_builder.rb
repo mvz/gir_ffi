@@ -133,17 +133,22 @@ module GirFFI
       type = @info.return_type
       tag = type.tag
       return if tag == :void
-      retval = new_var
-      @capture = "#{retval} = "
+      cvar = new_var
+      @capture = "#{cvar} = "
 
       if tag == :interface
 	interface = type.interface
 	namespace = interface.namespace
 	name = interface.name
 	GirFFI::Builder.build_class namespace, name
-	@retvals << "::#{namespace}::#{name}._real_new(#{retval})"
-      else
+	retval = new_var
+	@post << "#{retval} = ::#{namespace}::#{name}._real_new(#{cvar})"
+	if interface.type == :object
+	  @post << "GirFFI::GObject.object_ref_sink(#{retval}) if GirFFI::GObject.object_is_floating(#{retval})"
+	end
 	@retvals << retval
+      else
+	@retvals << cvar
       end
     end
 
@@ -151,7 +156,7 @@ module GirFFI
       if @info.throws?
 	errvar = new_var
 	@pre << "#{errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
-	@post << "GirFFI::ArgHelper.check_error(#{errvar})"
+	@post.unshift "GirFFI::ArgHelper.check_error(#{errvar})"
 	@callargs << errvar
       end
 

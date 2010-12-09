@@ -63,10 +63,12 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def new_from_file x
-	  _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
-	  _v1 = ::Lib.test_obj_new_from_file x, _v2
-	  GirFFI::ArgHelper.check_error(_v2)
-	  return ::Everything::TestObj._real_new(_v1)
+	  _v3 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+	  _v1 = ::Lib.test_obj_new_from_file x, _v3
+	  GirFFI::ArgHelper.check_error(_v3)
+	  _v2 = ::Everything::TestObj._real_new(_v1)
+	  GirFFI::GObject.object_ref_sink(_v2) if GirFFI::GObject.object_is_floating(_v2)
+	  return _v2
 	end"
 
       assert_equal cws(expected), cws(code)
