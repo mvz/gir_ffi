@@ -146,6 +146,9 @@ module GirFFI
       if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct
 	ffitype = ffitype.const_get :Struct
       end
+      if ffitype == :bool
+	ffitype = :int
+      end
       ffitype
     end
 

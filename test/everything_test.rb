@@ -257,6 +257,31 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    # TestStructB
+    # TestStructC
+    # TestSubObj
+
+    context "the Everything::TestWi8021x class" do
+      should "create an instance using #new" do
+	o = Everything::TestWi8021x.new
+	assert_instance_of Everything::TestWi8021x, o
+      end
+
+      context "an instance" do
+	setup do
+	  @obj = Everything::TestWi8021x.new
+	end
+	should "set its boolean struct member with #set_testbool" do
+	  @obj.set_testbool true
+	  assert_equal 1, @obj[:testbool]
+	  gv = GObject::Value.new
+	  gv.init GObject.type_from_name "gboolean"
+	  @obj.get_property "testbool", gv
+	  assert_equal true, gv.get_boolean
+	end
+      end
+    end
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)
