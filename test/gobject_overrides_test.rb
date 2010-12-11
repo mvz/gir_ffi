@@ -46,6 +46,15 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	assert_equal 2, a
       end
 
+      should "pass object to handler" do
+	o = Everything::TestSubObj.new
+	o2 = nil
+	GObject.signal_connect(o, "test") { |i, d| o2 = i }
+	GObject.signal_emit o, "test"
+	assert_instance_of Everything::TestSubObj, o2
+	assert_equal o.to_ptr, o2.to_ptr
+      end
+
       should "not allow connecting an invalid signal" do
 	o = Everything::TestSubObj.new
 	assert_raises RuntimeError do

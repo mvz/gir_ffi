@@ -13,6 +13,24 @@ module GirFFI
 	  kls[:g_type]
 	end
 
+	def signal_callback_args klass, &block
+	  return Proc.new do |instance, *args|
+	    instance = klass.send :_real_new, instance
+	    mapped = args.map {|arg|
+	      if FFI::Pointer === arg
+		begin
+		  ObjectSpace._id2ref arg.address
+		rescue RangeError
+		  arg
+		end
+	      else
+		arg
+	      end
+	    }
+	    block.call(instance, *mapped)
+	  end
+	end
+
 	def signal_emit object, signal
 	  type = type_from_instance object
 
@@ -51,7 +69,7 @@ module GirFFI
 	  argtypes = [:pointer] + sig.args.map {|a| :pointer} + [:pointer]
 
 	  callback = FFI::Function.new rettype, argtypes,
-	    &GirFFI::ArgHelper.mapped_callback_args(&block)
+	    &(signal_callback_args(object.class, &block))
 
 	  signal_connect_data object, signal, callback, data, nil, 0
 	end
