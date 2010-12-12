@@ -291,6 +291,11 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal true, Everything.test_boolean(true)
     end
 
+    should "have correct test_callback" do
+      result = Everything.test_callback Proc.new { 5 }
+      assert_equal 5, result
+    end
+
     should "have correct test_callback_user_data" do
       a = :foo
       result = Everything.test_callback_user_data Proc.new {|u|
