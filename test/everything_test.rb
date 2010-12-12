@@ -296,14 +296,20 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 5, result
     end
 
-    should "have correct test_callback_user_data" do
-      a = :foo
-      result = Everything.test_callback_user_data Proc.new {|u|
-	a = u
-	5
-      }, :bar
-      assert_equal :bar, a
-      assert_equal 5, result
+    context "the test_callback_user_data function" do
+      should "return the callbacks return value" do
+	result = Everything.test_callback_user_data Proc.new {|u| 5 }, nil
+	assert_equal 5, result
+      end
+
+      should "handle boolean user_data" do
+	a = false
+	result = Everything.test_callback_user_data Proc.new {|u|
+	  a = u
+	  5
+	}, true
+	assert_equal true, a
+      end
     end
 
     should "have correct test_gtype" do
