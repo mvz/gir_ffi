@@ -3,6 +3,17 @@ module GirFFI
   # Represents a registered type.
   # Not implemented yet.
   class IRegisteredTypeInfo < IBaseInfo
+    def type_name
+      Lib.g_registered_type_info_get_type_name @gobj
+    end
+
+    def type_init
+      Lib.g_registered_type_info_get_type_init @gobj
+    end
+
+    def g_type
+      Lib.g_registered_type_info_get_g_type @gobj
+    end
   end
 end
 
