@@ -40,6 +40,10 @@ class EverythingTest < Test::Unit::TestCase
 	assert_equal 54, tb[:some_int8]
       end
 
+      should "have non-zero result for #get_gtype" do
+	assert Everything::TestBoxed.get_gtype > 0
+      end
+
       context "an instance" do
 	setup do
 	  @tb = Everything::TestBoxed.new_alternative_constructor1 123

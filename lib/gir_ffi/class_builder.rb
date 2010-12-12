@@ -115,6 +115,7 @@ module GirFFI
       setup_layout
       setup_constants
       setup_instance_methods
+      setup_gtype_getter
 
       setup_vfunc_invokers if info.type == :object
       provide_struct_constructor if info.type == :struct
@@ -160,6 +161,17 @@ module GirFFI
 	  end
 	"
       end
+    end
+
+    def setup_gtype_getter
+      getter = info.type_init
+      return if getter.nil? or getter == "intern"
+      lib.attach_function getter.to_sym, [], :int
+      @klass.class_eval "
+	def self.get_gtype
+	  ::#{lib}.#{getter}
+	end
+      "
     end
 
     def setup_vfunc_invokers
