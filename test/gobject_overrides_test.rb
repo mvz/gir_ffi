@@ -9,6 +9,20 @@ class GObjectOverridesTest < Test::Unit::TestCase
       GirFFI.setup :Gio
     end
 
+    context "the wrap_in_g_value function" do
+      should "wrap a boolean false" do
+	gv = GObject.wrap_in_g_value false
+	assert_instance_of GObject::Value, gv
+	assert_equal false, gv.get_boolean
+      end
+
+      should "wrap a boolean true" do
+	gv = GObject.wrap_in_g_value true
+	assert_instance_of GObject::Value, gv
+	assert_equal true, gv.get_boolean
+      end
+    end
+
     context "the signal_emit function" do
       should "emit a signal" do
 	a = 1

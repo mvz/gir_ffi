@@ -13,6 +13,17 @@ module GirFFI
 	  kls[:g_type]
 	end
 
+	def wrap_in_g_value val
+	  gvalue = ::GObject::Value.new
+	  case val
+	  when true, false
+	    gvalue.init ::GObject.type_from_name("gboolean")
+	    gvalue.set_boolean val
+	  end
+	  gvalue
+	end
+
+	# FIXME: This is a private helper function. Move elsewhere?
 	def signal_callback_args klass, &block
 	  return Proc.new do |instance, *args|
 	    instance = klass.send :_real_new, instance
