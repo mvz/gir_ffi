@@ -23,6 +23,17 @@ module GirFFI
 	  gvalue
 	end
 
+	def unwrap_g_value gvalue
+	  gtype = gvalue[:g_type]
+	  gtypename = ::GObject.type_name gtype
+	  case gtypename
+	  when "gboolean"
+	    gvalue.get_boolean
+	  else
+	    nil
+	  end
+	end
+
 	# FIXME: This is a private helper function. Move elsewhere?
 	def signal_callback_args klass, &block
 	  return Proc.new do |instance, *args|

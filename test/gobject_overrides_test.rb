@@ -23,6 +23,20 @@ class GObjectOverridesTest < Test::Unit::TestCase
       end
     end
 
+    context "the unwrap_g_value function" do
+      should "unwrap a boolean false" do
+	gv = GObject.wrap_in_g_value false
+	result = GObject.unwrap_g_value gv
+	assert_equal false, result
+      end
+
+      should "unwrap a boolean true" do
+	gv = GObject.wrap_in_g_value true
+	result = GObject.unwrap_g_value gv
+	assert_equal true, result
+      end
+    end
+
     context "the signal_emit function" do
       should "emit a signal" do
 	a = 1
