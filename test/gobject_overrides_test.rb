@@ -109,6 +109,34 @@ class GObjectOverridesTest < Test::Unit::TestCase
 
     end
 
+    context "The GObject overrides Helper module" do
+      context "#wrap_signal_arguments" do
+	context "the result of wrapping test-with-static-scope-arg" do
+	  setup do
+	    o = Everything::TestSubObj.new
+	    b = Everything::TestSimpleBoxedA.new
+
+	    @gva = GirFFI::Overrides::GObject::Helper.wrap_signal_arguments "test-with-static-scope-arg", o, b
+	  end
+
+	  should "be a GObject::ValueArray" do
+	    assert_instance_of GObject::ValueArray, @gva
+	  end
+
+	  should "contain two values" do
+	    assert_equal 2, @gva[:n_values]
+	  end
+
+	  should "have a first value with GType for TestSubObj" do
+	    assert_equal Everything::TestSubObj.get_gtype, (@gva.get_nth 0)[:g_type]
+	  end
+
+	  should "have a second value with GType for TestSimpleBoxedA" do
+	    assert_equal Everything::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1)[:g_type]
+	  end
+	end
+      end
+    end
   end
 end
 

@@ -97,6 +97,52 @@ module GirFFI
 	end
       end
 
+      module Helper
+	def self.wrap_signal_arguments signal, instance, *rest
+	  type = ::GObject.type_from_instance instance
+
+	  id = ::GObject.signal_lookup signal, type
+	  query = ::GObject::SignalQuery.new
+	  ::GObject.signal_query id, query
+
+	  sig = instance.class.gir_ffi_builder.find_signal signal
+
+	  arr = ::GObject::ValueArray.new sig.n_args+1
+
+	  val = ::GObject::Value.new
+	  val.init type
+	  val.set_instance instance
+
+	  arr.append val
+
+	  val.unset
+
+	  sig.args.zip(rest).each do |a|
+	    info, arg = *a
+	    if info.type.tag == :interface
+	      interface = info.type.interface
+
+	      val = ::GObject::Value.new
+	      val.init info.type.interface.g_type
+	      if interface.type == :struct
+		val.set_boxed arg
+	      else
+		raise NotImplementedError
+	      end
+
+	      arr.append val
+
+	      val.unset
+
+	    else
+	      raise NotImplementedError
+	    end
+	  end
+
+	  arr
+	end
+      end
+
     end
   end
 end
