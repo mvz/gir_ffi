@@ -203,6 +203,16 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+    context "building GObject::TypeCValue" do
+      setup do
+	GirFFI::Builder.build_class 'GObject', 'TypeCValue'
+      end
+
+      should "set up the correct union members" do
+	assert_equal [:v_int, :v_long, :v_int64, :v_double, :v_pointer],
+	  GObject::TypeCValue::Struct.members
+      end
+    end
 
     context "building GObject::ValueArray" do
       should "use provided constructor if present" do

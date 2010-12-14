@@ -57,7 +57,7 @@ module GirFFI
     def build_class
       unless defined? @klass
 	case info.type
-	  when :object, :struct
+	  when :object, :struct, :union
 	    instantiate_class
 	    setup_class unless already_set_up
 	  when :enum, :flags
