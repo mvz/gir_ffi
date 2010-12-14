@@ -50,6 +50,16 @@ class ClassBuilderTest < Test::Unit::TestCase
 	assert_equal 'test', sig.name
       end
     end
+
+    context "for GObject::TypeCValue (a union)" do
+      setup do
+	@cbuilder = GirFFI::ClassBuilder.new 'GObject', 'TypeCValue'
+      end
+
+      should "not raise an error looking for a method that doesn't exist" do
+	assert_nothing_raised { @cbuilder.setup_instance_method 'blub' }
+      end
+    end
   end
 end
 

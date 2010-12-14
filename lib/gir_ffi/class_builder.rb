@@ -29,7 +29,7 @@ module GirFFI
       definition = prepare_method method.to_s
 
       if definition.nil?
-	if info.parent
+	if parent
 	  return superclass.gir_ffi_builder.setup_instance_method method
 	else
 	  return false
