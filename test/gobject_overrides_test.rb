@@ -55,6 +55,25 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	rv = GObject.signal_emit s, "incoming"
 	assert_equal true, rv.get_boolean
       end
+
+      should "pass in extra arguments" do
+	o = Everything::TestSubObj.new
+	sb = Everything::TestSimpleBoxedA.new
+	sb[:some_int8] = 31
+	sb[:some_double] = 2.42
+	sb[:some_enum] = :value2
+	b2 = nil
+
+	argtypes = [:pointer, :pointer, :pointer]
+	callback = FFI::Function.new(:void, argtypes) do |a,b,c|
+	  b2 = b
+	end
+	GObject.signal_connect_data o, "test-with-static-scope-arg", callback, nil, nil, 0
+	GObject.signal_emit o, "test-with-static-scope-arg", sb
+
+	sb2 = Everything::TestSimpleBoxedA.new b2
+	assert sb.equals(sb2)
+      end
     end
 
     context "the signal_connect function" do

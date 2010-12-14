@@ -53,7 +53,7 @@ module GirFFI
 	  end
 	end
 
-	def signal_emit object, signal
+	def signal_emit object, signal, *args
 	  type = type_from_instance object
 
 	  id = signal_lookup signal, type
@@ -71,7 +71,9 @@ module GirFFI
 	    rval.init q[:return_type]
 	  end
 
-	  signal_emitv val, id, 0, rval
+	  arr = Helper.wrap_signal_arguments signal, object, *args
+
+	  signal_emitv arr[:values], id, 0, rval
 
 	  if use_ret
 	    rval
@@ -124,10 +126,13 @@ module GirFFI
 
 	      val = ::GObject::Value.new
 	      val.init info.type.interface.g_type
-	      if interface.type == :struct
+	      case interface.type
+	      when :struct
 		val.set_boxed arg
+	      when :object
+		val.set_instance arg
 	      else
-		raise NotImplementedError
+		raise NotImplementedError, interface.type
 	      end
 
 	      arr.append val
