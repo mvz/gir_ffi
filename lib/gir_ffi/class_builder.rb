@@ -57,8 +57,11 @@ module GirFFI
     def build_class
       unless defined? @klass
 	case info.type
-	  when :object, :struct, :union
+	  when :object, :struct
 	    instantiate_class
+	    setup_class unless already_set_up
+	  when :union
+	    instantiate_union_class
 	    setup_class unless already_set_up
 	  when :enum, :flags
 	    @klass = optionally_define_constant namespace_module, @classname do
@@ -109,6 +112,11 @@ module GirFFI
     def instantiate_class
       @klass = get_or_define_class namespace_module, @classname, superclass
       @structklass = get_or_define_class @klass, :Struct, FFI::Struct
+    end
+
+    def instantiate_union_class
+      @klass = get_or_define_class namespace_module, @classname, superclass
+      @structklass = get_or_define_class @klass, :Struct, FFI::Union
     end
 
     def setup_class

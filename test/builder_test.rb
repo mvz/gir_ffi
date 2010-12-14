@@ -212,6 +212,15 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal [:v_int, :v_long, :v_int64, :v_double, :v_pointer],
 	  GObject::TypeCValue::Struct.members
       end
+
+      should "set up union members with the correct offset" do
+	assert_equal [0, 0, 0, 0, 0],
+	  GObject::TypeCValue::Struct.layout.fields.map(&:offset)
+      end
+
+      should "set up the inner class as derived from FFI::Union" do
+	assert_equal FFI::Union, GObject::TypeCValue::Struct.superclass
+      end
     end
 
     context "building GObject::ValueArray" do
