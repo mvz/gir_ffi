@@ -71,7 +71,7 @@ module GirFFI
 	    rval.init q[:return_type]
 	  end
 
-	  arr = Helper.wrap_signal_arguments signal, object, *args
+	  arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
 
 	  signal_emitv arr[:values], id, 0, rval
 
@@ -100,7 +100,7 @@ module GirFFI
       end
 
       module Helper
-	def self.wrap_signal_arguments signal, instance, *rest
+	def self.signal_arguments_to_gvalue_array signal, instance, *rest
 	  sig = instance.class.gir_ffi_builder.find_signal signal
 
 	  arr = ::GObject::ValueArray.new sig.n_args+1
@@ -137,6 +137,10 @@ module GirFFI
 	  end
 
 	  arr
+	end
+
+	def self.cast_back_signal_arguments signal, *args
+	  return args
 	end
       end
 

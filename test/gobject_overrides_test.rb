@@ -129,13 +129,15 @@ class GObjectOverridesTest < Test::Unit::TestCase
     end
 
     context "The GObject overrides Helper module" do
-      context "#wrap_signal_arguments" do
+      context "#signal_arguments_to_gvalue_array" do
 	context "the result of wrapping test-with-static-scope-arg" do
 	  setup do
 	    o = Everything::TestSubObj.new
 	    b = Everything::TestSimpleBoxedA.new
 
-	    @gva = GirFFI::Overrides::GObject::Helper.wrap_signal_arguments "test-with-static-scope-arg", o, b
+	    @gva =
+	      GirFFI::Overrides::GObject::Helper.signal_arguments_to_gvalue_array(
+		"test-with-static-scope-arg", o, b)
 	  end
 
 	  should "be a GObject::ValueArray" do
@@ -152,6 +154,23 @@ class GObjectOverridesTest < Test::Unit::TestCase
 
 	  should "have a second value with GType for TestSimpleBoxedA" do
 	    assert_equal Everything::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1)[:g_type]
+	  end
+	end
+      end
+      context "#cast_back_signal_arguments" do
+	context "the result of casting pointers for the test-with-static-scope-arg signal" do
+	  setup do
+	    o = Everything::TestSubObj.new
+	    b = Everything::TestSimpleBoxedA.new
+	    ud = GirFFI::ArgHelper.object_to_inptr "Hello!"
+
+	    @gva =
+	      GirFFI::Overrides::GObject::Helper.cast_back_signal_arguments(
+		"test-with-static-scope-arg", o.to_ptr, b.to_ptr, ud)
+	  end
+
+	  should "have three elements" do
+	    assert_equal 3, @gva.length
 	  end
 	end
       end
