@@ -7,10 +7,14 @@ module GirFFI
       end
 
       module ClassMethods
-	def type_from_instance instance
-	  base = ::GObject::TypeInstance.new instance.to_ptr
+	def type_from_instance_pointer inst_ptr
+	  base = ::GObject::TypeInstance.new inst_ptr
 	  kls = ::GObject::TypeClass.new(base[:g_class])
 	  kls[:g_type]
+	end
+
+	def type_from_instance instance
+	  type_from_instance_pointer instance.to_ptr
 	end
 
 	def wrap_in_g_value val
@@ -139,8 +143,10 @@ module GirFFI
 	  arr
 	end
 
-	def self.cast_back_signal_arguments signal, *args
-	  return args
+	def self.cast_back_signal_arguments signalinfo, klass, *args
+	  instptr = args.shift
+	  instance = klass.send :_real_new, instptr
+	  return [instance, *args]
 	end
       end
 

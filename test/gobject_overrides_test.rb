@@ -160,17 +160,25 @@ class GObjectOverridesTest < Test::Unit::TestCase
       context "#cast_back_signal_arguments" do
 	context "the result of casting pointers for the test-with-static-scope-arg signal" do
 	  setup do
+	    sig_name = "test-with-static-scope-arg"
 	    o = Everything::TestSubObj.new
 	    b = Everything::TestSimpleBoxedA.new
 	    ud = GirFFI::ArgHelper.object_to_inptr "Hello!"
+	    sig = o.class.gir_ffi_builder.find_signal sig_name
 
 	    @gva =
 	      GirFFI::Overrides::GObject::Helper.cast_back_signal_arguments(
-		"test-with-static-scope-arg", o.to_ptr, b.to_ptr, ud)
+		sig, o.class, o.to_ptr, b.to_ptr, ud)
 	  end
 
 	  should "have three elements" do
 	    assert_equal 3, @gva.length
+	  end
+
+	  context "its first value" do
+	    should "be a TestSubObj" do
+	      assert_instance_of Everything::TestSubObj, @gva[0]
+	    end
 	  end
 	end
       end
