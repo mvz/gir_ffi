@@ -180,6 +180,12 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	      assert_instance_of Everything::TestSubObj, @gva[0]
 	    end
 	  end
+
+	  context "its second value" do
+	    should "be a TestSimpleBoxedA" do
+	      assert_instance_of Everything::TestSimpleBoxedA, @gva[1]
+	    end
+	  end
 	end
       end
     end

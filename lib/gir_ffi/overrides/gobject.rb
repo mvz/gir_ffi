@@ -144,9 +144,29 @@ module GirFFI
 	end
 
 	def self.cast_back_signal_arguments signalinfo, klass, *args
+	  result = []
+
+	  # Instance
 	  instptr = args.shift
 	  instance = klass.send :_real_new, instptr
-	  return [instance, *args]
+	  result << instance
+
+	  # Extra arguments
+	  signalinfo.args.each do |info|
+	    arg = args.shift
+	    if info.type.tag == :interface
+	      iface = info.type.interface
+	      kls = GirFFI::Builder.build_class(iface.namespace, iface.name)
+	      result << kls.send(:_real_new, arg)
+	    else
+	      result << arg
+	    end
+	  end
+
+	  # User Data
+	  result << args.shift
+
+	  return result
 	end
       end
 
