@@ -101,22 +101,14 @@ module GirFFI
 
       module Helper
 	def self.wrap_signal_arguments signal, instance, *rest
-	  type = ::GObject.type_from_instance instance
-
-	  id = ::GObject.signal_lookup signal, type
-	  query = ::GObject::SignalQuery.new
-	  ::GObject.signal_query id, query
-
 	  sig = instance.class.gir_ffi_builder.find_signal signal
 
 	  arr = ::GObject::ValueArray.new sig.n_args+1
 
 	  val = ::GObject::Value.new
-	  val.init type
+	  val.init ::GObject.type_from_instance(instance)
 	  val.set_instance instance
-
 	  arr.append val
-
 	  val.unset
 
 	  sig.args.zip(rest).each do |a|
