@@ -1,3 +1,14 @@
+== 0.0.4 / 2010-12-14
+
+* Lots of changes to the internals.
+* Handle out-only arguments.
+* Make use of callbacks from other namespaces work.
+* Handle virtual methods where the invoker method has a different name.
+* Implement usable signal_connect and signal_emit.
+* Sink floating references when creating a GObject.
+* Implement Union type.
+* Many small bug fixes.
+
 == 0.0.3 / 2010-11-19
 
 * Update to restore Ruby 1.9 support.
