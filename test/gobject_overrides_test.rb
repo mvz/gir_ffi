@@ -157,6 +157,7 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	  end
 	end
       end
+
       context "#cast_back_signal_arguments" do
 	context "the result of casting pointers for the test-with-static-scope-arg signal" do
 	  setup do
@@ -184,6 +185,12 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	  context "its second value" do
 	    should "be a TestSimpleBoxedA" do
 	      assert_instance_of Everything::TestSimpleBoxedA, @gva[1]
+	    end
+	  end
+
+	  context "its third value" do
+	    should "be a 'Hello!'" do
+	      assert_equal "Hello!", @gva[2]
 	    end
 	  end
 	end

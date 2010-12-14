@@ -164,7 +164,17 @@ module GirFFI
 	  end
 
 	  # User Data
-	  result << args.shift
+	  arg = args.shift
+	  arg = if FFI::Pointer === arg
+		  begin
+		    ObjectSpace._id2ref arg.address
+		  rescue RangeError
+		    arg
+		  end
+		else
+		  arg
+		end
+	  result << arg
 
 	  return result
 	end
