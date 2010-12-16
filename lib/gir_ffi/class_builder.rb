@@ -26,7 +26,7 @@ module GirFFI
     end
 
     def setup_instance_method method
-      definition = prepare_method method.to_s
+      definition = prepare_instance_method method.to_s
 
       if definition.nil?
 	if parent
@@ -122,7 +122,7 @@ module GirFFI
     def setup_class
       setup_layout
       setup_constants
-      setup_instance_methods
+      prepare_instance_methods
       setup_gtype_getter
 
       setup_vfunc_invokers if info.type == :object
@@ -161,8 +161,9 @@ module GirFFI
       ffitype
     end
 
-    def setup_instance_methods
+    def prepare_instance_methods
       info.methods.each do |m|
+	next unless m.method?
 	@klass.class_eval "
 	  def #{m.name} *args, &block
 	    method_missing :#{m.name}, *args, &block
@@ -219,6 +220,16 @@ module GirFFI
 
     def function_definition go
       FunctionDefinitionBuilder.new(go, lib).generate
+    end
+
+    def prepare_instance_method method
+      go = method_introspection_data method
+
+      return nil if go.nil?
+      return nil unless go.method?
+
+      Builder.attach_ffi_function lib, go
+      function_definition go
     end
 
     def prepare_method method

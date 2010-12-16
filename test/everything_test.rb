@@ -176,6 +176,10 @@ class EverythingTest < Test::Unit::TestCase
 	  @o.instance_method_callback Proc.new { a = 2 }
 	  assert_equal 2, a
 	end
+
+	should "not respond to #static_method" do
+	  assert_raises(NoMethodError) { @o.static_method 1 }
+	end
       end
     end
 
