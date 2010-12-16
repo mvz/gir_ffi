@@ -14,31 +14,23 @@ module GirFFI
     end
 
     def setup_method method
-      definition = prepare_method method.to_s
-
-      return false if definition.nil?
-
       klass = build_class
       meta = (class << klass; self; end)
-      meta.class_eval definition
 
-      true
+      return prepare_method method.to_s, meta
     end
 
     def setup_instance_method method
-      definition = prepare_instance_method method.to_s
+      klass = build_class
+      result = prepare_instance_method method.to_s, klass
 
-      if definition.nil?
+      unless result
 	if parent
 	  return superclass.gir_ffi_builder.setup_instance_method method
 	else
 	  return false
 	end
       end
-
-      klass = build_class
-      klass.class_eval "undef #{method}"
-      klass.class_eval definition
 
       true
     end
@@ -218,27 +210,33 @@ module GirFFI
       info.find_method method
     end
 
+    def instance_method_introspection_data method
+      m = method_introspection_data method
+      return !m.nil? && m.method? ? m : nil
+    end
+
     def function_definition go
       FunctionDefinitionBuilder.new(go, lib).generate
     end
 
-    def prepare_instance_method method
-      go = method_introspection_data method
-
-      return nil if go.nil?
-      return nil unless go.method?
-
-      Builder.attach_ffi_function lib, go
-      function_definition go
+    def prepare_instance_method method, modul
+      go = instance_method_introspection_data method
+      return false if go.nil?
+      modul.class_eval { remove_method method }
+      attach_and_define_method go, modul
     end
 
-    def prepare_method method
+    def prepare_method method, modul
       go = method_introspection_data method
+      return false if go.nil?
+      attach_and_define_method go, modul
+    end
 
-      return nil if go.nil?
-
+    def attach_and_define_method go, modul
       Builder.attach_ffi_function lib, go
-      function_definition go
+      fd = function_definition go
+      modul.class_eval fd
+      true
     end
 
     def gir
