@@ -1,5 +1,5 @@
 module GirFFI
-  # Wraps a GICallbackInfo struct. Has no methods in addition to the onese
+  # Wraps a GICallbackInfo struct. Has no methods in addition to the ones
   # inherited from ICallableInfo.
   class ICallbackInfo < ICallableInfo
   end
