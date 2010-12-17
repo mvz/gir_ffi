@@ -338,5 +338,22 @@ class BuilderTest < Test::Unit::TestCase
 	assert_equal 0, subobj.instance_method
       end
     end
+
+    context "built Gio::ThreadedSocketService" do
+      setup do
+	cleanup_module :Gio
+	GirFFI::Builder.build_module 'Gio'
+      end
+
+      context "when parent constructor has been called" do
+	setup do
+	  Gio::SocketService.new
+	end
+
+	should "still use its own constructor" do
+	  assert_nothing_raised { Gio::ThreadedSocketService.new 2 }
+	end
+      end
+    end
   end
 end
