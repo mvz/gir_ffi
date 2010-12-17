@@ -17,12 +17,13 @@ module GirFFI
       klass = build_class
       meta = (class << klass; self; end)
 
-      return prepare_method method.to_s, meta
+      go = method_introspection_data method
+      return attach_and_define_method method, go, meta
     end
 
     def setup_instance_method method
-      klass = build_class
-      result = prepare_instance_method method.to_s, klass
+      go = instance_method_introspection_data method
+      result = attach_and_define_method method, go, build_class
 
       unless result
 	if parent
@@ -50,16 +51,11 @@ module GirFFI
       unless defined? @klass
 	case info.type
 	  when :object, :struct
-	    instantiate_class
-	    setup_class unless already_set_up
+	    instantiate_struct_class
 	  when :union
 	    instantiate_union_class
-	    setup_class unless already_set_up
 	  when :enum, :flags
-	    @klass = optionally_define_constant namespace_module, @classname do
-	      vals = info.values.map {|v| [v.name.to_sym, v.value]}.flatten
-	      lib.enum(@classname.to_sym, vals)
-	    end
+	    instantiate_enum_class
 	  else
 	    raise NotImplementedError, "Cannot build classes of type #{info.type}"
 	end
@@ -101,14 +97,23 @@ module GirFFI
       @lib ||= namespace_module.const_get :Lib
     end
 
-    def instantiate_class
+    def instantiate_struct_class
       @klass = get_or_define_class namespace_module, @classname, superclass
       @structklass = get_or_define_class @klass, :Struct, FFI::Struct
+      setup_class unless already_set_up
     end
 
     def instantiate_union_class
       @klass = get_or_define_class namespace_module, @classname, superclass
       @structklass = get_or_define_class @klass, :Struct, FFI::Union
+      setup_class unless already_set_up
+    end
+
+    def instantiate_enum_class
+      @klass = optionally_define_constant namespace_module, @classname do
+	vals = info.values.map {|v| [v.name.to_sym, v.value]}.flatten
+	lib.enum(@classname.to_sym, vals)
+      end
     end
 
     def setup_class
@@ -129,10 +134,8 @@ module GirFFI
     def layout_specification
       fields = info.fields
 
-      if fields.empty?
-	if parent
-	  return [:parent, superclass.const_get(:Struct), 0]
-	end
+      if fields.empty? and parent
+	return [:parent, superclass.const_get(:Struct), 0]
       end
 
       fields.map do |f|
@@ -220,16 +223,6 @@ module GirFFI
 
     def function_definition go
       FunctionDefinitionBuilder.new(go, lib).generate
-    end
-
-    def prepare_instance_method method, modul
-      go = instance_method_introspection_data method
-      attach_and_define_method method, go, modul
-    end
-
-    def prepare_method method, modul
-      go = method_introspection_data method
-      attach_and_define_method method, go, modul
     end
 
     def attach_and_define_method method, go, modul
