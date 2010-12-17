@@ -192,5 +192,23 @@ module GirFFI
     attach_function :g_vfunc_info_get_offset, [:pointer], :int
     attach_function :g_vfunc_info_get_signal, [:pointer], :pointer
     attach_function :g_vfunc_info_get_invoker, [:pointer], :pointer
+
+    # IInterfaceInfo
+    attach_function :g_interface_info_get_n_prerequisites, [:pointer], :int
+    attach_function :g_interface_info_get_prerequisite, [:pointer, :int], :pointer
+    attach_function :g_interface_info_get_n_properties, [:pointer], :int
+    attach_function :g_interface_info_get_property, [:pointer, :int], :pointer
+    attach_function :g_interface_info_get_n_methods, [:pointer], :int
+    attach_function :g_interface_info_get_method, [:pointer, :int], :pointer
+    attach_function :g_interface_info_find_method, [:pointer, :string], :pointer
+    attach_function :g_interface_info_get_n_signals, [:pointer], :int
+    attach_function :g_interface_info_get_signal, [:pointer, :int], :pointer
+    attach_function :g_interface_info_get_n_vfuncs, [:pointer], :int
+    attach_function :g_interface_info_get_vfunc, [:pointer, :int], :pointer
+    attach_function :g_interface_info_find_vfunc, [:pointer, :string], :pointer
+    attach_function :g_interface_info_get_n_constants, [:pointer], :int
+    attach_function :g_interface_info_get_constant, [:pointer, :int], :pointer
+    attach_function :g_interface_info_get_iface_struct, [:pointer], :pointer
+    
   end
 end
