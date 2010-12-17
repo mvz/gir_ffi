@@ -49,6 +49,12 @@ class ClassBuilderTest < Test::Unit::TestCase
 	sig = builder.find_signal 'test'
 	assert_equal 'test', sig.name
       end
+
+      should 'find the signal "changed" for Gtk::Entry' do
+	builder = GirFFI::ClassBuilder.new 'Gtk', 'Entry'
+	sig = builder.find_signal 'changed'
+	assert_equal 'changed', sig.name
+      end
     end
 
     context "for GObject::TypeCValue (a union)" do

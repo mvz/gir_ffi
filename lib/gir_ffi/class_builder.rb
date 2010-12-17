@@ -40,6 +40,13 @@ module GirFFI
       info.signals.each do |s|
 	return s if s.name == signal_name
       end
+      if info.type == :object
+	info.interfaces.each do |i|
+	  i.signals.each do |s|
+	    return s if s.name == signal_name
+	  end
+	end
+      end
       if info.parent
 	return superclass.gir_ffi_builder.find_signal signal_name
       end
