@@ -114,8 +114,7 @@ module GirFFI
     def setup_class
       setup_layout
       setup_constants
-      stub_instance_methods
-      stub_class_methods
+      stub_methods
       setup_gtype_getter
 
       setup_vfunc_invokers if info.type == :object
@@ -154,26 +153,18 @@ module GirFFI
       ffitype
     end
 
-    def stub_instance_methods
+    def stub_methods
       info.methods.each do |m|
-	next unless m.method?
-	@klass.class_eval "
-	  def #{m.name} *args, &block
-	    method_missing :#{m.name}, *args, &block
-	  end
-	"
+	@klass.class_eval method_stub(m.method? ? m.name : "self.#{m.name}", m.name)
       end
     end
 
-    def stub_class_methods
-      info.methods.each do |m|
-	next if m.method?
-	@klass.class_eval "
-	  def self.#{m.name} *args, &block
-	    method_missing :#{m.name}, *args, &block
-	  end
-	"
-      end
+    def method_stub name, symbol
+      "
+	def #{name} *args, &block
+	  method_missing :#{symbol}, *args, &block
+	end
+      "
     end
 
     def setup_gtype_getter
