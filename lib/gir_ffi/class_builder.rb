@@ -233,21 +233,19 @@ module GirFFI
 
     def prepare_instance_method method, modul
       go = instance_method_introspection_data method
-      return false if go.nil?
-      modul.class_eval { remove_method method }
-      attach_and_define_method go, modul
+      attach_and_define_method method, go, modul
     end
 
     def prepare_method method, modul
       go = method_introspection_data method
-      return false if go.nil?
-      attach_and_define_method go, modul
+      attach_and_define_method method, go, modul
     end
 
-    def attach_and_define_method go, modul
+    def attach_and_define_method method, go, modul
+      return false if go.nil?
       Builder.attach_ffi_function lib, go
-      fd = function_definition go
-      modul.class_eval fd
+      modul.class_eval { remove_method method }
+      modul.class_eval function_definition(go)
       true
     end
 
