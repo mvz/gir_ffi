@@ -182,11 +182,12 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building Everything::TestStructA" do
       setup do
+	@fieldnames = [:some_int, :some_int8, :some_double, :some_enum]
 	GirFFI::Builder.build_class 'Everything', 'TestStructA'
       end
 
       should "set up the correct struct members" do
-	assert_equal [:some_int, :some_int8, :some_double, :some_enum],
+	assert_equal @fieldnames,
 	  Everything::TestStructA::Struct.members
       end
 
@@ -199,7 +200,7 @@ class BuilderTest < Test::Unit::TestCase
       should "set up struct members with the correct types" do
 	tags = [:int, :int8, :double, Everything::TestEnum]
 	assert_equal tags.map {|t| FFI.find_type t},
-	  Everything::TestStructA::Struct.layout.fields.map(&:type)
+	  @fieldnames.map {|f| Everything::TestStructA::Struct.layout[f].type}
       end
     end
 
@@ -215,7 +216,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "set up union members with the correct offset" do
 	assert_equal [0, 0, 0, 0, 0],
-	  GObject::TypeCValue::Struct.layout.fields.map(&:offset)
+	  GObject::TypeCValue::Struct.offsets.map {|o| o[1]}
       end
 
       should "set up the inner class as derived from FFI::Union" do
