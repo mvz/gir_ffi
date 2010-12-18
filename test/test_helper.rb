@@ -3,6 +3,11 @@ require 'rr'
 require 'ffi'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
+if RUBY_PLATFORM == 'java'
+  require 'java'
+  JRuby.objectspace = true
+end
+
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
 module DummyGtk
   module Lib
