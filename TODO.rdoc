@@ -21,7 +21,7 @@ distinguished, based on the GIR data, from methods that take a pointer to
 any GObject.
 
 I'm currently passing the object id as the value of the 'gpointer'. Special
-overrided will have to be used for the cases where the 'gpointer' actually
+overrides will have to be used for the cases where the 'gpointer' actually
 needs to be a GObject. I consider it an omission in GIRepository that these
 two cases are not distinguished.
 
