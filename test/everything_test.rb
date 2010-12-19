@@ -40,7 +40,7 @@ class EverythingTest < Test::Unit::TestCase
 	assert_equal 54, tb[:some_int8]
       end
 
-      should "have non-zero result for #get_gtype" do
+      should "have non-zero positive result for #get_gtype" do
 	assert Everything::TestBoxed.get_gtype > 0
       end
 
