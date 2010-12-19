@@ -180,7 +180,7 @@ module GirFFI
     def setup_gtype_getter
       getter = info.type_init
       return if getter.nil? or getter == "intern"
-      lib.attach_function getter.to_sym, [], :int
+      lib.attach_function getter.to_sym, [], :size_t
       @klass.class_eval "
 	def self.get_gtype
 	  ::#{lib}.#{getter}

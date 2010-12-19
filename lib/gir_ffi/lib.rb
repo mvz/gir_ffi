@@ -150,7 +150,7 @@ module GirFFI
     # IRegisteredTypeInfo
     attach_function :g_registered_type_info_get_type_name, [:pointer], :string
     attach_function :g_registered_type_info_get_type_init, [:pointer], :string
-    attach_function :g_registered_type_info_get_g_type, [:pointer], :int
+    attach_function :g_registered_type_info_get_g_type, [:pointer], :size_t
 
     # IEnumInfo
     attach_function :g_enum_info_get_storage_type, [:pointer], :ITypeTag
