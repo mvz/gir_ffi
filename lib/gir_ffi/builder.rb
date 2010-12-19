@@ -66,7 +66,7 @@ module GirFFI
       when :boolean
 	return :bool
       when :GType, :size
-	return :int32
+	return :size_t
       else
 	return tag
       end
