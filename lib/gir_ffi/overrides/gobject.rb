@@ -38,14 +38,6 @@ module GirFFI
 	  end
 	end
 
-	# FIXME: This is a private helper function. Move elsewhere?
-	def signal_callback_args sig, klass, &block
-	  return Proc.new do |*args|
-	    mapped = Helper.cast_back_signal_arguments sig, klass, *args
-	    block.call(*mapped)
-	  end
-	end
-
 	def signal_emit object, signal, *args
 	  type = type_from_instance object
 
@@ -86,13 +78,20 @@ module GirFFI
 	  argtypes = [:pointer] + sig.args.map {|a| :pointer} + [:pointer]
 
 	  callback = FFI::Function.new rettype, argtypes,
-	    &(signal_callback_args(sig, object.class, &block))
+	    &(Helper.signal_callback_args(sig, object.class, &block))
 
 	  signal_connect_data object, signal, callback, data, nil, 0
 	end
       end
 
       module Helper
+	def self.signal_callback_args sig, klass, &block
+	  return Proc.new do |*args|
+	    mapped = cast_back_signal_arguments sig, klass, *args
+	    block.call(*mapped)
+	  end
+	end
+
 	def self.signal_arguments_to_gvalue_array signal, instance, *rest
 	  sig = instance.class.gir_ffi_builder.find_signal signal
 
