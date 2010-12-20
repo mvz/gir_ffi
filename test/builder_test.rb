@@ -12,8 +12,8 @@ class BuilderTest < Test::Unit::TestCase
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
 	gir = GirFFI::IRepository.default
-	expected = gir.shared_library 'GObject'
-	assert_same_elements [*expected], GObject::Lib.ffi_libraries.map(&:name)
+	expected = gir.shared_library('GObject')
+	assert_equal [expected], GObject::Lib.ffi_libraries.map(&:name)
       end
 
       should "create an array CALLBACKS inside the GObject::Lib module" do
@@ -60,7 +60,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "create a Gtk::Window#to_ptr method" do
-	assert_contains Gtk::Window.instance_methods.map(&:to_sym), :to_ptr
+	assert Gtk::Window.instance_methods.map(&:to_sym).include? :to_ptr
       end
 
       should "result in Gtk::Window.new to succeed" do
@@ -78,7 +78,7 @@ class BuilderTest < Test::Unit::TestCase
 	# The Gtk module has more than one library on my current machine.
 	gir = GirFFI::IRepository.default
 	expected = (gir.shared_library 'Gtk').split(',')
-	assert_same_elements expected, Gtk::Lib.ffi_libraries.map(&:name)
+	assert_equal expected.sort, Gtk::Lib.ffi_libraries.map(&:name).sort
       end
 
       should "create an array CALLBACKS inside the Gtk::Lib module" do
@@ -119,7 +119,7 @@ class BuilderTest < Test::Unit::TestCase
 	end
 
 	GirFFI::Builder.send :attach_ffi_function, libmod, @go
-	assert_contains libmod.public_methods.map(&:to_sym), :gtk_main
+	assert libmod.public_methods.map(&:to_sym).include? :gtk_main
       end
     end
 
@@ -253,7 +253,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "have a method_missing method" do
 	ms = (Everything.public_methods - Module.public_methods).map(&:to_sym)
-	assert_contains ms, :method_missing
+	assert ms.include? :method_missing
       end
 
       should "autocreate the TestObj class" do

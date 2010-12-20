@@ -1,4 +1,4 @@
-require 'shoulda'
+require 'contest'
 require 'rr'
 require 'ffi'
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
