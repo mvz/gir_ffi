@@ -32,73 +32,17 @@ PROJ = OpenStruct.new(
     :exclude => %w(^tasks/setup\.rb$),
     :extensions => %w(.txt .rb .erb .rdoc) << '',
     :tags => %w(FIXME OPTIMIZE TODO)
-  ),
-
-  # Test::Unit
-  :test => OpenStruct.new(
-    :files => FileList['test/**/*_test.rb'],
-    :file  => 'test/all.rb',
-    :opts  => []
   )
+
 )
 
 # Load the other rake files in the tasks folder
 tasks_dir = File.expand_path(File.dirname(__FILE__))
-post_load_fn = File.join(tasks_dir, 'post_load.rake')
 rakefiles = Dir.glob(File.join(tasks_dir, '*.rake')).sort
-rakefiles.unshift(rakefiles.delete(post_load_fn)).compact!
 import(*rakefiles)
 
 # Setup the project libraries
 %w(lib ext).each {|dir| PROJ.libs << dir if test ?d, dir}
-
-%w(facets/ansicode).each do |lib|
-  begin
-    require lib
-    Object.instance_eval {const_set "HAVE_#{lib.tr('/','_').upcase}", true}
-  rescue LoadError
-    Object.instance_eval {const_set "HAVE_#{lib.tr('/','_').upcase}", false}
-  end
-end
-
-# Reads a file at +path+ and spits out an array of the +paragraphs+
-# specified.
-#
-#    changes = paragraphs_of('History.txt', 0..1).join("\n\n")
-#    summary, *description = paragraphs_of('README.txt', 3, 3..8)
-#
-def paragraphs_of( path, *paragraphs )
-  title = String === paragraphs.first ? paragraphs.shift : nil
-  ary = File.read(path).delete("\r").split(/\n\n+/)
-
-  result = if title
-    tmp, matching = [], false
-    rgxp = %r/^=+\s*#{Regexp.escape(title)}/i
-    paragraphs << (0..-1) if paragraphs.empty?
-
-    ary.each do |val|
-      if val =~ rgxp
-        break if matching
-        matching = true
-        rgxp = %r/^=+/i
-      elsif matching
-        tmp << val
-      end
-    end
-    tmp
-  else ary end
-
-  result.values_at(*paragraphs)
-end
-
-# Adds the given arguments to the include path if they are not already there
-#
-def ensure_in_path( *args )
-  args.each do |path|
-    path = File.expand_path(path)
-    $:.unshift(path) if test(?d, path) and not $:.include?(path)
-  end
-end
 
 # Scans the current working directory and creates a list of files that are
 # candidates to be in the manifest.

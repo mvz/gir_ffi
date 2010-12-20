@@ -4,17 +4,7 @@
 
 load 'tasks/setup.rb'
 
-ensure_in_path 'lib'
-require 'gir_ffi'
-
 task :default => 'test:run'
-
-PROJ.name = 'gir_ffi'
-PROJ.authors = 'Matijs van Zuijlen'
-PROJ.email = 'matijs@matijs.net'
-PROJ.url = 'http://www.github.com/mvz/ruby-gir-ffi'
-PROJ.version = GirFFI::VERSION
-PROJ.readme_file = 'README.rdoc'
 
 PROJ.exclude << ["^tmp/", "\\.swp$", "^\\.gitignore$", "^\\.autotest$"]
 
