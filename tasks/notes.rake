@@ -1,13 +1,6 @@
 # The following code is copied straight from Bones 2.5.1
 #
 
-begin
-  require 'facets/ansicode'
-  HAVE_COLOR = true
-rescue LoadError
-  HAVE_COLOR = false
-end
-
 module Bones
 
 # A helper class used to find and display any annotations in a collection of
@@ -31,19 +24,18 @@ class AnnotationExtractor
   # will search for all athe annotations and display them on standard
   # output.
   #
-  def self.enumerate( project, tag, id = nil, opts = {} )
-    extractor = new(project, tag, id)
+  def self.enumerate tag, id = nil, opts = {}
+    extractor = new(tag, id)
     extractor.display(extractor.find, opts)
   end
 
-  attr_reader :tag, :project, :id
+  attr_reader :tag, :id
 
   # Creates a new annotation extractor configured to use the _project_ open
   # strcut and to search for the given _tag_ (which can be more than one tag
   # via a regular expression 'or' operation -- i.e. THIS|THAT|OTHER)
   #
-  def initialize( project, tag, id) 
-    @project = project
+  def initialize tag, id
     @tag = tag
     @id = @id_rgxp = nil
 
@@ -60,13 +52,9 @@ class AnnotationExtractor
     results = {}
     rgxp = %r/(#{tag}):?\s*(.*?)(?:\s*(?:-?%>|\*+\/))?$/o
 
-    extensions = project.notes.extensions.dup
-    exclude = if project.notes.exclude.empty? then nil
-              else Regexp.new(project.notes.exclude.join('|')) end
-
-    manifest.each do |fn|
-      next if exclude && exclude =~ fn
-      next unless extensions.include? File.extname(fn)
+    files = Dir.glob("lib/**/*.rb")
+    files += Dir.glob("test/**/*.rb")
+    files.each do |fn|
       results.update(extract_annotations_from(fn, rgxp))
     end
 
@@ -85,7 +73,6 @@ class AnnotationExtractor
 
       text = m[2]
       if text =~ @id_rgxp
-        text.gsub!(@id_rgxp) {|str| ANSICode.green(str)} if HAVE_COLOR
         list << Annotation.new(lineno, m[1], text)
       end
       list
@@ -110,25 +97,25 @@ class AnnotationExtractor
 end  # class AnnotationExtractor
 end  # module Bones
 
+note_tags = ["TODO", "FIXME", "OPTIMIZE"]
+
 desc "Enumerate all annotations"
 task :notes do |t|
   id = if t.application.top_level_tasks.length > 1
     t.application.top_level_tasks.slice!(1..-1).join(' ')
   end
   Bones::AnnotationExtractor.enumerate(
-      PROJ, PROJ.notes.tags.join('|'), id, :tag => true)
+      note_tags.join('|'), id, :tag => true)
 end
 
 namespace :notes do
-  PROJ.notes.tags.each do |tag|
+  note_tags.each do |tag|
     desc "Enumerate all #{tag} annotations"
     task tag.downcase.to_sym do |t|
       id = if t.application.top_level_tasks.length > 1
         t.application.top_level_tasks.slice!(1..-1).join(' ')
       end
-      Bones::AnnotationExtractor.enumerate(PROJ, tag, id)
+      Bones::AnnotationExtractor.enumerate(tag, id)
     end
   end
 end
-
-# EOF

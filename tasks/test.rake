@@ -8,7 +8,7 @@ namespace :test do
     t.ruby_opts += ["-w"]
   end
 
-end  # namespace :test
+end
 
 desc 'Alias to test:run'
 task :test => 'test:run'
