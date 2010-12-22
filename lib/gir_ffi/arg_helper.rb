@@ -47,6 +47,12 @@ module GirFFI
       return ptr
     end
 
+    def self.array_outptr
+      ptr = AllocationHelper.safe_malloc FFI.type_size(:pointer)
+      ptr.write_pointer nil
+      return ptr
+    end
+
     # Converts an outptr to an int, then frees the outptr.
     def self.outptr_to_int ptr
       value = ptr.read_int
@@ -80,6 +86,16 @@ module GirFFI
       value = ptr.get_double 0
       LibC.free ptr
       value
+    end
+
+    # Converts an outptr to an array of int, then frees the outptr.
+    def self.outptr_to_int_array ptr, size
+      block = ptr.read_pointer
+      LibC.free ptr
+
+      ints = block.read_array_of_int(size)
+      LibC.free block
+      ints
     end
 
     def self.mapped_callback_args prc=nil, &block

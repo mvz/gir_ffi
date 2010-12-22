@@ -322,6 +322,10 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    should "have correct test_array_fixed_size_int_out" do
+      assert_equal [0, 1, 2, 3, 4], Everything.test_array_fixed_size_int_out
+    end
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)

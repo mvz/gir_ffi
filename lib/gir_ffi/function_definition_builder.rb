@@ -79,6 +79,8 @@ module GirFFI
     end
 
     def process_out_arg arg
+      type = arg.type
+
       prevar = new_var
       postvar = new_var
 
@@ -97,6 +99,17 @@ module GirFFI
 	else
 	  raise NotImplementedError,
 	    "Don't know what to do with interface type #{iface.type}"
+	end
+      when :array
+	unless type.array_fixed_size > 0
+	  raise NotImplementedError
+	end
+	case arg.type.param_type(0).tag
+	when :int, :int32
+	  @pre << "#{prevar} = GirFFI::ArgHelper.array_outptr"
+	  @post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int_array #{prevar}, #{type.array_fixed_size}"
+	else
+	  raise NotImplementedError
 	end
       else
 	raise NotImplementedError,
