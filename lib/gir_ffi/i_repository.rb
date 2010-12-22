@@ -96,6 +96,11 @@ module GirFFI
       return wrap ptr
     end
 
+    def find_by_gtype gtype
+      ptr = Lib.g_irepository_find_by_gtype @gobj, gtype
+      return wrap ptr
+    end
+
     def shared_library namespace
       Lib.g_irepository_get_shared_library @gobj, namespace
     end

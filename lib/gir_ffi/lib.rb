@@ -17,6 +17,8 @@ module GirFFI
       [:pointer, :string, :int], :pointer
     attach_function :g_irepository_find_by_name,
       [:pointer, :string, :string], :pointer
+    attach_function :g_irepository_find_by_gtype, [:pointer, :size_t], :pointer
+
     attach_function :g_irepository_get_shared_library,
       [:pointer, :string], :string
 
