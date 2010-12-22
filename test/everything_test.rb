@@ -275,13 +275,31 @@ class EverythingTest < Test::Unit::TestCase
 	assert_instance_of Everything::TestWi8021x, o
       end
 
+      should "have a working #static_method" do
+	assert_equal(-84, Everything::TestWi8021x.static_method(-42))
+      end
+
       context "an instance" do
 	setup do
 	  @obj = Everything::TestWi8021x.new
 	end
+
 	should "set its boolean struct member with #set_testbool" do
 	  @obj.set_testbool true
 	  assert_equal 1, @obj[:testbool]
+	  @obj.set_testbool false
+	  assert_equal 0, @obj[:testbool]
+	end
+
+	should "get its boolean struct member with #get_testbool" do
+	  @obj[:testbool] = 0
+	  assert_equal false, @obj.get_testbool
+	  @obj[:testbool] = 1
+	  assert_equal true, @obj.get_testbool
+	end
+
+	should "get its boolean struct member with #get_property" do
+	  @obj[:testbool] = 1
 	  gv = GObject::Value.new
 	  gv.init GObject.type_from_name "gboolean"
 	  @obj.get_property "testbool", gv
