@@ -172,7 +172,7 @@ module GirFFI
     def method_stub name, symbol
       "
 	def #{name} *args, &block
-	  method_missing :#{symbol}, *args, &block
+	  setup_and_call :#{symbol}, *args, &block
 	end
       "
     end
