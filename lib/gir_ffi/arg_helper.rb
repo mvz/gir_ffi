@@ -8,6 +8,16 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
+    def self.int_array_to_inptr ary
+      return nil if ary.nil?
+
+      int_size = FFI.type_size(:int32)
+      block = AllocationHelper.safe_malloc int_size * ary.length
+      block.write_array_of_int ary
+
+      block
+    end
+
     def self.int_to_inoutptr val
       ptr = AllocationHelper.safe_malloc FFI.type_size(:int)
       ptr.write_int val
@@ -102,6 +112,12 @@ module GirFFI
     def self.sink_if_floating gobject
       if GirFFI::GObject.object_is_floating(gobject)
 	GirFFI::GObject.object_ref_sink(gobject)
+      end
+    end
+
+    def self.check_fixed_array_size size, arr, name
+      unless arr.size == size
+	raise ArgumentError, "#{name} should have size #{size}"
       end
     end
   end

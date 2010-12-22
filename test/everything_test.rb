@@ -308,6 +308,20 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    # set_abort_on_error
+
+    context "test_array_fixed_size_int_in" do
+      should "return the correct result" do
+	assert_equal 5 + 4 + 3 + 2 + 1, Everything.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
+      end
+
+      should "raise an error when called with the wrong number of arguments" do
+	assert_raises ArgumentError do
+	  Everything.test_array_fixed_size_int_in [2]
+	end
+      end
+    end
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)

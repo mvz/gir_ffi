@@ -113,16 +113,36 @@ module GirFFI
 
       @inargs << name
 
-      if tag == :interface and type.interface.type == :callback
-	# TODO: Use arg.scope to decide if this is needed.
-	procvar = new_var
-	@pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
-	@pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
-	@callargs << procvar
-      elsif tag == :void
+      case tag
+      when :interface
+	if type.interface.type == :callback
+	  # TODO: Use arg.scope to decide if this is needed.
+	  procvar = new_var
+	  @pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	  @pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
+	  @callargs << procvar
+	else
+	  @callargs << name
+	end
+      when :void
 	raise NotImplementedError unless arg.type.pointer?
 	prevar = new_var
 	@pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
+	@callargs << prevar
+      when :array
+	if type.array_fixed_size > 0
+	  @pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
+	end
+
+	prevar = new_var
+
+	case arg.type.param_type(0).tag
+	when :int, :int32
+	  @pre << "#{prevar} = GirFFI::ArgHelper.int_array_to_inptr #{name}"
+	else
+	  raise NotImplementedError
+	end
+
 	@callargs << prevar
       else
 	@callargs << name
