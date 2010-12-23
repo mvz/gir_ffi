@@ -334,6 +334,10 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 5 + 4 + 3, Everything.test_array_gint16_in([5, 4, 3])
     end
 
+    should "have correct test_array_gint32_in" do
+      assert_equal 5 + 4 + 3, Everything.test_array_gint32_in([5, 4, 3])
+    end
+
     should "have correct test_array_int_in" do
       assert_equal 5 + 4 + 3, Everything.test_array_int_in([5, 4, 3])
     end

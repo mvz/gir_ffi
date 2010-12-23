@@ -8,10 +8,15 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.int_array_to_inptr ary
+    def self.int32_array_to_inptr ary
       block = AllocationHelper.safe_malloc FFI.type_size(:int32) * ary.length
-      block.write_array_of_int ary
+      block.write_array_of_int32 ary
       block
+    end
+
+    # TODO: Use alias.
+    def self.int_array_to_inptr ary
+      int32_array_to_inptr ary
     end
 
     def self.int16_array_to_inptr ary
