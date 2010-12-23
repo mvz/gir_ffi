@@ -37,6 +37,20 @@ module GirFFI
       block
     end
 
+    def self.GType_array_to_inptr ary
+      case FFI.type_size(:size_t)
+      when 4
+	block = allocate_array_of_type :uint32, ary.length
+	block.write_array_of_uint32 ary
+      when 8
+	block = allocate_array_of_type :uint64, ary.length
+	block.write_array_of_uint64 ary
+      else
+	raise RuntimeError, "Unexpected size of :size_t"
+      end
+      block
+    end
+
     def self.cleanup_inptr ptr
       LibC.free ptr
     end
