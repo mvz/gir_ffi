@@ -45,13 +45,15 @@ module GirFFI
       @pre = []
       @post = []
 
+      @data = []
+
       @capture = ""
 
       @varno = 0
     end
 
     def process_arg arg
-      case arg.direction
+      data = case arg.direction
       when :inout
 	process_inout_arg arg
       when :in
@@ -61,6 +63,8 @@ module GirFFI
       else
 	raise ArgumentError
       end
+
+      @data << data
     end
 
     def process_inout_arg arg
@@ -96,11 +100,7 @@ module GirFFI
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
 
-      @inargs += data.inargs
-      @callargs += data.callargs
-      @retvals += data.retvals
-      @pre += data.pre
-      @post += data.post
+      data
     end
 
     def process_out_arg arg
@@ -111,7 +111,6 @@ module GirFFI
       prevar = new_var
       postvar = new_var
 
-      data.inargs << nil
       data.callargs << prevar
       data.retvals << postvar
 
@@ -134,11 +133,8 @@ module GirFFI
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
-      @inargs += data.inargs
-      @callargs += data.callargs
-      @retvals += data.retvals
-      @pre += data.pre
-      @post += data.post
+
+      data
     end
 
     def process_in_arg arg
@@ -171,10 +167,10 @@ module GirFFI
 	  data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
 	elsif type.array_length > -1
 	  idx = type.array_length
-	  @inargs[idx] = nil
+	  @data[idx].inargs = []
 	  lenvar = new_var
 	  data.pre << "#{lenvar} = #{name}.length"
-	  @callargs[idx] = lenvar
+	  @data[idx].callargs = [lenvar]
 	end
 
 	prevar = new_var
@@ -191,11 +187,7 @@ module GirFFI
 	data.callargs << name
       end
 
-      @inargs += data.inargs
-      @callargs += data.callargs
-      @retvals += data.retvals
-      @pre += data.pre
-      @post += data.post
+      data
     end
 
     def process_return_value
@@ -238,6 +230,14 @@ module GirFFI
     end
 
     def adjust_accumulators
+      @data.each do |data|
+	@inargs += data.inargs
+	@callargs += data.callargs
+	@retvals += data.retvals
+	@pre += data.pre
+	@post += data.post
+      end
+
       if @info.throws?
 	errvar = new_var
 	@pre << "#{errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
