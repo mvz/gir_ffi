@@ -19,7 +19,7 @@ module GirFFI
     end
 
     def self.int_to_inoutptr val
-      ptr = AllocationHelper.safe_malloc FFI.type_size(:int)
+      ptr = int_pointer
       ptr.write_int val
       return ptr
     end
@@ -42,15 +42,21 @@ module GirFFI
     end
 
     def self.double_to_inoutptr val
-      ptr = AllocationHelper.safe_malloc FFI.type_size(:double)
+      ptr = double_pointer
       ptr.put_double 0, val
       return ptr
     end
 
-    def self.array_outptr
-      ptr = AllocationHelper.safe_malloc FFI.type_size(:pointer)
-      ptr.write_pointer nil
-      return ptr
+    def self.int_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:double)
+    end
+
+    def self.double_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:int)
+    end
+
+    def self.pointer_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:pointer)
     end
 
     # Converts an outptr to an int, then frees the outptr.

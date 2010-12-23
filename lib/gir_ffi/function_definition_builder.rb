@@ -80,17 +80,12 @@ module GirFFI
 
     def process_out_arg arg
       type = arg.type
+      tag = type.tag
 
       prevar = new_var
       postvar = new_var
 
-      case arg.type.tag
-      when :int, :int32
-	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr 0"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int #{prevar}"
-      when :double
-	@pre << "#{prevar} = GirFFI::ArgHelper.double_to_inoutptr 0"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_double #{prevar}"
+      case tag
       when :interface
 	iface = arg.type.interface
 	if iface.type == :struct
@@ -101,19 +96,13 @@ module GirFFI
 	    "Don't know what to do with interface type #{iface.type}"
 	end
       when :array
-	unless type.array_fixed_size > 0
-	  raise NotImplementedError
-	end
-	case arg.type.param_type(0).tag
-	when :int, :int32
-	  @pre << "#{prevar} = GirFFI::ArgHelper.array_outptr"
-	  @post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int_array #{prevar}, #{type.array_fixed_size}"
-	else
-	  raise NotImplementedError
-	end
+	size = type.array_fixed_size
+	tag = arg.type.param_type(0).tag
+	@pre << "#{prevar} = GirFFI::ArgHelper.pointer_pointer"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
       else
-	raise NotImplementedError,
-	  "Don't know what to do with argument type #{arg.type.tag}"
+	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
       @callargs << prevar
       @retvals << postvar
