@@ -128,10 +128,19 @@ module GirFFI
 	    "Don't know what to do with interface type #{iface.type}"
 	end
       when :array
-	size = type.array_fixed_size
-	tag = arg.type.param_type(0).tag
 	data.pre << "#{prevar} = GirFFI::ArgHelper.pointer_pointer"
-	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
+
+	tag = arg.type.param_type(0).tag
+	size = type.array_fixed_size
+	idx = type.array_length
+
+	if size > 0
+	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
+	elsif idx > -1
+	  lendata = @data[idx]
+	  rv = lendata.retvals.shift
+	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
+	end
       else
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"

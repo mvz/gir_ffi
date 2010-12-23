@@ -352,6 +352,11 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal "[gboolean,gint64,]", Everything.test_array_gtype_in([t1, t2])
     end
 
+    should "have correct test_array_int_full_out"
+    if false #do
+      assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_full_out
+    end
+
     should "have correct test_array_int_in" do
       assert_equal 5 + 4 + 3, Everything.test_array_int_in([5, 4, 3])
     end
@@ -362,6 +367,10 @@ class EverythingTest < Test::Unit::TestCase
 
     should "have correct test_array_int_inout" do
       assert_equal [3, 4], Everything.test_array_int_inout([5, 2, 3])
+    end
+
+    should "have correct test_array_int_out" do
+      assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
     end
 
     should "have correct test_boolean" do
