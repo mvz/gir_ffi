@@ -330,6 +330,10 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [0, 1, 2, 3, 4], Everything.test_array_fixed_size_int_return
     end
 
+    should "have correct test_array_int_in" do
+      assert_equal 5 + 4 + 3, Everything.test_array_int_in([5, 4, 3])
+    end
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
       assert_equal true, Everything.test_boolean(true)

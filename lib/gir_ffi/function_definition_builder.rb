@@ -83,6 +83,7 @@ module GirFFI
       prevar = new_var
       postvar = new_var
 
+      @inargs << nil
       case tag
       when :interface
 	iface = arg.type.interface
@@ -132,6 +133,12 @@ module GirFFI
       when :array
 	if type.array_fixed_size > 0
 	  @pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
+	elsif type.array_length > -1
+	  idx = type.array_length
+	  @inargs[idx] = nil
+	  lenvar = new_var
+	  @pre << "#{lenvar} = #{name}.length"
+	  @callargs[idx] = lenvar
 	end
 
 	prevar = new_var
@@ -192,7 +199,7 @@ module GirFFI
 
     def filled_out_template
       return <<-CODE
-	def #{@info.name} #{@inargs.join(', ')}
+	def #{@info.name} #{@inargs.compact.join(', ')}
 	  #{@pre.join("\n")}
 	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
