@@ -29,8 +29,8 @@ module GirFFI
 
     def generate
       setup_accumulators
-      process_return_value
       @info.args.each {|a| process_arg a}
+      process_return_value
       adjust_accumulators
       return filled_out_template
     end
@@ -203,6 +203,7 @@ module GirFFI
     end
 
     def process_return_value
+      @rvdata = ArgData.new
       type = @info.return_type
       tag = type.tag
       return if tag == :void
@@ -216,23 +217,32 @@ module GirFFI
 	name = interface.name
 	GirFFI::Builder.build_class namespace, name
 	retval = new_var
-	@post << "#{retval} = ::#{namespace}::#{name}._real_new(#{cvar})"
+	@rvdata.post << "#{retval} = ::#{namespace}::#{name}._real_new(#{cvar})"
 	if interface.type == :object
-	  @post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
+	  @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	end
-	@retvals << retval
+	@rvdata.retvals << retval
       when :array
-	size = type.array_fixed_size
 	tag = type.param_type(0).tag
+	size = type.array_fixed_size
+	idx = type.array_length
+
 	retval = new_var
-	@post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
-	@retvals << retval
+	if size > 0
+	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
+	elsif idx > -1
+	  lendata = @data[idx]
+	  rv = lendata.retvals.shift
+	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{rv}"
+	end
+	@rvdata.retvals << retval
       else
-	@retvals << cvar
+	@rvdata.retvals << cvar
       end
     end
 
     def adjust_accumulators
+      @retvals += @rvdata.retvals
       @data.each do |data|
 	@inargs += data.inargs
 	@callargs += data.callargs
@@ -240,6 +250,7 @@ module GirFFI
 	@pre += data.pre
 	@post += data.post
       end
+      @post += @rvdata.post
 
       if @info.throws?
 	errvar = new_var
