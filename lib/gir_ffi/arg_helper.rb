@@ -28,6 +28,13 @@ module GirFFI
       return ptr
     end
 
+    def self.int_array_to_inoutptr ary
+      block = int_array_to_inptr ary
+      ptr = pointer_pointer
+      ptr.write_pointer block
+      ptr
+    end
+
     def self.utf8_array_to_inoutptr ary
       return nil if ary.nil?
 

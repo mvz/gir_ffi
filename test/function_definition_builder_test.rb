@@ -9,8 +9,8 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
       code = fbuilder.generate
 
       expected = "
-	def init argc, argv
-	  _v1 = GirFFI::ArgHelper.int_to_inoutptr argc
+	def init argv
+	  _v1 = GirFFI::ArgHelper.int_to_inoutptr argv.length
 	  _v3 = GirFFI::ArgHelper.utf8_array_to_inoutptr argv
 	  ::Lib.gtk_init _v1, _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_int _v1

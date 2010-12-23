@@ -69,7 +69,13 @@ module GirFFI
 	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
 	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
       else
-	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
+	arr_arg = find_counted_array(name)
+	if arr_arg
+	  @inargs.pop
+	  @pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{arr_arg.name}.length"
+	else
+	  @pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
+	end
 	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
       @callargs << prevar
@@ -117,9 +123,9 @@ module GirFFI
       case tag
       when :interface
 	if type.interface.type == :callback
-	  # TODO: Use arg.scope to decide if this is needed.
 	  procvar = new_var
 	  @pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	  # TODO: Use arg.scope to decide if this is needed.
 	  @pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
 	  @callargs << procvar
 	else
@@ -183,6 +189,15 @@ module GirFFI
 	@retvals << retval
       else
 	@retvals << cvar
+      end
+    end
+
+    def find_counted_array name
+      @info.args.each do |arg|
+	al = arg.type.array_length
+	if al >= 0 and @info.args[al].name == name
+	  return arg
+	end
       end
     end
 
