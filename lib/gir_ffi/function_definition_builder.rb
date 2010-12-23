@@ -90,19 +90,16 @@ module GirFFI
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
 	if arg.type.array_length > -1
 	  idx = arg.type.array_length
-	  rv = @data[idx].retvals.shift
+	  lendata = @data[idx]
+	  rv = lendata.retvals.shift
+	  lname = lendata.inargs.pop
+	  lendata.pre.unshift "#{lname} = #{name}.length"
 	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
 	else
-	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
+	  raise NotImplementedError
 	end
       else
-	arr_arg = find_counted_array(name)
-	if arr_arg
-	  data.inargs.pop
-	  data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{arr_arg.name}.length"
-	else
-	  data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
-	end
+	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
 
@@ -223,15 +220,6 @@ module GirFFI
 	@retvals << retval
       else
 	@retvals << cvar
-      end
-    end
-
-    def find_counted_array name
-      @info.args.each do |arg|
-	al = arg.type.array_length
-	if al >= 0 and @info.args[al].name == name
-	  return arg
-	end
       end
     end
 
