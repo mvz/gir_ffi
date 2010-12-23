@@ -14,8 +14,8 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	  _v3 = GirFFI::ArgHelper.utf8_array_to_inoutptr argv
 	  ::Lib.gtk_init _v1, _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_int _v1
-	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v3, argv.nil? ? 0 : argv.size
-	  return _v2, _v4
+	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v3, _v2
+	  return _v4
 	end
       "
 

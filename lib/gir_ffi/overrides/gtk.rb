@@ -18,7 +18,7 @@ module GirFFI
       module ClassMethods
 
 	def init_with_auto_argv
-	  (my_len, my_args) = init_without_auto_argv [$0, *ARGV]
+	  my_args = init_without_auto_argv [$0, *ARGV]
 	  my_args.shift
 	  ARGV.replace my_args
 	end

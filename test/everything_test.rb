@@ -339,7 +339,7 @@ class EverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_array_int_inout" do
-      assert_equal [2, [3, 4, 3]], Everything.test_array_int_inout([5, 2, 3])
+      assert_equal [3, 4], Everything.test_array_int_inout([5, 2, 3])
     end
 
     should "have correct test_boolean" do

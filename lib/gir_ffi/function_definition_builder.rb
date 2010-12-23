@@ -88,7 +88,13 @@ module GirFFI
       when :array
 	tag = arg.type.param_type(0).tag
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
-	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
+	if arg.type.array_length > -1
+	  idx = arg.type.array_length
+	  rv = @data[idx].retvals.shift
+	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
+	else
+	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
+	end
       else
 	arr_arg = find_counted_array(name)
 	if arr_arg
