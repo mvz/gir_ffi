@@ -104,19 +104,23 @@ module GirFFI
     end
 
     def process_out_arg arg
+      data = ArgData.new
       type = arg.type
       tag = type.tag
 
       prevar = new_var
       postvar = new_var
 
-      @inargs << nil
+      data.inargs << nil
+      data.callargs << prevar
+      data.retvals << postvar
+
       case tag
       when :interface
 	iface = arg.type.interface
 	if iface.type == :struct
-	  @pre << "#{prevar} = #{iface.namespace}::#{iface.name}.new"
-	  @post << "#{postvar} = #{prevar}"
+	  data.pre << "#{prevar} = #{iface.namespace}::#{iface.name}.new"
+	  data.post << "#{postvar} = #{prevar}"
 	else
 	  raise NotImplementedError,
 	    "Don't know what to do with interface type #{iface.type}"
@@ -124,14 +128,17 @@ module GirFFI
       when :array
 	size = type.array_fixed_size
 	tag = arg.type.param_type(0).tag
-	@pre << "#{prevar} = GirFFI::ArgHelper.pointer_pointer"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
+	data.pre << "#{prevar} = GirFFI::ArgHelper.pointer_pointer"
+	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
       else
-	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
+	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
+	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
-      @callargs << prevar
-      @retvals << postvar
+      @inargs += data.inargs
+      @callargs += data.callargs
+      @retvals += data.retvals
+      @pre += data.pre
+      @post += data.post
     end
 
     def process_in_arg arg
