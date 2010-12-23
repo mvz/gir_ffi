@@ -18,6 +18,10 @@ module GirFFI
       block
     end
 
+    def self.cleanup_inptr ptr
+      LibC.free ptr
+    end
+
     def self.int_to_inoutptr val
       ptr = int_pointer
       ptr.write_int val

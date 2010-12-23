@@ -145,6 +145,10 @@ module GirFFI
 
 	tag = arg.type.param_type(0).tag
 	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
+	unless arg.ownership_transfer == :everything
+	  # TODO: Call different cleanup method for strings
+	  @post << "GirFFI::ArgHelper.cleanup_inptr #{prevar}"
+	end
 
 	@callargs << prevar
       else
