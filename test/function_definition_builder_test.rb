@@ -15,7 +15,9 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	  _v3 = GirFFI::ArgHelper.utf8_array_to_inoutptr argv
 	  ::Lib.gtk_init _v1, _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_int _v1
+	  GirFFI::ArgHelper.cleanup_ptr _v1
 	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v3, _v2
+	  GirFFI::ArgHelper.cleanup_ptr_array_ptr _v3, _v2
 	  return _v4
 	end
       "

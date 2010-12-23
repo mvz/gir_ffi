@@ -368,6 +368,10 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [3, 4], Everything.test_array_int_inout([5, 2, 3])
     end
 
+    should "have correct test_array_int_none_out" do
+      assert_equal [1, 2, 3, 4, 5], Everything.test_array_int_none_out
+    end
+
     should "have correct test_array_int_out" do
       assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
     end

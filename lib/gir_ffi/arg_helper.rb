@@ -51,9 +51,33 @@ module GirFFI
       block
     end
 
-    def self.cleanup_inptr ptr
+    def self.cleanup_ptr ptr
       LibC.free ptr
     end
+
+    def self.cleanup_ptr_ptr ptr
+      block = ptr.read_pointer
+      LibC.free ptr
+      LibC.free block
+    end
+
+    # Converts an outptr to a string array, then frees pointers.
+    def self.cleanup_ptr_array_ptr ptr, size
+      return if ptr.nil?
+
+      block = ptr.read_pointer
+      LibC.free ptr
+
+      return if block.null?
+
+      ptrs = block.read_array_of_pointer(size)
+      LibC.free block
+
+      ptrs.map do |p|
+	LibC.free p unless p.null?
+      end
+    end
+
 
     def self.int_to_inoutptr val
       ptr = int_pointer
@@ -103,52 +127,42 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(:pointer)
     end
 
-    # Converts an outptr to an int, then frees the outptr.
+    # Converts an outptr to an int.
     def self.outptr_to_int ptr
       value = ptr.read_int
-      LibC.free ptr
       value
     end
 
     # Converts an outptr to a string array, then frees pointers.
     def self.outptr_to_utf8_array ptr, size
       return nil if ptr.nil?
-
       block = ptr.read_pointer
-      LibC.free ptr
-
       return nil if block.null?
-
       ptrs = block.read_array_of_pointer(size)
-      LibC.free block
 
       ptrs.map do |p|
 	if p.null?
 	  nil
 	else
-	  p.read_string.tap { LibC.free p }
+	  p.read_string
 	end
       end
     end
 
-    # Converts an outptr to a double, then frees the outptr.
+    # Converts an outptr to a double.
     def self.outptr_to_double ptr
       value = ptr.get_double 0
-      LibC.free ptr
       value
     end
 
-    # Converts an outptr to an array of int, then frees the outptr.
+    # Converts an outptr to an array of int.
     def self.outptr_to_int_array ptr, size
       block = ptr.read_pointer
-      LibC.free ptr
-
       ptr_to_int_array block, size
     end
 
     def self.ptr_to_int_array ptr, size
       ints = ptr.read_array_of_int(size)
-      LibC.free ptr
       ints
     end
 

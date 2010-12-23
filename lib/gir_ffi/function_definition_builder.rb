@@ -95,12 +95,19 @@ module GirFFI
 	  lname = lendata.inargs.pop
 	  lendata.pre.unshift "#{lname} = #{name}.length"
 	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
+	  # TODO: Call different cleanup method for strings
+	  if tag == :utf8
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{prevar}, #{rv}"
+	  else
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{prevar}"
+	  end
 	else
 	  raise NotImplementedError
 	end
       else
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
+	data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
       end
 
       data
@@ -134,16 +141,27 @@ module GirFFI
 	size = type.array_fixed_size
 	idx = type.array_length
 
-	if size > 0
-	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
-	elsif idx > -1
-	  lendata = @data[idx]
-	  rv = lendata.retvals.shift
-	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
+	if size <= 0
+	  if idx > -1
+	    size = @data[idx].retvals.shift
+	  else
+	    raise NotImplementedError
+	  end
+	end
+	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
+	if arg.ownership_transfer == :everything
+	  if tag == :utf8
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{prevar}, #{rv}"
+	  else
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{prevar}"
+	  end
 	end
       else
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
 	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
+	if arg.ownership_transfer == :everything
+	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
+	end
       end
 
       data
@@ -191,7 +209,7 @@ module GirFFI
 	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
 	unless arg.ownership_transfer == :everything
 	  # TODO: Call different cleanup method for strings
-	  data.post << "GirFFI::ArgHelper.cleanup_inptr #{prevar}"
+	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
 	end
 
 	data.callargs << prevar
