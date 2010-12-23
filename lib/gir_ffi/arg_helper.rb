@@ -9,12 +9,14 @@ module GirFFI
     end
 
     def self.int_array_to_inptr ary
-      return nil if ary.nil?
-
-      int_size = FFI.type_size(:int32)
-      block = AllocationHelper.safe_malloc int_size * ary.length
+      block = AllocationHelper.safe_malloc FFI.type_size(:int32) * ary.length
       block.write_array_of_int ary
+      block
+    end
 
+    def self.int16_array_to_inptr ary
+      block = AllocationHelper.safe_malloc FFI.type_size(:int16) * ary.length
+      block.write_array_of_int16 ary
       block
     end
 
