@@ -54,25 +54,23 @@ module GirFFI
     def process_inout_arg arg
       raise NotImplementedError unless arg.ownership_transfer == :everything
 
+      tag = arg.type.tag
+
       name = safe arg.name
       prevar = new_var
       postvar = new_var
 
       @inargs << name
-      case arg.type.tag
-      when :int, :int32
-	@pre << "#{prevar} = GirFFI::ArgHelper.int_to_inoutptr #{name}"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_int #{prevar}"
-      when :array
-	case arg.type.param_type(0).tag
-	when :utf8
-	  @pre << "#{prevar} = GirFFI::ArgHelper.string_array_to_inoutptr #{name}"
-	  @post << "#{postvar} = GirFFI::ArgHelper.outptr_to_string_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
-	else
-	  raise NotImplementedError
-	end
-      else
+      case tag
+      when :interface
 	raise NotImplementedError
+      when :array
+	tag = arg.type.param_type(0).tag
+	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
+      else
+	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
+	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
       @callargs << prevar
       @retvals << postvar
@@ -138,12 +136,8 @@ module GirFFI
 
 	prevar = new_var
 
-	case arg.type.param_type(0).tag
-	when :int, :int32
-	  @pre << "#{prevar} = GirFFI::ArgHelper.int_array_to_inptr #{name}"
-	else
-	  raise NotImplementedError
-	end
+	tag = arg.type.param_type(0).tag
+	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
 
 	@callargs << prevar
       else

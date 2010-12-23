@@ -16,10 +16,10 @@ class ArgHelperTest < Test::Unit::TestCase
     end
   end
 
-  context "The string_array_to_inoutptr method" do
+  context "The utf8_array_to_inoutptr method" do
     context "when called with an array of strings" do
       setup do
-	@result = GirFFI::ArgHelper.string_array_to_inoutptr ["foo", "bar", "baz"]
+	@result = GirFFI::ArgHelper.utf8_array_to_inoutptr ["foo", "bar", "baz"]
       end
 
       should "return a FFI::Pointer" do
@@ -34,7 +34,7 @@ class ArgHelperTest < Test::Unit::TestCase
     end
     context "when called with nil" do
       should "return nil" do
-	assert_nil GirFFI::ArgHelper.string_array_to_inoutptr nil
+	assert_nil GirFFI::ArgHelper.utf8_array_to_inoutptr nil
       end
     end
   end
@@ -50,7 +50,7 @@ class ArgHelperTest < Test::Unit::TestCase
     end
   end
 
-  context "The outptr_to_string_array method" do
+  context "The outptr_to_utf8_array method" do
     context "when called with a valid pointer to a string array" do
       setup do
 	p = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:pointer) * 2
@@ -64,7 +64,7 @@ class ArgHelperTest < Test::Unit::TestCase
 
       should "return the string array" do
 	assert_equal ["one", "two"],
-	  GirFFI::ArgHelper.outptr_to_string_array(@ptr, 2)
+	  GirFFI::ArgHelper.outptr_to_utf8_array(@ptr, 2)
       end
     end
 
@@ -83,13 +83,13 @@ class ArgHelperTest < Test::Unit::TestCase
 
       should "return render the null pointer as nil" do
 	assert_equal ["one", "two", nil],
-	  GirFFI::ArgHelper.outptr_to_string_array(@ptr, 3)
+	  GirFFI::ArgHelper.outptr_to_utf8_array(@ptr, 3)
       end
     end
 
     context "when called with nil" do
       should "return nil" do
-	assert_nil GirFFI::ArgHelper.outptr_to_string_array(nil, 0)
+	assert_nil GirFFI::ArgHelper.outptr_to_utf8_array(nil, 0)
       end
     end
   end

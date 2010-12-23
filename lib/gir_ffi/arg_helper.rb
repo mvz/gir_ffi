@@ -24,7 +24,7 @@ module GirFFI
       return ptr
     end
 
-    def self.string_array_to_inoutptr ary
+    def self.utf8_array_to_inoutptr ary
       return nil if ary.nil?
 
       ptrs = ary.map {|str|
@@ -67,7 +67,7 @@ module GirFFI
     end
 
     # Converts an outptr to a string array, then frees pointers.
-    def self.outptr_to_string_array ptr, size
+    def self.outptr_to_utf8_array ptr, size
       return nil if ptr.nil?
 
       block = ptr.read_pointer
