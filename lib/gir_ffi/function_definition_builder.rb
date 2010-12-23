@@ -142,52 +142,60 @@ module GirFFI
     end
 
     def process_in_arg arg
+      data = ArgData.new
+
       name = safe arg.name
       type = arg.type
       tag = type.tag
 
-      @inargs << name
+      data.inargs << name
 
       case tag
       when :interface
 	if type.interface.type == :callback
 	  procvar = new_var
-	  @pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	  data.pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
 	  # TODO: Use arg.scope to decide if this is needed.
-	  @pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
-	  @callargs << procvar
+	  data.pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
+	  data.callargs << procvar
 	else
-	  @callargs << name
+	  data.callargs << name
 	end
       when :void
 	raise NotImplementedError unless arg.type.pointer?
 	prevar = new_var
-	@pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
-	@callargs << prevar
+	data.pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
+	data.callargs << prevar
       when :array
 	if type.array_fixed_size > 0
-	  @pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
+	  data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
 	elsif type.array_length > -1
 	  idx = type.array_length
 	  @inargs[idx] = nil
 	  lenvar = new_var
-	  @pre << "#{lenvar} = #{name}.length"
+	  data.pre << "#{lenvar} = #{name}.length"
 	  @callargs[idx] = lenvar
 	end
 
 	prevar = new_var
 
 	tag = arg.type.param_type(0).tag
-	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
+	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
 	unless arg.ownership_transfer == :everything
 	  # TODO: Call different cleanup method for strings
-	  @post << "GirFFI::ArgHelper.cleanup_inptr #{prevar}"
+	  data.post << "GirFFI::ArgHelper.cleanup_inptr #{prevar}"
 	end
 
-	@callargs << prevar
+	data.callargs << prevar
       else
-	@callargs << name
+	data.callargs << name
       end
+
+      @inargs += data.inargs
+      @callargs += data.callargs
+      @retvals += data.retvals
+      @pre += data.pre
+      @post += data.post
     end
 
     def process_return_value
