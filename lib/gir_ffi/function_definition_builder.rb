@@ -152,7 +152,8 @@ module GirFFI
       cvar = new_var
       @capture = "#{cvar} = "
 
-      if tag == :interface
+      case tag
+      when :interface
 	interface = type.interface
 	namespace = interface.namespace
 	name = interface.name
@@ -162,6 +163,12 @@ module GirFFI
 	if interface.type == :object
 	  @post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	end
+	@retvals << retval
+      when :array
+	size = type.array_fixed_size
+	tag = type.param_type(0).tag
+	retval = new_var
+	@post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
 	@retvals << retval
       else
 	@retvals << cvar

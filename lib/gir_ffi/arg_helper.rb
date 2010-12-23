@@ -48,11 +48,11 @@ module GirFFI
     end
 
     def self.int_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:double)
+      AllocationHelper.safe_malloc FFI.type_size(:int)
     end
 
     def self.double_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int)
+      AllocationHelper.safe_malloc FFI.type_size(:double)
     end
 
     def self.pointer_pointer
@@ -99,8 +99,12 @@ module GirFFI
       block = ptr.read_pointer
       LibC.free ptr
 
-      ints = block.read_array_of_int(size)
-      LibC.free block
+      ptr_to_int_array block, size
+    end
+
+    def self.ptr_to_int_array ptr, size
+      ints = ptr.read_array_of_int(size)
+      LibC.free ptr
       ints
     end
 
