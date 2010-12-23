@@ -9,7 +9,7 @@ module GirFFI
     end
 
     def self.int32_array_to_inptr ary
-      block = AllocationHelper.safe_malloc FFI.type_size(:int32) * ary.length
+      block = allocate_array_of_type :int32, ary.length
       block.write_array_of_int32 ary
       block
     end
@@ -20,8 +20,14 @@ module GirFFI
     end
 
     def self.int16_array_to_inptr ary
-      block = AllocationHelper.safe_malloc FFI.type_size(:int16) * ary.length
+      block = allocate_array_of_type :int16, ary.length
       block.write_array_of_int16 ary
+      block
+    end
+
+    def self.int64_array_to_inptr ary
+      block = allocate_array_of_type :int64, ary.length
+      block.write_array_of_int64 ary
       block
     end
 
@@ -163,6 +169,10 @@ module GirFFI
       unless arr.size == size
 	raise ArgumentError, "#{name} should have size #{size}"
       end
+    end
+
+    def self.allocate_array_of_type type, length
+      AllocationHelper.safe_malloc FFI.type_size(type) * length
     end
   end
 end
