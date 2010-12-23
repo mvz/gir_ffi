@@ -31,6 +31,12 @@ module GirFFI
       block
     end
 
+    def self.int8_array_to_inptr ary
+      block = allocate_array_of_type :int8, ary.length
+      block.write_array_of_int8 ary
+      block
+    end
+
     def self.cleanup_inptr ptr
       LibC.free ptr
     end
