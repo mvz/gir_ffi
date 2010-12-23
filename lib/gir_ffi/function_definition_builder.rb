@@ -2,6 +2,18 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
+    ArgData = Struct.new(:inargs, :callargs, :retvals, :pre, :post)
+    class ArgData
+      def initialize
+	super
+	self.inargs = []
+	self.callargs = []
+	self.retvals = []
+	self.pre = []
+	self.post = []
+      end
+    end
+
     KEYWORDS =  [
       "alias", "and", "begin", "break", "case", "class", "def", "do",
       "else", "elsif", "end", "ensure", "false", "for", "if", "in",
@@ -54,32 +66,41 @@ module GirFFI
     def process_inout_arg arg
       raise NotImplementedError unless arg.ownership_transfer == :everything
 
+      data = ArgData.new
+
       tag = arg.type.tag
 
       name = safe arg.name
       prevar = new_var
       postvar = new_var
 
-      @inargs << name
+      data.inargs << name
+      data.callargs << prevar
+      data.retvals << postvar
+
       case tag
       when :interface
 	raise NotImplementedError
       when :array
 	tag = arg.type.param_type(0).tag
-	@pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
+	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
+	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{name}.nil? ? 0 : #{name}.size"
       else
 	arr_arg = find_counted_array(name)
 	if arr_arg
-	  @inargs.pop
-	  @pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{arr_arg.name}.length"
+	  data.inargs.pop
+	  data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{arr_arg.name}.length"
 	else
-	  @pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
+	  data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
 	end
-	@post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
+	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
       end
-      @callargs << prevar
-      @retvals << postvar
+
+      @inargs += data.inargs
+      @callargs += data.callargs
+      @retvals += data.retvals
+      @pre += data.pre
+      @post += data.post
     end
 
     def process_out_arg arg
