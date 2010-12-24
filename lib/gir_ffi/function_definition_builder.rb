@@ -2,13 +2,13 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    ArgData = Struct.new(:inargs, :callargs, :retvals, :pre, :post)
+    ArgData = Struct.new(:inarg, :callarg, :retval, :pre, :post)
     class ArgData
       def initialize
 	super
-	self.inargs = []
-	self.callargs = []
-	self.retvals = []
+	self.inarg = nil
+	self.callarg = nil
+	self.retval = nil
 	self.pre = []
 	self.post = []
       end
@@ -78,9 +78,9 @@ module GirFFI
       prevar = new_var
       postvar = new_var
 
-      data.inargs << name
-      data.callargs << prevar
-      data.retvals << postvar
+      data.inarg = name
+      data.callarg = prevar
+      data.retval = postvar
 
       case tag
       when :interface
@@ -91,8 +91,10 @@ module GirFFI
 	if arg.type.array_length > -1
 	  idx = arg.type.array_length
 	  lendata = @data[idx]
-	  rv = lendata.retvals.shift
-	  lname = lendata.inargs.pop
+	  rv = lendata.retval
+	  lendata.retval = nil
+	  lname = lendata.inarg
+	  lendata.inarg = nil
 	  lendata.pre.unshift "#{lname} = #{name}.length"
 	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
 	  # TODO: Call different cleanup method for strings
@@ -121,8 +123,8 @@ module GirFFI
       prevar = new_var
       postvar = new_var
 
-      data.callargs << prevar
-      data.retvals << postvar
+      data.callarg = prevar
+      data.retval = postvar
 
       case tag
       when :interface
@@ -143,7 +145,8 @@ module GirFFI
 
 	if size <= 0
 	  if idx > -1
-	    size = @data[idx].retvals.shift
+	    size = @data[idx].retval
+	    @data[idx].retval = nil
 	  else
 	    raise NotImplementedError
 	  end
@@ -174,33 +177,32 @@ module GirFFI
       type = arg.type
       tag = type.tag
 
-      data.inargs << name
+      data.inarg = name
 
       case tag
       when :interface
 	if type.interface.type == :callback
-	  procvar = new_var
-	  data.pre << "#{procvar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	  prevar = new_var
+	  data.pre << "#{prevar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
 	  # TODO: Use arg.scope to decide if this is needed.
-	  data.pre << "::#{@libmodule}::CALLBACKS << #{procvar}"
-	  data.callargs << procvar
+	  data.pre << "::#{@libmodule}::CALLBACKS << #{prevar}"
+	  data.callarg = prevar
 	else
-	  data.callargs << name
+	  data.callarg = name
 	end
       when :void
 	raise NotImplementedError unless arg.type.pointer?
 	prevar = new_var
 	data.pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
-	data.callargs << prevar
+	data.callarg = prevar
       when :array
 	if type.array_fixed_size > 0
 	  data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
 	elsif type.array_length > -1
 	  idx = type.array_length
-	  @data[idx].inargs = []
-	  lenvar = new_var
+	  @data[idx].inarg = nil
+	  lenvar = @data[idx].callarg
 	  data.pre << "#{lenvar} = #{name}.length"
-	  @data[idx].callargs = [lenvar]
 	end
 
 	prevar = new_var
@@ -212,9 +214,9 @@ module GirFFI
 	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
 	end
 
-	data.callargs << prevar
+	data.callarg = prevar
       else
-	data.callargs << name
+	data.callarg = name
       end
 
       data
@@ -239,7 +241,7 @@ module GirFFI
 	if interface.type == :object
 	  @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	end
-	@rvdata.retvals << retval
+	@rvdata.retval = retval
       when :array
 	tag = type.param_type(0).tag
 	size = type.array_fixed_size
@@ -250,21 +252,22 @@ module GirFFI
 	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
 	elsif idx > -1
 	  lendata = @data[idx]
-	  rv = lendata.retvals.shift
+	  rv = lendata.retval
+	  lendata.retval = nil
 	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{rv}"
 	end
-	@rvdata.retvals << retval
+	@rvdata.retval = retval
       else
-	@rvdata.retvals << cvar
+	@rvdata.retval = cvar
       end
     end
 
     def adjust_accumulators
-      @retvals += @rvdata.retvals
+      @retvals << @rvdata.retval
       @data.each do |data|
-	@inargs += data.inargs
-	@callargs += data.callargs
-	@retvals += data.retvals
+	@inargs << data.inarg
+	@callargs << data.callarg
+	@retvals << data.retval
 	@pre += data.pre
 	@post += data.post
       end
@@ -277,7 +280,8 @@ module GirFFI
 	@callargs << errvar
       end
 
-      @post << "return #{@retvals.join(', ')}" unless @retvals.empty?
+      @retvals = @retvals.compact
+      @post << "return #{@retvals.compact.join(', ')}" unless @retvals.empty?
 
       if @info.method?
 	@callargs.unshift "self"
@@ -288,7 +292,7 @@ module GirFFI
       return <<-CODE
 	def #{@info.name} #{@inargs.compact.join(', ')}
 	  #{@pre.join("\n")}
-	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
+	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.compact.join(', ')}
 	  #{@post.join("\n")}
 	end
       CODE
