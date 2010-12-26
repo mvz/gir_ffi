@@ -399,6 +399,13 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal true, Everything.test_boolean(true)
     end
 
+    should "have correct test_cairo_context_full_return"
+    should "have correct test_cairo_context_none_in"
+    should "have correct test_cairo_surface_full_out"
+    should "have correct test_cairo_surface_full_return"
+    should "have correct test_cairo_surface_none_in"
+    should "have correct test_cairo_surface_none_return"
+
     should "have correct test_callback" do
       result = Everything.test_callback Proc.new { 5 }
       assert_equal 5, result
