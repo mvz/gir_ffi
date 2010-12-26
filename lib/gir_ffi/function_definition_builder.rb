@@ -62,17 +62,15 @@ module GirFFI
     def prepare_arg data
       arg = data.arginfo
       data.name = safe arg.name
+      data.callarg = new_var
 
       case arg.direction
       when :inout
-	data.inarg = safe arg.name
-	data.callarg = new_var
+	data.inarg = data.name
 	data.retname = data.retval = new_var
       when :in
-	data.inarg = safe arg.name
-	data.callarg = new_var
+	data.inarg = data.name
       when :out
-	data.callarg = new_var
 	data.retname = data.retval = new_var
       else
 	raise ArgumentError
