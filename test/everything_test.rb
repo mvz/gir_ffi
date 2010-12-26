@@ -14,6 +14,7 @@ class EverythingTest < Test::Unit::TestCase
   context "The generated Everything module" do
     setup do
       GirFFI.setup :Everything
+      GirFFI.setup :GObject
       GirFFI.setup :GLib
     end
 
@@ -464,10 +465,134 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
+    should "have correct test_closure"
+    should "have correct test_closure_one_arg"
+
+    should "have correct test_double" do
+      r = Everything.test_double 5435.32
+      assert_equal 5435.32, r
+    end
+
+    should "have correct test_enum_param" do
+      r = Everything.test_enum_param :value3
+      assert_equal "value3", r
+    end
+
+    should "have correct test_filename_return"
+
+    should "have correct test_float" do
+      r = Everything.test_float 5435.32
+      assert_in_delta 5435.32, r, 0.001
+    end
+
+    should "have correct test_ghash_container_in"
+    should "have correct test_ghash_container_return"
+    should "have correct test_ghash_everything_in"
+    should "have correct test_ghash_everything_return"
+    should "have correct test_ghash_free"
+    should "have correct test_ghash_nested_everything_return"
+    should "have correct test_ghash_nested_everything_return2"
+    should "have correct test_ghash_nothing_in"
+    should "have correct test_ghash_nothing_in2"
+    should "have correct test_ghash_nothing_return"
+    should "have correct test_ghash_nothing_return2"
+    should "have correct test_ghash_null_in"
+    should "have correct test_ghash_null_out"
+    should "have correct test_ghash_null_return"
+    should "have correct test_glist_container_in"
+    should "have correct test_glist_container_return"
+    should "have correct test_glist_everything_in"
+    should "have correct test_glist_everything_return"
+    should "have correct test_glist_free"
+    should "have correct test_glist_nothing_in"
+    should "have correct test_glist_nothing_in2"
+    should "have correct test_glist_nothing_return"
+    should "have correct test_glist_nothing_return2"
+    should "have correct test_glist_null_in"
+    should "have correct test_glist_null_out"
+    should "have correct test_gslist_container_in"
+    should "have correct test_gslist_container_return"
+    should "have correct test_gslist_everything_in"
+    should "have correct test_gslist_everything_return"
+    should "have correct test_gslist_free"
+    should "have correct test_gslist_nothing_in"
+    should "have correct test_gslist_nothing_in2"
+    should "have correct test_gslist_nothing_return"
+    should "have correct test_gslist_nothing_return2"
+    should "have correct test_gslist_null_in"
+    should "have correct test_gslist_null_out"
+
     should "have correct test_gtype" do
       result = Everything.test_gtype 23
       assert_equal 23, result
     end
+
+    should "have correct test_int" do
+      result = Everything.test_int 23
+      assert_equal 23, result
+    end
+
+    should "have correct test_int16" do
+      result = Everything.test_int16 23
+      assert_equal 23, result
+    end
+
+    should "have correct test_int32" do
+      result = Everything.test_int32 23
+      assert_equal 23, result
+    end
+
+    should "have correct test_int64" do
+      result = Everything.test_int64 2300000000000
+      assert_equal 2300000000000, result
+    end
+
+    should "have correct test_int8" do
+      result = Everything.test_int8 23
+      assert_equal 23, result
+    end
+
+    should "have correct test_int_out_utf8" do
+      len = Everything.test_int_out_utf8 "How long?"
+      assert_equal 9, len
+    end
+
+    should "have correct test_int_value_arg"
+
+    should "have correct test_long" do
+      result = Everything.test_long 2300000000000
+      assert_equal 2300000000000, result
+    end
+
+    should "have correct test_multi_callback" do
+      a = 1
+      result = Everything.test_multi_callback Proc.new {
+	a += 1
+	23
+      }
+      assert_equal 2 * 23, result
+      assert_equal 3, a
+    end
+
+    should "have correct test_multi_double_args" do
+      one, two = Everything.test_multi_double_args 23.1
+      assert_equal 2 * 23.1, one
+      assert_equal 3 * 23.1, two
+    end
+
+    should "have correct test_object_null_in" do
+      assert_nothing_raised { Everything.test_object_null_in nil }
+    end
+
+    should "have correct test_object_null_out"
+
+    should "have correct test_short" do
+      result = Everything.test_short 23
+      assert_equal 23, result
+    end
+
+    should "have correct test_simple_boxed_a_const_return"
+    should "have correct test_simple_callback"
 
     should "have correct test_size" do
       assert_equal 2354, Everything.test_size(2354)
