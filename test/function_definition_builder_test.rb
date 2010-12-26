@@ -47,13 +47,15 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
       expected =
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
-	  _v2 = GirFFI::ArgHelper.mapped_callback_args c_handler
-	  ::Lib::CALLBACKS << _v2
-	  _v3 = GirFFI::ArgHelper.object_to_inptr data
-	  _v4 = GirFFI::ArgHelper.mapped_callback_args destroy_data
-	  ::Lib::CALLBACKS << _v4
-	  _v5 = ::Lib.g_signal_connect_data _v1, detailed_signal, _v2, _v3, _v4, connect_flags
-	  return _v5
+	  _v2 = detailed_signal
+	  _v3 = GirFFI::ArgHelper.mapped_callback_args c_handler
+	  ::Lib::CALLBACKS << _v3
+	  _v4 = GirFFI::ArgHelper.object_to_inptr data
+	  _v5 = GirFFI::ArgHelper.mapped_callback_args destroy_data
+	  ::Lib::CALLBACKS << _v5
+	  _v6 = connect_flags
+	  _v7 = ::Lib.g_signal_connect_data _v1, _v2, _v3, _v4, _v5, _v6
+	  return _v7
 	end"
 
       assert_equal cws(expected), cws(code)
@@ -66,12 +68,13 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def new_from_file x
-	  _v3 = FFI::MemoryPointer.new(:pointer).write_pointer nil
-	  _v1 = ::Lib.test_obj_new_from_file x, _v3
-	  GirFFI::ArgHelper.check_error(_v3)
-	  _v2 = ::Everything::TestObj._real_new(_v1)
-	  GirFFI::ArgHelper.sink_if_floating(_v2)
-	  return _v2
+	  _v1 = x
+	  _v4 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+	  _v2 = ::Lib.test_obj_new_from_file _v1, _v4
+	  GirFFI::ArgHelper.check_error(_v4)
+	  _v3 = ::Everything::TestObj._real_new(_v2)
+	  GirFFI::ArgHelper.sink_if_floating(_v3)
+	  return _v3
 	end"
 
       assert_equal cws(expected), cws(code)

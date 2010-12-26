@@ -74,20 +74,16 @@ module GirFFI
 
       tag = arg.type.tag
 
-      name = safe arg.name
-      prevar = new_var
-      postvar = new_var
-
-      data.inarg = name
-      data.callarg = prevar
-      data.retval = postvar
+      data.inarg = safe arg.name
+      data.callarg = new_var
+      data.retval = new_var
 
       case tag
       when :interface
 	raise NotImplementedError
       when :array
 	tag = arg.type.param_type(0).tag
-	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{name}"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{data.inarg}"
 	if arg.type.array_length > -1
 	  idx = arg.type.array_length
 	  lendata = @data[idx]
@@ -95,21 +91,21 @@ module GirFFI
 	  lendata.retval = nil
 	  lname = lendata.inarg
 	  lendata.inarg = nil
-	  lendata.pre.unshift "#{lname} = #{name}.length"
-	  data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{rv}"
+	  lendata.pre.unshift "#{lname} = #{data.inarg}.length"
+	  data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{rv}"
 	  # TODO: Call different cleanup method for strings
 	  if tag == :utf8
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{prevar}, #{rv}"
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
 	  else
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{prevar}"
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
 	  end
 	else
 	  raise NotImplementedError
 	end
       else
-	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{name}"
-	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
-	data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{data.inarg}"
+	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
+	data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
       end
 
       data
@@ -120,24 +116,21 @@ module GirFFI
       type = arg.type
       tag = type.tag
 
-      prevar = new_var
-      postvar = new_var
-
-      data.callarg = prevar
-      data.retval = postvar
+      data.callarg = new_var
+      data.retval = new_var
 
       case tag
       when :interface
 	iface = arg.type.interface
 	if iface.type == :struct
-	  data.pre << "#{prevar} = #{iface.namespace}::#{iface.name}.new"
-	  data.post << "#{postvar} = #{prevar}"
+	  data.pre << "#{data.callarg} = #{iface.namespace}::#{iface.name}.new"
+	  data.post << "#{data.retval} = #{data.callarg}"
 	else
 	  raise NotImplementedError,
 	    "Don't know what to do with interface type #{iface.type}"
 	end
       when :array
-	data.pre << "#{prevar} = GirFFI::ArgHelper.pointer_pointer"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_pointer"
 
 	tag = arg.type.param_type(0).tag
 	size = type.array_fixed_size
@@ -151,19 +144,19 @@ module GirFFI
 	    raise NotImplementedError
 	  end
 	end
-	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{prevar}, #{size}"
+	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{size}"
 	if arg.ownership_transfer == :everything
 	  if tag == :utf8
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{prevar}, #{rv}"
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
 	  else
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{prevar}"
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
 	  end
 	end
       else
-	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_pointer"
-	data.post << "#{postvar} = GirFFI::ArgHelper.outptr_to_#{tag} #{prevar}"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_pointer"
+	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
 	if arg.ownership_transfer == :everything
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
+	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
 	end
       end
 
@@ -173,50 +166,42 @@ module GirFFI
     def process_in_arg arg
       data = ArgData.new
 
-      name = safe arg.name
       type = arg.type
       tag = type.tag
 
-      data.inarg = name
+      data.inarg = safe arg.name
+      data.callarg = new_var
 
       case tag
       when :interface
 	if type.interface.type == :callback
-	  prevar = new_var
-	  data.pre << "#{prevar} = GirFFI::ArgHelper.mapped_callback_args #{name}"
+	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.mapped_callback_args #{data.inarg}"
 	  # TODO: Use arg.scope to decide if this is needed.
-	  data.pre << "::#{@libmodule}::CALLBACKS << #{prevar}"
-	  data.callarg = prevar
+	  data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
 	else
-	  data.callarg = name
+	  data.pre << "#{data.callarg} = #{data.inarg}"
 	end
       when :void
 	raise NotImplementedError unless arg.type.pointer?
-	prevar = new_var
-	data.pre << "#{prevar} = GirFFI::ArgHelper.object_to_inptr #{name}"
-	data.callarg = prevar
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.object_to_inptr #{data.inarg}"
       when :array
 	if type.array_fixed_size > 0
-	  data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{name}, \"#{name}\""
+	  data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{data.inarg}, \"#{data.inarg}\""
 	elsif type.array_length > -1
 	  idx = type.array_length
+	  lenvar = @data[idx].inarg
 	  @data[idx].inarg = nil
-	  lenvar = @data[idx].callarg
-	  data.pre << "#{lenvar} = #{name}.length"
+	  @data[idx].pre.unshift "#{lenvar} = #{data.inarg}.length"
 	end
-
-	prevar = new_var
 
 	tag = arg.type.param_type(0).tag
-	data.pre << "#{prevar} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{name}"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{data.inarg}"
 	unless arg.ownership_transfer == :everything
 	  # TODO: Call different cleanup method for strings
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{prevar}"
+	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
 	end
-
-	data.callarg = prevar
       else
-	data.callarg = name
+	data.pre << "#{data.callarg} = #{data.inarg}"
       end
 
       data

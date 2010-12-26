@@ -372,6 +372,12 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [1, 2, 3, 4, 5], Everything.test_array_int_none_out
     end
 
+    should "have correct test_array_int_null_in" do
+      #assert_nothing_raised { Everything.test_array_int_null_in nil }
+    end
+
+    should "have correct test_array_int_null_out"
+
     should "have correct test_array_int_out" do
       assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
     end
