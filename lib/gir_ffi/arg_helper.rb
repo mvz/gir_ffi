@@ -9,6 +9,7 @@ module GirFFI
     end
 
     def self.int32_array_to_inptr ary
+      return nil if ary.nil?
       block = allocate_array_of_type :int32, ary.length
       block.write_array_of_int32 ary
       block

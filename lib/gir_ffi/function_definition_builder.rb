@@ -2,7 +2,7 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post)
+    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post, :name)
     class ArgData
       def initialize arginfo=nil
 	super
@@ -10,6 +10,7 @@ module GirFFI
 	self.inarg = nil
 	self.callarg = nil
 	self.retval = nil
+	self.name = nil
 	self.pre = []
 	self.post = []
       end
@@ -57,6 +58,8 @@ module GirFFI
 
     def prepare_arg data
       arg = data.arginfo
+      data.name = safe arg.name
+
       case arg.direction
       when :inout
 	data.inarg = safe arg.name
@@ -200,7 +203,7 @@ module GirFFI
 	  idx = type.array_length
 	  lenvar = @data[idx].inarg
 	  @data[idx].inarg = nil
-	  @data[idx].pre.unshift "#{lenvar} = #{data.inarg}.length"
+	  @data[idx].pre.unshift "#{lenvar} = #{data.inarg}.nil? ? 0 : #{data.inarg}.length"
 	end
 
 	tag = arg.type.param_type(0).tag
@@ -213,7 +216,7 @@ module GirFFI
 	  end
 	end
       else
-	data.pre << "#{data.callarg} = #{data.inarg}"
+	data.pre << "#{data.callarg} = #{data.name}"
       end
 
       data

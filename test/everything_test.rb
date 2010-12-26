@@ -373,7 +373,7 @@ class EverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_array_int_null_in" do
-      #assert_nothing_raised { Everything.test_array_int_null_in nil }
+      assert_nothing_raised { Everything.test_array_int_null_in nil }
     end
 
     should "have correct test_array_int_null_out"
