@@ -424,6 +424,17 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 5, result
     end
 
+    should "have correct test_callback_async" do
+      a = 1
+      Everything.test_callback_async Proc.new {|b|
+	a = 2
+	b
+      }, 44
+      r = Everything.test_callback_thaw_async
+      assert_equal 44, r
+      assert_equal 2, a
+    end
+
     context "the test_callback_user_data function" do
       should "return the callbacks return value" do
 	result = Everything.test_callback_user_data Proc.new {|u| 5 }, nil
