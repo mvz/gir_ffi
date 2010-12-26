@@ -2,10 +2,11 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    ArgData = Struct.new(:inarg, :callarg, :retval, :pre, :post)
+    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post)
     class ArgData
-      def initialize
+      def initialize arginfo=nil
 	super
+	self.arginfo = arginfo
 	self.inarg = nil
 	self.callarg = nil
 	self.retval = nil
@@ -29,7 +30,9 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @info.args.each {|a| process_arg a}
+      @data = @info.args.map {|a| ArgData.new a}
+      @data.each {|data| prepare_arg data }
+      @data.each {|data| process_arg data }
       process_return_value
       adjust_accumulators
       return filled_out_template
@@ -52,31 +55,44 @@ module GirFFI
       @varno = 0
     end
 
-    def process_arg arg
-      data = case arg.direction
+    def prepare_arg data
+      arg = data.arginfo
+      case arg.direction
       when :inout
-	process_inout_arg arg
+	data.inarg = safe arg.name
+	data.callarg = new_var
+	data.retval = new_var
       when :in
-	process_in_arg arg
+	data.inarg = safe arg.name
+	data.callarg = new_var
       when :out
-	process_out_arg arg
+	data.callarg = new_var
+	data.retval = new_var
       else
 	raise ArgumentError
       end
-
-      @data << data
     end
 
-    def process_inout_arg arg
+    def process_arg data
+      arg = data.arginfo
+      case arg.direction
+      when :inout
+	process_inout_arg data
+      when :in
+	process_in_arg data
+      when :out
+	process_out_arg data
+      else
+	raise ArgumentError
+      end
+    end
+
+    def process_inout_arg data
+      arg = data.arginfo
+
       raise NotImplementedError unless arg.ownership_transfer == :everything
 
-      data = ArgData.new
-
       tag = arg.type.tag
-
-      data.inarg = safe arg.name
-      data.callarg = new_var
-      data.retval = new_var
 
       case tag
       when :interface
@@ -110,13 +126,10 @@ module GirFFI
       data
     end
 
-    def process_out_arg arg
-      data = ArgData.new
+    def process_out_arg data
+      arg = data.arginfo
       type = arg.type
       tag = type.tag
-
-      data.callarg = new_var
-      data.retval = new_var
 
       case tag
       when :interface
@@ -162,14 +175,11 @@ module GirFFI
       data
     end
 
-    def process_in_arg arg
-      data = ArgData.new
+    def process_in_arg data
+      arg = data.arginfo
 
       type = arg.type
       tag = type.tag
-
-      data.inarg = safe arg.name
-      data.callarg = new_var
 
       case tag
       when :interface
