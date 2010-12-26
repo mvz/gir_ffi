@@ -93,7 +93,6 @@ module GirFFI
 	  lendata.inarg = nil
 	  lendata.pre.unshift "#{lname} = #{data.inarg}.length"
 	  data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{rv}"
-	  # TODO: Call different cleanup method for strings
 	  if tag == :utf8
 	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
 	  else
@@ -197,8 +196,11 @@ module GirFFI
 	tag = arg.type.param_type(0).tag
 	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{data.inarg}"
 	unless arg.ownership_transfer == :everything
-	  # TODO: Call different cleanup method for strings
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
+	  if tag == :utf8
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
+	  else
+	    data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
+	  end
 	end
       else
 	data.pre << "#{data.callarg} = #{data.inarg}"
