@@ -2,7 +2,8 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post, :name)
+    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post, :postpost,
+			 :name, :retname)
     class ArgData
       def initialize arginfo=nil
 	super
@@ -10,9 +11,11 @@ module GirFFI
 	self.inarg = nil
 	self.callarg = nil
 	self.retval = nil
+	self.retname = nil
 	self.name = nil
 	self.pre = []
 	self.post = []
+	self.postpost = []
       end
     end
 
@@ -64,13 +67,13 @@ module GirFFI
       when :inout
 	data.inarg = safe arg.name
 	data.callarg = new_var
-	data.retval = new_var
+	data.retname = data.retval = new_var
       when :in
 	data.inarg = safe arg.name
 	data.callarg = new_var
       when :out
 	data.callarg = new_var
-	data.retval = new_var
+	data.retname = data.retval = new_var
       else
 	raise ArgumentError
       end
@@ -159,17 +162,17 @@ module GirFFI
 	    raise NotImplementedError
 	  end
 	end
-	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{size}"
+	data.postpost << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{size}"
 	if arg.ownership_transfer == :everything
 	  if tag == :utf8
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
+	    data.postpost << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
 	  else
-	    data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
+	    data.postpost << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
 	  end
 	end
       else
 	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_pointer"
-	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
+	data.post << "#{data.retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
 	if arg.ownership_transfer == :everything
 	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
 	end
@@ -270,6 +273,9 @@ module GirFFI
 	@retvals << data.retval
 	@pre += data.pre
 	@post += data.post
+      end
+      @data.each do |data|
+	@post += data.postpost
       end
       @post += @rvdata.post
 

@@ -96,5 +96,25 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       assert_equal cws(expected), cws(code)
     end
+
+    should "build correct definition of Everything:test_array_int_null_out" do
+      go = get_function_introspection_data 'Everything', 'test_array_int_null_out'
+      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      code = fbuilder.generate
+
+      expected =
+	"def test_array_int_null_out
+	  _v1 = GirFFI::ArgHelper.pointer_pointer
+	  _v3 = GirFFI::ArgHelper.int_pointer
+	  ::Lib.test_array_int_null_out _v1, _v3
+	  _v4 = GirFFI::ArgHelper.outptr_to_int _v3
+	  GirFFI::ArgHelper.cleanup_ptr _v3
+	  _v2 = GirFFI::ArgHelper.outptr_to_int_array _v1, _v4
+	  GirFFI::ArgHelper.cleanup_ptr_ptr _v1
+	  return _v2
+	end"
+
+      assert_equal cws(expected), cws(code)
+    end
   end
 end

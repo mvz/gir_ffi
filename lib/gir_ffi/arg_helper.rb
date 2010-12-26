@@ -153,7 +153,9 @@ module GirFFI
 
     # Converts an outptr to an array of int.
     def self.outptr_to_int_array ptr, size
+      return nil if ptr.null?
       block = ptr.read_pointer
+      return nil if block.null?
       ptr_to_int_array block, size
     end
 
