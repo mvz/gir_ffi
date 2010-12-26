@@ -384,8 +384,18 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
     end
 
+    should "have correct test_async_ready_callback"
+
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
+      assert_equal true, Everything.test_boolean(true)
+    end
+
+    should "have correct test_boolean_false" do
+      assert_equal false, Everything.test_boolean(false)
+    end
+
+    should "have correct test_boolean_true" do
       assert_equal true, Everything.test_boolean(true)
     end
 
