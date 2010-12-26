@@ -8,11 +8,15 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.int32_array_to_inptr ary
+    def self.typed_array_to_inptr type, ary
       return nil if ary.nil?
-      block = allocate_array_of_type :int32, ary.length
-      block.write_array_of_int32 ary
+      block = allocate_array_of_type type, ary.length
+      block.send "put_array_of_#{type}", 0, ary
       block
+    end
+
+    def self.int32_array_to_inptr ary
+      typed_array_to_inptr :int32, ary
     end
 
     # TODO: Use alias.
@@ -21,35 +25,26 @@ module GirFFI
     end
 
     def self.int16_array_to_inptr ary
-      block = allocate_array_of_type :int16, ary.length
-      block.write_array_of_int16 ary
-      block
+      typed_array_to_inptr :int16, ary
     end
 
     def self.int64_array_to_inptr ary
-      block = allocate_array_of_type :int64, ary.length
-      block.write_array_of_int64 ary
-      block
+      typed_array_to_inptr :int64, ary
     end
 
     def self.int8_array_to_inptr ary
-      block = allocate_array_of_type :int8, ary.length
-      block.write_array_of_int8 ary
-      block
+      typed_array_to_inptr :int8, ary
     end
 
     def self.GType_array_to_inptr ary
       case FFI.type_size(:size_t)
       when 4
-	block = allocate_array_of_type :uint32, ary.length
-	block.write_array_of_uint32 ary
+	int32_array_to_inptr ary
       when 8
-	block = allocate_array_of_type :uint64, ary.length
-	block.write_array_of_uint64 ary
+	int64_array_to_inptr ary
       else
 	raise RuntimeError, "Unexpected size of :size_t"
       end
-      block
     end
 
     def self.cleanup_ptr ptr
