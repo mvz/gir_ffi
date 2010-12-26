@@ -435,6 +435,19 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 2, a
     end
 
+    should "have correct test_callback_destroy_notify" do
+      a = 1
+      r1 = Everything.test_callback_destroy_notify Proc.new {|b|
+	a = 2
+	b
+      }, 42, Proc.new { a = 3 }
+      assert_equal 2, a
+      assert_equal 42, r1
+      r2 = Everything.test_callback_thaw_notifications
+      assert_equal 3, a
+      assert_equal 42, r2
+    end
+
     context "the test_callback_user_data function" do
       should "return the callbacks return value" do
 	result = Everything.test_callback_user_data Proc.new {|u| 5 }, nil
