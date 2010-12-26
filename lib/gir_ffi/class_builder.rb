@@ -141,8 +141,12 @@ module GirFFI
     def layout_specification
       fields = info.fields
 
-      if fields.empty? and parent
-	return [:parent, superclass.const_get(:Struct), 0]
+      if fields.empty?
+	if parent
+	  return [:parent, superclass.const_get(:Struct), 0]
+	else
+	  return [:dummy, :char, 0]
+	end
       end
 
       fields.map do |f|

@@ -14,6 +14,7 @@ class EverythingTest < Test::Unit::TestCase
   context "The generated Everything module" do
     setup do
       GirFFI.setup :Everything
+      GirFFI.setup :GLib
     end
 
     context "the Everything::TestBoxed class" do
@@ -384,7 +385,19 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
     end
 
-    should "have correct test_async_ready_callback"
+    should "have correct test_async_ready_callback" do
+      a = 1
+      main_loop = GLib.main_loop_new nil, false
+
+      Everything.test_async_ready_callback Proc.new {
+	GLib.main_loop_quit main_loop
+	a = 2
+      }
+
+      GLib.main_loop_run main_loop
+
+      assert_equal 2, a
+    end
 
     should "have correct test_boolean" do
       assert_equal false, Everything.test_boolean(false)
