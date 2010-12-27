@@ -679,9 +679,23 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 54_000_000, Everything.test_uint64(54_000_000)
     end
 
-    should "have correct test_utf8_const_in"
-    should "have correct test_utf8_const_return"
-    should "have correct test_utf8_inout"
+    should "have correct test_utf8_const_in" do
+      # TODO: Capture stderr to automatically look for error messages.
+      assert_nothing_raised do
+	Everything.test_utf8_const_in("const \xe2\x99\xa5 utf8")
+      end
+    end
+
+    should "have correct test_utf8_const_return" do
+      result = Everything.test_utf8_const_return
+      assert_equal "const \xe2\x99\xa5 utf8", result
+    end
+
+    should "have correct test_utf8_inout" do
+      result = Everything.test_utf8_inout "const \xe2\x99\xa5 utf8"
+      assert_equal "nonconst \xe2\x99\xa5 utf8", result
+    end
+
     should "have correct test_utf8_nonconst_in"
     should "have correct test_utf8_nonconst_return"
     should "have correct test_utf8_null_in"

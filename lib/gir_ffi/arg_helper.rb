@@ -81,6 +81,14 @@ module GirFFI
       return ptr
     end
 
+    def self.utf8_to_inoutptr str
+      len = str.bytesize
+      sptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
+      ptr = pointer_pointer
+      ptr.write_pointer sptr
+      ptr
+    end
+
     def self.int_array_to_inoutptr ary
       block = int_array_to_inptr ary
       ptr = pointer_pointer
@@ -146,7 +154,19 @@ module GirFFI
       value
     end
 
-    # Converts an outptr to a string array, then frees pointers.
+    # Converts an outptr to a string.
+    def self.outptr_to_utf8 ptr
+      return nil if ptr.nil?
+      sptr = ptr.read_pointer
+
+      if sptr.null?
+	nil
+      else
+	sptr.read_string
+      end
+    end
+
+    # Converts an outptr to a string array.
     def self.outptr_to_utf8_array ptr, size
       return nil if ptr.nil?
       block = ptr.read_pointer
