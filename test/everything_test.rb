@@ -713,8 +713,7 @@ class EverythingTest < Test::Unit::TestCase
       end
     end
 
-    should "have correct test_utf8_null_out"
-    if false #do
+    should "have correct test_utf8_null_out" do
       assert_equal nil, Everything.test_utf8_null_out
     end
 
@@ -723,13 +722,15 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal "nonconst \xe2\x99\xa5 utf8", result
     end
 
-    should "have correct test_utf8_out_nonconst_return"
-    if false #do
+    should "have correct test_utf8_out_nonconst_return" do
       r, out = Everything.test_utf8_out_nonconst_return
       assert_equal ["first", "second"], [r, out]
     end
 
-    should "have correct test_utf8_out_out"
+    should "have correct test_utf8_out_out" do
+      out0, out1 = Everything.test_utf8_out_nonconst_return
+      assert_equal ["first", "second"], [out0, out1]
+    end
 
     should "have correct test_value_return" do
       result = Everything.test_value_return 3423
