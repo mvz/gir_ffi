@@ -238,8 +238,12 @@ class BuilderTest < Test::Unit::TestCase
 	GirFFI::Builder.build_class 'Everything', 'TestBoxed'
       end
 
-      should "set up #_real_new as an alias to #new" do
-	assert Everything::TestBoxed.respond_to? "_real_new"
+      should "set up #wrap" do
+	assert Everything::TestBoxed.respond_to? "wrap"
+      end
+
+      should "set up #allocate" do
+	assert Everything::TestBoxed.respond_to? "allocate"
       end
     end
 

@@ -240,7 +240,7 @@ module GirFFI
 	name = interface.name
 	GirFFI::Builder.build_class namespace, name
 	retval = new_var
-	@rvdata.post << "#{retval} = ::#{namespace}::#{name}._real_new(#{cvar})"
+	@rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
 	if interface.type == :object
 	  @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	end

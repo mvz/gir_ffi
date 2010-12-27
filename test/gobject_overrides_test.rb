@@ -2,7 +2,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi'
 
 class GObjectOverridesTest < Test::Unit::TestCase
-  context "The GObject module with overridden functions" do
+  context "In the GObject module with overridden functions" do
     setup do
       GirFFI.setup :GObject
       GirFFI.setup :Everything
@@ -71,7 +71,7 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	GObject.signal_connect_data o, "test-with-static-scope-arg", callback, nil, nil, 0
 	GObject.signal_emit o, "test-with-static-scope-arg", sb
 
-	sb2 = Everything::TestSimpleBoxedA.new b2
+	sb2 = Everything::TestSimpleBoxedA.wrap b2
 	assert sb.equals(sb2)
       end
     end
@@ -123,12 +123,13 @@ class GObjectOverridesTest < Test::Unit::TestCase
 
 	  o = Everything::TestSubObj.new
 	  sb = Everything::TestSimpleBoxedA.new
+	  sb[:some_int] = 23
 
 	  GObject.signal_connect(o, "test-with-static-scope-arg", 2) { |i, object, d|
 	    @a = d
 	    @b = object
 	  }
-	  GObject.signal_emit o, "test-with-static-scope-arg"
+	  GObject.signal_emit o, "test-with-static-scope-arg", sb
 	end
 
 	should "move the user data argument" do
@@ -137,6 +138,7 @@ class GObjectOverridesTest < Test::Unit::TestCase
 
 	should "pass on the extra arguments" do
 	  assert_instance_of Everything::TestSimpleBoxedA, @b
+	  assert_equal 23, @b[:some_int]
 	end
       end
 

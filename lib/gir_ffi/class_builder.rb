@@ -210,7 +210,7 @@ module GirFFI
       return if info.find_method 'new'
 
       (class << @klass; self; end).class_eval {
-	alias_method :new, :_real_new
+	alias_method :new, :allocate
       }
     end
 

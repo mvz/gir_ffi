@@ -8,8 +8,8 @@ module GirFFI
 
       module ClassMethods
 	def type_from_instance_pointer inst_ptr
-	  base = ::GObject::TypeInstance.new inst_ptr
-	  kls = ::GObject::TypeClass.new(base[:g_class])
+	  base = ::GObject::TypeInstance.wrap inst_ptr
+	  kls = ::GObject::TypeClass.wrap(base[:g_class])
 	  kls[:g_type]
 	end
 
@@ -136,7 +136,7 @@ module GirFFI
 
 	  # Instance
 	  instptr = args.shift
-	  instance = klass.send :_real_new, instptr
+	  instance = klass.wrap instptr
 	  result << instance
 
 	  # Extra arguments
@@ -145,7 +145,7 @@ module GirFFI
 	    if info.type.tag == :interface
 	      iface = info.type.interface
 	      kls = GirFFI::Builder.build_class(iface.namespace, iface.name)
-	      result << kls.send(:_real_new, arg)
+	      result << kls.wrap(arg)
 	    else
 	      result << arg
 	    end
