@@ -584,7 +584,10 @@ class EverythingTest < Test::Unit::TestCase
       assert_nothing_raised { Everything.test_object_null_in nil }
     end
 
-    should "have correct test_object_null_out"
+    should "have correct test_object_null_out" do
+      result = Everything.test_object_null_out
+      assert_equal nil, result
+    end
 
     should "have correct test_short" do
       result = Everything.test_short 23

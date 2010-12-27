@@ -12,6 +12,9 @@ module GirFFI
     def optional?
       Lib.g_arg_info_is_optional @gobj
     end
+    def caller_allocates?
+      Lib.g_arg_info_is_caller_allocates @gobj
+    end
     def may_be_null?
       Lib.g_arg_info_may_be_null @gobj
     end

@@ -87,6 +87,7 @@ module GirFFI
     attach_function :g_arg_info_get_direction, [:pointer], :IDirection
     attach_function :g_arg_info_is_return_value, [:pointer], :bool
     attach_function :g_arg_info_is_optional, [:pointer], :bool
+    attach_function :g_arg_info_is_caller_allocates, [:pointer], :bool
     attach_function :g_arg_info_may_be_null, [:pointer], :bool
     attach_function :g_arg_info_get_ownership_transfer, [:pointer], :ITransfer
     attach_function :g_arg_info_get_scope, [:pointer], :IScopeType

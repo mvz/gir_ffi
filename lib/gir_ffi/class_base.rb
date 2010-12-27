@@ -46,6 +46,15 @@ module GirFFI
 
       alias_method :_real_new, :new
       undef new
+
+      def wrap ptr
+	return nil if ptr.nil? or ptr.null?
+	_real_new ptr
+      end
+
+      def allocate
+	_real_new
+      end
     end
   end
 end

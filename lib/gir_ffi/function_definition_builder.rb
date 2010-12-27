@@ -138,12 +138,14 @@ module GirFFI
       case tag
       when :interface
 	iface = arg.type.interface
-	if iface.type == :struct
-	  data.pre << "#{data.callarg} = #{iface.namespace}::#{iface.name}.new"
+	if arg.caller_allocates?
+	  data.pre << "#{data.callarg} = #{iface.namespace}::#{iface.name}.allocate"
 	  data.post << "#{data.retval} = #{data.callarg}"
 	else
-	  raise NotImplementedError,
-	    "Don't know what to do with interface type #{iface.type}"
+	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_pointer"
+	  tmpvar = new_var
+	  data.post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{data.callarg}"
+	  data.post << "#{data.retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
 	end
       when :array
 	data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_pointer"

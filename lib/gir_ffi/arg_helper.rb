@@ -123,6 +123,11 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(:pointer)
     end
 
+    # Converts an outptr to a pointer.
+    def self.outptr_to_pointer ptr
+      ptr.read_pointer
+    end
+
     # Converts an outptr to an int.
     def self.outptr_to_int ptr
       value = ptr.read_int
