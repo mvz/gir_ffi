@@ -109,4 +109,12 @@ class ArgHelperTest < Test::Unit::TestCase
       end
     end
   end
+
+  context "The pointer_outptr method" do
+    should "return a pointer to a null pointer" do
+      ptr = GirFFI::ArgHelper.pointer_outptr
+      pptr = ptr.read_pointer
+      assert pptr.null?
+    end
+  end
 end

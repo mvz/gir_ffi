@@ -104,8 +104,8 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def test_array_int_null_out
-	  _v1 = GirFFI::ArgHelper.pointer_pointer
-	  _v3 = GirFFI::ArgHelper.int_pointer
+	  _v1 = GirFFI::ArgHelper.pointer_outptr
+	  _v3 = GirFFI::ArgHelper.int_outptr
 	  ::Lib.test_array_int_null_out _v1, _v3
 	  _v4 = GirFFI::ArgHelper.outptr_to_int _v3
 	  GirFFI::ArgHelper.cleanup_ptr _v3

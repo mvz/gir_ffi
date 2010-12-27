@@ -142,13 +142,13 @@ module GirFFI
 	  data.pre << "#{data.callarg} = #{iface.namespace}::#{iface.name}.allocate"
 	  data.post << "#{data.retval} = #{data.callarg}"
 	else
-	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_pointer"
+	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_outptr"
 	  tmpvar = new_var
 	  data.post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{data.callarg}"
 	  data.post << "#{data.retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
 	end
       when :array
-	data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_pointer"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_outptr"
 
 	tag = arg.type.param_type(0).tag
 	size = type.array_fixed_size
@@ -171,7 +171,7 @@ module GirFFI
 	  end
 	end
       else
-	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_pointer"
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_outptr"
 	data.post << "#{data.retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
 	if arg.ownership_transfer == :everything
 	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"

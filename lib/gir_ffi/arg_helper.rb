@@ -123,6 +123,18 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(:pointer)
     end
 
+    def self.int_outptr
+      int_pointer.tap {|p| p.write_int 0}
+    end
+
+    def self.double_outptr
+      double_pointer.tap {|p| p.write_double 0.0}
+    end
+
+    def self.pointer_outptr
+      pointer_pointer.tap {|p| p.write_pointer nil}
+    end
+
     # Converts an outptr to a pointer.
     def self.outptr_to_pointer ptr
       ptr.read_pointer
