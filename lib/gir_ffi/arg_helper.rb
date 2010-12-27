@@ -143,6 +143,10 @@ module GirFFI
       pointer_pointer.tap {|p| p.write_pointer nil}
     end
 
+    def self.utf8_outptr
+      pointer_outptr
+    end
+
     # Converts an outptr to a pointer.
     def self.outptr_to_pointer ptr
       ptr.read_pointer
