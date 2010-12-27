@@ -557,7 +557,13 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 9, len
     end
 
-    should "have correct test_int_value_arg"
+    should "have correct test_int_value_arg" do
+      gv = GObject::Value.new
+      gv.init GObject.type_from_name "gint"
+      gv.set_int 343
+      result = Everything.test_int_value_arg gv
+      assert_equal 343, result
+    end
 
     should "have correct test_long" do
       result = Everything.test_long 2300000000000
@@ -594,12 +600,95 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal 23, result
     end
 
-    should "have correct test_simple_boxed_a_const_return"
-    should "have correct test_simple_callback"
+    should "have correct test_simple_boxed_a_const_return" do
+      result = Everything.test_simple_boxed_a_const_return
+      assert_equal [5, 6, 7.0], [result[:some_int], result[:some_int8], result[:some_double]]
+    end
+
+    should "have correct test_simple_callback" do
+      a = 0
+      Everything.test_simple_callback Proc.new { a = 1 }
+      assert_equal 1, a
+    end
 
     should "have correct test_size" do
       assert_equal 2354, Everything.test_size(2354)
     end
+
+    should "have correct test_ssize"
+    should "have correct test_strv_in"
+    should "have correct test_strv_in_container"
+    should "have correct test_strv_out"
+    should "have correct test_strv_out_c"
+    should "have correct test_strv_out_container"
+    should "have correct test_strv_outarg"
+    should "have correct test_timet"
+
+    should "have correct test_torture_signature_0" do
+      y, z, q = Everything.test_torture_signature_0 86, "foo", 2
+      assert_equal [86, 2*86, 3+2], [y, z, q]
+    end
+
+    context "its #test_torture_signature_1 method" do
+      should "work for m even" do
+	ret, y, z, q = Everything.test_torture_signature_1(-21, "hello", 12)
+	assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
+      end
+
+      should "throw an exception for m odd" do
+	assert_raises RuntimeError do
+	  Everything.test_torture_signature_1(-21, "hello", 11)
+	end
+      end
+    end
+      
+    should "have correct test_torture_signature_2" do
+      a = 1
+      y, z, q = Everything.test_torture_signature_2 244,
+	Proc.new {|u| a = u }, 2, Proc.new { a = 3 },
+	"foofoo", 31
+      assert_equal [244, 2*244, 6+31], [y, z, q]
+      assert_equal 3, a
+    end
+
+    should "have correct test_uint" do
+      assert_equal 31, Everything.test_uint(31)
+    end
+
+    should "have correct test_uint16" do
+      assert_equal 31, Everything.test_uint16(31)
+    end
+
+    should "have correct test_uint32" do
+      assert_equal 540000, Everything.test_uint32(540000)
+    end
+
+    should "have correct test_uint64" do
+      assert_equal 54_000_000_000_000, Everything.test_uint64(54_000_000_000_000)
+    end
+
+    should "have correct test_uint8" do
+      assert_equal 31, Everything.test_uint8(31)
+    end
+
+    should "have correct test_ulong" do
+      assert_equal 54_000_000_000_000, Everything.test_uint64(54_000_000_000_000)
+    end
+
+    should "have correct test_ushort" do
+      assert_equal 54_000_000, Everything.test_uint64(54_000_000)
+    end
+
+    should "have correct test_utf8_const_in"
+    should "have correct test_utf8_const_return"
+    should "have correct test_utf8_inout"
+    should "have correct test_utf8_nonconst_in"
+    should "have correct test_utf8_nonconst_return"
+    should "have correct test_utf8_null_in"
+    should "have correct test_utf8_null_out"
+    should "have correct test_utf8_out"
+    should "have correct test_utf8_out_nonconst_return"
+    should "have correct test_utf8_out_out"
 
     should "have correct test_value_return" do
       result = Everything.test_value_return 3423
