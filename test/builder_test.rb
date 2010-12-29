@@ -3,7 +3,6 @@ require 'gir_ffi'
 
 class BuilderTest < Test::Unit::TestCase
   context "The GirFFI::Builder module" do
-    # TODO: Use gir's sample Everything library for testing instead.
     context "building GObject::Object" do
       setup do
 	cleanup_module :GObject
@@ -102,7 +101,7 @@ class BuilderTest < Test::Unit::TestCase
       setup do
 	@go = get_function_introspection_data 'Gtk', 'main'
       end
-      # TODO: function_introspection_data should not return introspection data if not a function.
+
       should "have correct introspection data" do
 	gir = GirFFI::IRepository.default
 	gir.require "Gtk", nil
@@ -130,8 +129,6 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have :pointer, :pointer as types of the arguments for the attached function" do
-	# FIXME: Ideally, we attach the function and test that it requires
-	# the correct argument types.
 	assert_equal [:pointer, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
       end
 
@@ -247,8 +244,6 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    # TODO: Should not allow functions to be called as methods, etc.
-
     context "built Everything module" do
       setup do
 	cleanup_module :Everything
@@ -271,8 +266,6 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    # TODO: Turn this into full test of instance method creation, including
-    # inheritance issues.
     context "built Everything::TestObj" do
       setup do
 	cleanup_module :Everything

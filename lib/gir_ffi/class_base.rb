@@ -7,7 +7,6 @@ module GirFFI
     def_delegators :@struct, :[], :[]=, :to_ptr
 
     def initialize(*args)
-      # TODO: Handle NULL pointer.
       @struct = ffi_structure.new(*args)
     end
 

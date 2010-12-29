@@ -605,10 +605,21 @@ class EverythingTest < Test::Unit::TestCase
       assert_equal [5, 6, 7.0], [result[:some_int], result[:some_int8], result[:some_double]]
     end
 
-    should "have correct test_simple_callback" do
-      a = 0
-      Everything.test_simple_callback Proc.new { a = 1 }
-      assert_equal 1, a
+    context "the test_simple_callback function" do
+      should "call the passed-in proc" do
+	a = 0
+	Everything.test_simple_callback Proc.new { a = 1 }
+	assert_equal 1, a
+      end
+
+      # XXX: The scope data does not seem to be reliable enough.
+      if false
+      should "not store the proc in CALLBACKS" do
+	n = Everything::Lib::CALLBACKS.length
+	Everything.test_simple_callback Proc.new { }
+	assert_equal n, Everything::Lib::CALLBACKS.length
+      end
+      end
     end
 
     should "have correct test_size" do

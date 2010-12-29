@@ -191,7 +191,6 @@ module GirFFI
       when :interface
 	if type.interface.type == :callback
 	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.mapped_callback_args #{data.inarg}"
-	  # TODO: Use arg.scope to decide if this is needed.
 	  data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
 	else
 	  data.pre << "#{data.callarg} = #{data.inarg}"
