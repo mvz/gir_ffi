@@ -70,6 +70,7 @@ module GirFFI
       unless (class << @lib; self.include? FFI::Library; end)
 	@lib.extend FFI::Library
 	libs = gir.shared_library(@namespace).split(/,/)
+	@lib.ffi_lib_flags :global, :lazy
 	@lib.ffi_lib(*libs)
       end
 
