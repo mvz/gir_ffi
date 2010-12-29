@@ -116,6 +116,13 @@ class GObjectOverridesTest < Test::Unit::TestCase
 	assert_equal true, rv.get_boolean
       end
 
+      should "require a block" do
+	o = Everything::TestSubObj.new
+	assert_raises ArgumentError do
+	  GObject.signal_connect o, "test"
+	end
+      end
+
       context "connecting a signal with extra arguments" do
 	setup do
 	  @a = nil

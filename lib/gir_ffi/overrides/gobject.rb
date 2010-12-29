@@ -72,6 +72,9 @@ module GirFFI
 	  if sig.nil?
 	    raise "Signal #{signal} is invalid for #{object}"
 	  end
+	  if block.nil?
+	    raise ArgumentError, "Block needed"
+	  end
 
 	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
 
