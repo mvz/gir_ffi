@@ -12,7 +12,6 @@ module GirFFI
       return nil if ary.nil?
       block = allocate_array_of_type type, ary.length
       block.send "put_array_of_#{type}", 0, ary
-      block
     end
 
     def self.int32_array_to_inptr ary
@@ -39,8 +38,7 @@ module GirFFI
     def self.utf8_to_inptr str
       return nil if str.nil?
       len = str.bytesize
-      sptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-      sptr
+      AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
     end
 
     def self.GType_array_to_inptr ary
@@ -64,7 +62,7 @@ module GirFFI
       LibC.free block
     end
 
-    # Converts an outptr to a string array, then frees pointers.
+    # Takes an outptr to a pointer array, and frees all pointers.
     def self.cleanup_ptr_array_ptr ptr, size
       return if ptr.nil?
 
@@ -81,49 +79,33 @@ module GirFFI
       end
     end
 
-
     def self.int_to_inoutptr val
-      ptr = int_pointer
-      ptr.write_int val
-      return ptr
+      int_pointer.write_int val
     end
 
     def self.utf8_to_inoutptr str
-      len = str.bytesize
-      sptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-      ptr = pointer_pointer
-      ptr.write_pointer sptr
-      ptr
+      sptr = utf8_to_inptr str
+      pointer_pointer.write_pointer sptr
     end
 
     def self.int_array_to_inoutptr ary
       block = int_array_to_inptr ary
-      ptr = pointer_pointer
-      ptr.write_pointer block
-      ptr
+      pointer_pointer.write_pointer block
     end
 
     def self.utf8_array_to_inoutptr ary
       return nil if ary.nil?
 
-      ptrs = ary.map {|str|
-	len = str.bytesize
-	AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-      }
+      ptrs = ary.map {|str| utf8_to_inptr str}
 
-      ptr_size = FFI.type_size(:pointer)
-      block = AllocationHelper.safe_malloc ptr_size * ptrs.length
+      block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
       block.write_array_of_pointer ptrs
 
-      argv = AllocationHelper.safe_malloc ptr_size
-      argv.write_pointer block
-      argv
+      pointer_pointer.write_pointer block
     end
 
     def self.double_to_inoutptr val
-      ptr = double_pointer
-      ptr.put_double 0, val
-      return ptr
+      double_pointer.put_double 0, val
     end
 
     def self.int_pointer
@@ -139,15 +121,15 @@ module GirFFI
     end
 
     def self.int_outptr
-      int_pointer.tap {|p| p.write_int 0}
+      int_pointer.write_int 0
     end
 
     def self.double_outptr
-      double_pointer.tap {|p| p.write_double 0.0}
+      double_pointer.write_double 0.0
     end
 
     def self.pointer_outptr
-      pointer_pointer.tap {|p| p.write_pointer nil}
+      pointer_pointer.write_pointer nil
     end
 
     def self.utf8_outptr
@@ -161,8 +143,7 @@ module GirFFI
 
     # Converts an outptr to an int.
     def self.outptr_to_int ptr
-      value = ptr.read_int
-      value
+      ptr.read_int
     end
 
     # Converts an outptr to a string.
@@ -170,11 +151,7 @@ module GirFFI
       return nil if ptr.nil?
       sptr = ptr.read_pointer
 
-      if sptr.null?
-	nil
-      else
-	sptr.read_string
-      end
+      sptr.null? ? nil : sptr.read_string
     end
 
     # Converts an outptr to a string array.
@@ -185,18 +162,13 @@ module GirFFI
       ptrs = block.read_array_of_pointer(size)
 
       ptrs.map do |p|
-	if p.null?
-	  nil
-	else
-	  p.read_string
-	end
+	p.null? ? nil : p.read_string
       end
     end
 
     # Converts an outptr to a double.
     def self.outptr_to_double ptr
-      value = ptr.get_double 0
-      value
+      ptr.get_double 0
     end
 
     # Converts an outptr to an array of int.
@@ -208,8 +180,7 @@ module GirFFI
     end
 
     def self.ptr_to_int_array ptr, size
-      ints = ptr.read_array_of_int(size)
-      ints
+      ptr.read_array_of_int(size)
     end
 
     def self.mapped_callback_args prc=nil, &block
