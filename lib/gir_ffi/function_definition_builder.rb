@@ -189,8 +189,9 @@ module GirFFI
 
       case tag
       when :interface
-	if type.interface.type == :callback
-	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.mapped_callback_args #{data.inarg}"
+	iface = type.interface
+	if iface.type == :callback
+	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper #{data.inarg}"
 	  data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
 	else
 	  data.pre << "#{data.callarg} = #{data.inarg}"

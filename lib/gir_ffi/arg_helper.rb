@@ -183,25 +183,30 @@ module GirFFI
       ptr.read_array_of_int(size)
     end
 
-    def self.mapped_callback_args prc=nil, &block
+    def self.wrap_in_callback_args_mapper prc=nil, &block
       return prc if FFI::Function === prc
       if prc.nil?
 	return nil if block.nil?
 	prc = block
       end
       return Proc.new do |*args|
-	mapped = args.map {|arg|
-	  if FFI::Pointer === arg
-	    begin
-	      ObjectSpace._id2ref arg.address
-	    rescue RangeError
-	      arg
-	    end
-	  else
-	    arg
-	  end
-	}
-	prc.call(*mapped)
+	prc.call *map_callback_args(args)
+      end
+    end
+
+    def self.map_callback_args args
+      args.map { |arg| map_single_callback_arg arg }
+    end
+
+    def self.map_single_callback_arg arg
+      if FFI::Pointer === arg
+	begin
+	  ObjectSpace._id2ref arg.address
+	rescue RangeError
+	  arg
+	end
+      else
+	arg
       end
     end
 
@@ -229,10 +234,13 @@ module GirFFI
     # FIXME: Quasi-circular dependency on generated module
     def self.object_pointer_to_object optr
       tp = ::GObject.type_from_instance_pointer optr
-      gir = GirFFI::IRepository.default
       info = gir.find_by_gtype tp
       klass = GirFFI::Builder.build_class info.namespace, info.name
       klass.wrap optr
+    end
+
+    def self.gir
+      gir = GirFFI::IRepository.default
     end
   end
 end
