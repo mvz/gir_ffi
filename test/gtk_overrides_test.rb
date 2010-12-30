@@ -10,6 +10,7 @@ class GtkOverridesTest < Test::Unit::TestCase
 
     should "not take any arguments" do
       assert_raises(ArgumentError) { Gtk.init 1, ["foo"] }
+      assert_raises(ArgumentError) { Gtk.init ["foo"] }
       assert_nothing_raised { Gtk.init }
     end
 
