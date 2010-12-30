@@ -31,7 +31,8 @@ module GirFFI
 
     def self.ffi_function_argument_types info
       types = info.args.map do |a|
-	iarginfo_to_ffitype a
+	tp = iarginfo_to_ffitype a
+	tp == :string ? :pointer : tp
       end
       if info.type == :function
 	types.unshift :pointer if info.method?

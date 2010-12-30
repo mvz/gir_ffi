@@ -157,7 +157,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "have the correct types of the arguments for the attached function" do
 	argtypes = GirFFI::Builder.send(:ffi_function_argument_types, @go)
-	assert_equal [:pointer, :string, GObject::Callback, :pointer, GObject::ClosureNotify, GObject::ConnectFlags],
+	assert_equal [:pointer, :pointer, GObject::Callback, :pointer, GObject::ClosureNotify, GObject::ConnectFlags],
 	  argtypes
       end
 
@@ -304,7 +304,7 @@ class BuilderTest < Test::Unit::TestCase
 	should "have the correct types of the arguments for the attached function" do
 	  info = get_method_introspection_data 'Everything', 'TestObj',
 	    'torture_signature_0'
-	  assert_equal [:pointer, :int, :pointer, :pointer, :string, :pointer, :uint],
+	  assert_equal [:pointer, :int, :pointer, :pointer, :pointer, :pointer, :uint],
 	    GirFFI::Builder.send(:ffi_function_argument_types, info)
 	end
       end

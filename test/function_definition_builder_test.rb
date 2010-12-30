@@ -47,7 +47,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
       expected =
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
-	  _v2 = detailed_signal
+	  _v2 = GirFFI::ArgHelper.utf8_to_inptr detailed_signal
 	  _v3 = GirFFI::ArgHelper.mapped_callback_args c_handler
 	  ::Lib::CALLBACKS << _v3
 	  _v4 = GirFFI::ArgHelper.object_to_inptr data
@@ -68,7 +68,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
       expected =
 	"def new_from_file x
-	  _v1 = x
+	  _v1 = GirFFI::ArgHelper.utf8_to_inptr x
 	  _v4 = FFI::MemoryPointer.new(:pointer).write_pointer nil
 	  _v2 = ::Lib.test_obj_new_from_file _v1, _v4
 	  GirFFI::ArgHelper.check_error(_v4)
@@ -112,6 +112,20 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	  _v2 = GirFFI::ArgHelper.outptr_to_int_array _v1, _v4
 	  GirFFI::ArgHelper.cleanup_ptr_ptr _v1
 	  return _v2
+	end"
+
+      assert_equal cws(expected), cws(code)
+    end
+
+    should "build correct definition of Everything:test_utf8_nonconst_in" do
+      go = get_function_introspection_data 'Everything', 'test_utf8_nonconst_in'
+      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      code = fbuilder.generate
+
+      expected =
+	"def test_utf8_nonconst_in in_
+	  _v1 = GirFFI::ArgHelper.utf8_to_inptr in_
+	  ::Lib.test_utf8_nonconst_in _v1
 	end"
 
       assert_equal cws(expected), cws(code)

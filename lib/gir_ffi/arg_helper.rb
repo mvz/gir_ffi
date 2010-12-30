@@ -36,6 +36,13 @@ module GirFFI
       typed_array_to_inptr :int8, ary
     end
 
+    def self.utf8_to_inptr str
+      return nil if str.nil?
+      len = str.bytesize
+      sptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
+      sptr
+    end
+
     def self.GType_array_to_inptr ary
       case FFI.type_size(:size_t)
       when 4

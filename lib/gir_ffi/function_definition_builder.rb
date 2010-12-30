@@ -217,6 +217,10 @@ module GirFFI
 	    data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
 	  end
 	end
+      when :utf8
+	data.pre << "#{data.callarg} = GirFFI::ArgHelper.utf8_to_inptr #{data.name}"
+	# TODO:
+	#data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
       else
 	data.pre << "#{data.callarg} = #{data.name}"
       end
