@@ -36,6 +36,9 @@ class GtkTest < Test::Unit::TestCase
 	  @builder.connect_signals_full Proc.new {|*args| aa = args}, nil
 	  b, o, sn, hn, co, f, ud = aa
 	  assert_instance_of Gtk::Builder, b
+	  assert_equal b.to_ptr, @builder.to_ptr
+	  assert_instance_of Gtk::Button, o
+	  assert_equal "clicked", sn
 	end
       end
     end

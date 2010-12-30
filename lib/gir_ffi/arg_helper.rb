@@ -183,6 +183,10 @@ module GirFFI
       ptr.read_array_of_int(size)
     end
 
+    def self.ptr_to_utf8 ptr
+      ptr.null? ? nil : ptr.read_string
+    end
+
     def self.wrap_in_callback_args_mapper namespace, name, prc=nil, &block
       return prc if FFI::Function === prc
       if prc.nil?
@@ -210,6 +214,8 @@ module GirFFI
 	if iface.type == :object
 	  return object_pointer_to_object arg
 	end
+      when :utf8
+	return ptr_to_utf8 arg
       end
 
       if FFI::Pointer === arg
