@@ -183,7 +183,7 @@ module GirFFI
       ptr.read_array_of_int(size)
     end
 
-    def self.wrap_in_callback_args_mapper prc=nil, &block
+    def self.wrap_in_callback_args_mapper namespace, name, prc=nil, &block
       return prc if FFI::Function === prc
       if prc.nil?
 	return nil if block.nil?

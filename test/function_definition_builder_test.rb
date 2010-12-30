@@ -48,10 +48,10 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	"def signal_connect_data instance, detailed_signal, c_handler, data, destroy_data, connect_flags
 	  _v1 = GirFFI::ArgHelper.object_to_inptr instance
 	  _v2 = GirFFI::ArgHelper.utf8_to_inptr detailed_signal
-	  _v3 = GirFFI::ArgHelper.wrap_in_callback_args_mapper c_handler
+	  _v3 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"GObject\", \"Callback\", c_handler
 	  ::Lib::CALLBACKS << _v3
 	  _v4 = GirFFI::ArgHelper.object_to_inptr data
-	  _v5 = GirFFI::ArgHelper.wrap_in_callback_args_mapper destroy_data
+	  _v5 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"GObject\", \"ClosureNotify\", destroy_data
 	  ::Lib::CALLBACKS << _v5
 	  _v6 = connect_flags
 	  _v7 = ::Lib.g_signal_connect_data _v1, _v2, _v3, _v4, _v5, _v6

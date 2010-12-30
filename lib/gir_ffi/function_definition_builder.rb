@@ -191,7 +191,7 @@ module GirFFI
       when :interface
 	iface = type.interface
 	if iface.type == :callback
-	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper #{data.inarg}"
+	  data.pre << "#{data.callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{data.inarg}"
 	  data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
 	else
 	  data.pre << "#{data.callarg} = #{data.inarg}"
