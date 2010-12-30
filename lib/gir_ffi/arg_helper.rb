@@ -189,16 +189,29 @@ module GirFFI
 	return nil if block.nil?
 	prc = block
       end
+      info = gir.find_by_name namespace, name
       return Proc.new do |*args|
-	prc.call *map_callback_args(args)
+	prc.call *map_callback_args(args, info)
       end
     end
 
-    def self.map_callback_args args
-      args.map { |arg| map_single_callback_arg arg }
+    def self.map_callback_args args, info
+      args.zip(info.args).map { |arg, inf|
+	map_single_callback_arg arg, inf }
     end
 
-    def self.map_single_callback_arg arg
+    def self.map_single_callback_arg arg, info
+      type = info.type
+      tag = type.tag
+
+      case tag
+      when :interface
+	iface = type.interface
+	if iface.type == :object
+	  return object_pointer_to_object arg
+	end
+      end
+
       if FFI::Pointer === arg
 	begin
 	  ObjectSpace._id2ref arg.address
@@ -233,6 +246,7 @@ module GirFFI
 
     # FIXME: Quasi-circular dependency on generated module
     def self.object_pointer_to_object optr
+      return nil if optr.null?
       tp = ::GObject.type_from_instance_pointer optr
       info = gir.find_by_gtype tp
       klass = GirFFI::Builder.build_class info.namespace, info.name

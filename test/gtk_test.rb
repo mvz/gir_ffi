@@ -27,6 +27,17 @@ class GtkTest < Test::Unit::TestCase
 	  assert_instance_of Gtk::Button, o
 	end
       end
+      context "its #connect_signals_full method" do
+	setup do
+	  @builder.add_from_string @spec, @spec.length
+	end
+	should "pass arguments correctly" do
+	  aa = nil
+	  @builder.connect_signals_full Proc.new {|*args| aa = args}, nil
+	  b, o, sn, hn, co, f, ud = aa
+	  assert_instance_of Gtk::Builder, b
+	end
+      end
     end
   end
 end
