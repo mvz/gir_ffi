@@ -117,4 +117,14 @@ class ArgHelperTest < Test::Unit::TestCase
       assert pptr.null?
     end
   end
+
+  context "The object_pointer_to_object method" do
+    should "return an object of the correct class" do
+      GirFFI.setup :Everything
+      o = Everything::TestSubObj.new
+      o2 = GirFFI::ArgHelper.object_pointer_to_object o.to_ptr
+      assert_instance_of Everything::TestSubObj, o2
+      assert_equal o.to_ptr, o2.to_ptr
+    end
+  end
 end

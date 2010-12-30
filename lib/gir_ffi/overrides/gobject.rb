@@ -7,6 +7,7 @@ module GirFFI
       end
 
       module ClassMethods
+	# FIXME: These four helper methods belong elsewhere.
 	def type_from_instance_pointer inst_ptr
 	  base = ::GObject::TypeInstance.wrap inst_ptr
 	  kls = ::GObject::TypeClass.wrap(base[:g_class])

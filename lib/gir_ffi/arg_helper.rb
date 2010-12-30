@@ -247,5 +247,14 @@ module GirFFI
     def self.allocate_array_of_type type, length
       AllocationHelper.safe_malloc FFI.type_size(type) * length
     end
+
+    # FIXME: Quasi-circular dependency on generated module
+    def self.object_pointer_to_object optr
+      tp = ::GObject.type_from_instance_pointer optr
+      gir = GirFFI::IRepository.default
+      info = gir.find_by_gtype tp
+      klass = GirFFI::Builder.build_class info.namespace, info.name
+      klass.wrap optr
+    end
   end
 end
