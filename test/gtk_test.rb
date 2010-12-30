@@ -27,6 +27,7 @@ class GtkTest < Test::Unit::TestCase
 	  assert_instance_of Gtk::Button, o
 	end
       end
+
       context "its #connect_signals_full method" do
 	setup do
 	  @builder.add_from_string @spec, @spec.length
@@ -39,6 +40,10 @@ class GtkTest < Test::Unit::TestCase
 	  assert_equal b.to_ptr, @builder.to_ptr
 	  assert_instance_of Gtk::Button, o
 	  assert_equal "clicked", sn
+	  assert_equal "on_button_clicked", hn
+	  assert_equal nil, co
+	  assert_equal :after, f
+	  assert_equal nil, ud
 	end
       end
     end

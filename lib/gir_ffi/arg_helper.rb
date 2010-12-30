@@ -219,6 +219,7 @@ module GirFFI
       end
 
       if FFI::Pointer === arg
+	return nil if arg.null?
 	begin
 	  ObjectSpace._id2ref arg.address
 	rescue RangeError
