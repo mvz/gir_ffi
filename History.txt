@@ -1,3 +1,12 @@
+== 0.0.5 / 2010-12-30
+
+* Don't create instance methods out of functions and vice versa.
+* Find signals on interfaces, too.
+* Implement tests for most of Everything.
+* Correctly handle array + size arguments.
+* Handle most other argument types.
+* Various internal changes and other fixes.
+
 == 0.0.4 / 2010-12-14
 
 * Lots of changes to the internals.
