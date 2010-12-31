@@ -57,14 +57,14 @@ module GirFFI
     def build_class
       unless defined? @klass
 	case info.type
-	  when :object, :struct
-	    instantiate_struct_class
-	  when :union
-	    instantiate_union_class
-	  when :enum, :flags
-	    instantiate_enum_class
-	  else
-	    raise NotImplementedError, "Cannot build classes of type #{info.type}"
+	when :object, :struct, :interface
+	  instantiate_struct_class
+	when :union
+	  instantiate_union_class
+	when :enum, :flags
+	  instantiate_enum_class
+	else
+	  raise NotImplementedError, "Cannot build classes of type #{info.type}"
 	end
       end
       @klass
@@ -139,7 +139,11 @@ module GirFFI
     end
 
     def layout_specification
-      fields = info.fields
+      fields = if info.type == :interface
+		 []
+	       else
+		 info.fields
+	       end
 
       if fields.empty?
 	if parent

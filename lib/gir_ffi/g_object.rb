@@ -1,6 +1,7 @@
 require 'ffi'
 
 module GirFFI
+  # TODO: Rename to avoid constant lookup issues (and confusion).
   module GObject
     def self.type_init
       Lib::g_type_init

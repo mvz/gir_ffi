@@ -242,18 +242,27 @@ module GirFFI
 	interface = type.interface
 	namespace = interface.namespace
 	name = interface.name
-	GirFFI::Builder.build_class namespace, name
 	retval = new_var
-	if interface.type == :object
+
+	case interface.type
+	when :interface
+	  GirFFI::Builder.build_class namespace, name
+	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+	when :object
 	  if @info.constructor?
+	    GirFFI::Builder.build_class namespace, name
 	    @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
 	    @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
 	  else
 	    @rvdata.post << "#{retval} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})"
 	  end
-	else
+	when :struct
+	  GirFFI::Builder.build_class namespace, name
 	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+	else
+	  raise NotImplementedError
 	end
+
 	@rvdata.retval = retval
       when :array
 	tag = type.param_type(0).tag
@@ -277,6 +286,7 @@ module GirFFI
 
     def adjust_accumulators
       @retvals << @rvdata.retval
+
       @data.each do |data|
 	@inargs << data.inarg
 	@callargs << data.callarg
@@ -284,9 +294,11 @@ module GirFFI
 	@pre += data.pre
 	@post += data.post
       end
+
       @data.each do |data|
 	@post += data.postpost
       end
+
       @post += @rvdata.post
 
       if @info.throws?
