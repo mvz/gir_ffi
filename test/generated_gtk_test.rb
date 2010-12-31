@@ -2,7 +2,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi'
 
 # Tests generated methods and functions in the Gtk namespace.
-class GtkTest < Test::Unit::TestCase
+class GeneratedGtkTest < Test::Unit::TestCase
   context "In the generated Gtk module" do
     context "a Gtk::Builder instance" do
       setup do
