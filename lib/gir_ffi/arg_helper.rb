@@ -259,6 +259,12 @@ module GirFFI
       return nil if optr.null?
       tp = ::GObject.type_from_instance_pointer optr
       info = gir.find_by_gtype tp
+
+      if info.nil?
+	tpname = ::GObject.type_name tp
+	raise RuntimeError, "Unable to find info for type '#{tpname}' (#{tp})"
+      end
+
       klass = GirFFI::Builder.build_class info.namespace, info.name
       klass.wrap optr
     end
