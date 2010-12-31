@@ -212,18 +212,21 @@ module GirFFI
       when :interface
 	iface = type.interface
 	if iface.type == :object
-	  return object_pointer_to_object arg
+	  object_pointer_to_object arg
+	else
+	  arg
 	end
       when :utf8
-	return ptr_to_utf8 arg
-      end
-
-      if FFI::Pointer === arg
-	return nil if arg.null?
-	begin
-	  ObjectSpace._id2ref arg.address
-	rescue RangeError
-	  arg
+	ptr_to_utf8 arg
+      when :void
+	if arg.null?
+	  nil
+	else
+	  begin
+	    ObjectSpace._id2ref arg.address
+	  rescue RangeError
+	    arg
+	  end
 	end
       else
 	arg
