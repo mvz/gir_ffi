@@ -260,7 +260,7 @@ module GirFFI
 	  GirFFI::Builder.build_class namespace, name
 	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
 	else
-	  raise NotImplementedError
+	  @rvdata.post << "#{retval} = #{cvar}"
 	end
 
 	@rvdata.retval = retval
