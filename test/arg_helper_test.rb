@@ -6,7 +6,7 @@ class ArgHelperTest < Test::Unit::TestCase
       @result = GirFFI::ArgHelper.int_to_inoutptr 24
     end
 
-    should "be a FFI::Pointer" do
+    should "be an FFI::Pointer" do
       assert_instance_of FFI::Pointer, @result
     end
 
@@ -21,7 +21,7 @@ class ArgHelperTest < Test::Unit::TestCase
 	@result = GirFFI::ArgHelper.utf8_array_to_inoutptr ["foo", "bar", "baz"]
       end
 
-      should "return a FFI::Pointer" do
+      should "return an FFI::Pointer" do
 	assert_instance_of FFI::Pointer, @result
       end
 
@@ -80,7 +80,7 @@ class ArgHelperTest < Test::Unit::TestCase
 	@ptr.write_pointer p
       end
 
-      should "return render the null pointer as nil" do
+      should "render the null pointer as nil" do
 	assert_equal ["one", "two", nil],
 	  GirFFI::ArgHelper.outptr_to_utf8_array(@ptr, 3)
       end
