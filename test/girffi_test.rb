@@ -1,5 +1,4 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'gir_ffi'
 
 class GirFFITest < Test::Unit::TestCase
   context "GirFFI" do

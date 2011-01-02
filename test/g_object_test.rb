@@ -1,5 +1,4 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'gir_ffi/g_object'
 
 class GObjectTest < Test::Unit::TestCase
   context "The GirFFI::GObject helper module" do

@@ -1,5 +1,4 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'gir_ffi/arg_helper'
 
 class ArgHelperTest < Test::Unit::TestCase
   context "The int_to_inoutptr method's return value" do

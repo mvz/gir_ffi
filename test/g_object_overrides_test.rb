@@ -1,5 +1,4 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
-require 'gir_ffi'
 
 class GObjectOverridesTest < Test::Unit::TestCase
   context "In the GObject module with overridden functions" do
