@@ -7,20 +7,20 @@ module GirFFI
       Lib::g_type_init
     end
 
-    def self.object_ref o
-      Lib::g_object_ref o.to_ptr
+    def self.object_ref obj
+      Lib::g_object_ref obj.to_ptr
     end
 
-    def self.object_ref_sink o
-      Lib::g_object_ref_sink o.to_ptr
+    def self.object_ref_sink obj
+      Lib::g_object_ref_sink obj.to_ptr
     end
 
-    def self.object_unref o
-      Lib::g_object_unref o.to_ptr
+    def self.object_unref obj
+      Lib::g_object_unref obj.to_ptr
     end
 
-    def self.object_is_floating o
-      Lib::g_object_is_floating o.to_ptr
+    def self.object_is_floating obj
+      Lib::g_object_is_floating obj.to_ptr
     end
 
     module Lib
