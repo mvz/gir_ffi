@@ -285,55 +285,69 @@ module GirFFI
       @rvdata = ArgData.new
       type = @info.return_type
       tag = type.tag
+
       return if tag == :void
+
       cvar = new_var
       @capture = "#{cvar} = "
 
       case tag
       when :interface
-	interface = type.interface
-	namespace = interface.namespace
-	name = interface.name
-	retval = new_var
-
-	case interface.type
-	when :interface
-	  GirFFI::Builder.build_class namespace, name
-	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-	when :object
-	  if @info.constructor?
-	    GirFFI::Builder.build_class namespace, name
-	    @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-	    @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
-	  else
-	    @rvdata.post << "#{retval} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})"
-	  end
-	when :struct
-	  GirFFI::Builder.build_class namespace, name
-	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-	else
-	  @rvdata.post << "#{retval} = #{cvar}"
-	end
-
-	@rvdata.retval = retval
+	process_interface_return_value type, cvar
       when :array
-	tag = type.param_type(0).tag
-	size = type.array_fixed_size
-	idx = type.array_length
-
-	retval = new_var
-	if size > 0
-	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
-	elsif idx > -1
-	  lendata = @data[idx]
-	  rv = lendata.retval
-	  lendata.retval = nil
-	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{rv}"
-	end
-	@rvdata.retval = retval
+	process_array_return_value type, cvar
       else
-	@rvdata.retval = cvar
+	process_other_return_value cvar
       end
+    end
+
+    def process_interface_return_value type, cvar
+      interface = type.interface
+      namespace = interface.namespace
+      name = interface.name
+      retval = new_var
+
+      case interface.type
+      when :interface
+	GirFFI::Builder.build_class namespace, name
+	@rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+      when :object
+	if @info.constructor?
+	  GirFFI::Builder.build_class namespace, name
+	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+	  @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
+	else
+	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})"
+	end
+      when :struct
+	GirFFI::Builder.build_class namespace, name
+	@rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+      else
+	@rvdata.post << "#{retval} = #{cvar}"
+      end
+
+      @rvdata.retval = retval
+    end
+
+    def process_array_return_value type, cvar
+      tag = type.param_type(0).tag
+      size = type.array_fixed_size
+      idx = type.array_length
+
+      retval = new_var
+      if size > 0
+	@rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
+      elsif idx > -1
+	lendata = @data[idx]
+	rv = lendata.retval
+	lendata.retval = nil
+	@rvdata.post << "#{retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{rv}"
+      end
+      @rvdata.retval = retval
+    end
+
+    def process_other_return_value cvar
+      @rvdata.retval = cvar
     end
 
     def adjust_accumulators
