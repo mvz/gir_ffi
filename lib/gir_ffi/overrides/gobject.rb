@@ -24,6 +24,8 @@ module GirFFI
 	  when true, false
 	    gvalue.init ::GObject.type_from_name("gboolean")
 	    gvalue.set_boolean val
+	  else
+	    nil
 	  end
 	  gvalue
 	end
@@ -90,37 +92,38 @@ module GirFFI
 	  arr.append val
 	  val.unset
 
-	  sig.args.zip(rest).each do |a|
-	    info, arg = *a
-	    if info.type.tag == :interface
-	      interface = info.type.interface
-
-	      val = ::GObject::Value.new
-	      val.init info.type.interface.g_type
-	      case interface.type
-	      when :struct
-		val.set_boxed arg
-	      when :object
-		val.set_instance arg
-	      else
-		raise NotImplementedError, interface.type
-	      end
-
-	      arr.append val
-
-	      val.unset
-
-	    else
-	      raise NotImplementedError
-	    end
+	  sig.args.zip(rest).each do |info, arg|
+	    arr.append signal_argument_to_gvalue info, arg
 	  end
 
 	  arr
+	end
+	
+	def self.signal_argument_to_gvalue info, arg
+	  if info.type.tag == :interface
+	    interface = info.type.interface
+
+	    val = ::GObject::Value.new
+	    val.init info.type.interface.g_type
+	    case interface.type
+	    when :struct
+	      val.set_boxed arg
+	    when :object
+	      val.set_instance arg
+	    else
+	      raise NotImplementedError, interface.type
+	    end
+
+	    return val
+	  else
+	    raise NotImplementedError
+	  end
 	end
 
 	def self.gvalue_for_signal_return_value signal, object
 	  type = ::GObject.type_from_instance object
 
+	  # TODO: Use same signal info as signal_arguments_to_gvalue_array
 	  id = ::GObject.signal_lookup signal, type
 
 	  q = ::GObject::SignalQuery.new

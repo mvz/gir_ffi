@@ -45,13 +45,6 @@ module GirFFI
     private
 
     def setup_accumulators
-      @inargs = []
-      @callargs = []
-      @retvals = []
-
-      @pre = []
-      @post = []
-
       @data = []
 
       @capture = ""
@@ -351,21 +344,11 @@ module GirFFI
     end
 
     def adjust_accumulators
-      @retvals << @rvdata.retval
-
-      @data.each do |data|
-	@inargs << data.inarg
-	@callargs << data.callarg
-	@retvals << data.retval
-	@pre += data.pre
-	@post += data.post
-      end
-
-      @data.each do |data|
-	@post += data.postpost
-      end
-
-      @post += @rvdata.post
+      @retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
+      @callargs = @data.map(&:callarg).compact
+      @inargs = @data.map(&:inarg).compact
+      @pre = @data.map(&:pre).flatten
+      @post = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post).flatten
 
       if @info.throws?
 	errvar = new_var
@@ -374,8 +357,7 @@ module GirFFI
 	@callargs << errvar
       end
 
-      @retvals = @retvals.compact
-      @post << "return #{@retvals.compact.join(', ')}" unless @retvals.empty?
+      @post << "return #{@retvals.join(', ')}" unless @retvals.empty?
 
       if @info.method?
 	@callargs.unshift "self"
@@ -384,9 +366,9 @@ module GirFFI
 
     def filled_out_template
       return <<-CODE
-	def #{@info.name} #{@inargs.compact.join(', ')}
+	def #{@info.name} #{@inargs.join(', ')}
 	  #{@pre.join("\n")}
-	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.compact.join(', ')}
+	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
 	  #{@post.join("\n")}
 	end
       CODE
