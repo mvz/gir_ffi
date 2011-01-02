@@ -148,9 +148,7 @@ module GirFFI
 
     # Converts an outptr to a string.
     def self.outptr_to_utf8 ptr
-      sptr = ptr.read_pointer
-
-      sptr.null? ? nil : sptr.read_string
+      ptr_to_utf8 ptr.read_pointer
     end
 
     # Converts an outptr to a string array.
@@ -159,9 +157,7 @@ module GirFFI
       return nil if block.null?
       ptrs = block.read_array_of_pointer(size)
 
-      ptrs.map do |p|
-	p.null? ? nil : p.read_string
-      end
+      ptrs.map { |p| ptr_to_utf8 p }
     end
 
     # Converts an outptr to a double.
@@ -171,7 +167,6 @@ module GirFFI
 
     # Converts an outptr to an array of int.
     def self.outptr_to_int_array ptr, size
-      return nil if ptr.null?
       block = ptr.read_pointer
       return nil if block.null?
       ptr_to_int_array block, size
@@ -185,12 +180,8 @@ module GirFFI
       ptr.null? ? nil : ptr.read_string
     end
 
-    def self.wrap_in_callback_args_mapper namespace, name, prc=nil, &block
+    def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
-      if prc.nil?
-	return nil if block.nil?
-	prc = block
-      end
       info = gir.find_by_name namespace, name
       return Proc.new do |*args|
 	prc.call *map_callback_args(args, info)
