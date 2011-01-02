@@ -41,31 +41,14 @@ module GirFFI
 
 	def signal_emit object, signal, *args
 	  type = type_from_instance object
-
 	  id = signal_lookup signal, type
 
-	  val = ::GObject::Value.new
-	  val.init type
-	  val.set_instance object
-
-	  q = ::GObject::SignalQuery.new
-	  signal_query id, q
-
-	  use_ret = (q[:return_type] != ::GObject.type_from_name("void"))
-	  if use_ret
-	    rval = ::GObject::Value.new
-	    rval.init q[:return_type]
-	  end
-
 	  arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
+	  rval = Helper.gvalue_for_signal_return_value signal, object
 
 	  signal_emitv arr[:values], id, 0, rval
 
-	  if use_ret
-	    rval
-	  else
-	    nil
-	  end
+	  rval
 	end
 
 	def signal_connect object, signal, data=nil, &block
@@ -133,6 +116,22 @@ module GirFFI
 	  end
 
 	  arr
+	end
+
+	def self.gvalue_for_signal_return_value signal, object
+	  type = ::GObject.type_from_instance object
+
+	  id = ::GObject.signal_lookup signal, type
+
+	  q = ::GObject::SignalQuery.new
+	  ::GObject.signal_query id, q
+
+	  use_ret = (q[:return_type] != ::GObject.type_from_name("void"))
+	  if use_ret
+	    rval = ::GObject::Value.new
+	    rval.init q[:return_type]
+	  end
+	  rval
 	end
 
 	def self.cast_back_signal_arguments signalinfo, klass, *args
