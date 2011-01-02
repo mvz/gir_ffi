@@ -41,7 +41,7 @@ module GirFFI
       AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
     end
 
-    def self.GType_array_to_inptr ary
+    def self.gtype_array_to_inptr ary
       case FFI.type_size(:size_t)
       when 4
 	int32_array_to_inptr ary

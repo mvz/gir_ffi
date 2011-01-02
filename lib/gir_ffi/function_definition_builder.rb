@@ -253,7 +253,7 @@ module GirFFI
 	@data[idx].pre.unshift "#{lenvar} = #{data.inarg}.nil? ? 0 : #{data.inarg}.length"
       end
 
-      tag = arg.type.param_type(0).tag
+      tag = arg.type.param_type(0).tag.to_s.downcase
       data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{data.inarg}"
       unless arg.ownership_transfer == :everything
 	if tag == :utf8
