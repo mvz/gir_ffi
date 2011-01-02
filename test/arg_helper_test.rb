@@ -86,9 +86,10 @@ class ArgHelperTest < Test::Unit::TestCase
       end
     end
 
-    context "when called with nil" do
+    context "when called with a pointer to null" do
       should "return nil" do
-	assert_nil GirFFI::ArgHelper.outptr_to_utf8_array(nil, 0)
+	ptr = GirFFI::ArgHelper.pointer_pointer.write_pointer nil
+	assert_nil GirFFI::ArgHelper.outptr_to_utf8_array(ptr, 0)
       end
     end
   end

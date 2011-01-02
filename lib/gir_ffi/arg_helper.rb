@@ -148,7 +148,6 @@ module GirFFI
 
     # Converts an outptr to a string.
     def self.outptr_to_utf8 ptr
-      return nil if ptr.nil?
       sptr = ptr.read_pointer
 
       sptr.null? ? nil : sptr.read_string
@@ -156,7 +155,6 @@ module GirFFI
 
     # Converts an outptr to a string array.
     def self.outptr_to_utf8_array ptr, size
-      return nil if ptr.nil?
       block = ptr.read_pointer
       return nil if block.null?
       ptrs = block.read_array_of_pointer(size)
