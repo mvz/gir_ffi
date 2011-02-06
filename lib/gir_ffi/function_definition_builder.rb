@@ -19,7 +19,7 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @data = @info.args.map {|a| ArgumentBuilder.new a}
+      @data = @info.args.map {|a| ArgumentBuilder.new self, a}
       @data.each {|data| prepare_arg data }
       @data.each {|data| process_arg data }
       process_return_value
@@ -260,7 +260,7 @@ module GirFFI
     end
 
     def process_return_value
-      @rvdata = ArgumentBuilder.new
+      @rvdata = ArgumentBuilder.new self
       type = @info.return_type
       tag = type.tag
 
