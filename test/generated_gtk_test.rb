@@ -5,6 +5,7 @@ class GeneratedGtkTest < Test::Unit::TestCase
   context "In the generated Gtk module" do
     context "a Gtk::Builder instance" do
       setup do
+        GirFFI.setup :Gtk
 	@builder = Gtk::Builder.new
 	@spec = '
 	<interface>
