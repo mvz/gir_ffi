@@ -21,13 +21,11 @@ module GirFFI
       setup_accumulators
       @data = @info.args.map {|a| ArgumentBuilder.new self, a}
       @data.each {|data| prepare_arg data }
-      @data.each {|data| process_arg data }
+      @data.each {|data| data.process }
       process_return_value
       adjust_accumulators
       return filled_out_template
     end
-
-    private
 
     def setup_accumulators
       @data = []
@@ -50,20 +48,6 @@ module GirFFI
 	data.inarg = data.name
       when :out
 	data.retname = data.retval = new_var
-      else
-	raise ArgumentError
-      end
-    end
-
-    def process_arg data
-      arg = data.arginfo
-      case arg.direction
-      when :inout
-	process_inout_arg data
-      when :in
-	process_in_arg data
-      when :out
-	process_out_arg data
       else
 	raise ArgumentError
       end
