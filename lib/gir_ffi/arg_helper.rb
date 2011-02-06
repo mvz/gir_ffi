@@ -64,8 +64,6 @@ module GirFFI
 
     # Takes an outptr to a pointer array, and frees all pointers.
     def self.cleanup_ptr_array_ptr ptr, size
-      return if ptr.nil?
-
       block = ptr.read_pointer
       LibC.free ptr
 
@@ -74,9 +72,7 @@ module GirFFI
       ptrs = block.read_array_of_pointer(size)
       LibC.free block
 
-      ptrs.map do |p|
-	LibC.free p unless p.null?
-      end
+      ptrs.each { |ptr| LibC.free ptr }
     end
 
     def self.int_to_inoutptr val
