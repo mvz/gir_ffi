@@ -1,24 +1,9 @@
+require 'gir_ffi/argument_builder'
+
 module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    ArgData = Struct.new(:arginfo, :inarg, :callarg, :retval, :pre, :post, :postpost,
-			 :name, :retname)
-    class ArgData
-      def initialize arginfo=nil
-	super
-	self.arginfo = arginfo
-	self.inarg = nil
-	self.callarg = nil
-	self.retval = nil
-	self.retname = nil
-	self.name = nil
-	self.pre = []
-	self.post = []
-	self.postpost = []
-      end
-    end
-
     KEYWORDS =  [
       "alias", "and", "begin", "break", "case", "class", "def", "do",
       "else", "elsif", "end", "ensure", "false", "for", "if", "in",
@@ -34,7 +19,7 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @data = @info.args.map {|a| ArgData.new a}
+      @data = @info.args.map {|a| ArgumentBuilder.new a}
       @data.each {|data| prepare_arg data }
       @data.each {|data| process_arg data }
       process_return_value
@@ -275,7 +260,7 @@ module GirFFI
     end
 
     def process_return_value
-      @rvdata = ArgData.new
+      @rvdata = ArgumentBuilder.new
       type = @info.return_type
       tag = type.tag
 
