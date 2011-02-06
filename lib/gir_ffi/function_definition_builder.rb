@@ -4,14 +4,6 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionDefinitionBuilder
-    KEYWORDS =  [
-      "alias", "and", "begin", "break", "case", "class", "def", "do",
-      "else", "elsif", "end", "ensure", "false", "for", "if", "in",
-      "module", "next", "nil", "not", "or", "redo", "rescue", "retry",
-      "return", "self", "super", "then", "true", "undef", "unless",
-      "until", "when", "while", "yield"
-    ]
-
     def initialize info, libmodule
       @info = info
       @libmodule = libmodule
@@ -20,7 +12,7 @@ module GirFFI
     def generate
       setup_accumulators
       @data = @info.args.map {|a| ArgumentBuilder.build self, a}
-      @data.each {|data| prepare_arg data }
+      @data.each {|data| data.prepare }
       @data.each {|data| data.process }
       process_return_value
       adjust_accumulators
@@ -33,24 +25,6 @@ module GirFFI
       @capture = ""
 
       @varno = 0
-    end
-
-    def prepare_arg data
-      arg = data.arginfo
-      data.name = safe arg.name
-      data.callarg = new_var
-
-      case arg.direction
-      when :inout
-	data.inarg = data.name
-	data.retname = data.retval = new_var
-      when :in
-	data.inarg = data.name
-      when :out
-	data.retname = data.retval = new_var
-      else
-	raise ArgumentError
-      end
     end
 
     def process_inout_arg data
@@ -346,14 +320,6 @@ module GirFFI
     def new_var
       @varno += 1
       "_v#{@varno}"
-    end
-
-    def safe name
-      if KEYWORDS.include? name
-	"#{name}_"
-      else
-	name
-      end
     end
   end
 end
