@@ -16,19 +16,36 @@ module GirFFI
       @function_builder = function_builder
     end
 
-    def process
-      arg = self.arginfo
-      case arg.direction
-      when :inout
-	@function_builder.process_inout_arg self
-      when :in
-	@function_builder.process_in_arg self
-      when :out
-	@function_builder.process_out_arg self
-      else
-	raise ArgumentError
-      end
+    def self.build function_builder, arginfo
+      klass = case arginfo.direction
+              when :inout
+                InOutArgumentBuilder
+              when :in
+                InArgumentBuilder
+              when :out
+                OutArgumentBuilder
+              else
+                raise ArgumentError
+              end
+      klass.new function_builder, arginfo
     end
+  end
 
+  class InArgumentBuilder < ArgumentBuilder
+    def process
+      @function_builder.process_in_arg self
+    end
+  end
+
+  class OutArgumentBuilder < ArgumentBuilder
+    def process
+      @function_builder.process_out_arg self
+    end
+  end
+
+  class InOutArgumentBuilder < ArgumentBuilder
+    def process
+      @function_builder.process_inout_arg self
+    end
   end
 end
