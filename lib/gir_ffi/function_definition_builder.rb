@@ -27,27 +27,6 @@ module GirFFI
       @varno = 0
     end
 
-    def process_inout_arg data
-      arg = data.arginfo
-
-      raise NotImplementedError unless arg.ownership_transfer == :everything
-
-      case arg.type.tag
-      when :interface
-	process_interface_inout_arg data
-      when :array
-	process_array_inout_arg data
-      else
-	process_other_inout_arg data
-      end
-
-      data
-    end
-
-    def process_interface_inout_arg data
-      raise NotImplementedError
-    end
-
     def process_array_inout_arg data
       arg = data.arginfo
       tag = arg.type.param_type(0).tag
@@ -68,43 +47,6 @@ module GirFFI
 	end
       else
 	raise NotImplementedError
-      end
-    end
-
-    def process_other_inout_arg data
-      tag = data.arginfo.type.tag
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{data.inarg}"
-      data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
-      data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
-    end
-
-    def process_out_arg data
-      arg = data.arginfo
-
-      case arg.type.tag
-      when :interface
-	process_interface_out_arg data
-      when :array
-	process_array_out_arg data
-      else
-	process_other_out_arg data
-      end
-
-      data
-    end
-
-    def process_interface_out_arg data
-      arg = data.arginfo
-      iface = arg.type.interface
-
-      if arg.caller_allocates?
-	data.pre << "#{data.callarg} = #{iface.namespace}::#{iface.name}.allocate"
-	data.post << "#{data.retval} = #{data.callarg}"
-      else
-	data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_outptr"
-	tmpvar = new_var
-	data.post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{data.callarg}"
-	data.post << "#{data.retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
       end
     end
 
@@ -137,35 +79,6 @@ module GirFFI
       end
     end
 
-    def process_other_out_arg data
-      arg = data.arginfo
-      tag = arg.type.tag
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_outptr"
-      data.post << "#{data.retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{data.callarg}"
-      if arg.ownership_transfer == :everything
-	data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
-      end
-    end
-
-    def process_in_arg data
-      arg = data.arginfo
-
-      case arg.type.tag
-      when :interface
-	process_interface_in_arg data
-      when :void
-	process_void_in_arg data
-      when :array
-	process_array_in_arg data
-      when :utf8
-	process_utf8_in_arg data
-      else
-	process_other_in_arg data
-      end
-
-      data
-    end
-
     def process_interface_in_arg data
       arg = data.arginfo
       type = arg.type
@@ -177,10 +90,6 @@ module GirFFI
       else
 	data.pre << "#{data.callarg} = #{data.inarg}"
       end
-    end
-
-    def process_void_in_arg data
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.object_to_inptr #{data.inarg}"
     end
 
     def process_array_in_arg data
@@ -205,16 +114,6 @@ module GirFFI
 	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
 	end
       end
-    end
-
-    def process_utf8_in_arg data
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.utf8_to_inptr #{data.name}"
-      # TODO:
-      #data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
-    end
-
-    def process_other_in_arg data
-      data.pre << "#{data.callarg} = #{data.name}"
     end
 
     def process_return_value
