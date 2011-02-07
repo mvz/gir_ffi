@@ -53,7 +53,7 @@ module GirFFI
   # Implements argument processing for arguments with direction :in
   class InArgumentBuilder < ArgumentBuilder
     def prepare
-      @name = safe(arginfo.name)
+      @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
       @inarg = @name
     end
@@ -91,7 +91,7 @@ module GirFFI
   # Implements argument processing for arguments with direction :out
   class OutArgumentBuilder < ArgumentBuilder
     def prepare
-      @name = safe(arginfo.name)
+      @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
       @retname = @retval = @function_builder.new_var
     end
@@ -121,11 +121,10 @@ module GirFFI
     end
 
     def process_other_out_arg
-      arg = @arginfo
-      tag = arg.type.tag
+      tag = @arginfo.type.tag
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_outptr"
       @post << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
-      if arg.ownership_transfer == :everything
+      if @arginfo.ownership_transfer == :everything
 	@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
     end
@@ -135,7 +134,7 @@ module GirFFI
   # Implements argument processing for arguments with direction :inout
   class InOutArgumentBuilder < ArgumentBuilder
     def prepare
-      @name = safe(arginfo.name)
+      @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
       @inarg = @name
       @retname = @retval = @function_builder.new_var
