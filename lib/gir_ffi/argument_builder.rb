@@ -120,17 +120,15 @@ module GirFFI
     end
 
     def process_interface_out_arg
-      arg = @arginfo
-      iface = arg.type.interface
+      iface = @arginfo.type.interface
+      klass = "#{iface.namespace}::#{iface.name}"
 
-      if arg.caller_allocates?
-	@pre << "#{@callarg} = #{iface.namespace}::#{iface.name}.allocate"
+      if @arginfo.caller_allocates?
+	@pre << "#{@callarg} = #{klass}.allocate"
 	@post << "#{@retval} = #{@callarg}"
       else
 	@pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
-	tmpvar = @function_builder.new_var
-	@post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{@callarg}"
-	@post << "#{@retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
+	@post << "#{@retval} = #{klass}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       end
     end
 
