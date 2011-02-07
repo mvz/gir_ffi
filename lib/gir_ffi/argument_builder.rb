@@ -1,4 +1,7 @@
 module GirFFI
+  # Abstract parent class of the argument building classes. These classes
+  # are used by FunctionDefinitionBuilder to create the code that processes
+  # each argument before and after the actual function call.
   class ArgumentBuilder
     KEYWORDS =  [
       "alias", "and", "begin", "break", "case", "class", "def", "do",
@@ -47,6 +50,7 @@ module GirFFI
     end
   end
 
+  # Implements argument processing for arguments with direction :in
   class InArgumentBuilder < ArgumentBuilder
     def prepare
       @name = safe(arginfo.name)
@@ -92,6 +96,7 @@ module GirFFI
     end
   end
 
+  # Implements argument processing for arguments with direction :out
   class OutArgumentBuilder < ArgumentBuilder
     def prepare
       @name = safe(arginfo.name)
@@ -141,6 +146,7 @@ module GirFFI
 
   end
 
+  # Implements argument processing for arguments with direction :inout
   class InOutArgumentBuilder < ArgumentBuilder
     def prepare
       @name = safe(arginfo.name)
