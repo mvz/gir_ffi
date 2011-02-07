@@ -59,13 +59,7 @@ module GirFFI
     end
 
     def process
-      process_in_arg
-    end
-
-    def process_in_arg
-      arg = @arginfo
-
-      case arg.type.tag
+      case @arginfo.type.tag
       when :interface
 	@function_builder.process_interface_in_arg self
       when :void
@@ -77,8 +71,6 @@ module GirFFI
       else
 	process_other_in_arg
       end
-
-      self
     end
 
     def process_void_in_arg
@@ -105,9 +97,7 @@ module GirFFI
     end
 
     def process
-      arg = @arginfo
-
-      case arg.type.tag
+      case @arginfo.type.tag
       when :interface
 	process_interface_out_arg
       when :array
@@ -115,8 +105,6 @@ module GirFFI
       else
 	process_other_out_arg
       end
-
-      self
     end
 
     def process_interface_out_arg
@@ -154,11 +142,9 @@ module GirFFI
     end
 
     def process
-      arg = @arginfo
+      raise NotImplementedError unless @arginfo.ownership_transfer == :everything
 
-      raise NotImplementedError unless arg.ownership_transfer == :everything
-
-      case arg.type.tag
+      case @arginfo.type.tag
       when :interface
 	process_interface_inout_arg
       when :array
@@ -166,8 +152,6 @@ module GirFFI
       else
 	process_other_inout_arg
       end
-
-      self
     end
 
     def process_interface_inout_arg
