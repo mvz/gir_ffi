@@ -12,15 +12,15 @@ module GirFFI
       :postpost, :name, :retname
 
     def initialize function_builder, arginfo=nil
-      self.arginfo = arginfo
-      self.inarg = nil
-      self.callarg = nil
-      self.retval = nil
-      self.retname = nil
-      self.name = nil
-      self.pre = []
-      self.post = []
-      self.postpost = []
+      @arginfo = arginfo
+      @inarg = nil
+      @callarg = nil
+      @retval = nil
+      @retname = nil
+      @name = nil
+      @pre = []
+      @post = []
+      @postpost = []
       @function_builder = function_builder
     end
 
@@ -59,7 +59,7 @@ module GirFFI
     end
 
     def process_in_arg
-      arg = self.arginfo
+      arg = @arginfo
 
       case arg.type.tag
       when :interface
@@ -78,17 +78,17 @@ module GirFFI
     end
 
     def process_void_in_arg
-      self.pre << "#{self.callarg} = GirFFI::ArgHelper.object_to_inptr #{self.inarg}"
+      @pre << "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}"
     end
 
     def process_utf8_in_arg
-      self.pre << "#{self.callarg} = GirFFI::ArgHelper.utf8_to_inptr #{self.name}"
+      @pre << "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}"
       # TODO:
-      #self.post << "GirFFI::ArgHelper.cleanup_ptr #{self.callarg}"
+      #@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
     end
 
     def process_other_in_arg
-      self.pre << "#{self.callarg} = #{self.name}"
+      @pre << "#{@callarg} = #{@name}"
     end
   end
 
@@ -100,7 +100,7 @@ module GirFFI
     end
 
     def process
-      arg = self.arginfo
+      arg = @arginfo
 
       case arg.type.tag
       when :interface
@@ -115,27 +115,27 @@ module GirFFI
     end
 
     def process_interface_out_arg
-      arg = self.arginfo
+      arg = @arginfo
       iface = arg.type.interface
 
       if arg.caller_allocates?
-	self.pre << "#{self.callarg} = #{iface.namespace}::#{iface.name}.allocate"
-	self.post << "#{self.retval} = #{self.callarg}"
+	@pre << "#{@callarg} = #{iface.namespace}::#{iface.name}.allocate"
+	@post << "#{@retval} = #{@callarg}"
       else
-	self.pre << "#{self.callarg} = GirFFI::ArgHelper.pointer_outptr"
+	@pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
 	tmpvar = @function_builder.new_var
-	self.post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{self.callarg}"
-	self.post << "#{self.retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
+	@post << "#{tmpvar} = GirFFI::ArgHelper.outptr_to_pointer #{@callarg}"
+	@post << "#{@retval} = #{iface.namespace}::#{iface.name}.wrap #{tmpvar}"
       end
     end
 
     def process_other_out_arg
-      arg = self.arginfo
+      arg = @arginfo
       tag = arg.type.tag
-      self.pre << "#{self.callarg} = GirFFI::ArgHelper.#{tag}_outptr"
-      self.post << "#{self.retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{self.callarg}"
+      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_outptr"
+      @post << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
       if arg.ownership_transfer == :everything
-	self.post << "GirFFI::ArgHelper.cleanup_ptr #{self.callarg}"
+	@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
     end
 
@@ -150,7 +150,7 @@ module GirFFI
     end
 
     def process
-      arg = self.arginfo
+      arg = @arginfo
 
       raise NotImplementedError unless arg.ownership_transfer == :everything
 
@@ -171,10 +171,10 @@ module GirFFI
     end
 
     def process_other_inout_arg
-      tag = self.arginfo.type.tag
-      self.pre << "#{self.callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{self.inarg}"
-      self.post << "#{self.retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{self.callarg}"
-      self.post << "GirFFI::ArgHelper.cleanup_ptr #{self.callarg}"
+      tag = @arginfo.type.tag
+      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{@inarg}"
+      @post << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
+      @post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
     end
 
   end
