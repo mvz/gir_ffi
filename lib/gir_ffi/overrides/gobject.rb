@@ -64,7 +64,7 @@ module GirFFI
 
 	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
 
-	  argtypes = [:pointer] + sig.args.map {|a| :pointer} + [:pointer]
+	  argtypes = [:pointer] + sig.args.map {|arg| :pointer} + [:pointer]
 
 	  callback = FFI::Function.new rettype, argtypes,
 	    &(Helper.signal_callback_args(sig, object.class, &block))
@@ -126,13 +126,13 @@ module GirFFI
 	  # TODO: Use same signal info as signal_arguments_to_gvalue_array
 	  id = ::GObject.signal_lookup signal, type
 
-	  q = ::GObject::SignalQuery.new
-	  ::GObject.signal_query id, q
+	  query = ::GObject::SignalQuery.new
+	  ::GObject.signal_query id, query
 
-	  use_ret = (q[:return_type] != ::GObject.type_from_name("void"))
+	  use_ret = (query[:return_type] != ::GObject.type_from_name("void"))
 	  if use_ret
 	    rval = ::GObject::Value.new
-	    rval.init q[:return_type]
+	    rval.init query[:return_type]
 	  end
 	  rval
 	end

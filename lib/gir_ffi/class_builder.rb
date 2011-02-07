@@ -37,15 +37,10 @@ module GirFFI
     end
 
     def find_signal signal_name
-      info.signals.each do |s|
-	return s if s.name == signal_name
-      end
-      if info.type == :object
-	info.interfaces.each do |i|
-	  i.signals.each do |s|
-	    return s if s.name == signal_name
-	  end
-	end
+      signal_definers.each do |inf|
+        inf.signals.each do |sig|
+          return sig if sig.name == signal_name
+        end
       end
       if info.parent
 	return superclass.gir_ffi_builder.find_signal signal_name
@@ -118,7 +113,7 @@ module GirFFI
 
     def instantiate_enum_class
       @klass = optionally_define_constant namespace_module, @classname do
-	vals = info.values.map {|v| [v.name.to_sym, v.value]}.flatten
+	vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
 	lib.enum(@classname.to_sym, vals)
       end
     end
@@ -153,10 +148,10 @@ module GirFFI
 	end
       end
 
-      fields.map do |f|
-	[ f.name.to_sym,
-	  itypeinfo_to_ffitype_for_struct(f.type),
-	  f.offset ]
+      fields.map do |finfo|
+	[ finfo.name.to_sym,
+	  itypeinfo_to_ffitype_for_struct(finfo.type),
+	  finfo.offset ]
       end.flatten
     end
 
@@ -172,14 +167,14 @@ module GirFFI
     end
 
     def stub_methods
-      info.methods.each do |m|
-	@klass.class_eval method_stub(m.method? ? m.name : "self.#{m.name}", m.name)
+      info.methods.each do |minfo|
+	@klass.class_eval method_stub(minfo.name, minfo.method?)
       end
     end
 
-    def method_stub name, symbol
+    def method_stub symbol, is_instance_method
       "
-	def #{name} *args, &block
+	def #{is_instance_method ? '' : 'self.'}#{symbol} *args, &block
 	  setup_and_call :#{symbol}, *args, &block
 	end
       "
@@ -197,13 +192,13 @@ module GirFFI
     end
 
     def setup_vfunc_invokers
-      info.vfuncs.each do |v|
-	invoker = v.invoker
+      info.vfuncs.each do |vfinfo|
+	invoker = vfinfo.invoker
 	next if invoker.nil?
-	next if invoker.name == v.name
+	next if invoker.name == vfinfo.name
 
 	@klass.class_eval "
-	  def #{v.name} *args, &block
+	  def #{vfinfo.name} *args, &block
 	    #{invoker.name}(*args, &block)
 	  end
 	"
@@ -232,8 +227,8 @@ module GirFFI
     end
 
     def instance_method_introspection_data method
-      m = method_introspection_data method
-      return !m.nil? && m.method? ? m : nil
+      data = method_introspection_data method
+      return !data.nil? && data.method? ? data : nil
     end
 
     def function_definition go
@@ -260,6 +255,10 @@ module GirFFI
       optionally_define_constant(namespace, name) {
 	Class.new parent
       }
+    end
+
+    def signal_definers
+      [info] + (info.type == :object ? info.interfaces : [])
     end
   end
 end

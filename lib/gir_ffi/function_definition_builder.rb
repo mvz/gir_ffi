@@ -11,7 +11,7 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @data = @info.args.map {|a| ArgumentBuilder.build self, a}
+      @data = @info.args.map {|arg| ArgumentBuilder.build self, arg}
       @data.each {|data| data.prepare }
       @data.each {|data| data.process }
       process_return_value

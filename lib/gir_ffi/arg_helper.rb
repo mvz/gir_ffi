@@ -153,7 +153,7 @@ module GirFFI
       return nil if block.null?
       ptrs = block.read_array_of_pointer(size)
 
-      ptrs.map { |p| ptr_to_utf8 p }
+      ptrs.map { |ptr| ptr_to_utf8 ptr }
     end
 
     # Converts an outptr to a double.

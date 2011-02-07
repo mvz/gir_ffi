@@ -30,8 +30,8 @@ module GirFFI
     # All methods below will be made private at the end.
 
     def self.ffi_function_argument_types info
-      types = info.args.map do |a|
-	tp = iarginfo_to_ffitype a
+      types = info.args.map do |arg|
+	tp = iarginfo_to_ffitype arg
 	tp == :string ? :pointer : tp
       end
       if info.type == :function
@@ -93,8 +93,8 @@ module GirFFI
     end
 
     # Set up method access.
-    (self.public_methods - Module.public_methods).each do |m|
-      private_class_method m.to_sym
+    (self.public_methods - Module.public_methods).each do |method|
+      private_class_method method.to_sym
     end
     public_class_method :build_module, :build_class
     public_class_method :itypeinfo_to_ffitype

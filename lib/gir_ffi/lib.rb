@@ -99,8 +99,10 @@ module GirFFI
     # gobject-introspection version 0.9.0 and 0.9.1. Therefore, we need to
     # retrieve the correct values before declaring the ITypeTag enum.
     attach_function :tmp_type_tag_to_string, :g_type_tag_to_string, [:int], :string
-    arr = (0..31).map { |i| [tmp_type_tag_to_string(i).to_sym, i] }.flatten
-    enum :ITypeTag, arr
+    type_tag_map = (0..31).map { |id|
+      [tmp_type_tag_to_string(id).to_sym, id]
+    }.flatten
+    enum :ITypeTag, type_tag_map
 
     # Now, attach g_type_tag_to_string again under its own name with an
     # improved signature.
