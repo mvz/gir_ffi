@@ -13,6 +13,10 @@ module GirFFI
       setup_accumulators
       @data = @info.args.map {|arg| ArgumentBuilder.build self, arg}
       @data.each {|data| data.prepare }
+      @data.each {|data|
+	idx = data.arginfo.type.array_length
+        data.length_arg = @data[idx] if idx
+      }
       @data.each {|data| data.process }
       process_return_value
       adjust_accumulators
@@ -33,7 +37,7 @@ module GirFFI
       data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{data.inarg}"
       if arg.type.array_length > -1
 	idx = arg.type.array_length
-	lendata = @data[idx]
+	lendata = data.length_arg
 	rv = lendata.retval
 	lendata.retval = nil
 	lname = lendata.inarg
@@ -61,8 +65,8 @@ module GirFFI
 
       if size <= 0
 	if idx > -1
-	  size = @data[idx].retval
-	  @data[idx].retval = nil
+	  size = data.length_arg.retval
+	  data.length_arg.retval = nil
 	else
 	  raise NotImplementedError
 	end
@@ -100,9 +104,9 @@ module GirFFI
 	data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{data.inarg}, \"#{data.inarg}\""
       elsif type.array_length > -1
 	idx = type.array_length
-	lenvar = @data[idx].inarg
-	@data[idx].inarg = nil
-	@data[idx].pre.unshift "#{lenvar} = #{data.inarg}.nil? ? 0 : #{data.inarg}.length"
+	lenvar = data.length_arg.inarg
+	data.length_arg.inarg = nil
+	data.length_arg.pre.unshift "#{lenvar} = #{data.inarg}.nil? ? 0 : #{data.inarg}.length"
       end
 
       tag = arg.type.param_type(0).tag.to_s.downcase

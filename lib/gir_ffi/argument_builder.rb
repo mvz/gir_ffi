@@ -12,7 +12,7 @@ module GirFFI
     ]
 
     attr_accessor :arginfo, :inarg, :callarg, :retval, :pre, :post,
-      :postpost, :name, :retname
+      :postpost, :name, :retname, :length_arg
 
     def initialize function_builder, arginfo=nil
       @arginfo = arginfo
