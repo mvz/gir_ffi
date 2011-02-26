@@ -178,6 +178,7 @@ module GirFFI
 
     def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
+      return nil if prc.nil?
       info = gir.find_by_name namespace, name
       return Proc.new do |*args|
 	prc.call *map_callback_args(args, info)

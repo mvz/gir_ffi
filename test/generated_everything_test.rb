@@ -116,10 +116,18 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 	assert_equal 623.0, rv
       end
 
-      should "have a working #static_method_callback" do
-	a = 1
-	Everything::TestObj.static_method_callback Proc.new { a = 2 }
-	assert_equal 2, a
+      context "#static_method_callback" do
+        should "work when called with a Proc" do
+          a = 1
+          Everything::TestObj.static_method_callback Proc.new { a = 2 }
+          assert_equal 2, a
+        end
+
+        should "work when called with nil" do
+          assert_nothing_raised do
+            Everything::TestObj.static_method_callback nil
+          end
+        end
       end
 
       context "an instance" do
