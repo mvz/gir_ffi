@@ -49,34 +49,49 @@ module GirFFI
     end
 
     def adjust_accumulators
-      @retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
-      @callargs = @data.map(&:callarg).compact
-      @inargs = @data.map(&:inarg).compact
-      @pre = @data.map(&:pre).flatten
-      @post = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post).flatten
-
       if @info.throws?
-	errvar = new_var
-	@pre << "#{errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
-	@post.unshift "GirFFI::ArgHelper.check_error(#{errvar})"
-	@callargs << errvar
-      end
-
-      @post << "return #{@retvals.join(', ')}" unless @retvals.empty?
-
-      if @info.method?
-	@callargs.unshift "self"
+	@errvar = new_var
       end
     end
 
     def filled_out_template
       return <<-CODE
-	def #{@info.name} #{@inargs.join(', ')}
-	  #{@pre.join("\n")}
-	  #{@capture}::#{@libmodule}.#{@info.symbol} #{@callargs.join(', ')}
-	  #{@post.join("\n")}
+	def #{@info.name} #{inargs.join(', ')}
+	  #{pre.join("\n")}
+	  #{@capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}
+	  #{post.join("\n")}
 	end
       CODE
+    end
+
+    def inargs
+      @data.map(&:inarg).compact
+    end
+
+    def callargs
+      ca = @data.map(&:callarg).compact
+      ca << @errvar if @info.throws?
+      ca.unshift "self" if @info.method?
+      ca
+    end
+
+    def pre
+      pr = @data.map(&:pre).flatten
+
+      if @info.throws?
+	pr << "#{@errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
+      end
+      pr
+    end
+
+    def post
+      po = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post).flatten
+      po.unshift "GirFFI::ArgHelper.check_error(#{@errvar})" if @info.throws?
+
+      retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
+      po << "return #{retvals.join(', ')}" unless retvals.empty?
+
+      po
     end
 
     def new_var
