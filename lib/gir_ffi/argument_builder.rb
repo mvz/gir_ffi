@@ -358,4 +358,20 @@ module GirFFI
       end
     end
   end
+
+  class ErrorHandlerBuilder < ArgumentBuilder
+    def prepare
+      @callarg = @function_builder.new_var
+    end
+
+    def process
+      @pre << "#{@callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
+      @post << "GirFFI::ArgHelper.check_error(#{@callarg})"
+    end
+  end
+
+  class NullArgumentBuilder < ArgumentBuilder
+    def prepare; end
+    def process; end
+  end
 end

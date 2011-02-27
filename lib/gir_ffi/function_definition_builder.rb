@@ -35,9 +35,10 @@ module GirFFI
     end
 
     def adjust_accumulators
-      if @info.throws?
-	@errvar = new_var
-      end
+      klass = @info.throws? ? ErrorHandlerBuilder : NullArgumentBuilder
+      @errarg = klass.new(self)
+      @errarg.prepare
+      @errarg.process
     end
 
     def filled_out_template
@@ -55,19 +56,16 @@ module GirFFI
     end
 
     def callargs
-      ca = @data.map(&:callarg).compact
-      ca << @errvar if @info.throws?
+      ca = @data.map(&:callarg)
+      ca << @errarg.callarg
       ca.unshift "self" if @info.method?
-      ca
+      ca.compact
     end
 
     def pre
-      pr = @data.map(&:pre).flatten
-
-      if @info.throws?
-	pr << "#{@errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
-      end
-      pr
+      pr = @data.map(&:pre)
+      pr << @errarg.pre
+      pr.flatten
     end
 
     def capture
@@ -79,13 +77,13 @@ module GirFFI
     end
 
     def post
-      po = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post).flatten
-      po.unshift "GirFFI::ArgHelper.check_error(#{@errvar})" if @info.throws?
+      po = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post)
+      po.unshift @errarg.post
 
       retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
       po << "return #{retvals.join(', ')}" unless retvals.empty?
 
-      po
+      po.flatten
     end
 
     def new_var
