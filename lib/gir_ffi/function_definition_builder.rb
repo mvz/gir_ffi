@@ -38,6 +38,8 @@ module GirFFI
       return filled_out_template
     end
 
+    private
+
     def setup_accumulators
       @data = []
 
@@ -81,5 +83,7 @@ module GirFFI
       @varno += 1
       "_v#{@varno}"
     end
+
+    public :new_var
   end
 end

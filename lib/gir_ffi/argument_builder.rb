@@ -43,6 +43,8 @@ module GirFFI
       klass.new function_builder, arginfo, libmodule
     end
 
+    private
+
     def safe name
       if KEYWORDS.include? name
 	"#{name}_"
@@ -74,6 +76,9 @@ module GirFFI
 	process_other_in_arg
       end
     end
+
+    private
+
 
     def process_interface_in_arg
       arg = @arginfo
@@ -145,6 +150,8 @@ module GirFFI
 	process_other_out_arg
       end
     end
+
+    private
 
     def process_interface_out_arg
       iface = @arginfo.type.interface
@@ -221,6 +228,8 @@ module GirFFI
       end
     end
 
+    private
+
     def process_interface_inout_arg
       raise NotImplementedError
     end
@@ -278,6 +287,8 @@ module GirFFI
 	process_other_return_value
       end
     end
+
+    private
 
     def process_interface_return_value type, cvar
       interface = type.interface
