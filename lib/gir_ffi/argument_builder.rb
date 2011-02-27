@@ -3,7 +3,7 @@ module GirFFI
   # are used by FunctionDefinitionBuilder to create the code that processes
   # each argument before and after the actual function call.
   class ArgumentBuilder
-    KEYWORDS =  [
+    KEYWORDS = [
       "alias", "and", "begin", "break", "case", "class", "def", "do",
       "else", "elsif", "end", "ensure", "false", "for", "if", "in",
       "module", "next", "nil", "not", "or", "redo", "rescue", "retry",
@@ -41,6 +41,10 @@ module GirFFI
                 raise ArgumentError
               end
       klass.new function_builder, arginfo, libmodule
+    end
+
+    def type
+      @arginfo.type
     end
 
     private
@@ -288,6 +292,10 @@ module GirFFI
       end
     end
 
+    def type
+      @arginfo.return_type
+    end
+
     private
 
     def process_interface_return_value type, cvar
@@ -337,7 +345,7 @@ module GirFFI
     end
 
     def tag
-      @arginfo.return_type.tag
+      type.tag
     end
 
     def is_subclass_of_initially_unowned interface

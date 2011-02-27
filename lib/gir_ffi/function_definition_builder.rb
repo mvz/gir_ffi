@@ -12,23 +12,17 @@ module GirFFI
     def generate
       setup_accumulators
       @data = @info.args.map {|arg| ArgumentBuilder.build self, arg, @libmodule}
-
-      @data.each {|data| data.prepare }
-
       @rvdata = ReturnValueBuilder.new self, @info
-      @rvdata.prepare
 
-      @data.each {|data|
-	idx = data.arginfo.type.array_length
+      alldata = @data.dup << @rvdata
+
+      alldata.each {|data|
+        data.prepare
+	idx = data.type.array_length
         data.length_arg = @data[idx] if idx > -1
       }
 
-      idx = @rvdata.arginfo.return_type.array_length
-      @rvdata.length_arg = @data[idx] if idx > -1
-
-      @data.each {|data| data.process }
-
-      @rvdata.process
+      alldata.each {|data| data.process }
 
       if @rvdata.cvar
         @capture = "#{@rvdata.cvar} = "
@@ -41,8 +35,6 @@ module GirFFI
     private
 
     def setup_accumulators
-      @data = []
-
       @capture = ""
 
       @varno = 0
