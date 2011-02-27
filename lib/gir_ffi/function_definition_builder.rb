@@ -11,7 +11,7 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @data = @info.args.map {|arg| ArgumentBuilder.build self, arg}
+      @data = @info.args.map {|arg| ArgumentBuilder.build self, arg, @libmodule}
       @data.each {|data| data.prepare }
       @data.each {|data|
 	idx = data.arginfo.type.array_length

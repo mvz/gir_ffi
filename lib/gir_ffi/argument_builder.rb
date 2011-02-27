@@ -14,7 +14,7 @@ module GirFFI
     attr_accessor :arginfo, :inarg, :callarg, :retval, :pre, :post,
       :postpost, :name, :retname, :length_arg
 
-    def initialize function_builder, arginfo=nil
+    def initialize function_builder, arginfo=nil, libmodule=nil
       @arginfo = arginfo
       @inarg = nil
       @callarg = nil
@@ -25,9 +25,10 @@ module GirFFI
       @post = []
       @postpost = []
       @function_builder = function_builder
+      @libmodule = libmodule
     end
 
-    def self.build function_builder, arginfo
+    def self.build function_builder, arginfo, libmodule
       klass = case arginfo.direction
               when :inout
                 InOutArgumentBuilder
@@ -38,7 +39,7 @@ module GirFFI
               else
                 raise ArgumentError
               end
-      klass.new function_builder, arginfo
+      klass.new function_builder, arginfo, libmodule
     end
 
     def safe name
