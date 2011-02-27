@@ -31,58 +31,6 @@ module GirFFI
       @varno = 0
     end
 
-    def process_array_inout_arg data
-      arg = data.arginfo
-      tag = arg.type.param_type(0).tag
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{data.inarg}"
-      if arg.type.array_length > -1
-	idx = arg.type.array_length
-	lendata = data.length_arg
-	rv = lendata.retval
-	lendata.retval = nil
-	lname = lendata.inarg
-	lendata.inarg = nil
-	lendata.pre.unshift "#{lname} = #{data.inarg}.length"
-	data.post << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{rv}"
-	if tag == :utf8
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
-	else
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
-	end
-      else
-	raise NotImplementedError
-      end
-    end
-
-    def process_array_out_arg data
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.pointer_outptr"
-
-      arg = data.arginfo
-      type = arg.type
-      tag = type.param_type(0).tag
-      size = type.array_fixed_size
-      idx = type.array_length
-
-      if size <= 0
-	if idx > -1
-	  size = data.length_arg.retval
-	  data.length_arg.retval = nil
-	else
-	  raise NotImplementedError
-	end
-      end
-
-      data.postpost << "#{data.retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{data.callarg}, #{size}"
-
-      if arg.ownership_transfer == :everything
-	if tag == :utf8
-	  data.postpost << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{data.callarg}, #{rv}"
-	else
-	  data.postpost << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
-	end
-      end
-    end
-
     def process_interface_in_arg data
       arg = data.arginfo
       type = arg.type
@@ -93,30 +41,6 @@ module GirFFI
 	data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
       else
 	data.pre << "#{data.callarg} = #{data.inarg}"
-      end
-    end
-
-    def process_array_in_arg data
-      arg = data.arginfo
-      type = arg.type
-
-      if type.array_fixed_size > 0
-	data.pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{data.inarg}, \"#{data.inarg}\""
-      elsif type.array_length > -1
-	idx = type.array_length
-	lenvar = data.length_arg.inarg
-	data.length_arg.inarg = nil
-	data.length_arg.pre.unshift "#{lenvar} = #{data.inarg}.nil? ? 0 : #{data.inarg}.length"
-      end
-
-      tag = arg.type.param_type(0).tag.to_s.downcase
-      data.pre << "#{data.callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{data.inarg}"
-      unless arg.ownership_transfer == :everything
-	if tag == :utf8
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{data.callarg}"
-	else
-	  data.post << "GirFFI::ArgHelper.cleanup_ptr #{data.callarg}"
-	end
       end
     end
 
