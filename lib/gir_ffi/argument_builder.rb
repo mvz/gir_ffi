@@ -11,8 +11,9 @@ module GirFFI
       "until", "when", "while", "yield"
     ]
 
-    attr_accessor :arginfo, :inarg, :callarg, :retval, :pre, :post,
-      :postpost, :name, :retname, :length_arg
+    attr_reader :arginfo, :callarg, :pre, :post, :postpost
+
+    attr_accessor :length_arg, :inarg, :retval
 
     def initialize function_builder, arginfo=nil, libmodule=nil
       @arginfo = arginfo
