@@ -62,7 +62,7 @@ module GirFFI
     def process
       case @arginfo.type.tag
       when :interface
-	@function_builder.process_interface_in_arg self
+	process_interface_in_arg
       when :void
 	process_void_in_arg
       when :array
@@ -71,6 +71,19 @@ module GirFFI
 	process_utf8_in_arg
       else
 	process_other_in_arg
+      end
+    end
+
+    def process_interface_in_arg
+      arg = @arginfo
+      type = arg.type
+
+      iface = type.interface
+      if iface.type == :callback
+	@pre << "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}"
+	@pre << "::#{@libmodule}::CALLBACKS << #{@callarg}"
+      else
+	@pre << "#{@callarg} = #{@inarg}"
       end
     end
 

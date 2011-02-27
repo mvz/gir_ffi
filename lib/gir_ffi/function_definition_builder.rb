@@ -31,19 +31,6 @@ module GirFFI
       @varno = 0
     end
 
-    def process_interface_in_arg data
-      arg = data.arginfo
-      type = arg.type
-
-      iface = type.interface
-      if iface.type == :callback
-	data.pre << "#{data.callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{data.inarg}"
-	data.pre << "::#{@libmodule}::CALLBACKS << #{data.callarg}"
-      else
-	data.pre << "#{data.callarg} = #{data.inarg}"
-      end
-    end
-
     def process_return_value
       @rvdata = ArgumentBuilder.new self
       type = @info.return_type
