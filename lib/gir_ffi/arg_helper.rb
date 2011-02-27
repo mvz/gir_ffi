@@ -181,7 +181,7 @@ module GirFFI
       return nil if prc.nil?
       info = gir.find_by_name namespace, name
       return Proc.new do |*args|
-	prc.call *map_callback_args(args, info)
+	prc.call(*map_callback_args(args, info))
       end
     end
 
