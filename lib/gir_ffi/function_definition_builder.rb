@@ -24,10 +24,6 @@ module GirFFI
 
       alldata.each {|data| data.process }
 
-      if @rvdata.cvar
-        @capture = "#{@rvdata.cvar} = "
-      end
-
       adjust_accumulators
       return filled_out_template
     end
@@ -35,8 +31,6 @@ module GirFFI
     private
 
     def setup_accumulators
-      @capture = ""
-
       @varno = 0
     end
 
@@ -50,7 +44,7 @@ module GirFFI
       return <<-CODE
 	def #{@info.name} #{inargs.join(', ')}
 	  #{pre.join("\n")}
-	  #{@capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}
+	  #{capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}
 	  #{post.join("\n")}
 	end
       CODE
@@ -74,6 +68,14 @@ module GirFFI
 	pr << "#{@errvar} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
       end
       pr
+    end
+
+    def capture
+      if (cv = @rvdata.cvar)
+        "#{cv} = "
+      else
+        ""
+      end
     end
 
     def post
