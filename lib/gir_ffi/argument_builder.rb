@@ -292,7 +292,7 @@ module GirFFI
 	if @arginfo.constructor?
 	  GirFFI::Builder.build_class namespace, name
 	  @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-          if @function_builder.is_subclass_of_initially_unowned interface
+          if is_subclass_of_initially_unowned interface
             @post << "GirFFI::GObject.object_ref_sink(#{@retval})"
           end
 	else
@@ -327,6 +327,16 @@ module GirFFI
 
     def tag
       @arginfo.return_type.tag
+    end
+
+    def is_subclass_of_initially_unowned interface
+      if interface.namespace == "GObject" and interface.name == "InitiallyUnowned"
+        true
+      elsif interface.parent
+        is_subclass_of_initially_unowned interface.parent
+      else
+        false
+      end
     end
   end
 end

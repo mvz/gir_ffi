@@ -67,16 +67,6 @@ module GirFFI
       end
     end
 
-    def is_subclass_of_initially_unowned interface
-      if interface.namespace == "GObject" and interface.name == "InitiallyUnowned"
-        true
-      elsif interface.parent
-        is_subclass_of_initially_unowned interface.parent
-      else
-        false
-      end
-    end
-
     def filled_out_template
       return <<-CODE
 	def #{@info.name} #{@inargs.join(', ')}
