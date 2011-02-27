@@ -2,14 +2,6 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Everything namespace.
 class GeneratedEverythingTest < Test::Unit::TestCase
-  def ref_count object
-    GObject::Object::Struct.new(object.to_ptr)[:ref_count]
-  end
-
-  def is_floating? object
-    (GObject::Object::Struct.new(object.to_ptr)[:qdata].address & 2) == 2
-  end
-
   context "The generated Everything module" do
     setup do
       GirFFI.setup :Everything

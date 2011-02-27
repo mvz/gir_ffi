@@ -54,4 +54,12 @@ class Test::Unit::TestCase
       Object.send(:remove_const, name)
     end
   end
+
+  def ref_count object
+    GObject::Object::Struct.new(object.to_ptr)[:ref_count]
+  end
+
+  def is_floating? object
+    (GObject::Object::Struct.new(object.to_ptr)[:qdata].address & 2) == 2
+  end
 end

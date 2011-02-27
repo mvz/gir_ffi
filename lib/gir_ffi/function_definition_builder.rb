@@ -154,7 +154,9 @@ module GirFFI
 	if @info.constructor?
 	  GirFFI::Builder.build_class namespace, name
 	  @rvdata.post << "#{retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-	  @rvdata.post << "GirFFI::ArgHelper.sink_if_floating(#{retval})"
+          if is_subclass_of_initially_unowned interface
+            @rvdata.post << "GirFFI::GObject.object_ref_sink(#{retval})"
+          end
 	else
 	  @rvdata.post << "#{retval} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})"
 	end
@@ -207,6 +209,16 @@ module GirFFI
 
       if @info.method?
 	@callargs.unshift "self"
+      end
+    end
+
+    def is_subclass_of_initially_unowned interface
+      if interface.namespace == "GObject" and interface.name == "InitiallyUnowned"
+        true
+      elsif interface.parent
+        is_subclass_of_initially_unowned interface.parent
+      else
+        false
       end
     end
 

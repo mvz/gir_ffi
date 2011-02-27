@@ -224,12 +224,6 @@ module GirFFI
       raise GError.new(errp)[:message] unless errp.null?
     end
 
-    def self.sink_if_floating gobject
-      if GirFFI::GObject.object_is_floating(gobject)
-	GirFFI::GObject.object_ref_sink(gobject)
-      end
-    end
-
     def self.check_fixed_array_size size, arr, name
       unless arr.size == size
 	raise ArgumentError, "#{name} should have size #{size}"

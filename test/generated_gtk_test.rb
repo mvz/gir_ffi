@@ -3,9 +3,12 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 # Tests generated methods and functions in the Gtk namespace.
 class GeneratedGtkTest < Test::Unit::TestCase
   context "In the generated Gtk module" do
+    setup do
+      GirFFI.setup :Gtk
+    end
+
     context "a Gtk::Builder instance" do
       setup do
-        GirFFI.setup :Gtk
 	@builder = Gtk::Builder.new
 	@spec = '
 	<interface>
@@ -45,6 +48,16 @@ class GeneratedGtkTest < Test::Unit::TestCase
 	  assert_equal :after, f
 	  assert_equal nil, ud
 	end
+      end
+    end
+
+    context "a Gtk::Window instance" do
+      setup do
+        @w = Gtk::Window.new :toplevel
+      end
+
+      should "start with a refcount of 2 (one for us, one for GTK+)" do
+        assert_equal 2, ref_count(@w)
       end
     end
   end
