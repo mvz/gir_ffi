@@ -268,6 +268,7 @@ module GirFFI
     end
   end
 
+  # Implements argument processing for return values.
   class ReturnValueBuilder < ArgumentBuilder
     attr_reader :cvar
 
@@ -359,6 +360,9 @@ module GirFFI
     end
   end
 
+  # Implements argument processing for error handling arguments. These
+  # arguments are not part of the introspected signature, but their
+  # presence is indicated by the 'throws' attribute of the function.
   class ErrorHandlerBuilder < ArgumentBuilder
     def prepare
       @callarg = @function_builder.new_var
@@ -370,6 +374,7 @@ module GirFFI
     end
   end
 
+  # Argument builder that does nothing. Implements Null Object pattern.
   class NullArgumentBuilder < ArgumentBuilder
     def prepare; end
     def process; end
