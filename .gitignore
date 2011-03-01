@@ -6,3 +6,4 @@ gir_ffi*.gem
 *.rbc
 hs_err_pid*.log
 core
+Gemfile.lock
