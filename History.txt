@@ -1,3 +1,11 @@
+== 0.0.6 / 2011-03-01
+
+* Cast returned GObjects to their actual type.
+* Properly cast callback arguments.
+* Handle the case where functions formally return interfaces.
+* Make sure Gtk::Window has the correct number of references after creation.
+* Refactoring and some small fixes.
+
 == 0.0.5 / 2010-12-30
 
 * Don't create instance methods out of functions and vice versa.
