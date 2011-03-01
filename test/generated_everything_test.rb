@@ -405,11 +405,11 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_boolean_false" do
-      assert_equal false, Everything.test_boolean(false)
+      assert_equal false, Everything.test_boolean_false(false)
     end
 
     should "have correct test_boolean_true" do
-      assert_equal true, Everything.test_boolean(true)
+      assert_equal true, Everything.test_boolean_true(true)
     end
 
     should "have correct test_cairo_context_full_return"
