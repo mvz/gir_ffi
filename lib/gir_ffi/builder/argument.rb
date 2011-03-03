@@ -199,7 +199,7 @@ module GirFFI::Builder
 
       if @arginfo.ownership_transfer == :everything
 	if tag == :utf8
-	  @postpost << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{rv}"
+	  @postpost << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
 	else
 	  @postpost << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
 	end
