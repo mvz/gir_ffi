@@ -1,10 +1,10 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class FunctionDefinitionBuilderTest < Test::Unit::TestCase
-  context "The FunctionDefinition builder" do
+  context "The Builder::Function class" do
     should "build correct definition of Gtk.init" do
       go = get_function_introspection_data 'Gtk', 'init'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected = "
@@ -26,7 +26,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Gtk::Widget.show" do
       go = get_method_introspection_data 'Gtk', 'Widget', 'show'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected = "
@@ -40,7 +40,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of GObject.signal_connect_data" do
       go = get_function_introspection_data 'GObject', 'signal_connect_data'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected =
@@ -62,7 +62,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Everything::TestObj#new_from_file" do
       go = get_method_introspection_data 'Everything', 'TestObj', 'new_from_file'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected =
@@ -80,7 +80,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Everything:test_array_int_null_in" do
       go = get_function_introspection_data 'Everything', 'test_array_int_null_in'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected =
@@ -97,7 +97,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Everything:test_array_int_null_out" do
       go = get_function_introspection_data 'Everything', 'test_array_int_null_out'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected =
@@ -117,7 +117,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 
     should "build correct definition of Everything:test_utf8_nonconst_in" do
       go = get_function_introspection_data 'Everything', 'test_utf8_nonconst_in'
-      fbuilder = GirFFI::FunctionDefinitionBuilder.new go, Lib
+      fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
       expected =

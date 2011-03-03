@@ -2,7 +2,7 @@ require 'gir_ffi/builder_helper'
 module GirFFI
   # Builds a class based on information found in the introspection
   # repository.
-  class ClassBuilder
+  class Builder::Class
     include BuilderHelper
     def initialize namespace, classname
       @namespace = namespace
@@ -26,11 +26,11 @@ module GirFFI
       result = attach_and_define_method method, go, build_class
 
       unless result
-	if parent
-	  return superclass.gir_ffi_builder.setup_instance_method method
-	else
-	  return false
-	end
+        if parent
+          return superclass.gir_ffi_builder.setup_instance_method method
+        else
+          return false
+        end
       end
 
       true
@@ -43,7 +43,7 @@ module GirFFI
         end
       end
       if info.parent
-	return superclass.gir_ffi_builder.find_signal signal_name
+        return superclass.gir_ffi_builder.find_signal signal_name
       end
     end
 
@@ -51,42 +51,42 @@ module GirFFI
 
     def build_class
       unless defined? @klass
-	case info.type
-	when :object, :struct, :interface
-	  instantiate_struct_class
-	when :union
-	  instantiate_union_class
-	when :enum, :flags
-	  instantiate_enum_class
-	else
-	  raise NotImplementedError, "Cannot build classes of type #{info.type}"
-	end
+        case info.type
+        when :object, :struct, :interface
+          instantiate_struct_class
+        when :union
+          instantiate_union_class
+        when :enum, :flags
+          instantiate_enum_class
+        else
+          raise NotImplementedError, "Cannot build classes of type #{info.type}"
+        end
       end
       @klass
     end
 
     def info
       unless defined? @info
-	@info = gir.find_by_name @namespace, @classname
-	raise "Class #{@classname} not found in namespace #{@namespace}" if @info.nil?
+        @info = gir.find_by_name @namespace, @classname
+        raise "Class #{@classname} not found in namespace #{@namespace}" if @info.nil?
       end
       @info
     end
 
     def parent
       unless defined? @parent
-	@parent = info.type == :object ? info.parent : nil
+        @parent = info.type == :object ? info.parent : nil
       end
       @parent
     end
 
     def superclass
       unless defined? @superclass
-	if parent
-	  @superclass = Builder.build_class parent.namespace, parent.name
-	else
-	  @superclass = GirFFI::ClassBase
-	end
+        if parent
+          @superclass = Builder.build_class parent.namespace, parent.name
+        else
+          @superclass = GirFFI::ClassBase
+        end
       end
       @superclass
     end
@@ -113,8 +113,8 @@ module GirFFI
 
     def instantiate_enum_class
       @klass = optionally_define_constant namespace_module, @classname do
-	vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
-	lib.enum(@classname.to_sym, vals)
+        vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
+        lib.enum(@classname.to_sym, vals)
       end
     end
 
@@ -135,48 +135,48 @@ module GirFFI
 
     def layout_specification
       fields = if info.type == :interface
-		 []
-	       else
-		 info.fields
-	       end
+                 []
+               else
+                 info.fields
+               end
 
       if fields.empty?
-	if parent
-	  return [:parent, superclass.const_get(:Struct), 0]
-	else
-	  return [:dummy, :char, 0]
-	end
+        if parent
+          return [:parent, superclass.const_get(:Struct), 0]
+        else
+          return [:dummy, :char, 0]
+        end
       end
 
       fields.map do |finfo|
-	[ finfo.name.to_sym,
-	  itypeinfo_to_ffitype_for_struct(finfo.type),
-	  finfo.offset ]
+        [ finfo.name.to_sym,
+          itypeinfo_to_ffitype_for_struct(finfo.type),
+          finfo.offset ]
       end.flatten
     end
 
     def itypeinfo_to_ffitype_for_struct typeinfo
       ffitype = Builder.itypeinfo_to_ffitype typeinfo
       if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct
-	ffitype = ffitype.const_get :Struct
+        ffitype = ffitype.const_get :Struct
       end
       if ffitype == :bool
-	ffitype = :int
+        ffitype = :int
       end
       ffitype
     end
 
     def stub_methods
       info.methods.each do |minfo|
-	@klass.class_eval method_stub(minfo.name, minfo.method?)
+        @klass.class_eval method_stub(minfo.name, minfo.method?)
       end
     end
 
     def method_stub symbol, is_instance_method
       "
-	def #{is_instance_method ? '' : 'self.'}#{symbol} *args, &block
-	  setup_and_call :#{symbol}, *args, &block
-	end
+        def #{is_instance_method ? '' : 'self.'}#{symbol} *args, &block
+          setup_and_call :#{symbol}, *args, &block
+        end
       "
     end
 
@@ -185,23 +185,23 @@ module GirFFI
       return if getter.nil? or getter == "intern"
       lib.attach_function getter.to_sym, [], :size_t
       @klass.class_eval "
-	def self.get_gtype
-	  ::#{lib}.#{getter}
-	end
+        def self.get_gtype
+          ::#{lib}.#{getter}
+        end
       "
     end
 
     def setup_vfunc_invokers
       info.vfuncs.each do |vfinfo|
-	invoker = vfinfo.invoker
-	next if invoker.nil?
-	next if invoker.name == vfinfo.name
+        invoker = vfinfo.invoker
+        next if invoker.nil?
+        next if invoker.name == vfinfo.name
 
-	@klass.class_eval "
-	  def #{vfinfo.name} *args, &block
-	    #{invoker.name}(*args, &block)
-	  end
-	"
+        @klass.class_eval "
+          def #{vfinfo.name} *args, &block
+            #{invoker.name}(*args, &block)
+          end
+        "
       end
     end
 
@@ -209,7 +209,7 @@ module GirFFI
       return if info.find_method 'new'
 
       (class << @klass; self; end).class_eval {
-	alias_method :new, :allocate
+        alias_method :new, :allocate
       }
     end
 
@@ -232,7 +232,7 @@ module GirFFI
     end
 
     def function_definition go
-      FunctionDefinitionBuilder.new(go, lib).generate
+      Builder::Function.new(go, lib).generate
     end
 
     def attach_and_define_method method, go, modul
@@ -245,15 +245,15 @@ module GirFFI
 
     def gir
       unless defined? @gir
-	@gir = IRepository.default
-	@gir.require @namespace, nil
+        @gir = IRepository.default
+        @gir.require @namespace, nil
       end
       @gir
     end
 
     def get_or_define_class namespace, name, parent
       optionally_define_constant(namespace, name) {
-	Class.new parent
+        Class.new parent
       }
     end
 

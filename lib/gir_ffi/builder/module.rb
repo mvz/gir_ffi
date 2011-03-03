@@ -4,7 +4,7 @@ require 'gir_ffi/module_base'
 module GirFFI
   # Builds a module based on information found in the introspection
   # repository.
-  class ModuleBuilder
+  class Builder::Module
     include BuilderHelper
 
     def initialize namespace
@@ -39,9 +39,9 @@ module GirFFI
 
     def build_module
       unless defined? @module
-	instantiate_module
-	setup_lib_for_ffi
-	setup_module unless already_set_up
+        instantiate_module
+        setup_lib_for_ffi
+        setup_module unless already_set_up
       end
       @module
     end
@@ -54,8 +54,8 @@ module GirFFI
       @module.extend ModuleBase
       @module.const_set :GIR_FFI_BUILDER, self
       begin
-	require "gir_ffi/overrides/#{@namespace.downcase}"
-	@module.class_eval "include GirFFI::Overrides::#{@namespace}"
+        require "gir_ffi/overrides/#{@namespace.downcase}"
+        @module.class_eval "include GirFFI::Overrides::#{@namespace}"
       rescue LoadError
       end
     end
@@ -68,10 +68,10 @@ module GirFFI
       @lib = get_or_define_module @module, :Lib
 
       unless (class << @lib; self.include? FFI::Library; end)
-	@lib.extend FFI::Library
-	libs = gir.shared_library(@namespace).split(/,/)
-	@lib.ffi_lib_flags :global, :lazy
-	@lib.ffi_lib(*libs)
+        @lib.extend FFI::Library
+        libs = gir.shared_library(@namespace).split(/,/)
+        @lib.ffi_lib_flags :global, :lazy
+        @lib.ffi_lib(*libs)
       end
 
       optionally_define_constant(@lib, :CALLBACKS) { [] }
@@ -81,20 +81,20 @@ module GirFFI
       info = gir.find_by_name @namespace, function.to_s
 
       if info.type == :function
-	info
+        info
       else
-	nil
+        nil
       end
     end
 
     def function_definition info, libmodule
-      FunctionDefinitionBuilder.new(info, libmodule).generate
+      Builder::Function.new(info, libmodule).generate
     end
 
     def gir
       unless defined? @gir
-	@gir = IRepository.default
-	@gir.require @namespace, nil
+        @gir = IRepository.default
+        @gir.require @namespace, nil
       end
       @gir
     end

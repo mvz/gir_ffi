@@ -1,10 +1,10 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ModuleBuilderTest < Test::Unit::TestCase
-  context "The ModuleBuilder" do
+  context "The Builder::Module object" do
     context "for Gtk" do
       setup do
-	@mbuilder = GirFFI::ModuleBuilder.new('Gtk')
+	@mbuilder = GirFFI::Builder::Module.new('Gtk')
       end
 
       context "looking at Gtk.main" do
@@ -24,9 +24,9 @@ class ModuleBuilderTest < Test::Unit::TestCase
 	  @go = get_function_introspection_data 'Gtk', 'init'
 	end
 
-	should "delegate definition to FunctionDefinitionBuilder" do
+	should "delegate definition to Builder::Function" do
 	  code = @mbuilder.send :function_definition, @go, Lib
-	  expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
+	  expected = GirFFI::Builder::Function.new(@go, Lib).generate
 	  assert_equal cws(expected), cws(code)
 	end
       end
@@ -34,7 +34,7 @@ class ModuleBuilderTest < Test::Unit::TestCase
 
     context "for GObject" do
       setup do
-	@mbuilder = GirFFI::ModuleBuilder.new('GObject')
+	@mbuilder = GirFFI::Builder::Module.new('GObject')
       end
 
       context "looking at GObject.signal_connect_data" do
@@ -42,9 +42,9 @@ class ModuleBuilderTest < Test::Unit::TestCase
 	  @go = get_function_introspection_data 'GObject', 'signal_connect_data'
 	end
 
-	should "delegate definition to FunctionDefinitionBuilder" do
+	should "delegate definition to Builder::Function" do
 	  code = @mbuilder.send :function_definition, @go, Lib
-	  expected = GirFFI::FunctionDefinitionBuilder.new(@go, Lib).generate
+	  expected = GirFFI::Builder::Function.new(@go, Lib).generate
 	  assert_equal cws(expected), cws(code)
 	end
       end

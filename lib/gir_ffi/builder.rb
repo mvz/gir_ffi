@@ -1,8 +1,8 @@
 require 'gir_ffi/arg_helper'
-require 'gir_ffi/function_definition_builder'
+require 'gir_ffi/builder/function'
 require 'gir_ffi/class_base'
-require 'gir_ffi/class_builder'
-require 'gir_ffi/module_builder'
+require 'gir_ffi/builder/class'
+require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
 
 module GirFFI
@@ -12,11 +12,11 @@ module GirFFI
   module Builder
     extend BuilderHelper
     def self.build_class namespace, classname
-      ClassBuilder.new(namespace, classname).generate
+      Builder::Class.new(namespace, classname).generate
     end
 
     def self.build_module namespace
-      ModuleBuilder.new(namespace).generate
+      Builder::Module.new(namespace).generate
     end
 
     def self.attach_ffi_function lib, info

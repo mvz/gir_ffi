@@ -1,9 +1,9 @@
-require 'gir_ffi/argument_builder'
+require 'gir_ffi/builder/argument'
 
-module GirFFI
+module GirFFI::Builder
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
-  class FunctionDefinitionBuilder
+  class Function
     def initialize info, libmodule
       @info = info
       @libmodule = libmodule
@@ -11,8 +11,8 @@ module GirFFI
 
     def generate
       setup_accumulators
-      @data = @info.args.map {|arg| ArgumentBuilder.build self, arg, @libmodule}
-      @rvdata = ReturnValueBuilder.new self, @info
+      @data = @info.args.map {|arg| Argument.build self, arg, @libmodule}
+      @rvdata = ReturnValue.new self, @info
 
       alldata = @data.dup << @rvdata
 
@@ -35,7 +35,7 @@ module GirFFI
     end
 
     def adjust_accumulators
-      klass = @info.throws? ? ErrorHandlerBuilder : NullArgumentBuilder
+      klass = @info.throws? ? ErrorArgument : NullArgument
       @errarg = klass.new(self)
       @errarg.prepare
       @errarg.process

@@ -1,8 +1,8 @@
-module GirFFI
+module GirFFI::Builder
   # Abstract parent class of the argument building classes. These classes
-  # are used by FunctionDefinitionBuilder to create the code that processes
+  # are used by Builder::Function to create the code that processes
   # each argument before and after the actual function call.
-  class ArgumentBuilder
+  class Argument
     KEYWORDS = [
       "alias", "and", "begin", "break", "case", "class", "def", "do",
       "else", "elsif", "end", "ensure", "false", "for", "if", "in",
@@ -32,11 +32,11 @@ module GirFFI
     def self.build function_builder, arginfo, libmodule
       klass = case arginfo.direction
               when :inout
-                InOutArgumentBuilder
+                InOutArgument
               when :in
-                InArgumentBuilder
+                InArgument
               when :out
-                OutArgumentBuilder
+                OutArgument
               else
                 raise ArgumentError
               end
@@ -59,7 +59,7 @@ module GirFFI
   end
 
   # Implements argument processing for arguments with direction :in
-  class InArgumentBuilder < ArgumentBuilder
+  class InArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -137,7 +137,7 @@ module GirFFI
   end
 
   # Implements argument processing for arguments with direction :out
-  class OutArgumentBuilder < ArgumentBuilder
+  class OutArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -211,7 +211,7 @@ module GirFFI
   end
 
   # Implements argument processing for arguments with direction :inout
-  class InOutArgumentBuilder < ArgumentBuilder
+  class InOutArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -269,7 +269,7 @@ module GirFFI
   end
 
   # Implements argument processing for return values.
-  class ReturnValueBuilder < ArgumentBuilder
+  class ReturnValue < Argument
     attr_reader :cvar
 
     def prepare
@@ -363,7 +363,7 @@ module GirFFI
   # Implements argument processing for error handling arguments. These
   # arguments are not part of the introspected signature, but their
   # presence is indicated by the 'throws' attribute of the function.
-  class ErrorHandlerBuilder < ArgumentBuilder
+  class ErrorArgument < Argument
     def prepare
       @callarg = @function_builder.new_var
     end
@@ -375,7 +375,7 @@ module GirFFI
   end
 
   # Argument builder that does nothing. Implements Null Object pattern.
-  class NullArgumentBuilder < ArgumentBuilder
+  class NullArgument < Argument
     def prepare; end
     def process; end
   end

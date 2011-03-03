@@ -261,7 +261,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "know its own module builder" do
-	assert GirFFI::ModuleBuilder === Everything.gir_ffi_builder
+	assert GirFFI::Builder::Module === Everything.gir_ffi_builder
       end
     end
 
@@ -296,7 +296,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "know its own class builder" do
-	assert GirFFI::ClassBuilder === Everything::TestObj.gir_ffi_builder
+	assert GirFFI::Builder::Class === Everything::TestObj.gir_ffi_builder
       end
 
       context "its #torture_signature_0 method" do
