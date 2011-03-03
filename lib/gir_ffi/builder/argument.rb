@@ -40,14 +40,12 @@ module GirFFI::Builder
               else
                 raise ArgumentError
               end
-      klass.new function_builder, arginfo, libmodule
+      klass.build function_builder, arginfo, libmodule
     end
 
     def type
       @arginfo.type
     end
-
-    private
 
     def safe name
       if KEYWORDS.include? name
@@ -66,48 +64,44 @@ module GirFFI::Builder
       @inarg = @name
     end
 
+    def self.build function_builder, arginfo, libmodule
+      type = arginfo.type
+      klass = case type.tag
+              when :interface
+                if type.interface.type == :callback
+                  CallbackInArgument
+                else
+                  RegularInArgument
+                end
+              when :void
+                VoidInArgument
+              when :array
+                ArrayInArgument
+              when :utf8
+                Utf8InArgument
+              else
+                RegularInArgument
+              end
+      klass.new function_builder, arginfo, libmodule
+    end
+  end
+
+  class CallbackInArgument < InArgument
     def process
-      case @arginfo.type.tag
-      when :interface
-	process_interface_in_arg
-      when :void
-	process_void_in_arg
-      when :array
-	process_array_in_arg
-      when :utf8
-	process_utf8_in_arg
-      else
-	process_other_in_arg
-      end
+      iface = @arginfo.type.interface
+      @pre << "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}"
+      @pre << "::#{@libmodule}::CALLBACKS << #{@callarg}"
     end
+  end
 
-    private
-
-
-    def process_interface_in_arg
-      arg = @arginfo
-      type = arg.type
-
-      iface = type.interface
-      if iface.type == :callback
-	@pre << "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}"
-	@pre << "::#{@libmodule}::CALLBACKS << #{@callarg}"
-      else
-	@pre << "#{@callarg} = #{@inarg}"
-      end
-    end
-
-    def process_void_in_arg
+  class VoidInArgument < InArgument
+    def process
       @pre << "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}"
     end
+  end
 
-    def process_utf8_in_arg
-      @pre << "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}"
-      # TODO:
-      #@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
-    end
-
-    def process_array_in_arg
+  class ArrayInArgument < InArgument
+    def process
       arg = @arginfo
       type = arg.type
 
@@ -130,8 +124,19 @@ module GirFFI::Builder
 	end
       end
     end
+  end
 
-    def process_other_in_arg
+  class Utf8InArgument < InArgument
+    def process
+      @pre << "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}"
+      # TODO:
+      #@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+    end
+
+  end
+
+  class RegularInArgument < InArgument
+    def process
       @pre << "#{@callarg} = #{@name}"
     end
   end
@@ -153,6 +158,10 @@ module GirFFI::Builder
       else
 	process_other_out_arg
       end
+    end
+
+    def self.build function_builder, arginfo, libmodule
+      self.new function_builder, arginfo, libmodule
     end
 
     private
@@ -230,6 +239,10 @@ module GirFFI::Builder
       else
 	process_other_inout_arg
       end
+    end
+
+    def self.build function_builder, arginfo, libmodule
+      self.new function_builder, arginfo, libmodule
     end
 
     private
