@@ -149,24 +149,21 @@ module GirFFI::Builder
       @retname = @retval = @function_builder.new_var
     end
 
-    def process
-      case @arginfo.type.tag
-      when :interface
-	process_interface_out_arg
-      when :array
-	process_array_out_arg
-      else
-	process_other_out_arg
-      end
-    end
-
     def self.build function_builder, arginfo, libmodule
-      self.new function_builder, arginfo, libmodule
+      klass = case arginfo.type.tag
+              when :interface
+                InterfaceOutArgument
+              when :array
+                ArrayOutArgument
+              else
+                RegularOutArgument
+              end
+      klass.new function_builder, arginfo, libmodule
     end
+  end
 
-    private
-
-    def process_interface_out_arg
+  class InterfaceOutArgument < OutArgument
+    def process
       iface = @arginfo.type.interface
       klass = "#{iface.namespace}::#{iface.name}"
 
@@ -178,12 +175,13 @@ module GirFFI::Builder
 	@post << "#{@retval} = #{klass}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       end
     end
+  end
 
-    def process_array_out_arg
+  class ArrayOutArgument < OutArgument
+    def process
       @pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
 
-      arg = @arginfo
-      type = arg.type
+      type = @arginfo.type
       tag = type.param_type(0).tag
       size = type.array_fixed_size
       idx = type.array_length
@@ -199,7 +197,7 @@ module GirFFI::Builder
 
       @postpost << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
 
-      if arg.ownership_transfer == :everything
+      if @arginfo.ownership_transfer == :everything
 	if tag == :utf8
 	  @postpost << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{rv}"
 	else
@@ -207,8 +205,10 @@ module GirFFI::Builder
 	end
       end
     end
+  end
 
-    def process_other_out_arg
+  class RegularOutArgument < OutArgument
+    def process
       tag = @arginfo.type.tag
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_outptr"
       @post << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
@@ -216,7 +216,6 @@ module GirFFI::Builder
 	@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
     end
-
   end
 
   # Implements argument processing for arguments with direction :inout
