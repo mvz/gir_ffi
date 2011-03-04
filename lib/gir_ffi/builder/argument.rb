@@ -56,7 +56,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :in
+  # Implements argument processing for arguments with direction :in.
   class InArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
@@ -86,6 +86,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for callback arguments with direction
+  # :in.
   class CallbackInArgument < InArgument
     def process
       iface = @arginfo.type.interface
@@ -94,12 +96,15 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for void pointer arguments with
+  # direction :in.
   class VoidInArgument < InArgument
     def process
       @pre << "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}"
     end
   end
 
+  # Implements argument processing for array arguments with direction :in.
   class ArrayInArgument < InArgument
     def process
       type = @arginfo.type
@@ -125,6 +130,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for UTF8 string arguments with direction
+  # :in.
   class Utf8InArgument < InArgument
     def process
       @pre << "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}"
@@ -134,13 +141,16 @@ module GirFFI::Builder
 
   end
 
+  # Implements argument processing for arguments with direction :in whose
+  # type-specific processing is left to FFI (e.g., ints and floats, and
+  # objects that implement to_ptr.).
   class RegularInArgument < InArgument
     def process
       @pre << "#{@callarg} = #{@name}"
     end
   end
 
-  # Implements argument processing for arguments with direction :out
+  # Implements argument processing for arguments with direction :out.
   class OutArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
@@ -161,6 +171,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for interface arguments with direction
+  # :out (structs, objects, etc.).
   class InterfaceOutArgument < OutArgument
     def process
       iface = @arginfo.type.interface
@@ -176,6 +188,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for array arguments with direction
+  # :out.
   class ArrayOutArgument < OutArgument
     def process
       @pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
@@ -206,6 +220,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for arguments with direction
+  # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
     def process
       tag = @arginfo.type.tag
@@ -217,7 +233,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :inout
+  # Implements argument processing for arguments with direction :inout.
   class InOutArgument < Argument
     def prepare
       @name = safe(@arginfo.name)
@@ -242,6 +258,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for array arguments with direction
+  # :inout.
   class ArrayInOutArgument < InOutArgument
     def process
       tag = @arginfo.type.param_type(0).tag
@@ -265,6 +283,8 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for arguments with direction
+  # :inout that are neither arrays nor 'interfaces'.
   class RegularInOutArgument < InOutArgument
     def process
       tag = @arginfo.type.tag
@@ -310,11 +330,15 @@ module GirFFI::Builder
     end
   end
 
+  # Null object to represent the case where no actual values is returned.
   class VoidReturnValue < ReturnValue
     def prepare; end
     def process; end
   end
 
+  # Implements argument processing for interface return values (interfaces
+  # and structs, but not objects, which need special handling for
+  # polymorphism and constructors.
   class InterfaceReturnValue < ReturnValue
     def process
       type = @arginfo.return_type
@@ -327,6 +351,7 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
     def process
       interface = type.interface
@@ -355,6 +380,7 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for array return values.
   class ArrayReturnValue < ReturnValue
     def process
       type = @arginfo.return_type
@@ -373,6 +399,7 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for other return values.
   class RegularReturnValue < ReturnValue
     def process
       @retval = @cvar
