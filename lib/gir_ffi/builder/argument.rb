@@ -279,80 +279,69 @@ module GirFFI::Builder
     attr_reader :cvar
 
     def prepare
-      return if tag == :void
       @cvar = @function_builder.new_var
       @retval = @function_builder.new_var
-    end
-
-    def process
-      return if tag == :void
-
-      type = @arginfo.return_type
-
-      case tag
-      when :interface
-	process_interface_return_value type, @cvar
-      when :array
-	process_array_return_value type, @cvar
-      else
-	process_other_return_value
-      end
     end
 
     def type
       @arginfo.return_type
     end
 
-    private
+    def self.build function_builder, arginfo
+      type = arginfo.return_type
+      klass = case type.tag
+              when :void
+                VoidReturnValue
+              when :interface
+                case type.interface.type
+                when :interface, :struct
+                  InterfaceReturnValue
+                when :object
+                  ObjectReturnValue
+                else
+                  RegularReturnValue
+                end
+              when :array
+                ArrayReturnValue
+              else
+                RegularReturnValue
+              end
+      klass.new function_builder, arginfo, nil
+    end
+  end
 
-    def process_interface_return_value type, cvar
+  class VoidReturnValue < ReturnValue
+    def prepare; end
+    def process; end
+  end
+
+  class InterfaceReturnValue < ReturnValue
+    def process
+      type = @arginfo.return_type
       interface = type.interface
       namespace = interface.namespace
       name = interface.name
 
-      case interface.type
-      when :interface
-	GirFFI::Builder.build_class namespace, name
-	@post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-      when :object
-	if @arginfo.constructor?
-	  GirFFI::Builder.build_class namespace, name
-	  @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
-          if is_subclass_of_initially_unowned interface
-            @post << "GirFFI::GObject.object_ref_sink(#{@retval})"
-          end
-	else
-	  @post << "#{@retval} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})"
-	end
-      when :struct
-	GirFFI::Builder.build_class namespace, name
-	@post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{cvar})"
+      GirFFI::Builder.build_class namespace, name
+      @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
+    end
+  end
+
+  class ObjectReturnValue < ReturnValue
+    def process
+      interface = type.interface
+      namespace = interface.namespace
+      name = interface.name
+
+      if @arginfo.constructor?
+        GirFFI::Builder.build_class namespace, name
+        @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
+        if is_subclass_of_initially_unowned interface
+          @post << "GirFFI::GObject.object_ref_sink(#{@retval})"
+        end
       else
-	@post << "#{@retval} = #{cvar}"
+        @post << "#{@retval} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})"
       end
-    end
-
-    def process_array_return_value type, cvar
-      tag = type.param_type(0).tag
-      size = type.array_fixed_size
-      idx = type.array_length
-
-      if size > 0
-	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{size}"
-      elsif idx > -1
-	lendata = @length_arg #@data[idx]
-	rv = lendata.retval
-	lendata.retval = nil
-	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{cvar}, #{rv}"
-      end
-    end
-
-    def process_other_return_value
-      @retval = @cvar
-    end
-
-    def tag
-      type.tag
     end
 
     def is_subclass_of_initially_unowned interface
@@ -363,6 +352,30 @@ module GirFFI::Builder
       else
         false
       end
+    end
+  end
+
+  class ArrayReturnValue < ReturnValue
+    def process
+      type = @arginfo.return_type
+      tag = type.param_type(0).tag
+      size = type.array_fixed_size
+      idx = type.array_length
+
+      if size > 0
+	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{size}"
+      elsif idx > -1
+	lendata = @length_arg #@data[idx]
+	rv = lendata.retval
+	lendata.retval = nil
+	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{rv}"
+      end
+    end
+  end
+
+  class RegularReturnValue < ReturnValue
+    def process
+      @retval = @cvar
     end
   end
 

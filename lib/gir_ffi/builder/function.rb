@@ -12,7 +12,7 @@ module GirFFI::Builder
     def generate
       setup_accumulators
       @data = @info.args.map {|arg| Argument.build self, arg, @libmodule}
-      @rvdata = ReturnValue.new self, @info
+      @rvdata = ReturnValue.build self, @info
 
       alldata = @data.dup << @rvdata
 
