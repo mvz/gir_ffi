@@ -102,8 +102,7 @@ module GirFFI::Builder
 
   class ArrayInArgument < InArgument
     def process
-      arg = @arginfo
-      type = arg.type
+      type = @arginfo.type
 
       if type.array_fixed_size > 0
 	@pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{@inarg}, \"#{@inarg}\""
@@ -114,9 +113,9 @@ module GirFFI::Builder
 	@length_arg.pre.unshift "#{lenvar} = #{@inarg}.nil? ? 0 : #{@inarg}.length"
       end
 
-      tag = arg.type.param_type(0).tag.to_s.downcase
+      tag = @arginfo.type.param_type(0).tag.to_s.downcase
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{@inarg}"
-      unless arg.ownership_transfer == :everything
+      unless @arginfo.ownership_transfer == :everything
 	if tag == :utf8
 	  @post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
 	else
@@ -227,35 +226,28 @@ module GirFFI::Builder
       @retname = @retval = @function_builder.new_var
     end
 
-    def process
-      raise NotImplementedError unless @arginfo.ownership_transfer == :everything
-
-      case @arginfo.type.tag
-      when :interface
-	process_interface_inout_arg
-      when :array
-	process_array_inout_arg
-      else
-	process_other_inout_arg
-      end
-    end
-
     def self.build function_builder, arginfo, libmodule
-      self.new function_builder, arginfo, libmodule
+      raise NotImplementedError unless arginfo.ownership_transfer == :everything
+
+      klass = case arginfo.type.tag
+              when :interface
+                raise NotImplementedError
+              when :array
+                ArrayInOutArgument
+              else
+                RegularInOutArgument
+              end
+
+      klass.new function_builder, arginfo, libmodule
     end
+  end
 
-    private
-
-    def process_interface_inout_arg
-      raise NotImplementedError
-    end
-
-    def process_array_inout_arg
-      arg = @arginfo
-      tag = arg.type.param_type(0).tag
+  class ArrayInOutArgument < InOutArgument
+    def process
+      tag = @arginfo.type.param_type(0).tag
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{@inarg}"
-      if arg.type.array_length > -1
-	idx = arg.type.array_length
+      if @arginfo.type.array_length > -1
+	idx = @arginfo.type.array_length
 	rv = @length_arg.retval
 	@length_arg.retval = nil
 	lname = @length_arg.inarg
@@ -271,8 +263,10 @@ module GirFFI::Builder
 	raise NotImplementedError
       end
     end
+  end
 
-    def process_other_inout_arg
+  class RegularInOutArgument < InOutArgument
+    def process
       tag = @arginfo.type.tag
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{@inarg}"
       @post << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
