@@ -112,7 +112,6 @@ module GirFFI::Builder
       if type.array_fixed_size > 0
 	@pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{@inarg}, \"#{@inarg}\""
       elsif type.array_length > -1
-	idx = type.array_length
 	lenvar = @length_arg.inarg
 	@length_arg.inarg = nil
 	@length_arg.pre.unshift "#{lenvar} = #{@inarg}.nil? ? 0 : #{@inarg}.length"
@@ -195,18 +194,14 @@ module GirFFI::Builder
       @pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
 
       type = @arginfo.type
-      tag = type.param_type(0).tag
       size = type.array_fixed_size
-      idx = type.array_length
 
       if size <= 0
-	if idx > -1
-	  size = @length_arg.retval
-	  @length_arg.retval = nil
-	else
-	  raise NotImplementedError
-	end
+        size = @length_arg.retval
+        @length_arg.retval = nil
       end
+
+      tag = type.param_type(0).tag
 
       @postpost << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
 
@@ -264,8 +259,7 @@ module GirFFI::Builder
     def process
       tag = @arginfo.type.param_type(0).tag
       @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{@inarg}"
-      if @arginfo.type.array_length > -1
-	idx = @arginfo.type.array_length
+      if @length_arg
 	rv = @length_arg.retval
 	@length_arg.retval = nil
 	lname = @length_arg.inarg
@@ -341,8 +335,7 @@ module GirFFI::Builder
   # polymorphism and constructors.
   class InterfaceReturnValue < ReturnValue
     def process
-      type = @arginfo.return_type
-      interface = type.interface
+      interface = @arginfo.return_type.interface
       namespace = interface.namespace
       name = interface.name
 
@@ -354,11 +347,11 @@ module GirFFI::Builder
   # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
     def process
-      interface = type.interface
-      namespace = interface.namespace
-      name = interface.name
-
       if @arginfo.constructor?
+        interface = type.interface
+        namespace = interface.namespace
+        name = interface.name
+
         GirFFI::Builder.build_class namespace, name
         @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
         if is_subclass_of_initially_unowned interface
@@ -386,16 +379,13 @@ module GirFFI::Builder
       type = @arginfo.return_type
       tag = type.param_type(0).tag
       size = type.array_fixed_size
-      idx = type.array_length
 
-      if size > 0
-	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{size}"
-      elsif idx > -1
-	lendata = @length_arg #@data[idx]
-	rv = lendata.retval
-	lendata.retval = nil
-	@post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{rv}"
+      if size <= 0
+	size = @length_arg.retval
+	@length_arg.retval = nil
       end
+
+      @post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{size}"
     end
   end
 
