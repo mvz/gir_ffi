@@ -18,11 +18,6 @@ module GirFFI
       typed_array_to_inptr :int32, ary
     end
 
-    # TODO: Use alias.
-    def self.int_array_to_inptr ary
-      int32_array_to_inptr ary
-    end
-
     def self.int16_array_to_inptr ary
       typed_array_to_inptr :int16, ary
     end
@@ -52,6 +47,14 @@ module GirFFI
       end
     end
 
+    class << self
+      alias int_array_to_inptr int32_array_to_inptr
+      alias gint8_array_to_inptr int8_array_to_inptr
+      alias gint16_array_to_inptr int16_array_to_inptr
+      alias gint32_array_to_inptr int32_array_to_inptr
+      alias gint64_array_to_inptr int64_array_to_inptr
+    end
+
     def self.cleanup_ptr ptr
       LibC.free ptr
     end
@@ -75,8 +78,8 @@ module GirFFI
       ptrs.each { |ptr| LibC.free ptr }
     end
 
-    def self.int_to_inoutptr val
-      int_pointer.write_int val
+    def self.int32_to_inoutptr val
+      int32_pointer.write_int32 val
     end
 
     def self.utf8_to_inoutptr str
@@ -84,7 +87,7 @@ module GirFFI
       pointer_pointer.write_pointer sptr
     end
 
-    def self.int_array_to_inoutptr ary
+    def self.int32_array_to_inoutptr ary
       block = int_array_to_inptr ary
       pointer_pointer.write_pointer block
     end
@@ -104,8 +107,16 @@ module GirFFI
       double_pointer.put_double 0, val
     end
 
-    def self.int_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int)
+    class << self
+      alias int_to_inoutptr int32_to_inoutptr
+      alias gint32_to_inoutptr int32_to_inoutptr
+      alias int_array_to_inoutptr int32_array_to_inoutptr
+      alias gint32_array_to_inoutptr int32_array_to_inoutptr
+      alias gdouble_to_inoutptr double_to_inoutptr
+    end
+
+    def self.int32_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:int32)
     end
 
     def self.double_pointer
@@ -116,8 +127,14 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(:pointer)
     end
 
-    def self.int_outptr
-      int_pointer.write_int 0
+    class << self
+      alias int_pointer int32_pointer
+      alias gint32_pointer int32_pointer
+      alias gdouble_pointer double_pointer
+    end
+
+    def self.int32_outptr
+      int32_pointer.write_int32 0
     end
 
     def self.double_outptr
@@ -132,14 +149,20 @@ module GirFFI
       pointer_outptr
     end
 
+    class << self
+      alias int_outptr int32_outptr
+      alias gint32_outptr int32_outptr
+      alias gdouble_outptr double_outptr
+    end
+
     # Converts an outptr to a pointer.
     def self.outptr_to_pointer ptr
       ptr.read_pointer
     end
 
     # Converts an outptr to an int.
-    def self.outptr_to_int ptr
-      ptr.read_int
+    def self.outptr_to_int32 ptr
+      ptr.read_int32
     end
 
     # Converts an outptr to a string.
@@ -162,18 +185,31 @@ module GirFFI
     end
 
     # Converts an outptr to an array of int.
-    def self.outptr_to_int_array ptr, size
+    def self.outptr_to_int32_array ptr, size
       block = ptr.read_pointer
       return nil if block.null?
-      ptr_to_int_array block, size
+      ptr_to_int32_array block, size
     end
 
-    def self.ptr_to_int_array ptr, size
-      ptr.read_array_of_int(size)
+    class << self
+      alias outptr_to_int outptr_to_int32
+      alias outptr_to_int_array outptr_to_int32_array
+      alias outptr_to_gint32 outptr_to_int32
+      alias outptr_to_gint32_array outptr_to_int32_array
+      alias outptr_to_gdouble outptr_to_double
+    end
+
+    def self.ptr_to_int32_array ptr, size
+      ptr.read_array_of_int32(size)
     end
 
     def self.ptr_to_utf8 ptr
       ptr.null? ? nil : ptr.read_string
+    end
+
+    class << self
+      alias ptr_to_int_array ptr_to_int32_array
+      alias ptr_to_gint32_array ptr_to_int32_array
     end
 
     def self.wrap_in_callback_args_mapper namespace, name, prc
