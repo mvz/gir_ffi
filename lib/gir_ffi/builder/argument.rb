@@ -27,6 +27,7 @@ module GirFFI::Builder
       @postpost = []
       @function_builder = function_builder
       @libmodule = libmodule
+      @length_arg = nil
     end
 
     def self.build function_builder, arginfo, libmodule
@@ -53,6 +54,9 @@ module GirFFI::Builder
       else
 	name
       end
+    end
+
+    def process
     end
   end
 
@@ -89,55 +93,62 @@ module GirFFI::Builder
   # Implements argument processing for callback arguments with direction
   # :in.
   class CallbackInArgument < InArgument
-    def process
+    def pre
       iface = @arginfo.type.interface
-      @pre << "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}"
-      @pre << "::#{@libmodule}::CALLBACKS << #{@callarg}"
+      [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}",
+        "::#{@libmodule}::CALLBACKS << #{@callarg}" ]
     end
   end
 
   # Implements argument processing for void pointer arguments with
   # direction :in.
   class VoidInArgument < InArgument
-    def process
-      @pre << "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}"
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}" ]
     end
   end
 
   # Implements argument processing for array arguments with direction :in.
   class ArrayInArgument < InArgument
-    def process
-      type = @arginfo.type
+    def subtype_tag
+      @arginfo.type.param_type(0).tag.to_s.downcase
+    end
 
-      if type.array_fixed_size > 0
-	@pre << "GirFFI::ArgHelper.check_fixed_array_size #{type.array_fixed_size}, #{@inarg}, \"#{@inarg}\""
-      elsif type.array_length > -1
+    def post
+      unless @arginfo.ownership_transfer == :everything
+        if subtype_tag == :utf8
+          [ "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}" ]
+        else
+          [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+        end
+      end
+    end
+
+    def process
+      if not @length_arg
+	@pre << "GirFFI::ArgHelper.check_fixed_array_size #{@arginfo.type.array_fixed_size}, #{@inarg}, \"#{@inarg}\""
+      else
 	lenvar = @length_arg.inarg
 	@length_arg.inarg = nil
 	@length_arg.pre.unshift "#{lenvar} = #{@inarg}.nil? ? 0 : #{@inarg}.length"
       end
 
-      tag = @arginfo.type.param_type(0).tag.to_s.downcase
-      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_array_to_inptr #{@inarg}"
-      unless @arginfo.ownership_transfer == :everything
-	if tag == :utf8
-	  @post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
-	else
-	  @post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
-	end
-      end
+      @pre << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@inarg}"
     end
   end
 
   # Implements argument processing for UTF8 string arguments with direction
   # :in.
   class Utf8InArgument < InArgument
-    def process
-      @pre << "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}"
-      # TODO:
-      #@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
     end
 
+    def post
+      # TODO: Write tests and enable this.
+      # [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+      []
+    end
   end
 
   # Implements argument processing for arguments with direction :in whose
@@ -173,16 +184,24 @@ module GirFFI::Builder
   # Implements argument processing for interface arguments with direction
   # :out (structs, objects, etc.).
   class InterfaceOutArgument < OutArgument
-    def process
+    def klass
       iface = @arginfo.type.interface
-      klass = "#{iface.namespace}::#{iface.name}"
+      "#{iface.namespace}::#{iface.name}"
+    end
 
+    def pre
       if @arginfo.caller_allocates?
-	@pre << "#{@callarg} = #{klass}.allocate"
-	@post << "#{@retval} = #{@callarg}"
+	[ "#{@callarg} = #{klass}.allocate" ]
       else
-	@pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
-	@post << "#{@retval} = #{klass}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
+	[ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+      end
+    end
+
+    def post
+      if @arginfo.caller_allocates?
+	[ "#{@retval} = #{@callarg}" ]
+      else
+	[ "#{@retval} = #{klass}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
       end
     end
   end
@@ -190,9 +209,11 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :out.
   class ArrayOutArgument < OutArgument
-    def process
-      @pre << "#{@callarg} = GirFFI::ArgHelper.pointer_outptr"
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
 
+    def process
       type = @arginfo.type
       size = type.array_fixed_size
 
@@ -218,13 +239,21 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
-    def process
-      tag = @arginfo.type.tag
-      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_outptr"
-      @post << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
+    def type_tag
+      @arginfo.type.tag
+    end
+
+    def post
+      pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
       if @arginfo.ownership_transfer == :everything
-	@post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
+      pst
+    end
+
+    def process
+      tag = type_tag
+      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_outptr"
     end
   end
 
@@ -256,35 +285,48 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :inout.
   class ArrayInOutArgument < InOutArgument
-    def process
-      tag = @arginfo.type.param_type(0).tag
-      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_array_to_inoutptr #{@inarg}"
-      if @length_arg
-	rv = @length_arg.retval
-	@length_arg.retval = nil
-	lname = @length_arg.inarg
-	@length_arg.inarg = nil
-	@length_arg.pre.unshift "#{lname} = #{@inarg}.length"
-	@post << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{rv}"
-	if tag == :utf8
-	  @post << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{rv}"
-	else
-	  @post << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
-	end
+    def subtype_tag
+      @arginfo.type.param_type(0).tag
+    end
+
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@inarg}" ]
+    end
+
+    def post
+      tag = subtype_tag
+      pst = [ "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{@rv}" ]
+      if tag == :utf8
+        pst << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{@rv}"
       else
-	raise NotImplementedError
+        pst << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
       end
+      pst
+    end
+
+    def process
+      @rv = @length_arg.retval
+      @length_arg.retval = nil
+      lname = @length_arg.inarg
+      @length_arg.inarg = nil
+      @length_arg.pre.unshift "#{lname} = #{@inarg}.length"
     end
   end
 
   # Implements argument processing for arguments with direction
   # :inout that are neither arrays nor 'interfaces'.
   class RegularInOutArgument < InOutArgument
+    def type_tag
+      @arginfo.type.tag
+    end
+
+    def post
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}",
+        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+    end
+
     def process
-      tag = @arginfo.type.tag
-      @pre << "#{@callarg} = GirFFI::ArgHelper.#{tag}_to_inoutptr #{@inarg}"
-      @post << "#{@retval} = GirFFI::ArgHelper.outptr_to_#{tag} #{@callarg}"
-      @post << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+      @pre << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@inarg}"
     end
   end
 
@@ -334,32 +376,34 @@ module GirFFI::Builder
   # and structs, but not objects, which need special handling for
   # polymorphism and constructors.
   class InterfaceReturnValue < ReturnValue
-    def process
+    def post
       interface = @arginfo.return_type.interface
       namespace = interface.namespace
       name = interface.name
 
       GirFFI::Builder.build_class namespace, name
-      @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
+      [ "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})" ]
     end
   end
 
   # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
-    def process
+    def post
+      pst = []
       if @arginfo.constructor?
         interface = type.interface
         namespace = interface.namespace
         name = interface.name
 
         GirFFI::Builder.build_class namespace, name
-        @post << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
+        pst << "#{@retval} = ::#{namespace}::#{name}.wrap(#{@cvar})"
         if is_subclass_of_initially_unowned interface
-          @post << "GirFFI::GObject.object_ref_sink(#{@retval})"
+          pst << "GirFFI::GObject.object_ref_sink(#{@retval})"
         end
       else
-        @post << "#{@retval} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})"
+        pst << "#{@retval} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})"
       end
+      pst
     end
 
     def is_subclass_of_initially_unowned interface
@@ -375,17 +419,22 @@ module GirFFI::Builder
 
   # Implements argument processing for array return values.
   class ArrayReturnValue < ReturnValue
+    def subtype_tag
+      @arginfo.return_type.param_type(0).tag
+    end
+
+    def post
+      [ "#{@retval} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{@size}" ]
+    end
+
     def process
       type = @arginfo.return_type
-      tag = type.param_type(0).tag
-      size = type.array_fixed_size
+      @size = type.array_fixed_size
 
-      if size <= 0
-	size = @length_arg.retval
+      if @size <= 0
+	@size = @length_arg.retval
 	@length_arg.retval = nil
       end
-
-      @post << "#{@retval} = GirFFI::ArgHelper.ptr_to_#{tag}_array #{@cvar}, #{size}"
     end
   end
 
@@ -404,9 +453,12 @@ module GirFFI::Builder
       @callarg = @function_builder.new_var
     end
 
-    def process
-      @pre << "#{@callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
-      @post << "GirFFI::ArgHelper.check_error(#{@callarg})"
+    def pre
+      [ "#{@callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
+    end
+
+    def post
+      [ "GirFFI::ArgHelper.check_error(#{@callarg})" ]
     end
   end
 
