@@ -11,9 +11,9 @@ module GirFFI::Builder
       "until", "when", "while", "yield"
     ]
 
-    attr_reader :arginfo, :callarg, :pre, :post, :postpost, :name, :retname
+    attr_reader :callarg, :name, :retname
 
-    attr_accessor :length_arg, :inarg, :retval, :length_arg_for
+    attr_accessor :length_arg, :length_arg_for
 
     def initialize function_builder, arginfo=nil, libmodule=nil
       @arginfo = arginfo
@@ -21,9 +21,6 @@ module GirFFI::Builder
       @callarg = nil
       @retname = nil
       @name = nil
-      @pre = []
-      @post = []
-      @postpost = []
       @function_builder = function_builder
       @libmodule = libmodule
       @length_arg = nil
@@ -63,6 +60,18 @@ module GirFFI::Builder
     def retval
       @length_arg_for.nil? ? @retname : nil
     end
+
+    def pre
+      []
+    end
+
+    def post
+      []
+    end
+
+    def postpost
+      []
+    end
   end
 
   # Implements argument processing for arguments with direction :in.
@@ -100,7 +109,7 @@ module GirFFI::Builder
   class CallbackInArgument < InArgument
     def pre
       iface = @arginfo.type.interface
-      [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@inarg}",
+      [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
         "::#{@libmodule}::CALLBACKS << #{@callarg}" ]
     end
   end
@@ -109,7 +118,7 @@ module GirFFI::Builder
   # direction :in.
   class VoidInArgument < InArgument
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@inarg}" ]
+      [ "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
     end
   end
 
@@ -132,9 +141,9 @@ module GirFFI::Builder
     def pre
       pr = []
       if not @length_arg
-        pr << "GirFFI::ArgHelper.check_fixed_array_size #{@arginfo.type.array_fixed_size}, #{@inarg}, \"#{@inarg}\""
+        pr << "GirFFI::ArgHelper.check_fixed_array_size #{@arginfo.type.array_fixed_size}, #{@name}, \"#{@name}\""
       end
-      pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@inarg}"
+      pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
       pr
     end
   end
@@ -298,7 +307,7 @@ module GirFFI::Builder
     end
 
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@inarg}" ]
+      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
 
     def post
@@ -331,7 +340,7 @@ module GirFFI::Builder
       if @length_arg_for
         pr << "#{@name} = #{@length_arg_for.name}.length"
       end
-      pr << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@inarg}"
+      pr << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@name}"
       pr
     end
   end
@@ -369,6 +378,10 @@ module GirFFI::Builder
                 RegularReturnValue
               end
       klass.new function_builder, arginfo, nil
+    end
+
+    def inarg
+      nil
     end
   end
 
