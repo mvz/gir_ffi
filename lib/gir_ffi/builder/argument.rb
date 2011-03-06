@@ -368,7 +368,11 @@ module GirFFI::Builder
                 when :interface, :struct
                   InterfaceReturnValue
                 when :object
-                  ObjectReturnValue
+                  if arginfo.constructor?
+                    ConstructorReturnValue
+                  else
+                    ObjectReturnValue
+                  end
                 else
                   RegularReturnValue
                 end
@@ -407,31 +411,19 @@ module GirFFI::Builder
   # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
     def post
-      pst = []
-      if @arginfo.constructor?
-        interface = type.interface
-        namespace = interface.namespace
-        name = interface.name
-
-        GirFFI::Builder.build_class namespace, name
-        pst << "#{@retname} = ::#{namespace}::#{name}.wrap(#{@cvar})"
-        if is_subclass_of_initially_unowned interface
-          pst << "GirFFI::GObject.object_ref_sink(#{@retname})"
-        end
-      else
-        pst << "#{@retname} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})"
-      end
-      pst
+      [ "#{@retname} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})" ]
     end
+  end
 
-    def is_subclass_of_initially_unowned interface
-      if interface.namespace == "GObject" and interface.name == "InitiallyUnowned"
-        true
-      elsif interface.parent
-        is_subclass_of_initially_unowned interface.parent
-      else
-        false
-      end
+  # Implements argument processing for object constructors.
+  class ConstructorReturnValue < ReturnValue
+    def post
+      interface = type.interface
+      namespace = interface.namespace
+      name = interface.name
+
+      GirFFI::Builder.build_class namespace, name
+      [ "#{@retname} = ::#{namespace}::#{name}.constructor_wrap(#{@cvar})" ]
     end
   end
 

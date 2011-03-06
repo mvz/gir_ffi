@@ -4,6 +4,8 @@ module GirFFI
 
       def self.included(base)
 	base.extend ClassMethods
+        klass = base.gir_ffi_builder.build_class :InitiallyUnowned
+        klass.extend InitiallyUnownedClassMethods
       end
 
       module ClassMethods
@@ -172,6 +174,12 @@ module GirFFI
 
 	  return result
 	end
+      end
+
+      module InitiallyUnownedClassMethods
+        def constructor_wrap ptr
+          super.tap {|obj| GirFFI::GObject.object_ref_sink obj}
+        end
       end
 
     end
