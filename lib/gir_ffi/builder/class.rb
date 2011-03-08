@@ -42,7 +42,7 @@ module GirFFI
           return sig if sig.name == signal_name
         end
       end
-      if info.parent
+      if parent
         return superclass.gir_ffi_builder.find_signal signal_name
       end
     end
@@ -75,7 +75,16 @@ module GirFFI
 
     def parent
       unless defined? @parent
-        @parent = info.type == :object ? info.parent : nil
+        if info.type == :object
+	  pr = info.parent
+	  if pr.name == @classname and pr.namespace == @namespace
+	    @parent = nil
+	  else
+	    @parent = pr
+	  end
+	else
+	  @parent = nil
+	end
       end
       @parent
     end
