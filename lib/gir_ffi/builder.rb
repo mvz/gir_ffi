@@ -10,6 +10,15 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
+    TAG_TYPE_MAP = {
+      :boolean => :bool,
+      :GType => :size_t,
+      :size => :size_t,
+      :guint32 => :uint32,
+      :gint32 => :int32,
+      :guint16 => :uint16,
+      :guint8 => :uint8
+    }
     extend BuilderHelper
     def self.build_class namespace, classname
       Builder::Class.new(namespace, classname).generate
@@ -64,12 +73,12 @@ module GirFFI
 	else
 	  raise NotImplementedError
 	end
-      when :boolean
-	return :bool
-      when :GType, :size
-	return :size_t
       else
-	return tag
+        if TAG_TYPE_MAP[tag]
+	  return TAG_TYPE_MAP[tag]
+	else
+	  return tag
+	end
       end
     end
 
