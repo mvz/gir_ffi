@@ -79,7 +79,7 @@ module GirFFI
       unless defined? @parent
         if info.type == :object
 	  pr = info.parent
-	  if pr.name == @classname and pr.namespace == @namespace
+	  if pr.nil? or (pr.name == @classname and pr.namespace == @namespace)
 	    @parent = nil
 	  else
 	    @parent = pr
