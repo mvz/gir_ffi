@@ -11,6 +11,7 @@ module GirFFI
   # to create the modules and classes used in your program.
   module Builder
     TAG_TYPE_MAP = {
+      :gboolean => :bool,
       :boolean => :bool,
       :GType => :size_t,
       :size => :size_t,
