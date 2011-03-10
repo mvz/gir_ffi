@@ -10,17 +10,25 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
+    extend BuilderHelper
+
     TAG_TYPE_MAP = {
-      :gboolean => :bool,
       :boolean => :bool,
       :GType => :size_t,
       :size => :size_t,
-      :guint32 => :uint32,
-      :gint32 => :int32,
+      :gboolean => :bool,
+      :gint8 => :int8,
+      :guint8 => :uint8,
+      :gint16 => :int16,
       :guint16 => :uint16,
-      :guint8 => :uint8
+      :gint32 => :int32,
+      :guint32 => :uint32,
+      :gint64 => :int64,
+      :guint64 => :uint64,
+      :gfloat => :float,
+      :gdouble => :double,
     }
-    extend BuilderHelper
+
     def self.build_class namespace, classname
       Builder::Class.new(namespace, classname).generate
     end
