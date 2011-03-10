@@ -4,8 +4,11 @@ module GirFFI
 
       def self.included(base)
 	base.extend ClassMethods
-        klass = base.gir_ffi_builder.build_class :InitiallyUnowned
-        klass.extend InitiallyUnownedClassMethods
+        base::InitiallyUnowned.extend InitiallyUnownedClassMethods
+        base::Lib.attach_function :g_signal_connect_data,
+          [:pointer, :string, base::Callback, :pointer, base::ClosureNotify,
+            base::ConnectFlags],
+          :ulong
       end
 
       module ClassMethods
@@ -70,8 +73,11 @@ module GirFFI
 
 	  callback = FFI::Function.new rettype, argtypes,
 	    &(Helper.signal_callback_args(sig, object.class, &block))
+          ::GObject::Lib::CALLBACKS << callback
 
-	  signal_connect_data object, signal, callback, data, nil, 0
+          data_ptr = GirFFI::ArgHelper.object_to_inptr data
+
+	  ::GObject::Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
 	end
       end
 
