@@ -35,12 +35,20 @@ module GirFFI
     def name
       Lib.g_base_info_get_name @gobj
     end
+
     def type
       Lib.g_base_info_get_type @gobj
     end
+
     def namespace
       Lib.g_base_info_get_namespace @gobj
     end
+
+    def container
+      ptr = Lib.g_base_info_get_container @gobj
+      IRepository.wrap_ibaseinfo_pointer ptr
+    end
+
     def deprecated?
       Lib.g_base_info_is_deprecated @gobj
     end
