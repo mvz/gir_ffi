@@ -3,6 +3,7 @@ module GirFFI
   # Base class for all generated classes. Contains code for dealing with
   # the generated Struct classes.
   class ClassBase
+    # TODO: Make separate base for :struct, :union, :object.
     extend Forwardable
     def_delegators :@struct, :[], :[]=, :to_ptr
 
@@ -49,6 +50,11 @@ module GirFFI
       def wrap ptr
 	return nil if ptr.nil? or ptr.null?
 	_real_new ptr
+      end
+
+      # TODO: Only makes sense for :objects.
+      def constructor_wrap ptr
+        wrap ptr
       end
 
       def allocate

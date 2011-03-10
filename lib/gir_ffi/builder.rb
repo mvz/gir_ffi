@@ -36,8 +36,6 @@ module GirFFI
       lib.attach_function sym, argtypes, rt
     end
 
-    # All methods below will be made private at the end.
-
     def self.ffi_function_argument_types info
       types = info.args.map do |arg|
 	tp = iarginfo_to_ffitype arg
@@ -65,14 +63,7 @@ module GirFFI
       case tag
       when :interface
 	interface = info.interface
-	case interface.type
-	when :object, :struct, :flags, :enum
-	  return build_class interface.namespace, interface.name
-	when :callback
-	  return build_callback interface
-	else
-	  raise NotImplementedError
-	end
+        return build_class interface.namespace, interface.name
       else
         if TAG_TYPE_MAP[tag]
 	  return TAG_TYPE_MAP[tag]
@@ -100,13 +91,5 @@ module GirFFI
 	lib.callback sym, args, ret
       end
     end
-
-    # Set up method access.
-    (self.public_methods - Module.public_methods).each do |method|
-      private_class_method method.to_sym
-    end
-    public_class_method :build_module, :build_class
-    public_class_method :itypeinfo_to_ffitype
-    public_class_method :attach_ffi_function
   end
 end

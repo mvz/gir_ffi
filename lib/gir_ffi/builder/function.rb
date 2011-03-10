@@ -19,10 +19,11 @@ module GirFFI::Builder
       alldata.each {|data|
         data.prepare
 	idx = data.type.array_length
-        data.length_arg = @data[idx] if idx > -1
+        if idx > -1
+          data.length_arg = @data[idx] 
+          @data[idx].length_arg_for = data
+        end
       }
-
-      alldata.each {|data| data.process }
 
       adjust_accumulators
       return filled_out_template
@@ -38,7 +39,6 @@ module GirFFI::Builder
       klass = @info.throws? ? ErrorArgument : NullArgument
       @errarg = klass.new(self)
       @errarg.prepare
-      @errarg.process
     end
 
     def filled_out_template

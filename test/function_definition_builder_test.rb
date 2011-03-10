@@ -71,7 +71,7 @@ class FunctionDefinitionBuilderTest < Test::Unit::TestCase
 	  _v4 = FFI::MemoryPointer.new(:pointer).write_pointer nil
 	  _v2 = ::Lib.test_obj_new_from_file _v1, _v4
 	  GirFFI::ArgHelper.check_error(_v4)
-	  _v3 = ::Everything::TestObj.wrap(_v2)
+	  _v3 = ::Everything::TestObj.constructor_wrap(_v2)
 	  return _v3
 	end"
 

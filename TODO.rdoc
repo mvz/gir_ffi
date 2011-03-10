@@ -25,6 +25,16 @@ overrides will have to be used for the cases where the 'gpointer' actually
 needs to be a GObject. I consider it an omission in GIRepository that these
 two cases are not distinguished.
 
+Update: generic pointers have been declared 'not introspectable', so
+handling them can be removed.
+
+== Check binding of GObject:
+
+(11:37:03 PM) walters: the basic story is that GObject should be manually bound
+(11:47:02 PM) ebassi: the really necessary bits are: GObject/GInitiallyUnowned memory management; properties accessors; GSignal connection API
+(11:47:15 PM) ebassi: the rest is "nice to have"
+(11:47:37 PM) ebassi: oh, and probably GBinding - but that's just because I wrote it ;-)
+
 == Compatibility with all implementations.
 
 Currently, there are the following incompatibilities:
