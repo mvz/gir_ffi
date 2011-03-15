@@ -24,4 +24,7 @@ Regress-1.0.gir: libregress.la Makefile
 Regress-1.0.typelib: Regress-1.0.gir Makefile
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-all: Regress-1.0.typelib
+.la.so:
+	test -L $@ || $(LN_S) .libs/$@ $@
+
+all: $(testlib_LTLIBRARIES:.la=.so) Regress-1.0.typelib
