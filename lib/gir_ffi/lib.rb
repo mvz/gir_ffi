@@ -9,6 +9,7 @@ module GirFFI
     enum :IRepositoryLoadFlags, [:LAZY, (1<<0)]
 
     attach_function :g_irepository_get_default, [], :pointer
+    attach_function :g_irepository_prepend_search_path, [:string], :void
     attach_function :g_irepository_require,
       [:pointer, :string, :string, :IRepositoryLoadFlags, :pointer],
       :pointer
