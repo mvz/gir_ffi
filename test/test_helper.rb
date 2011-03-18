@@ -26,6 +26,21 @@ module DummyGtk
 end
 
 DummyGtk.init
+GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
+module GirFFI
+  class IRepository
+    def shared_library_with_regress namespace
+      if namespace == "Regress"
+	return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
+      else
+	return shared_library_without_regress namespace
+      end
+    end
+
+    alias shared_library_without_regress shared_library
+    alias shared_library shared_library_with_regress
+  end
+end
 
 # Need a dummy module for some tests.
 module Lib
