@@ -32,14 +32,14 @@ class ModuleBuilderTest < Test::Unit::TestCase
       end
     end
 
-    context "for GObject" do
+    context "for Regress" do
       setup do
-	@mbuilder = GirFFI::Builder::Module.new('GObject')
+	@mbuilder = GirFFI::Builder::Module.new('Regress')
       end
 
-      context "looking at GObject.signal_connect_data" do
+      context "looking at Regress.test_callback_destroy_notify" do
 	setup do
-	  @go = get_function_introspection_data 'GObject', 'signal_connect_data'
+	  @go = get_function_introspection_data 'Regress', 'test_callback_destroy_notify'
 	end
 
 	should "delegate definition to Builder::Function" do
