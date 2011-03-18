@@ -120,13 +120,13 @@ class ArgHelperTest < Test::Unit::TestCase
 
   context "The object_pointer_to_object method" do
     setup do
-      GirFFI.setup :Everything
-      @o = Everything::TestSubObj.new
+      GirFFI.setup :Regress
+      @o = Regress::TestSubObj.new
       @o2 = GirFFI::ArgHelper.object_pointer_to_object @o.to_ptr
     end
 
     should "return an object of the correct class" do
-      assert_instance_of Everything::TestSubObj, @o2
+      assert_instance_of Regress::TestSubObj, @o2
     end
 
     should "return an object pointing to the original struct" do
