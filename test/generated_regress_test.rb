@@ -1,49 +1,50 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-# Tests generated methods and functions in the Everything namespace.
-class GeneratedEverythingTest < Test::Unit::TestCase
-  context "The generated Everything module" do
+# Tests generated methods and functions in the Regress namespace.
+class GeneratedRegressTest < Test::Unit::TestCase
+  context "The generated Regress module" do
     setup do
-      GirFFI.setup :Everything
+      GirFFI.setup :Regress
       GirFFI.setup :GObject
       GirFFI.setup :GLib
+      GirFFI.setup :Gtk
     end
 
-    context "the Everything::TestBoxed class" do
+    context "the Regress::TestBoxed class" do
       should "create an instance using #new" do
-	tb = Everything::TestBoxed.new
-	assert_instance_of Everything::TestBoxed, tb
+	tb = Regress::TestBoxed.new
+	assert_instance_of Regress::TestBoxed, tb
       end
 
       should "create an instance using #new_alternative_constructor1" do
-	tb = Everything::TestBoxed.new_alternative_constructor1 1
-	assert_instance_of Everything::TestBoxed, tb
+	tb = Regress::TestBoxed.new_alternative_constructor1 1
+	assert_instance_of Regress::TestBoxed, tb
 	assert_equal 1, tb[:some_int8]
       end
 
       should "create an instance using #new_alternative_constructor2" do
-	tb = Everything::TestBoxed.new_alternative_constructor2 1, 2
-	assert_instance_of Everything::TestBoxed, tb
+	tb = Regress::TestBoxed.new_alternative_constructor2 1, 2
+	assert_instance_of Regress::TestBoxed, tb
 	assert_equal 1 + 2, tb[:some_int8]
       end
 
       should "create an instance using #new_alternative_constructor3" do
-	tb = Everything::TestBoxed.new_alternative_constructor3 "54"
-	assert_instance_of Everything::TestBoxed, tb
+	tb = Regress::TestBoxed.new_alternative_constructor3 "54"
+	assert_instance_of Regress::TestBoxed, tb
 	assert_equal 54, tb[:some_int8]
       end
 
       should "have non-zero positive result for #get_gtype" do
-	assert Everything::TestBoxed.get_gtype > 0
+	assert Regress::TestBoxed.get_gtype > 0
       end
 
       context "an instance" do
 	setup do
-	  @tb = Everything::TestBoxed.new_alternative_constructor1 123
+	  @tb = Regress::TestBoxed.new_alternative_constructor1 123
 	end
 
 	should "have a working equals method" do
-	  tb2 = Everything::TestBoxed.new_alternative_constructor2 120, 3
+	  tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
 	  assert_equal true, @tb.equals(tb2)
 	end
 
@@ -53,7 +54,7 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 	  end
 
 	  should "return an instance of TestBoxed" do
-	    assert_instance_of Everything::TestBoxed, @tb2
+	    assert_instance_of Regress::TestBoxed, @tb2
 	  end
 
 	  should "copy fields" do
@@ -68,18 +69,18 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       end
     end
 
-    context "the Everything::TestEnum type" do
+    context "the Regress::TestEnum type" do
       should "be of type FFI::Enum" do
-	assert_instance_of FFI::Enum, Everything::TestEnum
+	assert_instance_of FFI::Enum, Regress::TestEnum
       end
     end
 
     # TestFlags
 
-    context "the Everything::TestFloating class" do
+    context "the Regress::TestFloating class" do
       context "an instance" do
 	setup do
-	  @o = Everything::TestFloating.new
+	  @o = Regress::TestFloating.new
 	end
 
 	should "have a reference count of 1" do
@@ -92,39 +93,39 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       end
     end
 
-    context "the Everything::TestObj class" do
+    context "the Regress::TestObj class" do
       should "create an instance using #new_from_file" do
-	o = Everything::TestObj.new_from_file("foo")
-	assert_instance_of Everything::TestObj, o
+	o = Regress::TestObj.new_from_file("foo")
+	assert_instance_of Regress::TestObj, o
       end
 
       should "create an instance using #new_callback" do
-	o = Everything::TestObj.new_callback Proc.new { }, nil, nil
-	assert_instance_of Everything::TestObj, o
+	o = Regress::TestObj.new_callback Proc.new { }, nil, nil
+	assert_instance_of Regress::TestObj, o
       end
 
       should "have a working #static_method" do
-	rv = Everything::TestObj.static_method 623
+	rv = Regress::TestObj.static_method 623
 	assert_equal 623.0, rv
       end
 
       context "#static_method_callback" do
         should "work when called with a Proc" do
           a = 1
-          Everything::TestObj.static_method_callback Proc.new { a = 2 }
+          Regress::TestObj.static_method_callback Proc.new { a = 2 }
           assert_equal 2, a
         end
 
         should "work when called with nil" do
           assert_nothing_raised do
-            Everything::TestObj.static_method_callback nil
+            Regress::TestObj.static_method_callback nil
           end
         end
       end
 
       context "an instance" do
 	setup do
-	  @o = Everything::TestObj.new_from_file("foo")
+	  @o = Regress::TestObj.new_from_file("foo")
 	end
 
 	should "have a reference count of 1" do
@@ -141,7 +142,7 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 	end
 
 	should "have a working #set_bare method" do
-	  obj = Everything::TestObj.new_from_file("bar")
+	  obj = Regress::TestObj.new_from_file("bar")
 	  rv = @o.set_bare obj
 	  # TODO: What is the correct value to retrieve from the fields?
 	  assert_equal obj.to_ptr, @o[:bare]
@@ -184,15 +185,15 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       end
     end
 
-    context "the Everything::TestSimpleBoxedA class" do
+    context "the Regress::TestSimpleBoxedA class" do
       should "create an instance using #new" do
-	obj = Everything::TestSimpleBoxedA.new
-	assert_instance_of Everything::TestSimpleBoxedA, obj
+	obj = Regress::TestSimpleBoxedA.new
+	assert_instance_of Regress::TestSimpleBoxedA, obj
       end
 
       context "an instance" do
 	setup do
-	  @obj = Everything::TestSimpleBoxedA.new
+	  @obj = Regress::TestSimpleBoxedA.new
 	  @obj[:some_int] = 4236
 	  @obj[:some_int8] = 36
 	  @obj[:some_double] = 23.53
@@ -201,7 +202,7 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 
 	context "its equals method" do
 	  setup do
-	    @ob2 = Everything::TestSimpleBoxedA.new
+	    @ob2 = Regress::TestSimpleBoxedA.new
 	    @ob2[:some_int] = 4236
 	    @ob2[:some_int8] = 36
 	    @ob2[:some_double] = 23.53
@@ -229,7 +230,7 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 	  end
 
 	  should "return an instance of TestSimpleBoxedA" do
-	    assert_instance_of Everything::TestSimpleBoxedA, @ob2
+	    assert_instance_of Regress::TestSimpleBoxedA, @ob2
 	  end
 
 	  should "copy fields" do
@@ -247,10 +248,10 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       end
     end
 
-    context "the Everything::TestStructA class" do
+    context "the Regress::TestStructA class" do
       context "an instance" do
 	should "have a working clone method" do
-	  a = Everything::TestStructA.new
+	  a = Regress::TestStructA.new
 	  a[:some_int] = 2556
 	  a[:some_int8] = -10
 	  a[:some_double] = 1.03455e20
@@ -270,19 +271,19 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     # TestStructC
     # TestSubObj
 
-    context "the Everything::TestWi8021x class" do
+    context "the Regress::TestWi8021x class" do
       should "create an instance using #new" do
-	o = Everything::TestWi8021x.new
-	assert_instance_of Everything::TestWi8021x, o
+	o = Regress::TestWi8021x.new
+	assert_instance_of Regress::TestWi8021x, o
       end
 
       should "have a working #static_method" do
-	assert_equal(-84, Everything::TestWi8021x.static_method(-42))
+	assert_equal(-84, Regress::TestWi8021x.static_method(-42))
       end
 
       context "an instance" do
 	setup do
-	  @obj = Everything::TestWi8021x.new
+	  @obj = Regress::TestWi8021x.new
 	end
 
 	should "set its boolean struct member with #set_testbool" do
@@ -313,103 +314,98 @@ class GeneratedEverythingTest < Test::Unit::TestCase
 
     context "test_array_fixed_size_int_in" do
       should "return the correct result" do
-	assert_equal 5 + 4 + 3 + 2 + 1, Everything.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
+	assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
       end
 
       should "raise an error when called with the wrong number of arguments" do
 	assert_raises ArgumentError do
-	  Everything.test_array_fixed_size_int_in [2]
+	  Regress.test_array_fixed_size_int_in [2]
 	end
       end
     end
 
     should "have correct test_array_fixed_size_int_out" do
-      assert_equal [0, 1, 2, 3, 4], Everything.test_array_fixed_size_int_out
+      assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out
     end
 
     should "have correct test_array_fixed_size_int_return" do
-      assert_equal [0, 1, 2, 3, 4], Everything.test_array_fixed_size_int_return
+      assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_return
     end
 
     should "have correct test_array_gint16_in" do
-      assert_equal 5 + 4 + 3, Everything.test_array_gint16_in([5, 4, 3])
+      assert_equal 5 + 4 + 3, Regress.test_array_gint16_in([5, 4, 3])
     end
 
     should "have correct test_array_gint32_in" do
-      assert_equal 5 + 4 + 3, Everything.test_array_gint32_in([5, 4, 3])
+      assert_equal 5 + 4 + 3, Regress.test_array_gint32_in([5, 4, 3])
     end
 
     should "have correct test_array_gint64_in" do
-      assert_equal 5 + 4 + 3, Everything.test_array_gint64_in([5, 4, 3])
+      assert_equal 5 + 4 + 3, Regress.test_array_gint64_in([5, 4, 3])
     end
 
     should "have correct test_array_gint8_in" do
-      assert_equal 5 + 4 + 3, Everything.test_array_gint8_in([5, 4, 3])
+      assert_equal 5 + 4 + 3, Regress.test_array_gint8_in([5, 4, 3])
     end
 
     should "have correct test_array_gtype_in" do
       t1 = GObject.type_from_name "gboolean"
       t2 = GObject.type_from_name "gint64"
-      assert_equal "[gboolean,gint64,]", Everything.test_array_gtype_in([t1, t2])
+      assert_equal "[gboolean,gint64,]", Regress.test_array_gtype_in([t1, t2])
     end
 
     should "have correct test_array_int_full_out" do
-      assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_full_out
+      assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_full_out
     end
 
     should "have correct test_array_int_in" do
-      assert_equal 5 + 4 + 3, Everything.test_array_int_in([5, 4, 3])
-    end
-
-    should "have correct test_array_int_in_take" do
-      assert_equal 5 + 4 + 3, Everything.test_array_int_in_take([5, 4, 3])
+      assert_equal 5 + 4 + 3, Regress.test_array_int_in([5, 4, 3])
     end
 
     should "have correct test_array_int_inout" do
-      assert_equal [3, 4], Everything.test_array_int_inout([5, 2, 3])
+      assert_equal [3, 4], Regress.test_array_int_inout([5, 2, 3])
     end
 
     should "have correct test_array_int_none_out" do
-      assert_equal [1, 2, 3, 4, 5], Everything.test_array_int_none_out
+      assert_equal [1, 2, 3, 4, 5], Regress.test_array_int_none_out
     end
 
     should "have correct test_array_int_null_in" do
-      assert_nothing_raised { Everything.test_array_int_null_in nil }
+      assert_nothing_raised { Regress.test_array_int_null_in nil }
     end
 
     should "have correct test_array_int_null_out" do
-      assert_equal nil, Everything.test_array_int_null_out
+      assert_equal nil, Regress.test_array_int_null_out
     end
 
     should "have correct test_array_int_out" do
-      assert_equal [0, 1, 2, 3, 4], Everything.test_array_int_out
+      assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_out
     end
 
     should "have correct test_async_ready_callback" do
       a = 1
-      main_loop = GLib.main_loop_new nil, false
 
-      Everything.test_async_ready_callback Proc.new {
-	GLib.main_loop_quit main_loop
+      Regress.test_async_ready_callback Proc.new {
+	Gtk.main_quit
 	a = 2
       }
 
-      GLib.main_loop_run main_loop
+      Gtk.main
 
       assert_equal 2, a
     end
 
     should "have correct test_boolean" do
-      assert_equal false, Everything.test_boolean(false)
-      assert_equal true, Everything.test_boolean(true)
+      assert_equal false, Regress.test_boolean(false)
+      assert_equal true, Regress.test_boolean(true)
     end
 
     should "have correct test_boolean_false" do
-      assert_equal false, Everything.test_boolean_false(false)
+      assert_equal false, Regress.test_boolean_false(false)
     end
 
     should "have correct test_boolean_true" do
-      assert_equal true, Everything.test_boolean_true(true)
+      assert_equal true, Regress.test_boolean_true(true)
     end
 
     should "have correct test_cairo_context_full_return"
@@ -420,43 +416,43 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_cairo_surface_none_return"
 
     should "have correct test_callback" do
-      result = Everything.test_callback Proc.new { 5 }
+      result = Regress.test_callback Proc.new { 5 }
       assert_equal 5, result
     end
 
     should "have correct test_callback_async" do
       a = 1
-      Everything.test_callback_async Proc.new {|b|
+      Regress.test_callback_async Proc.new {|b|
 	a = 2
 	b
       }, 44
-      r = Everything.test_callback_thaw_async
+      r = Regress.test_callback_thaw_async
       assert_equal 44, r
       assert_equal 2, a
     end
 
     should "have correct test_callback_destroy_notify" do
       a = 1
-      r1 = Everything.test_callback_destroy_notify Proc.new {|b|
+      r1 = Regress.test_callback_destroy_notify Proc.new {|b|
 	a = 2
 	b
       }, 42, Proc.new { a = 3 }
       assert_equal 2, a
       assert_equal 42, r1
-      r2 = Everything.test_callback_thaw_notifications
+      r2 = Regress.test_callback_thaw_notifications
       assert_equal 3, a
       assert_equal 42, r2
     end
 
     context "the test_callback_user_data function" do
       should "return the callbacks return value" do
-	result = Everything.test_callback_user_data Proc.new {|u| 5 }, nil
+	result = Regress.test_callback_user_data Proc.new {|u| 5 }, nil
 	assert_equal 5, result
       end
 
       should "handle boolean user_data" do
 	a = false
-	result = Everything.test_callback_user_data Proc.new {|u|
+	result = Regress.test_callback_user_data Proc.new {|u|
 	  a = u
 	  5
 	}, true
@@ -468,19 +464,19 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_closure_one_arg"
 
     should "have correct test_double" do
-      r = Everything.test_double 5435.32
+      r = Regress.test_double 5435.32
       assert_equal 5435.32, r
     end
 
     should "have correct test_enum_param" do
-      r = Everything.test_enum_param :value3
+      r = Regress.test_enum_param :value3
       assert_equal "value3", r
     end
 
     should "have correct test_filename_return"
 
     should "have correct test_float" do
-      r = Everything.test_float 5435.32
+      r = Regress.test_float 5435.32
       assert_in_delta 5435.32, r, 0.001
     end
 
@@ -522,37 +518,37 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_gslist_null_out"
 
     should "have correct test_gtype" do
-      result = Everything.test_gtype 23
+      result = Regress.test_gtype 23
       assert_equal 23, result
     end
 
     should "have correct test_int" do
-      result = Everything.test_int 23
+      result = Regress.test_int 23
       assert_equal 23, result
     end
 
     should "have correct test_int16" do
-      result = Everything.test_int16 23
+      result = Regress.test_int16 23
       assert_equal 23, result
     end
 
     should "have correct test_int32" do
-      result = Everything.test_int32 23
+      result = Regress.test_int32 23
       assert_equal 23, result
     end
 
     should "have correct test_int64" do
-      result = Everything.test_int64 2300000000000
+      result = Regress.test_int64 2300000000000
       assert_equal 2300000000000, result
     end
 
     should "have correct test_int8" do
-      result = Everything.test_int8 23
+      result = Regress.test_int8 23
       assert_equal 23, result
     end
 
     should "have correct test_int_out_utf8" do
-      len = Everything.test_int_out_utf8 "How long?"
+      len = Regress.test_int_out_utf8 "How long?"
       assert_equal 9, len
     end
 
@@ -560,18 +556,18 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       gv = GObject::Value.new
       gv.init GObject.type_from_name "gint"
       gv.set_int 343
-      result = Everything.test_int_value_arg gv
+      result = Regress.test_int_value_arg gv
       assert_equal 343, result
     end
 
     should "have correct test_long" do
-      result = Everything.test_long 2300000000000
+      result = Regress.test_long 2300000000000
       assert_equal 2300000000000, result
     end
 
     should "have correct test_multi_callback" do
       a = 1
-      result = Everything.test_multi_callback Proc.new {
+      result = Regress.test_multi_callback Proc.new {
 	a += 1
 	23
       }
@@ -580,49 +576,40 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_multi_double_args" do
-      one, two = Everything.test_multi_double_args 23.1
+      one, two = Regress.test_multi_double_args 23.1
       assert_equal 2 * 23.1, one
       assert_equal 3 * 23.1, two
     end
 
-    should "have correct test_object_null_in" do
-      assert_nothing_raised { Everything.test_object_null_in nil }
-    end
-
-    should "have correct test_object_null_out" do
-      result = Everything.test_object_null_out
-      assert_equal nil, result
-    end
-
     should "have correct test_short" do
-      result = Everything.test_short 23
+      result = Regress.test_short 23
       assert_equal 23, result
     end
 
     should "have correct test_simple_boxed_a_const_return" do
-      result = Everything.test_simple_boxed_a_const_return
+      result = Regress.test_simple_boxed_a_const_return
       assert_equal [5, 6, 7.0], [result[:some_int], result[:some_int8], result[:some_double]]
     end
 
     context "the test_simple_callback function" do
       should "call the passed-in proc" do
 	a = 0
-	Everything.test_simple_callback Proc.new { a = 1 }
+	Regress.test_simple_callback Proc.new { a = 1 }
 	assert_equal 1, a
       end
 
       # XXX: The scope data does not seem to be reliable enough.
       if false
       should "not store the proc in CALLBACKS" do
-	n = Everything::Lib::CALLBACKS.length
-	Everything.test_simple_callback Proc.new { }
-	assert_equal n, Everything::Lib::CALLBACKS.length
+	n = Regress::Lib::CALLBACKS.length
+	Regress.test_simple_callback Proc.new { }
+	assert_equal n, Regress::Lib::CALLBACKS.length
       end
       end
     end
 
     should "have correct test_size" do
-      assert_equal 2354, Everything.test_size(2354)
+      assert_equal 2354, Regress.test_size(2354)
     end
 
     should "have correct test_ssize"
@@ -635,26 +622,26 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_timet"
 
     should "have correct test_torture_signature_0" do
-      y, z, q = Everything.test_torture_signature_0 86, "foo", 2
+      y, z, q = Regress.test_torture_signature_0 86, "foo", 2
       assert_equal [86, 2*86, 3+2], [y, z, q]
     end
 
     context "its #test_torture_signature_1 method" do
       should "work for m even" do
-	ret, y, z, q = Everything.test_torture_signature_1(-21, "hello", 12)
+	ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
 	assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
       end
 
       should "throw an exception for m odd" do
 	assert_raises RuntimeError do
-	  Everything.test_torture_signature_1(-21, "hello", 11)
+	  Regress.test_torture_signature_1(-21, "hello", 11)
 	end
       end
     end
       
     should "have correct test_torture_signature_2" do
       a = 1
-      y, z, q = Everything.test_torture_signature_2 244,
+      y, z, q = Regress.test_torture_signature_2 244,
 	Proc.new {|u| a = u }, 2, Proc.new { a = 3 },
 	"foofoo", 31
       assert_equal [244, 2*244, 6+31], [y, z, q]
@@ -662,88 +649,82 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_uint" do
-      assert_equal 31, Everything.test_uint(31)
+      assert_equal 31, Regress.test_uint(31)
     end
 
     should "have correct test_uint16" do
-      assert_equal 31, Everything.test_uint16(31)
+      assert_equal 31, Regress.test_uint16(31)
     end
 
     should "have correct test_uint32" do
-      assert_equal 540000, Everything.test_uint32(540000)
+      assert_equal 540000, Regress.test_uint32(540000)
     end
 
     should "have correct test_uint64" do
-      assert_equal 54_000_000_000_000, Everything.test_uint64(54_000_000_000_000)
+      assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
     end
 
     should "have correct test_uint8" do
-      assert_equal 31, Everything.test_uint8(31)
+      assert_equal 31, Regress.test_uint8(31)
     end
 
     should "have correct test_ulong" do
-      assert_equal 54_000_000_000_000, Everything.test_uint64(54_000_000_000_000)
+      assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
     end
 
     should "have correct test_ushort" do
-      assert_equal 54_000_000, Everything.test_uint64(54_000_000)
+      assert_equal 54_000_000, Regress.test_uint64(54_000_000)
     end
 
     should "have correct test_utf8_const_in" do
       # TODO: Capture stderr to automatically look for error messages.
       assert_nothing_raised do
-	Everything.test_utf8_const_in("const \xe2\x99\xa5 utf8")
+	Regress.test_utf8_const_in("const \xe2\x99\xa5 utf8")
       end
     end
 
     should "have correct test_utf8_const_return" do
-      result = Everything.test_utf8_const_return
+      result = Regress.test_utf8_const_return
       assert_equal "const \xe2\x99\xa5 utf8", result
     end
 
     should "have correct test_utf8_inout" do
-      result = Everything.test_utf8_inout "const \xe2\x99\xa5 utf8"
+      result = Regress.test_utf8_inout "const \xe2\x99\xa5 utf8"
       assert_equal "nonconst \xe2\x99\xa5 utf8", result
     end
 
-    should "have correct test_utf8_nonconst_in" do
-      assert_nothing_raised do
-	Everything.test_utf8_nonconst_in "nonconst \xe2\x99\xa5 utf8"
-      end
-    end
-
     should "have correct test_utf8_nonconst_return" do
-      result = Everything.test_utf8_nonconst_return
+      result = Regress.test_utf8_nonconst_return
       assert_equal "nonconst \xe2\x99\xa5 utf8", result
     end
 
     should "have correct test_utf8_null_in" do
       assert_nothing_raised do
-	Everything.test_utf8_null_in nil
+	Regress.test_utf8_null_in nil
       end
     end
 
     should "have correct test_utf8_null_out" do
-      assert_equal nil, Everything.test_utf8_null_out
+      assert_equal nil, Regress.test_utf8_null_out
     end
 
     should "have correct test_utf8_out" do
-      result = Everything.test_utf8_out
+      result = Regress.test_utf8_out
       assert_equal "nonconst \xe2\x99\xa5 utf8", result
     end
 
     should "have correct test_utf8_out_nonconst_return" do
-      r, out = Everything.test_utf8_out_nonconst_return
+      r, out = Regress.test_utf8_out_nonconst_return
       assert_equal ["first", "second"], [r, out]
     end
 
     should "have correct test_utf8_out_out" do
-      out0, out1 = Everything.test_utf8_out_nonconst_return
+      out0, out1 = Regress.test_utf8_out_nonconst_return
       assert_equal ["first", "second"], [out0, out1]
     end
 
     should "have correct test_value_return" do
-      result = Everything.test_value_return 3423
+      result = Regress.test_value_return 3423
       assert_equal 3423, result.get_int
     end
 
