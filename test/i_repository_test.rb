@@ -30,13 +30,13 @@ module GirFFI
 
       should "allow version to be nil" do
 	assert_nothing_raised do
-	  IRepository.default.require 'Everything', nil
+	  IRepository.default.require 'GObject', nil
 	end
       end
 
       should "allow version to be left out" do
 	assert_nothing_raised do
-	  IRepository.default.require 'Everything'
+	  IRepository.default.require 'GObject'
 	end
       end
     end
