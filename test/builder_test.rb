@@ -66,6 +66,17 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
+    context "built Gtk::ListStore" do
+      setup do
+        cleanup_module :Gtk
+	GirFFI::Builder.build_class 'Gtk', 'ListStore'
+      end
+
+      should "not have regular #new as a constructor" do
+	assert_raises(NoMethodError) { Gtk::ListStore.new }
+      end
+    end
+
     context "building Gtk" do
       setup do
 	cleanup_module :Gtk
@@ -147,56 +158,61 @@ class BuilderTest < Test::Unit::TestCase
 
     end
 
-    context "looking at GObject.signal_connect_data" do
+    context "looking at Regress.test_callback_destroy_notify" do
       setup do
+	cleanup_module :GLib
 	cleanup_module :GObject
+	cleanup_module :Regress
+	GirFFI::Builder.build_module 'GLib'
 	GirFFI::Builder.build_module 'GObject'
-	@go = get_function_introspection_data 'GObject', 'signal_connect_data'
+	GirFFI::Builder.build_module 'Regress'
+	@go = get_function_introspection_data 'Regress', 'test_callback_destroy_notify'
       end
 
       should "have the correct types of the arguments for the attached function" do
 	argtypes = GirFFI::Builder.send(:ffi_function_argument_types, @go)
-	assert_equal [:pointer, :pointer, GObject::Callback, :pointer, GObject::ClosureNotify, GObject::ConnectFlags],
+	assert_equal [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
 	  argtypes
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	GObject.gir_ffi_builder.setup_function 'signal_connect_data'
-	cb = GObject::Lib.find_type :Callback
-	cn = GObject::Lib.find_type :ClosureNotify
+	Regress.gir_ffi_builder.setup_function 'test_callback_destroy_notify'
+	tcud = Regress::Lib.find_type :TestCallbackUserData
+	dn = GLib::Lib.find_type :DestroyNotify
 
-	assert_equal FFI.find_type(:void), cb.result_type
-	assert_equal FFI.find_type(:void), cn.result_type
-	assert_equal [], cb.param_types
-	assert_equal [FFI.find_type(:pointer), FFI.find_type(:pointer)], cn.param_types
+	assert_equal FFI.find_type(:int32), tcud.result_type
+	assert_equal FFI.find_type(:void), dn.result_type
+	assert_equal [FFI.find_type(:pointer)], tcud.param_types
+	assert_equal [FFI.find_type(:pointer)], dn.param_types
       end
 
+      # FIXME: Test passes but does not test what it claims to test.
       should "define ffi enum type ConnectFlags" do
 	assert_equal({:after => 1, :swapped => 2}, GObject::ConnectFlags.to_h)
       end
     end
 
-    context "building Everything::TestStructA" do
+    context "building Regress::TestStructA" do
       setup do
 	@fieldnames = [:some_int, :some_int8, :some_double, :some_enum]
-	GirFFI::Builder.build_class 'Everything', 'TestStructA'
+	GirFFI::Builder.build_class 'Regress', 'TestStructA'
       end
 
       should "set up the correct struct members" do
 	assert_equal @fieldnames,
-	  Everything::TestStructA::Struct.members
+	  Regress::TestStructA::Struct.members
       end
 
       should "set up struct members with the correct offset" do
-	info = GirFFI::IRepository.default.find_by_name 'Everything', 'TestStructA'
+	info = GirFFI::IRepository.default.find_by_name 'Regress', 'TestStructA'
 	assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
-	  Everything::TestStructA::Struct.offsets
+	  Regress::TestStructA::Struct.offsets
       end
 
       should "set up struct members with the correct types" do
-	tags = [:int, :int8, :double, Everything::TestEnum]
+	tags = [:int, :int8, :double, Regress::TestEnum]
 	assert_equal tags.map {|t| FFI.find_type t},
-	  @fieldnames.map {|f| Everything::TestStructA::Struct.layout[f].type}
+	  @fieldnames.map {|f| Regress::TestStructA::Struct.layout[f].type}
       end
     end
 
@@ -229,99 +245,95 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    context "building Everything::TestBoxed" do
+    context "building Regress::TestBoxed" do
       setup do
-	GirFFI::Builder.build_class 'Everything', 'TestBoxed'
+	GirFFI::Builder.build_class 'Regress', 'TestBoxed'
       end
 
       should "set up #wrap" do
-	assert Everything::TestBoxed.respond_to? "wrap"
+	assert Regress::TestBoxed.respond_to? "wrap"
       end
 
       should "set up #allocate" do
-	assert Everything::TestBoxed.respond_to? "allocate"
+	assert Regress::TestBoxed.respond_to? "allocate"
       end
     end
 
-    context "built Everything module" do
+    context "built Regress module" do
       setup do
-	cleanup_module :Everything
-	GirFFI::Builder.build_module 'Everything'
+	cleanup_module :Regress
+	GirFFI::Builder.build_module 'Regress'
       end
 
       should "have a method_missing method" do
-	ms = (Everything.public_methods - Module.public_methods).map(&:to_sym)
+	ms = (Regress.public_methods - Module.public_methods).map(&:to_sym)
 	assert ms.include? :method_missing
       end
 
       should "autocreate the TestObj class" do
-	assert !Everything.const_defined?(:TestObj)
-	assert_nothing_raised {Everything::TestObj}
-	assert Everything.const_defined? :TestObj
+	assert !Regress.const_defined?(:TestObj)
+	assert_nothing_raised {Regress::TestObj}
+	assert Regress.const_defined? :TestObj
       end
 
       should "know its own module builder" do
-	assert GirFFI::Builder::Module === Everything.gir_ffi_builder
+	assert GirFFI::Builder::Module === Regress.gir_ffi_builder
       end
     end
 
-    context "built Everything::TestObj" do
+    context "built Regress::TestObj" do
       setup do
-	cleanup_module :Everything
-	GirFFI::Builder.build_class 'Everything', 'TestObj'
+	cleanup_module :Regress
+	GirFFI::Builder.build_class 'Regress', 'TestObj'
       end
 
       should "make autocreated instance method available to all instances" do
-	o1 = Everything::TestObj.new_from_file("foo")
-	o2 = Everything::TestObj.new_from_file("foo")
+	o1 = Regress::TestObj.new_from_file("foo")
+	o2 = Regress::TestObj.new_from_file("foo")
 	o1.instance_method
-	Everything::TestObj.class_eval do
+	Regress::TestObj.class_eval do
 	  undef method_missing
 	end
 	assert_nothing_raised { o2.instance_method }
       end
 
-      should "attach C functions to Everything::Lib" do
-	o = Everything::TestObj.new_from_file("foo")
+      should "attach C functions to Regress::Lib" do
+	o = Regress::TestObj.new_from_file("foo")
 	o.instance_method
-	assert Everything::Lib.respond_to? :test_obj_instance_method
-      end
-
-      should "not have regular #new as a constructor" do
-	assert_raises(NoMethodError) { Everything::TestObj.new }
+	assert Regress::Lib.respond_to? :regress_test_obj_instance_method
       end
 
       should "know its own GIR info" do
-	assert_equal 'TestObj', Everything::TestObj.gir_info.name
+	assert_equal 'TestObj', Regress::TestObj.gir_info.name
       end
 
       should "know its own class builder" do
-	assert GirFFI::Builder::Class === Everything::TestObj.gir_ffi_builder
+	assert GirFFI::Builder::Class === Regress::TestObj.gir_ffi_builder
       end
 
       context "its #torture_signature_0 method" do
 	should "have the correct types of the arguments for the attached function" do
-	  info = get_method_introspection_data 'Everything', 'TestObj',
+	  info = get_method_introspection_data 'Regress', 'TestObj',
 	    'torture_signature_0'
-	  assert_equal [:pointer, :int, :pointer, :pointer, :pointer, :pointer, :uint],
+	  assert_equal [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
 	    GirFFI::Builder.send(:ffi_function_argument_types, info)
 	end
       end
     end
 
-    context "built Everything::TestSubObj" do
+    context "built Regress::TestSubObj" do
       setup do
-	cleanup_module :Everything
-	GirFFI::Builder.build_class 'Everything', 'TestSubObj'
+	cleanup_module :Regress
+	GirFFI::Builder.build_class 'Regress', 'TestSubObj'
       end
 
       should "autocreate parent class' set_bare inside the parent class" do
-	o1 = Everything::TestSubObj.new
-	o2 = Everything::TestObj.new_from_file("foo")
+	o1 = Regress::TestSubObj.new
+	o2 = Regress::TestObj.new_from_file("foo")
 
 	assert_nothing_raised {o1.set_bare(nil)}
 
-	Everything::TestObj.class_eval do
+	Regress::TestObj.class_eval do
 	  undef method_missing
 	end
 
@@ -329,9 +341,9 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "use its own version of instance_method when parent's version has been created" do
-	obj = Everything::TestObj.new_from_file("foo")
+	obj = Regress::TestObj.new_from_file("foo")
 	assert_equal(-1, obj.instance_method)
-	subobj = Everything::TestSubObj.new
+	subobj = Regress::TestSubObj.new
 	assert_equal 0, subobj.instance_method
       end
     end
