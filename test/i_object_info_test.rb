@@ -6,8 +6,8 @@ module GirFFI
 
       setup do
 	gir = IRepository.default
-	gir.require 'Everything', nil
-	@info = gir.find_by_name 'Everything', 'TestObj'
+	gir.require 'Regress', nil
+	@info = gir.find_by_name 'Regress', 'TestObj'
       end
 
       should "find a vfunc by name" do
