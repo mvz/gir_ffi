@@ -626,7 +626,11 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     end
 
     should "have correct test_ssize"
-    should "have correct test_strv_in"
+
+    should "have correct test_strv_in" do
+      assert_equal true, Everything.test_strv_in(['1', '2', '3'])
+    end
+
     should "have correct test_strv_in_container"
     should "have correct test_strv_out"
     should "have correct test_strv_out_c"

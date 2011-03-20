@@ -140,8 +140,9 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      if not @length_arg
-        pr << "GirFFI::ArgHelper.check_fixed_array_size #{@arginfo.type.array_fixed_size}, #{@name}, \"#{@name}\""
+      size = type.array_fixed_size
+      if size > -1
+        pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
       pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
       pr

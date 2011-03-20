@@ -41,6 +41,13 @@ module GirFFI
       AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
     end
 
+    def self.utf8_array_to_inptr ary
+      return nil if ary.nil?
+      ptr_ary = ary.map {|str| utf8_to_inptr str}
+      ptr_ary << nil
+      typed_array_to_inptr :pointer, ptr_ary
+    end
+
     def self.gtype_array_to_inptr ary
       case FFI.type_size(:size_t)
       when 4
