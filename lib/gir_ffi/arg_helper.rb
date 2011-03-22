@@ -198,36 +198,41 @@ module GirFFI
     end
 
     def self.map_single_callback_arg arg, info
-      type = info.type
-      tag = type.tag
-
-      case tag
+      case info.type.tag
       when :interface
-	iface = type.interface
-	case iface.type
-        when :object
-	  object_pointer_to_object arg
-        when :struct
-          klass = GirFFI::Builder.build_class iface.namespace, iface.name
-          klass.wrap arg
-	else
-          arg
-	end
+        map_interface_callback_arg arg, info
       when :utf8
 	ptr_to_utf8 arg
       when :void
-	if arg.null?
-	  nil
-	else
-	  begin
-            # TODO: Use custom object store.
-	    ObjectSpace._id2ref arg.address
-	  rescue RangeError
-	    arg
-	  end
-	end
+        map_void_callback_arg arg
       else
 	arg
+      end
+    end
+
+    def self.map_interface_callback_arg arg, info
+      iface = info.type.interface
+      case iface.type
+      when :object
+        object_pointer_to_object arg
+      when :struct
+        klass = GirFFI::Builder.build_class iface.namespace, iface.name
+        klass.wrap arg
+      else
+        arg
+      end
+    end
+
+    def self.map_void_callback_arg arg
+      if arg.null?
+        nil
+      else
+        begin
+          # TODO: Use custom object store.
+          ObjectSpace._id2ref arg.address
+        rescue RangeError
+          arg
+        end
       end
     end
 
