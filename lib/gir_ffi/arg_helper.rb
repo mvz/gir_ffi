@@ -204,10 +204,14 @@ module GirFFI
       case tag
       when :interface
 	iface = type.interface
-	if iface.type == :object
+	case iface.type
+        when :object
 	  object_pointer_to_object arg
+        when :struct
+          klass = GirFFI::Builder.build_class iface.namespace, iface.name
+          klass.wrap arg
 	else
-	  arg
+          arg
 	end
       when :utf8
 	ptr_to_utf8 arg
@@ -216,6 +220,7 @@ module GirFFI
 	  nil
 	else
 	  begin
+            # TODO: Use custom object store.
 	    ObjectSpace._id2ref arg.address
 	  rescue RangeError
 	    arg
