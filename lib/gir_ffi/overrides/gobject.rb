@@ -2,13 +2,57 @@ module GirFFI
   module Overrides
     module GObject
 
-      def self.included(base)
+      def self.included base
 	base.extend ClassMethods
+        extend_classes(base)
+        attach_non_introspectable_functions(base)
+        build_extra_classes(base)
+      end
+
+      def self.extend_classes base
         base::InitiallyUnowned.extend InitiallyUnownedClassMethods
+      end
+
+      def self.attach_non_introspectable_functions base
         base::Lib.attach_function :g_signal_connect_data,
           [:pointer, :string, base::Callback, :pointer, base::ClosureNotify,
             base::ConnectFlags],
-          :ulong
+            :ulong
+      end
+
+      def self.build_extra_classes base
+        klass = Class.new(base::Closure) do
+          const_set :BLOCK_STORE, {}
+
+          const_set :Struct, Class.new(FFI::Struct) {
+            layout :parent, base::Closure::Struct, 0,
+            :blockhash, :int64
+          }
+
+          def self.new &block
+            raise ArgumentError unless block_given?
+            wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
+              h = block.hash
+              self::BLOCK_STORE[h] = block
+              it[:blockhash] = h
+              it.set_marshal Proc.new {|*args| marshaller(*args)}
+            end
+          end
+
+          def self.marshaller(closure, *args)
+            cast = self.wrap(closure.to_ptr)
+            cast.invoke_block
+          end
+
+          def block
+            self.class::BLOCK_STORE[self[:blockhash]]
+          end
+
+          def invoke_block
+            block.call
+          end
+        end
+        base.const_set :RubyClosure, klass
       end
 
       module ClassMethods
@@ -23,6 +67,7 @@ module GirFFI
 	  type_from_instance_pointer instance.to_ptr
 	end
 
+        # TODO: Make a class method of GObject::Value
 	def wrap_in_g_value val
 	  gvalue = ::GObject::Value.new
 	  case val
@@ -188,7 +233,6 @@ module GirFFI
           super.tap {|obj| GirFFI::GObject.object_ref_sink obj}
         end
       end
-
     end
   end
 end
