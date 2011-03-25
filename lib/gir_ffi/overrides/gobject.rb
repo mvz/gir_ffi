@@ -11,6 +11,10 @@ module GirFFI
 
       def self.extend_classes base
         base::InitiallyUnowned.extend InitiallyUnownedClassMethods
+        base::Value.class_eval {
+          include ValueInstanceMethods
+          extend ValueClassMethods
+        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -67,17 +71,9 @@ module GirFFI
 	  type_from_instance_pointer instance.to_ptr
 	end
 
-        # TODO: Make a class method of GObject::Value
+        # TODO: Deprecate wrap_in_g_value.
 	def wrap_in_g_value val
-	  gvalue = ::GObject::Value.new
-	  case val
-	  when true, false
-	    gvalue.init ::GObject.type_from_name("gboolean")
-	    gvalue.set_boolean val
-	  else
-	    nil
-	  end
-	  gvalue
+          ::GObject::Value.wrap_ruby_value val
 	end
 
 	def unwrap_g_value gvalue
@@ -86,6 +82,8 @@ module GirFFI
 	  case gtypename
 	  when "gboolean"
 	    gvalue.get_boolean
+	  when "gint"
+	    gvalue.get_int
 	  else
 	    nil
 	  end
@@ -231,6 +229,25 @@ module GirFFI
       module InitiallyUnownedClassMethods
         def constructor_wrap ptr
           super.tap {|obj| GirFFI::GObject.object_ref_sink obj}
+        end
+      end
+
+      module ValueClassMethods
+        def wrap_ruby_value val
+          self.new.set_ruby_value val
+        end
+      end
+
+      module ValueInstanceMethods
+        def set_ruby_value val
+	  case val
+	  when true, false
+	    init ::GObject.type_from_name("gboolean")
+	    set_boolean val
+	  else
+	    nil
+	  end
+          self
         end
       end
     end
