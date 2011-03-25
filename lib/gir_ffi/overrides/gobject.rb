@@ -43,9 +43,10 @@ module GirFFI
             end
           end
 
-          def self.marshaller(closure, *args)
+          def self.marshaller(closure, return_value, *args)
             cast = self.wrap(closure.to_ptr)
-            cast.invoke_block
+            r = cast.invoke_block
+            return_value.set_ruby_value r unless return_value.nil?
           end
 
           def block
@@ -244,6 +245,9 @@ module GirFFI
 	  when true, false
 	    init ::GObject.type_from_name("gboolean")
 	    set_boolean val
+          when Integer
+	    init ::GObject.type_from_name("gint")
+	    set_int val
 	  else
 	    nil
 	  end

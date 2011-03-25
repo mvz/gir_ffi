@@ -254,6 +254,13 @@ class GObjectOverridesTest < Test::Unit::TestCase
           GObject::RubyClosure.marshaller(c2, nil, 0, nil, nil, nil)
           assert_equal 2, a
         end
+
+        should "store the closure's return value in the proper gvalue" do
+          c = GObject::RubyClosure.new { 2 }
+          gv = GObject::Value.new
+          GObject::RubyClosure.marshaller(c, gv, 0, nil, nil, nil)
+          assert_equal 2, GObject.unwrap_g_value(gv)
+        end
       end
 
       should "have GObject::Closure#invoke call its block" do
