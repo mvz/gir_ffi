@@ -78,9 +78,7 @@ module GirFFI
 	end
 
 	def unwrap_g_value gvalue
-	  gtype = gvalue[:g_type]
-	  gtypename = ::GObject.type_name gtype
-	  case gtypename
+	  case gvalue.current_gtype_name
 	  when "gboolean"
 	    gvalue.get_boolean
 	  when "gint"
@@ -241,17 +239,37 @@ module GirFFI
 
       module ValueInstanceMethods
         def set_ruby_value val
-	  case val
-	  when true, false
-	    init ::GObject.type_from_name("gboolean")
+          if current_gtype == 0
+            init_for_ruby_value val
+          end
+
+	  case current_gtype_name
+	  when "gboolean"
 	    set_boolean val
-          when Integer
-	    init ::GObject.type_from_name("gint")
+          when "gint"
 	    set_int val
 	  else
 	    nil
 	  end
           self
+        end
+
+        def init_for_ruby_value val
+	  case val
+	  when true, false
+	    init ::GObject.type_from_name("gboolean")
+          when Integer
+	    init ::GObject.type_from_name("gint")
+	  end
+          self
+        end
+
+        def current_gtype
+          self[:g_type]
+        end
+
+        def current_gtype_name
+          ::GObject.type_name current_gtype
         end
       end
     end
