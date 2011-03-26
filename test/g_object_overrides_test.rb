@@ -8,31 +8,33 @@ class GObjectOverridesTest < Test::Unit::TestCase
       GirFFI.setup :Gio
     end
 
-    context "the wrap_in_g_value function" do
-      should "wrap a boolean false" do
-	gv = GObject.wrap_in_g_value false
-	assert_instance_of GObject::Value, gv
-	assert_equal false, gv.get_boolean
+    context "the Value class" do
+      context "the wrap_ruby_value class method" do
+        should "wrap a boolean false" do
+          gv = GObject::Value.wrap_ruby_value false
+          assert_instance_of GObject::Value, gv
+          assert_equal false, gv.get_boolean
+        end
+
+        should "wrap a boolean true" do
+          gv = GObject::Value.wrap_ruby_value true
+          assert_instance_of GObject::Value, gv
+          assert_equal true, gv.get_boolean
+        end
       end
 
-      should "wrap a boolean true" do
-	gv = GObject.wrap_in_g_value true
-	assert_instance_of GObject::Value, gv
-	assert_equal true, gv.get_boolean
-      end
-    end
+      context "the ruby_value method" do
+        should "unwrap a boolean false" do
+          gv = GObject::Value.wrap_ruby_value false
+          result = gv.ruby_value
+          assert_equal false, result
+        end
 
-    context "the unwrap_g_value function" do
-      should "unwrap a boolean false" do
-	gv = GObject.wrap_in_g_value false
-	result = GObject.unwrap_g_value gv
-	assert_equal false, result
-      end
-
-      should "unwrap a boolean true" do
-	gv = GObject.wrap_in_g_value true
-	result = GObject.unwrap_g_value gv
-	assert_equal true, result
+        should "unwrap a boolean true" do
+          gv = GObject::Value.wrap_ruby_value true
+          result = gv.ruby_value
+          assert_equal true, result
+        end
       end
     end
 
@@ -259,7 +261,7 @@ class GObjectOverridesTest < Test::Unit::TestCase
           c = GObject::RubyClosure.new { 2 }
           gv = GObject::Value.new
           GObject::RubyClosure.marshaller(c, gv, 0, nil, nil, nil)
-          assert_equal 2, GObject.unwrap_g_value(gv)
+          assert_equal 2, gv.ruby_value
         end
       end
 

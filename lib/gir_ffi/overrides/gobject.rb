@@ -72,22 +72,6 @@ module GirFFI
 	  type_from_instance_pointer instance.to_ptr
 	end
 
-        # TODO: Deprecate wrap_in_g_value.
-	def wrap_in_g_value val
-          ::GObject::Value.wrap_ruby_value val
-	end
-
-	def unwrap_g_value gvalue
-	  case gvalue.current_gtype_name
-	  when "gboolean"
-	    gvalue.get_boolean
-	  when "gint"
-	    gvalue.get_int
-	  else
-	    nil
-	  end
-	end
-
 	def signal_emit object, signal, *args
 	  type = type_from_instance object
 	  id = signal_lookup signal, type
@@ -270,6 +254,17 @@ module GirFFI
 
         def current_gtype_name
           ::GObject.type_name current_gtype
+        end
+
+        def ruby_value
+	  case current_gtype_name
+	  when "gboolean"
+	    get_boolean
+	  when "gint"
+	    get_int
+	  else
+	    nil
+	  end
         end
       end
     end
