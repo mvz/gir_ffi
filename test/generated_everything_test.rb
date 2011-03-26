@@ -464,7 +464,12 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       end
     end
 
-    should "have correct test_closure"
+    should "have correct test_closure" do
+      c = GObject::RubyClosure.new { 5235 }
+      r = Everything.test_closure c
+      assert_equal 5235, r
+    end
+
     should "have correct test_closure_one_arg"
 
     should "have correct test_double" do
