@@ -470,7 +470,11 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       assert_equal 5235, r
     end
 
-    should "have correct test_closure_one_arg"
+    should "have correct test_closure_one_arg" do
+      c = GObject::RubyClosure.new { |a| a * 2 }
+      r = Everything.test_closure_one_arg c, 2
+      assert_equal 4, r
+    end
 
     should "have correct test_double" do
       r = Everything.test_double 5435.32
