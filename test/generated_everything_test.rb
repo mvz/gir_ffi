@@ -514,7 +514,12 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_glist_free"
     should "have correct test_glist_nothing_in"
     should "have correct test_glist_nothing_in2"
-    should "have correct test_glist_nothing_return"
+
+    should "have correct test_glist_nothing_return" do
+      arr = Everything.test_glist_nothing_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
     should "have correct test_glist_nothing_return2"
     should "have correct test_glist_null_in"
     should "have correct test_glist_null_out"

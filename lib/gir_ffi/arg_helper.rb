@@ -198,6 +198,14 @@ module GirFFI
       GLib.slist_prepend list, utf8_to_inptr(first)
     end
 
+    def self.glist_to_utf8_array ptr
+      return [] if ptr.null?
+      # FIXME: Quasi-circular dependency on generated module
+      list = GLib::List.wrap(ptr)
+      str = ptr_to_utf8(list[:data])
+      [str] + glist_to_utf8_array(list[:next])
+    end
+
     def self.gslist_to_utf8_array ptr
       return [] if ptr.null?
       # FIXME: Quasi-circular dependency on generated module

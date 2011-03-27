@@ -415,8 +415,8 @@ module GirFFI::Builder
                 end
               when :array
                 ArrayReturnValue
-              when :gslist
-                GSListReturnValue
+              when :glist, :gslist
+                ListReturnValue
               else
                 RegularReturnValue
               end
@@ -484,17 +484,21 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for GSList return values.
-  class GSListReturnValue < ReturnValue
+  class ListReturnValue < ReturnValue
     # TODO: Extract to a module.
     def subtype_tag
       @arginfo.return_type.param_type(0).tag
+    end
+
+    def type_tag
+      @arginfo.return_type.tag
     end
 
     def post
       if subtype_tag == :void
         [ "#{@retname} = ::GLib::SList.wrap(#{@cvar})" ]
       else
-        [ "#{@retname} = GirFFI::ArgHelper.gslist_to_#{subtype_tag}_array #{@cvar}" ]
+        [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
       end
     end
   end
