@@ -664,7 +664,13 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_strv_out_c"
     should "have correct test_strv_out_container"
     should "have correct test_strv_outarg"
-    should "have correct test_timet"
+
+    should "have correct test_timet" do
+      # Time rounded to seconds.
+      t = Time.at(Time.now.to_i)
+      result = Everything.test_timet(t.to_i)
+      assert_equal t, Time.at(result)
+    end
 
     should "have correct test_torture_signature_0" do
       y, z, q = Everything.test_torture_signature_0 86, "foo", 2
