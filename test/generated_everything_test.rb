@@ -519,11 +519,27 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_glist_null_in"
     should "have correct test_glist_null_out"
     should "have correct test_gslist_container_in"
-    should "have correct test_gslist_container_return"
+
+    should "have correct test_gslist_container_return" do
+      arr = Everything.test_gslist_container_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
     should "have correct test_gslist_everything_in"
-    should "have correct test_gslist_everything_return"
+
+    should "have correct test_gslist_everything_return" do
+      arr = Everything.test_gslist_everything_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
     should "have correct test_gslist_free"
-    should "have correct test_gslist_nothing_in"
+
+    should "have correct test_gslist_nothing_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_nothing_in ["1", "2", "3"]
+      }
+    end
+
     should "have correct test_gslist_nothing_in2"
 
     should "have correct test_gslist_nothing_return" do

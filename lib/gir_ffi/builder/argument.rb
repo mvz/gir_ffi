@@ -95,6 +95,8 @@ module GirFFI::Builder
                 VoidInArgument
               when :array
                 ArrayInArgument
+              when :gslist
+                GSListInArgument
               when :utf8
                 Utf8InArgument
               else
@@ -146,6 +148,21 @@ module GirFFI::Builder
       end
       pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
       pr
+    end
+  end
+
+  # Implements argument processing for gslist arguments with direction :in.
+  class GSListInArgument < InArgument
+    def subtype_tag
+      @arginfo.type.param_type(0).tag
+    end
+
+    def pre
+      if subtype_tag == :void
+        [ "#{@callarg} = #{@name}" ]
+      else
+        [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_gslist #{@name}" ]
+      end
     end
   end
 
@@ -474,7 +491,11 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.gslist_to_#{subtype_tag}_array #{@cvar}" ]
+      if subtype_tag == :void
+        [ "#{@retname} = ::GLib::SList.wrap(#{@cvar})" ]
+      else
+        [ "#{@retname} = GirFFI::ArgHelper.gslist_to_#{subtype_tag}_array #{@cvar}" ]
+      end
     end
   end
 

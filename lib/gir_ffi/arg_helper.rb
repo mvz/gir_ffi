@@ -2,7 +2,9 @@ require 'gir_ffi/allocation_helper'
 
 module GirFFI
   module ArgHelper
+    # FIXME: Hideous.
     def self.object_to_inptr obj
+      return obj if obj.is_a? FFI::Pointer
       return obj.to_ptr if obj.respond_to? :to_ptr
       return nil if obj.nil?
       FFI::Pointer.new(obj.object_id)
@@ -181,6 +183,19 @@ module GirFFI
 
     def self.ptr_to_utf8 ptr
       ptr.null? ? nil : ptr.read_string
+    end
+
+    def self.utf8_array_to_gslist arr
+      return nil if arr.nil?
+      utf8_array_to_gslist_destructive arr.dup
+    end
+
+    def self.utf8_array_to_gslist_destructive arr
+      return nil if arr.empty?
+      first = arr.shift
+      list = utf8_array_to_gslist_destructive arr
+      # FIXME: Quasi-circular dependency on generated module
+      GLib.slist_prepend list, utf8_to_inptr(first)
     end
 
     def self.gslist_to_utf8_array ptr
