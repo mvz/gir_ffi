@@ -10,6 +10,8 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
+    FFI_TYPE_FOR_SSIZE_T = "int#{FFI.type_size(:size_t) * 8}".to_sym
+
     extend BuilderHelper
     def self.build_class namespace, classname
       Builder::Class.new(namespace, classname).generate
@@ -59,6 +61,8 @@ module GirFFI
 	return :bool
       when :GType, :size
 	return :size_t
+      when :ssize
+        return FFI_TYPE_FOR_SSIZE_T
       else
 	return tag
       end
