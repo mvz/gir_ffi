@@ -36,6 +36,7 @@ module GirFFI
           def self.new &block
             raise ArgumentError unless block_given?
             wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
+              # XXX: Check that this methods is fool-proof!
               h = block.hash
               self::BLOCK_STORE[h] = block
               it[:blockhash] = h

@@ -379,6 +379,8 @@ module GirFFI::Builder
                 end
               when :array
                 ArrayReturnValue
+              when :gslist
+                GSListReturnValue
               else
                 RegularReturnValue
               end
@@ -442,6 +444,18 @@ module GirFFI::Builder
 	size = @length_arg.retname
       end
       [ "#{@retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{size}" ]
+    end
+  end
+
+  # Implements argument processing for GSList return values.
+  class GSListReturnValue < ReturnValue
+    # TODO: Extract to a module.
+    def subtype_tag
+      @arginfo.return_type.param_type(0).tag
+    end
+
+    def post
+      [ "#{@retname} = GirFFI::ArgHelper.gslist_to_#{subtype_tag}_array #{@cvar}" ]
     end
   end
 

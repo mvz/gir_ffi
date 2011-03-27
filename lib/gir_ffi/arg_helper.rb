@@ -183,6 +183,14 @@ module GirFFI
       ptr.null? ? nil : ptr.read_string
     end
 
+    def self.gslist_to_utf8_array ptr
+      return [] if ptr.null?
+      # FIXME: Quasi-circular dependency on generated module
+      list = GLib::SList.wrap(ptr)
+      str = ptr_to_utf8(list[:data])
+      [str] + gslist_to_utf8_array(list[:next])
+    end
+
     def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
       return nil if prc.nil?
