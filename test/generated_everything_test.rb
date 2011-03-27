@@ -507,7 +507,13 @@ class GeneratedEverythingTest < Test::Unit::TestCase
     should "have correct test_ghash_null_in"
     should "have correct test_ghash_null_out"
     should "have correct test_ghash_null_return"
-    should "have correct test_glist_container_in"
+
+    should "have correct test_glist_container_in" do
+      assert_nothing_raised {
+        Everything.test_glist_container_in ["1", "2", "3"]
+      }
+    end
+
     should "have correct test_glist_container_return"
     should "have correct test_glist_everything_in"
     should "have correct test_glist_everything_return"

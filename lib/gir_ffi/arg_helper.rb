@@ -185,6 +185,12 @@ module GirFFI
       ptr.null? ? nil : ptr.read_string
     end
 
+    def self.utf8_array_to_glist arr
+      return nil if arr.nil?
+      arr.inject(nil) { |lst, str|
+        GLib.list_append lst, utf8_to_inptr(str) }
+    end
+
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
       utf8_array_to_gslist_destructive arr.dup
