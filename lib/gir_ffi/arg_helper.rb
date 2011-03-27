@@ -193,15 +193,8 @@ module GirFFI
 
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
-      utf8_array_to_gslist_destructive arr.dup
-    end
-
-    def self.utf8_array_to_gslist_destructive arr
-      return nil if arr.empty?
-      first = arr.shift
-      list = utf8_array_to_gslist_destructive arr
-      # FIXME: Quasi-circular dependency on generated module
-      GLib.slist_prepend list, utf8_to_inptr(first)
+      arr.reverse.inject(nil) { |lst, str|
+        GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
     def self.glist_to_utf8_array ptr
