@@ -514,21 +514,60 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       }
     end
 
-    should "have correct test_glist_container_return"
-    should "have correct test_glist_everything_in"
-    should "have correct test_glist_everything_return"
-    should "have correct test_glist_free"
-    should "have correct test_glist_nothing_in"
-    should "have correct test_glist_nothing_in2"
+    should "have correct test_glist_container_return" do
+      arr = Everything.test_glist_container_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_everything_in" do
+      assert_nothing_raised {
+        Everything.test_glist_everything_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_everything_return" do
+      arr = Everything.test_glist_everything_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_free" do
+      assert_nothing_raised {
+        Everything.test_glist_free ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_nothing_in" do
+      assert_nothing_raised {
+        Everything.test_glist_nothing_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_nothing_in2" do
+      assert_nothing_raised {
+        Everything.test_glist_nothing_in2 ["1", "2", "3"]
+      }
+    end
 
     should "have correct test_glist_nothing_return" do
       arr = Everything.test_glist_nothing_return
       assert_equal ["1", "2", "3"], arr
     end
 
-    should "have correct test_glist_nothing_return2"
-    should "have correct test_glist_null_in"
-    should "have correct test_glist_null_out"
+    should "have correct test_glist_nothing_return2" do
+      arr = Everything.test_glist_nothing_return2
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_null_in" do
+      assert_nothing_raised {
+        Everything.test_glist_null_in nil
+      }
+    end
+
+    should "have correct test_glist_null_out" do
+      result = Everything.test_glist_null_out
+      assert_equal [], result
+    end
 
     should "have correct test_gslist_container_in" do
       assert_nothing_raised {
