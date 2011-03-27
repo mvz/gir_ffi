@@ -191,6 +191,8 @@ module GirFFI::Builder
                 InterfaceOutArgument
               when :array
                 ArrayOutArgument
+              when :gslist
+                GSListOutArgument
               else
                 RegularOutArgument
               end
@@ -255,6 +257,23 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for gslist arguments with direction
+  # :out.
+  class GSListOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def postpost
+      type = @arginfo.type
+
+      tag = type.param_type(0).tag
+
+      pp = [ "#{@retname} = GirFFI::ArgHelper.outgslist_to_#{tag}_array #{@callarg}" ]
+
+      pp
+    end
+  end
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument

@@ -531,9 +531,21 @@ class GeneratedEverythingTest < Test::Unit::TestCase
       assert_equal ["1", "2", "3"], arr
     end
 
-    should "have correct test_gslist_nothing_return2"
-    should "have correct test_gslist_null_in"
-    should "have correct test_gslist_null_out"
+    should "have correct test_gslist_nothing_return2" do
+      arr = Everything.test_gslist_nothing_return2
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_gslist_null_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_null_in nil
+      }
+    end
+
+    should "have correct test_gslist_null_out" do
+      result = Everything.test_gslist_null_out
+      assert_equal [], result
+    end
 
     should "have correct test_gtype" do
       result = Everything.test_gtype 23
