@@ -489,11 +489,8 @@ class GeneratedRegressTest < Test::Unit::TestCase
       assert_in_delta 5435.32, r, 0.001
     end
 
-    should "have correct test_ghash_container_in"
     should "have correct test_ghash_container_return"
-    should "have correct test_ghash_everything_in"
     should "have correct test_ghash_everything_return"
-    should "have correct test_ghash_free"
     should "have correct test_ghash_nested_everything_return"
     should "have correct test_ghash_nested_everything_return2"
     should "have correct test_ghash_nothing_in"
@@ -504,32 +501,14 @@ class GeneratedRegressTest < Test::Unit::TestCase
     should "have correct test_ghash_null_out"
     should "have correct test_ghash_null_return"
 
-    should "have correct test_glist_container_in" do
-      assert_nothing_raised {
-        Regress.test_glist_container_in ["1", "2", "3"]
-      }
-    end
-
     should "have correct test_glist_container_return" do
       arr = Regress.test_glist_container_return
       assert_equal ["1", "2", "3"], arr
     end
 
-    should "have correct test_glist_everything_in" do
-      assert_nothing_raised {
-        Regress.test_glist_everything_in ["1", "2", "3"]
-      }
-    end
-
     should "have correct test_glist_everything_return" do
       arr = Regress.test_glist_everything_return
       assert_equal ["1", "2", "3"], arr
-    end
-
-    should "have correct test_glist_free" do
-      assert_nothing_raised {
-        Regress.test_glist_free ["1", "2", "3"]
-      }
     end
 
     should "have correct test_glist_nothing_in" do
@@ -565,32 +544,14 @@ class GeneratedRegressTest < Test::Unit::TestCase
       assert_equal [], result
     end
 
-    should "have correct test_gslist_container_in" do
-      assert_nothing_raised {
-        Regress.test_gslist_container_in ["1", "2", "3"]
-      }
-    end
-
     should "have correct test_gslist_container_return" do
       arr = Regress.test_gslist_container_return
       assert_equal ["1", "2", "3"], arr
     end
 
-    should "have correct test_gslist_everything_in" do
-      assert_nothing_raised {
-        Regress.test_gslist_everything_in ["1", "2", "3"]
-      }
-    end
-
     should "have correct test_gslist_everything_return" do
       arr = Regress.test_gslist_everything_return
       assert_equal ["1", "2", "3"], arr
-    end
-
-    should "have correct test_gslist_free" do
-      assert_nothing_raised {
-        Regress.test_gslist_free ["1", "2", "3"]
-      }
     end
 
     should "have correct test_gslist_nothing_in" do
@@ -729,7 +690,6 @@ class GeneratedRegressTest < Test::Unit::TestCase
       assert_equal true, Regress.test_strv_in(['1', '2', '3'])
     end
 
-    should "have correct test_strv_in_container"
     should "have correct test_strv_out"
     should "have correct test_strv_out_c"
     should "have correct test_strv_out_container"
