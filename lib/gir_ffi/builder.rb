@@ -10,6 +10,8 @@ module GirFFI
   # introspection repository. Call its build_module and build_class methods
   # to create the modules and classes used in your program.
   module Builder
+    FFI_TYPE_FOR_SSIZE_T = "int#{FFI.type_size(:size_t) * 8}".to_sym
+
     extend BuilderHelper
 
     TAG_TYPE_MAP = {
@@ -73,6 +75,8 @@ module GirFFI
       when :interface
 	interface = info.interface
         return build_class interface.namespace, interface.name
+      when :ssize
+        return FFI_TYPE_FOR_SSIZE_T
       else
         if TAG_TYPE_MAP[tag]
 	  return TAG_TYPE_MAP[tag]

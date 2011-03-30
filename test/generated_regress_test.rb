@@ -460,8 +460,17 @@ class GeneratedRegressTest < Test::Unit::TestCase
       end
     end
 
-    should "have correct test_closure"
-    should "have correct test_closure_one_arg"
+    should "have correct test_closure" do
+      c = GObject::RubyClosure.new { 5235 }
+      r = Everything.test_closure c
+      assert_equal 5235, r
+    end
+
+    should "have correct test_closure_one_arg" do
+      c = GObject::RubyClosure.new { |a| a * 2 }
+      r = Everything.test_closure_one_arg c, 2
+      assert_equal 4, r
+    end
 
     should "have correct test_double" do
       r = Regress.test_double 5435.32
@@ -494,28 +503,128 @@ class GeneratedRegressTest < Test::Unit::TestCase
     should "have correct test_ghash_null_in"
     should "have correct test_ghash_null_out"
     should "have correct test_ghash_null_return"
-    should "have correct test_glist_container_in"
-    should "have correct test_glist_container_return"
-    should "have correct test_glist_everything_in"
-    should "have correct test_glist_everything_return"
-    should "have correct test_glist_free"
-    should "have correct test_glist_nothing_in"
-    should "have correct test_glist_nothing_in2"
-    should "have correct test_glist_nothing_return"
-    should "have correct test_glist_nothing_return2"
-    should "have correct test_glist_null_in"
-    should "have correct test_glist_null_out"
-    should "have correct test_gslist_container_in"
-    should "have correct test_gslist_container_return"
-    should "have correct test_gslist_everything_in"
-    should "have correct test_gslist_everything_return"
-    should "have correct test_gslist_free"
-    should "have correct test_gslist_nothing_in"
-    should "have correct test_gslist_nothing_in2"
-    should "have correct test_gslist_nothing_return"
-    should "have correct test_gslist_nothing_return2"
-    should "have correct test_gslist_null_in"
-    should "have correct test_gslist_null_out"
+
+    should "have correct test_glist_container_in" do
+      assert_nothing_raised {
+        Everything.test_glist_container_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_container_return" do
+      arr = Everything.test_glist_container_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_everything_in" do
+      assert_nothing_raised {
+        Everything.test_glist_everything_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_everything_return" do
+      arr = Everything.test_glist_everything_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_free" do
+      assert_nothing_raised {
+        Everything.test_glist_free ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_nothing_in" do
+      assert_nothing_raised {
+        Everything.test_glist_nothing_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_nothing_in2" do
+      assert_nothing_raised {
+        Everything.test_glist_nothing_in2 ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_glist_nothing_return" do
+      arr = Everything.test_glist_nothing_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_nothing_return2" do
+      arr = Everything.test_glist_nothing_return2
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_glist_null_in" do
+      assert_nothing_raised {
+        Everything.test_glist_null_in nil
+      }
+    end
+
+    should "have correct test_glist_null_out" do
+      result = Everything.test_glist_null_out
+      assert_equal [], result
+    end
+
+    should "have correct test_gslist_container_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_container_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_gslist_container_return" do
+      arr = Everything.test_gslist_container_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_gslist_everything_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_everything_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_gslist_everything_return" do
+      arr = Everything.test_gslist_everything_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_gslist_free" do
+      assert_nothing_raised {
+        Everything.test_gslist_free ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_gslist_nothing_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_nothing_in ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_gslist_nothing_in2" do
+      assert_nothing_raised {
+        Everything.test_gslist_nothing_in2 ["1", "2", "3"]
+      }
+    end
+
+    should "have correct test_gslist_nothing_return" do
+      arr = Everything.test_gslist_nothing_return
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_gslist_nothing_return2" do
+      arr = Everything.test_gslist_nothing_return2
+      assert_equal ["1", "2", "3"], arr
+    end
+
+    should "have correct test_gslist_null_in" do
+      assert_nothing_raised {
+        Everything.test_gslist_null_in nil
+      }
+    end
+
+    should "have correct test_gslist_null_out" do
+      result = Everything.test_gslist_null_out
+      assert_equal [], result
+    end
 
     should "have correct test_gtype" do
       result = Regress.test_gtype 23
@@ -612,14 +721,26 @@ class GeneratedRegressTest < Test::Unit::TestCase
       assert_equal 2354, Regress.test_size(2354)
     end
 
-    should "have correct test_ssize"
-    should "have correct test_strv_in"
+    should "have correct test_ssize" do
+      assert_equal(-2_000_000, Everything.test_ssize(-2_000_000))
+    end
+
+    should "have correct test_strv_in" do
+      assert_equal true, Everything.test_strv_in(['1', '2', '3'])
+    end
+
     should "have correct test_strv_in_container"
     should "have correct test_strv_out"
     should "have correct test_strv_out_c"
     should "have correct test_strv_out_container"
     should "have correct test_strv_outarg"
-    should "have correct test_timet"
+
+    should "have correct test_timet" do
+      # Time rounded to seconds.
+      t = Time.at(Time.now.to_i)
+      result = Everything.test_timet(t.to_i)
+      assert_equal t, Time.at(result)
+    end
 
     should "have correct test_torture_signature_0" do
       y, z, q = Regress.test_torture_signature_0 86, "foo", 2

@@ -133,4 +133,20 @@ class ArgHelperTest < Test::Unit::TestCase
       assert_equal @o.to_ptr, @o2.to_ptr
     end
   end
+
+  context "The map_single_callback_arg method" do
+    should "correctly map a :struct type" do
+      GirFFI.setup :GObject
+
+      cl = GObject::Closure.new_simple GObject::Closure::Struct.size, nil
+
+      cinfo = GirFFI::IRepository.default.find_by_name 'GObject', 'ClosureMarshal'
+      ainfo = cinfo.args[0]
+
+      r = GirFFI::ArgHelper.map_single_callback_arg cl.to_ptr, ainfo
+
+      assert_instance_of GObject::Closure, r
+      assert_equal r.to_ptr, cl.to_ptr
+    end
+  end
 end

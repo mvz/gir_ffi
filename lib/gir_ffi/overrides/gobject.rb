@@ -2,13 +2,72 @@ module GirFFI
   module Overrides
     module GObject
 
-      def self.included(base)
+      def self.included base
 	base.extend ClassMethods
+        extend_classes(base)
+        attach_non_introspectable_functions(base)
+        build_extra_classes(base)
+      end
+
+      def self.extend_classes base
         base::InitiallyUnowned.extend InitiallyUnownedClassMethods
+        base::Value.class_eval {
+          include ValueInstanceMethods
+          extend ValueClassMethods
+        }
+      end
+
+      def self.attach_non_introspectable_functions base
         base::Lib.attach_function :g_signal_connect_data,
           [:pointer, :string, base::Callback, :pointer, base::ClosureNotify,
             base::ConnectFlags],
-          :ulong
+            :ulong
+      end
+
+      def self.build_extra_classes base
+        klass = Class.new(base::Closure) do
+          const_set :BLOCK_STORE, {}
+
+          const_set :Struct, Class.new(FFI::Struct) {
+            layout :parent, base::Closure::Struct, 0,
+            :blockhash, :int64
+          }
+
+          def self.new &block
+            raise ArgumentError unless block_given?
+            wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
+              # XXX: Check that this methods is fool-proof!
+              h = block.hash
+              self::BLOCK_STORE[h] = block
+              it[:blockhash] = h
+              it.set_marshal Proc.new {|*args| marshaller(*args)}
+            end
+          end
+
+          def self.marshaller(closure, return_value, n_param_values,
+                              param_values, invocation_hint, marshal_data)
+            rclosure = self.wrap(closure.to_ptr)
+
+            args = []
+            n_param_values.times {|i|
+              gv = ::GObject::Value.wrap(param_values.to_ptr +
+                                         i * ::GObject::Value::Struct.size)
+              args << gv.ruby_value
+            }
+
+            r = rclosure.invoke_block(*args)
+            return_value.set_ruby_value r unless return_value.nil?
+          end
+
+          def block
+            self.class::BLOCK_STORE[self[:blockhash]]
+          end
+
+          def invoke_block *args
+            block.call(*args)
+          end
+        end
+        base.const_set :RubyClosure, klass
       end
 
       module ClassMethods
@@ -21,29 +80,6 @@ module GirFFI
 
 	def type_from_instance instance
 	  type_from_instance_pointer instance.to_ptr
-	end
-
-	def wrap_in_g_value val
-	  gvalue = ::GObject::Value.new
-	  case val
-	  when true, false
-	    gvalue.init ::GObject.type_from_name("gboolean")
-	    gvalue.set_boolean val
-	  else
-	    nil
-	  end
-	  gvalue
-	end
-
-	def unwrap_g_value gvalue
-	  gtype = gvalue[:g_type]
-	  gtypename = ::GObject.type_name gtype
-	  case gtypename
-	  when "gboolean"
-	    gvalue.get_boolean
-	  else
-	    nil
-	  end
 	end
 
 	def signal_emit object, signal, *args
@@ -69,6 +105,7 @@ module GirFFI
 
 	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
 
+          # FIXME: Why are these all pointers?
 	  argtypes = [:pointer] + sig.args.map {|arg| :pointer} + [:pointer]
 
 	  callback = FFI::Function.new rettype, argtypes,
@@ -188,6 +225,58 @@ module GirFFI
         end
       end
 
+      module ValueClassMethods
+        def wrap_ruby_value val
+          self.new.set_ruby_value val
+        end
+      end
+
+      module ValueInstanceMethods
+        def set_ruby_value val
+          if current_gtype == 0
+            init_for_ruby_value val
+          end
+
+	  case current_gtype_name
+	  when "gboolean"
+	    set_boolean val
+          when "gint"
+	    set_int val
+	  else
+	    nil
+	  end
+          self
+        end
+
+        def init_for_ruby_value val
+	  case val
+	  when true, false
+	    init ::GObject.type_from_name("gboolean")
+          when Integer
+	    init ::GObject.type_from_name("gint")
+	  end
+          self
+        end
+
+        def current_gtype
+          self[:g_type]
+        end
+
+        def current_gtype_name
+          ::GObject.type_name current_gtype
+        end
+
+        def ruby_value
+	  case current_gtype_name
+	  when "gboolean"
+	    get_boolean
+	  when "gint"
+	    get_int
+	  else
+	    nil
+	  end
+        end
+      end
     end
   end
 end

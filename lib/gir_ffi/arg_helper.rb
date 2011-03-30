@@ -2,7 +2,9 @@ require 'gir_ffi/allocation_helper'
 
 module GirFFI
   module ArgHelper
+    # FIXME: Hideous.
     def self.object_to_inptr obj
+      return obj if obj.is_a? FFI::Pointer
       return obj.to_ptr if obj.respond_to? :to_ptr
       return nil if obj.nil?
       FFI::Pointer.new(obj.object_id)
@@ -34,6 +36,13 @@ module GirFFI
       return nil if str.nil?
       len = str.bytesize
       AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
+    end
+
+    def self.utf8_array_to_inptr ary
+      return nil if ary.nil?
+      ptr_ary = ary.map {|str| utf8_to_inptr str}
+      ptr_ary << nil
+      typed_array_to_inptr :pointer, ptr_ary
     end
 
     def self.gtype_array_to_inptr ary
@@ -212,6 +221,38 @@ module GirFFI
       alias ptr_to_gint32_array ptr_to_int32_array
     end
 
+    def self.utf8_array_to_glist arr
+      return nil if arr.nil?
+      arr.inject(nil) { |lst, str|
+        GLib.list_append lst, utf8_to_inptr(str) }
+    end
+
+    def self.utf8_array_to_gslist arr
+      return nil if arr.nil?
+      arr.reverse.inject(nil) { |lst, str|
+        GLib.slist_prepend lst, utf8_to_inptr(str) }
+    end
+
+    def self.glist_to_utf8_array ptr
+      return [] if ptr.null?
+      # FIXME: Quasi-circular dependency on generated module
+      list = GLib::List.wrap(ptr)
+      str = ptr_to_utf8(list[:data])
+      [str] + glist_to_utf8_array(list[:next])
+    end
+
+    def self.gslist_to_utf8_array ptr
+      return [] if ptr.null?
+      # FIXME: Quasi-circular dependency on generated module
+      list = GLib::SList.wrap(ptr)
+      str = ptr_to_utf8(list[:data])
+      [str] + gslist_to_utf8_array(list[:next])
+    end
+
+    def self.outgslist_to_utf8_array ptr
+      gslist_to_utf8_array ptr.read_pointer
+    end
+
     def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
       return nil if prc.nil?
@@ -227,31 +268,41 @@ module GirFFI
     end
 
     def self.map_single_callback_arg arg, info
-      type = info.type
-      tag = type.tag
-
-      case tag
+      case info.type.tag
       when :interface
-	iface = type.interface
-	if iface.type == :object
-	  object_pointer_to_object arg
-	else
-	  arg
-	end
+        map_interface_callback_arg arg, info
       when :utf8
 	ptr_to_utf8 arg
       when :void
-	if arg.null?
-	  nil
-	else
-	  begin
-	    ObjectSpace._id2ref arg.address
-	  rescue RangeError
-	    arg
-	  end
-	end
+        map_void_callback_arg arg
       else
 	arg
+      end
+    end
+
+    def self.map_interface_callback_arg arg, info
+      iface = info.type.interface
+      case iface.type
+      when :object
+        object_pointer_to_object arg
+      when :struct
+        klass = GirFFI::Builder.build_class iface.namespace, iface.name
+        klass.wrap arg
+      else
+        arg
+      end
+    end
+
+    def self.map_void_callback_arg arg
+      if arg.null?
+        nil
+      else
+        begin
+          # TODO: Use custom object store.
+          ObjectSpace._id2ref arg.address
+        rescue RangeError
+          arg
+        end
       end
     end
 

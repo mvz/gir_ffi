@@ -95,6 +95,8 @@ module GirFFI::Builder
                 VoidInArgument
               when :array
                 ArrayInArgument
+              when :glist, :gslist
+                ListInArgument
               when :utf8
                 Utf8InArgument
               else
@@ -140,11 +142,31 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      if not @length_arg
-        pr << "GirFFI::ArgHelper.check_fixed_array_size #{@arginfo.type.array_fixed_size}, #{@name}, \"#{@name}\""
+      size = type.array_fixed_size
+      if size > -1
+        pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
       pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
       pr
+    end
+  end
+
+  # Implements argument processing for gslist arguments with direction :in.
+  class ListInArgument < InArgument
+    def subtype_tag
+      @arginfo.type.param_type(0).tag
+    end
+
+    def type_tag
+      @arginfo.type.tag
+    end
+
+    def pre
+      if subtype_tag == :void
+        [ "#{@callarg} = #{@name}" ]
+      else
+        [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
+      end
     end
   end
 
@@ -190,6 +212,8 @@ module GirFFI::Builder
                 InterfaceOutArgument
               when :array
                 ArrayOutArgument
+              when :gslist
+                GSListOutArgument
               else
                 RegularOutArgument
               end
@@ -254,6 +278,23 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for gslist arguments with direction
+  # :out.
+  class GSListOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def postpost
+      type = @arginfo.type
+
+      tag = type.param_type(0).tag
+
+      pp = [ "#{@retname} = GirFFI::ArgHelper.outgslist_to_#{tag}_array #{@callarg}" ]
+
+      pp
+    end
+  end
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
@@ -378,6 +419,8 @@ module GirFFI::Builder
                 end
               when :array
                 ArrayReturnValue
+              when :glist, :gslist
+                ListReturnValue
               else
                 RegularReturnValue
               end
@@ -441,6 +484,26 @@ module GirFFI::Builder
 	size = @length_arg.retname
       end
       [ "#{@retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{size}" ]
+    end
+  end
+
+  # Implements argument processing for GSList return values.
+  class ListReturnValue < ReturnValue
+    # TODO: Extract to a module.
+    def subtype_tag
+      @arginfo.return_type.param_type(0).tag
+    end
+
+    def type_tag
+      @arginfo.return_type.tag
+    end
+
+    def post
+      if subtype_tag == :void
+        [ "#{@retname} = ::GLib::SList.wrap(#{@cvar})" ]
+      else
+        [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
+      end
     end
   end
 
