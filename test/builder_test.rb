@@ -39,22 +39,21 @@ class BuilderTest < Test::Unit::TestCase
 
       should "build parent classes also" do
 	assert Gtk.const_defined? :Widget
-	assert Gtk.const_defined? :Object
 	assert Object.const_defined? :GObject
 	assert GObject.const_defined? :InitiallyUnowned
 	assert GObject.const_defined? :Object
       end
 
-      should "set up inheritence chain" do
+      should "set up inheritance chain" do
+        ancestors = Gtk::Window.ancestors
 	assert_equal [
 	  Gtk::Window,
 	  Gtk::Bin,
 	  Gtk::Container,
-	  Gtk::Widget,
-	  Gtk::Object,
-	  GObject::InitiallyUnowned,
-	  GObject::Object
-	], Gtk::Window.ancestors[0..6]
+	  Gtk::Widget
+	], ancestors[0..3]
+        assert ancestors.include? GObject::InitiallyUnowned
+	assert ancestors.include? GObject::Object
       end
 
       should "create a Gtk::Window#to_ptr method" do
@@ -66,14 +65,14 @@ class BuilderTest < Test::Unit::TestCase
       end
     end
 
-    context "built Gtk::ListStore" do
+    context "built Gtk::Widget" do
       setup do
         cleanup_module :Gtk
-	GirFFI::Builder.build_class 'Gtk', 'ListStore'
+	GirFFI::Builder.build_class 'Gtk', 'Widget'
       end
 
       should "not have regular #new as a constructor" do
-	assert_raises(NoMethodError) { Gtk::ListStore.new }
+	assert_raises(NoMethodError) { Gtk::Widget.new }
       end
     end
 

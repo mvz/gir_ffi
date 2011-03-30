@@ -12,20 +12,9 @@ if RUBY_PLATFORM == 'java'
 end
 
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
-module DummyGtk
-  module Lib
-    extend FFI::Library
+GirFFI.setup :Gtk
+Gtk.init
 
-    ffi_lib "gtk-x11-2.0"
-    attach_function :gtk_init, [:pointer, :pointer], :void
-  end
-
-  def self.init
-    Lib.gtk_init nil, nil
-  end
-end
-
-DummyGtk.init
 GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
 module GirFFI
   class IRepository
