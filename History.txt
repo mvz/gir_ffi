@@ -1,3 +1,15 @@
+== 0.0.7 / 2011-04-01
+
+* Support gobject-introspection 0.10, drop support for earlier versions.
+  - Use Regress, not Everything, for testing.
+  - Deal with functions that are no longer introspectable.
+* Correctly handle constructors that declare their return type different
+  from their class.
+* Implement RubyClosure, a GObject::Closure for handling ruby callbacks.
+* Handle GLib's singly and doubly linked lists.
+* Handle callback types defined in-place (like Closure's marshal).
+* Refactoring.
+
 == 0.0.6 / 2011-03-01
 
 * Cast returned GObjects to their actual type.
