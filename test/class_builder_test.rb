@@ -2,16 +2,20 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ClassBuilderTest < Test::Unit::TestCase
   context "The Builder::Class class" do
-    should "use parent struct as default layout" do
+    setup do
       @gir = GirFFI::IRepository.default
+    end
+
+    should "use parent struct as default layout" do
       @gir.require 'GObject', nil
 
       stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }
       stub(info).fields { [] }
       stub(info).type { :object }
+      stub(info).name { 'Bar' }
+      stub(info).namespace { 'Foo' }
 
-      @classbuilder = GirFFI::Builder::Class.new 'Foo', 'Bar'
-      @classbuilder.instance_eval { @info = info }
+      @classbuilder = GirFFI::Builder::Class.new info
 
       spec = @classbuilder.send :layout_specification
       assert_equal [:parent, GObject::Object::Struct, 0], spec
@@ -19,7 +23,7 @@ class ClassBuilderTest < Test::Unit::TestCase
 
     context "for Gtk::Widget" do
       setup do
-	@cbuilder = GirFFI::Builder::Class.new 'Gtk', 'Widget'
+	@cbuilder = GirFFI::Builder::Class.new @gir.find_by_name('Gtk', 'Widget')
       end
 
       context "looking at Gtk::Widget#show" do
@@ -38,19 +42,19 @@ class ClassBuilderTest < Test::Unit::TestCase
 
     context 'the find_signal method' do
       should 'find the signal "test" for TestObj' do
-	builder = GirFFI::Builder::Class.new 'Regress', 'TestObj'
+	builder = GirFFI::Builder::Class.new @gir.find_by_name('Regress', 'TestObj')
 	sig = builder.find_signal 'test'
 	assert_equal 'test', sig.name
       end
 
       should 'find the signal "test" for TestSubObj' do
-	builder = GirFFI::Builder::Class.new 'Regress', 'TestSubObj'
+	builder = GirFFI::Builder::Class.new @gir.find_by_name('Regress', 'TestSubObj')
 	sig = builder.find_signal 'test'
 	assert_equal 'test', sig.name
       end
 
       should 'find the signal "changed" for Gtk::Entry' do
-	builder = GirFFI::Builder::Class.new 'Gtk', 'Entry'
+	builder = GirFFI::Builder::Class.new @gir.find_by_name('Gtk', 'Entry')
 	sig = builder.find_signal 'changed'
 	assert_equal 'changed', sig.name
       end
@@ -58,7 +62,7 @@ class ClassBuilderTest < Test::Unit::TestCase
 
     context "for GObject::TypeCValue (a union)" do
       setup do
-	@cbuilder = GirFFI::Builder::Class.new 'GObject', 'TypeCValue'
+	@cbuilder = GirFFI::Builder::Class.new @gir.find_by_name('GObject', 'TypeCValue')
       end
 
       should "not raise an error looking for a method that doesn't exist" do

@@ -286,7 +286,7 @@ module GirFFI
       when :object
         object_pointer_to_object arg
       when :struct
-        klass = GirFFI::Builder.build_class iface.namespace, iface.name
+        klass = GirFFI::Builder.build_class iface
         klass.wrap arg
       else
         arg
@@ -332,7 +332,7 @@ module GirFFI
 	raise RuntimeError, "Unable to find info for type '#{tpname}' (#{tp})"
       end
 
-      klass = GirFFI::Builder.build_class info.namespace, info.name
+      klass = GirFFI::Builder.build_class info
       klass.wrap optr
     end
 

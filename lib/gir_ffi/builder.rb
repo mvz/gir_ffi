@@ -31,8 +31,8 @@ module GirFFI
       :gdouble => :double,
     }
 
-    def self.build_class namespace, classname
-      Builder::Class.new(namespace, classname).generate
+    def self.build_class info
+      Builder::Class.new(info).generate
     end
 
     def self.build_module namespace
@@ -74,7 +74,7 @@ module GirFFI
       case tag
       when :interface
 	interface = info.interface
-        return build_class interface.namespace, interface.name
+        return build_class interface
       when :ssize
         return FFI_TYPE_FOR_SSIZE_T
       else

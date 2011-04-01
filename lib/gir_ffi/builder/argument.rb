@@ -446,7 +446,7 @@ module GirFFI::Builder
       namespace = interface.namespace
       name = interface.name
 
-      GirFFI::Builder.build_class namespace, name
+      GirFFI::Builder.build_class interface
       [ "#{@retname} = ::#{namespace}::#{name}.wrap(#{@cvar})" ]
     end
   end
@@ -465,7 +465,7 @@ module GirFFI::Builder
       namespace = classinfo.namespace
       name = classinfo.name
 
-      GirFFI::Builder.build_class namespace, name
+      GirFFI::Builder.build_class classinfo
       [ "#{@retname} = ::#{namespace}::#{name}.constructor_wrap(#{@cvar})" ]
     end
   end

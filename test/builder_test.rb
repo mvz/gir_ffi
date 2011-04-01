@@ -2,15 +2,18 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class BuilderTest < Test::Unit::TestCase
   context "The GirFFI::Builder module" do
+    setup do
+      @gir = GirFFI::IRepository.default
+    end
+
     context "building GObject::Object" do
       setup do
 	cleanup_module :GObject
-	GirFFI::Builder.build_class 'GObject', 'Object'
+	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'Object')
       end
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
-	gir = GirFFI::IRepository.default
-	expected = gir.shared_library('GObject')
+	expected = @gir.shared_library('GObject')
 	assert_equal [expected], GObject::Lib.ffi_libraries.map(&:name)
       end
 
@@ -20,7 +23,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "not replace existing classes" do
 	oldclass = GObject::Object
-	GirFFI::Builder.build_class 'GObject', 'Object'
+	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'Object')
 	assert_equal oldclass, GObject::Object
       end
     end
@@ -29,7 +32,7 @@ class BuilderTest < Test::Unit::TestCase
       setup do
 	cleanup_module :Gtk
 	cleanup_module :GObject
-	GirFFI::Builder.build_class 'Gtk', 'Window'
+	GirFFI::Builder.build_class @gir.find_by_name('Gtk', 'Window')
       end
 
       should "build Gtk namespace" do
@@ -68,7 +71,7 @@ class BuilderTest < Test::Unit::TestCase
     context "built Gtk::Widget" do
       setup do
         cleanup_module :Gtk
-	GirFFI::Builder.build_class 'Gtk', 'Widget'
+	GirFFI::Builder.build_class @gir.find_by_name('Gtk', 'Widget')
       end
 
       should "not have regular #new as a constructor" do
@@ -84,8 +87,7 @@ class BuilderTest < Test::Unit::TestCase
 
       should "create a Lib module ready to attach functions from gtk-x11-2.0" do
 	# The Gtk module has more than one library on my current machine.
-	gir = GirFFI::IRepository.default
-	expected = (gir.shared_library 'Gtk').split(',')
+	expected = (@gir.shared_library 'Gtk').split(',')
 	assert_equal expected.sort, Gtk::Lib.ffi_libraries.map(&:name).sort
       end
 
@@ -112,9 +114,8 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "have correct introspection data" do
-	gir = GirFFI::IRepository.default
-	gir.require "Gtk", nil
-	go2 = gir.find_by_name "Gtk", "main"
+	@gir.require "Gtk", nil
+	go2 = @gir.find_by_name "Gtk", "main"
 	assert_equal go2, @go
       end
 
@@ -194,7 +195,7 @@ class BuilderTest < Test::Unit::TestCase
     context "building Regress::TestStructA" do
       setup do
 	@fieldnames = [:some_int, :some_int8, :some_double, :some_enum]
-	GirFFI::Builder.build_class 'Regress', 'TestStructA'
+	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestStructA')
       end
 
       should "set up the correct struct members" do
@@ -203,7 +204,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "set up struct members with the correct offset" do
-	info = GirFFI::IRepository.default.find_by_name 'Regress', 'TestStructA'
+	info = @gir.find_by_name 'Regress', 'TestStructA'
 	assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
 	  Regress::TestStructA::Struct.offsets
       end
@@ -217,7 +218,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building GObject::TypeCValue" do
       setup do
-	GirFFI::Builder.build_class 'GObject', 'TypeCValue'
+	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'TypeCValue')
       end
 
       should "set up the correct union members" do
@@ -237,7 +238,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building GObject::ValueArray" do
       should "use provided constructor if present" do
-	GirFFI::Builder.build_class 'GObject', 'ValueArray'
+	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'ValueArray')
 	assert_nothing_raised {
 	  GObject::ValueArray.new 2
 	}
@@ -246,7 +247,7 @@ class BuilderTest < Test::Unit::TestCase
 
     context "building Regress::TestBoxed" do
       setup do
-	GirFFI::Builder.build_class 'Regress', 'TestBoxed'
+	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestBoxed')
       end
 
       should "set up #wrap" do
@@ -283,7 +284,7 @@ class BuilderTest < Test::Unit::TestCase
     context "built Regress::TestObj" do
       setup do
 	cleanup_module :Regress
-	GirFFI::Builder.build_class 'Regress', 'TestObj'
+	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestObj')
       end
 
       should "make autocreated instance method available to all instances" do
@@ -323,7 +324,7 @@ class BuilderTest < Test::Unit::TestCase
     context "built Regress::TestSubObj" do
       setup do
 	cleanup_module :Regress
-	GirFFI::Builder.build_class 'Regress', 'TestSubObj'
+	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestSubObj')
       end
 
       should "autocreate parent class' set_bare inside the parent class" do

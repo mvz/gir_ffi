@@ -4,9 +4,11 @@ module GirFFI
   # repository.
   class Builder::Class
     include BuilderHelper
-    def initialize namespace, classname
-      @namespace = namespace
-      @classname = classname
+
+    def initialize info
+      @info = info
+      @namespace = @info.namespace
+      @classname = @info.name
     end
 
     def generate
@@ -94,7 +96,7 @@ module GirFFI
     def superclass
       unless defined? @superclass
         if parent
-          @superclass = Builder.build_class parent.namespace, parent.name
+          @superclass = Builder.build_class parent
         else
           @superclass = GirFFI::ClassBase
         end

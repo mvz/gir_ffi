@@ -196,7 +196,7 @@ module GirFFI
 	    arg = args.shift
 	    if info.type.tag == :interface
 	      iface = info.type.interface
-	      kls = GirFFI::Builder.build_class(iface.namespace, iface.name)
+	      kls = GirFFI::Builder.build_class iface
 	      result << kls.wrap(arg)
 	    else
 	      result << arg
