@@ -460,7 +460,6 @@ class GeneratedRegressTest < Test::Unit::TestCase
       end
     end
 
-    if false
     should "have correct test_closure" do
       c = GObject::RubyClosure.new { 5235 }
       r = Regress.test_closure c
@@ -471,7 +470,6 @@ class GeneratedRegressTest < Test::Unit::TestCase
       c = GObject::RubyClosure.new { |a| a * 2 }
       r = Regress.test_closure_one_arg c, 2
       assert_equal 4, r
-    end
     end
 
     should "have correct test_double" do
