@@ -25,26 +25,22 @@ Ruby-FFI-based binding of the GObject Introspection Repository
 
 * Ruby-FFI of course
 * gobject-introspection installed with some introspection data
+* The `rr` and `shoulda` gems for testing.
 
 The current implementation needs the actual libraries to be available under
 the name ending in just `.so`. On Debian and Ubuntu at least, this means
 you have to install the -dev packages of any library you may want to
-access.
-
-On Ubuntu, the following set of packages should do the trick:
-`libffi-ruby`, `libgirepository1.0-dev`, `libgtk2.0-dev`,
-`libshoulda-ruby`, `gir1.0-everything-1.0`.
-
-On Debian it's the same, but the `gir1.0-everything-1.0` package is only
-available in experimental. You can take one of the patches attached to bug
-550478 and recompile `gobject-introspection` to get the files GirFFI needs.
+access. The following set of packages should do the trick:
+`libgirepository1.0-dev` (at least version 0.10), and either
+`gir1.2-gtk-3.0` and `libgtk-3-dev`, or `gir1.2-gtk-2.0` and
+`libgtk2.0-dev`.
 
 == Hacking
 
 This is still very much a work in progress. You can start exploring by
 running the example programs in the examples/ folder. Some illustrate what
 works, some are a test bed for how things should work. Have a look at
-+rake+ +-T+.
+`rake -T`. Feel free to file bugs or send pull requests.
 
 == Install
 
@@ -52,7 +48,7 @@ works, some are a test bed for how things should work. Have a look at
 
 == License
 
-Copyright (c) 2009--2010 Matijs van Zuijlen
+Copyright (c) 2009--2011 Matijs van Zuijlen
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
