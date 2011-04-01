@@ -15,6 +15,9 @@ module GirFFI
           include ValueInstanceMethods
           extend ValueClassMethods
         }
+        base::Closure.class_eval {
+          include ClosureInstanceMethods
+        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -22,6 +25,8 @@ module GirFFI
           [:pointer, :string, base::Callback, :pointer, base::ClosureNotify,
             base::ConnectFlags],
             :ulong
+        base::Lib.attach_function :g_closure_set_marshal,
+          [:pointer, base::ClosureMarshal], :void
       end
 
       def self.build_extra_classes base
@@ -275,6 +280,15 @@ module GirFFI
 	  else
 	    nil
 	  end
+        end
+      end
+
+      module ClosureInstanceMethods
+        def set_marshal marshal
+	  _v1 = GirFFI::ArgHelper.wrap_in_callback_args_mapper(
+            "GObject", "ClosureMarshal", marshal)
+	  ::GObject::Lib::CALLBACKS << _v1
+	  ::GObject::Lib.g_closure_set_marshal self, _v1
         end
       end
     end

@@ -221,7 +221,6 @@ class GObjectOverridesTest < Test::Unit::TestCase
       end
     end
 
-    if false
     context "The RubyClosure class" do
       should "have a constructor with a block argument" do
         assert_raises ArgumentError do
@@ -270,10 +269,9 @@ class GObjectOverridesTest < Test::Unit::TestCase
         a = 0
         c = GObject::RubyClosure.new { a = 2 }
         c2 = GObject::Closure.wrap(c.to_ptr)
-        c2.invoke nil, 0, nil, nil
+        c2.invoke nil, nil, nil
         assert_equal 2, a
       end
-    end
     end
   end
 end

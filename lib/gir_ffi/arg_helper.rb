@@ -56,6 +56,11 @@ module GirFFI
       end
     end
 
+    def self.gvalue_array_to_inptr ary
+      return nil if ary.nil?
+      raise NotImplementedError
+    end
+
     class << self
       alias int_array_to_inptr int32_array_to_inptr
       alias gint8_array_to_inptr int8_array_to_inptr

@@ -127,7 +127,21 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction :in.
   class ArrayInArgument < InArgument
     def subtype_tag
-      @arginfo.type.param_type(0).tag.to_s.downcase
+      st = @arginfo.type.param_type(0)
+      t = st.tag
+      case t
+      when :GType : return :gtype
+      when :interface
+        raise NotImplementedError if st.pointer?
+        iface = st.interface
+        if iface.name == 'Value' and iface.namespace == 'GObject'
+          return :gvalue
+        else
+          raise NotImplementedError
+        end
+      else
+        return t
+      end
     end
 
     def post
