@@ -25,7 +25,6 @@ module GirFFI
       end
 
       def self.build_extra_classes base
-        return if true
         klass = Class.new(base::Closure) do
           const_set :BLOCK_STORE, {}
 
