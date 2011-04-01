@@ -26,8 +26,7 @@ module GirFFI
     end
 
     def self.setup_and_call method, *arguments, &block
-      result = gir_ffi_builder.setup_method method.to_s
-      return super unless result
+      gir_ffi_builder.setup_method method.to_s
       self.send method, *arguments, &block
     end
 

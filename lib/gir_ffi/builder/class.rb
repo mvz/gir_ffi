@@ -20,7 +20,8 @@ module GirFFI
       meta = (class << klass; self; end)
 
       go = method_introspection_data method
-      return attach_and_define_method method, go, meta
+      raise NoMethodError unless go
+      attach_and_define_method method, go, meta
     end
 
     def setup_instance_method method
