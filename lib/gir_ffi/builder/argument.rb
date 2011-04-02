@@ -176,11 +176,7 @@ module GirFFI::Builder
     end
 
     def pre
-      if subtype_tag == :void
-        [ "#{@callarg} = #{@name}" ]
-      else
-        [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
-      end
+      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
     end
   end
 
@@ -513,11 +509,7 @@ module GirFFI::Builder
     end
 
     def post
-      if subtype_tag == :void
-        [ "#{@retname} = ::GLib::SList.wrap(#{@cvar})" ]
-      else
-        [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
-      end
+      [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
     end
   end
 
