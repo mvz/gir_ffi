@@ -71,10 +71,6 @@ module GirFFI
     end
 
     def info
-      unless defined? @info
-        @info = gir.find_by_name @namespace, @classname
-        raise "Class #{@classname} not found in namespace #{@namespace}" if @info.nil?
-      end
       @info
     end
 
@@ -263,14 +259,6 @@ module GirFFI
       modul.class_eval { remove_method method }
       modul.class_eval function_definition(go)
       true
-    end
-
-    def gir
-      unless defined? @gir
-        @gir = IRepository.default
-        @gir.require @namespace, nil
-      end
-      @gir
     end
 
     def get_or_define_class namespace, name, parent

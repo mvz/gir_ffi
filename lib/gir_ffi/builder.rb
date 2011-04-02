@@ -91,18 +91,5 @@ module GirFFI
       return :pointer if info.direction == :out
       return itypeinfo_to_ffitype info.type
     end
-
-    def self.build_callback interface
-      modul = build_module interface.namespace
-      lib = modul.const_get(:Lib)
-
-      sym = interface.name.to_sym
-
-      optionally_define_constant modul, sym do
-	args = ffi_function_argument_types interface
-	ret = ffi_function_return_type interface
-	lib.callback sym, args, ret
-      end
-    end
   end
 end
