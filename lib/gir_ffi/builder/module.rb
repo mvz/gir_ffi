@@ -9,6 +9,7 @@ module GirFFI
 
     def initialize namespace
       @namespace = namespace
+      @safe_namespace = @namespace.gsub(/^(.)/) { $1.upcase }
     end
 
     def generate
@@ -48,7 +49,7 @@ module GirFFI
     end
 
     def instantiate_module
-      @module = get_or_define_module ::Object, @namespace.to_s
+      @module = get_or_define_module ::Object, @safe_namespace
     end
 
     def setup_module
