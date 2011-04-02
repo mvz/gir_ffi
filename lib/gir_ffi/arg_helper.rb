@@ -74,22 +74,18 @@ module GirFFI
     end
 
     def self.cleanup_ptr_ptr ptr
-      block = ptr.read_pointer
+      LibC.free ptr.read_pointer
       LibC.free ptr
-      LibC.free block
     end
 
     # Takes an outptr to a pointer array, and frees all pointers.
     def self.cleanup_ptr_array_ptr ptr, size
       block = ptr.read_pointer
+      unless block.null?
+        block.read_array_of_pointer(size).each { |pt| LibC.free pt }
+        LibC.free block
+      end
       LibC.free ptr
-
-      return if block.null?
-
-      ptrs = block.read_array_of_pointer(size)
-      LibC.free block
-
-      ptrs.each { |ptr| LibC.free ptr }
     end
 
     def self.int32_to_inoutptr val
@@ -331,12 +327,6 @@ module GirFFI
       return nil if optr.null?
       tp = ::GObject.type_from_instance_pointer optr
       info = gir.find_by_gtype tp
-
-      if info.nil?
-	tpname = ::GObject.type_name tp
-	raise RuntimeError, "Unable to find info for type '#{tpname}' (#{tp})"
-      end
-
       klass = GirFFI::Builder.build_class info
       klass.wrap optr
     end
