@@ -5,8 +5,8 @@
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'gir_ffi'
 
+GirFFI.setup :Gtk, '2.0'
 GirFFI.setup :GObject
-GirFFI.setup :Gtk
 
 Gtk.init
 

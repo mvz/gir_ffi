@@ -32,8 +32,8 @@ module GirFFI
       Builder::Class.new(info).generate
     end
 
-    def self.build_module namespace
-      Builder::Module.new(namespace).generate
+    def self.build_module namespace, version=nil
+      Builder::Module.new(namespace, version).generate
     end
 
     def self.attach_ffi_function lib, info

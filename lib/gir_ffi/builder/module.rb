@@ -7,8 +7,9 @@ module GirFFI
   class Builder::Module
     include BuilderHelper
 
-    def initialize namespace
+    def initialize namespace, version=nil
       @namespace = namespace
+      @version = version
       @safe_namespace = @namespace.gsub(/^(.)/) { $1.upcase }
     end
 
@@ -96,7 +97,7 @@ module GirFFI
     def gir
       unless defined? @gir
         @gir = IRepository.default
-        @gir.require @namespace, nil
+        @gir.require @namespace, @version
       end
       @gir
     end
