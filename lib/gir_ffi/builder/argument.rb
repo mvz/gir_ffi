@@ -13,7 +13,7 @@ module GirFFI::Builder
 
     attr_reader :callarg, :name, :retname
 
-    attr_accessor :length_arg, :length_arg_for
+    attr_accessor :length_arg, :array_arg
 
     def initialize function_builder, arginfo=nil, libmodule=nil
       @arginfo = arginfo
@@ -24,7 +24,7 @@ module GirFFI::Builder
       @function_builder = function_builder
       @libmodule = libmodule
       @length_arg = nil
-      @length_arg_for = nil
+      @array_arg = nil
     end
 
     def self.build function_builder, arginfo, libmodule
@@ -89,11 +89,11 @@ module GirFFI::Builder
     end
 
     def inarg
-      @length_arg_for.nil? ? @inarg : nil
+      @array_arg.nil? ? @inarg : nil
     end
 
     def retval
-      @length_arg_for.nil? ? @retname : nil
+      @array_arg.nil? ? @retname : nil
     end
 
     def pre
@@ -209,8 +209,9 @@ module GirFFI::Builder
   class RegularInArgument < InArgument
     def pre
       pr = []
-      if @length_arg_for
-	pr << "#{@name} = #{@length_arg_for.name}.nil? ? 0 : #{@length_arg_for.name}.length"
+      if @array_arg
+        arrname = @array_arg.name
+	pr << "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
       pr << "#{@callarg} = #{@name}"
       pr
@@ -367,8 +368,8 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      if @length_arg_for
-        pr << "#{@name} = #{@length_arg_for.name}.length"
+      if @array_arg
+        pr << "#{@name} = #{@array_arg.name}.length"
       end
       pr << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@name}"
       pr

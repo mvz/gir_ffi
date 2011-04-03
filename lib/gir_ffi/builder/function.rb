@@ -21,7 +21,7 @@ module GirFFI::Builder
 	idx = data.type_info.array_length
         if idx > -1
           data.length_arg = @data[idx] 
-          @data[idx].length_arg_for = data
+          @data[idx].array_arg = data
         end
       }
 
