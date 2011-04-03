@@ -1,7 +1,7 @@
 require 'gir_ffi/arg_helper'
 require 'gir_ffi/builder/function'
 require 'gir_ffi/class_base'
-require 'gir_ffi/builder/class'
+require 'gir_ffi/builder/type'
 require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
 
