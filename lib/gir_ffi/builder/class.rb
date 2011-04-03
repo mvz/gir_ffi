@@ -2,12 +2,14 @@ require 'gir_ffi/builder_helper'
 module GirFFI
   # Builds a class based on information found in the introspection
   # repository.
-  class Builder::Type
-    include BuilderHelper
-
+  module Builder::Type
     def self.build info
-      self.new(info).generate
+      Base.new(info).generate
     end
+  end
+
+  class Builder::Type::Base
+    include BuilderHelper
 
     def initialize info
       @info = info

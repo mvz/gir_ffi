@@ -15,7 +15,7 @@ class TypeBuilderTest < Test::Unit::TestCase
       stub(info).name { 'Bar' }
       stub(info).namespace { 'Foo' }
 
-      @classbuilder = GirFFI::Builder::Type.new info
+      @classbuilder = GirFFI::Builder::Type::Base.new info
 
       spec = @classbuilder.send :layout_specification
       assert_equal [:parent, GObject::Object::Struct, 0], spec
@@ -23,7 +23,7 @@ class TypeBuilderTest < Test::Unit::TestCase
 
     context "for Gtk::Widget" do
       setup do
-	@cbuilder = GirFFI::Builder::Type.new @gir.find_by_name('Gtk', 'Widget')
+	@cbuilder = GirFFI::Builder::Type::Base.new @gir.find_by_name('Gtk', 'Widget')
       end
 
       context "looking at Gtk::Widget#show" do
@@ -42,19 +42,19 @@ class TypeBuilderTest < Test::Unit::TestCase
 
     context 'the find_signal method' do
       should 'find the signal "test" for TestObj' do
-	builder = GirFFI::Builder::Type.new @gir.find_by_name('Regress', 'TestObj')
+	builder = GirFFI::Builder::Type::Base.new @gir.find_by_name('Regress', 'TestObj')
 	sig = builder.find_signal 'test'
 	assert_equal 'test', sig.name
       end
 
       should 'find the signal "test" for TestSubObj' do
-	builder = GirFFI::Builder::Type.new @gir.find_by_name('Regress', 'TestSubObj')
+	builder = GirFFI::Builder::Type::Base.new @gir.find_by_name('Regress', 'TestSubObj')
 	sig = builder.find_signal 'test'
 	assert_equal 'test', sig.name
       end
 
       should 'find the signal "changed" for Gtk::Entry' do
-	builder = GirFFI::Builder::Type.new @gir.find_by_name('Gtk', 'Entry')
+	builder = GirFFI::Builder::Type::Base.new @gir.find_by_name('Gtk', 'Entry')
 	sig = builder.find_signal 'changed'
 	assert_equal 'changed', sig.name
       end
@@ -62,7 +62,7 @@ class TypeBuilderTest < Test::Unit::TestCase
 
     context "for GObject::TypeCValue (a union)" do
       setup do
-	@cbuilder = GirFFI::Builder::Type.new @gir.find_by_name('GObject', 'TypeCValue')
+	@cbuilder = GirFFI::Builder::Type::Base.new @gir.find_by_name('GObject', 'TypeCValue')
       end
 
       should "not raise an error looking for a method that doesn't exist" do
