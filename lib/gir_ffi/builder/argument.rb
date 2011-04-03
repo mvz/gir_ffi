@@ -428,7 +428,7 @@ module GirFFI::Builder
   # polymorphism and constructors.
   class InterfaceReturnValue < ReturnValue
     def post
-      interface = @arginfo.return_type.interface
+      interface = type_info.interface
       namespace = interface.namespace
       name = interface.name
 
@@ -459,8 +459,7 @@ module GirFFI::Builder
   # Implements argument processing for array return values.
   class ArrayReturnValue < ReturnValue
     def post
-      type = @arginfo.return_type
-      size = type.array_fixed_size
+      size = type_info.array_fixed_size
 
       if size <= 0
 	size = @length_arg.retname
