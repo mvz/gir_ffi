@@ -72,6 +72,14 @@ module GirFFI::Builder
       "::#{iface.namespace}::#{iface.name}"
     end
 
+    def array_size
+      if @length_arg
+        @length_arg.retname
+      else
+        type_info.array_fixed_size
+      end
+    end
+
     def safe name
       if KEYWORDS.include? name
 	"#{name}_"
@@ -260,12 +268,7 @@ module GirFFI::Builder
     end
 
     def postpost
-      size = if @length_arg
-               @length_arg.retname
-             else
-               type_info.array_fixed_size
-             end
-
+      size = array_size
       tag = subtype_tag
 
       pp = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
@@ -454,11 +457,8 @@ module GirFFI::Builder
   # Implements argument processing for array return values.
   class ArrayReturnValue < ReturnValue
     def post
-      size = type_info.array_fixed_size
+      size = array_size
 
-      if size <= 0
-	size = @length_arg.retname
-      end
       [ "#{@retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{size}" ]
     end
   end
