@@ -45,31 +45,27 @@ module GirFFI
     end
 
     def self.ffi_function_argument_types info
-      types = info.args.map do |arg|
-	tp = iarginfo_to_ffitype arg
-	tp == :string ? :pointer : tp
-      end
+      types = info.args.map { |arg| iarginfo_to_ffitype arg }
+
       if info.type == :function
 	types.unshift :pointer if info.method?
 	types << :pointer if info.throws?
       end
+
       types
     end
 
     def self.ffi_function_return_type info
-      itypeinfo_to_ffitype info.return_type
+      rt = info.return_type
+      return :string if rt.tag == :utf8
+      itypeinfo_to_ffitype rt
     end
 
     def self.itypeinfo_to_ffitype info
+      return :pointer if info.pointer?
+
       tag = info.tag
-
-      if info.pointer?
-	return :string if tag == :utf8
-	return :pointer
-      end
-
-      case tag
-      when :interface
+      if tag == :interface
         return build_class info.interface
       else
         return TAG_TYPE_MAP[tag]
@@ -77,8 +73,7 @@ module GirFFI
     end
 
     def self.iarginfo_to_ffitype info
-      return :pointer if info.direction == :inout
-      return :pointer if info.direction == :out
+      return :pointer if info.direction != :in
       return itypeinfo_to_ffitype info.type
     end
   end
