@@ -5,6 +5,10 @@ module GirFFI
   class Builder::Class
     include BuilderHelper
 
+    def self.build info
+      self.new(info).generate
+    end
+
     def initialize info
       @info = info
       @namespace = @info.namespace
