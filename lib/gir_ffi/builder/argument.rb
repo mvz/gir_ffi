@@ -41,7 +41,7 @@ module GirFFI::Builder
       klass.build function_builder, arginfo, libmodule
     end
 
-    def type
+    def type_info
       @arginfo.type
     end
 
@@ -110,7 +110,7 @@ module GirFFI::Builder
   # :in.
   class CallbackInArgument < InArgument
     def pre
-      iface = @arginfo.type.interface
+      iface = type_info.interface
       [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
         "::#{@libmodule}::CALLBACKS << #{@callarg}" ]
     end
@@ -127,7 +127,7 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction :in.
   class ArrayInArgument < InArgument
     def subtype_tag
-      st = @arginfo.type.param_type(0)
+      st = type_info.param_type(0)
       t = st.tag
       case t
       when :GType : return :gtype
@@ -156,7 +156,7 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      size = type.array_fixed_size
+      size = type_info.array_fixed_size
       if size > -1
         pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
@@ -168,11 +168,11 @@ module GirFFI::Builder
   # Implements argument processing for gslist arguments with direction :in.
   class ListInArgument < InArgument
     def subtype_tag
-      @arginfo.type.param_type(0).tag
+      type_info.param_type(0).tag
     end
 
     def type_tag
-      @arginfo.type.tag
+      type_info.tag
     end
 
     def pre
@@ -235,7 +235,7 @@ module GirFFI::Builder
   # :out (structs, objects, etc.).
   class InterfaceOutArgument < OutArgument
     def klass
-      iface = @arginfo.type.interface
+      iface = type_info.interface
       "#{iface.namespace}::#{iface.name}"
     end
 
@@ -264,7 +264,7 @@ module GirFFI::Builder
     end
 
     def postpost
-      type = @arginfo.type
+      type = type_info
 
       size = if @length_arg
                @length_arg.retname
@@ -296,7 +296,7 @@ module GirFFI::Builder
     end
 
     def postpost
-      type = @arginfo.type
+      type = type_info
 
       tag = type.param_type(0).tag
 
@@ -309,7 +309,7 @@ module GirFFI::Builder
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
     def type_tag
-      @arginfo.type.tag
+      type_info.tag
     end
 
     def post
@@ -354,7 +354,7 @@ module GirFFI::Builder
   # :inout.
   class ArrayInOutArgument < InOutArgument
     def subtype_tag
-      @arginfo.type.param_type(0).tag
+      type_info.param_type(0).tag
     end
 
     def pre
@@ -378,7 +378,7 @@ module GirFFI::Builder
   # :inout that are neither arrays nor 'interfaces'.
   class RegularInOutArgument < InOutArgument
     def type_tag
-      @arginfo.type.tag
+      type_info.tag
     end
 
     def post
@@ -405,7 +405,7 @@ module GirFFI::Builder
       @retname = @function_builder.new_var
     end
 
-    def type
+    def type_info
       @arginfo.return_type
     end
 
