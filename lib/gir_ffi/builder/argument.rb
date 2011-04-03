@@ -45,6 +45,28 @@ module GirFFI::Builder
       @arginfo.type
     end
 
+    def type_tag
+      type_info.tag
+    end
+
+    def subtype_tag
+      st = type_info.param_type(0)
+      t = st.tag
+      case t
+      when :GType : return :gtype
+      when :interface
+        raise NotImplementedError if st.pointer?
+        iface = st.interface
+        if iface.name == 'Value' and iface.namespace == 'GObject'
+          return :gvalue
+        else
+          raise NotImplementedError
+        end
+      else
+        return t
+      end
+    end
+
     def safe name
       if KEYWORDS.include? name
 	"#{name}_"
@@ -126,24 +148,6 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction :in.
   class ArrayInArgument < InArgument
-    def subtype_tag
-      st = type_info.param_type(0)
-      t = st.tag
-      case t
-      when :GType : return :gtype
-      when :interface
-        raise NotImplementedError if st.pointer?
-        iface = st.interface
-        if iface.name == 'Value' and iface.namespace == 'GObject'
-          return :gvalue
-        else
-          raise NotImplementedError
-        end
-      else
-        return t
-      end
-    end
-
     def post
       unless @arginfo.ownership_transfer == :everything
         if subtype_tag == :utf8
@@ -167,14 +171,6 @@ module GirFFI::Builder
 
   # Implements argument processing for gslist arguments with direction :in.
   class ListInArgument < InArgument
-    def subtype_tag
-      type_info.param_type(0).tag
-    end
-
-    def type_tag
-      type_info.tag
-    end
-
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
     end
@@ -264,15 +260,13 @@ module GirFFI::Builder
     end
 
     def postpost
-      type = type_info
-
       size = if @length_arg
                @length_arg.retname
              else
-               type.array_fixed_size
+               type_info.array_fixed_size
              end
 
-      tag = type.param_type(0).tag
+      tag = subtype_tag
 
       pp = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
 
@@ -296,22 +290,12 @@ module GirFFI::Builder
     end
 
     def postpost
-      type = type_info
-
-      tag = type.param_type(0).tag
-
-      pp = [ "#{@retname} = GirFFI::ArgHelper.outgslist_to_#{tag}_array #{@callarg}" ]
-
-      pp
+      [ "#{@retname} = GirFFI::ArgHelper.outgslist_to_#{subtype_tag}_array #{@callarg}" ]
     end
   end
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
-    def type_tag
-      type_info.tag
-    end
-
     def post
       pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
       if @arginfo.ownership_transfer == :everything
@@ -353,10 +337,6 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :inout.
   class ArrayInOutArgument < InOutArgument
-    def subtype_tag
-      type_info.param_type(0).tag
-    end
-
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
@@ -377,10 +357,6 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :inout that are neither arrays nor 'interfaces'.
   class RegularInOutArgument < InOutArgument
-    def type_tag
-      type_info.tag
-    end
-
     def post
       [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}",
         "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
@@ -482,10 +458,6 @@ module GirFFI::Builder
 
   # Implements argument processing for array return values.
   class ArrayReturnValue < ReturnValue
-    def subtype_tag
-      @arginfo.return_type.param_type(0).tag
-    end
-
     def post
       type = @arginfo.return_type
       size = type.array_fixed_size
@@ -499,15 +471,6 @@ module GirFFI::Builder
 
   # Implements argument processing for GSList return values.
   class ListReturnValue < ReturnValue
-    # TODO: Extract to a module.
-    def subtype_tag
-      @arginfo.return_type.param_type(0).tag
-    end
-
-    def type_tag
-      @arginfo.return_type.tag
-    end
-
     def post
       [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
     end
