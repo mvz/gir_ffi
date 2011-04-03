@@ -67,6 +67,11 @@ module GirFFI::Builder
       end
     end
 
+    def argument_class_name
+      iface = type_info.interface
+      "::#{iface.namespace}::#{iface.name}"
+    end
+
     def safe name
       if KEYWORDS.include? name
 	"#{name}_"
@@ -230,14 +235,9 @@ module GirFFI::Builder
   # Implements argument processing for interface arguments with direction
   # :out (structs, objects, etc.).
   class InterfaceOutArgument < OutArgument
-    def klass
-      iface = type_info.interface
-      "#{iface.namespace}::#{iface.name}"
-    end
-
     def pre
       if @arginfo.caller_allocates?
-	[ "#{@callarg} = #{klass}.allocate" ]
+	[ "#{@callarg} = #{argument_class_name}.allocate" ]
       else
 	[ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
       end
@@ -247,7 +247,7 @@ module GirFFI::Builder
       if @arginfo.caller_allocates?
 	[ "#{@retname} = #{@callarg}" ]
       else
-	[ "#{@retname} = #{klass}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+	[ "#{@retname} = #{argument_class_name}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
       end
     end
   end
@@ -428,12 +428,7 @@ module GirFFI::Builder
   # polymorphism and constructors.
   class InterfaceReturnValue < ReturnValue
     def post
-      interface = type_info.interface
-      namespace = interface.namespace
-      name = interface.name
-
-      GirFFI::Builder.build_class interface
-      [ "#{@retname} = ::#{namespace}::#{name}.wrap(#{@cvar})" ]
+      [ "#{@retname} = #{argument_class_name}.wrap(#{@cvar})" ]
     end
   end
 
@@ -446,13 +441,13 @@ module GirFFI::Builder
 
   # Implements argument processing for object constructors.
   class ConstructorReturnValue < ReturnValue
-    def post
+    def defining_class_name
       classinfo = @arginfo.container
-      namespace = classinfo.namespace
-      name = classinfo.name
+      "::#{classinfo.namespace}::#{classinfo.name}"
+    end
 
-      GirFFI::Builder.build_class classinfo
-      [ "#{@retname} = ::#{namespace}::#{name}.constructor_wrap(#{@cvar})" ]
+    def post
+      [ "#{@retname} = #{defining_class_name}.constructor_wrap(#{@cvar})" ]
     end
   end
 
