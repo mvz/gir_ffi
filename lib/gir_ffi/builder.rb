@@ -29,7 +29,7 @@ module GirFFI
     }
 
     def self.build_class info
-      Builder::Class.build(info)
+      Builder::Type.build(info)
     end
 
     def self.build_module namespace, version=nil

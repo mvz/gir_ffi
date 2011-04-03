@@ -308,7 +308,7 @@ class BuilderTest < Test::Unit::TestCase
       end
 
       should "know its own class builder" do
-	assert GirFFI::Builder::Class === Regress::TestObj.gir_ffi_builder
+	assert GirFFI::Builder::Type === Regress::TestObj.gir_ffi_builder
       end
 
       context "its #torture_signature_0 method" do
