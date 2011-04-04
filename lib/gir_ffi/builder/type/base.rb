@@ -52,8 +52,6 @@ module GirFFI
               instantiate_struct_class
             when :union
               instantiate_union_class
-            when :enum, :flags
-              instantiate_enum_class
             else
               raise NotImplementedError, "Cannot build classes of type #{info.type}"
             end
@@ -112,13 +110,6 @@ module GirFFI
           @klass = get_or_define_class namespace_module, @classname, superclass
           @structklass = get_or_define_class @klass, :Struct, FFI::Union
           setup_class unless already_set_up
-        end
-
-        def instantiate_enum_class
-          @klass = optionally_define_constant namespace_module, @classname do
-            vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
-            lib.enum(@classname.to_sym, vals)
-          end
         end
 
         def setup_class
