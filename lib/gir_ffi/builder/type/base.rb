@@ -50,8 +50,6 @@ module GirFFI
             case info.type
             when :object, :struct, :interface
               instantiate_struct_class
-            when :union
-              instantiate_union_class
             else
               raise NotImplementedError, "Cannot build classes of type #{info.type}"
             end
@@ -103,12 +101,6 @@ module GirFFI
         def instantiate_struct_class
           @klass = get_or_define_class namespace_module, @classname, superclass
           @structklass = get_or_define_class @klass, :Struct, FFI::Struct
-          setup_class unless already_set_up
-        end
-
-        def instantiate_union_class
-          @klass = get_or_define_class namespace_module, @classname, superclass
-          @structklass = get_or_define_class @klass, :Struct, FFI::Union
           setup_class unless already_set_up
         end
 

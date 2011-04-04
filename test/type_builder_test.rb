@@ -62,7 +62,7 @@ class TypeBuilderTest < Test::Unit::TestCase
 
     context "for GObject::TypeCValue (a union)" do
       setup do
-	@cbuilder = GirFFI::Builder::Type::Base.new @gir.find_by_name('GObject', 'TypeCValue')
+	@cbuilder = GirFFI::Builder::Type::Union.new @gir.find_by_name('GObject', 'TypeCValue')
       end
 
       should "not raise an error looking for a method that doesn't exist" do
