@@ -3,6 +3,9 @@ require 'gir_ffi/builder/type/base'
 require 'gir_ffi/builder/type/callback'
 require 'gir_ffi/builder/type/enum'
 require 'gir_ffi/builder/type/union'
+require 'gir_ffi/builder/type/object'
+require 'gir_ffi/builder/type/struct'
+require 'gir_ffi/builder/type/interface'
 
 module GirFFI
   # Builds a class based on information found in the introspection
@@ -17,8 +20,12 @@ module GirFFI
           Enum
         when :union
           Union
-        else
-          Base
+        when :object
+          Object
+        when :struct
+          Struct
+        when :interface
+          Interface
         end.new(info).build_class
       end
     end
