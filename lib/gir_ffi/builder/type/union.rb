@@ -1,11 +1,11 @@
-require 'gir_ffi/builder/type/base'
+require 'gir_ffi/builder/type/registered_type'
 module GirFFI
   module Builder
     module Type
 
       # Implements the creation of a class representing union type. The
       # class will have a nested FFI::Union class to represent its C union.
-      class Union < Base
+      class Union < RegisteredType
         def build_class
           unless defined? @klass
             instantiate_union_class
