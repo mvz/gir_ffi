@@ -10,10 +10,6 @@ module GirFFI
           @classname = @info.name.gsub(/^(.)/) { $1.upcase }
         end
 
-        def generate
-          build_class
-        end
-
         def setup_method method
           klass = build_class
           meta = (class << klass; self; end)
@@ -49,8 +45,6 @@ module GirFFI
           end
         end
 
-        private
-
         def build_class
           unless defined? @klass
             case info.type
@@ -60,14 +54,14 @@ module GirFFI
               instantiate_union_class
             when :enum, :flags
               instantiate_enum_class
-            when :callback
-              instantiate_callback_class
             else
               raise NotImplementedError, "Cannot build classes of type #{info.type}"
             end
           end
           @klass
         end
+
+        private
 
         def info
           @info
@@ -124,14 +118,6 @@ module GirFFI
           @klass = optionally_define_constant namespace_module, @classname do
             vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
             lib.enum(@classname.to_sym, vals)
-          end
-        end
-
-        def instantiate_callback_class
-          @klass = optionally_define_constant namespace_module, @classname do
-            args = Builder.ffi_function_argument_types info
-            ret = Builder.ffi_function_return_type info
-            lib.callback @classname.to_sym, args, ret
           end
         end
 
