@@ -9,11 +9,11 @@ module GirFFI
     ##
     build_array_method :fields
 
-    def n_methods; Lib.g_union_info_get_n_methods @gobj; end
-    def method(index); IFunctionInfo.wrap(Lib.g_union_info_get_method @gobj, index); end
+    def get_n_methods; Lib.g_union_info_get_n_methods @gobj; end
+    def get_method(index); IFunctionInfo.wrap(Lib.g_union_info_get_method @gobj, index); end
 
     ##
-    build_array_method :methods
+    build_array_method :get_methods
 
     def find_method(name); IFunctionInfo.wrap(Lib.g_union_info_find_method @gobj, name); end
     def size; Lib.g_union_info_get_size @gobj; end

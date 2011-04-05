@@ -19,8 +19,9 @@ module GirFFI
     # Provide the second parameter if the plural is not trivially
     # constructed by adding +s+ to the singular.
     def self.build_array_method method, single = nil
-      single ||= method.to_s[0..-2]
-      count = "n_#{method}"
+      method = method.to_s
+      single ||= method[0..-2]
+      count = method.sub(/^(get_)?/, "\\1n_")
       self.class_eval <<-CODE
 	def #{method}
 	  (0..(#{count} - 1)).map do |i|

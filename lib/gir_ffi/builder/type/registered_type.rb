@@ -109,7 +109,7 @@ module GirFFI
         end
 
         def stub_methods
-          info.methods.each do |minfo|
+          info.get_methods.each do |minfo|
             @klass.class_eval method_stub(minfo.name, minfo.method?)
           end
         end
