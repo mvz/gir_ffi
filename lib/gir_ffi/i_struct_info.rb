@@ -22,13 +22,11 @@ module GirFFI
     ##
     build_array_method :methods
 
-    def methods_hash
+    def find_method(name)
       @methods_hash ||= methods.inject({}) {|h,m| h[m.name] = m; h}
+      @methods_hash[name]
     end
 
-    def find_method(name)
-      methods_hash[name]
-    end
     def size
       Lib.g_struct_info_get_size @gobj
     end
