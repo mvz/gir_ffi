@@ -83,7 +83,7 @@ module GirFFI
 
           fields.map do |finfo|
             [ finfo.name.to_sym,
-              itypeinfo_to_ffitype_for_struct(finfo.type),
+              itypeinfo_to_ffitype_for_struct(finfo.field_type),
               finfo.offset ]
           end.flatten
         end
