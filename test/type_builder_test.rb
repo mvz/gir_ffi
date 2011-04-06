@@ -11,7 +11,7 @@ class TypeBuilderTest < Test::Unit::TestCase
 
       stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }
       stub(info).fields { [] }
-      stub(info).type { :object }
+      stub(info).info_type { :object }
       stub(info).name { 'Bar' }
       stub(info).namespace { 'Foo' }
 

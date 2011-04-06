@@ -121,7 +121,7 @@ module GirFFI::Builder
       type = arginfo.argument_type
       klass = case type.tag
               when :interface
-                if type.interface.type == :callback
+                if type.interface.info_type == :callback
                   CallbackInArgument
                 else
                   RegularInArgument
@@ -395,7 +395,7 @@ module GirFFI::Builder
               when :void
                 VoidReturnValue
               when :interface
-                case type.interface.type
+                case type.interface.info_type
                 when :interface, :struct
                   InterfaceReturnValue
                 when :object

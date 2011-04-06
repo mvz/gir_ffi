@@ -83,7 +83,7 @@ module GirFFI
     def function_introspection_data function
       info = gir.find_by_name @namespace, function.to_s
 
-      if info.type == :function
+      if info.info_type == :function
         info
       else
         nil

@@ -13,7 +13,7 @@ module GirFFI
   module Builder
     module Type
       def self.build info
-        case info.type
+        case info.info_type
         when :callback
           Callback
         when :enum, :flags

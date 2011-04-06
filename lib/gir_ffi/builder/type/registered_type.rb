@@ -67,7 +67,7 @@ module GirFFI
         end
 
         def layout_specification
-          fields = if info.type == :interface
+          fields = if info.info_type == :interface
                      []
                    else
                      info.fields

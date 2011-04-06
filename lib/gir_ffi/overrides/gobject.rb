@@ -155,13 +155,13 @@ module GirFFI
 
 	    val = ::GObject::Value.new
 	    val.init info.argument_type.interface.g_type
-	    case interface.type
+	    case interface.info_type
 	    when :struct
 	      val.set_boxed arg
 	    when :object
 	      val.set_instance arg
 	    else
-	      raise NotImplementedError, interface.type
+	      raise NotImplementedError, interface.info_type
 	    end
 
 	    return val

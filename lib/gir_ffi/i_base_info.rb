@@ -37,7 +37,7 @@ module GirFFI
       Lib.g_base_info_get_name @gobj
     end
 
-    def type
+    def info_type
       Lib.g_base_info_get_type @gobj
     end
 

@@ -282,7 +282,7 @@ module GirFFI
 
     def self.map_interface_callback_arg arg, info
       iface = info.argument_type.interface
-      case iface.type
+      case iface.info_type
       when :object
         object_pointer_to_object arg
       when :struct
