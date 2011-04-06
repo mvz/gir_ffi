@@ -74,7 +74,7 @@ module GirFFI
 
     def self.iarginfo_to_ffitype info
       return :pointer if info.direction != :in
-      return itypeinfo_to_ffitype info.type
+      return itypeinfo_to_ffitype info.argument_type
     end
   end
 end

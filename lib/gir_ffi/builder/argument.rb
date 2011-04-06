@@ -42,7 +42,7 @@ module GirFFI::Builder
     end
 
     def type_info
-      @arginfo.type
+      @arginfo.argument_type
     end
 
     def type_tag
@@ -118,7 +118,7 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo, libmodule
-      type = arginfo.type
+      type = arginfo.argument_type
       klass = case type.tag
               when :interface
                 if type.interface.type == :callback
@@ -227,7 +227,7 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo, libmodule
-      klass = case arginfo.type.tag
+      klass = case arginfo.argument_type.tag
               when :interface
                 InterfaceOutArgument
               when :array
@@ -325,7 +325,7 @@ module GirFFI::Builder
     def self.build function_builder, arginfo, libmodule
       raise NotImplementedError unless arginfo.ownership_transfer == :everything
 
-      klass = case arginfo.type.tag
+      klass = case arginfo.argument_type.tag
               when :interface
                 raise NotImplementedError
               when :array

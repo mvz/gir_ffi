@@ -150,11 +150,11 @@ module GirFFI
 	end
 	
 	def self.signal_argument_to_gvalue info, arg
-	  if info.type.tag == :interface
-	    interface = info.type.interface
+	  if info.argument_type.tag == :interface
+	    interface = info.argument_type.interface
 
 	    val = ::GObject::Value.new
-	    val.init info.type.interface.g_type
+	    val.init info.argument_type.interface.g_type
 	    case interface.type
 	    when :struct
 	      val.set_boxed arg
@@ -198,8 +198,8 @@ module GirFFI
 	  # Extra arguments
 	  signalinfo.args.each do |info|
 	    arg = args.shift
-	    if info.type.tag == :interface
-	      iface = info.type.interface
+	    if info.argument_type.tag == :interface
+	      iface = info.argument_type.interface
 	      kls = GirFFI::Builder.build_class iface
 	      result << kls.wrap(arg)
 	    else

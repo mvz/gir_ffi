@@ -268,7 +268,7 @@ module GirFFI
     end
 
     def self.map_single_callback_arg arg, info
-      case info.type.tag
+      case info.argument_type.tag
       when :interface
         map_interface_callback_arg arg, info
       when :utf8
@@ -281,7 +281,7 @@ module GirFFI
     end
 
     def self.map_interface_callback_arg arg, info
-      iface = info.type.interface
+      iface = info.argument_type.interface
       case iface.type
       when :object
         object_pointer_to_object arg
