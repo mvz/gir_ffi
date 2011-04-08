@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
-  s.version = "0.0.7"
+  s.version = "0.0.8"
   s.date = Date.today.to_s
 
-  s.summary = "Ruby-FFI-based binding of the GObject Introspection Repository"
-  s.description = "Ruby-FFI-based binding of the GObject Introspection Repository"
+  s.summary = "FFI-based GObject binding using the GObject Introspection Repository"
 
   s.authors = ["Matijs van Zuijlen"]
   s.email = ["matijs@matijs.net"]

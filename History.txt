@@ -1,3 +1,12 @@
+== 0.0.8 / 2011-04-08
+
+* Generate modules with names starting with a lowercase letter (like
+  cairo).
+* Allow specifying the typelib version on setup.
+* Rename methods #methods and #type of the introspection classes to avoid
+  clashing with standard Ruby methods.
+* Refactoring.
+
 == 0.0.7 / 2011-04-01
 
 * Support gobject-introspection 0.10, drop support for earlier versions.
