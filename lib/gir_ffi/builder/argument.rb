@@ -53,7 +53,8 @@ module GirFFI::Builder
       st = type_info.param_type(0)
       t = st.tag
       case t
-      when :GType : return :gtype
+      when :GType
+        return :gtype
       when :interface
         raise NotImplementedError if st.pointer?
         iface = st.interface
