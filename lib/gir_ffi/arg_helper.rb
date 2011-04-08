@@ -88,7 +88,7 @@ module GirFFI
     end
 
     def self.int32_to_inoutptr val
-      int32_pointer.write_int32 val
+      int32_pointer.put_int32 0, val
     end
 
     def self.utf8_to_inoutptr str
@@ -143,7 +143,7 @@ module GirFFI
     end
 
     def self.int32_outptr
-      int32_pointer.write_int32 0
+      int32_pointer.put_int32 0, 0
     end
 
     def self.double_outptr
@@ -171,7 +171,7 @@ module GirFFI
 
     # Converts an outptr to an int.
     def self.outptr_to_int32 ptr
-      ptr.read_int32
+      ptr.get_int32 0
     end
 
     # Converts an outptr to a string.
@@ -209,7 +209,7 @@ module GirFFI
     end
 
     def self.ptr_to_int32_array ptr, size
-      ptr.read_array_of_int32(size)
+      ptr.get_array_of_int32(0, size)
     end
 
     def self.ptr_to_utf8 ptr
