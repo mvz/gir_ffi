@@ -4,7 +4,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 class GeneratedGtkTest < Test::Unit::TestCase
   context "In the generated Gtk module" do
     setup do
-      GirFFI.setup :Gtk
+      GirFFI.setup :Gtk, '2.0'
     end
 
     context "a Gtk::Builder instance" do

@@ -12,7 +12,7 @@ if RUBY_PLATFORM == 'java'
 end
 
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
-GirFFI.setup :Gtk
+GirFFI.setup :Gtk, '2.0'
 Gtk.init
 
 GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')

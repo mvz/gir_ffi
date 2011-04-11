@@ -7,7 +7,7 @@ class GeneratedRegressTest < Test::Unit::TestCase
       GirFFI.setup :Regress
       GirFFI.setup :GObject
       GirFFI.setup :GLib
-      GirFFI.setup :Gtk
+      GirFFI.setup :Gtk, '2.0'
     end
 
     context "the Regress::TestBoxed class" do

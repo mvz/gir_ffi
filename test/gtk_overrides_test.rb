@@ -4,7 +4,7 @@ class GtkOverridesTest < Test::Unit::TestCase
   context "The Gtk.init function" do
     setup do
       cleanup_module :Gtk
-      GirFFI.setup :Gtk
+      GirFFI.setup :Gtk, '2.0'
     end
 
     should "not take any arguments" do
