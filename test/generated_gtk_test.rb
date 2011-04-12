@@ -60,6 +60,16 @@ class GeneratedGtkTest < Test::Unit::TestCase
         assert_equal 2, ref_count(@w)
       end
     end
+
+    context "Gtk::RadioButton" do
+      context "#new" do
+        should "work when called with nil" do
+          assert_nothing_raised {
+            Gtk::RadioButton.new nil
+          }
+        end
+      end
+    end
   end
 end
 

@@ -233,6 +233,11 @@ module GirFFI
         GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
+    def self.void_array_to_gslist ary
+      return nil if ary.nil?
+      raise NotImplementedError
+    end
+
     def self.glist_to_utf8_array ptr
       return [] if ptr.null?
       # FIXME: Quasi-circular dependency on generated module
