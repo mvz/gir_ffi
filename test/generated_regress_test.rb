@@ -501,14 +501,23 @@ class GeneratedRegressTest < Test::Unit::TestCase
     should "have correct test_ghash_null_out"
     should "have correct test_ghash_null_return"
 
-    should "have correct test_glist_container_return" do
-      arr = Regress.test_glist_container_return
-      assert_equal ["1", "2", "3"], arr
+    context "#test_glist_container_return" do
+      setup do
+        @list = Regress.test_glist_container_return
+      end
+
+      should "return an instance of GLib::SList" do
+        assert_instance_of GLib::List, @list
+      end
+
+      should "return the correct values" do
+        assert_equal ["1", "2", "3"], @list.to_a
+      end
     end
 
     should "have correct test_glist_everything_return" do
-      arr = Regress.test_glist_everything_return
-      assert_equal ["1", "2", "3"], arr
+      list = Regress.test_glist_everything_return
+      assert_equal ["1", "2", "3"], list.to_a
     end
 
     should "have correct test_glist_nothing_in" do
@@ -524,13 +533,13 @@ class GeneratedRegressTest < Test::Unit::TestCase
     end
 
     should "have correct test_glist_nothing_return" do
-      arr = Regress.test_glist_nothing_return
-      assert_equal ["1", "2", "3"], arr
+      list = Regress.test_glist_nothing_return
+      assert_equal ["1", "2", "3"], list.to_a
     end
 
     should "have correct test_glist_nothing_return2" do
-      arr = Regress.test_glist_nothing_return2
-      assert_equal ["1", "2", "3"], arr
+      list = Regress.test_glist_nothing_return2
+      assert_equal ["1", "2", "3"], list.to_a
     end
 
     should "have correct test_glist_null_in" do
@@ -541,17 +550,26 @@ class GeneratedRegressTest < Test::Unit::TestCase
 
     should "have correct test_glist_null_out" do
       result = Regress.test_glist_null_out
-      assert_equal [], result
+      assert_equal nil, result
     end
 
-    should "have correct test_gslist_container_return" do
-      arr = Regress.test_gslist_container_return
-      assert_equal ["1", "2", "3"], arr
+    context "#test_gslist_container_return" do
+      setup do
+        @slist = Regress.test_gslist_container_return
+      end
+
+      should "return a GLib::SList object" do
+        assert_instance_of GLib::SList, @slist
+      end
+
+      should "return the correct values" do
+        assert_equal ["1", "2", "3"], @slist.to_a
+      end
     end
 
     should "have correct test_gslist_everything_return" do
-      arr = Regress.test_gslist_everything_return
-      assert_equal ["1", "2", "3"], arr
+      slist = Regress.test_gslist_everything_return
+      assert_equal ["1", "2", "3"], slist.to_a
     end
 
     should "have correct test_gslist_nothing_in" do
@@ -567,13 +585,13 @@ class GeneratedRegressTest < Test::Unit::TestCase
     end
 
     should "have correct test_gslist_nothing_return" do
-      arr = Regress.test_gslist_nothing_return
-      assert_equal ["1", "2", "3"], arr
+      slist = Regress.test_gslist_nothing_return
+      assert_equal ["1", "2", "3"], slist.to_a
     end
 
     should "have correct test_gslist_nothing_return2" do
-      arr = Regress.test_gslist_nothing_return2
-      assert_equal ["1", "2", "3"], arr
+      slist = Regress.test_gslist_nothing_return2
+      assert_equal ["1", "2", "3"], slist.to_a
     end
 
     should "have correct test_gslist_null_in" do
@@ -582,9 +600,11 @@ class GeneratedRegressTest < Test::Unit::TestCase
       }
     end
 
-    should "have correct test_gslist_null_out" do
-      result = Regress.test_gslist_null_out
-      assert_equal [], result
+    context "#test_gslist_null_out" do
+      should "return nil" do
+        result = Regress.test_gslist_null_out
+        assert_equal nil, result
+      end
     end
 
     should "have correct test_gtype" do

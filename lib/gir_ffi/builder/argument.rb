@@ -295,7 +295,7 @@ module GirFFI::Builder
     end
 
     def postpost
-      [ "#{@retname} = GirFFI::ArgHelper.outgslist_to_#{subtype_tag}_array #{@callarg}" ]
+      [ "#{@retname} = GLib::SList.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
   # Implements argument processing for arguments with direction
@@ -410,8 +410,10 @@ module GirFFI::Builder
                 end
               when :array
                 ArrayReturnValue
-              when :glist, :gslist
+              when :glist
                 ListReturnValue
+              when :gslist
+                SListReturnValue
               else
                 RegularReturnValue
               end
@@ -465,10 +467,17 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for GSList return values.
+  # Implements argument processing for GList return values.
   class ListReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.#{type_tag}_to_#{subtype_tag}_array #{@cvar}" ]
+      [ "#{@retname} = GLib::List.wrap(#{@cvar})" ]
+    end
+  end
+
+  # Implements argument processing for GSList return values.
+  class SListReturnValue < ReturnValue
+    def post
+      [ "#{@retname} = GLib::SList.wrap(#{@cvar})" ]
     end
   end
 

@@ -62,7 +62,7 @@ class GeneratedGtkTest < Test::Unit::TestCase
     end
 
     context "Gtk::RadioButton" do
-      context "#new" do
+      context ".new" do
         should "work when called with nil" do
           assert_nothing_raised {
             Gtk::RadioButton.new nil
