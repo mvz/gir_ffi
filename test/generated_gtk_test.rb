@@ -69,6 +69,25 @@ class GeneratedGtkTest < Test::Unit::TestCase
           }
         end
       end
+
+      context "#get_group" do
+        should "return a GLib::SList object" do
+          btn = Gtk::RadioButton.new nil
+          grp = btn.get_group
+          assert_instance_of GLib::SList, grp
+        end
+      end
+
+      context ".new" do
+        should "work when called with the result of #get_group" do
+          assert_nothing_raised {
+            btn = Gtk::RadioButton.new nil
+            grp = btn.get_group
+            btn2 = Gtk::RadioButton.new grp
+          }
+        end
+      end
+
     end
   end
 end

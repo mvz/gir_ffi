@@ -235,6 +235,7 @@ module GirFFI
 
     def self.void_array_to_gslist ary
       return nil if ary.nil?
+      return ary if ary.is_a? GLib::SList
       raise NotImplementedError
     end
 
