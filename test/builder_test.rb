@@ -9,7 +9,7 @@ class BuilderTest < MiniTest::Spec
     context "building GObject::Object" do
       setup do
 	cleanup_module :GObject
-	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'Object')
+	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
       end
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
@@ -23,7 +23,7 @@ class BuilderTest < MiniTest::Spec
 
       should "not replace existing classes" do
 	oldclass = GObject::Object
-	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'Object')
+	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
 	assert_equal oldclass, GObject::Object
       end
     end
@@ -32,7 +32,7 @@ class BuilderTest < MiniTest::Spec
       setup do
 	cleanup_module :Gtk
 	cleanup_module :GObject
-	GirFFI::Builder.build_class @gir.find_by_name('Gtk', 'Window')
+	GirFFI::Builder.build_class get_function_introspection_data('Gtk', 'Window')
       end
 
       should "build Gtk namespace" do
@@ -71,7 +71,7 @@ class BuilderTest < MiniTest::Spec
     context "built Gtk::Widget" do
       setup do
         cleanup_module :Gtk
-	GirFFI::Builder.build_class @gir.find_by_name('Gtk', 'Widget')
+	GirFFI::Builder.build_class get_function_introspection_data('Gtk', 'Widget')
       end
 
       should "not have regular #new as a constructor" do
@@ -195,7 +195,7 @@ class BuilderTest < MiniTest::Spec
     context "building Regress::TestStructA" do
       setup do
 	@fieldnames = [:some_int, :some_int8, :some_double, :some_enum]
-	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestStructA')
+	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestStructA')
       end
 
       should "set up the correct struct members" do
@@ -218,7 +218,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building GObject::TypeCValue" do
       setup do
-	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'TypeCValue')
+	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'TypeCValue')
       end
 
       should "set up the correct union members" do
@@ -238,7 +238,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building GObject::ValueArray" do
       should "use provided constructor if present" do
-	GirFFI::Builder.build_class @gir.find_by_name('GObject', 'ValueArray')
+	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'ValueArray')
 	assert_nothing_raised {
 	  GObject::ValueArray.new 2
 	}
@@ -247,7 +247,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building Regress::TestBoxed" do
       setup do
-	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestBoxed')
+	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestBoxed')
       end
 
       should "set up #wrap" do
@@ -284,7 +284,7 @@ class BuilderTest < MiniTest::Spec
     context "built Regress::TestObj" do
       setup do
 	cleanup_module :Regress
-	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestObj')
+	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestObj')
       end
 
       should "make autocreated instance method available to all instances" do
@@ -324,7 +324,7 @@ class BuilderTest < MiniTest::Spec
     context "built Regress::TestSubObj" do
       setup do
 	cleanup_module :Regress
-	GirFFI::Builder.build_class @gir.find_by_name('Regress', 'TestSubObj')
+	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestSubObj')
       end
 
       should "autocreate parent class' set_bare inside the parent class" do
