@@ -1,10 +1,10 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 module GirFFI
-  class IRepositoryTest < Test::Unit::TestCase
+  class IRepositoryTest < MiniTest::Spec
     context "An IRepository object" do
       should "not be created by calling new()" do
-	assert_raise NoMethodError do
+	assert_raises NoMethodError do
 	  IRepository.new
 	end
       end
@@ -23,7 +23,7 @@ module GirFFI
 
     context "The namespace method" do
       should "raise an error if the namespace doesn't exist" do
-	assert_raise RuntimeError do
+	assert_raises RuntimeError do
 	  IRepository.default.require 'VeryUnlikelyGObjectNamespaceName', nil
 	end
       end

@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class ModuleBuilderTest < Test::Unit::TestCase
+class ModuleBuilderTest < MiniTest::Spec
   context "The Builder::Module object" do
     context "for Gtk" do
       setup do

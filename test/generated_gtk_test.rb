@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Gtk namespace.
-class GeneratedGtkTest < Test::Unit::TestCase
+class GeneratedGtkTest < MiniTest::Spec
   context "In the generated Gtk module" do
     setup do
       GirFFI.setup :Gtk, '2.0'

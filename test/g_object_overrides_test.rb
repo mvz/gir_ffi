@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class GObjectOverridesTest < Test::Unit::TestCase
+class GObjectOverridesTest < MiniTest::Spec
   context "In the GObject module with overridden functions" do
     setup do
       GirFFI.setup :GObject

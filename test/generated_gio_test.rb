@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Gio namespace.
-class GeneratedGioTest < Test::Unit::TestCase
+class GeneratedGioTest < MiniTest::Spec
   context "In the generated Gio module" do
     setup do
       GirFFI.setup :Gio

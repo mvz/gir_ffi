@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class ArgHelperTest < Test::Unit::TestCase
+class ArgHelperTest < MiniTest::Spec
   context "The int_to_inoutptr method's return value" do
     setup do
       @result = GirFFI::ArgHelper.int_to_inoutptr 24

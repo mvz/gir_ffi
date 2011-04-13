@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 module GirFFI
-  class IObjectInfoTest < Test::Unit::TestCase
+  class IObjectInfoTest < MiniTest::Spec
     context "An IObjectInfo object" do
 
       setup do

@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class GObjectTest < Test::Unit::TestCase
+class GObjectTest < MiniTest::Spec
   context "The GirFFI::GObject helper module" do
     should "have type_init as a public method" do
       assert GirFFI::GObject.respond_to?('type_init')

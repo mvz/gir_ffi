@@ -1,4 +1,5 @@
-require 'shoulda'
+require 'minitest/spec'
+require 'minitest/autorun'
 require 'rr'
 require 'ffi'
 
@@ -35,7 +36,7 @@ end
 module Lib
 end
 
-class Test::Unit::TestCase
+class MiniTest::Unit::TestCase
   include RR::Adapters::TestUnit
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
@@ -65,5 +66,23 @@ class Test::Unit::TestCase
 
   def is_floating? object
     (GObject::Object::Struct.new(object.to_ptr)[:qdata].address & 2) == 2
+  end
+
+  def assert_nothing_raised
+    yield
+    assert true
+  end
+
+  def assert_not_nil it
+    refute_nil it
+  end
+end
+
+class MiniTest::Spec
+  class << self
+    alias :setup :before
+    alias :teardown :after
+    alias :should :it
+    alias :context :describe
   end
 end

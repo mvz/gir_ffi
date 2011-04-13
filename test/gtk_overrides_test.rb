@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class GtkOverridesTest < Test::Unit::TestCase
+class GtkOverridesTest < MiniTest::Spec
   context "The Gtk.init function" do
     setup do
       cleanup_module :Gtk

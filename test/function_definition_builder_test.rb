@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class FunctionDefinitionBuilderTest < Test::Unit::TestCase
+class FunctionDefinitionBuilderTest < MiniTest::Spec
   context "The Builder::Function class" do
     should "build correct definition of Gtk.init" do
       go = get_function_introspection_data 'Gtk', 'init'

@@ -1,7 +1,7 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Regress namespace.
-class GeneratedRegressTest < Test::Unit::TestCase
+class GeneratedRegressTest < MiniTest::Spec
   context "The generated Regress module" do
     setup do
       GirFFI.setup :Regress

@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-class TypeBuilderTest < Test::Unit::TestCase
+class TypeBuilderTest < MiniTest::Spec
   context "The Builder::Type class" do
     setup do
       @gir = GirFFI::IRepository.default
