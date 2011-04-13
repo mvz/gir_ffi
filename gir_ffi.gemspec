@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -z -- test`.split("\0")
 
   s.add_runtime_dependency(%q<ffi>, ["~> 1.0.4"])
-  s.add_development_dependency('shoulda', ["~> 2.11.3"])
+  s.add_development_dependency('minitest', [">= 2.0.2"])
   s.add_development_dependency('rr', ["~> 1.0.2"])
 
   s.require_paths = ["lib"]
