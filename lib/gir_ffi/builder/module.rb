@@ -42,11 +42,20 @@ module GirFFI
 
     def build_module
       unless defined? @module
+        build_dependencies
         instantiate_module
         setup_lib_for_ffi
         setup_module unless already_set_up
       end
       @module
+    end
+
+    def build_dependencies
+      deps = gir.dependencies @namespace
+      deps.each {|dep|
+        name, version = dep.split '-'
+        Builder.build_module name, version
+      }
     end
 
     def instantiate_module

@@ -7,6 +7,13 @@ class GirFFITest < MiniTest::Spec
         GirFFI.setup :cairo
       }
     end
+
+    it "sets up dependencies" do
+      cleanup_module :GObject
+      cleanup_module :Regress
+      GirFFI.setup :Regress
+      assert Object.const_defined?(:GObject), "GObject should be defined, but isn't"
+    end
   end
 end
 
