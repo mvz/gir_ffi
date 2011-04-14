@@ -5,9 +5,6 @@ class GeneratedRegressTest < MiniTest::Spec
   context "The generated Regress module" do
     setup do
       GirFFI.setup :Regress
-      GirFFI.setup :GObject
-      GirFFI.setup :GLib
-      GirFFI.setup :Gtk, '2.0'
     end
 
     context "the Regress::TestBoxed class" do
@@ -383,6 +380,7 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     should "have correct test_async_ready_callback" do
+      GirFFI.setup :Gtk, '2.0'
       a = 1
 
       Regress.test_async_ready_callback Proc.new {

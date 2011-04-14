@@ -3,9 +3,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 class GObjectOverridesTest < MiniTest::Spec
   context "In the GObject module with overridden functions" do
     setup do
-      GirFFI.setup :GObject
       GirFFI.setup :Regress
-      GirFFI.setup :Gio
     end
 
     context "the Value class" do
