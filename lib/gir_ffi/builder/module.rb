@@ -38,11 +38,16 @@ module GirFFI
       Builder.build_class info
     end
 
-    private
-
     def build_module
       unless defined? @module
         build_dependencies
+        build_module_non_recursive
+      end
+      @module
+    end
+
+    def build_module_non_recursive
+      unless defined? @module
         instantiate_module
         setup_lib_for_ffi
         setup_module unless already_set_up
@@ -50,11 +55,13 @@ module GirFFI
       @module
     end
 
+    private
+
     def build_dependencies
       deps = gir.dependencies @namespace
       deps.each {|dep|
         name, version = dep.split '-'
-        Builder.build_module name, version
+        Builder.build_module_non_recursive name, version
       }
     end
 

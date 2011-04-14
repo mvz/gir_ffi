@@ -36,6 +36,10 @@ module GirFFI
       Builder::Module.new(namespace, version).generate
     end
 
+    def self.build_module_non_recursive namespace, version=nil
+      Builder::Module.new(namespace, version).build_module_non_recursive
+    end
+
     def self.attach_ffi_function lib, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info
