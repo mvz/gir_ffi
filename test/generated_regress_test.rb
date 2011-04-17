@@ -771,6 +771,13 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
     end
 
+    it "has a correct test_unichar" do
+      assert_equal 120, Regress.test_unichar(120)
+      assert_equal 540_000, Regress.test_unichar(540_000)
+    end
+
+    it "has a correct test_unsigned_enum_param"
+
     should "have correct test_ushort" do
       assert_equal 54_000_000, Regress.test_uint64(54_000_000)
     end

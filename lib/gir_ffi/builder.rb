@@ -15,6 +15,7 @@ module GirFFI
     TAG_TYPE_MAP = {
       :GType => :size_t,
       :gboolean => :bool,
+      :gunichar => :uint32,
       :gint8 => :int8,
       :guint8 => :uint8,
       :gint16 => :int16,
@@ -72,7 +73,7 @@ module GirFFI
       if tag == :interface
         return build_class info.interface
       else
-        return TAG_TYPE_MAP[tag]
+        return TAG_TYPE_MAP[tag] || tag
       end
     end
 
