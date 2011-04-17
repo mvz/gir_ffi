@@ -72,10 +72,10 @@ module GirFFI
       Lib.g_type_tag_to_string type
     end
 
-    def require namespace, version=nil
+    def require namespace, version=nil, flags=0
       errpp = FFI::MemoryPointer.new(:pointer).write_pointer nil
 
-      Lib.g_irepository_require @gobj, namespace, version, 0, errpp
+      Lib.g_irepository_require @gobj, namespace, version, flags, errpp
 
       errp = errpp.read_pointer
       raise GError.new(errp)[:message] unless errp.null?
