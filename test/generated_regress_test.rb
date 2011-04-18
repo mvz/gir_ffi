@@ -487,7 +487,21 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_in_delta 5435.32, r, 0.001
     end
 
-    should "have correct test_ghash_container_return"
+    describe "#test_ghash_container_return" do
+      before do
+        @hash = Regress.test_ghash_container_return
+      end
+      
+      it "returns an instance of GLib::Hash" do
+        @hash.must_be_instance_of GLib::HashTable
+      end
+
+      it "returns the correct values" do
+        @hash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
+          "qux" => "quux"}
+      end
+    end
+
     should "have correct test_ghash_everything_return"
     should "have correct test_ghash_nested_everything_return"
     should "have correct test_ghash_nested_everything_return2"

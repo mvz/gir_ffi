@@ -414,6 +414,8 @@ module GirFFI::Builder
                 ListReturnValue
               when :gslist
                 SListReturnValue
+              when :ghash
+                HashTableReturnValue
               else
                 RegularReturnValue
               end
@@ -478,6 +480,13 @@ module GirFFI::Builder
   class SListReturnValue < ReturnValue
     def post
       [ "#{@retname} = GLib::SList.wrap(#{@cvar})" ]
+    end
+  end
+
+  # Implements argument processing for GHashTable return values.
+  class HashTableReturnValue < ReturnValue
+    def post
+      [ "#{@retname} = GLib::HashTable.wrap(#{@cvar})" ]
     end
   end
 

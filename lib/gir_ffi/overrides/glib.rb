@@ -16,6 +16,10 @@ module GirFFI
           include ListInstanceMethods
           include Enumerable
         }
+        base::HashTable.class_eval {
+          include HashTableInstanceMethods
+          include Enumerable
+        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -23,6 +27,8 @@ module GirFFI
           :pointer
         base::Lib.attach_function :g_list_append, [:pointer, :pointer],
           :pointer
+        base::Lib.attach_function :g_hash_table_foreach,
+          [:pointer, base::HFunc, :pointer], :void
       end
 
       module ClassMethods
@@ -48,6 +54,22 @@ module GirFFI
           rval
         end
       end
+
+      module HashTableInstanceMethods
+        def each
+          prc = Proc.new {|kp, vp, ud|
+            ks = GirFFI::ArgHelper.ptr_to_utf8 kp
+            vs = GirFFI::ArgHelper.ptr_to_utf8 vp
+            yield ks, vs
+          }
+          ::GLib::Lib.g_hash_table_foreach self.to_ptr, prc, nil
+        end
+
+        def to_hash
+          Hash[self.to_a]
+        end
+      end
+
     end
   end
 end
