@@ -502,16 +502,36 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    should "have correct test_ghash_everything_return"
+    it "has correct #test_ghash_everything_return" do
+      ghash = Regress.test_ghash_everything_return
+      ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
+          "qux" => "quux"}
+    end
+
     should "have correct test_ghash_nested_everything_return"
     should "have correct test_ghash_nested_everything_return2"
     should "have correct test_ghash_nothing_in"
     should "have correct test_ghash_nothing_in2"
-    should "have correct test_ghash_nothing_return"
-    should "have correct test_ghash_nothing_return2"
+
+    it "has correct #test_ghash_nothing_return" do
+      ghash = Regress.test_ghash_nothing_return
+      ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
+          "qux" => "quux"}
+    end
+
+    it "has correct #test_ghash_nothing_return2" do
+      ghash = Regress.test_ghash_nothing_return2
+      ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
+          "qux" => "quux"}
+    end
+
     should "have correct test_ghash_null_in"
     should "have correct test_ghash_null_out"
-    should "have correct test_ghash_null_return"
+
+    it "has correct #test_ghash_null_return" do
+      ghash = Regress.test_ghash_null_return
+      ghash.must_be_nil
+    end
 
     context "#test_glist_container_return" do
       setup do
