@@ -233,6 +233,13 @@ module GirFFI
         GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
+    def self.utf8_utf8_hash_to_ghash hash
+      return nil if hash.nil?
+      ghash = GLib.hash_table_new
+      hash.each {|key, val| ghash.insert key, val}
+      ghash
+    end
+
     def self.void_array_to_gslist ary
       return nil if ary.nil?
       return ary if ary.is_a? GLib::SList

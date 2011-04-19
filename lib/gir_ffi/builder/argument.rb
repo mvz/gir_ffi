@@ -49,8 +49,8 @@ module GirFFI::Builder
       type_info.tag
     end
 
-    def subtype_tag
-      st = type_info.param_type(0)
+    def subtype_tag index=0
+      st = type_info.param_type(index)
       t = st.tag
       case t
       when :GType
@@ -133,6 +133,8 @@ module GirFFI::Builder
                 ArrayInArgument
               when :glist, :gslist
                 ListInArgument
+              when :ghash
+                HashTableInArgument
               when :utf8
                 Utf8InArgument
               else
@@ -183,10 +185,18 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for gslist arguments with direction :in.
+  # Implements argument processing for glist and gslist arguments with
+  # direction :in.
   class ListInArgument < InArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
+    end
+  end
+
+  # Implements argument processing for ghash arguments with direction :in.
+  class HashTableInArgument < InArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag(0)}_#{subtype_tag(1)}_hash_to_ghash #{@name}" ]
     end
   end
 

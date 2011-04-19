@@ -29,17 +29,26 @@ module GirFFI
           :pointer
         base::Lib.attach_function :g_hash_table_foreach,
           [:pointer, base::HFunc, :pointer], :void
+        base::Lib.attach_function :g_hash_table_new,
+          [base::HashFunc, base::EqualFunc], :pointer
+        base::Lib.attach_function :g_hash_table_insert,
+          [:pointer, :pointer, :pointer], :void
       end
 
       module ClassMethods
-        # FIXME: Should not be so visible for end users. 
+        # FIXME: Should not be so visible for end users.
         def slist_prepend slist, data
           ::GLib::SList.wrap(::GLib::Lib.g_slist_prepend slist, data)
         end
 
-        # FIXME: Should not be so visible for end users. 
+        # FIXME: Should not be so visible for end users.
         def list_append list, data
           ::GLib::List.wrap(::GLib::Lib.g_list_append list, data)
+        end
+
+        # FIXME: Turn into real constructor
+        def hash_table_new
+          ::GLib::HashTable.wrap(::GLib::Lib.g_hash_table_new nil, nil)
         end
       end
 
@@ -57,16 +66,22 @@ module GirFFI
 
       module HashTableInstanceMethods
         def each
-          prc = Proc.new {|kp, vp, ud|
-            ks = GirFFI::ArgHelper.ptr_to_utf8 kp
-            vs = GirFFI::ArgHelper.ptr_to_utf8 vp
-            yield ks, vs
+          prc = Proc.new {|keyptr, valptr, userdata|
+            key = GirFFI::ArgHelper.ptr_to_utf8 keyptr
+            val = GirFFI::ArgHelper.ptr_to_utf8 valptr
+            yield key, val
           }
           ::GLib::Lib.g_hash_table_foreach self.to_ptr, prc, nil
         end
 
         def to_hash
           Hash[self.to_a]
+        end
+
+        def insert key, value
+          keyptr = GirFFI::ArgHelper.utf8_to_inptr key
+          valptr = GirFFI::ArgHelper.utf8_to_inptr value
+          ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
         end
       end
 
