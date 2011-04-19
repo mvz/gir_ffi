@@ -516,7 +516,10 @@ class GeneratedRegressTest < MiniTest::Spec
           "qux" => "quux"})
     end
 
-    should "have correct test_ghash_nothing_in2"
+    it "has correct #test_ghash_nothing_in2" do
+      Regress.test_ghash_nothing_in2({"foo" => "bar", "baz" => "bat",
+          "qux" => "quux"})
+    end
 
     it "has correct #test_ghash_nothing_return" do
       ghash = Regress.test_ghash_nothing_return
@@ -530,7 +533,10 @@ class GeneratedRegressTest < MiniTest::Spec
           "qux" => "quux"}
     end
 
-    should "have correct test_ghash_null_in"
+    it "has correct #test_ghash_null_in" do
+      Regress.test_ghash_null_in(nil)
+    end
+
     should "have correct test_ghash_null_out"
 
     it "has correct #test_ghash_null_return" do
