@@ -436,7 +436,11 @@ module GirFFI::Builder
                   RegularReturnValue
                 end
               when :array
-                ArrayReturnValue
+                if type.zero_terminated?
+                  StrzReturnValue
+                else
+                  ArrayReturnValue
+                end
               when :glist
                 ListReturnValue
               when :gslist
@@ -493,6 +497,13 @@ module GirFFI::Builder
       size = array_size
 
       [ "#{@retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{size}" ]
+    end
+  end
+
+  # Implements argument processing for NULL-terminated string array return values.
+  class StrzReturnValue < ReturnValue
+    def post
+      [ "#{@retname} = GirFFI::ArgHelper.strz_to_utf8_array #{@cvar}" ]
     end
   end
 

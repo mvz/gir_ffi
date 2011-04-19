@@ -756,7 +756,11 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal true, Regress.test_strv_in(['1', '2', '3'])
     end
 
-    should "have correct test_strv_out"
+    it "has correct #test_strv_out" do
+      arr = Regress.test_strv_out
+      assert_equal ["thanks", "for", "all", "the", "fish"], arr
+    end
+
     should "have correct test_strv_out_c"
     should "have correct test_strv_out_container"
     should "have correct test_strv_outarg"

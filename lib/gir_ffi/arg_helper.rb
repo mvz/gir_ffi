@@ -221,6 +221,19 @@ module GirFFI
       alias ptr_to_gint32_array ptr_to_int32_array
     end
 
+    def self.strz_to_utf8_array strz
+      return [] if strz.null?
+      arr = []
+      i = 0
+      loop do
+        ptr = strz.get_pointer i * FFI.type_size(:pointer)
+        break if ptr.null?
+        arr << ptr.read_string
+        i += 1
+      end
+      return arr
+    end
+
     def self.utf8_array_to_glist arr
       return nil if arr.nil?
       arr.inject(nil) { |lst, str|
