@@ -45,6 +45,10 @@ module GirFFI
       Lib.g_base_info_get_namespace @gobj
     end
 
+    def safe_namespace
+      namespace.gsub(/^(.)/) { $1.upcase }
+    end
+
     def container
       ptr = Lib.g_base_info_get_container @gobj
       IRepository.wrap_ibaseinfo_pointer ptr

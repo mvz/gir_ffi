@@ -406,12 +406,35 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal true, Regress.test_boolean_true(true)
     end
 
-    should "have correct test_cairo_context_full_return"
-    should "have correct test_cairo_context_none_in"
-    should "have correct test_cairo_surface_full_out"
-    should "have correct test_cairo_surface_full_return"
-    should "have correct test_cairo_surface_none_in"
-    should "have correct test_cairo_surface_none_return"
+    it "has correct #test_cairo_context_full_return" do
+      ct = Regress.test_cairo_context_full_return
+      assert_instance_of Cairo::Context, ct
+    end
+
+    it "has correct #test_cairo_context_none_in" do
+      ct = Regress.test_cairo_context_full_return
+      Regress.test_cairo_context_none_in ct
+    end
+
+    it "has correct #test_cairo_surface_full_out" do
+      cs = Regress.test_cairo_surface_full_out
+      assert_instance_of Cairo::Surface, cs
+    end
+
+    it "has correct #test_cairo_surface_full_return" do
+      cs = Regress.test_cairo_surface_full_return
+      assert_instance_of Cairo::Surface, cs
+    end
+
+    it "has correct #test_cairo_surface_none_in" do
+      cs = Regress.test_cairo_surface_full_return
+      Regress.test_cairo_surface_none_in cs
+    end
+
+    it "has correct #test_cairo_surface_none_return" do
+      cs = Regress.test_cairo_surface_none_return
+      assert_instance_of Cairo::Surface, cs
+    end
 
     should "have correct test_callback" do
       result = Regress.test_callback Proc.new { 5 }

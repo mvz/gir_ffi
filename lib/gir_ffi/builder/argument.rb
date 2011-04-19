@@ -70,7 +70,7 @@ module GirFFI::Builder
 
     def argument_class_name
       iface = type_info.interface
-      "::#{iface.namespace}::#{iface.name}"
+      "::#{iface.safe_namespace}::#{iface.name}"
     end
 
     def array_size
