@@ -465,7 +465,7 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 42, r2
     end
 
-    context "the test_callback_user_data function" do
+    describe "the #test_callback_user_data function" do
       should "return the callbacks return value" do
 	result = Regress.test_callback_user_data Proc.new {|u| 5 }, nil
 	assert_equal 5, result
@@ -761,7 +761,7 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal [5, 6, 7.0], [result[:some_int], result[:some_int8], result[:some_double]]
     end
 
-    context "the test_simple_callback function" do
+    describe "the #test_simple_callback function" do
       should "call the passed-in proc" do
 	a = 0
 	Regress.test_simple_callback Proc.new { a = 1 }
