@@ -503,7 +503,11 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal "value3", r
     end
 
-    should "have correct test_filename_return"
+    # TODO: Find a way to test encoding issues.
+    it "has correct #test_filename_return" do
+      arr = Regress.test_filename_return
+      assert_equal ["åäö", "/etc/fstab"], arr.to_a
+    end
 
     should "have correct test_float" do
       r = Regress.test_float 5435.32
