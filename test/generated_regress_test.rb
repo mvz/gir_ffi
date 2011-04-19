@@ -761,9 +761,20 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal ["thanks", "for", "all", "the", "fish"], arr
     end
 
-    should "have correct test_strv_out_c"
-    should "have correct test_strv_out_container"
-    should "have correct test_strv_outarg"
+    it "has correct #test_strv_out_c" do
+      arr = Regress.test_strv_out_c
+      assert_equal ["thanks", "for", "all", "the", "fish"], arr
+    end
+
+    it "has correct #test_strv_out_container" do
+      arr = Regress.test_strv_out_container
+      assert_equal ['1', '2', '3'], arr
+    end
+
+    it "has correct #test_strv_outarg" do
+      arr = Regress.test_strv_outarg
+      assert_equal ['1', '2', '3'], arr
+    end
 
     should "have correct test_timet" do
       # Time rounded to seconds.

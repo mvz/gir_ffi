@@ -238,11 +238,16 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo, libmodule
+      type = arginfo.argument_type
       klass = case arginfo.argument_type.tag
               when :interface
                 InterfaceOutArgument
               when :array
-                ArrayOutArgument
+                if type.zero_terminated?
+                  StrzOutArgument
+                else
+                  ArrayOutArgument
+                end
               when :gslist
                 SListOutArgument
               when :ghash
@@ -296,6 +301,18 @@ module GirFFI::Builder
       end
 
       pp
+    end
+  end
+
+  # Implements argument processing for strz arguments with direction
+  # :out.
+  class StrzOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def postpost
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_strz_to_utf8_array #{@callarg}" ]
     end
   end
 

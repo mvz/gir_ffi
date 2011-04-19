@@ -221,6 +221,10 @@ module GirFFI
       alias ptr_to_gint32_array ptr_to_int32_array
     end
 
+    def self.outptr_strz_to_utf8_array ptr
+      strz_to_utf8_array ptr.read_pointer
+    end
+
     def self.strz_to_utf8_array strz
       return [] if strz.null?
       arr = []
