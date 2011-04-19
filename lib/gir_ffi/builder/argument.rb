@@ -244,7 +244,9 @@ module GirFFI::Builder
               when :array
                 ArrayOutArgument
               when :gslist
-                GSListOutArgument
+                SListOutArgument
+              when :ghash
+                HashTableOutArgument
               else
                 RegularOutArgument
               end
@@ -299,7 +301,8 @@ module GirFFI::Builder
 
   # Implements argument processing for gslist arguments with direction
   # :out.
-  class GSListOutArgument < OutArgument
+  # TODO: Pass list type into new SList object.
+  class SListOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
@@ -308,6 +311,20 @@ module GirFFI::Builder
       [ "#{@retname} = GLib::SList.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
+
+  # Implements argument processing for ghash arguments with direction
+  # :out.
+  # TODO: Pass hash table type into new HashTable object.
+  class HashTableOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def postpost
+      [ "#{@retname} = GLib::HashTable.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+    end
+  end
+
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument

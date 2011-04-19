@@ -537,7 +537,10 @@ class GeneratedRegressTest < MiniTest::Spec
       Regress.test_ghash_null_in(nil)
     end
 
-    should "have correct test_ghash_null_out"
+    it "has correct #test_ghash_null_out" do
+      ghash = Regress.test_ghash_null_out
+      ghash.must_be_nil
+    end
 
     it "has correct #test_ghash_null_return" do
       ghash = Regress.test_ghash_null_return
