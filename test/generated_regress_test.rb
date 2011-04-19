@@ -309,7 +309,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
     # set_abort_on_error
 
-    context "test_array_fixed_size_int_in" do
+    describe "#test_array_fixed_size_int_in" do
       should "return the correct result" do
 	assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
       end
@@ -861,12 +861,12 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
     end
 
-    it "has a correct test_unichar" do
+    it "has a correct #test_unichar" do
       assert_equal 120, Regress.test_unichar(120)
       assert_equal 540_000, Regress.test_unichar(540_000)
     end
 
-    it "has a correct test_unsigned_enum_param"
+    it "has a correct #test_unsigned_enum_param"
 
     should "have correct test_ushort" do
       assert_equal 54_000_000, Regress.test_uint64(54_000_000)
