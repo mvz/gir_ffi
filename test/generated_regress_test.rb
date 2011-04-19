@@ -783,6 +783,11 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal true, Regress.test_strv_in(['1', '2', '3'])
     end
 
+    it "has correct #test_strv_in_gvalue" do
+      gv = Regress.test_strv_in_gvalue
+      assert_equal ['one', 'two', 'three'], gv.ruby_value
+    end
+
     it "has correct #test_strv_out" do
       arr = Regress.test_strv_out
       assert_equal ["thanks", "for", "all", "the", "fish"], arr

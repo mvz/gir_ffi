@@ -277,6 +277,8 @@ module GirFFI
 	    get_boolean
 	  when "gint"
 	    get_int
+          when "GStrv"
+            ArgHelper.strz_to_utf8_array get_boxed
 	  else
 	    nil
 	  end
