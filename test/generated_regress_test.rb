@@ -493,6 +493,13 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 4, r
     end
 
+    it "has a correct #test_date_in_gvalue function" do
+      r = Regress.test_date_in_gvalue
+      date = r.ruby_value
+      assert_equal [1984, :december, 5],
+        [date.get_year, date.get_month, date.get_day]
+    end
+
     should "have correct test_double" do
       r = Regress.test_double 5435.32
       assert_equal 5435.32, r

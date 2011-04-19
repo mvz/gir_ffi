@@ -272,12 +272,14 @@ module GirFFI
         end
 
         def ruby_value
-	  case current_gtype_name
-	  when "gboolean"
+	  case current_gtype_name.to_sym
+	  when :gboolean
 	    get_boolean
-	  when "gint"
+	  when :gint
 	    get_int
-          when "GStrv"
+          when :GDate
+            ::GLib::Date.wrap(get_boxed)
+          when :GStrv
             ArgHelper.strz_to_utf8_array get_boxed
 	  else
 	    nil
