@@ -109,15 +109,7 @@ module GirFFI
 
     def dependencies namespace
       strz = Lib.g_irepository_get_dependencies @gobj, namespace
-      return [] if strz.null?
-      arr = []
-      i = 0
-      loop do
-        ptr = strz.get_pointer i * FFI.type_size(:pointer)
-        return arr if ptr.null?
-        arr << ptr.read_string
-        i += 1
-      end
+      ArgHelper.strz_to_utf8_array strz
     end
 
     def shared_library namespace
