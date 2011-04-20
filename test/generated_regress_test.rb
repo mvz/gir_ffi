@@ -878,7 +878,11 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 540_000, Regress.test_unichar(540_000)
     end
 
-    it "has a correct #test_unsigned_enum_param"
+    it "has a correct #test_unsigned_enum_param" do
+      assert_equal "value1", Regress.test_unsigned_enum_param(:value1)
+      skip "FFI does not seem to support unsigned enums"
+      assert_equal "value2", Regress.test_unsigned_enum_param(:value2)
+    end
 
     should "have correct test_ushort" do
       assert_equal 54_000_000, Regress.test_uint64(54_000_000)
