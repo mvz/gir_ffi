@@ -17,7 +17,7 @@ namespace :test do
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do
-  sh %{cd test/lib && ./configure}
+  sh %{cd test/lib && ./configure --enable-maintainer-mode}
 end
 
 file "test/lib/configure" do
