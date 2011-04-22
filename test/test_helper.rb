@@ -20,8 +20,11 @@ GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
 module GirFFI
   class IRepository
     def shared_library_with_regress namespace
-      if namespace == "Regress"
+      case namespace
+      when "Regress"
 	return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
+      when "GIMarshallingTests"
+	return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
       else
 	return shared_library_without_regress namespace
       end
