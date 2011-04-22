@@ -30,6 +30,12 @@ module GirFFI
       end
 
       def self.build_extra_classes base
+        build_ruby_closure_class base
+      end
+
+      # Build the GObject::RubyClosure class. This class encapsulates Ruby
+      # blocks as GObject Closures.
+      def self.build_ruby_closure_class base
         klass = Class.new(base::Closure) do
           const_set :BLOCK_STORE, {}
 
@@ -41,8 +47,7 @@ module GirFFI
           def self.new &block
             raise ArgumentError unless block_given?
             wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
-              # XXX: Check that this methods is fool-proof!
-              h = block.hash
+              h = block.object_id
               self::BLOCK_STORE[h] = block
               it[:blockhash] = h
               it.set_marshal Proc.new {|*args| marshaller(*args)}
