@@ -11,7 +11,8 @@ Gemfile.lock
 /test/lib/.libs
 /test/lib/Makefile
 /test/lib/Makefile.in
-/test/lib/Regress*
+/test/lib/*.gir
+/test/lib/*.typelib
 /test/lib/autom4te.cache
 /test/lib/aclocal.m4
 /test/lib/config.*
@@ -19,7 +20,10 @@ Gemfile.lock
 /test/lib/configure
 /test/lib/depcomp
 /test/lib/install-sh
-/test/lib/libregress*
+/test/lib/*.so
+/test/lib/*.la
+/test/lib/*.lo
+/test/lib/*.o
 /test/lib/libtool
 /test/lib/ltmain.sh
 /test/lib/m4/libtool.m4
