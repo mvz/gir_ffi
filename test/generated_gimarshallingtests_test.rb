@@ -99,6 +99,7 @@ describe "GIMarshallingTests" do
     it "creates instances with #new" do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
+      assert_equal 42, ob[:int_]
     end
 
     it "has a working function #full_inout" do
@@ -129,7 +130,57 @@ describe "GIMarshallingTests" do
       refute_equal res.to_ptr, ob.to_ptr
     end
 
-  end
+    it "has a working function #none_out" do
+      res = GIMarshallingTests::Object.none_out
+      assert_instance_of GIMarshallingTests::Object, res
+    end
 
+    it "has a working function #none_return" do
+      res = GIMarshallingTests::Object.none_return
+      assert_instance_of GIMarshallingTests::Object, res
+    end
+
+    it "has a working function #static_method" do
+      GIMarshallingTests::Object.static_method
+      pass
+    end
+
+    it "has a working function #static_method" do
+      GIMarshallingTests::Object.static_method
+      pass
+    end
+
+    describe "an instance" do
+      before do
+        @obj = GIMarshallingTests::Object.new 42
+      end
+
+      it "has a working virtual method #method_int8_in"
+      it "has a working virtual method #method_int8_out"
+
+      it "has a working virtual method #method_with_default_implementation" do
+        @obj.method_with_default_implementation 104
+        assert_equal 104, @obj[:int_]
+      end
+
+      it "has a working method #full_in" do
+        skip "This function is only found in the header"
+      end
+
+      it "has a working method #int8_in"
+      it "has a working method #int8_out"
+
+      # TODO: Avoid using common method names?
+      it "has a working method #method" do
+        @obj.method
+        pass
+      end
+
+      it "has a working method #method_array_in" do
+        @obj.method_array_in [-1, 0, 1, 2]
+        pass
+      end
+    end
+  end
 end
 
