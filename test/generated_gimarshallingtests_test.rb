@@ -28,5 +28,18 @@ describe "GIMarshallingTests" do
     assert_equal "gi-marshalling-tests-gerror-domain",
       GIMarshallingTests::CONSTANT_GERROR_DOMAIN
   end
+
+  it "has the constant CONSTANT_GERROR_MESSAGE" do
+    assert_equal "gi-marshalling-tests-gerror-message",
+      GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+  end
+
+  it "has the constant CONSTANT_NUMBER" do
+    assert_equal 42, GIMarshallingTests::CONSTANT_NUMBER
+  end
+
+  it "has the constant CONSTANT_UTF8" do
+    assert_equal "const ♥ utf8", GIMarshallingTests::CONSTANT_UTF8
+  end
 end
 
