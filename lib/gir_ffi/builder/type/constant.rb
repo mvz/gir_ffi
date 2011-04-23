@@ -9,7 +9,8 @@ module GirFFI
       # constant will be attached to the appropriate namespace module.
       class Constant < Base
         TYPE_TAG_TO_UNION_MEMBER = {
-          :gint32 => :v_int,
+          :gint32 => :v_int32,
+          :gdouble => :v_double,
           :utf8 => :v_string
         }
 

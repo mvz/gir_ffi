@@ -7,6 +7,10 @@ class GeneratedRegressTest < MiniTest::Spec
       GirFFI.setup :Regress
     end
 
+    it "has the constant DOUBLE_CONSTANT" do
+      assert_equal 44.22, Regress::DOUBLE_CONSTANT
+    end
+
     context "the Regress::TestBoxed class" do
       should "create an instance using #new" do
 	tb = Regress::TestBoxed.new
