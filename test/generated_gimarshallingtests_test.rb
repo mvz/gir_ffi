@@ -23,5 +23,10 @@ describe "GIMarshallingTests" do
   it "has the constant CONSTANT_GERROR_CODE" do
     assert_equal 5, GIMarshallingTests::CONSTANT_GERROR_CODE
   end
+
+  it "has the constant CONSTANT_GERROR_DOMAIN" do
+    assert_equal "gi-marshalling-tests-gerror-domain",
+      GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+  end
 end
 
