@@ -11,6 +11,18 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 44.22, Regress::DOUBLE_CONSTANT
     end
 
+    it "has the constant INT_CONSTANT" do
+      assert_equal 4422, Regress::INT_CONSTANT
+    end
+
+    it "has the constant Mixed_Case_Constant" do
+      assert_equal 4423, Regress::Mixed_Case_Constant
+    end
+
+    it "has the constant STRING_CONSTANT" do
+      assert_equal "Some String", Regress::STRING_CONSTANT
+    end
+
     context "the Regress::TestBoxed class" do
       should "create an instance using #new" do
 	tb = Regress::TestBoxed.new
@@ -309,6 +321,10 @@ class GeneratedRegressTest < MiniTest::Spec
 	  assert_equal true, gv.get_boolean
 	end
       end
+    end
+
+    it "has the constant UTF8_CONSTANT" do
+      assert_equal "const ♥ utf8", Regress::UTF8_CONSTANT
     end
 
     # set_abort_on_error
