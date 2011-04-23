@@ -372,7 +372,7 @@ module GirFFI::Builder
 
       klass = case arginfo.argument_type.tag
               when :interface
-                raise NotImplementedError
+                InterfaceInOutArgument
               when :array
                 ArrayInOutArgument
               else
@@ -380,6 +380,19 @@ module GirFFI::Builder
               end
 
       klass.new function_builder, arginfo, libmodule
+    end
+  end
+
+  # Implements argument processing for interface arguments with direction
+  # :inout (structs, objects, etc.).
+  class InterfaceInOutArgument < InOutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}.to_ptr" ]
+    end
+
+    def post
+      [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})",
+        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 

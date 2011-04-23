@@ -124,6 +124,10 @@ module GirFFI
       alias gdouble_to_inoutptr double_to_inoutptr
     end
 
+    def self.pointer_to_inoutptr val
+      pointer_pointer.write_pointer val
+    end
+
     def self.int32_pointer
       AllocationHelper.safe_malloc FFI.type_size(:int32)
     end

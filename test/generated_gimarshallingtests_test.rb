@@ -95,5 +95,19 @@ describe "GIMarshallingTests" do
     assert_equal 42, GIMarshallingTests::OVERRIDES_CONSTANT
   end
 
+  describe "Object" do
+    it "creates instances with #new" do
+      ob = GIMarshallingTests::Object.new 42
+      assert_instance_of GIMarshallingTests::Object, ob
+    end
+
+    it "has the function #full_inout" do
+      ob = GIMarshallingTests::Object.new 42
+      res = GIMarshallingTests::Object.full_inout ob
+      assert_instance_of GIMarshallingTests::Object, res
+      refute_equal res.to_ptr, ob.to_ptr
+    end
+  end
+
 end
 
