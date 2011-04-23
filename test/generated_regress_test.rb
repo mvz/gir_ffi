@@ -88,7 +88,9 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    # TestFlags
+    describe "TestFlags" do
+      it "must be tested"
+    end
 
     context "the Regress::TestFloating class" do
       context "an instance" do
@@ -104,6 +106,18 @@ class GeneratedRegressTest < MiniTest::Spec
 	  assert !is_floating?(@o)
 	end
       end
+    end
+
+    describe "TestFundamentalObject" do
+      it "must be tested"
+    end
+
+    describe "TestFundamentalSubObject" do
+      it "must be tested"
+    end
+
+    describe "TestInterface" do
+      it "must be tested"
     end
 
     context "the Regress::TestObj class" do
@@ -280,9 +294,17 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    # TestStructB
-    # TestStructC
-    # TestSubObj
+    describe "TestStructB" do
+      it "must be tested"
+    end
+
+    describe "TestStructC" do
+      it "must be tested"
+    end
+
+    describe "TestSubObj" do
+      it "must be tested"
+    end
 
     context "the Regress::TestWi8021x class" do
       should "create an instance using #new" do
@@ -327,7 +349,9 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal "const ♥ utf8", Regress::UTF8_CONSTANT
     end
 
-    # set_abort_on_error
+    describe "set_abort_on_error" do
+      it "must be tested"
+    end
 
     describe "#test_array_fixed_size_int_in" do
       should "return the correct result" do
