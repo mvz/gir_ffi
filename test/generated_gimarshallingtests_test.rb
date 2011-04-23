@@ -41,5 +41,59 @@ describe "GIMarshallingTests" do
   it "has the constant CONSTANT_UTF8" do
     assert_equal "const ♥ utf8", GIMarshallingTests::CONSTANT_UTF8
   end
+
+  it "has the enum Enum" do
+    assert_equal 0, GIMarshallingTests::Enum[:value1]
+    assert_equal 1, GIMarshallingTests::Enum[:value2]
+    assert_equal 42, GIMarshallingTests::Enum[:value3]
+  end
+
+  it "has the bitfield Flags" do
+    assert_equal 1, GIMarshallingTests::Flags[:value1]
+    assert_equal 2, GIMarshallingTests::Flags[:value2]
+    assert_equal 4, GIMarshallingTests::Flags[:value3]
+    assert_equal 3, GIMarshallingTests::Flags[:mask]
+    assert_equal 3, GIMarshallingTests::Flags[:mask2]
+  end
+
+  it "has the enum GEnum" do
+    assert_equal 0, GIMarshallingTests::GEnum[:value1]
+    assert_equal 1, GIMarshallingTests::GEnum[:value2]
+    assert_equal 42, GIMarshallingTests::GEnum[:value3]
+  end
+
+  describe "Interface" do
+    it "must be tested"
+  end
+
+  describe "Interface2" do
+    it "must be tested"
+  end
+
+  describe "NestedStruct" do
+    it "contains a SimpleStruct" do
+      ns = GIMarshallingTests::NestedStruct.new
+      # FIXME: Make it an instance of SimpleStruct
+      assert_instance_of GIMarshallingTests::SimpleStruct::Struct,
+        ns[:simple_struct]
+    end
+  end
+
+  it "has the bitfield NoTypeFlags" do
+    assert_equal 1, GIMarshallingTests::NoTypeFlags[:value1]
+    assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
+    assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
+    assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask]
+    assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask2]
+  end
+
+  describe "NotSimpleStruct" do
+    it "must be tested"
+  end
+
+  it "has the constant OVERRIDES_CONSTANT" do
+    assert_equal 42, GIMarshallingTests::OVERRIDES_CONSTANT
+  end
+
 end
 
