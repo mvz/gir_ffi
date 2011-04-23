@@ -19,5 +19,9 @@ describe "GIMarshallingTests" do
       pass
     end
   end
+
+  it "has the constant CONSTANT_GERROR_CODE" do
+    assert_equal 5, GIMarshallingTests::CONSTANT_GERROR_CODE
+  end
 end
 

@@ -88,6 +88,7 @@ module GirFFI
           end.flatten
         end
 
+        # FIXME: Move this into a class with the other type knowledge.
         def itypeinfo_to_ffitype_for_struct typeinfo
           ffitype = Builder.itypeinfo_to_ffitype typeinfo
           if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct

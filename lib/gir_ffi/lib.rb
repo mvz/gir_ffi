@@ -218,6 +218,34 @@ module GirFFI
     attach_function :g_interface_info_get_n_constants, [:pointer], :int
     attach_function :g_interface_info_get_constant, [:pointer, :int], :pointer
     attach_function :g_interface_info_get_iface_struct, [:pointer], :pointer
-    
+
+    class GIArgument < FFI::Union
+      layout :v_boolean, :int,
+        :v_int8, :int8,
+        :v_uint8, :uint8,
+        :v_int16, :int16,
+        :v_uint16, :uint16,
+        :v_int32, :int32,
+        :v_uint32, :uint32,
+        :v_int64, :int64,
+        :v_uint64, :uint64,
+        :v_float, :float,
+        :v_double, :double,
+        :v_short, :short,
+        :v_ushort, :ushort,
+        :v_int, :int,
+        :v_uint, :uint,
+        :v_long, :long,
+        :v_ulong, :ulong,
+        :v_ssize, :size_t, # FIXME: Needs to be signed.
+        :v_size, :size_t,
+        :v_string, :string,
+        :v_pointer, :pointer
+    end
+
+    # IConstInfo
+    #
+    attach_function :g_constant_info_get_type, [:pointer], :pointer
+    attach_function :g_constant_info_get_value, [:pointer, :pointer], :int
   end
 end

@@ -1,6 +1,7 @@
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/builder/type/base'
 require 'gir_ffi/builder/type/callback'
+require 'gir_ffi/builder/type/constant'
 require 'gir_ffi/builder/type/enum'
 require 'gir_ffi/builder/type/union'
 require 'gir_ffi/builder/type/object'
@@ -14,6 +15,7 @@ module GirFFI
     module Type
       TYPE_MAP = {
         :callback => Callback,
+        :constant => Constant,
         :enum => Enum,
         :flags => Enum,
         :interface => Interface,
