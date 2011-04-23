@@ -368,8 +368,6 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo, libmodule
-      raise NotImplementedError unless arginfo.ownership_transfer == :everything
-
       klass = case arginfo.argument_type.tag
               when :interface
                 InterfaceInOutArgument

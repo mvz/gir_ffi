@@ -101,12 +101,34 @@ describe "GIMarshallingTests" do
       assert_instance_of GIMarshallingTests::Object, ob
     end
 
-    it "has the function #full_inout" do
+    it "has a working function #full_inout" do
       ob = GIMarshallingTests::Object.new 42
       res = GIMarshallingTests::Object.full_inout ob
       assert_instance_of GIMarshallingTests::Object, res
       refute_equal res.to_ptr, ob.to_ptr
     end
+
+    it "has a working function #full_out" do
+      res = GIMarshallingTests::Object.full_out
+      assert_instance_of GIMarshallingTests::Object, res
+    end
+
+    it "has a working function #full_return" do
+      res = GIMarshallingTests::Object.full_return
+      assert_instance_of GIMarshallingTests::Object, res
+    end
+
+    it "has a working function #inout_same" do
+      skip "This function is only found in the header"
+    end
+
+    it "has a working function #none_inout" do
+      ob = GIMarshallingTests::Object.new 42
+      res = GIMarshallingTests::Object.none_inout ob
+      assert_instance_of GIMarshallingTests::Object, res
+      refute_equal res.to_ptr, ob.to_ptr
+    end
+
   end
 
 end
