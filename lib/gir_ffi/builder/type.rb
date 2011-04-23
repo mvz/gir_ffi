@@ -12,21 +12,18 @@ module GirFFI
   # repository.
   module Builder
     module Type
+      TYPE_MAP = {
+        :callback => Callback,
+        :enum => Enum,
+        :flags => Enum,
+        :interface => Interface,
+        :object => Object,
+        :struct => Struct,
+        :union => Union
+      }
+
       def self.build info
-        case info.info_type
-        when :callback
-          Callback
-        when :enum, :flags
-          Enum
-        when :union
-          Union
-        when :object
-          Object
-        when :struct
-          Struct
-        when :interface
-          Interface
-        end.new(info).build_class
+        TYPE_MAP[info.info_type].new(info).build_class
       end
     end
   end
