@@ -407,5 +407,10 @@ describe "GIMarshallingTests" do
       end
     end
   end
+
+  it "has a working function #array_fixed_inout" do
+    res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
+    assert_equal [2, 1, 0, -1], res
+  end
 end
 

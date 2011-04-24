@@ -403,7 +403,7 @@ module GirFFI::Builder
 
     def postpost
       tag = subtype_tag
-      size = @length_arg.retname
+      size = array_size
       pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
       if @arginfo.ownership_transfer == :nothing
         pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
