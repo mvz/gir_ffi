@@ -35,6 +35,10 @@ module GirFFI
       typed_array_to_inptr :int8, ary
     end
 
+    def self.uint8_array_to_inptr ary
+      typed_array_to_inptr :uint8, ary
+    end
+
     def self.utf8_to_inptr str
       return nil if str.nil?
       len = str.bytesize
@@ -74,6 +78,7 @@ module GirFFI
     class << self
       alias int_array_to_inptr int32_array_to_inptr
       alias gint8_array_to_inptr int8_array_to_inptr
+      alias guint8_array_to_inptr uint8_array_to_inptr
       alias gint16_array_to_inptr int16_array_to_inptr
       alias gint32_array_to_inptr int32_array_to_inptr
       alias gint64_array_to_inptr int64_array_to_inptr

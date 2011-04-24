@@ -453,5 +453,29 @@ describe "GIMarshallingTests" do
     # assert_equal "Hello", res[1].get_string
   end
 
+  it "has a working function #array_in" do
+    GIMarshallingTests.array_in [-1, 0, 1, 2]
+    pass
+  end
+
+  it "has a working function #array_inout" do
+    res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
+    assert_equal [-2, -1, 0, 1, 2], res
+  end
+
+  it "has a working function #array_out" do
+    res = GIMarshallingTests.array_out
+    assert_equal  [-1, 0, 1, 2], res
+  end
+
+  it "has a working function #array_return" do
+    res = GIMarshallingTests.array_return
+    assert_equal  [-1, 0, 1, 2], res
+  end
+
+  it "has a working function #array_uint8_in" do
+    GIMarshallingTests.array_uint8_in [?a, ?b, ?c, ?d]
+    pass
+  end
 end
 
