@@ -103,6 +103,10 @@ module GirFFI
       LibC.free ptr
     end
 
+    def self.gboolean_to_inoutptr val
+      gboolean_pointer.put_int 0, (val ? 1 : 0)
+    end
+
     def self.int32_to_inoutptr val
       int32_pointer.put_int32 0, val
     end
@@ -144,6 +148,10 @@ module GirFFI
       pointer_pointer.write_pointer val
     end
 
+    def self.int_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:int)
+    end
+
     def self.int32_pointer
       AllocationHelper.safe_malloc FFI.type_size(:int32)
     end
@@ -157,9 +165,13 @@ module GirFFI
     end
 
     class << self
-      alias int_pointer int32_pointer
+      alias gboolean_pointer int_pointer
       alias gint32_pointer int32_pointer
       alias gdouble_pointer double_pointer
+    end
+
+    def self.gboolean_outptr
+      gboolean_pointer.put_int 0, 0
     end
 
     def self.int32_outptr
@@ -187,6 +199,11 @@ module GirFFI
     # Converts an outptr to a pointer.
     def self.outptr_to_pointer ptr
       ptr.read_pointer
+    end
+
+    # Converts an outptr to a boolean.
+    def self.outptr_to_gboolean ptr
+      (ptr.get_int 0) != 0
     end
 
     # Converts an outptr to an int.

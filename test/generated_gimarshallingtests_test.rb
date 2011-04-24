@@ -477,5 +477,60 @@ describe "GIMarshallingTests" do
     GIMarshallingTests.array_uint8_in [?a, ?b, ?c, ?d]
     pass
   end
+
+  it "has a working function #array_zero_terminated_in" do
+    GIMarshallingTests.array_zero_terminated_in ["0", "1", "2"]
+    pass
+  end
+
+  it "has a working function #array_zero_terminated_out" do
+    res = GIMarshallingTests.array_zero_terminated_out
+    assert_equal ["0", "1", "2"], res
+  end
+
+  it "has a working function #array_zero_terminated_return" do
+    res = GIMarshallingTests.array_zero_terminated_return
+    assert_equal ["0", "1", "2"], res
+  end
+
+  it "has a working function #boolean_in_false" do
+    GIMarshallingTests.boolean_in_false false
+    pass
+  end
+
+  it "has a working function #boolean_in_true" do
+    GIMarshallingTests.boolean_in_true true
+    pass
+  end
+
+  it "has a working function #boolean_inout_false_true" do
+    res = GIMarshallingTests.boolean_inout_false_true false
+    assert_equal true, res
+  end
+
+  it "has a working function #boolean_inout_true_false" do
+    res = GIMarshallingTests.boolean_inout_true_false true
+    assert_equal false, res
+  end
+
+  it "has a working function #boolean_out_false" do
+    res = GIMarshallingTests.boolean_out_false
+    assert_equal false, res
+  end
+
+  it "has a working function #boolean_out_true" do
+    res = GIMarshallingTests.boolean_out_true
+    assert_equal true, res
+  end
+
+  it "has a working function #boolean_return_false" do
+    res = GIMarshallingTests.boolean_return_false
+    assert_equal false, res
+  end
+
+  it "has a working function #boolean_return_true" do
+    res = GIMarshallingTests.boolean_return_true
+    assert_equal true, res
+  end
 end
 
