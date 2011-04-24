@@ -185,6 +185,121 @@ describe "GIMarshallingTests" do
         res = @obj.method_array_inout [-1, 0, 1, 2]
         assert_equal [-2, -1, 0, 1, 2], res
       end
+
+      it "has a working method #method_array_out" do
+        res = @obj.method_array_out
+        assert_equal [-1, 0, 1, 2], res
+      end
+
+      it "has a working method #method_array_return" do
+        res = @obj.method_array_return
+        assert_equal [-1, 0, 1, 2], res
+      end
+
+      it "has a working method #none_in" do
+        @obj.none_in
+        pass
+      end
+
+      it "has a working method #overridden_method" do
+        @obj[:int_] = 0
+        @obj.overridden_method
+        pass
+      end
+
+      it "has a property 'int'"
+
+      it "has a field parent_instance containing the parent struct" do
+        skip "This fails sometimes, perhaps due to a race condition"
+        assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
+      end
+
+      it "has a field int_ containing the argument to #new" do
+        assert_equal 42, @obj[:int_]
+      end
+    end
+  end
+
+  describe "OverridesObject" do
+    it "creates instances with #new" do
+      ob = GIMarshallingTests::OverridesObject.new
+      assert_instance_of GIMarshallingTests::OverridesObject, ob
+    end
+
+    it "creates instances with #returnv" do
+      ob = GIMarshallingTests::OverridesObject.returnv
+      assert_instance_of GIMarshallingTests::OverridesObject, ob
+    end
+
+    describe "an instance" do
+      before do
+        @obj = GIMarshallingTests::OverridesObject.new
+      end
+
+      it "has a field parent_instance containing the parent struct" do
+        skip "This fails, perhaps due to a race condition"
+        assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
+      end
+
+      it "has a field long_" do
+        assert_equal 0.0, @obj[:long_]
+      end
+    end
+  end
+
+  describe "PointerStruct" do
+    it "creates instances with #new" do
+      ps = GIMarshallingTests::PointerStruct.new
+      assert_instance_of GIMarshallingTests::PointerStruct, ps
+    end
+
+    describe "an instance" do
+      before do
+        @ps = GIMarshallingTests::PointerStruct.new
+      end
+
+      it "has a field long_" do
+        assert_equal 0.0, @ps[:long_]
+      end
+
+      it "has a working method #inv" do
+        @ps[:long_] = 42.0
+        @ps.inv
+        pass
+      end
+    end
+  end
+
+  it "has the enum SecondEnum" do
+    assert_equal 0, GIMarshallingTests::SecondEnum[:secondvalue1]
+    assert_equal 1, GIMarshallingTests::SecondEnum[:secondvalue2]
+  end
+
+  describe "SimpleStruct" do
+    it "creates instances with #new" do
+      ss = GIMarshallingTests::SimpleStruct.new
+      assert_instance_of GIMarshallingTests::SimpleStruct, ss
+    end
+
+    describe "an instance" do
+      before do
+        @ss = GIMarshallingTests::SimpleStruct.new
+      end
+
+      it "has a field long_" do
+        assert_equal 0.0, @ss[:long_]
+      end
+
+      it "has a field int8" do
+        assert_equal 0.0, @ss[:int8]
+      end
+
+      it "has a working method #inv" do
+        @ss[:long_] = 6.0
+        @ss[:int8] = 7
+        @ss.inv
+        pass
+      end
     end
   end
 end
