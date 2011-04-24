@@ -519,7 +519,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = #{defining_class_name}.constructor_wrap(#{@cvar})" ]
+      [ "#{@retname} = self.constructor_wrap(#{@cvar})" ]
     end
   end
 

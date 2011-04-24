@@ -12,7 +12,14 @@ module GirFFI
           meta = (class << klass; self; end)
 
           go = method_introspection_data method
-          raise NoMethodError unless go
+          if go.nil?
+            if parent
+              return superclass.gir_ffi_builder.setup_method method
+            else
+              raise NoMethodError
+            end
+          end
+
           attach_and_define_method method, go, meta
         end
 

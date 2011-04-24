@@ -68,17 +68,6 @@ class BuilderTest < MiniTest::Spec
       end
     end
 
-    context "built Gtk::Widget" do
-      setup do
-        cleanup_module :Gtk
-	GirFFI::Builder.build_class get_function_introspection_data('Gtk', 'Widget')
-      end
-
-      should "not have regular #new as a constructor" do
-	assert_raises(NoMethodError) { Gtk::Widget.new }
-      end
-    end
-
     context "building Gtk" do
       setup do
 	cleanup_module :Gtk

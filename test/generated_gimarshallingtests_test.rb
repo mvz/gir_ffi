@@ -302,5 +302,12 @@ describe "GIMarshallingTests" do
       end
     end
   end
+
+  describe "SubObject" do
+    it "creates instances with #new" do
+      so = GIMarshallingTests::SubObject.new 42
+      assert_instance_of GIMarshallingTests::SubObject, so
+    end
+  end
 end
 
