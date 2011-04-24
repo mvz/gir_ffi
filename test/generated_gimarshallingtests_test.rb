@@ -308,6 +308,75 @@ describe "GIMarshallingTests" do
       so = GIMarshallingTests::SubObject.new 42
       assert_instance_of GIMarshallingTests::SubObject, so
     end
+
+    describe "an instance" do
+      before do
+        @so = GIMarshallingTests::SubObject.new 0
+      end
+
+      it "has the method #overwritten_method" do
+        @so.overwritten_method
+        pass
+      end
+
+      it "has the method #sub_method" do
+        @so.sub_method
+        pass
+      end
+
+      it "has a field parent_instance containing the parent struct" do
+        assert_instance_of GIMarshallingTests::Object::Struct, @so[:parent_instance]
+      end
+
+      it "has a working inherited virtual method #method_int8_in"
+      it "has a working inherited virtual method #method_int8_out"
+
+      it "has a working inherited virtual method #method_with_default_implementation" do
+        @so.method_with_default_implementation 104
+        assert_equal 104, @so[:parent_instance][:int_]
+      end
+
+      it "has a working inherited method #int8_in"
+      it "has a working inherited method #int8_out"
+
+      it "has a working inherited method #method" do
+        @so[:parent_instance][:int_] = 42
+        @so.method
+        pass
+      end
+
+      it "has a working inherited method #method_array_in" do
+        @so.method_array_in [-1, 0, 1, 2]
+        pass
+      end
+
+      it "has a working inherited method #method_array_inout" do
+        res = @so.method_array_inout [-1, 0, 1, 2]
+        assert_equal [-2, -1, 0, 1, 2], res
+      end
+
+      it "has a working inherited method #method_array_out" do
+        res = @so.method_array_out
+        assert_equal [-1, 0, 1, 2], res
+      end
+
+      it "has a working inherited method #method_array_return" do
+        res = @so.method_array_return
+        assert_equal [-1, 0, 1, 2], res
+      end
+
+      it "has a working inherited method #none_in" do
+        @so[:parent_instance][:int_] = 42
+        @so.none_in
+        pass
+      end
+
+      it "has a working inherited method #overridden_method" do
+        @so[:parent_instance][:int_] = 0
+        @so.overridden_method
+        pass
+      end
+    end
   end
 end
 
