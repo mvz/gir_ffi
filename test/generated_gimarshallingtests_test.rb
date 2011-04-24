@@ -180,6 +180,11 @@ describe "GIMarshallingTests" do
         @obj.method_array_in [-1, 0, 1, 2]
         pass
       end
+
+      it "has a working method #method_array_inout" do
+        res = @obj.method_array_inout [-1, 0, 1, 2]
+        assert_equal [-2, -1, 0, 1, 2], res
+      end
     end
   end
 end

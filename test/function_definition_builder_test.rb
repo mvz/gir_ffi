@@ -111,5 +111,27 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       assert_equal cws(expected), cws(code)
     end
+
+    it "builds the correct definition of GIMarshallingTests::Object#method_array_inout" do
+      go = get_method_introspection_data 'GIMarshallingTests', 'Object', 'method_array_inout'
+      fbuilder = GirFFI::Builder::Function.new go, Lib
+      code = fbuilder.generate
+
+      expected =
+        "def method_array_inout ints
+          _v1 = GirFFI::ArgHelper.gint32_array_to_inoutptr ints
+          length = ints.length
+          _v3 = GirFFI::ArgHelper.gint32_to_inoutptr length
+          ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v3
+          _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
+          GirFFI::ArgHelper.cleanup_ptr _v3
+          _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
+          GirFFI::ArgHelper.cleanup_ptr _v1
+          return _v2
+	end"
+
+      assert_equal cws(expected), cws(code)
+    end
+
   end
 end

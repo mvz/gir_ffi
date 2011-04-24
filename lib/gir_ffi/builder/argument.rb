@@ -401,14 +401,18 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
 
-    def post
+    def postpost
       tag = subtype_tag
       size = @length_arg.retname
       pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
-      if tag == :utf8
-        pst << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
+      if @arginfo.ownership_transfer == :nothing
+        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       else
-        pst << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
+        if tag == :utf8
+          pst << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
+        else
+          pst << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
+        end
       end
       pst
     end
