@@ -55,7 +55,7 @@ module GirFFI
       end
     end
 
-    def self.gvalue_array_to_inptr ary
+    def self.interface_array_to_inptr ary
       return nil if ary.nil?
       raise NotImplementedError
     end
@@ -204,6 +204,13 @@ module GirFFI
       ptr_to_int32_array block, size
     end
 
+    # Converts an outptr to an array of the given class.
+    def self.outptr_to_interface_array klass, ptr, size
+      block = ptr.read_pointer
+      return nil if block.null?
+      ptr_to_interface_array klass, block, size
+    end
+
     class << self
       alias outptr_to_int outptr_to_int32
       alias outptr_to_int_array outptr_to_int32_array
@@ -214,6 +221,16 @@ module GirFFI
 
     def self.ptr_to_int32_array ptr, size
       ptr.get_array_of_int32(0, size)
+    end
+
+    def self.ptr_to_interface_array klass, ptr, size
+      sz = klass.ffi_structure.size
+      arr = []
+      size.times do
+        arr << klass.wrap(ptr)
+        ptr += sz
+      end
+      arr
     end
 
     def self.ptr_to_utf8 ptr

@@ -412,5 +412,25 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
     assert_equal [2, 1, 0, -1], res
   end
+
+  it "has a working function #array_fixed_int_in" do
+    GIMarshallingTests.array_fixed_int_in [-1, 0, 1, 2]
+    pass
+  end
+
+  it "has a working function #array_fixed_int_return" do
+    res = GIMarshallingTests.array_fixed_int_return
+    assert_equal [-1, 0, 1, 2], res
+  end
+
+  it "has a working function #array_fixed_out" do
+    res = GIMarshallingTests.array_fixed_out
+    assert_equal [-1, 0, 1, 2], res
+  end
+
+  it "has a working function #array_fixed_out_struct" do
+    res = GIMarshallingTests.array_fixed_out_struct
+    assert_equal [[7, 6], [6, 7]], res.map {|s| [s[:long_], s[:int8]]}
+  end
 end
 

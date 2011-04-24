@@ -56,13 +56,8 @@ module GirFFI::Builder
       when :GType
         return :gtype
       when :interface
-        raise NotImplementedError if st.pointer?
-        iface = st.interface
-        if iface.name == 'Value' and iface.namespace == 'GObject'
-          return :gvalue
-        else
-          raise NotImplementedError
-        end
+        return :interface_pointer if st.pointer?
+        return :interface
       else
         return t
       end
@@ -70,6 +65,11 @@ module GirFFI::Builder
 
     def argument_class_name
       iface = type_info.interface
+      "::#{iface.safe_namespace}::#{iface.name}"
+    end
+
+    def subtype_class_name index=0
+      iface = type_info.param_type(index).interface
       "::#{iface.safe_namespace}::#{iface.name}"
     end
 
@@ -290,11 +290,20 @@ module GirFFI::Builder
       size = array_size
       tag = subtype_tag
 
-      pp = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
+      pp = []
+
+      if tag == :interface or tag == :interface_pointer
+        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{subtype_class_name}, #{@callarg}, #{size}"
+      else
+        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
+      end
 
       if @arginfo.ownership_transfer == :everything
-	if tag == :utf8
+        case tag
+        when :utf8
 	  pp << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
+        when :interface
+	  pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
 	else
 	  pp << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
 	end
