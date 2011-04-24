@@ -432,5 +432,15 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.array_fixed_out_struct
     assert_equal [[7, 6], [6, 7]], res.map {|s| [s[:long_], s[:int8]]}
   end
+
+  it "has a working function #array_fixed_short_in" do
+    GIMarshallingTests.array_fixed_short_in [-1, 0, 1, 2]
+    pass
+  end
+
+  it "has a working function #array_fixed_short_return" do
+    res = GIMarshallingTests.array_fixed_short_return
+    assert_equal [-1, 0, 1, 2], res
+  end
 end
 

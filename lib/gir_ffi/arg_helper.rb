@@ -223,6 +223,10 @@ module GirFFI
       ptr.get_array_of_int32(0, size)
     end
 
+    def self.ptr_to_int16_array ptr, size
+      ptr.get_array_of_int16(0, size)
+    end
+
     def self.ptr_to_interface_array klass, ptr, size
       sz = klass.ffi_structure.size
       arr = []
@@ -240,6 +244,7 @@ module GirFFI
     class << self
       alias ptr_to_int_array ptr_to_int32_array
       alias ptr_to_gint32_array ptr_to_int32_array
+      alias ptr_to_gint16_array ptr_to_int16_array
     end
 
     def self.outptr_strz_to_utf8_array ptr
