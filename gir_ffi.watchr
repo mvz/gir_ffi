@@ -14,7 +14,7 @@ def notify stock_icon, title, message
 end
 
 def test_and_notify
-  if system "rake TESTOPTS='-v' test"
+  if system "rake test"
     notify SUCCESS_STOCK_ICON, "Green", "All tests passed, good job!"
   else
     notify ERROR_STOCK_ICON, "Red", "Some tests failed"
