@@ -442,5 +442,16 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.array_fixed_short_return
     assert_equal [-1, 0, 1, 2], res
   end
+
+  it "has a working function #array_gvariant_in" do
+    v1 = GLib::Variant.new_int32(27)
+    v2 = GLib::Variant.new_string("Hello")
+    res = GIMarshallingTests.array_gvariant_in [v1, v2]
+    pass
+    # TODO: Can we determine that res should be an array?
+    # assert_equal 27, res[0].get_int32
+    # assert_equal "Hello", res[1].get_string
+  end
+
 end
 

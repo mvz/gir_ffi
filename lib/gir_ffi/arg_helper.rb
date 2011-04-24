@@ -15,6 +15,10 @@ module GirFFI
       block.send "put_array_of_#{type}", 0, ary
     end
 
+    def self.pointer_array_to_inptr ary
+      typed_array_to_inptr :pointer, ary
+    end
+
     def self.int32_array_to_inptr ary
       typed_array_to_inptr :int32, ary
     end
@@ -58,6 +62,13 @@ module GirFFI
     def self.interface_array_to_inptr ary
       return nil if ary.nil?
       raise NotImplementedError
+    end
+
+    def self.interface_pointer_array_to_inptr ary
+      return nil if ary.nil?
+      ptr_ary = ary.map {|ifc| ifc.to_ptr}
+      ptr_ary << nil
+      pointer_array_to_inptr ptr_ary
     end
 
     class << self

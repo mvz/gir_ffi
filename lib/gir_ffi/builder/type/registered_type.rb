@@ -130,13 +130,13 @@ module GirFFI
           "
         end
 
+        # TODO: Rename the created method, or use a constant.
         def setup_gtype_getter
-          getter = info.type_init
-          return if getter.nil? or getter == "intern"
-          lib.attach_function getter.to_sym, [], :size_t
+          gtype = info.g_type
+          return if gtype.nil?
           @klass.class_eval "
             def self.get_gtype
-              ::#{lib}.#{getter}
+              #{gtype}
             end
           "
         end
