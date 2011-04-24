@@ -287,15 +287,15 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field long_" do
-        assert_equal 0.0, @ss[:long_]
+        assert_equal 0, @ss[:long_]
       end
 
       it "has a field int8" do
-        assert_equal 0.0, @ss[:int8]
+        assert_equal 0, @ss[:int8]
       end
 
       it "has a working method #inv" do
-        @ss[:long_] = 6.0
+        @ss[:long_] = 6
         @ss[:int8] = 7
         @ss.inv
         pass
@@ -376,6 +376,13 @@ describe "GIMarshallingTests" do
         @so.overridden_method
         pass
       end
+    end
+  end
+
+  describe "Union" do
+    it "creates an instance with #new" do
+      u = GIMarshallingTests::Union.new
+      assert_instance_of GIMarshallingTests::Union, u
     end
   end
 end

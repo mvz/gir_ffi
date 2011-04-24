@@ -7,15 +7,7 @@ module GirFFI
       class Struct < StructBased
         def setup_class
           super
-          provide_struct_constructor
-        end
-
-        def provide_struct_constructor
-          return if info.find_method 'new'
-
-          (class << @klass; self; end).class_eval {
-            alias_method :new, :allocate
-          }
+          provide_constructor
         end
       end
     end

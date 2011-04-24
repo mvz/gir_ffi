@@ -18,6 +18,11 @@ module GirFFI
           @structklass = get_or_define_class @klass, :Struct, FFI::Union
           setup_class unless already_set_up
         end
+
+        def setup_class
+          super
+          provide_constructor
+        end
       end
     end
   end
