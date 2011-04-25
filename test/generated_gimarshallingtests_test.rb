@@ -578,5 +578,25 @@ describe "GIMarshallingTests" do
     pass
   end
 
+  it "has a working function #double_in" do
+    GIMarshallingTests.double_in Float::MAX
+    pass
+  end
+
+  it "has a working function #double_inout" do
+    ret = GIMarshallingTests.double_inout Float::MAX
+    assert_equal Float::MIN, ret
+  end
+
+  it "has a working function #double_out" do
+    ret = GIMarshallingTests.double_out
+    assert_equal Float::MAX, ret
+  end
+
+  it "has a working function #double_return" do
+    ret = GIMarshallingTests.double_return
+    assert_equal Float::MAX, ret
+  end
+
 end
 
