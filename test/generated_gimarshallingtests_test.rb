@@ -598,5 +598,25 @@ describe "GIMarshallingTests" do
     assert_equal Float::MAX, ret
   end
 
+  it "has a working function #enum_in" do
+    GIMarshallingTests.enum_in :value3
+    pass
+  end
+
+  it "has a working function #enum_inout" do
+    e = GIMarshallingTests.enum_inout :value3
+    assert_equal :value1, e
+  end
+
+  it "has a working function #enum_out" do
+    e = GIMarshallingTests.enum_out
+    assert_equal :value3, e
+  end
+
+  it "has a working function #enum_returnv" do
+    e = GIMarshallingTests.enum_returnv
+    assert_equal :value3, e
+  end
+
 end
 

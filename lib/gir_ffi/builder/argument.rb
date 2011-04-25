@@ -245,7 +245,12 @@ module GirFFI::Builder
       type = arginfo.argument_type
       klass = case arginfo.argument_type.tag
               when :interface
-                InterfaceOutArgument
+                case type.interface.info_type
+                when :enum
+                  EnumOutArgument
+                else
+                  InterfaceOutArgument
+                end
               when :array
                 if type.zero_terminated?
                   StrzOutArgument
@@ -260,6 +265,22 @@ module GirFFI::Builder
                 RegularOutArgument
               end
       klass.new function_builder, arginfo, libmodule
+    end
+  end
+
+  # Implements argument processing for arguments with direction
+  # :out that are enums
+  class EnumOutArgument < OutArgument
+    def post
+      pst = [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_int #{@callarg}]" ]
+      if @arginfo.ownership_transfer == :everything
+        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+      end
+      pst
+    end
+
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.int_outptr" ]
     end
   end
 
@@ -381,9 +402,15 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo, libmodule
-      klass = case arginfo.argument_type.tag
+      type = arginfo.argument_type
+      klass = case type.tag
               when :interface
-                InterfaceInOutArgument
+                case type.interface.info_type
+                when :enum
+                  EnumInOutArgument
+                else
+                  InterfaceInOutArgument
+                end
               when :array
                 ArrayInOutArgument
               else
@@ -391,6 +418,21 @@ module GirFFI::Builder
               end
 
       klass.new function_builder, arginfo, libmodule
+    end
+  end
+
+  # Implements argument processing for arguments with direction
+  # :inout that are enums.
+  class EnumInOutArgument < InOutArgument
+    def pre
+      pr = []
+      pr << "#{@callarg} = GirFFI::ArgHelper.int_to_inoutptr #{argument_class_name}[#{@name}]"
+      pr
+    end
+
+    def post
+      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_int #{@callarg}]",
+        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 
@@ -434,11 +476,6 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :inout that are neither arrays nor 'interfaces'.
   class RegularInOutArgument < InOutArgument
-    def post
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}",
-        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-    end
-
     def pre
       pr = []
       if @array_arg
@@ -446,6 +483,11 @@ module GirFFI::Builder
       end
       pr << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@name}"
       pr
+    end
+
+    def post
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}",
+        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 
