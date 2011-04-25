@@ -136,12 +136,17 @@ module GirFFI
       double_pointer.put_double 0, val
     end
 
+    def self.float_to_inoutptr val
+      float_pointer.put_float 0, val
+    end
+
     class << self
       alias int_to_inoutptr int32_to_inoutptr
       alias gint32_to_inoutptr int32_to_inoutptr
       alias int_array_to_inoutptr int32_array_to_inoutptr
       alias gint32_array_to_inoutptr int32_array_to_inoutptr
       alias gdouble_to_inoutptr double_to_inoutptr
+      alias gfloat_to_inoutptr float_to_inoutptr
     end
 
     def self.pointer_to_inoutptr val
@@ -158,6 +163,10 @@ module GirFFI
 
     def self.double_pointer
       AllocationHelper.safe_malloc FFI.type_size(:double)
+    end
+
+    def self.float_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:float)
     end
 
     def self.pointer_pointer
@@ -182,6 +191,10 @@ module GirFFI
       double_pointer.write_double 0.0
     end
 
+    def self.float_outptr
+      float_pointer.write_float 0.0
+    end
+
     def self.pointer_outptr
       pointer_pointer.write_pointer nil
     end
@@ -194,6 +207,7 @@ module GirFFI
       alias int_outptr int32_outptr
       alias gint32_outptr int32_outptr
       alias gdouble_outptr double_outptr
+      alias gfloat_outptr float_outptr
     end
 
     # Converts an outptr to a pointer.
@@ -230,6 +244,11 @@ module GirFFI
       ptr.get_double 0
     end
 
+    # Converts an outptr to a float.
+    def self.outptr_to_float ptr
+      ptr.get_float 0
+    end
+
     # Converts an outptr to an array of int.
     def self.outptr_to_int32_array ptr, size
       block = ptr.read_pointer
@@ -250,6 +269,7 @@ module GirFFI
       alias outptr_to_gint32 outptr_to_int32
       alias outptr_to_gint32_array outptr_to_int32_array
       alias outptr_to_gdouble outptr_to_double
+      alias outptr_to_gfloat outptr_to_float
     end
 
     def self.ptr_to_int32_array ptr, size

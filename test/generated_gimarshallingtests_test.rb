@@ -648,5 +648,29 @@ describe "GIMarshallingTests" do
     assert_equal :value2, res
   end
 
+  it "has a working function #float_in" do
+    # float_return returns MAX_FLT
+    flt = GIMarshallingTests.float_return
+    GIMarshallingTests.float_in flt
+    pass
+  end
+
+  it "has a working function #float_inout" do
+    # float_return returns MAX_FLT
+    flt = GIMarshallingTests.float_return
+    res = GIMarshallingTests.float_inout flt
+    assert_in_epsilon 1.175e-38, res
+  end
+
+  it "has a working function #float_out" do
+    flt = GIMarshallingTests.float_out
+    assert_in_epsilon 3.402e+38, flt
+  end
+
+  it "has a working function #float_return" do
+    flt = GIMarshallingTests.float_return
+    assert_in_epsilon 3.402e+38, flt
+  end
+
 end
 
