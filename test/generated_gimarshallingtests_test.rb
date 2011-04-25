@@ -685,8 +685,9 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #garray_utf8_container_out" do
-    GIMarshallingTests.garray_utf8_container_out
-    pass
+    res = GIMarshallingTests.garray_utf8_container_out
+    assert_equal ["0", "1", "2"], res.to_a
+  end
   end
 end
 

@@ -234,9 +234,7 @@ module GirFFI
     def self.outptr_to_utf8_array ptr, size
       block = ptr.read_pointer
       return nil if block.null?
-      ptrs = block.read_array_of_pointer(size)
-
-      ptrs.map { |ptr| ptr_to_utf8 ptr }
+      ptr_to_utf8_array block, size
     end
 
     # Converts an outptr to a double.
@@ -273,7 +271,11 @@ module GirFFI
     end
 
     def self.ptr_to_typed_array type, ptr, size
-      ptr.send "get_array_of_#{type}", 0, size
+      if type == :utf8
+        ptr_to_utf8_array ptr, size
+      else
+        ptr.send "get_array_of_#{type}", 0, size
+      end
     end
 
     def self.ptr_to_int32_array ptr, size
@@ -282,6 +284,12 @@ module GirFFI
 
     def self.ptr_to_int16_array ptr, size
       ptr.get_array_of_int16(0, size)
+    end
+
+    def self.ptr_to_utf8_array ptr, size
+      ptrs = ptr.read_array_of_pointer(size)
+
+      ptrs.map { |ptr| ptr_to_utf8 ptr }
     end
 
     def self.ptr_to_interface_array klass, ptr, size
