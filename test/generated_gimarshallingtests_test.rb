@@ -546,5 +546,24 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.boolean_return_true
     assert_equal true, res
   end
+
+  it "has a working function #boxed_struct_inout" do
+    bx = GIMarshallingTests::BoxedStruct.new
+    bx[:long_] = 42
+    res = GIMarshallingTests.boxed_struct_inout bx
+    assert_equal 0, res[:long_]
+  end
+
+  it "has a working function #boxed_struct_out" do
+    res = GIMarshallingTests.boxed_struct_out
+    assert_equal 42, res[:long_]
+  end
+
+  it "has a working function #boxed_struct_returnv" do
+    res = GIMarshallingTests.boxed_struct_returnv
+    assert_equal 42, res[:long_]
+    assert_equal ["0", "1", "2"], GirFFI::ArgHelper.strz_to_utf8_array(res[:g_strv])
+  end
+
 end
 
