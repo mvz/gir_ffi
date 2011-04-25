@@ -246,7 +246,7 @@ module GirFFI::Builder
       klass = case arginfo.argument_type.tag
               when :interface
                 case type.interface.info_type
-                when :enum
+                when :enum, :flags
                   EnumOutArgument
                 else
                   InterfaceOutArgument
@@ -406,7 +406,7 @@ module GirFFI::Builder
       klass = case type.tag
               when :interface
                 case type.interface.info_type
-                when :enum
+                when :enum, :flags
                   EnumInOutArgument
                 else
                   InterfaceInOutArgument

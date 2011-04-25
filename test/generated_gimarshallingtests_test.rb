@@ -623,5 +623,30 @@ describe "GIMarshallingTests" do
     assert_equal nil, fl
   end
 
+  it "has a working function #flags_in" do
+    GIMarshallingTests.flags_in :value2
+    pass
+  end
+
+  it "has a working function #flags_in_zero" do
+    GIMarshallingTests.flags_in_zero 0
+    pass
+  end
+
+  it "has a working function #flags_inout" do
+    res = GIMarshallingTests.flags_inout :value2
+    assert_equal :value1, res
+  end
+
+  it "has a working function #flags_out" do
+    res = GIMarshallingTests.flags_out
+    assert_equal :value2, res
+  end
+
+  it "has a working function #flags_returnv" do
+    res = GIMarshallingTests.flags_returnv
+    assert_equal :value2, res
+  end
+
 end
 
