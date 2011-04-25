@@ -114,12 +114,20 @@ module GirFFI
 
     #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
+    enum :IArrayType, [
+      :c,
+      :array,
+      :ptr_array,
+      :byte_array
+    ]
+
     attach_function :g_type_info_is_pointer, [:pointer], :bool
     attach_function :g_type_info_get_tag, [:pointer], :ITypeTag
     attach_function :g_type_info_get_param_type, [:pointer, :int], :pointer
     attach_function :g_type_info_get_interface, [:pointer], :pointer
     attach_function :g_type_info_get_array_length, [:pointer], :int
     attach_function :g_type_info_get_array_fixed_size, [:pointer], :int
+    attach_function :g_type_info_get_array_type, [:pointer], :IArrayType
     attach_function :g_type_info_is_zero_terminated, [:pointer], :bool
     attach_function :g_type_info_get_n_error_domains, [:pointer], :int
     attach_function :g_type_info_get_error_domain, [:pointer, :int], :pointer

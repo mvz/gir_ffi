@@ -130,7 +130,11 @@ module GirFFI::Builder
               when :void
                 VoidInArgument
               when :array
-                ArrayInArgument
+                if type.array_type == :c
+                  ArrayInArgument
+                else
+                  RegularInArgument
+                end
               when :glist, :gslist
                 ListInArgument
               when :ghash
@@ -480,7 +484,12 @@ module GirFFI::Builder
                 if type.zero_terminated?
                   StrzReturnValue
                 else
-                  ArrayReturnValue
+                  case type.array_type
+                  when :c
+                    ArrayReturnValue
+                  when :byte_array
+                    ByteArrayReturnValue
+                  end
                 end
               when :glist
                 ListReturnValue
@@ -566,6 +575,13 @@ module GirFFI::Builder
   class HashTableReturnValue < ReturnValue
     def post
       [ "#{@retname} = GLib::HashTable.wrap(#{@cvar})" ]
+    end
+  end
+
+  # Implements argument processing for GHashTable return values.
+  class ByteArrayReturnValue < ReturnValue
+    def post
+      [ "#{@retname} = GLib::ByteArray.wrap(#{@cvar})" ]
     end
   end
 

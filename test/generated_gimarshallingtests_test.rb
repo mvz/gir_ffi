@@ -565,5 +565,18 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], GirFFI::ArgHelper.strz_to_utf8_array(res[:g_strv])
   end
 
+  it "has a working function #bytearray_full_return" do
+    ret = GIMarshallingTests.bytearray_full_return
+    assert_instance_of GLib::ByteArray, ret
+    assert_equal "0123", ret.to_string
+  end
+
+  it "has a working function #bytearray_none_in" do
+    ba = GLib.byte_array_new
+    GLib.byte_array_append ba, "0123"
+    GIMarshallingTests.bytearray_none_in ba
+    pass
+  end
+
 end
 

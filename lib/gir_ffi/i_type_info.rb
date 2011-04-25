@@ -15,12 +15,19 @@ module GirFFI
       ptr = Lib.g_type_info_get_interface @gobj
       IRepository.wrap_ibaseinfo_pointer ptr
     end
+
     def array_length
       Lib.g_type_info_get_array_length @gobj
     end
+
     def array_fixed_size
       Lib.g_type_info_get_array_fixed_size @gobj
     end
+
+    def array_type
+      Lib.g_type_info_get_array_type @gobj
+    end
+
     def zero_terminated?
       Lib.g_type_info_is_zero_terminated @gobj
     end
