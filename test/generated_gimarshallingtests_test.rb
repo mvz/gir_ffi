@@ -683,5 +683,10 @@ describe "GIMarshallingTests" do
     arr = GIMarshallingTests.garray_int_none_return
     assert_equal [-1, 0, 1, 2], arr.to_a
   end
+
+  it "has a working function #garray_utf8_container_out" do
+    GIMarshallingTests.garray_utf8_container_out
+    pass
+  end
 end
 

@@ -255,7 +255,12 @@ module GirFFI::Builder
                 if type.zero_terminated?
                   StrzOutArgument
                 else
-                  CArrayOutArgument
+                  case type.array_type
+                  when :c
+                    CArrayOutArgument
+                  when :array
+                    ArrayOutArgument
+                  end
                 end
               when :gslist
                 SListOutArgument
@@ -347,6 +352,30 @@ module GirFFI::Builder
 
     def postpost
       [ "#{@retname} = GirFFI::ArgHelper.outptr_strz_to_utf8_array #{@callarg}" ]
+    end
+  end
+
+  # Implements argument processing for GArray arguments with direction
+  # :out.
+  class ArrayOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def post
+      tag = subtype_tag
+      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
+
+      pp = []
+
+      pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
+      pp << "#{@retname}.element_type = #{etype.inspect}"
+
+      if @arginfo.ownership_transfer == :everything
+        pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+      end
+
+      pp
     end
   end
 
@@ -632,8 +661,8 @@ module GirFFI::Builder
   # Implements argument processing for GHashTable return values.
   class ArrayReturnValue < ReturnValue
     def post
-      etype = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[etype] || etype
+      tag = subtype_tag
+      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
       [ "#{@retname} = GLib::Array.wrap(#{@cvar})",
         "#{@retname}.element_type = #{etype.inspect}" ]
     end
