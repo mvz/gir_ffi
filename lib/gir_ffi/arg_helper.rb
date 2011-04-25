@@ -272,6 +272,10 @@ module GirFFI
       alias outptr_to_gfloat outptr_to_float
     end
 
+    def self.ptr_to_typed_array type, ptr, size
+      ptr.send "get_array_of_#{type}", 0, size
+    end
+
     def self.ptr_to_int32_array ptr, size
       ptr.get_array_of_int32(0, size)
     end

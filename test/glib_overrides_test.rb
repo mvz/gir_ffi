@@ -55,6 +55,26 @@ describe "With the GLib overrides" do
       assert_equal "abdc", ba.to_string
     end
   end
+
+  describe "Array" do
+    it "can be created (for now) with Glib.array_new" do
+      arr = GLib.array_new :int32
+      assert_instance_of GLib::Array, arr
+      assert_equal :int32, arr.element_type
+    end
+
+    it "allows values to be appended to it" do
+      ba = GLib.array_new :int32
+      GLib.array_append_vals ba, [1, 2, 3]
+      assert_equal 3, ba[:len]
+    end
+
+    it "has a working #to_a method" do
+      ba = GLib.array_new :int32
+      GLib.array_append_vals ba, [1, 2, 3]
+      assert_equal [1, 2, 3], ba.to_a
+    end
+  end
 end
 
 

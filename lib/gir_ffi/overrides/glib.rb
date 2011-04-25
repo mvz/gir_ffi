@@ -23,6 +23,10 @@ module GirFFI
         base::ByteArray.class_eval {
           include ByteArrayInstanceMethods
         }
+        base::Array.class_eval {
+          attr_accessor :element_type
+          include ArrayInstanceMethods
+        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -38,6 +42,9 @@ module GirFFI
           [:pointer, :pointer, :pointer], :void
         base::Lib.attach_function :g_byte_array_new, [], :pointer
         base::Lib.attach_function :g_byte_array_append,
+          [:pointer, :pointer, :uint], :pointer
+        base::Lib.attach_function :g_array_new, [:int, :int, :uint], :pointer
+        base::Lib.attach_function :g_array_append_vals,
           [:pointer, :pointer, :uint], :pointer
       end
 
@@ -68,6 +75,25 @@ module GirFFI
           len = data.bytesize
           ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_append arr.to_ptr, bytes, len)
         end
+
+        # FIXME: Turn into real constructor
+        def array_new type
+          arr = ::GLib::Array.wrap(
+            ::GLib::Lib.g_array_new(0, 0, FFI.type_size(type)))
+          arr.element_type = type
+          arr
+        end
+
+        # FIXME: Turn into instance method
+        def array_append_vals arr, data
+          bytes = GirFFI::ArgHelper.typed_array_to_inptr arr.element_type, data
+          len = data.length
+          res = ::GLib::Array.wrap(
+            ::GLib::Lib.g_array_append_vals(arr.to_ptr, bytes, len))
+          res.element_type = arr.element_type
+          res
+        end
+
       end
 
       module ListInstanceMethods
@@ -106,6 +132,13 @@ module GirFFI
       module ByteArrayInstanceMethods
         def to_string
           GirFFI::ArgHelper.ptr_to_utf8_length self[:data], self[:len]
+        end
+      end
+
+      module ArrayInstanceMethods
+        def to_a
+          GirFFI::ArgHelper.ptr_to_typed_array(self.element_type,
+                                               self[:data], self[:len])
         end
       end
     end
