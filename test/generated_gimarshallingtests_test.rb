@@ -12,11 +12,25 @@ describe "GIMarshallingTests" do
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
     end
 
-    it "has the method #inv" do
-      bx = GIMarshallingTests::BoxedStruct.new
-      bx[:long_] = 42
-      bx.inv
-      pass
+    describe "an instance" do
+      before do
+        @bx = GIMarshallingTests::BoxedStruct.new
+        @bx[:long_] = 42
+      end
+
+      it "has a working method #inv" do
+        @bx.inv
+        pass
+      end
+
+      it "has a field :long_" do
+        assert_equal 42, @bx[:long_]
+      end
+
+      # TODO: More friendly access to array fields.
+      it "has a field :g_strv" do
+        assert @bx[:g_strv].null?
+      end
     end
   end
 
