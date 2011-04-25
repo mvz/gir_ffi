@@ -131,7 +131,7 @@ module GirFFI::Builder
                 VoidInArgument
               when :array
                 if type.array_type == :c
-                  ArrayInArgument
+                  CArrayInArgument
                 else
                   RegularInArgument
                 end
@@ -167,7 +167,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for array arguments with direction :in.
-  class ArrayInArgument < InArgument
+  class CArrayInArgument < InArgument
     def post
       unless @arginfo.ownership_transfer == :everything
         if subtype_tag == :utf8
@@ -255,7 +255,7 @@ module GirFFI::Builder
                 if type.zero_terminated?
                   StrzOutArgument
                 else
-                  ArrayOutArgument
+                  CArrayOutArgument
                 end
               when :gslist
                 SListOutArgument
@@ -306,7 +306,7 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction
   # :out.
-  class ArrayOutArgument < OutArgument
+  class CArrayOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
@@ -412,7 +412,7 @@ module GirFFI::Builder
                   InterfaceInOutArgument
                 end
               when :array
-                ArrayInOutArgument
+                CArrayInOutArgument
               else
                 RegularInOutArgument
               end
@@ -451,7 +451,7 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction
   # :inout.
-  class ArrayInOutArgument < InOutArgument
+  class CArrayInOutArgument < InOutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
@@ -528,6 +528,8 @@ module GirFFI::Builder
                 else
                   case type.array_type
                   when :c
+                    CArrayReturnValue
+                  when :array
                     ArrayReturnValue
                   when :byte_array
                     ByteArrayReturnValue
@@ -584,7 +586,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for array return values.
-  class ArrayReturnValue < ReturnValue
+  class CArrayReturnValue < ReturnValue
     def post
       size = array_size
 
@@ -624,6 +626,16 @@ module GirFFI::Builder
   class ByteArrayReturnValue < ReturnValue
     def post
       [ "#{@retname} = GLib::ByteArray.wrap(#{@cvar})" ]
+    end
+  end
+
+  # Implements argument processing for GHashTable return values.
+  class ArrayReturnValue < ReturnValue
+    def post
+      etype = subtype_tag
+      etype = GirFFI::Builder::TAG_TYPE_MAP[etype] || etype
+      [ "#{@retname} = GLib::Array.wrap(#{@cvar})",
+        "#{@retname}.element_type = #{etype.inspect}" ]
     end
   end
 

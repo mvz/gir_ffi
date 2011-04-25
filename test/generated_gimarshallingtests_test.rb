@@ -672,5 +672,16 @@ describe "GIMarshallingTests" do
     assert_in_epsilon 3.402e+38, flt
   end
 
+  it "has a working function #garray_int_none_in" do
+    arr = GLib.array_new :int
+    GLib.array_append_vals arr, [-1, 0, 1, 2]
+    GIMarshallingTests.garray_int_none_in arr
+    pass
+  end
+
+  it "has a working function #garray_int_none_return" do
+    arr = GIMarshallingTests.garray_int_none_return
+    assert_equal [-1, 0, 1, 2], arr.to_a
+  end
 end
 
