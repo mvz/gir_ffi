@@ -100,12 +100,8 @@ module GirFFI
 
     def function_introspection_data function
       info = gir.find_by_name @namespace, function.to_s
-
-      if info.info_type == :function
-        info
-      else
-        nil
-      end
+      return nil if info.nil?
+      info.info_type == :function ? info : nil
     end
 
     def function_definition info, libmodule

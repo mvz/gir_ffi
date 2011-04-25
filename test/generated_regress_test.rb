@@ -984,6 +984,13 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal 3423, result.get_int
     end
 
+    it "raises an appropriate NoMethodError when a function is not found" do
+      begin
+        Regress.this_method_does_not_exist
+      rescue => e
+        assert_equal "undefined method `this_method_does_not_exist' for Regress:Module", e.message
+      end
+    end
   end
 
 end
