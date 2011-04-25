@@ -274,6 +274,10 @@ module GirFFI
       ptr.null? ? nil : ptr.read_string
     end
 
+    def self.ptr_to_utf8_length ptr, len
+      ptr.null? ? nil : ptr.read_string_length(len)
+    end
+
     class << self
       alias ptr_to_int_array ptr_to_int32_array
       alias ptr_to_gint32_array ptr_to_int32_array

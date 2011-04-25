@@ -20,6 +20,9 @@ module GirFFI
           include HashTableInstanceMethods
           include Enumerable
         }
+        base::ByteArray.class_eval {
+          include ByteArrayInstanceMethods
+        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -33,15 +36,18 @@ module GirFFI
           [base::HashFunc, base::EqualFunc], :pointer
         base::Lib.attach_function :g_hash_table_insert,
           [:pointer, :pointer, :pointer], :void
+        base::Lib.attach_function :g_byte_array_new, [], :pointer
+        base::Lib.attach_function :g_byte_array_append,
+          [:pointer, :pointer, :uint], :pointer
       end
 
       module ClassMethods
-        # FIXME: Should not be so visible for end users.
+        # FIXME: Turn into instance method
         def slist_prepend slist, data
           ::GLib::SList.wrap(::GLib::Lib.g_slist_prepend slist, data)
         end
 
-        # FIXME: Should not be so visible for end users.
+        # FIXME: Turn into instance method
         def list_append list, data
           ::GLib::List.wrap(::GLib::Lib.g_list_append list, data)
         end
@@ -49,6 +55,18 @@ module GirFFI
         # FIXME: Turn into real constructor
         def hash_table_new
           ::GLib::HashTable.wrap(::GLib::Lib.g_hash_table_new nil, nil)
+        end
+
+        # FIXME: Turn into real constructor
+        def byte_array_new
+          ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_new)
+        end
+
+        # FIXME: Turn into instance method
+        def byte_array_append arr, data
+          bytes = GirFFI::ArgHelper.utf8_to_inptr data
+          len = data.bytesize
+          ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_append arr.to_ptr, bytes, len)
         end
       end
 
@@ -85,6 +103,11 @@ module GirFFI
         end
       end
 
+      module ByteArrayInstanceMethods
+        def to_string
+          GirFFI::ArgHelper.ptr_to_utf8_length self[:data], self[:len]
+        end
+      end
     end
   end
 end
