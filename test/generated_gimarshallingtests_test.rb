@@ -618,5 +618,10 @@ describe "GIMarshallingTests" do
     assert_equal :value3, e
   end
 
+  it "has a working function #filename_list_return" do
+    fl = GIMarshallingTests.filename_list_return
+    assert_equal nil, fl
+  end
+
 end
 
