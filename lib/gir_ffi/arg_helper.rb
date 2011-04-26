@@ -65,6 +65,7 @@ module GirFFI
       end
     end
 
+    # FIXME: :interface is too generic. implement only GValueArray?
     def self.interface_array_to_inptr ary
       return nil if ary.nil?
       raise NotImplementedError

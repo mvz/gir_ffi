@@ -731,5 +731,18 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.garray_utf8_none_return
     assert_equal ["0", "1", "2"], res.to_a
   end
+
+  it "has a working function #gclosure_in" do
+    cl = GObject::RubyClosure.new { 42 }
+    GIMarshallingTests.gclosure_in cl
+  end
+
+  it "has a working function #gclosure_return" do
+    cl = GIMarshallingTests.gclosure_return
+    gv = GObject::Value.wrap_ruby_value 0
+    cl.invoke gv, nil, nil
+    assert_equal 42, gv.ruby_value
+  end
+
 end
 
