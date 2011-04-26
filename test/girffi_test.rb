@@ -15,10 +15,12 @@ class GirFFITest < MiniTest::Spec
     end
 
     it "sets up dependencies" do
-      cleanup_module :GObject
-      cleanup_module :Regress
+      save_module :GObject
+      save_module :Regress
       GirFFI.setup :Regress
       assert Object.const_defined?(:GObject)
+      restore_module :Regress
+      restore_module :GObject
     end
   end
 end

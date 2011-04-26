@@ -7,8 +7,8 @@ class BuilderTest < MiniTest::Spec
     end
 
     context "building GObject::Object" do
-      setup do
-	cleanup_module :GObject
+      before do
+	save_module :GObject
 	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
       end
 
@@ -26,12 +26,16 @@ class BuilderTest < MiniTest::Spec
 	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
 	assert_equal oldclass, GObject::Object
       end
+
+      after do
+        restore_module :GObject
+      end
     end
 
     context "building Gtk::Window" do
-      setup do
-	cleanup_module :Gtk
-	cleanup_module :GObject
+      before do
+	save_module :Gtk
+	save_module :GObject
 	GirFFI::Builder.build_class get_function_introspection_data('Gtk', 'Window')
       end
 
@@ -66,11 +70,16 @@ class BuilderTest < MiniTest::Spec
       should "result in Gtk::Window.new to succeed" do
 	assert_nothing_raised {Gtk::Window.new(:toplevel)}
       end
+
+      after do
+	restore_module :Gtk
+	restore_module :GObject
+      end
     end
 
     context "building Gtk" do
-      setup do
-	cleanup_module :Gtk
+      before do
+	save_module :Gtk
 	GirFFI::Builder.build_module 'Gtk'
       end
 
@@ -94,6 +103,10 @@ class BuilderTest < MiniTest::Spec
 	oldmodule = Gtk::Lib
 	GirFFI::Builder.build_module 'Gtk'
 	assert_equal oldmodule, Gtk::Lib
+      end
+
+      after do
+	restore_module :Gtk
       end
     end
 
@@ -148,10 +161,10 @@ class BuilderTest < MiniTest::Spec
     end
 
     context "looking at Regress.test_callback_destroy_notify" do
-      setup do
-	cleanup_module :GLib
-	cleanup_module :GObject
-	cleanup_module :Regress
+      before do
+	save_module :GLib
+	save_module :GObject
+	save_module :Regress
 	GirFFI::Builder.build_module 'GLib'
 	GirFFI::Builder.build_module 'GObject'
 	GirFFI::Builder.build_module 'Regress'
@@ -178,6 +191,12 @@ class BuilderTest < MiniTest::Spec
       # FIXME: Test passes but does not test what it claims to test.
       should "define ffi enum type ConnectFlags" do
 	assert_equal({:after => 1, :swapped => 2}, GObject::ConnectFlags.to_h)
+      end
+
+      after do
+	restore_module :Regress
+	restore_module :GObject
+	restore_module :GLib
       end
     end
 
@@ -249,8 +268,8 @@ class BuilderTest < MiniTest::Spec
     end
 
     context "built Regress module" do
-      setup do
-	cleanup_module :Regress
+      before do
+	save_module :Regress
 	GirFFI::Builder.build_module 'Regress'
       end
 
@@ -268,11 +287,15 @@ class BuilderTest < MiniTest::Spec
       should "know its own module builder" do
 	assert GirFFI::Builder::Module === Regress.gir_ffi_builder
       end
+
+      after do
+        restore_module :Regress
+      end
     end
 
     context "built Regress::TestObj" do
-      setup do
-	cleanup_module :Regress
+      before do
+	save_module :Regress
 	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestObj')
       end
 
@@ -308,11 +331,15 @@ class BuilderTest < MiniTest::Spec
 	    GirFFI::Builder.send(:ffi_function_argument_types, info)
 	end
       end
+
+      after do
+        restore_module :Regress
+      end
     end
 
     context "built Regress::TestSubObj" do
-      setup do
-	cleanup_module :Regress
+      before do
+	save_module :Regress
 	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestSubObj')
       end
 
@@ -335,11 +362,15 @@ class BuilderTest < MiniTest::Spec
 	subobj = Regress::TestSubObj.new
 	assert_equal 0, subobj.instance_method
       end
+
+      after do
+        restore_module :Regress
+      end
     end
 
     context "built Gio::ThreadedSocketService" do
-      setup do
-	cleanup_module :Gio
+      before do
+	save_module :Gio
 	GirFFI::Builder.build_module 'Gio'
       end
 
@@ -351,6 +382,10 @@ class BuilderTest < MiniTest::Spec
 	should "still use its own constructor" do
 	  assert_nothing_raised { Gio::ThreadedSocketService.new 2 }
 	end
+      end
+
+      after do
+        restore_module :Gio
       end
     end
   end

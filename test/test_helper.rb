@@ -3,6 +3,8 @@ require 'minitest/autorun'
 require 'rr'
 require 'ffi'
 
+Thread.abort_on_exception = true
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'gir_ffi'
@@ -57,9 +59,23 @@ class MiniTest::Unit::TestCase
     gir.find_by_name(namespace, klass).find_method function
   end
 
-  def cleanup_module name
+  SAVED_MODULES = {}
+
+  def save_module name
     if Object.const_defined? name
+      puts "Saving #{name} over existing" if SAVED_MODULES.has_key? name
+      SAVED_MODULES[name] = Object.const_get name
       Object.send(:remove_const, name)
+    end
+  end
+
+  def restore_module name
+    if SAVED_MODULES.has_key? name
+      if Object.const_defined? name
+        Object.send(:remove_const, name)
+      end
+      Object.const_set name, SAVED_MODULES[name]
+      SAVED_MODULES.delete name
     end
   end
 

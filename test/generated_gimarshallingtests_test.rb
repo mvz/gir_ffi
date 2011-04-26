@@ -222,7 +222,6 @@ describe "GIMarshallingTests" do
       it "has a property 'int'"
 
       it "has a field parent_instance containing the parent struct" do
-        skip "This fails sometimes, perhaps due to a race condition"
         assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
       end
 
@@ -249,7 +248,6 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field parent_instance containing the parent struct" do
-        skip "This fails, perhaps due to a race condition"
         assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
       end
 
