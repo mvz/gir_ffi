@@ -321,7 +321,30 @@ class GeneratedRegressTest < MiniTest::Spec
     # describe "TestStructC"
 
     describe "TestSubObj" do
-      it "must be tested"
+      it "is created with #new" do
+        tso = Regress::TestSubObj.new
+        assert_instance_of Regress::TestSubObj, tso
+      end
+
+      describe "an instance" do
+        before do
+          @tso = Regress::TestSubObj.new
+        end
+
+        it "has a working method #instance_method" do
+          res = @tso.instance_method
+          assert_equal 0, res
+        end
+
+        it "has a working method #unset_bare" do
+          @tso.unset_bare
+          pass
+        end
+
+        it "has a field parent_instance" do
+          assert_instance_of Regress::TestObj::Struct, @tso[:parent_instance]
+        end
+      end
     end
 
     context "the Regress::TestWi8021x class" do
