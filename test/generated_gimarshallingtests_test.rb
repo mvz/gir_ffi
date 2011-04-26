@@ -688,5 +688,17 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.garray_utf8_container_out
     assert_equal ["0", "1", "2"], res.to_a
   end
+
+  it "has a working function #garray_utf8_container_return" do
+    res = GIMarshallingTests.garray_utf8_container_return
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #garray_utf8_full_inout" do
+    arr = GLib.array_new :utf8
+    GLib.array_append_vals arr, ["0", "1", "2"]
+    res = GIMarshallingTests.garray_utf8_full_inout arr
+    assert_equal ["-2", "-1", "0", "1"], res.to_a
+  end
 end
 

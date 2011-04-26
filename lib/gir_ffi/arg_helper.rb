@@ -11,10 +11,12 @@ module GirFFI
 
     def self.typed_array_to_inptr type, ary
       return nil if ary.nil?
+      return utf8_array_to_inptr ary if type == :utf8
       block = allocate_array_of_type type, ary.length
       block.send "put_array_of_#{type}", 0, ary
     end
 
+    # TODO: Hard-code correct action based on type.
     def self.pointer_array_to_inptr ary
       typed_array_to_inptr :pointer, ary
     end

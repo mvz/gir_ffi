@@ -441,7 +441,12 @@ module GirFFI::Builder
                   InterfaceInOutArgument
                 end
               when :array
-                CArrayInOutArgument
+                case type.array_type
+                when :c
+                  CArrayInOutArgument
+                when :array
+                  ArrayInOutArgument
+                end
               else
                 RegularInOutArgument
               end
@@ -499,6 +504,27 @@ module GirFFI::Builder
         end
       end
       pst
+    end
+  end
+
+  # Implements argument processing for GArray arguments with direction
+  # :out.
+  class ArrayInOutArgument < InOutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
+    end
+
+    def post
+      tag = subtype_tag
+      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
+
+      pp = []
+
+      pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
+      pp << "#{@retname}.element_type = #{etype.inspect}"
+      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+
+      pp
     end
   end
 
