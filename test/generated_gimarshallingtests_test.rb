@@ -133,9 +133,8 @@ describe "GIMarshallingTests" do
       assert_instance_of GIMarshallingTests::Object, res
     end
 
-    it "has a working function #inout_same" do
-      skip "This function is only found in the header"
-    end
+    # This function is only found in the header
+    # it "has a working function #inout_same"
 
     it "has a working function #none_inout" do
       ob = GIMarshallingTests::Object.new 42
@@ -177,9 +176,8 @@ describe "GIMarshallingTests" do
         assert_equal 104, @obj[:int_]
       end
 
-      it "has a working method #full_in" do
-        skip "This function is only found in the header"
-      end
+      # This function is only found in the header
+      # it "has a working method #full_in"
 
       it "has a working method #int8_in"
       it "has a working method #int8_out"
