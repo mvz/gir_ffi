@@ -688,6 +688,5 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.garray_utf8_container_out
     assert_equal ["0", "1", "2"], res.to_a
   end
-  end
 end
 
