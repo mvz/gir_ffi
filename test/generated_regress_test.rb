@@ -297,7 +297,24 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     describe "TestStructB" do
-      it "must be tested"
+      describe "an instance" do
+	it "has a working method #clone" do
+	  a = Regress::TestStructB.new
+	  a[:some_int8] = 42
+	  a[:nested_a][:some_int] = 2556
+	  a[:nested_a][:some_int8] = -10
+	  a[:nested_a][:some_double] = 1.03455e20
+	  a[:nested_a][:some_enum] = :value2
+
+	  b = a.clone
+
+	  assert_equal 42, b[:some_int8]
+	  assert_equal 2556, b[:nested_a][:some_int]
+	  assert_equal(-10, b[:nested_a][:some_int8])
+	  assert_equal 1.03455e20, b[:nested_a][:some_double]
+	  assert_equal :value2, b[:nested_a][:some_enum]
+	end
+      end
     end
 
     describe "TestStructC" do
