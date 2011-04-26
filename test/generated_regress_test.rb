@@ -88,8 +88,10 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    describe "TestFlags" do
-      it "must be tested"
+    it "has the bitfield TestFlags" do
+      assert_equal 1, Regress::TestFlags[:flag1]
+      assert_equal 2, Regress::TestFlags[:flag2]
+      assert_equal 4, Regress::TestFlags[:flag3]
     end
 
     context "the Regress::TestFloating class" do
