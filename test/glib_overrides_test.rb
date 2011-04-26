@@ -69,6 +69,7 @@ describe "With the GLib overrides" do
       assert_equal 3, ba[:len]
     end
 
+    # TODO: Make GLib::Array a full Enumerable"
     it "has a working #to_a method" do
       ba = GLib.array_new :int32
       GLib.array_append_vals ba, [1, 2, 3]
