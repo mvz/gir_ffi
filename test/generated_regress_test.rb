@@ -924,7 +924,6 @@ class GeneratedRegressTest < MiniTest::Spec
 
     it "has a correct #test_unsigned_enum_param" do
       assert_equal "value1", Regress.test_unsigned_enum_param(:value1)
-      skip "FFI does not seem to support unsigned enums"
       assert_equal "value2", Regress.test_unsigned_enum_param(:value2)
     end
 

@@ -14,10 +14,17 @@ module GirFFI
           @klass
         end
 
+        def value_spec
+          return info.values.map {|vinfo|
+            val = vinfo.value
+            val = -(0x100000000-val) if val >= 0x80000000
+            [vinfo.name.to_sym, val]
+          }.flatten
+        end
+
         def instantiate_enum_class
           @klass = optionally_define_constant namespace_module, @classname do
-            vals = info.values.map {|vinfo| [vinfo.name.to_sym, vinfo.value]}.flatten
-            lib.enum(@classname.to_sym, vals)
+            lib.enum(@classname.to_sym, value_spec)
           end
         end
       end
