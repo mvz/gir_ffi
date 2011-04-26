@@ -390,8 +390,9 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_equal "const ♥ utf8", Regress::UTF8_CONSTANT
     end
 
-    describe "set_abort_on_error" do
-      it "must be tested"
+    it "has the function #set_abort_on_error" do
+      Regress.set_abort_on_error false
+      Regress.set_abort_on_error true
     end
 
     describe "#test_array_fixed_size_int_in" do
