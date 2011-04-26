@@ -744,5 +744,40 @@ describe "GIMarshallingTests" do
     assert_equal 42, gv.ruby_value
   end
 
+  it "has a working function #genum_in" do
+    GIMarshallingTests.genum_in :value3
+    pass
+  end
+
+  it "has a working function #genum_inout" do
+    res = GIMarshallingTests.genum_inout :value3
+    assert_equal :value1, res
+  end
+
+  it "has a working function #genum_out" do
+    res = GIMarshallingTests.genum_out
+    assert_equal :value3, res
+  end
+
+  it "has a working function #genum_returnv" do
+    res = GIMarshallingTests.genum_returnv
+    assert_equal :value3, res
+  end
+
+  it "has a working function #gerror" do
+    begin
+      GIMarshallingTests.gerror
+    rescue RuntimeError => e
+      assert_equal "gi-marshalling-tests-gerror-message", e.message
+    end
+  end
+
+  it "has a working function #gerror_array_in" do
+    begin
+      GIMarshallingTests.gerror_array_in [1, 2, 3]
+    rescue RuntimeError => e
+      assert_equal "gi-marshalling-tests-gerror-message", e.message
+    end
+  end
 end
 
