@@ -755,7 +755,15 @@ module GirFFI::Builder
   # Implements argument processing for other return values.
   class RegularReturnValue < ReturnValue
     def retval
-      @cvar
+      if RUBY_VERSION < "1.9"
+        @cvar
+      else
+        if type_tag == :utf8
+          "#{@cvar}.force_encoding('utf-8')"
+        else
+          @cvar
+        end
+      end
     end
   end
 

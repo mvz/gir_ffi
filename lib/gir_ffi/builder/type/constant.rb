@@ -23,7 +23,13 @@ module GirFFI
 
         def instantiate_class
           @klass = optionally_define_constant namespace_module, @classname do
-            info.value[TYPE_TAG_TO_UNION_MEMBER[info.constant_type.tag]]
+            tag = info.constant_type.tag
+            val = info.value[TYPE_TAG_TO_UNION_MEMBER[tag]]
+            if RUBY_VERSION >= "1.9" and tag == :utf8
+              val.force_encoding("utf-8")
+            else
+              val
+            end
           end
         end
       end

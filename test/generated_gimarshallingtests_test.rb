@@ -1,3 +1,4 @@
+# coding: utf-8
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
@@ -484,7 +485,8 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #array_uint8_in" do
-    GIMarshallingTests.array_uint8_in [?a, ?b, ?c, ?d]
+    arr = "abcd".bytes.to_a
+    GIMarshallingTests.array_uint8_in arr
     pass
   end
 

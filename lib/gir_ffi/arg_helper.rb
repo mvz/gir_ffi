@@ -305,8 +305,14 @@ module GirFFI
       arr
     end
 
-    def self.ptr_to_utf8 ptr
-      ptr.null? ? nil : ptr.read_string
+    if RUBY_VERSION < "1.9"
+      def self.ptr_to_utf8 ptr
+        ptr.null? ? nil : ptr.read_string
+      end
+    else
+      def self.ptr_to_utf8 ptr
+        ptr.null? ? nil : ptr.read_string.force_encoding("utf-8")
+      end
     end
 
     def self.ptr_to_utf8_length ptr, len
