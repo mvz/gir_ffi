@@ -856,5 +856,68 @@ describe "GIMarshallingTests" do
                  res.to_hash)
   end
 
+  it "has a working function #glist_int_none_in" do
+    GIMarshallingTests.glist_int_none_in [-1, 0, 1, 2]
+  end
+
+  it "has a working function #glist_int_none_return" do
+    GIMarshallingTests.glist_int_none_return
+  end
+
+  # XXX: Only defined in header
+  # it "has a working function #glist_utf8_container_in"
+
+  it "has a working function #glist_utf8_container_inout" do
+    res = GIMarshallingTests.glist_utf8_container_inout ["0", "1", "2"]
+    assert_equal ["-2", "-1", "0", "1"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_container_out" do
+    res = GIMarshallingTests.glist_utf8_container_out
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_container_return" do
+    res = GIMarshallingTests.glist_utf8_container_return
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  # XXX: Only defined in header
+  # it "has a working function #glist_utf8_full_in"
+
+  it "has a working function #glist_utf8_full_inout" do
+    res = GIMarshallingTests.glist_utf8_full_inout ["0", "1", "2"]
+    assert_equal ["-2", "-1", "0", "1"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_full_out" do
+    res = GIMarshallingTests.glist_utf8_full_out
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_full_return" do
+    res = GIMarshallingTests.glist_utf8_full_return
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_none_in" do
+    GIMarshallingTests.glist_utf8_none_in ["0", "1", "2"]
+  end
+
+  it "has a working function #glist_utf8_none_inout" do
+    res = GIMarshallingTests.glist_utf8_none_inout ["0", "1", "2"]
+    assert_equal ["-2", "-1", "0", "1"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_none_out" do
+    res = GIMarshallingTests.glist_utf8_none_out
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #glist_utf8_none_return" do
+    res = GIMarshallingTests.glist_utf8_none_return
+    assert_equal ["0", "1", "2"], res.to_a
+  end
+
 end
 

@@ -262,6 +262,8 @@ module GirFFI::Builder
                     ArrayOutArgument
                   end
                 end
+              when :glist
+                ListOutArgument
               when :gslist
                 SListOutArgument
               when :ghash
@@ -379,6 +381,19 @@ module GirFFI::Builder
     end
   end
 
+  # Implements argument processing for glist arguments with direction
+  # :out.
+  # TODO: Pass list type into new List object.
+  class ListOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+
+    def postpost
+      [ "#{@retname} = GLib::List.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+    end
+  end
+
   # Implements argument processing for gslist arguments with direction
   # :out.
   # TODO: Pass list type into new SList object.
@@ -448,6 +463,8 @@ module GirFFI::Builder
                 when :array
                   ArrayInOutArgument
                 end
+              when :glist
+                ListInOutArgument
               when :ghash
                 HashTableInOutArgument
               else
@@ -527,6 +544,22 @@ module GirFFI::Builder
       pp << "#{@retname}.element_type = #{etype.inspect}"
       pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
 
+      pp
+    end
+  end
+
+  # Implements argument processing for glist arguments with direction
+  # :inout.
+  # TODO: Pass list type into new List object.
+  class ListInOutArgument < InOutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+    end
+
+    def postpost
+      pp = []
+      pp << "#{@retname} = GLib::List.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
+      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
     end
   end

@@ -342,6 +342,12 @@ module GirFFI
         GLib.list_append lst, utf8_to_inptr(str) }
     end
 
+    def self.gint32_array_to_glist arr
+      return nil if arr.nil?
+      arr.inject(nil) { |lst, int|
+        GLib.list_append lst, cast_int32_to_pointer(int) }
+    end
+
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
       arr.reverse.inject(nil) { |lst, str|
@@ -474,6 +480,10 @@ module GirFFI
 
     def self.cast_pointer_to_int32 ptr
       cast_uint32_to_int32(ptr.address & 0xffffffff)
+    end
+
+    def self.cast_int32_to_pointer int
+      FFI::Pointer.new(int)
     end
   end
 end
