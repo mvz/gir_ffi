@@ -463,5 +463,17 @@ module GirFFI
     def self.gir
       gir = GirFFI::IRepository.default
     end
+
+    def self.cast_uint32_to_int32 val
+      if val >= 0x80000000
+        -(0x100000000-val)
+      else
+        val
+      end
+    end
+
+    def self.cast_pointer_to_int32 ptr
+      cast_uint32_to_int32(ptr.address & 0xffffffff)
+    end
   end
 end

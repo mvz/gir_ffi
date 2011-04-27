@@ -16,8 +16,7 @@ module GirFFI
 
         def value_spec
           return info.values.map {|vinfo|
-            val = vinfo.value
-            val = -(0x100000000-val) if val >= 0x80000000
+            val = GirFFI::ArgHelper.cast_uint32_to_int32(vinfo.value)
             [vinfo.name.to_sym, val]
           }.flatten
         end

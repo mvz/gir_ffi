@@ -151,8 +151,11 @@ module GirFFI
         end
 
         def cast_from_pointer type, it
-          if type == :utf8
+          case type
+          when :utf8
             GirFFI::ArgHelper.ptr_to_utf8 it
+          when :gint32
+            GirFFI::ArgHelper.cast_pointer_to_int32 it
           else
             it.address
           end

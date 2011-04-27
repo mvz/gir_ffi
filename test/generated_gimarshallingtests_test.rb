@@ -784,5 +784,10 @@ describe "GIMarshallingTests" do
     GIMarshallingTests.ghashtable_int_none_in(
       {-1 => 1, 0 => 0, 1 => -1, 2 => -2})
   end
+
+  it "has a working function #ghashtable_int_none_return" do
+    gh = GIMarshallingTests.ghashtable_int_none_return
+    assert_equal({-1 => 1, 0 => 0, 1 => -1, 2 => -2}, gh.to_hash)
+  end
 end
 
