@@ -394,7 +394,6 @@ module GirFFI::Builder
 
   # Implements argument processing for ghash arguments with direction
   # :out.
-  # TODO: Pass hash table type into new HashTable object.
   class HashTableOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
@@ -449,6 +448,8 @@ module GirFFI::Builder
                 when :array
                   ArrayInOutArgument
                 end
+              when :ghash
+                HashTableInOutArgument
               else
                 RegularInOutArgument
               end
@@ -526,6 +527,26 @@ module GirFFI::Builder
       pp << "#{@retname}.element_type = #{etype.inspect}"
       pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
 
+      pp
+    end
+  end
+
+  # Implements argument processing for ghash arguments with direction
+  # :inout.
+  class HashTableInOutArgument < InOutArgument
+    def pre
+      key_t = subtype_tag(0).inspect
+      val_t = subtype_tag(1).inspect
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name}))" ]
+    end
+
+    def postpost
+      pp = []
+
+      key_t = subtype_tag(0).inspect
+      val_t = subtype_tag(1).inspect
+      pp << "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
+      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
     end
   end

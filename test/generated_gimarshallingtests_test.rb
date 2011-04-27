@@ -790,10 +790,71 @@ describe "GIMarshallingTests" do
     assert_equal({-1 => 1, 0 => 0, 1 => -1, 2 => -2}, gh.to_hash)
   end
 
+  # XXX: Only defined in header
+  # it "has a working function #ghashtable_utf8_container_in"
+
+  it "has a working function #ghashtable_utf8_container_inout" do
+    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    res = GIMarshallingTests.ghashtable_utf8_container_inout hsh
+    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_container_out" do
+    res = GIMarshallingTests.ghashtable_utf8_container_out
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_container_return" do
+    res = GIMarshallingTests.ghashtable_utf8_container_return
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
+  # XXX: Only defined in header
+  # it "has a working function #ghashtable_utf8_full_in"
+
+  it "has a working function #ghashtable_utf8_full_inout" do
+    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    res = GIMarshallingTests.ghashtable_utf8_full_inout hsh
+    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_full_out" do
+    res = GIMarshallingTests.ghashtable_utf8_full_out
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_full_return" do
+    res = GIMarshallingTests.ghashtable_utf8_full_return
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
   it "has a working function #ghashtable_utf8_none_in" do
     hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
     GIMarshallingTests.ghashtable_utf8_none_in hsh
     pass
   end
+
+  it "has a working function #ghashtable_utf8_none_inout" do
+    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    res = GIMarshallingTests.ghashtable_utf8_none_inout hsh
+    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_none_out" do
+    res = GIMarshallingTests.ghashtable_utf8_none_out
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_none_return" do
+    res = GIMarshallingTests.ghashtable_utf8_none_return
+    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+                 res.to_hash)
+  end
+
 end
 
