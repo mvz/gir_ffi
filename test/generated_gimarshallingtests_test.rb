@@ -779,5 +779,10 @@ describe "GIMarshallingTests" do
       assert_equal "gi-marshalling-tests-gerror-message", e.message
     end
   end
+
+  it "has a working function #ghashtable_int_none_in" do
+    GIMarshallingTests.ghashtable_int_none_in(
+      {-1 => 1, 0 => 0, 1 => -1, 2 => -2})
+  end
 end
 

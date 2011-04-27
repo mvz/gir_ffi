@@ -200,7 +200,7 @@ module GirFFI::Builder
   # Implements argument processing for ghash arguments with direction :in.
   class HashTableInArgument < InArgument
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag(0)}_#{subtype_tag(1)}_hash_to_ghash #{@name}" ]
+      [ "#{@callarg} = GirFFI::ArgHelper.hash_to_ghash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
     end
   end
 
@@ -401,7 +401,9 @@ module GirFFI::Builder
     end
 
     def postpost
-      [ "#{@retname} = GLib::HashTable.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+      key_t = subtype_tag(0).inspect
+      val_t = subtype_tag(1).inspect
+      [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
@@ -673,7 +675,9 @@ module GirFFI::Builder
   # Implements argument processing for GHashTable return values.
   class HashTableReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GLib::HashTable.wrap(#{@cvar})" ]
+      key_t = subtype_tag(0).inspect
+      val_t = subtype_tag(1).inspect
+      [ "#{@retname} = GLib::HashTable.wrap(#{key_t}, #{val_t}, #{@cvar})" ]
     end
   end
 

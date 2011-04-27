@@ -17,7 +17,10 @@ module GirFFI
           include Enumerable
         }
         base::HashTable.class_eval {
+          attr_accessor :key_type
+          attr_accessor :value_type
           include HashTableInstanceMethods
+          extend HashTableClassMethods
           include Enumerable
         }
         base::ByteArray.class_eval {
@@ -60,8 +63,8 @@ module GirFFI
         end
 
         # FIXME: Turn into real constructor
-        def hash_table_new
-          ::GLib::HashTable.wrap(::GLib::Lib.g_hash_table_new nil, nil)
+        def hash_table_new keytype, valtype
+          ::GLib::HashTable.wrap(keytype, valtype, ::GLib::Lib.g_hash_table_new(nil, nil))
         end
 
         # FIXME: Turn into real constructor
@@ -109,11 +112,21 @@ module GirFFI
         end
       end
 
+      module HashTableClassMethods
+        def wrap keytype, valtype, ptr
+          super(ptr).tap do |it|
+            break if it.nil?
+            it.key_type = keytype
+            it.value_type = valtype
+          end
+        end
+      end
+
       module HashTableInstanceMethods
         def each
           prc = Proc.new {|keyptr, valptr, userdata|
-            key = GirFFI::ArgHelper.ptr_to_utf8 keyptr
-            val = GirFFI::ArgHelper.ptr_to_utf8 valptr
+            key = cast_from_pointer key_type, keyptr
+            val = cast_from_pointer value_type, valptr
             yield key, val
           }
           ::GLib::Lib.g_hash_table_foreach self.to_ptr, prc, nil
@@ -124,9 +137,25 @@ module GirFFI
         end
 
         def insert key, value
-          keyptr = GirFFI::ArgHelper.utf8_to_inptr key
-          valptr = GirFFI::ArgHelper.utf8_to_inptr value
+          keyptr = cast_to_pointer key_type, key
+          valptr = cast_to_pointer value_type, value
           ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
+        end
+
+        def cast_to_pointer type, it
+          if type == :utf8
+            GirFFI::ArgHelper.utf8_to_inptr it
+          else
+            FFI::Pointer.new(it)
+          end
+        end
+
+        def cast_from_pointer type, it
+          if type == :utf8
+            GirFFI::ArgHelper.ptr_to_utf8 it
+          else
+            it.address
+          end
         end
       end
 

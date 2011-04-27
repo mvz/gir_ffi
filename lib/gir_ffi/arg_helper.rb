@@ -348,10 +348,12 @@ module GirFFI
         GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
-    def self.utf8_utf8_hash_to_ghash hash
+    def self.hash_to_ghash keytype, valtype, hash
       return nil if hash.nil?
-      ghash = GLib.hash_table_new
-      hash.each {|key, val| ghash.insert key, val}
+      ghash = GLib.hash_table_new keytype, valtype
+      hash.each do |key, val|
+        ghash.insert key, val
+      end
       ghash
     end
 
