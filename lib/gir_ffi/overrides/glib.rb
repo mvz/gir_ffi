@@ -64,7 +64,15 @@ module GirFFI
 
         # FIXME: Turn into real constructor
         def hash_table_new keytype, valtype
-          ::GLib::HashTable.wrap(keytype, valtype, ::GLib::Lib.g_hash_table_new(nil, nil))
+          hash_fn, eq_fn = case keytype
+                           when :utf8
+                             [::GLib::Lib.ffi_libraries.first.find_function("g_str_equal"),
+                               ::GLib::Lib.ffi_libraries.first.find_function("g_str_equal")]
+                           else
+                             [nil, nil]
+                           end
+
+          ::GLib::HashTable.wrap(keytype, valtype, ::GLib::Lib.g_hash_table_new(hash_fn, eq_fn))
         end
 
         # FIXME: Turn into real constructor
