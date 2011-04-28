@@ -927,5 +927,18 @@ describe "GIMarshallingTests" do
     GIMarshallingTests.gslist_int_none_in [-1, 0, 1, 2]
     pass
   end
+
+  it "has a working function #gslist_int_none_return" do
+    res = GIMarshallingTests.gslist_int_none_return
+    assert_equal [-1, 0, 1, 2], res.to_a
+  end
+
+  # XXX: Only defined in header
+  # it "has a working function #gslist_utf8_container_in"
+
+  it "has a working function #gslist_utf8_container_inout" do
+    res = GIMarshallingTests.gslist_utf8_container_inout ["0", "1", "2"]
+    assert_equal ["-2", "-1", "0", "1"], res.to_a
+  end
 end
 

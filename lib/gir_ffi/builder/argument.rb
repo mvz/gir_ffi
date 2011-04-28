@@ -383,7 +383,6 @@ module GirFFI::Builder
 
   # Implements argument processing for glist arguments with direction
   # :out.
-  # TODO: Pass list type into new List object.
   class ListOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
@@ -397,7 +396,6 @@ module GirFFI::Builder
 
   # Implements argument processing for gslist arguments with direction
   # :out.
-  # TODO: Pass list type into new SList object.
   class SListOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
@@ -467,6 +465,8 @@ module GirFFI::Builder
                 end
               when :glist
                 ListInOutArgument
+              when :gslist
+                SListInOutArgument
               when :ghash
                 HashTableInOutArgument
               else
@@ -552,7 +552,6 @@ module GirFFI::Builder
 
   # Implements argument processing for glist arguments with direction
   # :inout.
-  # TODO: Pass list type into new List object.
   class ListInOutArgument < InOutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
@@ -562,6 +561,23 @@ module GirFFI::Builder
       elm_t = subtype_tag.inspect
       pp = []
       pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
+      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+      pp
+    end
+  end
+
+  # Implements argument processing for gslist arguments with direction
+  # :inout.
+  # FIXME: Merge code with ListInOutArgument somehow.
+  class SListInOutArgument < InOutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+    end
+
+    def post
+      elm_t = subtype_tag.inspect
+      pp = []
+      pp << "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
     end
