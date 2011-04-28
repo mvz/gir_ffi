@@ -1062,7 +1062,7 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #int16_in_min" do
-    GIMarshallingTests.int16_in_min -0x8000
+    GIMarshallingTests.int16_in_min(-0x8000)
     pass
   end
 
@@ -1072,28 +1072,28 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #int16_inout_min_max" do
-    res = GIMarshallingTests.int16_inout_min_max -0x8000
-    assert_equal res, 0x7fff
+    res = GIMarshallingTests.int16_inout_min_max(-0x8000)
+    assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_out_max" do
     res = GIMarshallingTests.int16_out_max
-    assert_equal res, 0x7fff
+    assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_out_min" do
     res = GIMarshallingTests.int16_out_min
-    assert_equal res, -0x8000
+    assert_equal(-0x8000, res)
   end
 
   it "has a working function #int16_return_max" do
     res = GIMarshallingTests.int16_return_max
-    assert_equal res, 0x7fff
+    assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_return_min" do
     res = GIMarshallingTests.int16_return_min
-    assert_equal res, -0x8000
+    assert_equal(-0x8000, res)
   end
 
 end
