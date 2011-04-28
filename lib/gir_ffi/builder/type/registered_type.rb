@@ -1,4 +1,6 @@
 require 'gir_ffi/builder/type/base'
+require 'gir_ffi/class_base'
+
 module GirFFI
   module Builder
     module Type

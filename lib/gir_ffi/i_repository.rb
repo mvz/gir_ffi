@@ -20,6 +20,7 @@ require 'gir_ffi/i_union_info'
 require 'gir_ffi/i_enum_info'
 require 'gir_ffi/i_flags_info'
 require 'gir_ffi/i_error_domain_info'
+require 'gir_ffi/arg_helper'
 
 module GirFFI
   # The Gobject Introspection Repository. This class is the point of

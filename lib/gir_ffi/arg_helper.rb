@@ -1,7 +1,25 @@
 require 'gir_ffi/allocation_helper'
+require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
+    def self.setup_array_to_inptr_handler_for *types
+      types.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        defn =
+          "def self.#{type}_array_to_inptr ary
+            return nil if ary.nil?
+            block = allocate_array_of_type #{ffi_type.inspect}, ary.length
+            block.put_array_of_#{ffi_type} 0, ary
+          end"
+        eval defn
+      end
+    end
+
+    setup_array_to_inptr_handler_for :gint8, :guint8, :gint16, :gint32,
+      :gint64
+    setup_array_to_inptr_handler_for :pointer
+
     # FIXME: Hideous.
     def self.object_to_inptr obj
       return obj.to_ptr if obj.respond_to? :to_ptr
@@ -14,31 +32,6 @@ module GirFFI
       return utf8_array_to_inptr ary if type == :utf8
       block = allocate_array_of_type type, ary.length
       block.send "put_array_of_#{type}", 0, ary
-    end
-
-    # TODO: Hard-code correct action based on type.
-    def self.pointer_array_to_inptr ary
-      typed_array_to_inptr :pointer, ary
-    end
-
-    def self.int32_array_to_inptr ary
-      typed_array_to_inptr :int32, ary
-    end
-
-    def self.int16_array_to_inptr ary
-      typed_array_to_inptr :int16, ary
-    end
-
-    def self.int64_array_to_inptr ary
-      typed_array_to_inptr :int64, ary
-    end
-
-    def self.int8_array_to_inptr ary
-      typed_array_to_inptr :int8, ary
-    end
-
-    def self.uint8_array_to_inptr ary
-      typed_array_to_inptr :uint8, ary
     end
 
     def self.utf8_to_inptr str
@@ -65,15 +58,6 @@ module GirFFI
       ptr_ary = ary.map {|ifc| ifc.to_ptr}
       ptr_ary << nil
       pointer_array_to_inptr ptr_ary
-    end
-
-    class << self
-      alias int_array_to_inptr int32_array_to_inptr
-      alias gint8_array_to_inptr int8_array_to_inptr
-      alias guint8_array_to_inptr uint8_array_to_inptr
-      alias gint16_array_to_inptr int16_array_to_inptr
-      alias gint32_array_to_inptr int32_array_to_inptr
-      alias gint64_array_to_inptr int64_array_to_inptr
     end
 
     def self.cleanup_ptr ptr
@@ -117,7 +101,7 @@ module GirFFI
     end
 
     def self.int32_array_to_inoutptr ary
-      block = int_array_to_inptr ary
+      block = gint32_array_to_inptr ary
       pointer_pointer.write_pointer block
     end
 
@@ -349,12 +333,12 @@ module GirFFI
     class << self
       case FFI.type_size(:size_t)
       when 4
-        alias gtype_array_to_inptr int32_array_to_inptr
+        alias gtype_array_to_inptr gint32_array_to_inptr
         alias gtype_outptr int32_outptr
         alias gtype_to_inoutptr int32_to_inoutptr
         alias outptr_to_gtype outptr_to_int32
       when 8
-        alias gtype_array_to_inptr int64_array_to_inptr
+        alias gtype_array_to_inptr gint64_array_to_inptr
         alias gtype_outptr int64_outptr
         alias gtype_to_inoutptr int64_to_inoutptr
         alias outptr_to_gtype outptr_to_int64
