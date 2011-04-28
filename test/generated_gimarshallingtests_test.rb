@@ -1520,5 +1520,83 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.uint32_return
     assert_equal 0xffffffff, res
   end
+
+  it "has a working function #uint64_in" do
+    GIMarshallingTests.uint64_in 0xffff_ffff_ffff_ffff
+    pass
+  end
+
+  it "has a working function #uint64_inout" do
+    res = GIMarshallingTests.uint64_inout 0xffff_ffff_ffff_ffff
+    assert_equal 0, res
+  end
+
+  it "has a working function #uint64_out" do
+    res = GIMarshallingTests.uint64_out
+    assert_equal 0xffff_ffff_ffff_ffff, res
+  end
+
+  it "has a working function #uint64_return" do
+    res = GIMarshallingTests.uint64_return
+    assert_equal 0xffff_ffff_ffff_ffff, res
+  end
+
+  it "has a working function #uint8_in" do
+    GIMarshallingTests.uint8_in 0xff
+  end
+
+  it "has a working function #uint8_inout" do
+    res = GIMarshallingTests.uint8_inout 0xff
+    assert_equal 0, res
+  end
+
+  it "has a working function #uint8_out" do
+    res = GIMarshallingTests.uint8_out
+    assert_equal 0xff, res
+  end
+
+  it "has a working function #uint8_return" do
+    res = GIMarshallingTests.uint8_return
+    assert_equal 0xff, res
+  end
+
+  it "has a working function #uint_in" do
+    GIMarshallingTests.uint_in max_uint
+    pass
+  end
+
+  it "has a working function #uint_inout" do
+    res = GIMarshallingTests.uint_inout max_uint
+    assert_equal 0, res
+  end
+
+  it "has a working function #uint_out" do
+    res = GIMarshallingTests.uint_out
+    assert_equal max_uint, res
+  end
+
+  it "has a working function #uint_return" do
+    res = GIMarshallingTests.uint_return
+    assert_equal max_uint, res
+  end
+
+  it "has a working function #ulong_in" do
+    GIMarshallingTests.ulong_in max_ulong
+  end
+
+  it "has a working function #ulong_inout" do
+    res = GIMarshallingTests.ulong_inout max_ulong
+    assert_equal 0, res
+  end
+
+  it "has a working function #ulong_out" do
+    res = GIMarshallingTests.ulong_out
+    assert_equal max_ulong, res
+  end
+
+  it "has a working function #ulong_return" do
+    res = GIMarshallingTests.ulong_return
+    assert_equal max_ulong, res
+  end
 end
 

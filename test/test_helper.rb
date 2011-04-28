@@ -128,6 +128,14 @@ class MiniTest::Unit::TestCase
   def min_ssize_t
     min_for_type :size_t
   end
+
+  def max_uint
+    max_for_unsigned_type :uint
+  end
+
+  def max_ulong
+    max_for_unsigned_type :ulong
+  end
 end
 
 class MiniTest::Spec
