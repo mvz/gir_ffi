@@ -389,8 +389,9 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
 
-    def postpost
-      [ "#{@retname} = GLib::List.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+    def post
+      elm_t = subtype_tag.inspect
+      [ "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
@@ -402,8 +403,9 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
 
-    def postpost
-      [ "#{@retname} = GLib::SList.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+    def post
+      elm_t = subtype_tag.inspect
+      [ "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
@@ -556,9 +558,10 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
     end
 
-    def postpost
+    def post
+      elm_t = subtype_tag.inspect
       pp = []
-      pp << "#{@retname} = GLib::List.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
+      pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
     end
@@ -715,14 +718,16 @@ module GirFFI::Builder
   # Implements argument processing for GList return values.
   class ListReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GLib::List.wrap(#{@cvar})" ]
+      elm_t = subtype_tag.inspect
+      [ "#{@retname} = GLib::List.wrap(#{elm_t}, #{@cvar})" ]
     end
   end
 
   # Implements argument processing for GSList return values.
   class SListReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GLib::SList.wrap(#{@cvar})" ]
+      elm_t = subtype_tag.inspect
+      [ "#{@retname} = GLib::SList.wrap(#{elm_t}, #{@cvar})" ]
     end
   end
 

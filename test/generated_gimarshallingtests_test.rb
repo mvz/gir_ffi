@@ -860,10 +860,12 @@ describe "GIMarshallingTests" do
 
   it "has a working function #glist_int_none_in" do
     GIMarshallingTests.glist_int_none_in [-1, 0, 1, 2]
+    pass
   end
 
   it "has a working function #glist_int_none_return" do
-    GIMarshallingTests.glist_int_none_return
+    res = GIMarshallingTests.glist_int_none_return
+    assert_equal [-1, 0, 1, 2], res.to_a
   end
 
   # XXX: Only defined in header

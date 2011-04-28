@@ -9,11 +9,15 @@ module GirFFI
 
       def self.extend_classes base
         base::SList.class_eval {
+          attr_accessor :element_type
           include ListInstanceMethods
+          extend ListClassMethods
           include Enumerable
         }
         base::List.class_eval {
+          attr_accessor :element_type
           include ListInstanceMethods
+          extend ListClassMethods
           include Enumerable
         }
         base::HashTable.class_eval {
@@ -52,14 +56,26 @@ module GirFFI
       end
 
       module ClassMethods
-        # FIXME: Turn into instance method
-        def slist_prepend slist, data
-          ::GLib::SList.wrap(::GLib::Lib.g_slist_prepend slist, data)
+        # FIXME: Turn into real constructor
+        def slist_new elmttype
+          ::GLib::List._real_new(FFI::Pointer.new(0)).tap {|it|
+            it.element_type = elmttype}
         end
 
-        # FIXME: Turn into instance method
+        # FIXME: Turn into instance method; Use element type.
+        def slist_prepend slist, data
+          ::GLib::SList.wrap(slist.element_type, ::GLib::Lib.g_slist_prepend(slist, data))
+        end
+
+        # FIXME: Turn into real constructor
+        def list_new elmttype
+          ::GLib::List._real_new(FFI::Pointer.new(0)).tap {|it|
+            it.element_type = elmttype}
+        end
+
+        # FIXME: Turn into instance method; Use element type.
         def list_append list, data
-          ::GLib::List.wrap(::GLib::Lib.g_list_append list, data)
+          ::GLib::List.wrap(list.element_type, ::GLib::Lib.g_list_append(list, data))
         end
 
         # FIXME: Turn into real constructor
@@ -113,10 +129,19 @@ module GirFFI
           list = self
           rval = nil
           until list.nil?
-            rval = yield GirFFI::ArgHelper.ptr_to_utf8(list[:data])
-            list = self.class.wrap(list[:next])
+            rval = yield GirFFI::ArgHelper.cast_from_pointer(element_type, list[:data])
+            list = self.class.wrap(element_type, list[:next])
           end
           rval
+        end
+      end
+
+      module ListClassMethods
+        def wrap elmttype, ptr
+          super(ptr).tap do |it|
+            break if it.nil?
+            it.element_type = elmttype
+          end
         end
       end
 

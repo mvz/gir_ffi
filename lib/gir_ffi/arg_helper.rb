@@ -344,19 +344,19 @@ module GirFFI
 
     def self.utf8_array_to_glist arr
       return nil if arr.nil?
-      arr.inject(nil) { |lst, str|
+      arr.inject(GLib.list_new :utf8) { |lst, str|
         GLib.list_append lst, utf8_to_inptr(str) }
     end
 
     def self.gint32_array_to_glist arr
       return nil if arr.nil?
-      arr.inject(nil) { |lst, int|
+      arr.inject(GLib.list_new :gint32) { |lst, int|
         GLib.list_append lst, cast_int32_to_pointer(int) }
     end
 
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
-      arr.reverse.inject(nil) { |lst, str|
+      arr.reverse.inject(GLib.slist_new :utf8) { |lst, str|
         GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
@@ -474,6 +474,17 @@ module GirFFI
 
     def self.gir
       gir = GirFFI::IRepository.default
+    end
+
+    def self.cast_from_pointer type, it
+      case type
+      when :utf8, :filename
+        ptr_to_utf8 it
+      when :gint32
+        cast_pointer_to_int32 it
+      else
+        it.address
+      end
     end
 
     def self.cast_uint32_to_int32 val
