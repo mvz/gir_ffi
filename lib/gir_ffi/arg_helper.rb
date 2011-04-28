@@ -3,8 +3,10 @@ require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
+    SIMPLE_G_TYPES = [:gint8, :guint8, :gint16, :gint, :gint32, :gint64,
+      :gfloat, :gdouble]
     def self.setup_array_to_inptr_handler_for *types
-      types.each do |type|
+      types.flatten.each do |type|
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
         defn =
           "def self.#{type}_array_to_inptr ary
@@ -16,8 +18,7 @@ module GirFFI
       end
     end
 
-    setup_array_to_inptr_handler_for :gint8, :guint8, :gint16, :gint32,
-      :gint64
+    setup_array_to_inptr_handler_for SIMPLE_G_TYPES
     setup_array_to_inptr_handler_for :pointer
 
     # FIXME: Hideous.
@@ -84,15 +85,15 @@ module GirFFI
     end
 
     def self.int16_to_inoutptr val
-      int16_pointer.put_int16 0, val
+      gint16_pointer.put_int16 0, val
     end
 
     def self.int32_to_inoutptr val
-      int32_pointer.put_int32 0, val
+      gint32_pointer.put_int32 0, val
     end
 
     def self.int64_to_inoutptr val
-      int64_pointer.put_int64 0, val
+      gint64_pointer.put_int64 0, val
     end
 
     def self.utf8_to_inoutptr str
@@ -111,11 +112,11 @@ module GirFFI
     end
 
     def self.double_to_inoutptr val
-      double_pointer.put_double 0, val
+      gdouble_pointer.put_double 0, val
     end
 
     def self.float_to_inoutptr val
-      float_pointer.put_float 0, val
+      gfloat_pointer.put_float 0, val
     end
 
     class << self
@@ -132,38 +133,23 @@ module GirFFI
       pointer_pointer.write_pointer val
     end
 
-    def self.int_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int)
+    def self.setup_pointer_maker_for *types
+      types.flatten.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        size = FFI.type_size ffi_type
+        defn =
+          "def self.#{type}_pointer
+            AllocationHelper.safe_malloc #{size}
+          end"
+        eval defn
+      end
     end
 
-    def self.int16_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int16)
-    end
-
-    def self.int32_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int32)
-    end
-
-    def self.int64_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:int64)
-    end
-
-    def self.double_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:double)
-    end
-
-    def self.float_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:float)
-    end
-
-    def self.pointer_pointer
-      AllocationHelper.safe_malloc FFI.type_size(:pointer)
-    end
+    setup_pointer_maker_for SIMPLE_G_TYPES
+    setup_pointer_maker_for :pointer
 
     class << self
-      alias gboolean_pointer int_pointer
-      alias gint32_pointer int32_pointer
-      alias gdouble_pointer double_pointer
+      alias gboolean_pointer gint_pointer
     end
 
     def self.gboolean_outptr
@@ -171,23 +157,23 @@ module GirFFI
     end
 
     def self.int16_outptr
-      int16_pointer.put_int16 0, 0
+      gint16_pointer.put_int16 0, 0
     end
 
     def self.int32_outptr
-      int32_pointer.put_int32 0, 0
+      gint32_pointer.put_int32 0, 0
     end
 
     def self.int64_outptr
-      int64_pointer.put_int64 0, 0
+      gint64_pointer.put_int64 0, 0
     end
 
     def self.double_outptr
-      double_pointer.write_double 0.0
+      gdouble_pointer.write_double 0.0
     end
 
     def self.float_outptr
-      float_pointer.write_float 0.0
+      gfloat_pointer.write_float 0.0
     end
 
     def self.pointer_outptr
