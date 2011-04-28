@@ -1481,5 +1481,44 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.time_t_return
     assert_equal 1234567890, res
   end
+
+  it "has a working function #uint16_in" do
+    GIMarshallingTests.uint16_in 0xffff
+    pass
+  end
+
+  it "has a working function #uint16_inout" do
+    res = GIMarshallingTests.uint16_inout 0xffff
+    assert_equal 0, res
+  end
+
+  it "has a working function #uint16_out" do
+    res = GIMarshallingTests.uint16_out
+    assert_equal 0xffff, res
+  end
+
+  it "has a working function #uint16_return" do
+    res = GIMarshallingTests.uint16_return
+    assert_equal 0xffff, res
+  end
+
+  it "has a working function #uint32_in" do
+    GIMarshallingTests.uint32_in 0xffffffff
+  end
+
+  it "has a working function #uint32_inout" do
+    res = GIMarshallingTests.uint32_inout 0xffffffff
+    assert_equal 0, res
+  end
+
+  it "has a working function #uint32_out" do
+    res = GIMarshallingTests.uint32_out
+    assert_equal 0xffffffff, res
+  end
+
+  it "has a working function #uint32_return" do
+    res = GIMarshallingTests.uint32_return
+    assert_equal 0xffffffff, res
+  end
 end
 
