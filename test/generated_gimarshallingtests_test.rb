@@ -923,5 +923,9 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
+  it "has a working function #gslist_int_none_in" do
+    GIMarshallingTests.gslist_int_none_in [-1, 0, 1, 2]
+    pass
+  end
 end
 

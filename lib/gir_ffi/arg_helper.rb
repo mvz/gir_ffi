@@ -360,6 +360,12 @@ module GirFFI
         GLib.slist_prepend lst, utf8_to_inptr(str) }
     end
 
+    def self.gint32_array_to_gslist arr
+      return nil if arr.nil?
+      arr.reverse.inject(GLib.slist_new :gint32) { |lst, int|
+        GLib.slist_prepend lst, cast_int32_to_pointer(int) }
+    end
+
     def self.hash_to_ghash keytype, valtype, hash
       return nil if hash.nil?
       ghash = GLib.hash_table_new keytype, valtype
