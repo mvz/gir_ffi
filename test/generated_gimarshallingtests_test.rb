@@ -1341,5 +1341,17 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.pointer_in_return ptr
     assert_equal ptr.address, res.address
   end
+
+  it "has a working function #pointer_struct_get_type" do
+    res = GIMarshallingTests.pointer_struct_get_type
+    gtype = GObject.type_from_name "GIMarshallingTestsPointerStruct"
+    assert_equal gtype, res
+  end
+
+  it "has a working function #pointer_struct_returnv" do
+    res = GIMarshallingTests.pointer_struct_returnv
+    assert_instance_of GIMarshallingTests::PointerStruct, res
+    assert_equal 42, res[:long_]
+  end
 end
 
