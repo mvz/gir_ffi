@@ -1310,5 +1310,31 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.long_return_min
     assert_equal min_long, res
   end
+
+  it "has a working function #no_type_flags_in" do
+    GIMarshallingTests.no_type_flags_in :value2
+    pass
+  end
+
+  it "has a working function #no_type_flags_in_zero" do
+    GIMarshallingTests.no_type_flags_in_zero 0
+    pass
+  end
+
+  it "has a working function #no_type_flags_inout" do
+    res = GIMarshallingTests.no_type_flags_inout :value2
+    assert_equal :value1, res
+  end
+
+  it "has a working function #no_type_flags_out" do
+    res = GIMarshallingTests.no_type_flags_out
+    assert_equal :value2, res
+  end
+
+  it "has a working function #no_type_flags_returnv" do
+    res = GIMarshallingTests.no_type_flags_returnv
+    assert_equal :value2, res
+  end
+
 end
 
