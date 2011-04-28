@@ -26,6 +26,7 @@ module GirFFI
     def self.object_to_inptr obj
       return obj.to_ptr if obj.respond_to? :to_ptr
       return nil if obj.nil?
+      return obj if obj.is_a? FFI::Pointer
       FFI::Pointer.new(obj.object_id)
     end
 

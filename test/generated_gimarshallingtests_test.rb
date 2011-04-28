@@ -1336,5 +1336,10 @@ describe "GIMarshallingTests" do
     assert_equal :value2, res
   end
 
+  it "has a working function #pointer_in_return" do
+    ptr = FFI::MemoryPointer.new 1
+    res = GIMarshallingTests.pointer_in_return ptr
+    assert_equal ptr.address, res.address
+  end
 end
 
