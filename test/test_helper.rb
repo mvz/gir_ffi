@@ -95,6 +95,22 @@ class MiniTest::Unit::TestCase
   def assert_not_nil it
     refute_nil it
   end
+
+  def max_for_type type
+    ( 1 << (FFI.type_size(type) * 8 - 1) ) - 1
+  end
+
+  def min_for_type type
+    ~max_for_type(type)
+  end
+
+  def max_long
+    max_for_type :long
+  end
+
+  def min_long
+    min_for_type :long
+  end
 end
 
 class MiniTest::Spec

@@ -1096,5 +1096,219 @@ describe "GIMarshallingTests" do
     assert_equal(-0x8000, res)
   end
 
+  it "has a working function #int32_in_max" do
+    GIMarshallingTests.int32_in_max 0x7fffffff
+    pass
+  end
+
+  it "has a working function #int32_in_min" do
+    GIMarshallingTests.int32_in_min(-0x80000000)
+    pass
+  end
+
+  it "has a working function #int32_inout_max_min" do
+    res = GIMarshallingTests.int32_inout_max_min 0x7fffffff
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int32_inout_min_max" do
+    res = GIMarshallingTests.int32_inout_min_max(-0x80000000)
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int32_out_max" do
+    res = GIMarshallingTests.int32_out_max
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int32_out_min" do
+    res = GIMarshallingTests.int32_out_min
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int32_return_max" do
+    res = GIMarshallingTests.int32_return_max
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int32_return_min" do
+    res = GIMarshallingTests.int32_return_min
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int64_in_max" do
+    GIMarshallingTests.int64_in_max 0x7fffffffffffffff
+    pass
+  end
+
+  it "has a working function #int64_in_min" do
+    GIMarshallingTests.int64_in_min(-0x8000000000000000)
+    pass
+  end
+
+  it "has a working function #int64_inout_max_min" do
+    res = GIMarshallingTests.int64_inout_max_min 0x7fffffffffffffff
+    assert_equal(-0x8000000000000000, res)
+  end
+
+  it "has a working function #int64_inout_min_max" do
+    res = GIMarshallingTests.int64_inout_min_max(-0x8000000000000000)
+    assert_equal 0x7fffffffffffffff, res
+  end
+
+  it "has a working function #int64_out_max" do
+    res = GIMarshallingTests.int64_out_max
+    assert_equal 0x7fffffffffffffff, res
+  end
+
+  it "has a working function #int64_out_min" do
+    res = GIMarshallingTests.int64_out_min
+    assert_equal(-0x8000000000000000, res)
+  end
+
+  it "has a working function #int64_return_max" do
+    res = GIMarshallingTests.int64_return_max
+    assert_equal 0x7fffffffffffffff, res
+  end
+
+  it "has a working function #int64_return_min" do
+    res = GIMarshallingTests.int64_return_min
+    assert_equal(-0x8000000000000000, res)
+  end
+
+  it "has a working function #int8_in_max" do
+    GIMarshallingTests.int8_in_max 0x7f
+    pass
+  end
+
+  it "has a working function #int8_in_min" do
+    GIMarshallingTests.int8_in_min(-0x80)
+    pass
+  end
+
+  it "has a working function #int8_inout_max_min" do
+    res = GIMarshallingTests.int8_inout_max_min 0x7f
+    assert_equal(-0x80, res)
+  end
+
+  it "has a working function #int8_inout_min_max" do
+    res = GIMarshallingTests.int8_inout_min_max(-0x80)
+    assert_equal 0x7f, res
+  end
+
+  it "has a working function #int8_out_max" do
+    res = GIMarshallingTests.int8_out_max
+    assert_equal 0x7f, res
+  end
+
+  it "has a working function #int8_out_min" do
+    res = GIMarshallingTests.int8_out_min
+    assert_equal(-0x80, res)
+  end
+
+  it "has a working function #int8_return_max" do
+    res = GIMarshallingTests.int8_return_max
+    assert_equal 0x7f, res
+  end
+
+  it "has a working function #int8_return_min" do
+    res = GIMarshallingTests.int8_return_min
+    assert_equal(-0x80, res)
+  end
+
+  it "has a working function #int_in_max" do
+    GIMarshallingTests.int_in_max 0x7fffffff
+    pass
+  end
+
+  it "has a working function #int_in_min" do
+    GIMarshallingTests.int_in_min(-0x80000000)
+    pass
+  end
+
+  it "has a working function #int_inout_max_min" do
+    res = GIMarshallingTests.int_inout_max_min 0x7fffffff
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int_inout_min_max" do
+    res = GIMarshallingTests.int_inout_min_max(-0x80000000)
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int_out_max" do
+    res = GIMarshallingTests.int_out_max
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int_out_min" do
+    res = GIMarshallingTests.int_out_min
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int_out_out" do
+    res = GIMarshallingTests.int_out_out
+    assert_equal [6, 7], res
+  end
+
+  it "has a working function #int_return_max" do
+    res = GIMarshallingTests.int_return_max
+    assert_equal 0x7fffffff, res
+  end
+
+  it "has a working function #int_return_min" do
+    res = GIMarshallingTests.int_return_min
+    assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int_return_out" do
+    res = GIMarshallingTests.int_return_out
+    assert_equal [6, 7], res
+  end
+
+  it "has a working function #int_three_in_three_out" do
+    res = GIMarshallingTests.int_three_in_three_out 4, 5, 6
+    assert_equal [4, 5, 6], res
+  end
+
+  it "has a working function #long_in_max" do
+    GIMarshallingTests.long_in_max max_long
+    pass
+  end
+
+  it "has a working function #long_in_min" do
+    GIMarshallingTests.long_in_min min_long
+    pass
+  end
+
+  it "has a working function #long_inout_max_min" do
+    res = GIMarshallingTests.long_inout_max_min max_long
+    assert_equal min_long, res
+  end
+
+  it "has a working function #long_inout_min_max" do
+    res = GIMarshallingTests.long_inout_min_max min_long
+    assert_equal max_long, res
+  end
+
+  it "has a working function #long_out_max" do
+    res = GIMarshallingTests.long_out_max
+    assert_equal max_long, res
+  end
+
+  it "has a working function #long_out_min" do
+    res = GIMarshallingTests.long_out_min
+    assert_equal min_long, res
+  end
+
+  it "has a working function #long_return_max" do
+    res = GIMarshallingTests.long_return_max
+    assert_equal max_long, res
+  end
+
+  it "has a working function #long_return_min" do
+    res = GIMarshallingTests.long_return_min
+    assert_equal min_long, res
+  end
 end
 
