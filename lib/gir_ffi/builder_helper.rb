@@ -9,10 +9,11 @@ module GirFFI
     end
 
     def optionally_define_constant parent, name
-      unless const_defined_for parent, name
-	parent.const_set name, yield
+      if const_defined_for parent, name
+        parent.const_get name
+      else
+        parent.const_set name, yield
       end
-      parent.const_get name
     end
 
   end
