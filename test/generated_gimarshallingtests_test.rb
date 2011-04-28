@@ -1353,5 +1353,52 @@ describe "GIMarshallingTests" do
     assert_instance_of GIMarshallingTests::PointerStruct, res
     assert_equal 42, res[:long_]
   end
+
+  it "has a working function #short_in_max" do
+    GIMarshallingTests.short_in_max 0x7fff
+    pass
+  end
+
+  it "has a working function #short_in_min" do
+    GIMarshallingTests.short_in_min(-0x8000)
+    pass
+  end
+
+  it "has a working function #short_inout_max_min" do
+    res = GIMarshallingTests.short_inout_max_min 0x7fff
+    assert_equal(-0x8000, res)
+  end
+
+  it "has a working function #short_inout_min_max" do
+    res = GIMarshallingTests.short_inout_min_max(-0x8000)
+    assert_equal 0x7fff, res
+  end
+
+  it "has a working function #short_out_max" do
+    res = GIMarshallingTests.short_out_max
+    assert_equal 0x7fff, res
+  end
+
+  it "has a working function #short_out_min" do
+    res = GIMarshallingTests.short_out_min
+    assert_equal(-0x8000, res)
+  end
+
+  it "has a working function #short_return_max" do
+    res = GIMarshallingTests.short_return_max
+    assert_equal 0x7fff, res
+  end
+
+  it "has a working function #short_return_min" do
+    res = GIMarshallingTests.short_return_min
+    assert_equal(-0x8000, res)
+  end
+
+  it "has a working function #simple_struct_returnv" do
+    res = GIMarshallingTests.simple_struct_returnv
+    assert_instance_of GIMarshallingTests::SimpleStruct, res
+    assert_equal 6, res[:long_]
+    assert_equal 7, res[:int8]
+  end
 end
 
