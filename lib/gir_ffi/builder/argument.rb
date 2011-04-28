@@ -487,7 +487,7 @@ module GirFFI::Builder
   class EnumInOutArgument < InOutArgument
     def pre
       pr = []
-      pr << "#{@callarg} = GirFFI::ArgHelper.int_to_inoutptr #{argument_class_name}[#{@name}]"
+      pr << "#{@callarg} = GirFFI::ArgHelper.gint32_to_inoutptr #{argument_class_name}[#{@name}]"
       pr
     end
 

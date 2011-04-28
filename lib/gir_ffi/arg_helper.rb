@@ -5,6 +5,7 @@ module GirFFI
   module ArgHelper
     SIMPLE_G_TYPES = [:gint8, :guint8, :gint16, :gint, :gint32, :gint64,
       :gfloat, :gdouble]
+
     def self.setup_array_to_inptr_handler_for *types
       types.flatten.each do |type|
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
@@ -80,20 +81,22 @@ module GirFFI
       LibC.free ptr
     end
 
+    def self.setup_type_to_inoutptr_handler_for *types
+      types.flatten.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        defn =
+          "def self.#{type}_to_inoutptr val
+            #{type}_pointer.put_#{ffi_type} 0, val
+          end"
+        eval defn
+      end
+    end
+
+    setup_type_to_inoutptr_handler_for SIMPLE_G_TYPES
+    setup_type_to_inoutptr_handler_for :pointer
+
     def self.gboolean_to_inoutptr val
       gboolean_pointer.put_int 0, (val ? 1 : 0)
-    end
-
-    def self.int16_to_inoutptr val
-      gint16_pointer.put_int16 0, val
-    end
-
-    def self.int32_to_inoutptr val
-      gint32_pointer.put_int32 0, val
-    end
-
-    def self.int64_to_inoutptr val
-      gint64_pointer.put_int64 0, val
     end
 
     def self.utf8_to_inoutptr str
@@ -111,26 +114,9 @@ module GirFFI
       pointer_pointer.write_pointer utf8_array_to_inptr(ary)
     end
 
-    def self.double_to_inoutptr val
-      gdouble_pointer.put_double 0, val
-    end
-
-    def self.float_to_inoutptr val
-      gfloat_pointer.put_float 0, val
-    end
-
     class << self
-      alias gint16_to_inoutptr int16_to_inoutptr
-      alias int_to_inoutptr int32_to_inoutptr
-      alias gint32_to_inoutptr int32_to_inoutptr
       alias int_array_to_inoutptr int32_array_to_inoutptr
       alias gint32_array_to_inoutptr int32_array_to_inoutptr
-      alias gdouble_to_inoutptr double_to_inoutptr
-      alias gfloat_to_inoutptr float_to_inoutptr
-    end
-
-    def self.pointer_to_inoutptr val
-      pointer_pointer.write_pointer val
     end
 
     def self.setup_pointer_maker_for *types
@@ -326,7 +312,7 @@ module GirFFI
       when 8
         alias gtype_array_to_inptr gint64_array_to_inptr
         alias gtype_outptr int64_outptr
-        alias gtype_to_inoutptr int64_to_inoutptr
+        alias gtype_to_inoutptr gint64_to_inoutptr
         alias outptr_to_gtype outptr_to_int64
       else
         raise RuntimeError, "Unexpected size of :size_t"
