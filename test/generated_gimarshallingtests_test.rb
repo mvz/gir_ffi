@@ -1459,5 +1459,27 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.ssize_return_min
     assert_equal min_ssize_t, res
   end
+
+  it "has a working function #test_interface_test_int8_in"
+
+  it "has a working function #time_t_in" do
+    GIMarshallingTests.time_t_in 1234567890
+    pass
+  end
+
+  it "has a working function #time_t_inout" do
+    res = GIMarshallingTests.time_t_inout 1234567890
+    assert_equal 0, res
+  end
+
+  it "has a working function #time_t_out" do
+    res = GIMarshallingTests.time_t_out
+    assert_equal 1234567890, res
+  end
+
+  it "has a working function #time_t_return" do
+    res = GIMarshallingTests.time_t_return
+    assert_equal 1234567890, res
+  end
 end
 
