@@ -129,6 +129,10 @@ class MiniTest::Unit::TestCase
     min_for_type :size_t
   end
 
+  def max_ushort
+    max_for_unsigned_type :ushort
+  end
+
   def max_uint
     max_for_unsigned_type :uint
   end

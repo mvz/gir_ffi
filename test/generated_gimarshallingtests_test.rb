@@ -1610,5 +1610,68 @@ describe "GIMarshallingTests" do
     assert_instance_of GIMarshallingTests::Union, res
     assert_equal 42, res[:long_]
   end
+
+  it "has a working function #ushort_in" do
+    GIMarshallingTests.ushort_in max_ushort
+    pass
+  end
+
+  it "has a working function #ushort_inout" do
+    res = GIMarshallingTests.ushort_inout max_ushort
+    assert_equal 0, res
+  end
+
+  it "has a working function #ushort_out" do
+    res = GIMarshallingTests.ushort_out
+    assert_equal max_ushort, res
+  end
+
+  it "has a working function #ushort_return" do
+    res = GIMarshallingTests.ushort_return
+    assert_equal max_ushort, res
+  end
+
+  it "has a working function #utf8_dangling_out" do
+    res = GIMarshallingTests.utf8_dangling_out
+    assert_nil res
+  end
+
+  # XXX: Only defined in header
+  # it "has a working function #utf8_full_in"
+
+  it "has a working function #utf8_full_inout" do
+    res = GIMarshallingTests.utf8_full_inout "const ♥ utf8"
+    assert_equal "", res
+  end
+
+  it "has a working function #utf8_full_out" do
+    res = GIMarshallingTests.utf8_full_out
+    assert_equal "const ♥ utf8", res
+  end
+
+  it "has a working function #utf8_full_return" do
+    res = GIMarshallingTests.utf8_full_return
+    assert_equal "const ♥ utf8", res
+  end
+
+  it "has a working function #utf8_none_in" do
+    GIMarshallingTests.utf8_none_in "const ♥ utf8"
+    pass
+  end
+
+  it "has a working function #utf8_none_inout" do
+    res = GIMarshallingTests.utf8_none_inout "const ♥ utf8"
+    assert_equal "", res
+  end
+
+  it "has a working function #utf8_none_out" do
+    res = GIMarshallingTests.utf8_none_out
+    assert_equal "const ♥ utf8", res
+  end
+
+  it "has a working function #utf8_none_return" do
+    res = GIMarshallingTests.utf8_none_return
+    assert_equal "const ♥ utf8", res
+  end
 end
 
