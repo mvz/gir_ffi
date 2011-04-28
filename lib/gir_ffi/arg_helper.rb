@@ -3,7 +3,9 @@ require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
-    SIMPLE_G_TYPES = [:gint8, :guint8, :gint16, :gint, :gint32, :gint64,
+    SIMPLE_G_TYPES = [
+      :gint8, :gint16, :gint, :gint32, :gint64,
+      :guint8, :guint64,
       :gfloat, :gdouble]
 
     def self.setup_array_to_inptr_handler_for *types

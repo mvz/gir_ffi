@@ -1400,5 +1400,24 @@ describe "GIMarshallingTests" do
     assert_equal 6, res[:long_]
     assert_equal 7, res[:int8]
   end
+
+  it "has a working function #size_in" do
+    GIMarshallingTests.size_in max_size_t
+  end
+
+  it "has a working function #size_inout" do
+    res = GIMarshallingTests.size_inout max_size_t
+    assert_equal 0, res
+  end
+
+  it "has a working function #size_out" do
+    res = GIMarshallingTests.size_out
+    assert_equal max_size_t, res
+  end
+
+  it "has a working function #size_return" do
+    res = GIMarshallingTests.size_return
+    assert_equal max_size_t, res
+  end
 end
 

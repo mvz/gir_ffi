@@ -96,6 +96,10 @@ class MiniTest::Unit::TestCase
     refute_nil it
   end
 
+  def max_for_unsigned_type type
+    ( 1 << (FFI.type_size(type) * 8) ) - 1
+  end
+
   def max_for_type type
     ( 1 << (FFI.type_size(type) * 8 - 1) ) - 1
   end
@@ -110,6 +114,10 @@ class MiniTest::Unit::TestCase
 
   def min_long
     min_for_type :long
+  end
+
+  def max_size_t
+    max_for_unsigned_type :size_t
   end
 end
 
