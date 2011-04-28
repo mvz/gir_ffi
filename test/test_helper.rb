@@ -119,6 +119,15 @@ class MiniTest::Unit::TestCase
   def max_size_t
     max_for_unsigned_type :size_t
   end
+
+  def max_ssize_t
+    # FFI has no :ssize_t, but it's the same number of bits as :size_t
+    max_for_type :size_t
+  end
+
+  def min_ssize_t
+    min_for_type :size_t
+  end
 end
 
 class MiniTest::Spec

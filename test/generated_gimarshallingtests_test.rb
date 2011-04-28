@@ -1419,5 +1419,45 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.size_return
     assert_equal max_size_t, res
   end
+
+  it "has a working function #ssize_in_max" do
+    GIMarshallingTests.ssize_in_max max_ssize_t
+    pass
+  end
+
+  it "has a working function #ssize_in_min" do
+    GIMarshallingTests.ssize_in_min min_ssize_t
+    pass
+  end
+
+  it "has a working function #ssize_inout_max_min" do
+    res = GIMarshallingTests.ssize_inout_max_min max_ssize_t
+    assert_equal min_ssize_t, res
+  end
+
+  it "has a working function #ssize_inout_min_max" do
+    res = GIMarshallingTests.ssize_inout_min_max min_ssize_t
+    assert_equal max_ssize_t, res
+  end
+
+  it "has a working function #ssize_out_max" do
+    res = GIMarshallingTests.ssize_out_max
+    assert_equal max_ssize_t, res
+  end
+
+  it "has a working function #ssize_out_min" do
+    res = GIMarshallingTests.ssize_out_min
+    assert_equal min_ssize_t, res
+  end
+
+  it "has a working function #ssize_return_max" do
+    res = GIMarshallingTests.ssize_return_max
+    assert_equal max_ssize_t, res
+  end
+
+  it "has a working function #ssize_return_min" do
+    res = GIMarshallingTests.ssize_return_min
+    assert_equal min_ssize_t, res
+  end
 end
 
