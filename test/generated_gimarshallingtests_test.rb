@@ -1027,5 +1027,26 @@ describe "GIMarshallingTests" do
     name = GObject.type_name res
     assert_equal "void", name
   end
+
+  it "has a working function #gvalue_in" do
+    GIMarshallingTests.gvalue_in GObject::Value.wrap_ruby_value(42)
+    pass
+  end
+
+  it "has a working function #gvalue_inout" do
+    res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
+    assert_equal "42", res.ruby_value
+  end
+
+  it "has a working function #gvalue_out" do
+    res = GIMarshallingTests.gvalue_out
+    assert_equal 42, res.ruby_value
+  end
+
+  it "has a working function #gvalue_return" do
+    res = GIMarshallingTests.gvalue_return
+    assert_equal 42, res.ruby_value
+  end
+
 end
 

@@ -282,6 +282,8 @@ module GirFFI
 	    get_boolean
 	  when :gint
 	    get_int
+          when :gchararray
+            get_string
           when :GDate
             ::GLib::Date.wrap(get_boxed)
           when :GStrv
