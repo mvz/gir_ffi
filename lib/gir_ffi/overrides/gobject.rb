@@ -285,7 +285,7 @@ module GirFFI
           when :GDate
             ::GLib::Date.wrap(get_boxed)
           when :GStrv
-            ArgHelper.strz_to_utf8_array get_boxed
+            ArgHelper.strv_to_utf8_array get_boxed
 	  else
 	    nil
 	  end

@@ -126,13 +126,7 @@ module GirFFI
 
     def self.utf8_array_to_inoutptr ary
       return nil if ary.nil?
-
-      ptrs = ary.map {|str| utf8_to_inptr str}
-
-      block = AllocationHelper.safe_malloc FFI.type_size(:pointer) * ptrs.length
-      block.write_array_of_pointer ptrs
-
-      pointer_pointer.write_pointer block
+      pointer_pointer.write_pointer utf8_array_to_inptr(ary)
     end
 
     def self.double_to_inoutptr val
@@ -325,16 +319,16 @@ module GirFFI
       alias ptr_to_gint16_array ptr_to_int16_array
     end
 
-    def self.outptr_strz_to_utf8_array ptr
-      strz_to_utf8_array ptr.read_pointer
+    def self.outptr_strv_to_utf8_array ptr
+      strv_to_utf8_array ptr.read_pointer
     end
 
-    def self.strz_to_utf8_array strz
-      return [] if strz.null?
+    def self.strv_to_utf8_array strv
+      return [] if strv.null?
       arr = []
       i = 0
       loop do
-        ptr = strz.get_pointer i * FFI.type_size(:pointer)
+        ptr = strv.get_pointer i * FFI.type_size(:pointer)
         break if ptr.null?
         arr << ptr.read_string
         i += 1

@@ -253,7 +253,7 @@ module GirFFI::Builder
                 end
               when :array
                 if type.zero_terminated?
-                  StrzOutArgument
+                  StrvOutArgument
                 else
                   case type.array_type
                   when :c
@@ -345,15 +345,15 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for strz arguments with direction
+  # Implements argument processing for strv arguments with direction
   # :out.
-  class StrzOutArgument < OutArgument
+  class StrvOutArgument < OutArgument
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
 
     def postpost
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_strz_to_utf8_array #{@callarg}" ]
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
     end
   end
 
@@ -457,11 +457,15 @@ module GirFFI::Builder
                   InterfaceInOutArgument
                 end
               when :array
-                case type.array_type
-                when :c
-                  CArrayInOutArgument
-                when :array
-                  ArrayInOutArgument
+                if type.zero_terminated?
+                  StrvInOutArgument
+                else
+                  case type.array_type
+                  when :c
+                    CArrayInOutArgument
+                  when :array
+                    ArrayInOutArgument
+                  end
                 end
               when :glist
                 ListInOutArgument
@@ -502,6 +506,18 @@ module GirFFI::Builder
     def post
       [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})",
         "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+    end
+  end
+
+  # Implements argument processing for strv arguments with direction
+  # :inout.
+  class StrvInOutArgument < InOutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
+    end
+
+    def post
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
     end
   end
 
@@ -654,7 +670,7 @@ module GirFFI::Builder
                 end
               when :array
                 if type.zero_terminated?
-                  StrzReturnValue
+                  StrvReturnValue
                 else
                   case type.array_type
                   when :c
@@ -725,9 +741,9 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for NULL-terminated string array return values.
-  class StrzReturnValue < ReturnValue
+  class StrvReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.strz_to_utf8_array #{@cvar}" ]
+      [ "#{@retname} = GirFFI::ArgHelper.strv_to_utf8_array #{@cvar}" ]
     end
   end
 

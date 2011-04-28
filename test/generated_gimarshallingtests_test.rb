@@ -560,7 +560,7 @@ describe "GIMarshallingTests" do
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
     assert_equal 42, res[:long_]
-    assert_equal ["0", "1", "2"], GirFFI::ArgHelper.strz_to_utf8_array(res[:g_strv])
+    assert_equal ["0", "1", "2"], GirFFI::ArgHelper.strv_to_utf8_array(res[:g_strv])
   end
 
   it "has a working function #bytearray_full_return" do
@@ -987,6 +987,26 @@ describe "GIMarshallingTests" do
   it "has a working function #gslist_utf8_none_return" do
     res = GIMarshallingTests.gslist_utf8_none_return
     assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #gstrv_in" do
+    GIMarshallingTests.gstrv_in ["0", "1", "2"]
+    pass
+  end
+
+  it "has a working function #gstrv_inout" do
+    res = GIMarshallingTests.gstrv_inout ["0", "1", "2"]
+    assert_equal ["-1", "0", "1", "2"], res
+  end
+
+  it "has a working function #gstrv_out" do
+    res = GIMarshallingTests.gstrv_out
+    assert_equal ["0", "1", "2"], res
+  end
+
+  it "has a working function #gstrv_return" do
+    res = GIMarshallingTests.gstrv_return
+    assert_equal ["0", "1", "2"], res
   end
 end
 

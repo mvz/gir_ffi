@@ -108,8 +108,8 @@ module GirFFI
     end
 
     def dependencies namespace
-      strz = Lib.g_irepository_get_dependencies @gobj, namespace
-      ArgHelper.strz_to_utf8_array strz
+      strv = Lib.g_irepository_get_dependencies @gobj, namespace
+      ArgHelper.strv_to_utf8_array strv
     end
 
     def shared_library namespace
