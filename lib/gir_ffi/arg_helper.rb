@@ -54,17 +54,6 @@ module GirFFI
       typed_array_to_inptr :pointer, ptr_ary
     end
 
-    def self.gtype_array_to_inptr ary
-      case FFI.type_size(:size_t)
-      when 4
-	int32_array_to_inptr ary
-      when 8
-	int64_array_to_inptr ary
-      else
-	raise RuntimeError, "Unexpected size of :size_t"
-      end
-    end
-
     # FIXME: :interface is too generic. implement only GValueArray?
     def self.interface_array_to_inptr ary
       return nil if ary.nil?
@@ -114,6 +103,10 @@ module GirFFI
       int32_pointer.put_int32 0, val
     end
 
+    def self.int64_to_inoutptr val
+      int64_pointer.put_int64 0, val
+    end
+
     def self.utf8_to_inoutptr str
       sptr = utf8_to_inptr str
       pointer_pointer.write_pointer sptr
@@ -158,6 +151,10 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(:int32)
     end
 
+    def self.int64_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:int64)
+    end
+
     def self.double_pointer
       AllocationHelper.safe_malloc FFI.type_size(:double)
     end
@@ -182,6 +179,10 @@ module GirFFI
 
     def self.int32_outptr
       int32_pointer.put_int32 0, 0
+    end
+
+    def self.int64_outptr
+      int64_pointer.put_int64 0, 0
     end
 
     def self.double_outptr
@@ -217,9 +218,14 @@ module GirFFI
       (ptr.get_int 0) != 0
     end
 
-    # Converts an outptr to an int.
+    # Converts an outptr to an int32.
     def self.outptr_to_int32 ptr
       ptr.get_int32 0
+    end
+
+    # Converts an outptr to an int64.
+    def self.outptr_to_int64 ptr
+      ptr.get_int64 0
     end
 
     # Converts an outptr to a string.
@@ -317,6 +323,24 @@ module GirFFI
       alias ptr_to_int_array ptr_to_int32_array
       alias ptr_to_gint32_array ptr_to_int32_array
       alias ptr_to_gint16_array ptr_to_int16_array
+    end
+
+    # Set up gtype handlers depending on type size.
+    class << self
+      case FFI.type_size(:size_t)
+      when 4
+        alias gtype_array_to_inptr int32_array_to_inptr
+        alias gtype_outptr int32_outptr
+        alias gtype_to_inoutptr int32_to_inoutptr
+        alias outptr_to_gtype outptr_to_int32
+      when 8
+        alias gtype_array_to_inptr int64_array_to_inptr
+        alias gtype_outptr int64_outptr
+        alias gtype_to_inoutptr int64_to_inoutptr
+        alias outptr_to_gtype outptr_to_int64
+      else
+        raise RuntimeError, "Unexpected size of :size_t"
+      end
     end
 
     def self.outptr_strv_to_utf8_array ptr

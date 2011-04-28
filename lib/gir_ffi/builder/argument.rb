@@ -46,7 +46,8 @@ module GirFFI::Builder
     end
 
     def type_tag
-      type_info.tag
+      tag = type_info.tag
+      tag == :GType ? :gtype : tag
     end
 
     def subtype_tag index=0

@@ -1008,5 +1008,24 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.gstrv_return
     assert_equal ["0", "1", "2"], res
   end
+
+  it "has a working function #gtype_inout" do
+    none = GObject.type_from_name "void"
+    res = GIMarshallingTests.gtype_inout none
+    name = GObject.type_name res
+    assert_equal "gint", name
+  end
+
+  it "has a working function #gtype_out" do
+    res = GIMarshallingTests.gtype_out
+    name = GObject.type_name res
+    assert_equal "void", name
+  end
+
+  it "has a working function #gtype_return" do
+    res = GIMarshallingTests.gtype_return
+    name = GObject.type_name res
+    assert_equal "void", name
+  end
 end
 
