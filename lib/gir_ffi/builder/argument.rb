@@ -658,7 +658,7 @@ module GirFFI::Builder
                 VoidReturnValue
               when :interface
                 case type.interface.info_type
-                when :interface, :struct
+                when :interface, :struct, :union
                   InterfaceReturnValue
                 when :object
                   if arginfo.constructor?

@@ -1598,5 +1598,17 @@ describe "GIMarshallingTests" do
     res = GIMarshallingTests.ulong_return
     assert_equal max_ulong, res
   end
+
+  # XXX: Only defined in header
+  # it "has a working function #union_inout"
+
+  # XXX: Only defined in header
+  # it "has a working function #union_out"
+
+  it "has a working function #union_returnv" do
+    res = GIMarshallingTests.union_returnv
+    assert_instance_of GIMarshallingTests::Union, res
+    assert_equal 42, res[:long_]
+  end
 end
 
