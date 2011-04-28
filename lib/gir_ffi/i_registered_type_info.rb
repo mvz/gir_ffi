@@ -1,7 +1,6 @@
 module GirFFI
   # Wraps a GIRegisteredTypeInfo struct.
   # Represents a registered type.
-  # Not implemented yet.
   class IRegisteredTypeInfo < IBaseInfo
     def type_name
       Lib.g_registered_type_info_get_type_name @gobj

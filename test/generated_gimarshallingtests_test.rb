@@ -1033,6 +1033,14 @@ describe "GIMarshallingTests" do
     pass
   end
 
+  it "has a working function #gvalue_in_enum" do
+    gv = GObject::Value.new
+    gv.init GIMarshallingTests::GEnum.get_gtype
+    gv.set_enum GIMarshallingTests::GEnum[:value3]
+    GIMarshallingTests.gvalue_in_enum gv
+    pass
+  end
+
   it "has a working function #gvalue_inout" do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
     assert_equal "42", res.ruby_value

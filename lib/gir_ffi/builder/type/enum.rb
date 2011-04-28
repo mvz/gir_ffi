@@ -1,4 +1,4 @@
-require 'gir_ffi/builder/type/base'
+require 'gir_ffi/builder/type/registered_type'
 module GirFFI
   module Builder
     module Type
@@ -6,7 +6,7 @@ module GirFFI
       # Implements the creation of an enum or flags type. The type will be
       # attached to the appropriate namespace module, and will be defined
       # as an enum for FFI.
-      class Enum < Base
+      class Enum < RegisteredType
         def build_class
           unless defined? @klass
             instantiate_enum_class
@@ -22,8 +22,12 @@ module GirFFI
         end
 
         def instantiate_enum_class
-          @klass = optionally_define_constant namespace_module, @classname do
-            lib.enum(@classname.to_sym, value_spec)
+          if const_defined_for namespace_module, @classname
+            @klass = namespace_module.const_get @classname
+          else
+            @klass = namespace_module.const_set @classname,
+              lib.enum(@classname.to_sym, value_spec)
+            setup_gtype_getter
           end
         end
       end

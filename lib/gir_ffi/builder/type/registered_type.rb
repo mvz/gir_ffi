@@ -134,7 +134,7 @@ module GirFFI
         def setup_gtype_getter
           gtype = info.g_type
           return if gtype.nil?
-          @klass.class_eval "
+          @klass.instance_eval "
             def self.get_gtype
               #{gtype}
             end
