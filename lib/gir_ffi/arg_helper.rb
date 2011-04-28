@@ -99,6 +99,10 @@ module GirFFI
       gboolean_pointer.put_int 0, (val ? 1 : 0)
     end
 
+    def self.int16_to_inoutptr val
+      int16_pointer.put_int16 0, val
+    end
+
     def self.int32_to_inoutptr val
       int32_pointer.put_int32 0, val
     end
@@ -131,6 +135,7 @@ module GirFFI
     end
 
     class << self
+      alias gint16_to_inoutptr int16_to_inoutptr
       alias int_to_inoutptr int32_to_inoutptr
       alias gint32_to_inoutptr int32_to_inoutptr
       alias int_array_to_inoutptr int32_array_to_inoutptr
@@ -145,6 +150,10 @@ module GirFFI
 
     def self.int_pointer
       AllocationHelper.safe_malloc FFI.type_size(:int)
+    end
+
+    def self.int16_pointer
+      AllocationHelper.safe_malloc FFI.type_size(:int16)
     end
 
     def self.int32_pointer
@@ -177,6 +186,10 @@ module GirFFI
       gboolean_pointer.put_int 0, 0
     end
 
+    def self.int16_outptr
+      int16_pointer.put_int16 0, 0
+    end
+
     def self.int32_outptr
       int32_pointer.put_int32 0, 0
     end
@@ -202,6 +215,7 @@ module GirFFI
     end
 
     class << self
+      alias gint16_outptr int16_outptr
       alias int_outptr int32_outptr
       alias gint32_outptr int32_outptr
       alias gdouble_outptr double_outptr
@@ -216,6 +230,11 @@ module GirFFI
     # Converts an outptr to a boolean.
     def self.outptr_to_gboolean ptr
       (ptr.get_int 0) != 0
+    end
+
+    # Converts an outptr to an int16.
+    def self.outptr_to_int16 ptr
+      ptr.get_int16 0
     end
 
     # Converts an outptr to an int32.
@@ -265,6 +284,7 @@ module GirFFI
     end
 
     class << self
+      alias outptr_to_gint16 outptr_to_int16
       alias outptr_to_int outptr_to_int32
       alias outptr_to_int_array outptr_to_int32_array
       alias outptr_to_gint32 outptr_to_int32

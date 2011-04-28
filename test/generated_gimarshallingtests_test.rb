@@ -1056,5 +1056,45 @@ describe "GIMarshallingTests" do
     assert_equal 42, res.ruby_value
   end
 
+  it "has a working function #int16_in_max" do
+    GIMarshallingTests.int16_in_max 0x7fff
+    pass
+  end
+
+  it "has a working function #int16_in_min" do
+    GIMarshallingTests.int16_in_min -0x8000
+    pass
+  end
+
+  it "has a working function #int16_inout_max_min" do
+    res = GIMarshallingTests.int16_inout_max_min 0x7fff
+    assert_equal res, -0x8000
+  end
+
+  it "has a working function #int16_inout_min_max" do
+    res = GIMarshallingTests.int16_inout_min_max -0x8000
+    assert_equal res, 0x7fff
+  end
+
+  it "has a working function #int16_out_max" do
+    res = GIMarshallingTests.int16_out_max
+    assert_equal res, 0x7fff
+  end
+
+  it "has a working function #int16_out_min" do
+    res = GIMarshallingTests.int16_out_min
+    assert_equal res, -0x8000
+  end
+
+  it "has a working function #int16_return_max" do
+    res = GIMarshallingTests.int16_return_max
+    assert_equal res, 0x7fff
+  end
+
+  it "has a working function #int16_return_min" do
+    res = GIMarshallingTests.int16_return_min
+    assert_equal res, -0x8000
+  end
+
 end
 
