@@ -288,7 +288,7 @@ module GirFFI::Builder
     end
 
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.int_outptr" ]
+      [ "#{@callarg} = GirFFI::ArgHelper.gint32_outptr" ]
     end
   end
 

@@ -138,44 +138,26 @@ module GirFFI
       alias gboolean_pointer gint_pointer
     end
 
+    def self.setup_type_outptr_handler_for *types
+      types.flatten.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        defn =
+          "def self.#{type}_outptr
+            #{type}_pointer.put_#{ffi_type} 0, 0
+          end"
+        eval defn
+      end
+    end
+
+    setup_type_outptr_handler_for SIMPLE_G_TYPES
+    setup_type_outptr_handler_for :pointer
+
     def self.gboolean_outptr
       gboolean_pointer.put_int 0, 0
     end
 
-    def self.int16_outptr
-      gint16_pointer.put_int16 0, 0
-    end
-
-    def self.int32_outptr
-      gint32_pointer.put_int32 0, 0
-    end
-
-    def self.int64_outptr
-      gint64_pointer.put_int64 0, 0
-    end
-
-    def self.double_outptr
-      gdouble_pointer.write_double 0.0
-    end
-
-    def self.float_outptr
-      gfloat_pointer.write_float 0.0
-    end
-
-    def self.pointer_outptr
-      pointer_pointer.write_pointer nil
-    end
-
     def self.utf8_outptr
       pointer_outptr
-    end
-
-    class << self
-      alias gint16_outptr int16_outptr
-      alias int_outptr int32_outptr
-      alias gint32_outptr int32_outptr
-      alias gdouble_outptr double_outptr
-      alias gfloat_outptr float_outptr
     end
 
     # Converts an outptr to a pointer.
@@ -306,12 +288,12 @@ module GirFFI
       case FFI.type_size(:size_t)
       when 4
         alias gtype_array_to_inptr gint32_array_to_inptr
-        alias gtype_outptr int32_outptr
-        alias gtype_to_inoutptr int32_to_inoutptr
-        alias outptr_to_gtype outptr_to_int32
+        alias gtype_outptr gint32_outptr
+        alias gtype_to_inoutptr gint32_to_inoutptr
+        alias outptr_to_gtype outptr_to_gint32
       when 8
         alias gtype_array_to_inptr gint64_array_to_inptr
-        alias gtype_outptr int64_outptr
+        alias gtype_outptr gint64_outptr
         alias gtype_to_inoutptr gint64_to_inoutptr
         alias outptr_to_gtype outptr_to_int64
       else
