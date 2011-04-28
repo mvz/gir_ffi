@@ -38,14 +38,14 @@ class ArgHelperTest < MiniTest::Spec
     end
   end
 
-  context "The outptr_to_int method" do
+  context "The outptr_to_gint32 method" do
     setup do
       @ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:int)
       @ptr.write_int 342
     end
 
     should "retrieve the correct integer value" do
-      assert_equal 342, GirFFI::ArgHelper.outptr_to_int(@ptr)
+      assert_equal 342, GirFFI::ArgHelper.outptr_to_gint32(@ptr)
     end
   end
 

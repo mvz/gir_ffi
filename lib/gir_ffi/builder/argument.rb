@@ -280,7 +280,7 @@ module GirFFI::Builder
   # :out that are enums
   class EnumOutArgument < OutArgument
     def post
-      pst = [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_int #{@callarg}]" ]
+      pst = [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
       if @arginfo.ownership_transfer == :everything
         pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
@@ -492,7 +492,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_int #{@callarg}]",
+      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]",
         "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end

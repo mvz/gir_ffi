@@ -160,29 +160,23 @@ module GirFFI
       pointer_outptr
     end
 
-    # Converts an outptr to a pointer.
-    def self.outptr_to_pointer ptr
-      ptr.read_pointer
+    def self.setup_outptr_to_type_handler_for *types
+      types.flatten.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        defn =
+          "def self.outptr_to_#{type} ptr
+            ptr.get_#{ffi_type} 0
+          end"
+        eval defn
+      end
     end
+
+    setup_outptr_to_type_handler_for SIMPLE_G_TYPES
+    setup_outptr_to_type_handler_for :pointer
 
     # Converts an outptr to a boolean.
     def self.outptr_to_gboolean ptr
       (ptr.get_int 0) != 0
-    end
-
-    # Converts an outptr to an int16.
-    def self.outptr_to_int16 ptr
-      ptr.get_int16 0
-    end
-
-    # Converts an outptr to an int32.
-    def self.outptr_to_int32 ptr
-      ptr.get_int32 0
-    end
-
-    # Converts an outptr to an int64.
-    def self.outptr_to_int64 ptr
-      ptr.get_int64 0
     end
 
     # Converts an outptr to a string.
@@ -195,16 +189,6 @@ module GirFFI
       block = ptr.read_pointer
       return nil if block.null?
       ptr_to_utf8_array block, size
-    end
-
-    # Converts an outptr to a double.
-    def self.outptr_to_double ptr
-      ptr.get_double 0
-    end
-
-    # Converts an outptr to a float.
-    def self.outptr_to_float ptr
-      ptr.get_float 0
     end
 
     # Converts an outptr to an array of int.
@@ -222,13 +206,8 @@ module GirFFI
     end
 
     class << self
-      alias outptr_to_gint16 outptr_to_int16
-      alias outptr_to_int outptr_to_int32
       alias outptr_to_int_array outptr_to_int32_array
-      alias outptr_to_gint32 outptr_to_int32
       alias outptr_to_gint32_array outptr_to_int32_array
-      alias outptr_to_gdouble outptr_to_double
-      alias outptr_to_gfloat outptr_to_float
     end
 
     def self.ptr_to_typed_array type, ptr, size
@@ -295,7 +274,7 @@ module GirFFI
         alias gtype_array_to_inptr gint64_array_to_inptr
         alias gtype_outptr gint64_outptr
         alias gtype_to_inoutptr gint64_to_inoutptr
-        alias outptr_to_gtype outptr_to_int64
+        alias outptr_to_gtype outptr_to_gint64
       else
         raise RuntimeError, "Unexpected size of :size_t"
       end
