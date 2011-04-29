@@ -153,10 +153,13 @@ module GirFFI
     end
 
     setup_type_outptr_handler_for SIMPLE_G_TYPES
-    setup_type_outptr_handler_for :pointer
 
     def self.gboolean_outptr
       gboolean_pointer.put_int 0, 0
+    end
+
+    def self.pointer_outptr
+      pointer_pointer.put_pointer 0, nil
     end
 
     def self.utf8_outptr
