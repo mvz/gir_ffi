@@ -583,7 +583,7 @@ describe "GIMarshallingTests" do
 
   it "has a working function #double_inout" do
     ret = GIMarshallingTests.double_inout Float::MAX
-    assert_equal Float::MIN, ret
+    assert_in_epsilon 2.225e-308, ret
   end
 
   it "has a working function #double_out" do
