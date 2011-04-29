@@ -82,8 +82,9 @@ module GirFFI
         def hash_table_new keytype, valtype
           hash_fn, eq_fn = case keytype
                            when :utf8
-                             [::GLib::Lib.ffi_libraries.first.find_function("g_str_hash"),
-                               ::GLib::Lib.ffi_libraries.first.find_function("g_str_equal")]
+                             lib = ::GLib::Lib.ffi_libraries.first
+                             [ FFI::Function.new(:uint, [:pointer], lib.find_function("g_str_hash")),
+                               FFI::Function.new(:int, [:pointer, :pointer], lib.find_function("g_str_equal"))]
                            else
                              [nil, nil]
                            end
