@@ -259,7 +259,7 @@ module GirFFI
     end
 
     def self.ptr_to_utf8_length ptr, len
-      ptr.null? ? nil : ptr.read_string_length(len)
+      ptr.null? ? nil : ptr.read_string(len)
     end
 
     class << self
