@@ -376,6 +376,7 @@ module GirFFI
 	map_single_callback_arg arg, inf }
     end
 
+    # TODO: Use GirFFI::ReturnValue classes for mapping.
     def self.map_single_callback_arg arg, info
       case info.argument_type.tag
       when :interface

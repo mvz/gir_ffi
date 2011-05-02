@@ -202,12 +202,11 @@ class BuilderTest < MiniTest::Spec
 
     context "building Regress::TestStructA" do
       setup do
-	@fieldnames = [:some_int, :some_int8, :some_double, :some_enum]
 	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestStructA')
       end
 
       should "set up the correct struct members" do
-	assert_equal @fieldnames,
+	assert_equal [:some_int, :some_int8, :some_double, :some_enum],
 	  Regress::TestStructA::Struct.members
       end
 
@@ -220,7 +219,7 @@ class BuilderTest < MiniTest::Spec
       should "set up struct members with the correct types" do
 	tags = [:int, :int8, :double, Regress::TestEnum]
 	assert_equal tags.map {|t| FFI.find_type t},
-	  @fieldnames.map {|f| Regress::TestStructA::Struct.layout[f].type}
+	  Regress::TestStructA::Struct.layout.fields.map {|f| f.type}
       end
     end
 
