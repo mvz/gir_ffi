@@ -1,3 +1,14 @@
+== 0.0.9 / 2011-05-02
+
+* More complete support for the basic types.
+* Improved support for GList, GSList, GStrv, and GValue.
+* Add support for GHashTable, GVariant, GByteArray, and GArray.
+* Generate constants.
+* When setting up a module, set up its dependencies as well.
+* Test against the GIMarshallingTests test namespace.
+* Use minitest/spec for testing.
+* Various bug fixes and internal improvements.
+
 == 0.0.8 / 2011-04-08
 
 * Generate modules with names starting with a lowercase letter (like

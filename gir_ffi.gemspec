@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
-  s.version = "0.0.8"
+  s.version = "0.0.9"
   s.date = Date.today.to_s
 
   s.summary = "FFI-based GObject binding using the GObject Introspection Repository"
