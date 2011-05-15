@@ -201,7 +201,7 @@ module GirFFI
     def self.outptr_to_int32_array ptr, size
       block = ptr.read_pointer
       return nil if block.null?
-      ptr_to_int32_array block, size
+      ptr_to_gint32_array block, size
     end
 
     # Converts an outptr to an array of the given class.
@@ -224,17 +224,18 @@ module GirFFI
       end
     end
 
-    def self.ptr_to_int64_array ptr, size
-      ptr.get_array_of_int64(0, size)
+    def self.setup_ptr_to_type_array_handler_for *types
+      types.flatten.each do |type|
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        defn =
+          "def self.ptr_to_#{type}_array ptr, size
+            ptr.get_array_of_#{ffi_type}(0, size)
+          end"
+        eval defn
+      end
     end
 
-    def self.ptr_to_int32_array ptr, size
-      ptr.get_array_of_int32(0, size)
-    end
-
-    def self.ptr_to_int16_array ptr, size
-      ptr.get_array_of_int16(0, size)
-    end
+    setup_ptr_to_type_array_handler_for SIMPLE_G_TYPES
 
     def self.ptr_to_utf8_array ptr, size
       ptrs = ptr.read_array_of_pointer(size)
@@ -264,13 +265,6 @@ module GirFFI
 
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
-    end
-
-    class << self
-      alias ptr_to_int_array ptr_to_int32_array
-      alias ptr_to_gint64_array ptr_to_int64_array
-      alias ptr_to_gint32_array ptr_to_int32_array
-      alias ptr_to_gint16_array ptr_to_int16_array
     end
 
     # Set up gtype handlers depending on type size.
