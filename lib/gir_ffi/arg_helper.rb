@@ -269,22 +269,13 @@ module GirFFI
 
     # Set up gtype handlers depending on type size.
     class << self
-      case FFI.type_size(:size_t)
-      when 4
-        alias gtype_array_to_inptr gint32_array_to_inptr
-        alias gtype_outptr gint32_outptr
-        alias gtype_to_inoutptr gint32_to_inoutptr
-        alias outptr_to_gtype outptr_to_gint32
-        alias ptr_to_gtype_array ptr_to_gint32_array
-      when 8
-        alias gtype_array_to_inptr gint64_array_to_inptr
-        alias gtype_outptr gint64_outptr
-        alias gtype_to_inoutptr gint64_to_inoutptr
-        alias outptr_to_gtype outptr_to_gint64
-        alias ptr_to_gtype_array ptr_to_gint64_array
-      else
-        raise RuntimeError, "Unexpected size of :size_t"
-      end
+      sz = FFI.type_size(:size_t) * 8
+      type = "guint#{sz}"
+      alias_method :gtype_array_to_inptr, "#{type}_array_to_inptr"
+      alias_method :gtype_outptr, "#{type}_outptr"
+      alias_method :gtype_to_inoutptr, "#{type}_to_inoutptr"
+      alias_method :outptr_to_gtype, "outptr_to_#{type}"
+      alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
     end
 
     def self.outptr_strv_to_utf8_array ptr
