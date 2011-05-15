@@ -1,3 +1,9 @@
+if RUBY_PLATFORM == 'java'
+  require 'java'
+  JRuby.objectspace = true
+  require 'rubygems'
+end
+
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'rr'
@@ -8,11 +14,6 @@ Thread.abort_on_exception = true
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'gir_ffi'
-
-if RUBY_PLATFORM == 'java'
-  require 'java'
-  JRuby.objectspace = true
-end
 
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
 GirFFI.setup :Gtk, '2.0'
