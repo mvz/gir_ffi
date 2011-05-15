@@ -45,7 +45,7 @@ class GeneratedGtkTest < MiniTest::Spec
 	  assert_equal "clicked", sn
 	  assert_equal "on_button_clicked", hn
 	  assert_equal nil, co
-	  assert_equal :after, f
+	  assert_equal 0, f
 	  assert_equal nil, ud
 	end
       end
