@@ -224,6 +224,10 @@ module GirFFI
       end
     end
 
+    def self.ptr_to_int64_array ptr, size
+      ptr.get_array_of_int64(0, size)
+    end
+
     def self.ptr_to_int32_array ptr, size
       ptr.get_array_of_int32(0, size)
     end
@@ -264,6 +268,7 @@ module GirFFI
 
     class << self
       alias ptr_to_int_array ptr_to_int32_array
+      alias ptr_to_gint64_array ptr_to_int64_array
       alias ptr_to_gint32_array ptr_to_int32_array
       alias ptr_to_gint16_array ptr_to_int16_array
     end
@@ -276,11 +281,13 @@ module GirFFI
         alias gtype_outptr gint32_outptr
         alias gtype_to_inoutptr gint32_to_inoutptr
         alias outptr_to_gtype outptr_to_gint32
+        alias ptr_to_gtype_array ptr_to_gint32_array
       when 8
         alias gtype_array_to_inptr gint64_array_to_inptr
         alias gtype_outptr gint64_outptr
         alias gtype_to_inoutptr gint64_to_inoutptr
         alias outptr_to_gtype outptr_to_gint64
+        alias ptr_to_gtype_array ptr_to_gint64_array
       else
         raise RuntimeError, "Unexpected size of :size_t"
       end
