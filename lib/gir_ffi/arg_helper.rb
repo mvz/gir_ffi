@@ -428,7 +428,11 @@ module GirFFI
       return nil if optr.null?
       tp = ::GObject.type_from_instance_pointer optr
       info = gir.find_by_gtype tp
-      klass = GirFFI::Builder.build_class info
+      if info.nil?
+        klass = GirFFI::Builder::DynamicType.new(tp).build_class
+      else
+        klass = GirFFI::Builder.build_class info
+      end
       klass.wrap optr
     end
 

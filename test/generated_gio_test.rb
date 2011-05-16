@@ -7,13 +7,13 @@ class GeneratedGioTest < MiniTest::Spec
       GirFFI.setup :Gio
     end
 
-    if false
     should "create a GFile with #file_new_from_path" do
       assert_nothing_raised {
 	Gio.file_new_for_path('/')
       }
     end
 
+    if false
     context "the FileInfo class" do
       context "an instance" do
 	setup do
