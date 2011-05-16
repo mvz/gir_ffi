@@ -12,18 +12,20 @@ describe "GirFFI::Builder::DynamicType" do
       Gio::Lib.g_file_new_for_path(ptr)
 
       @gtype = GObject.type_from_name 'GLocalFile'
+      bldr = GirFFI::Builder::DynamicType.new(@gtype)
+      @klass = bldr.build_class
     end
 
     it "builds a class" do
-      bldr = GirFFI::Builder::DynamicType.new(@gtype)
-      klass = bldr.build_class
-      assert_instance_of Class, klass
+      assert_instance_of Class, @klass
     end
 
     it "builds a class derived from GObject::Object" do
-      bldr = GirFFI::Builder::DynamicType.new(@gtype)
-      klass = bldr.build_class
-      assert_includes klass.ancestors, GObject::Object
+      assert_includes @klass.ancestors, GObject::Object
+    end
+
+    it "builds a class derived from Gio::File" do
+      assert_includes @klass.ancestors, Gio::File
     end
   end
 end
