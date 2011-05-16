@@ -8,6 +8,7 @@ module GirFFI
         def setup_class
           super
           setup_vfunc_invokers
+          setup_interfaces
         end
 
         def parent
@@ -33,6 +34,15 @@ module GirFFI
                 #{invoker.name}(*args, &block)
               end
             "
+          end
+        end
+
+        def setup_interfaces
+          info.interfaces.each do |ifinfo|
+            iface = GirFFI::Builder.build_class ifinfo
+            @klass.class_eval do
+              include iface
+            end
           end
         end
 
