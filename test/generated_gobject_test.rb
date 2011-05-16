@@ -6,7 +6,7 @@ describe "The generated GObject module" do
   end
 
   describe "#type_interfaces" do
-    it "correctly returns an array of GType" do
+    it "works, showing that returning an array of GType works" do
       tp = GObject.type_from_name 'GTypeModule'
       ifcs = GObject.type_interfaces tp
       assert_equal 1, ifcs.size
