@@ -4,7 +4,19 @@ module GirFFI
     module Type
 
       # Implements the creation of a class representing an Interface.
-      class Interface < StructBased
+      class Interface < RegisteredType
+        def build_class
+          unless defined? @klass
+            instantiate_module
+          end
+          @klass
+        end
+
+        def instantiate_module
+          @klass = optionally_define_constant(namespace_module, @classname) {
+            ::Module.new
+          }
+        end
       end
     end
   end

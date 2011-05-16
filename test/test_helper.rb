@@ -48,6 +48,7 @@ class MiniTest::Unit::TestCase
     code.gsub(/(^\s*|\s*$)/, "")
   end
 
+  # FIXME: Rename. It can also get object, interface, etc., data.
   def get_function_introspection_data namespace, function
     gir = GirFFI::IRepository.default
     gir.require namespace, nil
