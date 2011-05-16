@@ -7,7 +7,9 @@ describe "GirFFI::Builder::DynamicType" do
     before do
       # Ensure existence of GLocalFile type
       GirFFI.setup :Gio
-      Gio.gir_ffi_builder.setup_function "file_new_for_path"
+      unless Gio::Lib.respond_to? :g_file_new_for_path
+        Gio.gir_ffi_builder.setup_function "file_new_for_path"
+      end
       ptr = GirFFI::ArgHelper.utf8_to_inptr '/'
       Gio::Lib.g_file_new_for_path(ptr)
 
