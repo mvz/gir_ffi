@@ -16,6 +16,12 @@ module GirFFI
           @klass = optionally_define_constant(namespace_module, @classname) {
             ::Module.new
           }
+          setup_module unless already_set_up
+        end
+
+        def setup_module
+          setup_constants
+          stub_methods
         end
       end
     end
