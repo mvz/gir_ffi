@@ -12,6 +12,6 @@ describe GirFFI::Builder::Type::Interface do
   end
 
   it "creates methods on the interface" do
-    assert_includes @iface.instance_methods, 'complete_interface_info'
+    assert_includes @iface.instance_methods.map(&:to_s), 'complete_interface_info'
   end
 end
