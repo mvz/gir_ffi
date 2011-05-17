@@ -5,6 +5,32 @@ module GirFFI
 
       # Implements the creation of a class representing a GObject Object.
       class Object < StructBased
+        def setup_method method
+          if super
+            return true
+          else
+            if parent
+              return superclass.gir_ffi_builder.setup_method method
+            else
+              return false
+            end
+          end
+        end
+
+        def setup_instance_method method
+          if super
+            return true
+          else
+            if parent
+              return superclass.gir_ffi_builder.setup_instance_method method
+            else
+              return false
+            end
+          end
+        end
+
+        private
+
         def setup_class
           super
           setup_vfunc_invokers

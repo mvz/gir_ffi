@@ -14,28 +14,11 @@ module GirFFI
           meta = (class << klass; self; end)
 
           go = method_introspection_data method
-          if go.nil?
-            if parent
-              return superclass.gir_ffi_builder.setup_method method
-            else
-              return false
-            end
-          end
-
           attach_and_define_method method, go, meta
         end
 
         def setup_instance_method method
           go = instance_method_introspection_data method
-
-          if go.nil?
-            if parent
-              return superclass.gir_ffi_builder.setup_instance_method method
-            else
-              return false
-            end
-          end
-
           attach_and_define_method method, go, build_class
         end
 
