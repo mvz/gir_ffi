@@ -13,7 +13,6 @@ class GeneratedGioTest < MiniTest::Spec
       }
     end
 
-    if false
     context "the FileInfo class" do
       context "an instance" do
 	setup do
@@ -27,7 +26,6 @@ class GeneratedGioTest < MiniTest::Spec
 	  }
 	end
       end
-    end
     end
   end
 end
