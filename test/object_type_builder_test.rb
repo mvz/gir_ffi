@@ -12,5 +12,23 @@ describe GirFFI::Builder::Type::Object do
       assert_includes klass.ancestors, GObject::TypePlugin
     end
   end
+
+  describe "building the CharsetConverter class" do
+    before do
+      GirFFI.setup :Gio
+    end
+
+    it "includes two interfaces" do
+      klass = Gio::CharsetConverter
+      assert_includes klass.ancestors, Gio::Converter
+      assert_includes klass.ancestors, Gio::Initable
+    end
+
+    it "allows an instance to find the #reset method" do
+      cnv = Gio::CharsetConverter.new "utf8", "utf8"
+      cnv.reset
+      pass
+    end
+  end
 end
 

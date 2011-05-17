@@ -21,6 +21,12 @@ module GirFFI
           if super
             return true
           else
+            info.interfaces.each do |ifinfo|
+              iface = GirFFI::Builder.build_class ifinfo
+              if iface.gir_ffi_builder.setup_instance_method method
+                return true
+              end
+            end
             if parent
               return superclass.gir_ffi_builder.setup_instance_method method
             else

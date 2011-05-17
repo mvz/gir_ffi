@@ -13,9 +13,13 @@ module GirFFI
         end
 
         def instantiate_module
-          @klass = optionally_define_constant(namespace_module, @classname) {
-            ::Module.new
-          }
+          @klass = optionally_define_constant(namespace_module, @classname) do
+            ::Module.new do
+              def self.gir_ffi_builder
+                const_get :GIR_FFI_BUILDER
+              end
+            end
+          end
           setup_module unless already_set_up
         end
 
