@@ -29,9 +29,8 @@ class GeneratedGioTest < MiniTest::Spec
 	end
 
 	should "hava a working #get_attribute_type method" do
-	  assert_nothing_raised {
-	    @fileinfo.get_attribute_type "standard::displayname"
-	  }
+	  type = @fileinfo.get_attribute_type "standard::display-name"
+          assert_equal :string, type
 	end
       end
     end
