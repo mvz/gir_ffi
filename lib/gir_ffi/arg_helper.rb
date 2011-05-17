@@ -1,5 +1,6 @@
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
+require 'gir_ffi/builder/dynamic_type'
 
 module GirFFI
   module ArgHelper
