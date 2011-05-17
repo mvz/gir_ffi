@@ -18,7 +18,7 @@ module GirFFI
             if parent
               return superclass.gir_ffi_builder.setup_method method
             else
-              raise NoMethodError
+              raise RuntimeError, "Unable to set up method #{method} in #{@namespace}::#{@classname}"
             end
           end
 
@@ -27,17 +27,16 @@ module GirFFI
 
         def setup_instance_method method
           go = instance_method_introspection_data method
-          result = attach_and_define_method method, go, build_class
 
-          unless result
+          if go.nil?
             if parent
               return superclass.gir_ffi_builder.setup_instance_method method
             else
-              return false
+              raise RuntimeError, "Unable to set up instance method #{method} in #{@namespace}::#{@classname}"
             end
           end
 
-          true
+          attach_and_define_method method, go, build_class
         end
 
         private
