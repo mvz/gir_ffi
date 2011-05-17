@@ -18,7 +18,7 @@ module GirFFI
             if parent
               return superclass.gir_ffi_builder.setup_method method
             else
-              raise RuntimeError, "Unable to set up method #{method} in #{@namespace}::#{@classname}"
+              return false
             end
           end
 
@@ -32,7 +32,7 @@ module GirFFI
             if parent
               return superclass.gir_ffi_builder.setup_instance_method method
             else
-              raise RuntimeError, "Unable to set up instance method #{method} in #{@namespace}::#{@classname}"
+              return false
             end
           end
 

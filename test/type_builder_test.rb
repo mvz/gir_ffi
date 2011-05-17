@@ -62,8 +62,8 @@ class TypeBuilderTest < MiniTest::Spec
 	@cbuilder = GirFFI::Builder::Type::Union.new get_function_introspection_data('GObject', 'TypeCValue')
       end
 
-      should "raise a RuntimeError looking for a method that doesn't exist" do
-	assert_raises(RuntimeError) { @cbuilder.setup_instance_method 'blub' }
+      should "returns false looking for a method that doesn't exist" do
+	assert_equal false, @cbuilder.setup_instance_method('blub')
       end
     end
   end

@@ -20,12 +20,16 @@ module GirFFI
     end
 
     def setup_and_call method, *arguments, &block
-      gir_ffi_builder.setup_instance_method method.to_s
+      unless gir_ffi_builder.setup_instance_method method.to_s
+        raise RuntimeError, "Unable to set up instance method #{method} in #{self}"
+      end
       self.send method, *arguments, &block
     end
 
     def self.setup_and_call method, *arguments, &block
-      gir_ffi_builder.setup_method method.to_s
+      unless gir_ffi_builder.setup_method method.to_s
+        raise RuntimeError, "Unable to set up method #{method} in #{self}"
+      end
       self.send method, *arguments, &block
     end
 
