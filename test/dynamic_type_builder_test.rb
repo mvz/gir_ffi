@@ -29,5 +29,12 @@ describe "GirFFI::Builder::DynamicType" do
     it "builds a class derived from Gio::File" do
       assert_includes @klass.ancestors, Gio::File
     end
+
+    it "returns the same class when built again" do
+      other_bldr = GirFFI::Builder::DynamicType.new(@gtype)
+      other_klass = other_bldr.build_class
+
+      assert_equal @klass, other_klass
+    end
   end
 end

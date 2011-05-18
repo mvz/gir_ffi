@@ -1,12 +1,14 @@
 module GirFFI
   module Builder
     class DynamicType
+      CACHE = {}
+
       def initialize gtype
         @gtype = gtype
       end
 
       def build_class
-        Class.new(parent).tap do |klass|
+        CACHE[@gtype] ||= Class.new(parent).tap do |klass|
           interfaces.each do |iface|
             klass.class_eval do
               include iface
