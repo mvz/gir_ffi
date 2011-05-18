@@ -1,3 +1,9 @@
+== 0.0.10 / 2011-05-18
+
+* Handle GObject interfaces properly.
+* Create types only defined by the GType system.
+* Support GType array return values.
+
 == 0.0.9 / 2011-05-02
 
 * More complete support for the basic types.
