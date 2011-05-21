@@ -14,7 +14,17 @@ module GirFFI
               include iface
             end
           end
+          klass.const_set :GIR_FFI_BUILDER, self
         end
+      end
+
+      def setup_instance_method method
+        interfaces.each do |iface|
+          if iface.gir_ffi_builder.setup_instance_method method
+            return true
+          end
+        end
+        parent.gir_ffi_builder.setup_instance_method method
       end
 
       private

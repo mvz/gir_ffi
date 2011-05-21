@@ -7,7 +7,7 @@ class GeneratedGioTest < MiniTest::Spec
       GirFFI.setup :Gio
     end
 
-    describe "#file_new_from_path, a method returning an interface," do
+    describe "#file_new_for_path, a method returning an interface," do
       it "does not throw an error when generated" do
         assert_nothing_raised {
           Gio.file_new_for_path('/')
@@ -18,6 +18,23 @@ class GeneratedGioTest < MiniTest::Spec
         file = Gio.file_new_for_path('/')
         refute_instance_of Gio::File, file
         assert_includes file.class.ancestors, Gio::File
+      end
+    end
+
+    describe "the result of #file_new_from_path" do
+      before do
+        @it = Gio.file_new_for_path('/')
+      end
+
+      it "is able to set up a method in a class that is not the first ancestor" do
+        anc = @it.class.ancestors
+        assert_equal Gio::File, anc[1]
+        assert_equal GObject::Object, anc[2]
+        refute_includes Gio::File.instance_methods.map(&:to_s),
+          'get_property'
+        assert_includes GObject::Object.instance_methods.map(&:to_s),
+          'get_property'
+        @it.setup_and_call :get_property, 'foo', GObject::Value.wrap_ruby_value(0)
       end
     end
 
