@@ -31,10 +31,10 @@ class GeneratedGioTest < MiniTest::Spec
         assert_equal Gio::File, anc[1]
         assert_equal GObject::Object, anc[2]
         refute_includes Gio::File.instance_methods.map(&:to_s),
-          'get_property'
+          'get_qdata'
         assert_includes GObject::Object.instance_methods.map(&:to_s),
-          'get_property'
-        @it.setup_and_call :get_property, 'foo', GObject::Value.wrap_ruby_value(0)
+          'get_qdata'
+        @it.setup_and_call :get_qdata, 1
       end
     end
 
