@@ -1,6 +1,6 @@
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
-require 'gir_ffi/builder/dynamic_type'
+require 'gir_ffi/builder/type/unintrospectable'
 
 module GirFFI
   module ArgHelper
@@ -430,7 +430,7 @@ module GirFFI
       tp = ::GObject.type_from_instance_pointer optr
       info = gir.find_by_gtype tp
       if info.nil?
-        klass = GirFFI::Builder::DynamicType.new(tp).build_class
+        klass = GirFFI::Builder::Type::Unintrospectable.new(tp).build_class
       else
         klass = GirFFI::Builder.build_class info
       end
