@@ -21,21 +21,24 @@ module GirFFI
           if super
             return true
           else
-            info.interfaces.each do |ifinfo|
-              iface = GirFFI::Builder.build_class ifinfo
-              if iface.gir_ffi_builder.setup_instance_method method
-                return true
-              end
-            end
-            if parent
-              return superclass.gir_ffi_builder.setup_instance_method method
-            else
-              return false
-            end
+            setup_instance_method_in_ancestor method
           end
         end
 
         private
+
+        def setup_instance_method_in_ancestor method
+          interfaces.each do |iface|
+            if iface.gir_ffi_builder.setup_instance_method method
+              return true
+            end
+          end
+          if parent
+            return superclass.gir_ffi_builder.setup_instance_method method
+          else
+            return false
+          end
+        end
 
         def setup_class
           super
@@ -70,8 +73,7 @@ module GirFFI
         end
 
         def setup_interfaces
-          info.interfaces.each do |ifinfo|
-            iface = GirFFI::Builder.build_class ifinfo
+          interfaces.each do |iface|
             @klass.class_eval do
               include iface
             end
@@ -80,6 +82,12 @@ module GirFFI
 
         def signal_definers
           [info] + info.interfaces
+        end
+
+        def interfaces
+          info.interfaces.map do |ifinfo|
+            GirFFI::Builder.build_class ifinfo
+          end
         end
       end
     end

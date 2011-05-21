@@ -13,40 +13,42 @@ module GirFFI
           @gtype = gtype
         end
 
-        def build_class
-          CACHE[@gtype] ||= Class.new(parent).tap do |klass|
-            interfaces.each do |iface|
-              klass.class_eval do
-                include iface
-              end
-            end
-            klass.const_set :GIR_FFI_BUILDER, self
-          end
+        def instantiate_struct_class
+          CACHE[@gtype] ||= Class.new(superclass)
+          @klass = CACHE[@gtype]
+          setup_class unless already_set_up
+        end
+
+        def setup_class
+          setup_constants
+          setup_interfaces
         end
 
         def setup_instance_method method
-          interfaces.each do |iface|
-            if iface.gir_ffi_builder.setup_instance_method method
-              return true
-            end
-          end
-          parent.gir_ffi_builder.setup_instance_method method
+          setup_instance_method_in_ancestor method
         end
 
         private
 
         def parent
           parent_type = ::GObject.type_parent @gtype
-          info = gir.find_by_gtype(parent_type)
-          GirFFI::Builder.build_class info
+          gir.find_by_gtype(parent_type)
+        end
+
+        def interface_infos
+          ::GObject.type_interfaces(@gtype).map do |gtype|
+            gir.find_by_gtype gtype
+          end
         end
 
         def interfaces
-          iface_types = ::GObject.type_interfaces @gtype
-          iface_types.map do |gtype|
-            info = gir.find_by_gtype gtype
+          interface_infos.map do |info|
             GirFFI::Builder.build_class info
           end
+        end
+
+        def signal_definers
+          interface_infos
         end
 
         def gir

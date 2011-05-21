@@ -12,8 +12,8 @@ describe GirFFI::Builder::Type::Unintrospectable do
       Gio::Lib.g_file_new_for_path(ptr)
 
       @gtype = GObject.type_from_name 'GLocalFile'
-      bldr = GirFFI::Builder::Type::Unintrospectable.new(@gtype)
-      @klass = bldr.build_class
+      @bldr = GirFFI::Builder::Type::Unintrospectable.new(@gtype)
+      @klass = @bldr.build_class
     end
 
     it "builds a class" do
@@ -33,6 +33,10 @@ describe GirFFI::Builder::Type::Unintrospectable do
       other_klass = other_bldr.build_class
 
       assert_equal @klass, other_klass
+    end
+
+    it "has a working find_signal method" do
+      assert_nil @bldr.find_signal "foo"
     end
   end
 end
