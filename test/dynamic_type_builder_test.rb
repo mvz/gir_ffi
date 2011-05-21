@@ -1,8 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-require 'gir_ffi/builder/dynamic_type'
-
-describe "GirFFI::Builder::DynamicType" do
+describe GirFFI::Builder::DynamicType do
   describe "building the GLocalFile type" do
     before do
       # Ensure existence of GLocalFile type
