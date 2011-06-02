@@ -11,6 +11,7 @@ module GirFFI
 
         def initialize gtype
           @gtype = gtype
+          @info = nil
         end
 
         def instantiate_struct_class
