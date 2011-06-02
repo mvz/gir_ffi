@@ -35,8 +35,10 @@ describe GirFFI::Builder::Type::Unintrospectable do
       assert_equal @klass, other_klass
     end
 
-    it "has a working find_signal method" do
-      assert_nil @bldr.find_signal "foo"
+    describe "its #find_signal method" do
+      it "works for a signal that doesn't exist" do
+        assert_nil @bldr.find_signal "foo"
+      end
     end
   end
 end
