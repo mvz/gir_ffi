@@ -9,7 +9,7 @@ class ModuleBuilderTest < MiniTest::Spec
 
       context "looking at Gtk.main" do
 	setup do
-	  @go = get_function_introspection_data 'Gtk', 'main'
+	  @go = get_introspection_data 'Gtk', 'main'
 	end
 
 	should "build correct definition of Gtk.main" do
@@ -21,7 +21,7 @@ class ModuleBuilderTest < MiniTest::Spec
 
       context "looking at Gtk.init" do
 	setup do
-	  @go = get_function_introspection_data 'Gtk', 'init'
+	  @go = get_introspection_data 'Gtk', 'init'
 	end
 
 	should "delegate definition to Builder::Function" do
@@ -39,7 +39,7 @@ class ModuleBuilderTest < MiniTest::Spec
 
       context "looking at Regress.test_callback_destroy_notify" do
 	setup do
-	  @go = get_function_introspection_data 'Regress', 'test_callback_destroy_notify'
+	  @go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
 	end
 
 	should "delegate definition to Builder::Function" do

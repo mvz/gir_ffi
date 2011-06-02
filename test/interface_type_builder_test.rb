@@ -2,7 +2,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 describe GirFFI::Builder::Type::Interface do
   before do
-    info = get_function_introspection_data 'GObject', 'TypePlugin'
+    info = get_introspection_data 'GObject', 'TypePlugin'
     @bldr = GirFFI::Builder::Type::Interface.new info
     @iface = @bldr.build_class
   end

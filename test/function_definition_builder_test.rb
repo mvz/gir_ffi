@@ -3,7 +3,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 class FunctionDefinitionBuilderTest < MiniTest::Spec
   context "The Builder::Function class" do
     should "build correct definition of Gtk.init" do
-      go = get_function_introspection_data 'Gtk', 'init'
+      go = get_introspection_data 'Gtk', 'init'
       fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
@@ -39,7 +39,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
     end
 
     should "build correct definition of Regress.test_callback_destroy_notify" do
-      go = get_function_introspection_data 'Regress', 'test_callback_destroy_notify'
+      go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
       fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
@@ -76,7 +76,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
     end
 
     should "build correct definition of Regress:test_array_int_null_in" do
-      go = get_function_introspection_data 'Regress', 'test_array_int_null_in'
+      go = get_introspection_data 'Regress', 'test_array_int_null_in'
       fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 
@@ -93,7 +93,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
     end
 
     should "build correct definition of Regress:test_array_int_null_out" do
-      go = get_function_introspection_data 'Regress', 'test_array_int_null_out'
+      go = get_introspection_data 'Regress', 'test_array_int_null_out'
       fbuilder = GirFFI::Builder::Function.new go, Lib
       code = fbuilder.generate
 

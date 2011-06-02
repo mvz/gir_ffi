@@ -9,7 +9,7 @@ class BuilderTest < MiniTest::Spec
     context "building GObject::Object" do
       before do
 	save_module :GObject
-	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
+	GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
       end
 
       should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
@@ -23,7 +23,7 @@ class BuilderTest < MiniTest::Spec
 
       should "not replace existing classes" do
 	oldclass = GObject::Object
-	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'Object')
+	GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
 	assert_equal oldclass, GObject::Object
       end
 
@@ -36,7 +36,7 @@ class BuilderTest < MiniTest::Spec
       before do
 	save_module :Gtk
 	save_module :GObject
-	GirFFI::Builder.build_class get_function_introspection_data('Gtk', 'Window')
+	GirFFI::Builder.build_class get_introspection_data('Gtk', 'Window')
       end
 
       should "build Gtk namespace" do
@@ -112,7 +112,7 @@ class BuilderTest < MiniTest::Spec
 
     context "looking at Gtk.main" do
       setup do
-	@go = get_function_introspection_data 'Gtk', 'main'
+	@go = get_introspection_data 'Gtk', 'main'
       end
 
       should "have correct introspection data" do
@@ -137,7 +137,7 @@ class BuilderTest < MiniTest::Spec
     context "looking at Gtk.init" do
       setup do
 	GirFFI::Builder.build_module 'Gtk'
-	@go = get_function_introspection_data 'Gtk', 'init'
+	@go = get_introspection_data 'Gtk', 'init'
       end
 
       should "have :pointer, :pointer as types of the arguments for the attached function" do
@@ -168,7 +168,7 @@ class BuilderTest < MiniTest::Spec
 	GirFFI::Builder.build_module 'GLib'
 	GirFFI::Builder.build_module 'GObject'
 	GirFFI::Builder.build_module 'Regress'
-	@go = get_function_introspection_data 'Regress', 'test_callback_destroy_notify'
+	@go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
       end
 
       should "have the correct types of the arguments for the attached function" do
@@ -202,7 +202,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building Regress::TestStructA" do
       setup do
-	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestStructA')
+	GirFFI::Builder.build_class get_introspection_data('Regress', 'TestStructA')
       end
 
       should "set up the correct struct members" do
@@ -225,7 +225,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building GObject::TypeCValue" do
       setup do
-	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'TypeCValue')
+	GirFFI::Builder.build_class get_introspection_data('GObject', 'TypeCValue')
       end
 
       should "set up the correct union members" do
@@ -245,7 +245,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building GObject::ValueArray" do
       should "use provided constructor if present" do
-	GirFFI::Builder.build_class get_function_introspection_data('GObject', 'ValueArray')
+	GirFFI::Builder.build_class get_introspection_data('GObject', 'ValueArray')
 	assert_nothing_raised {
 	  GObject::ValueArray.new 2
 	}
@@ -254,7 +254,7 @@ class BuilderTest < MiniTest::Spec
 
     context "building Regress::TestBoxed" do
       setup do
-	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestBoxed')
+	GirFFI::Builder.build_class get_introspection_data('Regress', 'TestBoxed')
       end
 
       should "set up #wrap" do
@@ -295,7 +295,7 @@ class BuilderTest < MiniTest::Spec
     context "built Regress::TestObj" do
       before do
 	save_module :Regress
-	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestObj')
+	GirFFI::Builder.build_class get_introspection_data('Regress', 'TestObj')
       end
 
       should "make autocreated instance method available to all instances" do
@@ -339,7 +339,7 @@ class BuilderTest < MiniTest::Spec
     context "built Regress::TestSubObj" do
       before do
 	save_module :Regress
-	GirFFI::Builder.build_class get_function_introspection_data('Regress', 'TestSubObj')
+	GirFFI::Builder.build_class get_introspection_data('Regress', 'TestSubObj')
       end
 
       should "autocreate parent class' set_bare inside the parent class" do
