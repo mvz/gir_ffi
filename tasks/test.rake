@@ -2,9 +2,15 @@ require 'rake/testtask'
 
 namespace :test do
 
+  Rake::TestTask.new(:integration) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/integration/*_test.rb']
+    t.ruby_opts += ["-w"]
+  end
+
   Rake::TestTask.new(:run) do |t|
     t.libs = ['lib']
-    t.test_files = FileList['test/**/*_test.rb']
+    t.test_files = FileList['test/*_test.rb']
     t.ruby_opts += ["-w"]
   end
 
@@ -13,7 +19,7 @@ namespace :test do
     sh %{cd test/lib && make}
   end
 
-  task :run => :lib
+  task :integration => :lib
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do
@@ -24,5 +30,5 @@ file "test/lib/configure" do
   sh %{cd test/lib && NOCONFIGURE=1 ./autogen.sh}
 end
 
-desc 'Alias to test:run'
-task :test => 'test:run'
+desc 'Run unit an integration tests'
+task :test => ['test:run', 'test:integration']
