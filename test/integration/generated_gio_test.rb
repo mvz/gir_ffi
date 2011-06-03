@@ -1,4 +1,4 @@
-require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Gio namespace.
 class GeneratedGioTest < MiniTest::Spec
