@@ -1,25 +1,31 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class GtkOverridesTest < MiniTest::Spec
-  context "The Gtk.init function" do
-    setup do
-      GirFFI.setup :Gtk, '2.0'
+  setup do
+    @gtk = Module.new do
+      def self.init arr
+        ["baz", "qux", "zonk"]
+      end
     end
+    # FIXME: Too-complex stubbing because of violation of Law of Demeter.
+    stub(@builder = Object.new).setup_function {}
+    stub(@gtk).gir_ffi_builder { @builder }
+    @gtk.instance_eval do
+      include GirFFI::Overrides::Gtk
+    end
+  end
 
+  context "The .init function" do
     should "not take any arguments" do
-      assert_raises(ArgumentError) { Gtk.init 1, ["foo"] }
-      assert_raises(ArgumentError) { Gtk.init ["foo"] }
-      assert_nothing_raised { Gtk.init }
+      assert_raises(ArgumentError) { @gtk.init 1, ["foo"] }
+      assert_raises(ArgumentError) { @gtk.init ["foo"] }
+      assert_nothing_raised { @gtk.init }
     end
 
-    # FIXME: The following test doesn't actually work.
-    # In practice however, the Gtk.init function does exactly this.
-    if false
-    should "process ARGV, removing Gtk+ options" do
-      ARGV.replace ["foo", "--g-fatal-warnings"]
-      Gtk.init
-      assert_same_elements ["foo"], ARGV
-    end
+    should "replace ARGV with the tail of the result of the original init function" do
+      ARGV.replace ["foo", "bar"]
+      @gtk.init
+      assert_equal ["qux", "zonk"], ARGV.to_a
     end
   end
 end
