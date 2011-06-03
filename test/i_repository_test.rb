@@ -41,9 +41,10 @@ module GirFFI
       end
     end
 
-    context "Enumerating the infos" do
+    context "Enumerating the infos for Gtk" do
       setup do
 	@gir = IRepository.default
+        @gir.require 'Gtk'
       end
 
       should "yield more than one object" do
