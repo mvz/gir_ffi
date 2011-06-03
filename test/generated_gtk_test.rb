@@ -1,12 +1,12 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
+# Since the tests will call Gtk+ functions, Gtk+ must be initialized.
+GirFFI.setup :Gtk, '2.0'
+Gtk.init
+
 # Tests generated methods and functions in the Gtk namespace.
 class GeneratedGtkTest < MiniTest::Spec
   context "In the generated Gtk module" do
-    setup do
-      GirFFI.setup :Gtk, '2.0'
-    end
-
     context "a Gtk::Builder instance" do
       setup do
 	@builder = Gtk::Builder.new

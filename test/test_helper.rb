@@ -15,10 +15,6 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'gir_ffi'
 
-# Since the tests will call Gtk+ functions, Gtk+ must be initialized.
-GirFFI.setup :Gtk, '2.0'
-Gtk.init
-
 GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
 module GirFFI
   class IRepository

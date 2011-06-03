@@ -67,10 +67,6 @@ class BuilderTest < MiniTest::Spec
 	assert Gtk::Window.instance_methods.map(&:to_sym).include? :to_ptr
       end
 
-      should "result in Gtk::Window.new to succeed" do
-	assert_nothing_raised {Gtk::Window.new(:toplevel)}
-      end
-
       after do
 	restore_module :Gtk
 	restore_module :GObject
