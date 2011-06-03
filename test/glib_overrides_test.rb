@@ -1,6 +1,10 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 describe "With the GLib overrides" do
+  before do
+    GirFFI.setup :GLib
+  end
+
   describe "a HashTable provided by the system" do
     before do
       GirFFI.setup :Regress
