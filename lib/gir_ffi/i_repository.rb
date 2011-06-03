@@ -1,6 +1,5 @@
 require 'singleton'
 require 'gir_ffi/lib'
-require 'gir_ffi/g_object'
 require 'gir_ffi/g_error'
 require 'gir_ffi/i_base_info'
 require 'gir_ffi/i_callable_info'
@@ -53,7 +52,6 @@ module GirFFI
     }
 
     def initialize
-      GObject.type_init
       @gobj = Lib::g_irepository_get_default
     end
 
