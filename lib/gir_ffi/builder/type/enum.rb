@@ -7,12 +7,7 @@ module GirFFI
       # attached to the appropriate namespace module, and will be defined
       # as an enum for FFI.
       class Enum < RegisteredType
-        def build_class
-          unless defined? @klass
-            instantiate_enum_class
-          end
-          @klass
-        end
+        private
 
         def value_spec
           return info.values.map {|vinfo|
@@ -21,7 +16,7 @@ module GirFFI
           }.flatten
         end
 
-        def instantiate_enum_class
+        def instantiate_class
           if const_defined_for namespace_module, @classname
             @klass = namespace_module.const_get @classname
           else

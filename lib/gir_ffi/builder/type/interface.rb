@@ -5,14 +5,8 @@ module GirFFI
 
       # Implements the creation of a class representing an Interface.
       class Interface < RegisteredType
-        def build_class
-          unless defined? @klass
-            instantiate_module
-          end
-          @klass
-        end
-
-        def instantiate_module
+        # FIXME: The word 'class' is not really correct.
+        def instantiate_class
           @klass = optionally_define_constant(namespace_module, @classname) do
             ::Module.new do
               def self.gir_ffi_builder

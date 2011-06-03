@@ -14,12 +14,7 @@ module GirFFI
           :utf8 => :v_string
         }
 
-        def build_class
-          unless defined? @klass
-            instantiate_class
-          end
-          @klass
-        end
+        private
 
         def instantiate_class
           @klass = optionally_define_constant namespace_module, @classname do

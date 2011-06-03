@@ -10,6 +10,13 @@ module GirFFI
           @classname = @info.name.gsub(/^(.)/) { $1.upcase }
         end
 
+        def build_class
+          unless defined? @klass
+            instantiate_class
+          end
+          @klass
+        end
+
         private
 
         def info

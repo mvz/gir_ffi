@@ -9,12 +9,13 @@ module GirFFI
       class Unintrospectable < Object
         CACHE = {}
 
+        # FIXME: Breaks parent interface.
         def initialize gtype
           @gtype = gtype
           @info = nil
         end
 
-        def instantiate_struct_class
+        def instantiate_class
           CACHE[@gtype] ||= Class.new(superclass)
           @klass = CACHE[@gtype]
           setup_class unless already_set_up

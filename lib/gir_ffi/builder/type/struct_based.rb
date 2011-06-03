@@ -7,14 +7,7 @@ module GirFFI
       # whose C representation is a struct, i.e., :object, :struct, and
       # :interface.
       class StructBased < RegisteredType
-        def build_class
-          unless defined? @klass
-            instantiate_struct_class
-          end
-          @klass
-        end
-
-        def instantiate_struct_class
+        def instantiate_class
           @klass = get_or_define_class namespace_module, @classname, superclass
           @structklass = get_or_define_class @klass, :Struct, FFI::Struct
           setup_class unless already_set_up
