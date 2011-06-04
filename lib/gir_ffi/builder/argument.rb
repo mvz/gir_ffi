@@ -15,6 +15,12 @@ module GirFFI::Builder
               end
       klass.build function_builder, arginfo, libmodule
     end
+
+    module PreSetsUpPointerOutPointer
+      def pre
+        [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+      end
+    end
   end
 
   # Implements argument processing for arguments with direction :in.
@@ -221,9 +227,7 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :out.
   class CArrayOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def postpost
       size = array_size
@@ -255,9 +259,7 @@ module GirFFI::Builder
   # Implements argument processing for strv arguments with direction
   # :out.
   class StrvOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def postpost
       [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
@@ -267,9 +269,7 @@ module GirFFI::Builder
   # Implements argument processing for GArray arguments with direction
   # :out.
   class ArrayOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def post
       tag = subtype_tag
@@ -291,9 +291,7 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :out.
   class ListOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def post
       elm_t = subtype_tag.inspect
@@ -304,9 +302,7 @@ module GirFFI::Builder
   # Implements argument processing for gslist arguments with direction
   # :out.
   class SListOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def post
       elm_t = subtype_tag.inspect
@@ -317,9 +313,7 @@ module GirFFI::Builder
   # Implements argument processing for ghash arguments with direction
   # :out.
   class HashTableOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-    end
+    include Argument::PreSetsUpPointerOutPointer
 
     def postpost
       key_t = subtype_tag(0).inspect
