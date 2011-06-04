@@ -25,6 +25,17 @@ module GirFFI
           end
         end
 
+        def find_signal signal_name
+          signal_definers.each do |inf|
+            inf.signals.each do |sig|
+              return sig if sig.name == signal_name
+            end
+          end
+          if parent
+            return superclass.gir_ffi_builder.find_signal signal_name
+          end
+        end
+
         private
 
         def setup_instance_method_in_ancestor method
