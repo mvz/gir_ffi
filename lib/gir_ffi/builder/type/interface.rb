@@ -3,8 +3,10 @@ module GirFFI
   module Builder
     module Type
 
-      # Implements the creation of a class representing an Interface.
+      # Implements the creation of a module representing an Interface.
       class Interface < RegisteredType
+        private
+
         # FIXME: The word 'class' is not really correct.
         def instantiate_class
           @klass = optionally_define_constant(namespace_module, @classname) do
