@@ -1,8 +1,8 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi/overrides/gtk'
 
-class GtkOverridesTest < MiniTest::Spec
-  setup do
+describe GirFFI::Overrides::Gtk do
+  before do
     @gtk = Module.new do
       def self.init arr
         ["baz", "qux", "zonk"]
