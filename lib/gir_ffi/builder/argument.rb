@@ -1,32 +1,7 @@
+require 'gir_ffi/builder/argument/base'
+
 module GirFFI::Builder
-  # Abstract parent class of the argument building classes. These classes
-  # are used by Builder::Function to create the code that processes
-  # each argument before and after the actual function call.
-  class Argument
-    KEYWORDS = [
-      "alias", "and", "begin", "break", "case", "class", "def", "do",
-      "else", "elsif", "end", "ensure", "false", "for", "if", "in",
-      "module", "next", "nil", "not", "or", "redo", "rescue", "retry",
-      "return", "self", "super", "then", "true", "undef", "unless",
-      "until", "when", "while", "yield"
-    ]
-
-    attr_reader :callarg, :name, :retname
-
-    attr_accessor :length_arg, :array_arg
-
-    def initialize function_builder, arginfo=nil, libmodule=nil
-      @arginfo = arginfo
-      @inarg = nil
-      @callarg = nil
-      @retname = nil
-      @name = nil
-      @function_builder = function_builder
-      @libmodule = libmodule
-      @length_arg = nil
-      @array_arg = nil
-    end
-
+  module Argument
     def self.build function_builder, arginfo, libmodule
       klass = case arginfo.direction
               when :inout
@@ -40,79 +15,10 @@ module GirFFI::Builder
               end
       klass.build function_builder, arginfo, libmodule
     end
-
-    def type_info
-      @arginfo.argument_type
-    end
-
-    def type_tag
-      tag = type_info.tag
-      tag == :GType ? :gtype : tag
-    end
-
-    def subtype_tag index=0
-      st = type_info.param_type(index)
-      t = st.tag
-      case t
-      when :GType
-        return :gtype
-      when :interface
-        return :interface_pointer if st.pointer?
-        return :interface
-      else
-        return t
-      end
-    end
-
-    def argument_class_name
-      iface = type_info.interface
-      "::#{iface.safe_namespace}::#{iface.name}"
-    end
-
-    def subtype_class_name index=0
-      iface = type_info.param_type(index).interface
-      "::#{iface.safe_namespace}::#{iface.name}"
-    end
-
-    def array_size
-      if @length_arg
-        @length_arg.retname
-      else
-        type_info.array_fixed_size
-      end
-    end
-
-    def safe name
-      if KEYWORDS.include? name
-	"#{name}_"
-      else
-	name
-      end
-    end
-
-    def inarg
-      @array_arg.nil? ? @inarg : nil
-    end
-
-    def retval
-      @array_arg.nil? ? @retname : nil
-    end
-
-    def pre
-      []
-    end
-
-    def post
-      []
-    end
-
-    def postpost
-      []
-    end
   end
 
   # Implements argument processing for arguments with direction :in.
-  class InArgument < Argument
+  class InArgument < Argument::Base
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -235,7 +141,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for arguments with direction :out.
-  class OutArgument < Argument
+  class OutArgument < Argument::Base
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -439,7 +345,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for arguments with direction :inout.
-  class InOutArgument < Argument
+  class InOutArgument < Argument::Base
     def prepare
       @name = safe(@arginfo.name)
       @callarg = @function_builder.new_var
@@ -639,7 +545,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for return values.
-  class ReturnValue < Argument
+  class ReturnValue < Argument::Base
     attr_reader :cvar
 
     def prepare
@@ -808,7 +714,7 @@ module GirFFI::Builder
   # Implements argument processing for error handling arguments. These
   # arguments are not part of the introspected signature, but their
   # presence is indicated by the 'throws' attribute of the function.
-  class ErrorArgument < Argument
+  class ErrorArgument < Argument::Base
     def prepare
       @callarg = @function_builder.new_var
     end
@@ -823,7 +729,7 @@ module GirFFI::Builder
   end
 
   # Argument builder that does nothing. Implements Null Object pattern.
-  class NullArgument < Argument
+  class NullArgument < Argument::Base
     def prepare; end
   end
 end
