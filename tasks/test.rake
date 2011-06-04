@@ -26,6 +26,7 @@ namespace :test do
   end
 
   task :integration => :lib
+  task :run => :lib
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do
