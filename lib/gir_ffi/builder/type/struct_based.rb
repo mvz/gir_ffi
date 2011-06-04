@@ -1,4 +1,7 @@
 require 'gir_ffi/builder/type/registered_type'
+require 'gir_ffi/builder/type/with_layout'
+require 'gir_ffi/builder/type/with_methods'
+
 module GirFFI
   module Builder
     module Type
@@ -6,6 +9,9 @@ module GirFFI
       # Implements the creation of a class representing one of the types
       # whose C representation is a struct, i.e., :object and :struct.
       class StructBased < RegisteredType
+        include WithMethods
+        include WithLayout
+
         private
 
         def instantiate_class

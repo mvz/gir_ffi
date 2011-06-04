@@ -1,10 +1,13 @@
-require 'gir_ffi/builder/type/struct_based'
+require 'gir_ffi/builder/type/registered_type'
+require 'gir_ffi/builder/type/with_methods'
 module GirFFI
   module Builder
     module Type
 
       # Implements the creation of a module representing an Interface.
       class Interface < RegisteredType
+        include WithMethods
+
         private
 
         # FIXME: The word 'class' is not really correct.
