@@ -103,9 +103,9 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 	  _v3 = GirFFI::ArgHelper.gint32_outptr
 	  ::Lib.regress_test_array_int_null_out _v1, _v3
 	  _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
-	  GirFFI::ArgHelper.cleanup_ptr _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
 	  GirFFI::ArgHelper.cleanup_ptr_ptr _v1
+	  GirFFI::ArgHelper.cleanup_ptr _v3
 	  return _v2
 	end"
 

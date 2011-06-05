@@ -171,18 +171,42 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for arguments with direction
-  # :out that are enums
-  class EnumOutArgument < OutArgument
+  # :out that are neither arrays nor 'interfaces'.
+  class RegularOutArgument < OutArgument
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.gint32_outptr" ]
+      [ "#{@callarg} = GirFFI::ArgHelper.#{base_type}_outptr" ]
     end
 
     def post
-      pst = [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
+    end
+
+    def cleanup
       if @arginfo.ownership_transfer == :everything
-        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
+      else
+        super
       end
-      pst
+    end
+
+    private
+
+    def base_type
+      type_tag
+    end
+  end
+
+  # Implements argument processing for arguments with direction
+  # :out that are enums
+  class EnumOutArgument < RegularOutArgument
+    def post
+      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
+    end
+
+    private
+
+    def base_type
+      :gint32
     end
   end
 
@@ -295,22 +319,6 @@ module GirFFI::Builder
       key_t = subtype_tag(0).inspect
       val_t = subtype_tag(1).inspect
       [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
-    end
-  end
-
-  # Implements argument processing for arguments with direction
-  # :out that are neither arrays nor 'interfaces'.
-  class RegularOutArgument < OutArgument
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_outptr" ]
-    end
-
-    def post
-      pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
-      if @arginfo.ownership_transfer == :everything
-        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
-      end
-      pst
     end
   end
 
