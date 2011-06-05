@@ -373,10 +373,6 @@ module GirFFI::Builder
     def post
       [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
     end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-    end
   end
 
   # Implements argument processing for interface arguments with direction
@@ -388,10 +384,6 @@ module GirFFI::Builder
 
     def post
       [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})" ]
-    end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 
@@ -423,7 +415,7 @@ module GirFFI::Builder
 
     def cleanup
       if @arginfo.ownership_transfer == :nothing
-        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
+        super
       else
         if subtype_tag == :utf8
           ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{array_size}"]
@@ -467,10 +459,6 @@ module GirFFI::Builder
       pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       pp
     end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-    end
   end
 
   # Implements argument processing for gslist arguments with direction
@@ -486,10 +474,6 @@ module GirFFI::Builder
       pp = []
       pp << "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       pp
-    end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
@@ -510,10 +494,6 @@ module GirFFI::Builder
       pp << "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
       pp
     end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-    end
   end
 
   # Implements argument processing for arguments with direction
@@ -530,10 +510,6 @@ module GirFFI::Builder
 
     def post
       [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
-    end
-
-    def cleanup
-      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
