@@ -1,6 +1,7 @@
 require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
+require 'gir_ffi/builder/argument/in_out_base'
 
 module GirFFI::Builder
   module Argument
@@ -324,14 +325,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for arguments with direction :inout.
-  class InOutArgument < Argument::Base
-    def prepare
-      @name = safe(@arginfo.name)
-      @callarg = @function_builder.new_var
-      @inarg = @name
-      @retname = @function_builder.new_var
-    end
-
+  module InOutArgument
     def self.build function_builder, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -369,7 +363,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction
   # :inout that are enums.
-  class EnumInOutArgument < InOutArgument
+  class EnumInOutArgument < Argument::InOutBase
     def pre
       pr = []
       pr << "#{@callarg} = GirFFI::ArgHelper.gint32_to_inoutptr #{argument_class_name}[#{@name}]"
@@ -387,7 +381,7 @@ module GirFFI::Builder
 
   # Implements argument processing for interface arguments with direction
   # :inout (structs, objects, etc.).
-  class InterfaceInOutArgument < InOutArgument
+  class InterfaceInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}.to_ptr" ]
     end
@@ -403,7 +397,7 @@ module GirFFI::Builder
 
   # Implements argument processing for strv arguments with direction
   # :inout.
-  class StrvInOutArgument < InOutArgument
+  class StrvInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
@@ -415,7 +409,7 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction
   # :inout.
-  class CArrayInOutArgument < InOutArgument
+  class CArrayInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
     end
@@ -442,7 +436,7 @@ module GirFFI::Builder
 
   # Implements argument processing for GArray arguments with direction
   # :out.
-  class ArrayInOutArgument < InOutArgument
+  class ArrayInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
     end
@@ -462,7 +456,7 @@ module GirFFI::Builder
 
   # Implements argument processing for glist arguments with direction
   # :inout.
-  class ListInOutArgument < InOutArgument
+  class ListInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
     end
@@ -482,7 +476,7 @@ module GirFFI::Builder
   # Implements argument processing for gslist arguments with direction
   # :inout.
   # FIXME: Merge code with ListInOutArgument somehow.
-  class SListInOutArgument < InOutArgument
+  class SListInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
     end
@@ -501,7 +495,7 @@ module GirFFI::Builder
 
   # Implements argument processing for ghash arguments with direction
   # :inout.
-  class HashTableInOutArgument < InOutArgument
+  class HashTableInOutArgument < Argument::InOutBase
     def pre
       key_t = subtype_tag(0).inspect
       val_t = subtype_tag(1).inspect
@@ -524,7 +518,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction
   # :inout that are neither arrays nor 'interfaces'.
-  class RegularInOutArgument < InOutArgument
+  class RegularInOutArgument < Argument::InOutBase
     def pre
       pr = []
       if @array_arg
