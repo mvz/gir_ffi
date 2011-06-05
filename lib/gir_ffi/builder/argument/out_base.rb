@@ -9,6 +9,10 @@ module GirFFI
           @callarg = @function_builder.new_var
           @retname = @function_builder.new_var
         end
+
+        def pre
+          [ "#{@callarg} = GirFFI::ArgHelper.#{base_type}_outptr" ]
+        end
       end
     end
   end

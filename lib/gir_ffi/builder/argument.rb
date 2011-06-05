@@ -168,10 +168,6 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < Argument::OutBase
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{base_type}_outptr" ]
-    end
-
     def post
       [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
     end
@@ -226,8 +222,10 @@ module GirFFI::Builder
   end
 
   class PointerLikeOutArgument < Argument::OutBase
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    private
+
+    def base_type
+      :pointer
     end
   end
 
