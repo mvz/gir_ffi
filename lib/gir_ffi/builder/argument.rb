@@ -63,7 +63,7 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
-    def post
+    def cleanup
       unless @arginfo.ownership_transfer == :everything
         if subtype_tag == :utf8
           [ "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}" ]
@@ -106,7 +106,7 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
     end
 
-    def post
+    def cleanup
       # TODO: Write tests and enable this.
       # [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
       []
@@ -251,18 +251,22 @@ module GirFFI::Builder
         pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
       end
 
-      if @arginfo.ownership_transfer == :everything
-        case tag
-        when :utf8
-	  pp << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
-        when :interface
-	  pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
-	else
-	  pp << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
-	end
-      end
-
       pp
+    end
+
+    def cleanup
+      if @arginfo.ownership_transfer == :everything
+        case subtype_tag
+        when :utf8
+	  ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"]
+        when :interface
+	  ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
+	else
+	  ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
+	end
+      else
+        super
+      end
     end
   end
 
@@ -286,11 +290,15 @@ module GirFFI::Builder
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
       pp << "#{@retname}.element_type = #{etype.inspect}"
 
-      if @arginfo.ownership_transfer == :everything
-        pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
-      end
-
       pp
+    end
+
+    def cleanup
+      if @arginfo.ownership_transfer == :everything
+        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
+      else
+        super
+      end
     end
   end
 
@@ -376,8 +384,11 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]",
-        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 
@@ -389,8 +400,11 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})",
-        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+      [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})" ]
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
     end
   end
 
@@ -417,16 +431,19 @@ module GirFFI::Builder
       tag = subtype_tag
       size = array_size
       pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
+      pst
+    end
+
+    def cleanup
       if @arginfo.ownership_transfer == :nothing
-        pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
+        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
       else
-        if tag == :utf8
-          pst << "GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"
+        if subtype_tag == :utf8
+          ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{array_size}"]
         else
-          pst << "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"
+          ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
         end
       end
-      pst
     end
   end
 
@@ -445,7 +462,6 @@ module GirFFI::Builder
 
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
       pp << "#{@retname}.element_type = #{etype.inspect}"
-      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
 
       pp
     end
@@ -462,8 +478,11 @@ module GirFFI::Builder
       elm_t = subtype_tag.inspect
       pp = []
       pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
@@ -479,8 +498,11 @@ module GirFFI::Builder
       elm_t = subtype_tag.inspect
       pp = []
       pp << "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
@@ -499,8 +521,11 @@ module GirFFI::Builder
       key_t = subtype_tag(0).inspect
       val_t = subtype_tag(1).inspect
       pp << "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       pp
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
@@ -517,8 +542,11 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}",
-        "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
+    end
+
+    def cleanup
+      ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
     end
   end
 
