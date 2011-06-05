@@ -80,6 +80,8 @@ module GirFFI::Builder
       po = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post)
       po.unshift @errarg.post
 
+      po += @data.map {|d| d.cleanup}
+
       retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
       po << "return #{retvals.join(', ')}" unless retvals.empty?
 

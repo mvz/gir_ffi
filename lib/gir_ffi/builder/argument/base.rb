@@ -97,6 +97,10 @@ module GirFFI
         def postpost
           []
         end
+
+        def cleanup
+          []
+        end
       end
     end
   end
