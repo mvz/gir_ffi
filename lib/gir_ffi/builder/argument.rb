@@ -4,23 +4,11 @@ require 'gir_ffi/builder/argument/in_base'
 module GirFFI::Builder
   module Argument
     def self.build function_builder, arginfo, libmodule
-      klass = case arginfo.direction
-              when :inout
-                InOutArgument
-              when :in
-                InArgument
-              when :out
-                OutArgument
-              else
-                raise ArgumentError
-              end
-      klass.build function_builder, arginfo, libmodule
-    end
-
-    module PreSetsUpPointerOutPointer
-      def pre
-        [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
-      end
+      {
+        :inout => InOutArgument,
+        :in => InArgument,
+        :out => OutArgument
+      }[arginfo.direction].build function_builder, arginfo, libmodule
     end
   end
 
