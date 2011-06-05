@@ -202,14 +202,7 @@ module GirFFI
 
 	  # Extra arguments
 	  signalinfo.args.each do |info|
-	    arg = args.shift
-	    if info.argument_type.tag == :interface
-	      iface = info.argument_type.interface
-	      kls = GirFFI::Builder.build_class iface
-	      result << kls.wrap(arg)
-	    else
-	      result << arg
-	    end
+            result << cast_signal_argument(info, args.shift)
 	  end
 
 	  # User Data
@@ -227,6 +220,17 @@ module GirFFI
 
 	  return result
 	end
+
+        def self.cast_signal_argument info, arg
+          arg_t = info.argument_type
+          if arg_t.tag == :interface
+            iface = arg_t.interface
+            kls = GirFFI::Builder.build_class iface
+            kls.wrap(arg)
+          else
+            arg
+          end
+        end
       end
 
       module InitiallyUnownedClassMethods
