@@ -206,11 +206,15 @@ module GirFFI::Builder
     end
   end
 
+  class PointerLikeOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+    end
+  end
+
   # Implements argument processing for array arguments with direction
   # :out.
-  class CArrayOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class CArrayOutArgument < PointerLikeOutArgument
     def postpost
       size = array_size
       tag = subtype_tag
@@ -240,9 +244,7 @@ module GirFFI::Builder
 
   # Implements argument processing for strv arguments with direction
   # :out.
-  class StrvOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class StrvOutArgument < PointerLikeOutArgument
     def postpost
       [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
     end
@@ -250,9 +252,7 @@ module GirFFI::Builder
 
   # Implements argument processing for GArray arguments with direction
   # :out.
-  class ArrayOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class ArrayOutArgument < PointerLikeOutArgument
     def post
       tag = subtype_tag
       etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
@@ -272,9 +272,7 @@ module GirFFI::Builder
 
   # Implements argument processing for glist arguments with direction
   # :out.
-  class ListOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class ListOutArgument < PointerLikeOutArgument
     def post
       elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
@@ -283,9 +281,7 @@ module GirFFI::Builder
 
   # Implements argument processing for gslist arguments with direction
   # :out.
-  class SListOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class SListOutArgument < PointerLikeOutArgument
     def post
       elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
@@ -294,9 +290,7 @@ module GirFFI::Builder
 
   # Implements argument processing for ghash arguments with direction
   # :out.
-  class HashTableOutArgument < OutArgument
-    include Argument::PreSetsUpPointerOutPointer
-
+  class HashTableOutArgument < PointerLikeOutArgument
     def post
       key_t = subtype_tag(0).inspect
       val_t = subtype_tag(1).inspect
