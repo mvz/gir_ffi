@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/argument/base'
+require 'gir_ffi/builder/argument/in_base'
 
 module GirFFI::Builder
   module Argument
@@ -23,14 +24,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :in.
-  class InArgument < Argument::Base
-    def prepare
-      @name = safe(@arginfo.name)
-      @callarg = @function_builder.new_var
-      @inarg = @name
-    end
-
+  module InArgument
     def self.build function_builder, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -63,7 +57,7 @@ module GirFFI::Builder
 
   # Implements argument processing for callback arguments with direction
   # :in.
-  class CallbackInArgument < InArgument
+  class CallbackInArgument < Argument::InBase
     def pre
       iface = type_info.interface
       [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
@@ -73,14 +67,14 @@ module GirFFI::Builder
 
   # Implements argument processing for void pointer arguments with
   # direction :in.
-  class VoidInArgument < InArgument
+  class VoidInArgument < Argument::InBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
     end
   end
 
   # Implements argument processing for array arguments with direction :in.
-  class CArrayInArgument < InArgument
+  class CArrayInArgument < Argument::InBase
     def post
       unless @arginfo.ownership_transfer == :everything
         if subtype_tag == :utf8
@@ -104,14 +98,14 @@ module GirFFI::Builder
 
   # Implements argument processing for glist and gslist arguments with
   # direction :in.
-  class ListInArgument < InArgument
+  class ListInArgument < Argument::InBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction :in.
-  class HashTableInArgument < InArgument
+  class HashTableInArgument < Argument::InBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.hash_to_ghash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
     end
@@ -119,7 +113,7 @@ module GirFFI::Builder
 
   # Implements argument processing for UTF8 string arguments with direction
   # :in.
-  class Utf8InArgument < InArgument
+  class Utf8InArgument < Argument::InBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
     end
@@ -134,7 +128,7 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction :in whose
   # type-specific processing is left to FFI (e.g., ints and floats, and
   # objects that implement to_ptr.).
-  class RegularInArgument < InArgument
+  class RegularInArgument < Argument::InBase
     def pre
       pr = []
       if @array_arg
