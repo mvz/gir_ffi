@@ -217,6 +217,22 @@ class GObjectOverridesTest < MiniTest::Spec
 	  end
 	end
       end
+
+      describe "#cast_signal_argument" do
+        describe "with info for an enum" do
+          before do
+            enuminfo = get_introspection_data 'GLib', 'DateMonth'
+            stub(arg_t = Object.new).interface { enuminfo }
+            stub(arg_t).tag { :interface }
+            stub(@info = Object.new).argument_type { arg_t }
+          end
+
+          it "casts an integer to its enum symbol" do
+            res = GirFFI::Overrides::GObject::Helper.cast_signal_argument @info, 7
+            assert_equal :july, res
+          end
+        end
+      end
     end
 
     context "The RubyClosure class" do

@@ -192,6 +192,7 @@ module GirFFI
 	  rval
 	end
 
+        # TODO: Generate cast back methods using existing Argument builders.
 	def self.cast_back_signal_arguments signalinfo, klass, *args
 	  result = []
 
@@ -226,7 +227,12 @@ module GirFFI
           if arg_t.tag == :interface
             iface = arg_t.interface
             kls = GirFFI::Builder.build_class iface
-            kls.wrap(arg)
+            case iface.info_type
+            when :enum, :flags
+              kls[arg]
+            else
+              kls.wrap(arg)
+            end
           else
             arg
           end
