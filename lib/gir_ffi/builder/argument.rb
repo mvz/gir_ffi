@@ -191,16 +191,16 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :out that are enums
   class EnumOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.gint32_outptr" ]
+    end
+
     def post
       pst = [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
       if @arginfo.ownership_transfer == :everything
         pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
       pst
-    end
-
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.gint32_outptr" ]
     end
   end
 
@@ -315,7 +315,7 @@ module GirFFI::Builder
   class HashTableOutArgument < OutArgument
     include Argument::PreSetsUpPointerOutPointer
 
-    def postpost
+    def post
       key_t = subtype_tag(0).inspect
       val_t = subtype_tag(1).inspect
       [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
@@ -325,16 +325,16 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < OutArgument
+    def pre
+      [ "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_outptr" ]
+    end
+
     def post
       pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
       if @arginfo.ownership_transfer == :everything
         pst << "GirFFI::ArgHelper.cleanup_ptr #{@callarg}"
       end
       pst
-    end
-
-    def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_outptr" ]
     end
   end
 
@@ -509,7 +509,7 @@ module GirFFI::Builder
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name}))" ]
     end
 
-    def postpost
+    def post
       pp = []
 
       key_t = subtype_tag(0).inspect
@@ -599,14 +599,14 @@ module GirFFI::Builder
     end
   end
 
-  # Null object to represent the case where no actual values is returned.
+  # Null object to represent the case where no actual value is returned.
   class VoidReturnValue < ReturnValue
     def prepare; end
   end
 
   # Implements argument processing for interface return values (interfaces
   # and structs, but not objects, which need special handling for
-  # polymorphism and constructors.
+  # polymorphism and constructors).
   class InterfaceReturnValue < ReturnValue
     def post
       [ "#{@retname} = #{argument_class_name}.wrap(#{@cvar})" ]
