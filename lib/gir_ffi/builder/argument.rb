@@ -1,5 +1,6 @@
 require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
+require 'gir_ffi/builder/argument/out_base'
 
 module GirFFI::Builder
   module Argument
@@ -129,13 +130,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for arguments with direction :out.
-  class OutArgument < Argument::Base
-    def prepare
-      @name = safe(@arginfo.name)
-      @callarg = @function_builder.new_var
-      @retname = @function_builder.new_var
-    end
-
+  module OutArgument
     def self.build function_builder, arginfo, libmodule
       type = arginfo.argument_type
       klass = case arginfo.argument_type.tag
@@ -172,7 +167,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
-  class RegularOutArgument < OutArgument
+  class RegularOutArgument < Argument::OutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.#{base_type}_outptr" ]
     end
@@ -212,7 +207,7 @@ module GirFFI::Builder
 
   # Implements argument processing for interface arguments with direction
   # :out (structs, objects, etc.).
-  class InterfaceOutArgument < OutArgument
+  class InterfaceOutArgument < Argument::OutBase
     def pre
       if @arginfo.caller_allocates?
 	[ "#{@callarg} = #{argument_class_name}.allocate" ]
@@ -230,7 +225,7 @@ module GirFFI::Builder
     end
   end
 
-  class PointerLikeOutArgument < OutArgument
+  class PointerLikeOutArgument < Argument::OutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
     end
