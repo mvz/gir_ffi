@@ -622,11 +622,6 @@ module GirFFI::Builder
 
   # Implements argument processing for object constructors.
   class ConstructorReturnValue < ReturnValue
-    def defining_class_name
-      classinfo = @arginfo.container
-      "::#{classinfo.namespace}::#{classinfo.name}"
-    end
-
     def post
       [ "#{@retname} = self.constructor_wrap(#{@cvar})" ]
     end
