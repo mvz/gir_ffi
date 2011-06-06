@@ -6,12 +6,12 @@ http://www.github.com/mvz/ruby-gir-ffi
 
 == Description
 
-Ruby-FFI-based binding of the GObject Introspection Repository
+Ruby bindings for GNOME using the GObject Introspection Repository.
 
 == Features/Problems
 
 * Create bindings to GObject-based libraries at runtime
-* Not done yet
+* Almost, but not entirely done yet
 
 == Synopsis
 
@@ -21,26 +21,40 @@ Ruby-FFI-based binding of the GObject Introspection Repository
   Gtk.init
   win = Gtk::Window.new :toplevel
 
+See the `examples/` directory for more, well, examples.
+
 == Requirements
 
 * Ruby-FFI of course
 * gobject-introspection installed with some introspection data
-* The `rr` and `shoulda` gems for testing.
+* The `rr` and `minitest` gems for testing
 
-The current implementation needs the actual libraries to be available under
-the name ending in just `.so`. On Debian and Ubuntu at least, this means
-you have to install the -dev packages of any library you may want to
-access. The following set of packages should do the trick:
-`libgirepository1.0-dev` (at least version 0.10), and either
-`gir1.2-gtk-3.0` and `libgtk-3-dev`, or `gir1.2-gtk-2.0` and
-`libgtk2.0-dev`.
+Depending on the GIR data, GirFFI needs the actual libraries to be
+available under the name ending in plain `.so`. If GirFFI complains that it
+cannot find the library, try installing development packages for those
+libraries.
 
-== Hacking
+On Debian and Ubuntu, the following set of packages should be enough to get
+`rake test` working: `libgirepository1.0-dev` (at least version 0.10),
+`gir1.2-gtk-2.0` and `libgtk2.0-dev`.
+
+== Hacking and contributing
 
 This is still very much a work in progress. You can start exploring by
-running the example programs in the examples/ folder. Some illustrate what
-works, some are a test bed for how things should work. Have a look at
-`rake -T`. Feel free to file bugs or send pull requests.
+running the example programs in the `examples/` folder. Some illustrate
+what works, some are a test bed for how things should work. Have a look at
+the output of `rake notes`. Feel free to file bugs or send pull requests.
+
+If you want to send pull requests or patches, please:
+
+* Make sure `rake test` runs without reporting any failures. If your code
+  breaks existing stuff, it won't get merged in.
+* Add tests for your feature. Otherwise, I can't see if it works or if I
+  break it later.
+* Make sure latest master merges cleanly with your branch. Things might
+  have moved around since you forked.
+* Try not to include changes that are irrelevant to your feature in the
+  same commit.
 
 == Install
 
