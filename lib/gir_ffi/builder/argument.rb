@@ -134,7 +134,7 @@ module GirFFI::Builder
   module OutArgument
     def self.build function_builder, arginfo, libmodule
       type = arginfo.argument_type
-      klass = case arginfo.argument_type.tag
+      klass = case type.tag
               when :interface
                 case type.interface.info_type
                 when :enum, :flags
@@ -427,7 +427,7 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for GArray arguments with direction
-  # :out.
+  # :inout.
   class ArrayInOutArgument < Argument::InOutBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
