@@ -427,13 +427,8 @@ module GirFFI
     # FIXME: Quasi-circular dependency on generated module
     def self.object_pointer_to_object optr
       return nil if optr.null?
-      tp = ::GObject.type_from_instance_pointer optr
-      info = gir.find_by_gtype tp
-      if info.nil?
-        klass = GirFFI::Builder::Type::Unintrospectable.new(tp).build_class
-      else
-        klass = GirFFI::Builder.build_class info
-      end
+      gtype = ::GObject.type_from_instance_pointer optr
+      klass = GirFFI::Builder.build_by_gtype gtype
       klass.wrap optr
     end
 

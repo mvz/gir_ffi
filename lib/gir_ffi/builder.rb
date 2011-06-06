@@ -31,6 +31,15 @@ module GirFFI
       Builder::Type.build(info)
     end
 
+    def self.build_by_gtype gtype
+      info = IRepository.default.find_by_gtype gtype
+      if info.nil?
+        Builder::Type::Unintrospectable.new(gtype).build_class
+      else
+        build_class info
+      end
+    end
+
     def self.build_module namespace, version=nil
       Builder::Module.new(namespace, version).generate
     end
