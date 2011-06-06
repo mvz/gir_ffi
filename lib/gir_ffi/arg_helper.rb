@@ -246,12 +246,9 @@ module GirFFI
 
     def self.ptr_to_interface_array klass, ptr, size
       sz = klass.ffi_structure.size
-      arr = []
-      size.times do
-        arr << klass.wrap(ptr)
-        ptr += sz
+      size.times.map do |i|
+        klass.wrap(ptr + sz * i)
       end
-      arr
     end
 
     if RUBY_VERSION < "1.9"
@@ -433,7 +430,7 @@ module GirFFI
     end
 
     def self.gir
-      gir = GirFFI::IRepository.default
+      GirFFI::IRepository.default
     end
 
     def self.cast_from_pointer type, it
