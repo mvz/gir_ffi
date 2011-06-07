@@ -67,10 +67,35 @@ module GirFFI
       types
     end
 
+    def self.ffi_argument_types_for_signal info
+      types = info.args.map do |arg|
+        itypeinfo_to_callback_ffitype arg.argument_type
+      end
+      types.unshift(:pointer).push(:pointer)
+    end
+
     def self.ffi_function_return_type info
       rt = info.return_type
       return :string if rt.tag == :utf8
       itypeinfo_to_ffitype rt
+    end
+
+    def self.itypeinfo_to_callback_ffitype info
+      tag = info.tag
+
+      return :string if tag == :utf8
+      return :pointer if info.pointer?
+
+      if tag == :interface
+        case info.interface.info_type
+        when :object, :struct
+          :pointer
+        else
+          raise NotImplementedError, info.interface.info_type
+        end
+      else
+        return TAG_TYPE_MAP[tag] || tag
+      end
     end
 
     def self.itypeinfo_to_ffitype info

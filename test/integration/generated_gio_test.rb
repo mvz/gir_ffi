@@ -50,5 +50,20 @@ describe "The generated Gio module" do
       end
     end
   end
+
+  describe "the action-added signal" do
+    before do
+      @grp = Gio::SimpleActionGroup.new
+    end
+
+    it "correctly passes on the string parameter 'action_name'" do
+      a = nil
+      GObject.signal_connect @grp, "action-added" do |grp, action_name, user_data|
+        a = action_name
+      end
+      GObject.signal_emit @grp, "action-added", "foo"
+      assert_equal "foo", a
+    end
+  end
 end
 

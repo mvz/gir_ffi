@@ -115,8 +115,7 @@ module GirFFI
 
 	  rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
 
-          # FIXME: Why are these all pointers?
-	  argtypes = [:pointer] + sig.args.map {|arg| :pointer} + [:pointer]
+	  argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
 
 	  callback = FFI::Function.new rettype, argtypes,
 	    &(Helper.signal_callback_args(sig, object.class, &block))
