@@ -129,6 +129,7 @@ class GeneratedRegressTest < MiniTest::Spec
 	assert_instance_of Regress::TestObj, o
       end
 
+      # TODO: Test that callback is called
       should "create an instance using #new_callback" do
 	o = Regress::TestObj.new_callback Proc.new { }, nil, nil
 	assert_instance_of Regress::TestObj, o
@@ -212,7 +213,21 @@ class GeneratedRegressTest < MiniTest::Spec
 	should "not respond to #static_method" do
 	  assert_raises(NoMethodError) { @o.static_method 1 }
 	end
+        # TODO: Test instance's fields and properies.
       end
+
+      describe "its 'test' signal" do
+        it "properly passes its arguments" do
+          a = b = nil
+          o = Regress::TestSubObj.new
+          GObject.signal_connect(o, "test", 2) { |i, d| a = d; b = i }
+          GObject.signal_emit o, "test"
+          # TODO: store o's identity somewhere so we can make o == b.
+          assert_equal [2, o.to_ptr], [a, b.to_ptr]
+        end
+      end
+
+      # TODO: Test other signals.
     end
 
     context "the Regress::TestSimpleBoxedA class" do
