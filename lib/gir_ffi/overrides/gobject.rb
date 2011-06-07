@@ -171,6 +171,8 @@ module GirFFI
 	      val.set_boxed arg
 	    when :object
 	      val.set_instance arg
+            when :enum
+              val.set_enum arg
 	    else
 	      raise NotImplementedError, interface.info_type
 	    end

@@ -90,6 +90,8 @@ module GirFFI
         case info.interface.info_type
         when :object, :struct
           :pointer
+        when :enum
+          :int32
         else
           raise NotImplementedError, info.interface.info_type
         end

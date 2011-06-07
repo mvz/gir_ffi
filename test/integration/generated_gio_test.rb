@@ -65,5 +65,20 @@ describe "The generated Gio module" do
       assert_equal "foo", a
     end
   end
+
+  describe "the reply signal" do
+    before do
+      @mo = Gio::MountOperation.new
+    end
+
+    it "correctly passes on the enum parameter 'result'" do
+      a = nil
+      GObject.signal_connect @mo, "reply" do |mnt, result, user_data|
+        a = result
+      end
+      GObject.signal_emit @mo, "reply", 2
+      assert_equal :unhandled, a
+    end
+  end
 end
 
