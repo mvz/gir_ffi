@@ -129,6 +129,10 @@ module GirFFI
       end
 
       module Helper
+        TAG_TYPE_TO_GTYPE_NAME_MAP = {
+          :utf8 => "gchararray"
+        }
+
 	def self.signal_callback_args sig, klass, &block
 	  return Proc.new do |*args|
 	    mapped = cast_back_signal_arguments sig, klass, *args
@@ -155,7 +159,10 @@ module GirFFI
 	end
 	
 	def self.signal_argument_to_gvalue info, arg
-	  if info.argument_type.tag == :interface
+          arg_type = info.argument_type
+          tag = arg_type.tag
+
+	  if tag == :interface
 	    interface = info.argument_type.interface
 
 	    val = ::GObject::Value.new
@@ -171,7 +178,9 @@ module GirFFI
 
 	    return val
 	  else
-	    raise NotImplementedError
+            val = ::GObject::Value.new
+            val.init ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
+            val.set_ruby_value arg
 	  end
 	end
 
@@ -262,6 +271,8 @@ module GirFFI
 	    set_boolean val
           when "gint"
 	    set_int val
+	  when "gchararray"
+	    set_string val
 	  else
 	    nil
 	  end

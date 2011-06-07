@@ -180,6 +180,18 @@ class GObjectOverridesTest < MiniTest::Spec
 	end
       end
 
+      describe "#signal_argument_to_gvalue" do
+        it "maps a :utf8 argument to a string-valued GValue" do
+          stub(arg_t = Object.new).tag { :utf8 }
+          stub(info = Object.new).argument_type { arg_t }
+          val =
+            GirFFI::Overrides::GObject::Helper.signal_argument_to_gvalue(
+              info, "foo")
+          assert_instance_of GObject::Value, val
+          assert_equal "foo", val.get_string
+        end
+      end
+
       context "#cast_back_signal_arguments" do
 	context "the result of casting pointers for the test-with-static-scope-arg signal" do
 	  setup do
