@@ -65,16 +65,6 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
-    def cleanup
-      unless @arginfo.ownership_transfer == :everything
-        if subtype_tag == :utf8
-          [ "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}" ]
-        else
-          [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-        end
-      end
-    end
-
     def pre
       pr = []
       size = type_info.array_fixed_size
@@ -106,12 +96,6 @@ module GirFFI::Builder
   class Utf8InArgument < Argument::InBase
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
-    end
-
-    def cleanup
-      # TODO: Write tests and enable this.
-      # [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-      []
     end
   end
 
@@ -171,14 +155,6 @@ module GirFFI::Builder
   class RegularOutArgument < Argument::OutBase
     def post
       [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
-    end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-      else
-        super
-      end
     end
 
     private
@@ -247,21 +223,6 @@ module GirFFI::Builder
 
       pp
     end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        case subtype_tag
-        when :utf8
-	  ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"]
-        when :interface
-	  ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-	else
-	  ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
-	end
-      else
-        super
-      end
-    end
   end
 
   # Implements argument processing for strv arguments with direction
@@ -285,14 +246,6 @@ module GirFFI::Builder
       pp << "#{@retname}.element_type = #{etype.inspect}"
 
       pp
-    end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-      else
-        super
-      end
     end
   end
 
@@ -413,17 +366,6 @@ module GirFFI::Builder
       pst
     end
 
-    def cleanup
-      if @arginfo.ownership_transfer == :nothing
-        super
-      else
-        if subtype_tag == :utf8
-          ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{array_size}"]
-        else
-          ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
-        end
-      end
-    end
   end
 
   # Implements argument processing for GArray arguments with direction

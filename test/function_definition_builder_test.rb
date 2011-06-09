@@ -15,8 +15,6 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 	  ::Lib.gtk_init _v1, _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_gint32 _v1
 	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v3, _v2
-	  GirFFI::ArgHelper.cleanup_ptr _v1
-	  GirFFI::ArgHelper.cleanup_ptr_array_ptr _v3, _v2
 	  return _v4
 	end
       "
@@ -86,7 +84,6 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 	  len = arr.nil? ? 0 : arr.length
 	  _v2 = len
 	  ::Lib.regress_test_array_int_null_in _v1, _v2
-	  GirFFI::ArgHelper.cleanup_ptr _v1
 	end"
 
       assert_equal cws(expected), cws(code)
@@ -104,8 +101,6 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 	  ::Lib.regress_test_array_int_null_out _v1, _v3
 	  _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
 	  _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
-	  GirFFI::ArgHelper.cleanup_ptr_ptr _v1
-	  GirFFI::ArgHelper.cleanup_ptr _v3
 	  return _v2
 	end"
 
@@ -125,8 +120,6 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
           ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v3
           _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
           _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
-          GirFFI::ArgHelper.cleanup_ptr _v1
-          GirFFI::ArgHelper.cleanup_ptr _v3
           return _v2
 	end"
 

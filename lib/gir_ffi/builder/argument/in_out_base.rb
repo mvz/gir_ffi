@@ -10,10 +10,6 @@ module GirFFI
           @inarg = @name
           @retname = @function_builder.new_var
         end
-
-        def cleanup
-          ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-        end
       end
     end
   end
