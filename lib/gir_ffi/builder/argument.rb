@@ -2,6 +2,8 @@ require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
 require 'gir_ffi/builder/argument/in_out_base'
+require 'gir_ffi/builder/argument/list_base'
+require 'gir_ffi/builder/argument/hash_table_base'
 
 module GirFFI::Builder
   module Argument
@@ -252,8 +254,9 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :out.
   class ListOutArgument < PointerLikeOutArgument
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
@@ -261,8 +264,9 @@ module GirFFI::Builder
   # Implements argument processing for gslist arguments with direction
   # :out.
   class SListOutArgument < PointerLikeOutArgument
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
@@ -270,9 +274,9 @@ module GirFFI::Builder
   # Implements argument processing for ghash arguments with direction
   # :out.
   class HashTableOutArgument < PointerLikeOutArgument
+    include Argument::HashTableBase
+
     def post
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
       [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
@@ -391,15 +395,14 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :inout.
   class ListInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
     end
 
     def post
-      elm_t = subtype_tag.inspect
-      pp = []
-      pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
@@ -407,34 +410,28 @@ module GirFFI::Builder
   # :inout.
   # FIXME: Merge code with ListInOutArgument somehow.
   class SListInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
     end
 
     def post
-      elm_t = subtype_tag.inspect
-      pp = []
-      pp << "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction
   # :inout.
   class HashTableInOutArgument < Argument::InOutBase
+    include Argument::HashTableBase
+
     def pre
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name}))" ]
     end
 
     def post
-      pp = []
-
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
-      pp << "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
     end
   end
 
@@ -562,25 +559,27 @@ module GirFFI::Builder
 
   # Implements argument processing for GList return values.
   class ListReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::List.wrap(#{elm_t}, #{@cvar})" ]
     end
   end
 
   # Implements argument processing for GSList return values.
   class SListReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::SList.wrap(#{elm_t}, #{@cvar})" ]
     end
   end
 
   # Implements argument processing for GHashTable return values.
   class HashTableReturnValue < ReturnValue
+    include Argument::HashTableBase
+
     def post
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
       [ "#{@retname} = GLib::HashTable.wrap(#{key_t}, #{val_t}, #{@cvar})" ]
     end
   end
