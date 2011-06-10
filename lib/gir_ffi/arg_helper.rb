@@ -1,6 +1,5 @@
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
-require 'gir_ffi/builder/type/unintrospectable'
 
 module GirFFI
   module ArgHelper

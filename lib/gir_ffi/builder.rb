@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/type'
+require 'gir_ffi/builder/type/unintrospectable'
 require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
 
