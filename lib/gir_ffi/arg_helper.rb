@@ -245,9 +245,9 @@ module GirFFI
     end
 
     def self.ptr_to_interface_array klass, ptr, size
-      sz = klass.ffi_structure.size
-      size.times.map do |i|
-        klass.wrap(ptr + sz * i)
+      struct_size = klass.ffi_structure.size
+      size.times.map do |idx|
+        klass.wrap(ptr + struct_size * idx)
       end
     end
 
