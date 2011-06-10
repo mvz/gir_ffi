@@ -52,7 +52,7 @@ module GirFFI::Builder
   class CallbackInArgument < Argument::InBase
     def pre
       iface = type_info.interface
-      [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
+      [ "#{@callarg} = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
         "::#{@libmodule}::CALLBACKS << #{@callarg}" ]
     end
   end

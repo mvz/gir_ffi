@@ -43,10 +43,10 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def test_callback_destroy_notify callback, user_data, notify
-	  _v1 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
+	  _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
 	  ::Lib::CALLBACKS << _v1
 	  _v2 = GirFFI::ArgHelper.object_to_inptr user_data
-	  _v3 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
+	  _v3 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
 	  ::Lib::CALLBACKS << _v3
 	  _v4 = ::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
 	  return _v4
