@@ -15,7 +15,7 @@ module GirFFI
         defn =
           "def self.#{type}_array_to_inptr ary
             return nil if ary.nil?
-            block = allocate_array_of_type #{ffi_type.inspect}, ary.length
+            block = AllocationHelper.safe_malloc #{FFI.type_size(ffi_type)} * ary.length
             block.put_array_of_#{ffi_type} 0, ary
           end"
         eval defn
