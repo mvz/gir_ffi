@@ -239,14 +239,11 @@ module GirFFI::Builder
   # :out.
   class ArrayOutArgument < PointerLikeOutArgument
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
+      elm_t = subtype_tag.inspect
 
       pp = []
-
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
-      pp << "#{@retname}.element_type = #{etype.inspect}"
-
+      pp << "#{@retname}.element_type = #{elm_t}"
       pp
     end
   end
@@ -380,14 +377,11 @@ module GirFFI::Builder
     end
 
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
+      elm_t = subtype_tag.inspect
 
       pp = []
-
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
-      pp << "#{@retname}.element_type = #{etype.inspect}"
-
+      pp << "#{@retname}.element_type = #{elm_t}"
       pp
     end
   end
@@ -594,10 +588,9 @@ module GirFFI::Builder
   # Implements argument processing for GHashTable return values.
   class ArrayReturnValue < ReturnValue
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
+      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::Array.wrap(#{@cvar})",
-        "#{@retname}.element_type = #{etype.inspect}" ]
+        "#{@retname}.element_type = #{elm_t}" ]
     end
   end
 

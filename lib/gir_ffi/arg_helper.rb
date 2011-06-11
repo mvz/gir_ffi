@@ -36,8 +36,9 @@ module GirFFI
     def self.typed_array_to_inptr type, ary
       return nil if ary.nil?
       return utf8_array_to_inptr ary if type == :utf8
-      block = allocate_array_of_type type, ary.length
-      block.send "put_array_of_#{type}", 0, ary
+      ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+      block = allocate_array_of_type ffi_type, ary.length
+      block.send "put_array_of_#{ffi_type}", 0, ary
     end
 
     def self.utf8_to_inptr str
@@ -202,7 +203,8 @@ module GirFFI
       if type == :utf8
         ptr_to_utf8_array ptr, size
       else
-        ptr.send "get_array_of_#{type}", 0, size
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        ptr.send "get_array_of_#{ffi_type}", 0, size
       end
     end
 
