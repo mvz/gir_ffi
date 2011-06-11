@@ -61,12 +61,10 @@ module GirFFI
       self.instance
     end
 
-    # TODO: Make sure GType is initialized first.
     def self.prepend_search_path path
       Lib.g_irepository_prepend_search_path path
     end
 
-    # TODO: Make sure GType is initialized first.
     def self.type_tag_to_string type
       Lib.g_type_tag_to_string type
     end
