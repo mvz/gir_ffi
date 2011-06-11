@@ -66,25 +66,6 @@ module GirFFI
       pointer_array_to_inptr ptr_ary
     end
 
-    def self.cleanup_ptr ptr
-      LibC.free ptr
-    end
-
-    def self.cleanup_ptr_ptr ptr
-      LibC.free ptr.read_pointer
-      LibC.free ptr
-    end
-
-    # Takes an outptr to a pointer array, and frees all pointers.
-    def self.cleanup_ptr_array_ptr ptr, size
-      block = ptr.read_pointer
-      unless block.null?
-        block.read_array_of_pointer(size).each { |pt| LibC.free pt }
-        LibC.free block
-      end
-      LibC.free ptr
-    end
-
     def self.setup_type_to_inoutptr_handler_for *types
       types.flatten.each do |type|
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
@@ -373,10 +354,6 @@ module GirFFI
       gtype = ::GObject.type_from_instance_pointer optr
       klass = GirFFI::Builder.build_by_gtype gtype
       klass.wrap optr
-    end
-
-    def self.gir
-      GirFFI::IRepository.default
     end
 
     def self.cast_from_pointer type, it
