@@ -89,7 +89,7 @@ module GirFFI
 
       if tag == :interface
         case info.interface.info_type
-        when :enum
+        when :enum, :flags
           :int32
         else
           :pointer
