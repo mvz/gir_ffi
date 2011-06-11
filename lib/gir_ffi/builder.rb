@@ -89,12 +89,10 @@ module GirFFI
 
       if tag == :interface
         case info.interface.info_type
-        when :object, :struct
-          :pointer
         when :enum
           :int32
         else
-          raise NotImplementedError, info.interface.info_type
+          :pointer
         end
       else
         return TAG_TYPE_MAP[tag] || tag
