@@ -50,7 +50,7 @@ module GirFFI
       return nil if ary.nil?
       ptr_ary = ary.map {|str| utf8_to_inptr str}
       ptr_ary << nil
-      typed_array_to_inptr :pointer, ptr_ary
+      pointer_array_to_inptr ptr_ary
     end
 
     # FIXME: :interface is too generic. implement only GValueArray?
