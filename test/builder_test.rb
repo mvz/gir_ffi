@@ -174,7 +174,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	Regress.gir_ffi_setup_function 'test_callback_destroy_notify'
+	Regress._setup_function 'test_callback_destroy_notify'
 	tcud = Regress::Lib.find_type :TestCallbackUserData
 	dn = GLib::Lib.find_type :DestroyNotify
 
@@ -280,7 +280,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "know its own module builder" do
-	assert GirFFI::Builder::Module === Regress.gir_ffi_builder
+	assert GirFFI::Builder::Module === Regress._builder
       end
 
       after do
@@ -315,7 +315,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "know its own class builder" do
-	assert GirFFI::Builder::Type::Base === Regress::TestObj.gir_ffi_builder
+	assert GirFFI::Builder::Type::Base === Regress::TestObj._builder
       end
 
       context "its #torture_signature_0 method" do

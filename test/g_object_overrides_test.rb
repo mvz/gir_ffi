@@ -199,7 +199,7 @@ class GObjectOverridesTest < MiniTest::Spec
 	    o = Regress::TestSubObj.new
 	    b = Regress::TestSimpleBoxedA.new
 	    ud = GirFFI::ArgHelper.object_to_inptr "Hello!"
-	    sig = o.class.gir_ffi_builder.find_signal sig_name
+	    sig = o.class._builder.find_signal sig_name
 
 	    @gva =
 	      GirFFI::Overrides::GObject::Helper.cast_back_signal_arguments(

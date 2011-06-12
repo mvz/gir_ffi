@@ -15,19 +15,19 @@ module GirFFI
       self.class.ffi_structure
     end
 
-    def gir_ffi_builder
-      self.class.gir_ffi_builder
+    def _builder
+      self.class._builder
     end
 
     def setup_and_call method, *arguments, &block
-      unless gir_ffi_builder.setup_instance_method method.to_s
+      unless _builder.setup_instance_method method.to_s
         raise RuntimeError, "Unable to set up instance method #{method} in #{self}"
       end
       self.send method, *arguments, &block
     end
 
     def self.setup_and_call method, *arguments, &block
-      unless gir_ffi_builder.setup_method method.to_s
+      unless _builder.setup_method method.to_s
         raise RuntimeError, "Unable to set up method #{method} in #{self}"
       end
       self.send method, *arguments, &block
@@ -42,7 +42,7 @@ module GirFFI
 	self.const_get :GIR_INFO
       end
 
-      def gir_ffi_builder
+      def _builder
 	self.const_get :GIR_FFI_BUILDER
       end
 
