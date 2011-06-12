@@ -6,9 +6,15 @@ module GirFFI
       class InOutBase < Base
         def prepare
           @name = safe(@arginfo.name)
-          @callarg = @function_builder.new_var
           @inarg = @name
-          @retname = @function_builder.new_var
+        end
+
+        def callarg
+          @callarg ||= @function_builder.new_var
+        end
+
+        def retname
+          @retname ||= @function_builder.new_var
         end
       end
     end

@@ -29,6 +29,8 @@ module GirFFI
           @array_arg = nil
         end
 
+        def prepare; end
+
         def type_info
           @arginfo.argument_type
         end
