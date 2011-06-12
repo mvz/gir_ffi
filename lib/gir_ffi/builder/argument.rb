@@ -212,18 +212,14 @@ module GirFFI::Builder
   # :out.
   class CArrayOutArgument < PointerLikeOutArgument
     def postpost
-      size = array_size
       tag = subtype_tag
 
-      pp = []
-
+      args = [@callarg, array_size]
       if tag == :interface or tag == :interface_pointer
-        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{subtype_class_name}, #{@callarg}, #{size}"
-      else
-        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
+        args.unshift subtype_class_name
       end
 
-      pp
+      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{args.join ', '}" ]
     end
   end
 
