@@ -15,5 +15,9 @@ module GirFFI
     def gir_ffi_builder
       self.const_get :GIR_FFI_BUILDER
     end
+
+    def gir_ffi_setup_function name
+      gir_ffi_builder.setup_function name
+    end
   end
 end

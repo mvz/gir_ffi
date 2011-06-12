@@ -6,7 +6,7 @@ describe GirFFI::Builder::Type::Unintrospectable do
       # Ensure existence of GLocalFile type
       GirFFI.setup :Gio
       unless Gio::Lib.respond_to? :g_file_new_for_path
-        Gio.gir_ffi_builder.setup_function "file_new_for_path"
+        Gio.gir_ffi_setup_function "file_new_for_path"
       end
       ptr = GirFFI::ArgHelper.utf8_to_inptr '/'
       Gio::Lib.g_file_new_for_path(ptr)

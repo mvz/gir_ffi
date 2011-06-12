@@ -174,7 +174,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "define ffi callback types :Callback and :ClosureNotify" do
-	Regress.gir_ffi_builder.setup_function 'test_callback_destroy_notify'
+	Regress.gir_ffi_setup_function 'test_callback_destroy_notify'
 	tcud = Regress::Lib.find_type :TestCallbackUserData
 	dn = GLib::Lib.find_type :DestroyNotify
 
