@@ -34,7 +34,7 @@ module GirFFI
       true
     end
 
-    def build_class classname
+    def build_namespaced_class classname
       info = gir.find_by_name @namespace, classname.to_s
       Builder.build_class info
     end

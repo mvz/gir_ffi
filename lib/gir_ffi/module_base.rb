@@ -7,7 +7,7 @@ module GirFFI
     end
 
     def const_missing classname
-      klass = gir_ffi_builder.build_class classname.to_s
+      klass = gir_ffi_builder.build_namespaced_class classname.to_s
       return super if klass.nil?
       klass
     end
