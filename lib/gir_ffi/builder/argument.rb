@@ -238,9 +238,9 @@ module GirFFI::Builder
   # Implements argument processing for GArray arguments with direction
   # :out.
   class ArrayOutArgument < PointerLikeOutArgument
-    def post
-      elm_t = subtype_tag.inspect
+    include Argument::ListBase
 
+    def post
       pp = []
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
       pp << "#{@retname}.element_type = #{elm_t}"
@@ -372,13 +372,13 @@ module GirFFI::Builder
   # Implements argument processing for GArray arguments with direction
   # :inout.
   class ArrayInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
       [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
     end
 
     def post
-      elm_t = subtype_tag.inspect
-
       pp = []
       pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
       pp << "#{@retname}.element_type = #{elm_t}"
@@ -587,8 +587,9 @@ module GirFFI::Builder
 
   # Implements argument processing for GHashTable return values.
   class ArrayReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
       [ "#{@retname} = GLib::Array.wrap(#{@cvar})",
         "#{@retname}.element_type = #{elm_t}" ]
     end
