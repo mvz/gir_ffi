@@ -3,7 +3,7 @@ module GirFFI
     module Gtk
 
       def self.included(base)
-	base._setup_function "init"
+	base._setup_method "init"
 	base.extend ClassMethods
 	base.class_eval do
 

@@ -8,7 +8,7 @@ describe GirFFI::Overrides::Gtk do
         ["baz", "qux", "zonk"]
       end
     end
-    stub(@gtk)._setup_function { }
+    stub(@gtk)._setup_method { }
 
     @gtk.instance_eval do
       include GirFFI::Overrides::Gtk
