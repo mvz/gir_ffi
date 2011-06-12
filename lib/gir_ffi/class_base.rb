@@ -46,6 +46,18 @@ module GirFFI
 	self.const_get :GIR_FFI_BUILDER
       end
 
+      def _find_signal name
+        _builder.find_signal name
+      end
+
+      def _setup_method name
+        _builder.setup_method name
+      end
+
+      def _setup_instance_method name
+        _builder.setup_instance_method name
+      end
+
       alias_method :_real_new, :new
       undef new
 

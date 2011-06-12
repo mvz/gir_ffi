@@ -105,7 +105,7 @@ module GirFFI
 	end
 
 	def signal_connect object, signal, data=nil, &block
-	  sig = object.class._builder.find_signal signal
+	  sig = object.class._find_signal signal
 	  if sig.nil?
 	    raise "Signal #{signal} is invalid for #{object}"
 	  end
@@ -140,7 +140,7 @@ module GirFFI
 	end
 
 	def self.signal_arguments_to_gvalue_array signal, instance, *rest
-	  sig = instance.class._builder.find_signal signal
+	  sig = instance.class._find_signal signal
 
 	  arr = ::GObject::ValueArray.new sig.n_args+1
 
