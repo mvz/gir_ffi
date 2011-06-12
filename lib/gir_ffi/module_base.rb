@@ -1,7 +1,7 @@
 module GirFFI
   module ModuleBase
     def method_missing method, *arguments, &block
-      result = gir_ffi_builder.setup_function method.to_s
+      result = gir_ffi_setup_function method.to_s
       return super unless result
       self.send method, *arguments, &block
     end
@@ -17,7 +17,7 @@ module GirFFI
     end
 
     def gir_ffi_setup_function name
-      gir_ffi_builder.setup_function name
+      gir_ffi_builder.setup_method name
     end
   end
 end

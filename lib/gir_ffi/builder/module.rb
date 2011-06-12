@@ -18,7 +18,7 @@ module GirFFI
       build_module
     end
 
-    def setup_function method
+    def setup_method method
       go = function_introspection_data method.to_s
 
       return false if go.nil?
