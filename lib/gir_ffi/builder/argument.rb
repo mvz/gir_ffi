@@ -226,7 +226,7 @@ module GirFFI::Builder
   # Implements argument processing for strv arguments with direction
   # :out.
   class StrvOutArgument < PointerLikeOutArgument
-    def postpost
+    def post
       [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
     end
   end
