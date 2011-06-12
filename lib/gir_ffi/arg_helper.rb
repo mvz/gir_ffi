@@ -4,6 +4,8 @@ require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
+    POINTER_SIZE = FFI.type_size(:pointer)
+
     SIMPLE_G_TYPES = [
       :gint8, :gint16, :gint, :gint32, :gint64,
       :guint8, :guint16, :guint32, :guint64,
@@ -265,13 +267,10 @@ module GirFFI
 
     def self.strv_to_utf8_array strv
       return [] if strv.null?
-      arr = []
-      i = 0
-      loop do
-        ptr = strv.get_pointer i * FFI.type_size(:pointer)
-        break if ptr.null?
+      arr, offset = [], 0
+      until (ptr = strv.get_pointer offset).null? do
         arr << ptr.read_string
-        i += 1
+        offset += POINTER_SIZE
       end
       return arr
     end
