@@ -12,4 +12,19 @@ describe "The generated GObject module" do
       assert_equal 1, ifcs.size
     end
   end
+
+  describe "the TypePlugin interface" do
+    it "is implemented as a module" do
+      mod = GObject::TypePlugin
+      assert_instance_of Module, mod
+      refute_instance_of Class, mod
+    end
+  end
+
+  describe "the TypeModule class" do
+    it "has the GObject::TypePlugin module as an ancestor" do
+      klass = GObject::TypeModule
+      assert_includes klass.ancestors, GObject::TypePlugin
+    end
+  end
 end
