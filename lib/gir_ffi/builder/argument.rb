@@ -200,6 +200,9 @@ module GirFFI::Builder
     end
   end
 
+  # Base class for arguments with direction :out for which the base type is
+  # a pointer: For these, a pointer to a pointer needs to be passed to the
+  # C function.
   class PointerLikeOutArgument < Argument::OutBase
     private
 
