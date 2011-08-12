@@ -8,6 +8,10 @@ describe GirFFI::InPointer do
       result = GirFFI::InPointer.from_array :gint32, nil
       assert { result.nil? }
     end
+
+    it "handles GType" do
+      GirFFI::InPointer.from_array :gtype, [2]
+    end
   end
 
   describe "an instance created with .from_array" do

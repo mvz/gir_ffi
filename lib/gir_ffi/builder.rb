@@ -10,8 +10,12 @@ module GirFFI
   module Builder
     extend BuilderHelper
 
+    sz = FFI.type_size(:size_t) * 8
+    gtype_type = "uint#{sz}".to_sym
+
     TAG_TYPE_MAP = {
       :GType => :size_t,
+      :gtype => gtype_type,
       :gboolean => :bool,
       :gunichar => :uint32,
       :gint8 => :int8,
