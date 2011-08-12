@@ -3,7 +3,14 @@ require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 require 'gir_ffi/in_pointer'
 
 describe GirFFI::InPointer do
-  describe "an instance created with #from_array" do
+  describe ".from_array" do
+    it "returns nil when passed nil" do
+      result = GirFFI::InPointer.from_array :gint32, nil
+      assert { result.nil? }
+    end
+  end
+
+  describe "an instance created with .from_array" do
     setup do
       @result = GirFFI::InPointer.from_array :gint32, [24, 13]
     end
