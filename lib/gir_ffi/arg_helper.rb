@@ -92,7 +92,7 @@ module GirFFI
       pointer_pointer.write_pointer sptr
     end
 
-    def self.int32_array_to_inoutptr ary
+    def self.gint32_array_to_inoutptr ary
       block = gint32_array_to_inptr ary
       pointer_pointer.write_pointer block
     end
@@ -100,11 +100,6 @@ module GirFFI
     def self.utf8_array_to_inoutptr ary
       return nil if ary.nil?
       pointer_pointer.write_pointer utf8_array_to_inptr(ary)
-    end
-
-    class << self
-      alias int_array_to_inoutptr int32_array_to_inoutptr
-      alias gint32_array_to_inoutptr int32_array_to_inoutptr
     end
 
     def self.setup_pointer_maker_for *types
