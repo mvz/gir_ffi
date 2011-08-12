@@ -1,3 +1,4 @@
+require 'gir_ffi/in_pointer'
 require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
@@ -73,7 +74,7 @@ module GirFFI::Builder
       if size > -1
         pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
-      pr << "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
+      pr << "#{callarg} = GirFFI::InPointer.from_array #{subtype_tag.inspect}, #{@name}"
       pr
     end
   end

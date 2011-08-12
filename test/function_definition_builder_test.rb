@@ -80,7 +80,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def test_array_int_null_in arr
-	  _v1 = GirFFI::ArgHelper.gint32_array_to_inptr arr
+	  _v1 = GirFFI::InPointer.from_array :gint32, arr
 	  len = arr.nil? ? 0 : arr.length
 	  _v2 = len
 	  ::Lib.regress_test_array_int_null_in _v1, _v2
