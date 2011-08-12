@@ -1,7 +1,7 @@
 module GirFFI
-  class InPointer
+  class InPointer < FFI::Pointer
     def self.from_array type, array
-      ArgHelper.typed_array_to_inptr type, array
+      self.new ArgHelper.typed_array_to_inptr(type, array)
     end
   end
 end

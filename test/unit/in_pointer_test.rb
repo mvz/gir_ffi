@@ -12,6 +12,10 @@ describe GirFFI::InPointer do
       assert_equal 24, @result.get_int(0)
       assert_equal 13, @result.get_int(4)
     end
+
+    it "is an instance of GirFFI::InPointer" do
+      assert { @result.is_a? GirFFI::InPointer }
+    end
   end
 end
 
