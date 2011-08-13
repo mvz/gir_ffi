@@ -1,29 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ArgHelperTest < MiniTest::Spec
-  context "The utf8_array_to_inoutptr method" do
-    context "when called with an array of strings" do
-      setup do
-	@result = GirFFI::ArgHelper.utf8_array_to_inoutptr ["foo", "bar", "baz"]
-      end
-
-      should "return an FFI::Pointer" do
-	assert_instance_of FFI::Pointer, @result
-      end
-
-      should "return a pointer to an array of pointers to strings" do
-	ptr = @result.read_pointer
-	ary = ptr.read_array_of_pointer(3)
-	assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
-      end
-    end
-    context "when called with nil" do
-      should "return nil" do
-	assert_nil GirFFI::ArgHelper.utf8_array_to_inoutptr nil
-      end
-    end
-  end
-
   context "The outptr_to_gint32 method" do
     setup do
       @ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:int)
@@ -93,14 +70,6 @@ class ArgHelperTest < MiniTest::Spec
       should "return nil" do
 	assert_equal nil, GirFFI::ArgHelper.object_to_inptr(nil)
       end
-    end
-  end
-
-  context "The pointer_outptr method" do
-    should "return a pointer to a null pointer" do
-      ptr = GirFFI::ArgHelper.pointer_outptr
-      pptr = ptr.read_pointer
-      assert pptr.null?
     end
   end
 

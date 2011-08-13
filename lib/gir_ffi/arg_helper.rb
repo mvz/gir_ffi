@@ -24,7 +24,6 @@ module GirFFI
       end
     end
 
-    setup_array_to_inptr_handler_for SIMPLE_G_TYPES
     setup_array_to_inptr_handler_for :pointer
 
     # FIXME: Hideous.
@@ -75,16 +74,6 @@ module GirFFI
       pointer_pointer.write_pointer sptr
     end
 
-    def self.gint32_array_to_inoutptr ary
-      block = gint32_array_to_inptr ary
-      pointer_pointer.write_pointer block
-    end
-
-    def self.utf8_array_to_inoutptr ary
-      return nil if ary.nil?
-      pointer_pointer.write_pointer utf8_array_to_inptr(ary)
-    end
-
     def self.setup_pointer_maker_for *types
       types.flatten.each do |type|
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
@@ -97,37 +86,7 @@ module GirFFI
       end
     end
 
-    setup_pointer_maker_for SIMPLE_G_TYPES
     setup_pointer_maker_for :pointer
-
-    class << self
-      alias gboolean_pointer gint_pointer
-    end
-
-    def self.setup_type_outptr_handler_for *types
-      types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        defn =
-          "def self.#{type}_outptr
-            #{type}_pointer.put_#{ffi_type} 0, 0
-          end"
-        eval defn
-      end
-    end
-
-    setup_type_outptr_handler_for SIMPLE_G_TYPES
-
-    def self.gboolean_outptr
-      gboolean_pointer.put_int 0, 0
-    end
-
-    def self.pointer_outptr
-      pointer_pointer.put_pointer 0, nil
-    end
-
-    def self.utf8_outptr
-      pointer_outptr
-    end
 
     def self.setup_outptr_to_type_handler_for *types
       types.flatten.each do |type|
@@ -232,8 +191,6 @@ module GirFFI
     class << self
       sz = FFI.type_size(:size_t) * 8
       type = "guint#{sz}"
-      alias_method :gtype_array_to_inptr, "#{type}_array_to_inptr"
-      alias_method :gtype_outptr, "#{type}_outptr"
       alias_method :outptr_to_gtype, "outptr_to_#{type}"
       alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
     end
