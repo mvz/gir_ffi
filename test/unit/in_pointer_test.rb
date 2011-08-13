@@ -53,6 +53,10 @@ describe GirFFI::InPointer do
       ary = @result.read_array_of_pointer(3)
       assert { @result.read_string == "foo" }
     end
+
+    it "is an instance of GirFFI::InPointer" do
+      assert { @result.is_a? GirFFI::InPointer }
+    end
   end
 end
 

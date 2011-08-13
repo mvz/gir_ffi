@@ -16,7 +16,7 @@ module GirFFI
     end
 
     def self.from type, val
-      ArgHelper.utf8_to_inptr val
+      self.new ArgHelper.utf8_to_inptr(val)
     end
 
     def self.from_utf8_array ary
