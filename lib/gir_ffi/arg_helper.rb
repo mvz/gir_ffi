@@ -204,26 +204,6 @@ module GirFFI
       raise NotImplementedError
     end
 
-    def self.glist_to_utf8_array ptr
-      return [] if ptr.null?
-      # FIXME: Quasi-circular dependency on generated module
-      list = GLib::List.wrap(ptr)
-      str = ptr_to_utf8(list[:data])
-      [str] + glist_to_utf8_array(list[:next])
-    end
-
-    def self.gslist_to_utf8_array ptr
-      return [] if ptr.null?
-      # FIXME: Quasi-circular dependency on generated module
-      list = GLib::SList.wrap(ptr)
-      str = ptr_to_utf8(list[:data])
-      [str] + gslist_to_utf8_array(list[:next])
-    end
-
-    def self.outgslist_to_utf8_array ptr
-      gslist_to_utf8_array ptr.read_pointer
-    end
-
     def self.check_error errpp
       errp = errpp.read_pointer
       raise GError.new(errp)[:message] unless errp.null?
