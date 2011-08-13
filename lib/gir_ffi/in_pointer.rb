@@ -22,7 +22,7 @@ module GirFFI
 
     def self.from_utf8_array ary
       return nil if ary.nil?
-      ptr_ary = ary.map {|str| ArgHelper.utf8_to_inptr str}
+      ptr_ary = ary.map {|str| self.from :utf8, str}
       ptr_ary << nil
       self.from_array :pointer, ptr_ary
     end

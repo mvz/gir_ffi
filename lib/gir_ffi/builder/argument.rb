@@ -101,7 +101,7 @@ module GirFFI::Builder
   # :in.
   class Utf8InArgument < Argument::InBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InPointer.from :utf8, #{@name}" ]
     end
   end
 

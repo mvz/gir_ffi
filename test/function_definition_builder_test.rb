@@ -62,7 +62,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def new_from_file x
-	  _v1 = GirFFI::ArgHelper.utf8_to_inptr x
+	  _v1 = GirFFI::InPointer.from :utf8, x
 	  _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
 	  _v3 = ::Lib.regress_test_obj_new_from_file _v1, _v2
 	  GirFFI::ArgHelper.check_error(_v2)

@@ -106,7 +106,7 @@ module GirFFI
 
         # FIXME: Turn into instance method
         def byte_array_append arr, data
-          bytes = GirFFI::ArgHelper.utf8_to_inptr data
+          bytes = GirFFI::InPointer.from :utf8, data
           len = data.bytesize
           ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_append arr.to_ptr, bytes, len)
         end
@@ -189,7 +189,7 @@ module GirFFI
 
         def cast_to_pointer type, it
           if type == :utf8
-            GirFFI::ArgHelper.utf8_to_inptr it
+            GirFFI::InPointer.from :utf8, it
           else
             FFI::Pointer.new(it)
           end
