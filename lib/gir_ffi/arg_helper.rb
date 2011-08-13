@@ -70,24 +70,6 @@ module GirFFI
       pointer_array_to_inptr ptr_ary
     end
 
-    def self.setup_type_to_inoutptr_handler_for *types
-      types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        defn =
-          "def self.#{type}_to_inoutptr val
-            #{type}_pointer.put_#{ffi_type} 0, val
-          end"
-        eval defn
-      end
-    end
-
-    setup_type_to_inoutptr_handler_for SIMPLE_G_TYPES
-    setup_type_to_inoutptr_handler_for :pointer
-
-    def self.gboolean_to_inoutptr val
-      gboolean_pointer.put_int 0, (val ? 1 : 0)
-    end
-
     def self.utf8_to_inoutptr str
       sptr = utf8_to_inptr str
       pointer_pointer.write_pointer sptr
@@ -252,7 +234,6 @@ module GirFFI
       type = "guint#{sz}"
       alias_method :gtype_array_to_inptr, "#{type}_array_to_inptr"
       alias_method :gtype_outptr, "#{type}_outptr"
-      alias_method :gtype_to_inoutptr, "#{type}_to_inoutptr"
       alias_method :outptr_to_gtype, "outptr_to_#{type}"
       alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
     end

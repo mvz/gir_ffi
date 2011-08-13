@@ -1,20 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ArgHelperTest < MiniTest::Spec
-  context "The gint32_to_inoutptr method's return value" do
-    setup do
-      @result = GirFFI::ArgHelper.gint32_to_inoutptr 24
-    end
-
-    should "be an FFI::Pointer" do
-      assert_instance_of FFI::Pointer, @result
-    end
-
-    should "hold a pointer to the correct input value" do
-      assert_equal 24, @result.read_int
-    end
-  end
-
   context "The utf8_array_to_inoutptr method" do
     context "when called with an array of strings" do
       setup do
