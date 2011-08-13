@@ -17,7 +17,7 @@ module GirFFI
 
     def self.from type, val
       return nil if val.nil?
-      self.new ArgHelper.utf8_to_inptr(val)
+      from_utf8 val
     end
 
     class << self
@@ -34,6 +34,12 @@ module GirFFI
         ptr_ary = ary.map {|ifc| ifc.to_ptr}
         ptr_ary << nil
         self.from_array :pointer, ptr_ary
+      end
+
+      def from_utf8 str
+        len = str.bytesize
+        ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
+        self.new ptr
       end
     end
   end

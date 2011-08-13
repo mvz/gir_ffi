@@ -8,7 +8,7 @@ describe GirFFI::Builder::Type::Unintrospectable do
       unless Gio::Lib.respond_to? :g_file_new_for_path
         Gio._setup_method "file_new_for_path"
       end
-      ptr = GirFFI::ArgHelper.utf8_to_inptr '/'
+      ptr = GirFFI::InPointer.from :utf8, '/'
       Gio::Lib.g_file_new_for_path(ptr)
 
       @gtype = GObject.type_from_name 'GLocalFile'

@@ -19,14 +19,8 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.utf8_to_inptr str
-      return nil if str.nil?
-      len = str.bytesize
-      AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-    end
-
     def self.utf8_to_inoutptr str
-      sptr = utf8_to_inptr str
+      sptr = InPointer.from :utf8, str
       pointer_pointer.write_pointer sptr
     end
 
@@ -168,7 +162,7 @@ module GirFFI
     def self.utf8_array_to_glist arr
       return nil if arr.nil?
       arr.inject(GLib.list_new :utf8) { |lst, str|
-        GLib.list_append lst, utf8_to_inptr(str) }
+        GLib.list_append lst, InPointer.from(:utf8, str) }
     end
 
     def self.gint32_array_to_glist arr
@@ -180,7 +174,7 @@ module GirFFI
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
       arr.reverse.inject(GLib.slist_new :utf8) { |lst, str|
-        GLib.slist_prepend lst, utf8_to_inptr(str) }
+        GLib.slist_prepend lst, InPointer.from(:utf8, str) }
     end
 
     def self.gint32_array_to_gslist arr
