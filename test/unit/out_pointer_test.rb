@@ -16,4 +16,14 @@ describe GirFFI::OutPointer do
       assert { @result.is_a? GirFFI::OutPointer }
     end
   end
+
+  describe ".for" do
+    it "handles :gboolean" do
+      GirFFI::OutPointer.for :gboolean
+    end
+
+    it "handles :utf8" do
+      GirFFI::OutPointer.for :utf8
+    end
+  end
 end
