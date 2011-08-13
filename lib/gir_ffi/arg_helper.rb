@@ -11,21 +11,6 @@ module GirFFI
       :guint8, :guint16, :guint32, :guint64,
       :gfloat, :gdouble]
 
-    def self.setup_array_to_inptr_handler_for *types
-      types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        defn =
-          "def self.#{type}_array_to_inptr ary
-            return nil if ary.nil?
-            block = AllocationHelper.safe_malloc #{FFI.type_size(ffi_type)} * ary.length
-            block.put_array_of_#{ffi_type} 0, ary
-          end"
-        eval defn
-      end
-    end
-
-    setup_array_to_inptr_handler_for :pointer
-
     # FIXME: Hideous.
     def self.object_to_inptr obj
       return obj.to_ptr if obj.respond_to? :to_ptr
@@ -36,8 +21,6 @@ module GirFFI
 
     def self.typed_array_to_inptr type, ary
       return nil if ary.nil?
-      return utf8_array_to_inptr ary if type == :utf8
-      return interface_pointer_array_to_inptr ary if type == :interface_pointer
       ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
       block = allocate_array_of_type ffi_type, ary.length
       block.send "put_array_of_#{ffi_type}", 0, ary
@@ -49,24 +32,10 @@ module GirFFI
       AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
     end
 
-    def self.utf8_array_to_inptr ary
-      return nil if ary.nil?
-      ptr_ary = ary.map {|str| utf8_to_inptr str}
-      ptr_ary << nil
-      pointer_array_to_inptr ptr_ary
-    end
-
     # FIXME: :interface is too generic. implement only GValueArray?
     def self.interface_array_to_inptr ary
       return nil if ary.nil?
       raise NotImplementedError
-    end
-
-    def self.interface_pointer_array_to_inptr ary
-      return nil if ary.nil?
-      ptr_ary = ary.map {|ifc| ifc.to_ptr}
-      ptr_ary << nil
-      pointer_array_to_inptr ptr_ary
     end
 
     def self.utf8_to_inoutptr str
