@@ -1,5 +1,7 @@
 require 'gir_ffi/in_pointer'
 require 'gir_ffi/out_pointer'
+require 'gir_ffi/in_out_pointer'
+
 require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
@@ -438,7 +440,7 @@ module GirFFI::Builder
       if @array_arg
         pr << "#{@name} = #{@array_arg.name}.length"
       end
-      pr << "#{callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@name}"
+      pr << "#{callarg} = GirFFI::InOutPointer.from #{type_tag.inspect}, #{@name}"
       pr
     end
 

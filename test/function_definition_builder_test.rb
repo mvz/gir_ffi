@@ -10,7 +10,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
       expected = "
 	def init argv
 	  argc = argv.length
-	  _v1 = GirFFI::ArgHelper.gint32_to_inoutptr argc
+	  _v1 = GirFFI::InOutPointer.from :gint32, argc
 	  _v2 = GirFFI::ArgHelper.utf8_array_to_inoutptr argv
 	  ::Lib.gtk_init _v1, _v2
 	  _v3 = GirFFI::ArgHelper.outptr_to_gint32 _v1
@@ -116,7 +116,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
         "def method_array_inout ints
           _v1 = GirFFI::ArgHelper.gint32_array_to_inoutptr ints
           length = ints.length
-          _v2 = GirFFI::ArgHelper.gint32_to_inoutptr length
+          _v2 = GirFFI::InOutPointer.from :gint32, length
           ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
           _v3 = GirFFI::ArgHelper.outptr_to_gint32 _v2
           _v4 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v3
