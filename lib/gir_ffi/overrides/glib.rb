@@ -122,7 +122,7 @@ module GirFFI
 
         # FIXME: Turn into instance method
         def array_append_vals arr, data
-          bytes = GirFFI::ArgHelper.typed_array_to_inptr arr.element_type, data
+          bytes = GirFFI::InPointer.from_array arr.element_type, data
           len = data.length
           res = ::GLib::Array.wrap(
             ::GLib::Lib.g_array_append_vals(arr.to_ptr, bytes, len))
