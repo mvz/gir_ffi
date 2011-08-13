@@ -19,23 +19,10 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.typed_array_to_inptr type, ary
-      return nil if ary.nil?
-      ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-      block = allocate_array_of_type ffi_type, ary.length
-      block.send "put_array_of_#{ffi_type}", 0, ary
-    end
-
     def self.utf8_to_inptr str
       return nil if str.nil?
       len = str.bytesize
       AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-    end
-
-    # FIXME: :interface is too generic. implement only GValueArray?
-    def self.interface_array_to_inptr ary
-      return nil if ary.nil?
-      raise NotImplementedError
     end
 
     def self.utf8_to_inoutptr str
