@@ -348,7 +348,7 @@ module GirFFI::Builder
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
     end
 
     def post
@@ -360,7 +360,7 @@ module GirFFI::Builder
   # :inout.
   class CArrayInOutArgument < Argument::InOutBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
     end
 
     def postpost
