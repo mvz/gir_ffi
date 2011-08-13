@@ -15,6 +15,10 @@ module GirFFI
       self.new block
     end
 
+    def self.from type, val
+      ArgHelper.utf8_to_inptr val
+    end
+
     def self.from_utf8_array ary
       return nil if ary.nil?
       ptr_ary = ary.map {|str| ArgHelper.utf8_to_inptr str}

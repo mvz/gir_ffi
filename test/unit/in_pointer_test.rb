@@ -43,5 +43,16 @@ describe GirFFI::InPointer do
       assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
     end
   end
+
+  describe "an instance created with .from :utf8" do
+    before do
+      @result = GirFFI::InPointer.from :utf8, "foo"
+    end
+
+    it "returns an pointers to the given string" do
+      ary = @result.read_array_of_pointer(3)
+      assert { @result.read_string == "foo" }
+    end
+  end
 end
 
