@@ -191,7 +191,7 @@ module GirFFI::Builder
       if @arginfo.caller_allocates?
 	[ "#{callarg} = #{argument_class_name}.allocate" ]
       else
-	[ "#{callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+	[ "#{callarg} = GirFFI::OutPointer.for :pointer" ]
       end
     end
 
@@ -323,7 +323,7 @@ module GirFFI::Builder
   class EnumInOutArgument < Argument::InOutBase
     def pre
       pr = []
-      pr << "#{callarg} = GirFFI::ArgHelper.gint32_to_inoutptr #{argument_class_name}[#{@name}]"
+      pr << "#{callarg} = GirFFI::InOutPointer.from :gint32, #{argument_class_name}[#{@name}]"
       pr
     end
 
@@ -336,7 +336,7 @@ module GirFFI::Builder
   # :inout (structs, objects, etc.).
   class InterfaceInOutArgument < Argument::InOutBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}.to_ptr" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}.to_ptr" ]
     end
 
     def post
@@ -378,7 +378,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}" ]
     end
 
     def post
@@ -395,7 +395,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
     end
 
     def post
@@ -410,7 +410,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
     end
 
     def post
@@ -424,7 +424,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name}))" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name})" ]
     end
 
     def post
