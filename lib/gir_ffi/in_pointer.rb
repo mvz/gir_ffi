@@ -5,8 +5,8 @@ module GirFFI
   class InPointer < FFI::Pointer
     def self.from_array type, ary
       return nil if ary.nil?
-      return self.from_utf8_array ary if type == :utf8
-      return self.from_interface_pointer_array ary if type == :interface_pointer
+      return from_utf8_array ary if type == :utf8
+      return from_interface_pointer_array ary if type == :interface_pointer
 
       ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
       block = ArgHelper.allocate_array_of_type ffi_type, ary.length
@@ -20,18 +20,21 @@ module GirFFI
       self.new ArgHelper.utf8_to_inptr(val)
     end
 
-    def self.from_utf8_array ary
-      return nil if ary.nil?
-      ptr_ary = ary.map {|str| self.from :utf8, str}
-      ptr_ary << nil
-      self.from_array :pointer, ptr_ary
-    end
+    class << self
 
-    def self.from_interface_pointer_array ary
-      return nil if ary.nil?
-      ptr_ary = ary.map {|ifc| ifc.to_ptr}
-      ptr_ary << nil
-      self.from_array :pointer, ptr_ary
+      private
+
+      def from_utf8_array ary
+        ptr_ary = ary.map {|str| self.from :utf8, str}
+        ptr_ary << nil
+        self.from_array :pointer, ptr_ary
+      end
+
+      def from_interface_pointer_array ary
+        ptr_ary = ary.map {|ifc| ifc.to_ptr}
+        ptr_ary << nil
+        self.from_array :pointer, ptr_ary
+      end
     end
   end
 end
