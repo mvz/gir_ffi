@@ -2,11 +2,22 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout.
   class InOutPointer < FFI::Pointer
-    def self.for type, value
+    def self.from type, value
       ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-      size = FFI.type_size ffi_type
-      ptr = AllocationHelper.safe_malloc(size)
-      ptr.send "put_#{ffi_type}", 0, value
+
+      if type == :gboolean
+        ffi_type = :int
+        value = (value ? 1 : 0)
+      end
+
+      if type == :utf8
+        ptr = GirFFI::ArgHelper.utf8_to_inoutptr value
+      else
+        size = FFI.type_size ffi_type
+        ptr = AllocationHelper.safe_malloc(size)
+        ptr.send "put_#{ffi_type}", 0, value
+      end
+
       self.new ptr
     end
   end
