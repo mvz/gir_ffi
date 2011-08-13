@@ -49,4 +49,11 @@ describe GirFFI::InOutPointer do
       assert { @result.is_a? GirFFI::InOutPointer }
     end
   end
+
+  describe ".from_array" do
+    it "returns nil when passed nil" do
+      result = GirFFI::InOutPointer.from_array :gint32, nil
+      assert { result.nil? }
+    end
+  end
 end

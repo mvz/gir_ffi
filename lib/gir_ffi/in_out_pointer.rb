@@ -22,6 +22,7 @@ module GirFFI
     end
 
     def self.from_array type, array
+      return nil if array.nil?
       ptr = ArgHelper.typed_array_to_inptr(type, array)
       self.from :pointer, ptr
     end
