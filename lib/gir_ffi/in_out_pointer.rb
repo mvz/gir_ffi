@@ -20,6 +20,11 @@ module GirFFI
 
       self.new ptr
     end
+
+    def self.from_array type, array
+      ptr = ArgHelper.typed_array_to_inptr(type, array)
+      self.from :pointer, ptr
+    end
   end
 end
 
