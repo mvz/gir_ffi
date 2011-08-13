@@ -32,5 +32,16 @@ describe GirFFI::InPointer do
       assert { @result.is_a? GirFFI::InPointer }
     end
   end
+
+  describe "an instance created with .from_array :utf8" do
+    before do
+      @result = GirFFI::InPointer.from_array :utf8, ["foo", "bar", "baz"]
+    end
+
+    it "returns an array of pointers to strings" do
+      ary = @result.read_array_of_pointer(3)
+      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+    end
+  end
 end
 
