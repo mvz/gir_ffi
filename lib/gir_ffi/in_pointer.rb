@@ -7,7 +7,12 @@ module GirFFI
       return nil if ary.nil?
       return self.from_utf8_array ary if type == :utf8
       return self.from_interface_pointer_array ary if type == :interface_pointer
-      self.new ArgHelper.typed_array_to_inptr(type, ary)
+
+      ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+      block = ArgHelper.allocate_array_of_type ffi_type, ary.length
+      block.send "put_array_of_#{ffi_type}", 0, ary
+
+      self.new block
     end
 
     def self.from_utf8_array ary
