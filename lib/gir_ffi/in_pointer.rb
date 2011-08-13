@@ -16,6 +16,7 @@ module GirFFI
     end
 
     def self.from type, val
+      return nil if val.nil?
       self.new ArgHelper.utf8_to_inptr(val)
     end
 

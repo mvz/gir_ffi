@@ -58,5 +58,12 @@ describe GirFFI::InPointer do
       assert { @result.is_a? GirFFI::InPointer }
     end
   end
+
+  describe ".from" do
+    it "returns nil when passed nil" do
+      result = GirFFI::InPointer.from :foo, nil
+      assert { result.nil? }
+    end
+  end
 end
 
