@@ -11,7 +11,10 @@ module GirFFI
       end
 
       if type == :utf8
-        ptr = GirFFI::ArgHelper.utf8_to_inoutptr value
+        sptr = InPointer.from :utf8, value
+        size = FFI.type_size :pointer
+        ptr = AllocationHelper.safe_malloc(size)
+        ptr.write_pointer sptr
       else
         size = FFI.type_size ffi_type
         ptr = AllocationHelper.safe_malloc(size)

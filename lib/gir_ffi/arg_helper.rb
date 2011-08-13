@@ -19,25 +19,6 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.utf8_to_inoutptr str
-      sptr = InPointer.from :utf8, str
-      pointer_pointer.write_pointer sptr
-    end
-
-    def self.setup_pointer_maker_for *types
-      types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        size = FFI.type_size ffi_type
-        defn =
-          "def self.#{type}_pointer
-            AllocationHelper.safe_malloc #{size}
-          end"
-        eval defn
-      end
-    end
-
-    setup_pointer_maker_for :pointer
-
     def self.setup_outptr_to_type_handler_for *types
       types.flatten.each do |type|
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
