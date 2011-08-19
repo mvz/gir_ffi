@@ -16,8 +16,11 @@ module GirFFI
     private
 
     def adjust_value_out value
-      if @value_type == :gboolean
+      case @value_type
+      when :gboolean
         (value != 0)
+      when :utf8
+        ArgHelper.ptr_to_utf8 value
       else
         value
       end

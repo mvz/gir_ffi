@@ -86,5 +86,12 @@ describe GirFFI::InOutPointer do
         assert { ptr.to_value == true }
       end
     end
+
+    describe "for :utf8 values" do
+      it "returns the held value" do
+        ptr = GirFFI::InOutPointer.from :utf8, "Some value"
+        assert { "Some value" == ptr.to_value }
+      end
+    end
   end
 end
