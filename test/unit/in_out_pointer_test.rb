@@ -68,4 +68,11 @@ describe GirFFI::InOutPointer do
       assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
     end
   end
+
+  describe "#to_value" do
+    it "returns the held value" do
+      ptr = GirFFI::InOutPointer.from :gint32, 123
+      assert { ptr.to_value == 123 }
+    end
+  end
 end
