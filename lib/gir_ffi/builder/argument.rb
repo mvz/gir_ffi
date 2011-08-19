@@ -191,7 +191,7 @@ module GirFFI::Builder
       if @arginfo.caller_allocates?
 	[ "#{callarg} = #{argument_class_name}.allocate" ]
       else
-	[ "#{callarg} = GirFFI::OutPointer.for :pointer" ]
+	[ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
       end
     end
 

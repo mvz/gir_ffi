@@ -17,7 +17,7 @@ module GirFFI
         end
 
         def pre
-          [ "#{callarg} = GirFFI::OutPointer.for #{base_type.inspect}" ]
+          [ "#{callarg} = GirFFI::InOutPointer.for #{base_type.inspect}" ]
         end
       end
     end
