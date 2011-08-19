@@ -328,7 +328,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{callarg}]" ]
+      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
   end
 
@@ -340,7 +340,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{callarg})" ]
+      [ "#{retname} = #{argument_class_name}.wrap(#{callarg}.to_value)" ]
     end
   end
 
@@ -383,7 +383,7 @@ module GirFFI::Builder
 
     def post
       pp = []
-      pp << "#{retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{callarg})"
+      pp << "#{retname} = GLib::Array.wrap(#{callarg}.to_value)"
       pp << "#{retname}.element_type = #{elm_t}"
       pp
     end
@@ -399,7 +399,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -414,7 +414,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -428,7 +428,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
     end
   end
 
