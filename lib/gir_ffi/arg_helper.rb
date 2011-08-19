@@ -19,30 +19,6 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    def self.setup_outptr_to_type_handler_for *types
-      types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        defn =
-          "def self.outptr_to_#{type} ptr
-            ptr.get_#{ffi_type} 0
-          end"
-        eval defn
-      end
-    end
-
-    setup_outptr_to_type_handler_for SIMPLE_G_TYPES
-    setup_outptr_to_type_handler_for :pointer
-
-    # Converts an outptr to a boolean.
-    def self.outptr_to_gboolean ptr
-      (ptr.get_int 0) != 0
-    end
-
-    # Converts an outptr to a string.
-    def self.outptr_to_utf8 ptr
-      ptr_to_utf8 ptr.read_pointer
-    end
-
     # Converts an outptr to a string array.
     def self.outptr_to_utf8_array ptr, size
       block = ptr.read_pointer
@@ -122,7 +98,6 @@ module GirFFI
     class << self
       sz = FFI.type_size(:size_t) * 8
       type = "guint#{sz}"
-      alias_method :outptr_to_gtype, "outptr_to_#{type}"
       alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
     end
 

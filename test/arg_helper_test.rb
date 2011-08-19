@@ -1,17 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ArgHelperTest < MiniTest::Spec
-  context "The outptr_to_gint32 method" do
-    setup do
-      @ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:int)
-      @ptr.write_int 342
-    end
-
-    should "retrieve the correct integer value" do
-      assert_equal 342, GirFFI::ArgHelper.outptr_to_gint32(@ptr)
-    end
-  end
-
   context "The outptr_to_utf8_array method" do
     context "when called with a valid pointer to a string array" do
       setup do
