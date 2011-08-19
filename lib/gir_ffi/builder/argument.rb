@@ -445,7 +445,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{callarg}" ]
+      [ "#{retname} = #{callarg}.to_value" ]
     end
   end
 
