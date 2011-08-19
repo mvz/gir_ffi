@@ -13,13 +13,12 @@ module GirFFI
     end
 
     def self.from type, value
-      return from_gboolean value if type == :gboolean
       return from_utf8 value if type == :utf8
 
-      ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+      value = adjust_value_in type, value
 
-      size = FFI.type_size ffi_type
-      ptr = AllocationHelper.safe_malloc(size)
+      ffi_type = type_to_ffi_type type
+      ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
       ptr.send "put_#{ffi_type}", 0, value
 
       self.new ptr, type
@@ -34,8 +33,18 @@ module GirFFI
     class << self
       private
 
-      def from_gboolean value
-        self.from :gint32, (value ? 1 : 0)
+      def type_to_ffi_type type
+        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        ffi_type = :int32 if type == :gboolean
+        ffi_type
+      end
+
+      def adjust_value_in type, value
+        if type == :gboolean
+          (value ? 1 : 0)
+        else
+          value
+        end
       end
 
       def from_utf8 value
