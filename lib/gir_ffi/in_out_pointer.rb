@@ -42,6 +42,7 @@ module GirFFI
     end
 
     class << self
+      # TODO: Make separate module to hold type info.
       def type_to_ffi_type type
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
         ffi_type = :int32 if type == :gboolean

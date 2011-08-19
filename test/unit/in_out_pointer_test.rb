@@ -80,6 +80,11 @@ describe GirFFI::InOutPointer do
         ptr = GirFFI::InOutPointer.from :gboolean, false
         assert { ptr.to_value == false }
       end
+
+      it "works when the value is true" do
+        ptr = GirFFI::InOutPointer.from :gboolean, true
+        assert { ptr.to_value == true }
+      end
     end
   end
 end
