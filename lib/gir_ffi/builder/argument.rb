@@ -159,7 +159,7 @@ module GirFFI::Builder
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < Argument::OutBase
     def post
-      [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{callarg}" ]
+      [ "#{retname} = #{callarg}.to_value" ]
     end
 
     private
@@ -173,7 +173,7 @@ module GirFFI::Builder
   # :out that are enums
   class EnumOutArgument < RegularOutArgument
     def post
-      [ "#{retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{callarg}]" ]
+      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
 
     private
@@ -198,7 +198,7 @@ module GirFFI::Builder
       if @arginfo.caller_allocates?
 	[ "#{retname} = #{callarg}" ]
       else
-	[ "#{retname} = #{argument_class_name}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+	[ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
       end
     end
   end
@@ -244,7 +244,7 @@ module GirFFI::Builder
 
     def post
       pp = []
-      pp << "#{retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{callarg})"
+      pp << "#{retname} = GLib::Array.wrap #{callarg}.to_value"
       pp << "#{retname}.element_type = #{elm_t}"
       pp
     end
@@ -256,7 +256,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def post
-      [ "#{retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -266,7 +266,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def post
-      [ "#{retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -276,7 +276,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def post
-      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{callarg})" ]
+      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
     end
   end
 
