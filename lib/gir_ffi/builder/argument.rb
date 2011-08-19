@@ -1,5 +1,4 @@
 require 'gir_ffi/in_pointer'
-require 'gir_ffi/out_pointer'
 require 'gir_ffi/in_out_pointer'
 
 require 'gir_ffi/builder/argument/base'
