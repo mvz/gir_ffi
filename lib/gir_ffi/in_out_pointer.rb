@@ -24,14 +24,10 @@ module GirFFI
     end
 
     def self.from type, value
-      return from_utf8 value if type == :utf8
-
       value = adjust_value_in type, value
-
       ffi_type = type_to_ffi_type type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
       ptr.send "put_#{ffi_type}", 0, value
-
       self.new ptr, type, ffi_type
     end
 
@@ -44,24 +40,25 @@ module GirFFI
     class << self
       # TODO: Make separate module to hold type info.
       def type_to_ffi_type type
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
-        ffi_type = :int32 if type == :gboolean
-        ffi_type
-      end
-
-      def adjust_value_in type, value
-        if type == :gboolean
-          (value ? 1 : 0)
+        case type
+        when :gboolean
+          :int32
+        when :utf8
+          :pointer
         else
-          value
+          GirFFI::Builder::TAG_TYPE_MAP[type] || type
         end
       end
 
-      private
-
-      def from_utf8 value
-        ptr = InPointer.from :utf8, value
-        self.from :pointer, ptr
+      def adjust_value_in type, value
+        case type
+        when :gboolean
+          (value ? 1 : 0)
+        when :utf8
+          InPointer.from :utf8, value
+        else
+          value
+        end
       end
     end
   end
