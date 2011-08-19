@@ -74,5 +74,12 @@ describe GirFFI::InOutPointer do
       ptr = GirFFI::InOutPointer.from :gint32, 123
       assert { ptr.to_value == 123 }
     end
+
+    describe "for :gboolean values" do
+      it "works when the value is false" do
+        ptr = GirFFI::InOutPointer.from :gboolean, false
+        assert { ptr.to_value == false }
+      end
+    end
   end
 end
