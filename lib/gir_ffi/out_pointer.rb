@@ -3,12 +3,9 @@ module GirFFI
   # ruby types for arguments with direction :out.
   class OutPointer < FFI::Pointer
     def self.for type
-      value = case type
-              when :gboolean : false
-              when :utf8 : nil
-              else 0
-              end
-      ptr = InOutPointer.from type, value
+      ffi_type = InOutPointer.type_to_ffi_type type
+      ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
+      ptr.send "put_#{ffi_type}", 0, 0
       self.new ptr
     end
   end
