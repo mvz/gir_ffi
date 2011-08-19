@@ -26,6 +26,13 @@ module GirFFI
       end
     end
 
+    def self.for type
+      ffi_type = type_to_ffi_type type
+      ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
+      ptr.send "put_#{ffi_type}", 0, 0
+      self.new ptr, type, ffi_type
+    end
+
     def self.from type, value
       value = adjust_value_in type, value
       ffi_type = type_to_ffi_type type

@@ -69,6 +69,30 @@ describe GirFFI::InOutPointer do
     end
   end
 
+  describe "in instance created with .for" do
+    setup do
+      @result = GirFFI::InOutPointer.for :gint32
+    end
+
+    it "holds a pointer to a null value" do
+      assert { @result.read_int32 == 0 }
+    end
+
+    it "is an instance of GirFFI::InOutPointer" do
+      assert { @result.is_a? GirFFI::InOutPointer }
+    end
+  end
+
+  describe ".for" do
+    it "handles :gboolean" do
+      GirFFI::InOutPointer.for :gboolean
+    end
+
+    it "handles :utf8" do
+      GirFFI::InOutPointer.for :utf8
+    end
+  end
+
   describe "#to_value" do
     it "returns the held value" do
       ptr = GirFFI::InOutPointer.from :gint32, 123
