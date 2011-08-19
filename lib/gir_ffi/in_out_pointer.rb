@@ -42,8 +42,6 @@ module GirFFI
     end
 
     class << self
-      private
-
       def type_to_ffi_type type
         ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
         ffi_type = :int32 if type == :gboolean
@@ -57,6 +55,8 @@ module GirFFI
           value
         end
       end
+
+      private
 
       def from_utf8 value
         ptr = InPointer.from :utf8, value
