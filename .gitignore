@@ -1,5 +1,6 @@
 /coverage
 /doc
+/html
 /tmp
 /pkg
 gir_ffi*.gem
