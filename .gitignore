@@ -1,8 +1,9 @@
 /coverage
-/doc
 /html
+/doc
 /tmp
 /pkg
+/.yardoc
 gir_ffi*.gem
 *.rbc
 hs_err_pid*.log
