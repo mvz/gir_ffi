@@ -27,6 +27,12 @@ namespace :test do
 
   task :integration => :lib
   task :run => :lib
+
+  desc 'Run rcov for the entire test suite'
+  task :coverage => :lib do
+    rm_f "coverage"
+    system "rcov", "-Ilib", "--exclude", "\.gem\/,\/gems\/", *FileList['test/**/*_test.rb']
+  end
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do
