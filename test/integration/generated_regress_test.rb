@@ -990,7 +990,6 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     should "have correct test_utf8_const_in" do
-      # TODO: Capture stderr to automatically look for error messages.
       assert_nothing_raised do
 	Regress.test_utf8_const_in("const \xe2\x99\xa5 utf8")
       end

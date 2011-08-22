@@ -1,54 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
 class ArgHelperTest < MiniTest::Spec
-  context "The gint32_to_inoutptr method's return value" do
-    setup do
-      @result = GirFFI::ArgHelper.gint32_to_inoutptr 24
-    end
-
-    should "be an FFI::Pointer" do
-      assert_instance_of FFI::Pointer, @result
-    end
-
-    should "hold a pointer to the correct input value" do
-      assert_equal 24, @result.read_int
-    end
-  end
-
-  context "The utf8_array_to_inoutptr method" do
-    context "when called with an array of strings" do
-      setup do
-	@result = GirFFI::ArgHelper.utf8_array_to_inoutptr ["foo", "bar", "baz"]
-      end
-
-      should "return an FFI::Pointer" do
-	assert_instance_of FFI::Pointer, @result
-      end
-
-      should "return a pointer to an array of pointers to strings" do
-	ptr = @result.read_pointer
-	ary = ptr.read_array_of_pointer(3)
-	assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
-      end
-    end
-    context "when called with nil" do
-      should "return nil" do
-	assert_nil GirFFI::ArgHelper.utf8_array_to_inoutptr nil
-      end
-    end
-  end
-
-  context "The outptr_to_gint32 method" do
-    setup do
-      @ptr = GirFFI::AllocationHelper.safe_malloc FFI.type_size(:int)
-      @ptr.write_int 342
-    end
-
-    should "retrieve the correct integer value" do
-      assert_equal 342, GirFFI::ArgHelper.outptr_to_gint32(@ptr)
-    end
-  end
-
   context "The outptr_to_utf8_array method" do
     context "when called with a valid pointer to a string array" do
       setup do
@@ -88,7 +40,8 @@ class ArgHelperTest < MiniTest::Spec
 
     context "when called with a pointer to null" do
       should "return nil" do
-	ptr = GirFFI::ArgHelper.pointer_pointer.write_pointer nil
+	ptr = GirFFI::InOutPointer.for :pointer
+        assert { ptr.read_pointer.null? }
 	assert_nil GirFFI::ArgHelper.outptr_to_utf8_array(ptr, 0)
       end
     end
@@ -110,14 +63,6 @@ class ArgHelperTest < MiniTest::Spec
     end
   end
 
-  context "The pointer_outptr method" do
-    should "return a pointer to a null pointer" do
-      ptr = GirFFI::ArgHelper.pointer_outptr
-      pptr = ptr.read_pointer
-      assert pptr.null?
-    end
-  end
-
   context "The object_pointer_to_object method" do
     setup do
       GirFFI.setup :Regress
@@ -134,19 +79,4 @@ class ArgHelperTest < MiniTest::Spec
     end
   end
 
-  context "The map_single_callback_arg method" do
-    should "correctly map a :struct type" do
-      GirFFI.setup :GObject
-
-      cl = GObject::Closure.new_simple GObject::Closure::Struct.size, nil
-
-      cinfo = GirFFI::IRepository.default.find_by_name 'GObject', 'ClosureMarshal'
-      ainfo = cinfo.args[0]
-
-      r = GirFFI::ArgHelper.map_single_callback_arg cl.to_ptr, ainfo
-
-      assert_instance_of GObject::Closure, r
-      assert_equal r.to_ptr, cl.to_ptr
-    end
-  end
 end

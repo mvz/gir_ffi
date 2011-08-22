@@ -6,12 +6,18 @@ module GirFFI
       class OutBase < Base
         def prepare
           @name = safe(@arginfo.name)
-          @callarg = @function_builder.new_var
-          @retname = @function_builder.new_var
+        end
+
+        def callarg
+          @callarg ||= @function_builder.new_var
+        end
+
+        def retname
+          @retname ||= @function_builder.new_var
         end
 
         def pre
-          [ "#{@callarg} = GirFFI::ArgHelper.#{base_type}_outptr" ]
+          [ "#{callarg} = GirFFI::InOutPointer.for #{base_type.inspect}" ]
         end
       end
     end

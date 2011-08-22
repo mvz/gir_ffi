@@ -10,13 +10,11 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
       expected = "
 	def init argv
 	  argc = argv.length
-	  _v1 = GirFFI::ArgHelper.gint32_to_inoutptr argc
-	  _v3 = GirFFI::ArgHelper.utf8_array_to_inoutptr argv
-	  ::Lib.gtk_init _v1, _v3
-	  _v2 = GirFFI::ArgHelper.outptr_to_gint32 _v1
-	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v3, _v2
-	  GirFFI::ArgHelper.cleanup_ptr _v1
-	  GirFFI::ArgHelper.cleanup_ptr_array_ptr _v3, _v2
+	  _v1 = GirFFI::InOutPointer.from :gint32, argc
+	  _v2 = GirFFI::InOutPointer.from_array :utf8, argv
+	  ::Lib.gtk_init _v1, _v2
+	  _v3 = _v1.to_value
+	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v2, _v3
 	  return _v4
 	end
       "
@@ -45,10 +43,10 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def test_callback_destroy_notify callback, user_data, notify
-	  _v1 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
+	  _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
 	  ::Lib::CALLBACKS << _v1
 	  _v2 = GirFFI::ArgHelper.object_to_inptr user_data
-	  _v3 = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
+	  _v3 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
 	  ::Lib::CALLBACKS << _v3
 	  _v4 = ::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
 	  return _v4
@@ -64,12 +62,12 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def new_from_file x
-	  _v1 = GirFFI::ArgHelper.utf8_to_inptr x
-	  _v4 = FFI::MemoryPointer.new(:pointer).write_pointer nil
-	  _v2 = ::Lib.regress_test_obj_new_from_file _v1, _v4
-	  GirFFI::ArgHelper.check_error(_v4)
-	  _v3 = self.constructor_wrap(_v2)
-	  return _v3
+	  _v1 = GirFFI::InPointer.from :utf8, x
+	  _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+	  _v3 = ::Lib.regress_test_obj_new_from_file _v1, _v2
+	  GirFFI::ArgHelper.check_error(_v2)
+	  _v4 = self.constructor_wrap(_v3)
+	  return _v4
 	end"
 
       assert_equal cws(expected), cws(code)
@@ -82,11 +80,10 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def test_array_int_null_in arr
-	  _v1 = GirFFI::ArgHelper.gint32_array_to_inptr arr
+	  _v1 = GirFFI::InPointer.from_array :gint32, arr
 	  len = arr.nil? ? 0 : arr.length
 	  _v2 = len
 	  ::Lib.regress_test_array_int_null_in _v1, _v2
-	  GirFFI::ArgHelper.cleanup_ptr _v1
 	end"
 
       assert_equal cws(expected), cws(code)
@@ -99,14 +96,12 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
 	"def test_array_int_null_out
-	  _v1 = GirFFI::ArgHelper.pointer_outptr
-	  _v3 = GirFFI::ArgHelper.gint32_outptr
-	  ::Lib.regress_test_array_int_null_out _v1, _v3
-	  _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
-	  _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
-	  GirFFI::ArgHelper.cleanup_ptr_ptr _v1
-	  GirFFI::ArgHelper.cleanup_ptr _v3
-	  return _v2
+	  _v1 = GirFFI::InOutPointer.for :pointer
+	  _v2 = GirFFI::InOutPointer.for :gint32
+	  ::Lib.regress_test_array_int_null_out _v1, _v2
+	  _v3 = _v2.to_value
+	  _v4 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v3
+	  return _v4
 	end"
 
       assert_equal cws(expected), cws(code)
@@ -119,15 +114,13 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 
       expected =
         "def method_array_inout ints
-          _v1 = GirFFI::ArgHelper.gint32_array_to_inoutptr ints
+          _v1 = GirFFI::InOutPointer.from_array :gint32, ints
           length = ints.length
-          _v3 = GirFFI::ArgHelper.gint32_to_inoutptr length
-          ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v3
-          _v4 = GirFFI::ArgHelper.outptr_to_gint32 _v3
-          _v2 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v4
-          GirFFI::ArgHelper.cleanup_ptr _v1
-          GirFFI::ArgHelper.cleanup_ptr _v3
-          return _v2
+          _v2 = GirFFI::InOutPointer.from :gint32, length
+          ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
+          _v3 = _v2.to_value
+          _v4 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v3
+          return _v4
 	end"
 
       assert_equal cws(expected), cws(code)

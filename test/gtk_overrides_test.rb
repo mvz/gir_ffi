@@ -8,9 +8,8 @@ describe GirFFI::Overrides::Gtk do
         ["baz", "qux", "zonk"]
       end
     end
-    # FIXME: Too-complex stubbing because of violation of Law of Demeter.
-    stub(@builder = Object.new).setup_function {}
-    stub(@gtk).gir_ffi_builder { @builder }
+    stub(@gtk)._setup_method { }
+
     @gtk.instance_eval do
       include GirFFI::Overrides::Gtk
     end

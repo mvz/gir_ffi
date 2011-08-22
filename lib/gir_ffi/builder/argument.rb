@@ -1,7 +1,12 @@
+require 'gir_ffi/in_pointer'
+require 'gir_ffi/in_out_pointer'
+
 require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
 require 'gir_ffi/builder/argument/in_out_base'
+require 'gir_ffi/builder/argument/list_base'
+require 'gir_ffi/builder/argument/hash_table_base'
 
 module GirFFI::Builder
   module Argument
@@ -50,8 +55,8 @@ module GirFFI::Builder
   class CallbackInArgument < Argument::InBase
     def pre
       iface = type_info.interface
-      [ "#{@callarg} = GirFFI::ArgHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
-        "::#{@libmodule}::CALLBACKS << #{@callarg}" ]
+      [ "#{callarg} = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
+        "::#{@libmodule}::CALLBACKS << #{callarg}" ]
     end
   end
 
@@ -59,29 +64,19 @@ module GirFFI::Builder
   # direction :in.
   class VoidInArgument < Argument::InBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
+      [ "#{callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
     end
   end
 
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
-    def cleanup
-      unless @arginfo.ownership_transfer == :everything
-        if subtype_tag == :utf8
-          [ "GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}" ]
-        else
-          [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-        end
-      end
-    end
-
     def pre
       pr = []
       size = type_info.array_fixed_size
       if size > -1
         pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
-      pr << "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inptr #{@name}"
+      pr << "#{callarg} = GirFFI::InPointer.from_array #{subtype_tag.inspect}, #{@name}"
       pr
     end
   end
@@ -90,14 +85,14 @@ module GirFFI::Builder
   # direction :in.
   class ListInArgument < Argument::InBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
+      [ "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction :in.
   class HashTableInArgument < Argument::InBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.hash_to_ghash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
+      [ "#{callarg} = GirFFI::ArgHelper.hash_to_ghash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
     end
   end
 
@@ -105,13 +100,7 @@ module GirFFI::Builder
   # :in.
   class Utf8InArgument < Argument::InBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.utf8_to_inptr #{@name}" ]
-    end
-
-    def cleanup
-      # TODO: Write tests and enable this.
-      # [ "GirFFI::ArgHelper.cleanup_ptr #{@callarg}" ]
-      []
+      [ "#{callarg} = GirFFI::InPointer.from :utf8, #{@name}" ]
     end
   end
 
@@ -125,7 +114,7 @@ module GirFFI::Builder
         arrname = @array_arg.name
 	pr << "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
-      pr << "#{@callarg} = #{@name}"
+      pr << "#{callarg} = #{@name}"
       pr
     end
   end
@@ -170,15 +159,7 @@ module GirFFI::Builder
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < Argument::OutBase
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
-    end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-      else
-        super
-      end
+      [ "#{retname} = #{callarg}.to_value" ]
     end
 
     private
@@ -192,7 +173,7 @@ module GirFFI::Builder
   # :out that are enums
   class EnumOutArgument < RegularOutArgument
     def post
-      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
+      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
 
     private
@@ -207,21 +188,24 @@ module GirFFI::Builder
   class InterfaceOutArgument < Argument::OutBase
     def pre
       if @arginfo.caller_allocates?
-	[ "#{@callarg} = #{argument_class_name}.allocate" ]
+	[ "#{callarg} = #{argument_class_name}.allocate" ]
       else
-	[ "#{@callarg} = GirFFI::ArgHelper.pointer_outptr" ]
+	[ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
       end
     end
 
     def post
       if @arginfo.caller_allocates?
-	[ "#{@retname} = #{@callarg}" ]
+	[ "#{retname} = #{callarg}" ]
       else
-	[ "#{@retname} = #{argument_class_name}.wrap GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+	[ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
       end
     end
   end
 
+  # Base class for arguments with direction :out for which the base type is
+  # a pointer: For these, a pointer to a pointer needs to be passed to the
+  # C function.
   class PointerLikeOutArgument < Argument::OutBase
     private
 
@@ -234,93 +218,65 @@ module GirFFI::Builder
   # :out.
   class CArrayOutArgument < PointerLikeOutArgument
     def postpost
-      size = array_size
       tag = subtype_tag
 
-      pp = []
-
+      args = [callarg, array_size]
       if tag == :interface or tag == :interface_pointer
-        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{subtype_class_name}, #{@callarg}, #{size}"
-      else
-        pp << "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}"
+        args.unshift subtype_class_name
       end
 
-      pp
-    end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        case subtype_tag
-        when :utf8
-	  ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{size}"]
-        when :interface
-	  ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-	else
-	  ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
-	end
-      else
-        super
-      end
+      [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{args.join ', '}" ]
     end
   end
 
   # Implements argument processing for strv arguments with direction
   # :out.
   class StrvOutArgument < PointerLikeOutArgument
-    def postpost
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
+    def post
+      [ "#{retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{callarg}" ]
     end
   end
 
   # Implements argument processing for GArray arguments with direction
   # :out.
   class ArrayOutArgument < PointerLikeOutArgument
+    include Argument::ListBase
+
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
-
       pp = []
-
-      pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
-      pp << "#{@retname}.element_type = #{etype.inspect}"
-
+      pp << "#{retname} = GLib::Array.wrap #{callarg}.to_value"
+      pp << "#{retname}.element_type = #{elm_t}"
       pp
-    end
-
-    def cleanup
-      if @arginfo.ownership_transfer == :everything
-        ["GirFFI::ArgHelper.cleanup_ptr #{@callarg}"]
-      else
-        super
-      end
     end
   end
 
   # Implements argument processing for glist arguments with direction
   # :out.
   class ListOutArgument < PointerLikeOutArgument
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
-      [ "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
   # Implements argument processing for gslist arguments with direction
   # :out.
   class SListOutArgument < PointerLikeOutArgument
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
-      [ "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction
   # :out.
   class HashTableOutArgument < PointerLikeOutArgument
+    include Argument::HashTableBase
+
     def post
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
-      [ "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})" ]
+      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -366,12 +322,12 @@ module GirFFI::Builder
   class EnumInOutArgument < Argument::InOutBase
     def pre
       pr = []
-      pr << "#{@callarg} = GirFFI::ArgHelper.gint32_to_inoutptr #{argument_class_name}[#{@name}]"
+      pr << "#{callarg} = GirFFI::InOutPointer.from :gint32, #{argument_class_name}[#{@name}]"
       pr
     end
 
     def post
-      [ "#{@retname} = #{argument_class_name}[GirFFI::ArgHelper.outptr_to_gint32 #{@callarg}]" ]
+      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
   end
 
@@ -379,11 +335,11 @@ module GirFFI::Builder
   # :inout (structs, objects, etc.).
   class InterfaceInOutArgument < Argument::InOutBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}.to_ptr" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}.to_ptr" ]
     end
 
     def post
-      [ "#{@retname} = #{argument_class_name}.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})" ]
+      [ "#{retname} = #{argument_class_name}.wrap(#{callarg}.to_value)" ]
     end
   end
 
@@ -391,11 +347,11 @@ module GirFFI::Builder
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
     end
 
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{@callarg}" ]
+      [ "#{retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{callarg}" ]
     end
   end
 
@@ -403,45 +359,31 @@ module GirFFI::Builder
   # :inout.
   class CArrayInOutArgument < Argument::InOutBase
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
     end
 
     def postpost
       tag = subtype_tag
       size = array_size
-      pst = [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{@callarg}, #{size}" ]
+      pst = [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{callarg}, #{size}" ]
       pst
     end
 
-    def cleanup
-      if @arginfo.ownership_transfer == :nothing
-        super
-      else
-        if subtype_tag == :utf8
-          ["GirFFI::ArgHelper.cleanup_ptr_array_ptr #{@callarg}, #{array_size}"]
-        else
-          ["GirFFI::ArgHelper.cleanup_ptr_ptr #{@callarg}"]
-        end
-      end
-    end
   end
 
   # Implements argument processing for GArray arguments with direction
   # :inout.
   class ArrayInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}" ]
     end
 
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
-
       pp = []
-
-      pp << "#{@retname} = GLib::Array.wrap(GirFFI::ArgHelper.outptr_to_pointer #{@callarg})"
-      pp << "#{@retname}.element_type = #{etype.inspect}"
-
+      pp << "#{retname} = GLib::Array.wrap(#{callarg}.to_value)"
+      pp << "#{retname}.element_type = #{elm_t}"
       pp
     end
   end
@@ -449,15 +391,14 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :inout.
   class ListInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
     end
 
     def post
-      elm_t = subtype_tag.inspect
-      pp = []
-      pp << "#{@retname} = GLib::List.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -465,34 +406,28 @@ module GirFFI::Builder
   # :inout.
   # FIXME: Merge code with ListInOutArgument somehow.
   class SListInOutArgument < Argument::InOutBase
+    include Argument::ListBase
+
     def pre
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
     end
 
     def post
-      elm_t = subtype_tag.inspect
-      pp = []
-      pp << "#{@retname} = GLib::SList.wrap #{elm_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction
   # :inout.
   class HashTableInOutArgument < Argument::InOutBase
+    include Argument::HashTableBase
+
     def pre
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
-      [ "#{@callarg} = GirFFI::ArgHelper.pointer_to_inoutptr(GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name}))" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name})" ]
     end
 
     def post
-      pp = []
-
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
-      pp << "#{@retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, GirFFI::ArgHelper.outptr_to_pointer(#{@callarg})"
-      pp
+      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -504,12 +439,12 @@ module GirFFI::Builder
       if @array_arg
         pr << "#{@name} = #{@array_arg.name}.length"
       end
-      pr << "#{@callarg} = GirFFI::ArgHelper.#{type_tag}_to_inoutptr #{@name}"
+      pr << "#{callarg} = GirFFI::InOutPointer.from #{type_tag.inspect}, #{@name}"
       pr
     end
 
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.outptr_to_#{type_tag} #{@callarg}" ]
+      [ "#{retname} = #{callarg}.to_value" ]
     end
   end
 
@@ -517,9 +452,12 @@ module GirFFI::Builder
   class ReturnValue < Argument::Base
     attr_reader :cvar
 
-    def prepare
-      @cvar = @function_builder.new_var
-      @retname = @function_builder.new_var
+    def cvar
+      @cvar ||= @function_builder.new_var
+    end
+
+    def retname
+      @retname ||= @function_builder.new_var
     end
 
     def type_info
@@ -576,7 +514,8 @@ module GirFFI::Builder
 
   # Null object to represent the case where no actual value is returned.
   class VoidReturnValue < ReturnValue
-    def prepare; end
+    def cvar; end
+    def retname; end
   end
 
   # Implements argument processing for interface return values (interfaces
@@ -584,21 +523,21 @@ module GirFFI::Builder
   # polymorphism and constructors).
   class InterfaceReturnValue < ReturnValue
     def post
-      [ "#{@retname} = #{argument_class_name}.wrap(#{@cvar})" ]
+      [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
     end
   end
 
   # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.object_pointer_to_object(#{@cvar})" ]
+      [ "#{retname} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})" ]
     end
   end
 
   # Implements argument processing for object constructors.
   class ConstructorReturnValue < ReturnValue
     def post
-      [ "#{@retname} = self.constructor_wrap(#{@cvar})" ]
+      [ "#{retname} = self.constructor_wrap(#{cvar})" ]
     end
   end
 
@@ -607,56 +546,58 @@ module GirFFI::Builder
     def post
       size = array_size
 
-      [ "#{@retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{@cvar}, #{size}" ]
+      [ "#{retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{cvar}, #{size}" ]
     end
   end
 
   # Implements argument processing for NULL-terminated string array return values.
   class StrvReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GirFFI::ArgHelper.strv_to_utf8_array #{@cvar}" ]
+      [ "#{retname} = GirFFI::ArgHelper.strv_to_utf8_array #{cvar}" ]
     end
   end
 
   # Implements argument processing for GList return values.
   class ListReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
-      [ "#{@retname} = GLib::List.wrap(#{elm_t}, #{@cvar})" ]
+      [ "#{retname} = GLib::List.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 
   # Implements argument processing for GSList return values.
   class SListReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      elm_t = subtype_tag.inspect
-      [ "#{@retname} = GLib::SList.wrap(#{elm_t}, #{@cvar})" ]
+      [ "#{retname} = GLib::SList.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 
   # Implements argument processing for GHashTable return values.
   class HashTableReturnValue < ReturnValue
+    include Argument::HashTableBase
+
     def post
-      key_t = subtype_tag(0).inspect
-      val_t = subtype_tag(1).inspect
-      [ "#{@retname} = GLib::HashTable.wrap(#{key_t}, #{val_t}, #{@cvar})" ]
+      [ "#{retname} = GLib::HashTable.wrap(#{key_t}, #{val_t}, #{cvar})" ]
     end
   end
 
   # Implements argument processing for GHashTable return values.
   class ByteArrayReturnValue < ReturnValue
     def post
-      [ "#{@retname} = GLib::ByteArray.wrap(#{@cvar})" ]
+      [ "#{retname} = GLib::ByteArray.wrap(#{cvar})" ]
     end
   end
 
   # Implements argument processing for GHashTable return values.
   class ArrayReturnValue < ReturnValue
+    include Argument::ListBase
+
     def post
-      tag = subtype_tag
-      etype = GirFFI::Builder::TAG_TYPE_MAP[tag] || tag
-      [ "#{@retname} = GLib::Array.wrap(#{@cvar})",
-        "#{@retname}.element_type = #{etype.inspect}" ]
+      [ "#{retname} = GLib::Array.wrap(#{cvar})",
+        "#{retname}.element_type = #{elm_t}" ]
     end
   end
 
@@ -667,7 +608,7 @@ module GirFFI::Builder
         @cvar
       else
         if type_tag == :utf8
-          "#{@cvar}.force_encoding('utf-8')"
+          "#{cvar}.force_encoding('utf-8')"
         else
           @cvar
         end
@@ -679,21 +620,20 @@ module GirFFI::Builder
   # arguments are not part of the introspected signature, but their
   # presence is indicated by the 'throws' attribute of the function.
   class ErrorArgument < Argument::Base
-    def prepare
-      @callarg = @function_builder.new_var
+    def callarg
+      @callarg ||= @function_builder.new_var
     end
 
     def pre
-      [ "#{@callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
+      [ "#{callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
     end
 
     def post
-      [ "GirFFI::ArgHelper.check_error(#{@callarg})" ]
+      [ "GirFFI::ArgHelper.check_error(#{callarg})" ]
     end
   end
 
   # Argument builder that does nothing. Implements Null Object pattern.
   class NullArgument < Argument::Base
-    def prepare; end
   end
 end

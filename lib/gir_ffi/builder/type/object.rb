@@ -10,7 +10,7 @@ module GirFFI
             return true
           else
             if parent
-              return superclass.gir_ffi_builder.setup_method method
+              return superclass._setup_method method
             else
               return false
             end
@@ -32,7 +32,7 @@ module GirFFI
             end
           end
           if parent
-            return superclass.gir_ffi_builder.find_signal signal_name
+            return superclass._find_signal signal_name
           end
         end
 
@@ -40,12 +40,12 @@ module GirFFI
 
         def setup_instance_method_in_ancestor method
           interfaces.each do |iface|
-            if iface.gir_ffi_builder.setup_instance_method method
+            if iface._setup_instance_method method
               return true
             end
           end
           if parent
-            return superclass.gir_ffi_builder.setup_instance_method method
+            return superclass._setup_instance_method method
           else
             return false
           end

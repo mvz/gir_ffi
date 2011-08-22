@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/type'
+require 'gir_ffi/builder/type/unintrospectable'
 require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
 
@@ -9,8 +10,12 @@ module GirFFI
   module Builder
     extend BuilderHelper
 
+    sz = FFI.type_size(:size_t) * 8
+    gtype_type = "uint#{sz}".to_sym
+
     TAG_TYPE_MAP = {
       :GType => :size_t,
+      :gtype => gtype_type,
       :gboolean => :bool,
       :gunichar => :uint32,
       :gint8 => :int8,
@@ -88,12 +93,10 @@ module GirFFI
 
       if tag == :interface
         case info.interface.info_type
-        when :object, :struct
-          :pointer
-        when :enum
+        when :enum, :flags
           :int32
         else
-          raise NotImplementedError, info.interface.info_type
+          :pointer
         end
       else
         return TAG_TYPE_MAP[tag] || tag

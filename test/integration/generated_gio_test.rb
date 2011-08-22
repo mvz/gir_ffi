@@ -80,5 +80,19 @@ describe "The generated Gio module" do
       assert_equal :unhandled, a
     end
   end
+
+  describe "the CharsetConverter class" do
+    it "includes two interfaces" do
+      klass = Gio::CharsetConverter
+      assert_includes klass.ancestors, Gio::Converter
+      assert_includes klass.ancestors, Gio::Initable
+    end
+
+    it "allows an instance to find the #reset method" do
+      cnv = Gio::CharsetConverter.new "utf8", "utf8"
+      cnv.reset
+      pass
+    end
+  end
 end
 

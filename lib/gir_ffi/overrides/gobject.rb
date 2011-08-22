@@ -105,7 +105,7 @@ module GirFFI
 	end
 
 	def signal_connect object, signal, data=nil, &block
-	  sig = object.class.gir_ffi_builder.find_signal signal
+	  sig = object.class._find_signal signal
 	  if sig.nil?
 	    raise "Signal #{signal} is invalid for #{object}"
 	  end
@@ -140,7 +140,7 @@ module GirFFI
 	end
 
 	def self.signal_arguments_to_gvalue_array signal, instance, *rest
-	  sig = instance.class.gir_ffi_builder.find_signal signal
+	  sig = instance.class._find_signal signal
 
 	  arr = ::GObject::ValueArray.new sig.n_args+1
 
@@ -318,7 +318,7 @@ module GirFFI
 
       module ClosureInstanceMethods
         def set_marshal marshal
-	  _v1 = GirFFI::ArgHelper.wrap_in_callback_args_mapper(
+	  _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper(
             "GObject", "ClosureMarshal", marshal)
 	  ::GObject::Lib::CALLBACKS << _v1
 	  ::GObject::Lib.g_closure_set_marshal self, _v1
