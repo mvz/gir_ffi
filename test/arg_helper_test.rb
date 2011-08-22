@@ -41,7 +41,7 @@ class ArgHelperTest < MiniTest::Spec
     context "when called with a pointer to null" do
       should "return nil" do
 	ptr = GirFFI::InOutPointer.for :pointer
-        assert { ptr.read_pointer.null? }
+        assert ptr.read_pointer.null?
 	assert_nil GirFFI::ArgHelper.outptr_to_utf8_array(ptr, 0)
       end
     end

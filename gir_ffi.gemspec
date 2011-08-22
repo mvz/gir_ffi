@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<ffi>, ["~> 1.0.8"])
   s.add_development_dependency('minitest', [">= 2.0.2"])
   s.add_development_dependency('rr', ["~> 1.0.2"])
-  s.add_development_dependency('wrong', [">= 0.5.4"])
 
   s.require_paths = ["lib"]
 end

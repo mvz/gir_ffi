@@ -6,7 +6,6 @@ end
 
 require 'minitest/spec'
 require 'minitest/autorun'
-require 'wrong/adapters/minitest'
 require 'rr'
 require 'ffi'
 

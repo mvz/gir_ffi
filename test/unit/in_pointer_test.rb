@@ -6,7 +6,7 @@ describe GirFFI::InPointer do
   describe ".from_array" do
     it "returns nil when passed nil" do
       result = GirFFI::InPointer.from_array :gint32, nil
-      assert { result.nil? }
+      assert_nil result
     end
 
     it "handles type tag :gtype" do
@@ -29,7 +29,7 @@ describe GirFFI::InPointer do
     end
 
     it "is an instance of GirFFI::InPointer" do
-      assert { @result.is_a? GirFFI::InPointer }
+      assert_instance_of GirFFI::InPointer, @result
     end
   end
 
@@ -51,18 +51,18 @@ describe GirFFI::InPointer do
 
     it "returns an pointers to the given string" do
       ary = @result.read_array_of_pointer(3)
-      assert { @result.read_string == "foo" }
+      assert_equal "foo", @result.read_string
     end
 
     it "is an instance of GirFFI::InPointer" do
-      assert { @result.is_a? GirFFI::InPointer }
+      assert_instance_of GirFFI::InPointer, @result
     end
   end
 
   describe ".from" do
     it "returns nil when passed nil" do
       result = GirFFI::InPointer.from :foo, nil
-      assert { result.nil? }
+      assert_nil result
     end
   end
 end

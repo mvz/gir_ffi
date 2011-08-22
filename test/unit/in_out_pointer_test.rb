@@ -9,11 +9,11 @@ describe GirFFI::InOutPointer do
     end
 
     it "holds a pointer to the given value" do
-      assert { @result.read_int32 == 23 }
+      assert_equal 23, @result.read_int32
     end
 
     it "is an instance of GirFFI::InOutPointer" do
-      assert { @result.is_a? GirFFI::InOutPointer }
+      assert_instance_of GirFFI::InOutPointer, @result
     end
   end
 
@@ -34,26 +34,23 @@ describe GirFFI::InOutPointer do
 
     it "holds a pointer to a non-null pointer" do
       ptr = @result.read_pointer
-      deny { ptr.null? }
+      refute ptr.null?
     end
 
     it "holds a pointer to a pointer to the correct input values" do
       ptr = @result.read_pointer
-      assert {
-        ptr.get_int(0) == 24 &&
-        ptr.get_int(4) == 13
-      }
+      assert_equal [24, 13], [ptr.get_int(0), ptr.get_int(4)]
     end
 
     it "is an instance of GirFFI::InPointer" do
-      assert { @result.is_a? GirFFI::InOutPointer }
+      assert_instance_of GirFFI::InOutPointer, @result
     end
   end
 
   describe ".from_array" do
     it "returns nil when passed nil" do
       result = GirFFI::InOutPointer.from_array :gint32, nil
-      assert { result.nil? }
+      assert_nil result
     end
   end
 
@@ -75,11 +72,11 @@ describe GirFFI::InOutPointer do
     end
 
     it "holds a pointer to a null value" do
-      assert { @result.read_int32 == 0 }
+      assert_equal 0, @result.read_int32
     end
 
     it "is an instance of GirFFI::InOutPointer" do
-      assert { @result.is_a? GirFFI::InOutPointer }
+      assert_instance_of GirFFI::InOutPointer, @result
     end
   end
 
@@ -96,25 +93,25 @@ describe GirFFI::InOutPointer do
   describe "#to_value" do
     it "returns the held value" do
       ptr = GirFFI::InOutPointer.from :gint32, 123
-      assert { ptr.to_value == 123 }
+      assert_equal 123, ptr.to_value
     end
 
     describe "for :gboolean values" do
       it "works when the value is false" do
         ptr = GirFFI::InOutPointer.from :gboolean, false
-        assert { ptr.to_value == false }
+        assert_equal false, ptr.to_value
       end
 
       it "works when the value is true" do
         ptr = GirFFI::InOutPointer.from :gboolean, true
-        assert { ptr.to_value == true }
+        assert_equal true, ptr.to_value
       end
     end
 
     describe "for :utf8 values" do
       it "returns the held value" do
         ptr = GirFFI::InOutPointer.from :utf8, "Some value"
-        assert { "Some value" == ptr.to_value }
+        assert_equal "Some value", ptr.to_value
       end
     end
   end
