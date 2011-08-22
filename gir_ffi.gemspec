@@ -4,7 +4,6 @@ require File.join(File.dirname(__FILE__), 'lib/gir_ffi/version.rb')
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
   s.version = GirFFI::VERSION
-  s.date = Date.today.to_s
 
   s.summary = "FFI-based GObject binding using the GObject Introspection Repository"
 
