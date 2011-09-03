@@ -4,6 +4,8 @@ require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
+    OBJECT_STORE = {}
+
     POINTER_SIZE = FFI.type_size(:pointer)
 
     SIMPLE_G_TYPES = [
@@ -16,6 +18,8 @@ module GirFFI
       return obj.to_ptr if obj.respond_to? :to_ptr
       return nil if obj.nil?
       return obj if obj.is_a? FFI::Pointer
+
+      OBJECT_STORE[obj.object_id] = obj
       FFI::Pointer.new(obj.object_id)
     end
 

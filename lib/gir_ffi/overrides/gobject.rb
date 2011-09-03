@@ -218,7 +218,7 @@ module GirFFI
 
 	  # User Data
 	  arg = args.shift
-	  arg = ObjectSpace._id2ref arg.address
+          arg = GirFFI::ArgHelper::OBJECT_STORE[arg.address]
 	  result << arg
 
 	  return result

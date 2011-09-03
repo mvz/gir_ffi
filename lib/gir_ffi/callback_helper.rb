@@ -45,12 +45,7 @@ module GirFFI
       if arg.null?
         nil
       else
-        begin
-          # TODO: Use custom object store.
-          ObjectSpace._id2ref arg.address
-        rescue RangeError
-          arg
-        end
+        GirFFI::ArgHelper::OBJECT_STORE[arg.address]
       end
     end
   end
