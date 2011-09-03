@@ -218,15 +218,7 @@ module GirFFI
 
 	  # User Data
 	  arg = args.shift
-	  arg = if FFI::Pointer === arg
-		  begin
-		    ObjectSpace._id2ref arg.address
-		  rescue RangeError
-		    arg
-		  end
-		else
-		  arg
-		end
+	  arg = ObjectSpace._id2ref arg.address
 	  result << arg
 
 	  return result
