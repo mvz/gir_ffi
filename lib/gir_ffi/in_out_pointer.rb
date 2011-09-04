@@ -29,7 +29,7 @@ module GirFFI
     def self.for type
       ffi_type = type_to_ffi_type type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
-      ptr.send "put_#{ffi_type}", 0, 0
+      ptr.send "put_#{ffi_type}", 0, nil_value_for(type)
       self.new ptr, type, ffi_type
     end
 
@@ -68,6 +68,15 @@ module GirFFI
           InPointer.from :utf8, value
         else
           value
+        end
+      end
+
+      def nil_value_for type
+        case type
+        when :utf8, :pointer
+          nil
+        else
+          0
         end
       end
     end
