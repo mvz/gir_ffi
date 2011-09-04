@@ -1,3 +1,8 @@
+== 0.0.12 / 2011-09-04
+
+* No longer use _id2ref to locate objects past as user data pointers.
+* Fix failing tests on JRuby.
+
 == 0.0.11 / 2011-08-22
 
 * Change interface to the underlying builder in generated modules and
