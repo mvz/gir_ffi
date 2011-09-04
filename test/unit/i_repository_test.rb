@@ -43,7 +43,7 @@ describe GirFFI::IRepository do
   describe "enumerating the infos for Gtk" do
     setup do
       @gir = GirFFI::IRepository.default
-      @gir.require 'Gtk'
+      @gir.require 'Gtk', "2.0"
     end
 
     should "yield more than one object" do

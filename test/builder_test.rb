@@ -112,7 +112,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "have correct introspection data" do
-	@gir.require "Gtk", nil
+	@gir.require "Gtk", "2.0"
 	go2 = @gir.find_by_name "Gtk", "main"
 	assert_equal go2, @go
       end
