@@ -9,7 +9,7 @@ describe GirFFI::InOutPointer do
     end
 
     it "holds a pointer to the given value" do
-      assert_equal 23, @result.read_int32
+      assert_equal 23, @result.get_int32(0)
     end
 
     it "is an instance of GirFFI::InOutPointer" do
@@ -72,7 +72,7 @@ describe GirFFI::InOutPointer do
     end
 
     it "holds a pointer to a null value" do
-      assert_equal 0, @result.read_int32
+      assert_equal 0, @result.get_int32(0)
     end
 
     it "is an instance of GirFFI::InOutPointer" do
