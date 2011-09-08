@@ -37,7 +37,7 @@ module GirFFI
       :object,
       :interface,
       :constant,
-      :error_domain,
+      :invalid_was_error_domain, # deprecated in GI 1.29.17
       :union,
       :value,
       :signal,
@@ -129,8 +129,6 @@ module GirFFI
     attach_function :g_type_info_get_array_fixed_size, [:pointer], :int
     attach_function :g_type_info_get_array_type, [:pointer], :IArrayType
     attach_function :g_type_info_is_zero_terminated, [:pointer], :bool
-    attach_function :g_type_info_get_n_error_domains, [:pointer], :int
-    attach_function :g_type_info_get_error_domain, [:pointer, :int], :pointer
 
     # IStructInfo
     attach_function :g_struct_info_get_n_fields, [:pointer], :int

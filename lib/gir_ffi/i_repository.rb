@@ -18,7 +18,6 @@ require 'gir_ffi/i_value_info'
 require 'gir_ffi/i_union_info'
 require 'gir_ffi/i_enum_info'
 require 'gir_ffi/i_flags_info'
-require 'gir_ffi/i_error_domain_info'
 require 'gir_ffi/arg_helper'
 
 module GirFFI
@@ -39,7 +38,7 @@ module GirFFI
       :object => IObjectInfo,
       :interface => IInterfaceInfo,
       :constant => IConstantInfo,
-      :error_domain => IErrorDomainInfo,
+      :invalid_was_error_domain => IBaseInfo,
       :union => IUnionInfo,
       :value => IValueInfo,
       :signal => ISignalInfo,

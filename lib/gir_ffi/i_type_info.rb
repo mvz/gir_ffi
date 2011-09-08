@@ -31,14 +31,6 @@ module GirFFI
     def zero_terminated?
       Lib.g_type_info_is_zero_terminated @gobj
     end
-    def n_error_domains
-      Lib.g_type_info_get_n_error_domains @gobj
-    end
-    def error_domain(index)
-      IErrorDomainInfo.wrap(Lib.g_type_info_get_error_domain @gobj, index)
-    end
-    ##
-    build_array_method :error_domains
 
     def name
       raise "Should not call this for gir 0.6.5 ..."
