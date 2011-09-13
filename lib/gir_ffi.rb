@@ -1,5 +1,6 @@
 require 'gir_ffi/g_object'
-require 'gir_ffi/i_repository'
+require 'ffi-gobject_introspection'
+require 'gir_ffi/arg_helper'
 require 'gir_ffi/builder'
 
 module GirFFI

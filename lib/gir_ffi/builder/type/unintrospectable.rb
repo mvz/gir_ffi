@@ -54,7 +54,7 @@ module GirFFI
         end
 
         def gir
-          @gir ||= GirFFI::IRepository.default
+          @gir ||= GObjectIntrospection::IRepository.default
         end
       end
     end

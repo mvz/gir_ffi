@@ -5,7 +5,7 @@ module GirFFI
     context "An IObjectInfo object" do
 
       setup do
-	gir = IRepository.default
+	gir = GObjectIntrospection::IRepository.default
 	gir.require 'Regress', nil
 	@info = gir.find_by_name 'Regress', 'TestObj'
       end

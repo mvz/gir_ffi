@@ -8,7 +8,7 @@ class GirFFITest < MiniTest::Spec
     end
 
     it "sets up xlib, which has no shared library" do
-      gir = GirFFI::IRepository.default
+      gir = GObjectIntrospection::IRepository.default
       gir.require 'xlib'
       assert_nil gir.shared_library('xlib'), "Precondition for test failed"
       GirFFI.setup :xlib

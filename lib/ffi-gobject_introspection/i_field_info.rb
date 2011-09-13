@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIFieldInfo struct.
   # Represents a field of an IStructInfo or an IUnionInfo.
   class IFieldInfo < IBaseInfo

@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps GIBaseInfo struct, the base \type for all info types.
   # Decendant types will be implemented as needed.
   class IBaseInfo

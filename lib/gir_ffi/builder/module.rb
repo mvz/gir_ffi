@@ -111,7 +111,7 @@ module GirFFI
 
     def gir
       unless defined? @gir
-        @gir = IRepository.default
+        @gir = GObjectIntrospection::IRepository.default
         @gir.require @namespace, @version
       end
       @gir

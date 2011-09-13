@@ -1,8 +1,8 @@
-require 'gir_ffi/i_base_info'
-require 'gir_ffi/i_type_info'
-require 'gir_ffi/i_arg_info'
+require 'ffi-gobject_introspection/i_base_info'
+require 'ffi-gobject_introspection/i_type_info'
+require 'ffi-gobject_introspection/i_arg_info'
 
-module GirFFI
+module GObjectIntrospection
   # Wraps a GICallableInfo struct; represents a callable, either
   # IFunctionInfo, ICallbackInfo or IVFuncInfo.
   class ICallableInfo < IBaseInfo

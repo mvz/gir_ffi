@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIUnionInfo struct.
   # Represents a union.
   # Not implemented yet.

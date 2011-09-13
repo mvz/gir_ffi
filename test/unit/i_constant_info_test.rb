@@ -1,6 +1,6 @@
 require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 
-describe GirFFI::IConstantInfo do
+describe GObjectIntrospection::IConstantInfo do
   describe "for GLib::ALLOCATOR_LIST, a constant of type :gint32" do
     before do
       @info = get_introspection_data 'GLib', 'ALLOCATOR_LIST'

@@ -1,4 +1,5 @@
 require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require "gir_ffi/callback_helper"
 
 describe GirFFI::CallbackHelper do
   describe ".map_single_callback_arg" do
@@ -7,7 +8,7 @@ describe GirFFI::CallbackHelper do
 
       cl = GObject::Closure.new_simple GObject::Closure::Struct.size, nil
 
-      cinfo = GirFFI::IRepository.default.find_by_name 'GObject', 'ClosureMarshal'
+      cinfo = GObjectIntrospection::IRepository.default.find_by_name 'GObject', 'ClosureMarshal'
       ainfo = cinfo.args[0]
 
       r = GirFFI::CallbackHelper.map_single_callback_arg cl.to_ptr, ainfo

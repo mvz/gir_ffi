@@ -1,6 +1,6 @@
 require 'ffi'
 
-module GirFFI
+module GObjectIntrospection
   module Lib
     extend FFI::Library
     ffi_lib "girepository-1.0"

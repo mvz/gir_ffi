@@ -3,7 +3,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 class BuilderTest < MiniTest::Spec
   context "The GirFFI::Builder module" do
     setup do
-      @gir = GirFFI::IRepository.default
+      @gir = GObjectIntrospection::IRepository.default
     end
 
     context "building GObject::Object" do

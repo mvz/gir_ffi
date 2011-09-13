@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIRegisteredTypeInfo struct.
   # Represents a registered type.
   class IRegisteredTypeInfo < IBaseInfo

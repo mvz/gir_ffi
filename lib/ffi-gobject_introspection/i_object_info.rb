@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIObjectInfo struct.
   # Represents an object.
   class IObjectInfo < IRegisteredTypeInfo

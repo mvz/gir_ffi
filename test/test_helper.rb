@@ -15,8 +15,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'gir_ffi'
 
-GirFFI::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
-module GirFFI
+GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
+module GObjectIntrospection
   class IRepository
     def shared_library_with_regress namespace
       case namespace
@@ -35,7 +35,7 @@ module GirFFI
 end
 
 # Preload data for Gtk+ version 2.0.
-gir = GirFFI::IRepository.default
+gir = GObjectIntrospection::IRepository.default
 gir.require "Gtk", "2.0"
 
 # Need a dummy module for some tests.
@@ -49,15 +49,13 @@ class MiniTest::Unit::TestCase
   end
 
   def get_introspection_data namespace, name
-    gir = GirFFI::IRepository.default
+    gir = GObjectIntrospection::IRepository.default
     gir.require namespace, nil
     gir.find_by_name namespace, name
   end
 
   def get_method_introspection_data namespace, klass, name
-    gir = GirFFI::IRepository.default
-    gir.require namespace, nil
-    gir.find_by_name(namespace, klass).find_method name
+    get_introspection_data(namespace, klass).find_method name
   end
 
   SAVED_MODULES = {}

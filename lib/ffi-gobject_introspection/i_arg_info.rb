@@ -1,5 +1,5 @@
-require 'gir_ffi/i_base_info'
-module GirFFI
+require 'ffi-gobject_introspection/i_base_info'
+module GObjectIntrospection
   # Wraps a GIArgInfo struct.
   # Represents an argument.
   class IArgInfo < IBaseInfo

@@ -1,26 +1,25 @@
 require 'singleton'
-require 'gir_ffi/lib'
-require 'gir_ffi/g_error'
-require 'gir_ffi/i_base_info'
-require 'gir_ffi/i_callable_info'
-require 'gir_ffi/i_callback_info'
-require 'gir_ffi/i_function_info'
-require 'gir_ffi/i_constant_info'
-require 'gir_ffi/i_field_info'
-require 'gir_ffi/i_registered_type_info'
-require 'gir_ffi/i_interface_info'
-require 'gir_ffi/i_property_info'
-require 'gir_ffi/i_vfunc_info'
-require 'gir_ffi/i_signal_info'
-require 'gir_ffi/i_object_info'
-require 'gir_ffi/i_struct_info'
-require 'gir_ffi/i_value_info'
-require 'gir_ffi/i_union_info'
-require 'gir_ffi/i_enum_info'
-require 'gir_ffi/i_flags_info'
-require 'gir_ffi/arg_helper'
+require 'ffi-gobject_introspection/lib'
+require 'ffi-gobject_introspection/g_error'
+require 'ffi-gobject_introspection/i_base_info'
+require 'ffi-gobject_introspection/i_callable_info'
+require 'ffi-gobject_introspection/i_callback_info'
+require 'ffi-gobject_introspection/i_function_info'
+require 'ffi-gobject_introspection/i_constant_info'
+require 'ffi-gobject_introspection/i_field_info'
+require 'ffi-gobject_introspection/i_registered_type_info'
+require 'ffi-gobject_introspection/i_interface_info'
+require 'ffi-gobject_introspection/i_property_info'
+require 'ffi-gobject_introspection/i_vfunc_info'
+require 'ffi-gobject_introspection/i_signal_info'
+require 'ffi-gobject_introspection/i_object_info'
+require 'ffi-gobject_introspection/i_struct_info'
+require 'ffi-gobject_introspection/i_value_info'
+require 'ffi-gobject_introspection/i_union_info'
+require 'ffi-gobject_introspection/i_enum_info'
+require 'ffi-gobject_introspection/i_flags_info'
 
-module GirFFI
+module GObjectIntrospection
   # The Gobject Introspection Repository. This class is the point of
   # access to the introspection typelibs.
   # This class wraps the GIRepository struct.
@@ -49,6 +48,8 @@ module GirFFI
       :type => ITypeInfo,
       :unresolved => IBaseInfo
     }
+
+    POINTER_SIZE = FFI.type_size(:pointer)
 
     def initialize
       @gobj = Lib::g_irepository_get_default
@@ -105,7 +106,7 @@ module GirFFI
 
     def dependencies namespace
       strv = Lib.g_irepository_get_dependencies @gobj, namespace
-      ArgHelper.strv_to_utf8_array strv
+      strv_to_utf8_array strv
     end
 
     def shared_library namespace
@@ -125,6 +126,16 @@ module GirFFI
 
     def wrap ptr
       IRepository.wrap_ibaseinfo_pointer ptr
+    end
+
+    def strv_to_utf8_array strv
+      return [] if strv.null?
+      arr, offset = [], 0
+      until (ptr = strv.get_pointer offset).null? do
+        arr << ptr.read_string
+        offset += POINTER_SIZE
+      end
+      return arr
     end
   end
 end

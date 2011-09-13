@@ -3,7 +3,7 @@ require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 class TypeBuilderTest < MiniTest::Spec
   context "The Builder::Type class" do
     should "use parent struct as default layout" do
-      @gir = GirFFI::IRepository.default
+      @gir = GObjectIntrospection::IRepository.default
       @gir.require 'GObject', nil
 
       stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }

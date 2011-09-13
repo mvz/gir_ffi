@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GISignalInfo struct.
   # Represents a signal.
   # Not implemented yet.

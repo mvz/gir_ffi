@@ -37,7 +37,7 @@ module GirFFI
     end
 
     def self.build_by_gtype gtype
-      info = IRepository.default.find_by_gtype gtype
+      info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
       if info.nil?
         Builder::Type::Unintrospectable.new(gtype).build_class
       else

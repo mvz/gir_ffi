@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIPropertyInfo struct.
   # Represents a property of an IObjectInfo or an IInterfaceInfo.
   # Not implemented yet.

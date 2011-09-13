@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIVFuncInfo struct.
   # Represents a virtual function.
   class IVFuncInfo < IBaseInfo

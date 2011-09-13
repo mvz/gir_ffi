@@ -1,4 +1,4 @@
-module GirFFI
+module GObjectIntrospection
   # Wraps a GIFunctioInfo struct.
   # Represents a function.
   class IFunctionInfo < ICallableInfo
