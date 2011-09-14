@@ -1,5 +1,5 @@
 # coding: utf-8
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 # Tests generated methods and functions in the Regress namespace.
 class GeneratedRegressTest < MiniTest::Spec

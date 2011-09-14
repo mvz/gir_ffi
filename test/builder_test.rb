@@ -1,4 +1,4 @@
-require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 class BuilderTest < MiniTest::Spec
   context "The GirFFI::Builder module" do

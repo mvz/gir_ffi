@@ -1,5 +1,7 @@
 require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
 
+require 'ffi-gobject_introspection/i_repository'
+
 describe GObjectIntrospection::IRepository do
   describe "an instance" do
     should "not be created by calling new()" do

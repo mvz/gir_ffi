@@ -1,4 +1,4 @@
-require File.expand_path('test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 class ClassBaseTest < MiniTest::Spec
   context "A class derived from GirFFI::Base" do

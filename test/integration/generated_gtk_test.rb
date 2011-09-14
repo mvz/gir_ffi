@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
 GirFFI.setup :Gtk, '2.0'
