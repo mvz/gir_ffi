@@ -1,4 +1,6 @@
-require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+
+require 'ffi-gobject'
 
 class GObjectOverridesTest < MiniTest::Spec
   context "In the GObject module with overridden functions" do
@@ -301,5 +303,3 @@ class GObjectOverridesTest < MiniTest::Spec
     end
   end
 end
-
-

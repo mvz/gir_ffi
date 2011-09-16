@@ -26,6 +26,12 @@ namespace :test do
     t.ruby_opts += ["-w"]
   end
 
+  Rake::TestTask.new(:gobject) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/ffi-gobject/*_test.rb']
+    t.ruby_opts += ["-w"]
+  end
+
   desc 'Build Regress test library and typelib'
   task :lib => "test/lib/Makefile" do
     sh %{cd test/lib && make}
@@ -50,4 +56,4 @@ file "test/lib/configure" do
 end
 
 desc 'Run unit an integration tests'
-task :test => ['test:gobjectintrospection', 'test:unit', 'test:run', 'test:integration']
+task :test => ['test:gobjectintrospection', 'test:unit', 'test:run', 'test:gobject', 'test:integration']
