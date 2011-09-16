@@ -8,36 +8,6 @@ class GObjectOverridesTest < MiniTest::Spec
       GirFFI.setup :Regress
     end
 
-    context "the Value class" do
-      context "the wrap_ruby_value class method" do
-        should "wrap a boolean false" do
-          gv = GObject::Value.wrap_ruby_value false
-          assert_instance_of GObject::Value, gv
-          assert_equal false, gv.get_boolean
-        end
-
-        should "wrap a boolean true" do
-          gv = GObject::Value.wrap_ruby_value true
-          assert_instance_of GObject::Value, gv
-          assert_equal true, gv.get_boolean
-        end
-      end
-
-      context "the ruby_value method" do
-        should "unwrap a boolean false" do
-          gv = GObject::Value.wrap_ruby_value false
-          result = gv.ruby_value
-          assert_equal false, result
-        end
-
-        should "unwrap a boolean true" do
-          gv = GObject::Value.wrap_ruby_value true
-          result = gv.ruby_value
-          assert_equal true, result
-        end
-      end
-    end
-
     context "the signal_emit function" do
       should "emit a signal" do
 	a = 1
