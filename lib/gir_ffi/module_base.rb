@@ -12,6 +12,10 @@ module GirFFI
       klass
     end
 
+    def load_class classname
+      _builder.build_namespaced_class classname.to_s
+    end
+
     def _builder
       self.const_get :GIR_FFI_BUILDER
     end

@@ -11,10 +11,6 @@ module GirFFI
 
       def self.extend_classes base
         base::InitiallyUnowned.extend InitiallyUnownedClassMethods
-        base::Value.class_eval {
-          include ValueInstanceMethods
-          extend ValueClassMethods
-        }
         base::Closure.class_eval {
           include ClosureInstanceMethods
         }
@@ -247,67 +243,6 @@ module GirFFI
       module InitiallyUnownedClassMethods
         def constructor_wrap ptr
           super.tap {|obj| GirFFI::GObject.object_ref_sink obj}
-        end
-      end
-
-      module ValueClassMethods
-        def wrap_ruby_value val
-          self.new.set_ruby_value val
-        end
-      end
-
-      module ValueInstanceMethods
-        def set_ruby_value val
-          if current_gtype == 0
-            init_for_ruby_value val
-          end
-
-	  case current_gtype_name
-	  when "gboolean"
-	    set_boolean val
-          when "gint"
-	    set_int val
-	  when "gchararray"
-	    set_string val
-	  else
-	    nil
-	  end
-          self
-        end
-
-        def init_for_ruby_value val
-	  case val
-	  when true, false
-	    init ::GObject.type_from_name("gboolean")
-          when Integer
-	    init ::GObject.type_from_name("gint")
-	  end
-          self
-        end
-
-        def current_gtype
-          self[:g_type]
-        end
-
-        def current_gtype_name
-          ::GObject.type_name current_gtype
-        end
-
-        def ruby_value
-	  case current_gtype_name.to_sym
-	  when :gboolean
-	    get_boolean
-	  when :gint
-	    get_int
-          when :gchararray
-            get_string
-          when :GDate
-            ::GLib::Date.wrap(get_boxed)
-          when :GStrv
-            ArgHelper.strv_to_utf8_array get_boxed
-	  else
-	    nil
-	  end
         end
       end
 
