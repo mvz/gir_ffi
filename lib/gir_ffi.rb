@@ -1,4 +1,5 @@
 require 'ffi-gobject_introspection'
+require 'gir_ffi-base'
 require 'gir_ffi/arg_helper'
 require 'gir_ffi/builder'
 
