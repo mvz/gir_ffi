@@ -1,4 +1,5 @@
 require 'singleton'
+require 'ffi-gobject-base'
 require 'ffi-gobject_introspection/lib'
 require 'ffi-gobject_introspection/g_error'
 require 'ffi-gobject_introspection/i_base_info'
@@ -19,9 +20,7 @@ require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 
-# FIXME: Move type_init to new 'ffi-gobject-base' section.
-require 'gir_ffi/g_object'
-GirFFI::GObject.type_init
+GObject.type_init
 
 module GObjectIntrospection
   # The Gobject Introspection Repository. This class is the point of

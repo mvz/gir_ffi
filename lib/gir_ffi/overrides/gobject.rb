@@ -242,7 +242,7 @@ module GirFFI
 
       module InitiallyUnownedClassMethods
         def constructor_wrap ptr
-          super.tap {|obj| GirFFI::GObject.object_ref_sink obj}
+          super.tap {|obj| ::GObject.object_ref_sink obj}
         end
       end
 
