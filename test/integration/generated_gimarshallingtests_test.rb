@@ -1,6 +1,8 @@
 # coding: utf-8
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
+require 'gir_ffi'
+
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe "GIMarshallingTests" do
   before do

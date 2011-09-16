@@ -1,6 +1,6 @@
 require File.expand_path('test_helper.rb', File.dirname(__FILE__))
 
-require 'gir_ffi'
+require 'gir_ffi-builder'
 
 GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
 module GObjectIntrospection
