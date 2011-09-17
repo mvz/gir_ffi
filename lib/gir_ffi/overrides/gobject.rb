@@ -79,9 +79,8 @@ module GirFFI
       module ClassMethods
 	# FIXME: These four helper methods belong elsewhere.
 	def type_from_instance_pointer inst_ptr
-	  base = ::GObject::TypeInstance.wrap inst_ptr
-	  kls = ::GObject::TypeClass.wrap(base[:g_class])
-	  kls[:g_type]
+          klsptr = inst_ptr.get_pointer 0
+          klsptr.send "get_#{GirFFI::Builder::TAG_TYPE_MAP[:gtype]}", 0
 	end
 
 	def type_from_instance instance
