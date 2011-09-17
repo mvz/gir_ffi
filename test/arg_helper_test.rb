@@ -63,20 +63,21 @@ class ArgHelperTest < MiniTest::Spec
     end
   end
 
-  context "The object_pointer_to_object method" do
-    setup do
-      GirFFI.setup :Regress
-      @o = Regress::TestSubObj.new
-      @o2 = GirFFI::ArgHelper.object_pointer_to_object @o.to_ptr
-    end
+  describe "::object_pointer_to_object" do
+    it "finds the wrapping class by gtype and wraps the pointer in it" do
+      GirFFI.setup :GObject
 
-    should "return an object of the correct class" do
-      assert_instance_of Regress::TestSubObj, @o2
-    end
+      kls = GObject::TypeClass.new
+      kls[:g_type] = 0xdeadbeef
+      base = GObject::TypeInstance.new
+      base[:g_class] = kls.to_ptr
 
-    should "return an object pointing to the original struct" do
-      assert_equal @o.to_ptr, @o2.to_ptr
+      object_class = Class.new
+      mock(GirFFI::Builder).build_by_gtype(0xdeadbeef) { object_class }
+      mock(object_class).wrap(base.to_ptr) { "good-result" }
+
+      r = GirFFI::ArgHelper.object_pointer_to_object base.to_ptr
+      assert_equal "good-result", r
     end
   end
-
 end
