@@ -67,16 +67,14 @@ class ArgHelperTest < MiniTest::Spec
     it "finds the wrapping class by gtype and wraps the pointer in it" do
       GirFFI.setup :GObject
 
-      kls = GObject::TypeClass.new
-      kls[:g_type] = 0xdeadbeef
-      base = GObject::TypeInstance.new
-      base[:g_class] = kls.to_ptr
+      klsptr = GirFFI::InOutPointer.from :gtype, 0xdeadbeef
+      objptr = GirFFI::InOutPointer.from :pointer, klsptr
 
       object_class = Class.new
       mock(GirFFI::Builder).build_by_gtype(0xdeadbeef) { object_class }
-      mock(object_class).wrap(base.to_ptr) { "good-result" }
+      mock(object_class).wrap(objptr) { "good-result" }
 
-      r = GirFFI::ArgHelper.object_pointer_to_object base.to_ptr
+      r = GirFFI::ArgHelper.object_pointer_to_object objptr
       assert_equal "good-result", r
     end
   end
