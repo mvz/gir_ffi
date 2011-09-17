@@ -53,14 +53,14 @@ module GirFFI
       if type == :utf8
         ptr_to_utf8_array ptr, size
       else
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        ffi_type = TypeMap.map_basic_type type
         ptr.send "get_array_of_#{ffi_type}", 0, size
       end
     end
 
     def self.setup_ptr_to_type_array_handler_for *types
       types.flatten.each do |type|
-        ffi_type = GirFFI::Builder::TAG_TYPE_MAP[type] || type
+        ffi_type = TypeMap.map_basic_type type
         defn =
           "def self.ptr_to_#{type}_array ptr, size
             ptr.get_array_of_#{ffi_type}(0, size)

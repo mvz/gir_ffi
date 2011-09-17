@@ -65,8 +65,6 @@ class ArgHelperTest < MiniTest::Spec
 
   describe "::object_pointer_to_object" do
     it "finds the wrapping class by gtype and wraps the pointer in it" do
-      GirFFI.setup :GObject
-
       klsptr = GirFFI::InOutPointer.from :gtype, 0xdeadbeef
       objptr = GirFFI::InOutPointer.from :pointer, klsptr
 

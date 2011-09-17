@@ -77,12 +77,6 @@ module GirFFI
       end
 
       module ClassMethods
-	# FIXME: These four helper methods belong elsewhere.
-	def type_from_instance_pointer inst_ptr
-          klsptr = inst_ptr.get_pointer 0
-          klsptr.send "get_#{GirFFI::Builder::TAG_TYPE_MAP[:gtype]}", 0
-	end
-
 	def type_from_instance instance
 	  type_from_instance_pointer instance.to_ptr
 	end

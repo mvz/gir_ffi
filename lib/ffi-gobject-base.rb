@@ -21,6 +21,11 @@ module GObject
     Lib::g_object_is_floating obj.to_ptr
   end
 
+  def self.type_from_instance_pointer inst_ptr
+    klsptr = inst_ptr.get_pointer 0
+    klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:gtype]}", 0
+  end
+
   module Lib
     extend FFI::Library
     ffi_lib "gobject-2.0"

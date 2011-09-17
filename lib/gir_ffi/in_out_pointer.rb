@@ -56,7 +56,7 @@ module GirFFI
         when :utf8
           :pointer
         else
-          GirFFI::Builder::TAG_TYPE_MAP[type] || type
+          TypeMap.map_basic_type type
         end
       end
 
