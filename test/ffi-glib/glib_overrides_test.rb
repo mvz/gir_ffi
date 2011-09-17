@@ -1,10 +1,8 @@
-require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+
+require 'ffi-glib'
 
 describe "With the GLib overrides" do
-  before do
-    GirFFI.setup :GLib
-  end
-
   describe "a HashTable provided by the system" do
     before do
       GirFFI.setup :Regress
