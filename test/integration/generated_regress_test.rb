@@ -159,6 +159,14 @@ class GeneratedRegressTest < MiniTest::Spec
 	  @o = Regress::TestObj.new_from_file("foo")
 	end
 
+        describe "its gtype" do
+          it "can be found through get_gtype and GObject.type_from_instance" do
+            gtype = Regress::TestObj.get_gtype
+            r = GObject.type_from_instance @o
+            assert_equal gtype, r
+          end
+        end
+
 	should "have a reference count of 1" do
 	  assert_equal 1, ref_count(@o)
 	end

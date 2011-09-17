@@ -27,14 +27,4 @@ describe "The generated GObject module" do
       assert_includes klass.ancestors, GObject::TypePlugin
     end
   end
-
-  describe "::type_from_instance" do
-    it "returns the correct type for an actual instance" do
-      GirFFI.setup :Regress
-      o = Regress::TestObj.new_from_file("foo")
-      gtype = Regress::TestObj.get_gtype
-      r = GObject.type_from_instance o
-      assert_equal gtype, r
-    end
-  end
 end
