@@ -26,12 +26,6 @@ namespace :test do
     t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:gobject_base) do |t|
-    t.libs = ['lib']
-    t.test_files = FileList['test/ffi-gobject-base/*_test.rb']
-    t.ruby_opts += ["-w"]
-  end
-
   Rake::TestTask.new(:glib) do |t|
     t.libs = ['lib']
     t.test_files = FileList['test/ffi-glib/*_test.rb']
@@ -68,5 +62,5 @@ file "test/lib/configure" do
 end
 
 desc 'Run unit an integration tests'
-task :test => ['test:gobject_base', 'test:gobjectintrospection',
+task :test => ['test:gobjectintrospection',
   'test:unit', 'test:run', 'test:glib', 'test:gobject', 'test:integration']
