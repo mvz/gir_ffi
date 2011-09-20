@@ -1,6 +1,6 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
-require 'ffi-gobject-base'
+require 'ffi-gobject'
 
 describe GObject do
   it "has type_init as a public method" do

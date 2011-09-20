@@ -3,7 +3,6 @@ require 'ffi'
 require 'gir_ffi/class_base'
 require 'gir_ffi/type_map'
 
-require 'ffi-gobject-base'
 require 'ffi-gobject_introspection'
 
 require 'gir_ffi/arg_helper'
