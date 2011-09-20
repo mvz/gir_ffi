@@ -1,5 +1,3 @@
-require 'gir_ffi-base'
-
 module GObject
   def self.type_init
     Lib::g_type_init
