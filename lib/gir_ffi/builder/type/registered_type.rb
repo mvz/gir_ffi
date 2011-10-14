@@ -20,6 +20,10 @@ module GirFFI
           if ffitype == :bool
             ffitype = :int
           end
+          if ffitype == :array
+            subtype = itypeinfo_to_ffitype_for_struct typeinfo.param_type(0)
+            ffitype = [subtype, typeinfo.array_fixed_size]
+          end
           ffitype
         end
 
