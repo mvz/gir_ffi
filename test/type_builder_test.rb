@@ -19,7 +19,7 @@ class TypeBuilderTest < MiniTest::Spec
     end
 
     it "handles layouts with fixed-length arrays" do
-      @gir = GirFFI::IRepository.default
+      @gir = GObjectIntrospection::IRepository.default
       @gir.require 'GObject', nil
 
       stub(type = Object.new)
