@@ -18,6 +18,30 @@ class TypeBuilderTest < MiniTest::Spec
       assert_equal [:parent, GObject::Object::Struct, 0], spec
     end
 
+    it "handles layouts with fixed-length arrays" do
+      @gir = GirFFI::IRepository.default
+      @gir.require 'GObject', nil
+
+      stub(type = Object.new)
+      stub(type).name { 'Bar' }
+      stub(type).namespace { 'Foo' }
+
+      builder = GirFFI::Builder::Type::RegisteredType.new type
+
+      stub(info = Object.new).pointer? { false }
+      stub(info).tag { :array }
+      stub(info).array_fixed_size { 2 }
+
+      stub(subtype = Object.new).pointer? { false }
+      stub(subtype).tag { :foo }
+
+      stub(info).param_type { subtype }
+
+      spec = builder.send :itypeinfo_to_ffitype_for_struct, info
+
+      assert_equal [:foo, 2], spec
+    end
+
     context "for Gtk::Widget" do
       setup do
 	@cbuilder = GirFFI::Builder::Type::Object.new get_introspection_data('Gtk', 'Widget')
