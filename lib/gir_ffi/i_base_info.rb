@@ -38,7 +38,11 @@ module GirFFI
     end
 
     def safe_name
-      name.gsub(/^(.)/) { $1.upcase }
+      if name =~ /^_/
+        "Private__" + name
+      else
+        name.gsub(/^(.)/) { $1.upcase }
+      end
     end
 
     def info_type
