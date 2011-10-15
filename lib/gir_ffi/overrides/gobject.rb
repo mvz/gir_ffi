@@ -162,13 +162,11 @@ module GirFFI
 
 	def self.signal_argument_to_gvalue info, arg
           arg_type = info.argument_type
-          tag = arg_type.tag
 
-	  if tag == :interface
-	    interface = info.argument_type.interface
+          val = gvalue_for_type_info arg_type
 
-	    val = ::GObject::Value.new
-	    val.init info.argument_type.interface.g_type
+	  if arg_type.tag == :interface
+	    interface = arg_type.interface
 	    case interface.info_type
 	    when :struct
 	      val.set_boxed arg
@@ -179,14 +177,22 @@ module GirFFI
 	    else
 	      raise NotImplementedError, interface.info_type
 	    end
-
-	    return val
 	  else
-            val = ::GObject::Value.new
-            val.init ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
             val.set_ruby_value arg
 	  end
+
+          return val
 	end
+
+        def self.gvalue_for_type_info info
+          tag = info.tag
+          gtype = if tag == :interface
+                    info.interface.g_type
+                  else
+                    ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
+                  end
+          ::GObject::Value.new.tap {|val| val.init gtype}
+        end
 
 	def self.gvalue_for_signal_return_value signal, object
 	  type = ::GObject.type_from_instance object
