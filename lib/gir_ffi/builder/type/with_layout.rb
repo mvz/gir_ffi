@@ -31,11 +31,12 @@ module GirFFI
             end
           end
 
-          fields.map do |finfo|
-            [ finfo.name.to_sym,
-              itypeinfo_to_ffitype_for_struct(finfo.field_type),
-              finfo.offset ]
-          end.flatten
+          fields.inject([]) do |spec, finfo|
+            spec +
+              [ finfo.name.to_sym,
+                itypeinfo_to_ffitype_for_struct(finfo.field_type),
+                finfo.offset ]
+          end
         end
       end
     end
