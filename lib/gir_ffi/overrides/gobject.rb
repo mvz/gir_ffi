@@ -129,7 +129,9 @@ module GirFFI
 
       module Helper
         TAG_TYPE_TO_GTYPE_NAME_MAP = {
-          :utf8 => "gchararray"
+          :utf8 => "gchararray",
+          :gboolean => "gboolean",
+          :void => "void"
         }
 
 	def self.signal_callback_args sig, klass, &block
@@ -186,8 +188,11 @@ module GirFFI
 
         def self.gvalue_for_type_info info
           tag = info.tag
-          gtype = if tag == :interface
+          gtype = case tag
+                  when :interface
                     info.interface.g_type
+                  when :void
+                    return nil
                   else
                     ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
                   end
@@ -195,20 +200,10 @@ module GirFFI
         end
 
 	def self.gvalue_for_signal_return_value signal, object
-	  type = ::GObject.type_from_instance object
+          sig = object.class._find_signal signal
+          rettypeinfo = sig.return_type
 
-	  # TODO: Use same signal info as signal_arguments_to_gvalue_array
-	  id = ::GObject.signal_lookup signal, type
-
-	  query = ::GObject::SignalQuery.new
-	  ::GObject.signal_query id, query
-
-	  use_ret = (query[:return_type] != ::GObject.type_from_name("void"))
-	  if use_ret
-	    rval = ::GObject::Value.new
-	    rval.init query[:return_type]
-	  end
-	  rval
+          gvalue_for_type_info rettypeinfo
 	end
 
         # TODO: Generate cast back methods using existing Argument builders.
