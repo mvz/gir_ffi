@@ -9,7 +9,7 @@ class TypeBuilderTest < MiniTest::Spec
       stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }
       stub(info).fields { [] }
       stub(info).info_type { :object }
-      stub(info).name { 'Bar' }
+      stub(info).safe_name { 'Bar' }
       stub(info).namespace { 'Foo' }
 
       @classbuilder = GirFFI::Builder::Type::Object.new info
@@ -23,7 +23,7 @@ class TypeBuilderTest < MiniTest::Spec
       @gir.require 'GObject', nil
 
       stub(type = Object.new)
-      stub(type).name { 'Bar' }
+      stub(type).safe_name { 'Bar' }
       stub(type).namespace { 'Foo' }
 
       builder = GirFFI::Builder::Type::RegisteredType.new type

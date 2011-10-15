@@ -7,7 +7,7 @@ module GirFFI
         def initialize info
           @info = info
           @namespace = @info.namespace
-          @classname = @info.name.gsub(/^(.)/) { $1.upcase }
+          @classname = @info.safe_name
         end
 
         def build_class

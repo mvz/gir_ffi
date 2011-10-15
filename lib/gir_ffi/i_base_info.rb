@@ -37,6 +37,10 @@ module GirFFI
       Lib.g_base_info_get_name @gobj
     end
 
+    def safe_name
+      name.gsub(/^(.)/) { $1.upcase }
+    end
+
     def info_type
       Lib.g_base_info_get_type @gobj
     end
