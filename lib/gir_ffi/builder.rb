@@ -31,6 +31,7 @@ module GirFFI
       Builder::Module.new(namespace, version).build_module_non_recursive
     end
 
+    # TODO: Move elsewhere, perhaps to Builder::Function.
     def self.attach_ffi_function lib, info
       sym = info.symbol
       argtypes = ffi_function_argument_types info

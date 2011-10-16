@@ -6,6 +6,7 @@ module GirFFI
 	base.extend ClassMethods
         extend_classes(base)
         attach_non_introspectable_functions(base)
+        preload_methods(base)
         build_extra_classes(base)
       end
 
@@ -23,6 +24,10 @@ module GirFFI
             :ulong
         base::Lib.attach_function :g_closure_set_marshal,
           [:pointer, base::ClosureMarshal], :void
+      end
+
+      def self.preload_methods base
+        base._setup_method :signal_emitv
       end
 
       def self.build_extra_classes base
@@ -88,7 +93,7 @@ module GirFFI
 	  arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
 	  rval = Helper.gvalue_for_signal_return_value signal, object
 
-	  signal_emitv arr[:values], id, 0, rval
+	  ::GObject::Lib.g_signal_emitv arr[:values], id, 0, rval
 
 	  rval
 	end
@@ -118,7 +123,9 @@ module GirFFI
 
       module Helper
         TAG_TYPE_TO_GTYPE_NAME_MAP = {
-          :utf8 => "gchararray"
+          :utf8 => "gchararray",
+          :gboolean => "gboolean",
+          :void => "void"
         }
 
 	def self.signal_callback_args sig, klass, &block
@@ -151,13 +158,11 @@ module GirFFI
 
 	def self.signal_argument_to_gvalue info, arg
           arg_type = info.argument_type
-          tag = arg_type.tag
 
-	  if tag == :interface
-	    interface = info.argument_type.interface
+          val = gvalue_for_type_info arg_type
 
-	    val = ::GObject::Value.new
-	    val.init info.argument_type.interface.g_type
+	  if arg_type.tag == :interface
+	    interface = arg_type.interface
 	    case interface.info_type
 	    when :struct
 	      val.set_boxed arg
@@ -168,30 +173,31 @@ module GirFFI
 	    else
 	      raise NotImplementedError, interface.info_type
 	    end
-
-	    return val
 	  else
-            val = ::GObject::Value.new
-            val.init ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
             val.set_ruby_value arg
 	  end
+
+          return val
 	end
 
+        def self.gvalue_for_type_info info
+          tag = info.tag
+          gtype = case tag
+                  when :interface
+                    info.interface.g_type
+                  when :void
+                    return nil
+                  else
+                    ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
+                  end
+          ::GObject::Value.new.tap {|val| val.init gtype}
+        end
+
 	def self.gvalue_for_signal_return_value signal, object
-	  type = ::GObject.type_from_instance object
+          sig = object.class._find_signal signal
+          rettypeinfo = sig.return_type
 
-	  # TODO: Use same signal info as signal_arguments_to_gvalue_array
-	  id = ::GObject.signal_lookup signal, type
-
-	  query = ::GObject::SignalQuery.new
-	  ::GObject.signal_query id, query
-
-	  use_ret = (query[:return_type] != ::GObject.type_from_name("void"))
-	  if use_ret
-	    rval = ::GObject::Value.new
-	    rval.init query[:return_type]
-	  end
-	  rval
+          gvalue_for_type_info rettypeinfo
 	end
 
         # TODO: Generate cast back methods using existing Argument builders.
