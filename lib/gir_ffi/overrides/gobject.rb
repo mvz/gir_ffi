@@ -6,6 +6,7 @@ module GirFFI
 	base.extend ClassMethods
         extend_classes(base)
         attach_non_introspectable_functions(base)
+        preload_methods(base)
         build_extra_classes(base)
       end
 
@@ -27,6 +28,10 @@ module GirFFI
             :ulong
         base::Lib.attach_function :g_closure_set_marshal,
           [:pointer, base::ClosureMarshal], :void
+      end
+
+      def self.preload_methods base
+        base._setup_method :signal_emitv
       end
 
       def self.build_extra_classes base
@@ -99,7 +104,7 @@ module GirFFI
 	  arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
 	  rval = Helper.gvalue_for_signal_return_value signal, object
 
-	  signal_emitv arr[:values], id, 0, rval
+	  ::GObject::Lib.g_signal_emitv arr[:values], id, 0, rval
 
 	  rval
 	end
