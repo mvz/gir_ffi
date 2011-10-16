@@ -14,6 +14,8 @@ Thread.abort_on_exception = true
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 class MiniTest::Unit::TestCase
+  include RR::Adapters::TestUnit
+
   def get_introspection_data namespace, name
     gir = GObjectIntrospection::IRepository.default
     gir.require namespace, nil

@@ -30,7 +30,6 @@ module Lib
 end
 
 class MiniTest::Unit::TestCase
-  include RR::Adapters::TestUnit
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
   end
