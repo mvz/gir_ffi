@@ -11,7 +11,6 @@ module GirFFI
       end
 
       def self.extend_classes base
-        base::InitiallyUnowned.extend InitiallyUnownedClassMethods
         base::Closure.class_eval {
           include ClosureInstanceMethods
         }
@@ -236,12 +235,6 @@ module GirFFI
           else
             arg
           end
-        end
-      end
-
-      module InitiallyUnownedClassMethods
-        def constructor_wrap ptr
-          super.tap {|obj| ::GObject.object_ref_sink obj}
         end
       end
 

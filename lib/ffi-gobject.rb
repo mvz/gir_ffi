@@ -1,5 +1,8 @@
 GirFFI.setup :GObject
 
+require 'ffi-gobject/value'
+require 'ffi-gobject/initially_unowned'
+
 module GObject
   def self.type_init
     Lib::g_type_init
@@ -36,5 +39,3 @@ module GObject
     attach_function :g_object_is_floating, [:pointer], :bool
   end
 end
-
-require 'ffi-gobject/value'
