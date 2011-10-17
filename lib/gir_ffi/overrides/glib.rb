@@ -3,18 +3,7 @@ module GirFFI
     module GLib
       def self.included base
 	base.extend ClassMethods
-        extend_classes(base)
         attach_non_introspectable_functions(base)
-      end
-
-      def self.extend_classes base
-        base::ByteArray.class_eval {
-          include ByteArrayInstanceMethods
-        }
-        base::Array.class_eval {
-          attr_accessor :element_type
-          include ArrayInstanceMethods
-        }
       end
 
       def self.attach_non_introspectable_functions base
@@ -114,19 +103,6 @@ module GirFFI
         # FIXME: Turn into real constructor?
         def main_loop_new context, is_running
           ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
-        end
-      end
-
-      module ByteArrayInstanceMethods
-        def to_string
-          GirFFI::ArgHelper.ptr_to_utf8_length self[:data], self[:len]
-        end
-      end
-
-      module ArrayInstanceMethods
-        def to_a
-          GirFFI::ArgHelper.ptr_to_typed_array(self.element_type,
-                                               self[:data], self[:len])
         end
       end
     end
