@@ -4,58 +4,6 @@ module GirFFI
 
       def self.included base
 	base.extend ClassMethods
-        build_extra_classes(base)
-      end
-
-      def self.build_extra_classes base
-        build_ruby_closure_class base
-      end
-
-      # Build the GObject::RubyClosure class. This class encapsulates Ruby
-      # blocks as GObject Closures.
-      def self.build_ruby_closure_class base
-        klass = Class.new(base::Closure) do
-          const_set :BLOCK_STORE, {}
-
-          const_set :Struct, Class.new(FFI::Struct) {
-            layout :parent, base::Closure::Struct, 0,
-            :blockhash, :int64
-          }
-
-          def self.new &block
-            raise ArgumentError unless block_given?
-            wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
-              h = block.object_id
-              self::BLOCK_STORE[h] = block
-              it[:blockhash] = h
-              it.set_marshal Proc.new {|*args| marshaller(*args)}
-            end
-          end
-
-          def self.marshaller(closure, return_value, n_param_values,
-                              param_values, invocation_hint, marshal_data)
-            rclosure = self.wrap(closure.to_ptr)
-
-            args = []
-            n_param_values.times {|i|
-              gv = ::GObject::Value.wrap(param_values.to_ptr +
-                                         i * ::GObject::Value::Struct.size)
-              args << gv.ruby_value
-            }
-
-            r = rclosure.invoke_block(*args)
-            return_value.set_ruby_value r unless return_value.nil?
-          end
-
-          def block
-            self.class::BLOCK_STORE[self[:blockhash]]
-          end
-
-          def invoke_block *args
-            block.call(*args)
-          end
-        end
-        base.const_set :RubyClosure, klass
       end
 
       module ClassMethods
