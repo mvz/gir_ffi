@@ -2,9 +2,8 @@
 # Simple notification example.
 #
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'gir_ffi'
+require 'ffi-gtk3'
 
-GirFFI.setup :Gtk
 GirFFI.setup :Notify
 
 # Both Gtk and Notify need to be init'ed.

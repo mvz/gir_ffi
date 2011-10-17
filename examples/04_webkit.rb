@@ -1,8 +1,8 @@
 # Based on http://www.idle-hacking.com/2010/02/webkit-ruby-and-gtk/
 $LOAD_PATH.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-require 'gir_ffi'
+require 'ffi-gtk3'
 
-GirFFI.setup :WebKit, '1.0'
+GirFFI.setup :WebKit, '3.0'
 
 Gtk.init
 
