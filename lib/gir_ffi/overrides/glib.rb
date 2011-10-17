@@ -8,12 +8,6 @@ module GirFFI
       end
 
       def self.extend_classes base
-        base::List.class_eval {
-          attr_accessor :element_type
-          include ListInstanceMethods
-          extend ListClassMethods
-          include Enumerable
-        }
         base::HashTable.class_eval {
           attr_accessor :key_type
           attr_accessor :value_type
@@ -127,27 +121,6 @@ module GirFFI
         # FIXME: Turn into real constructor?
         def main_loop_new context, is_running
           ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
-        end
-      end
-
-      module ListInstanceMethods
-        def each
-          list = self
-          rval = nil
-          until list.nil?
-            rval = yield GirFFI::ArgHelper.cast_from_pointer(element_type, list[:data])
-            list = self.class.wrap(element_type, list[:next])
-          end
-          rval
-        end
-      end
-
-      module ListClassMethods
-        def wrap elmttype, ptr
-          super(ptr).tap do |it|
-            break if it.nil?
-            it.element_type = elmttype
-          end
         end
       end
 
