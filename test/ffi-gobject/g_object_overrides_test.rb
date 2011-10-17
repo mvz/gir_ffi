@@ -130,7 +130,7 @@ class GObjectOverridesTest < MiniTest::Spec
 	    b = Regress::TestSimpleBoxedA.new
 
 	    @gva =
-	      GirFFI::Overrides::GObject::Helper.signal_arguments_to_gvalue_array(
+	      GObject::Helper.signal_arguments_to_gvalue_array(
 		"test-with-static-scope-arg", o, b)
 	  end
 
@@ -157,7 +157,7 @@ class GObjectOverridesTest < MiniTest::Spec
           stub(arg_t = Object.new).tag { :utf8 }
           stub(info = Object.new).argument_type { arg_t }
           val =
-            GirFFI::Overrides::GObject::Helper.signal_argument_to_gvalue(
+            GObject::Helper.signal_argument_to_gvalue(
               info, "foo")
           assert_instance_of GObject::Value, val
           assert_equal "foo", val.get_string
@@ -174,7 +174,7 @@ class GObjectOverridesTest < MiniTest::Spec
 	    sig = o.class._find_signal sig_name
 
 	    @gva =
-	      GirFFI::Overrides::GObject::Helper.cast_back_signal_arguments(
+	      GObject::Helper.cast_back_signal_arguments(
 		sig, o.class, o.to_ptr, b.to_ptr, ud)
 	  end
 
@@ -212,7 +212,7 @@ class GObjectOverridesTest < MiniTest::Spec
           end
 
           it "casts an integer to its enum symbol" do
-            res = GirFFI::Overrides::GObject::Helper.cast_signal_argument @info, 7
+            res = GObject::Helper.cast_signal_argument @info, 7
             assert_equal :july, res
           end
         end

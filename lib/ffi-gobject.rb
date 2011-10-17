@@ -4,6 +4,7 @@ require 'ffi-gobject/value'
 require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'
 require 'ffi-gobject/ruby_closure'
+require 'ffi-gobject/helper'
 
 module GObject
   def self.type_init
@@ -31,12 +32,50 @@ module GObject
     klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:gtype]}", 0
   end
 
+  def self.type_from_instance instance
+    type_from_instance_pointer instance.to_ptr
+  end
+
+  _setup_method :signal_emitv
+
+  def self.signal_emit object, signal, *args
+    type = type_from_instance object
+    id = signal_lookup signal, type
+
+    arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
+    rval = Helper.gvalue_for_signal_return_value signal, object
+
+    ::GObject::Lib.g_signal_emitv arr[:values], id, 0, rval
+
+    rval
+  end
+
+  def self.signal_connect object, signal, data=nil, &block
+    sig = object.class._find_signal signal
+    if sig.nil?
+      raise "Signal #{signal} is invalid for #{object}"
+    end
+    if block.nil?
+      raise ArgumentError, "Block needed"
+    end
+
+    rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
+
+    argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
+
+    callback = FFI::Function.new rettype, argtypes,
+      &(Helper.signal_callback_args(sig, object.class, &block))
+    ::GObject::Lib::CALLBACKS << callback
+
+    data_ptr = GirFFI::ArgHelper.object_to_inptr data
+
+    ::GObject::Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
+  end
+
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
   load_class :ClosureMarshal
-
-  _setup_method :signal_emitv
 
   module Lib
     attach_function :g_type_init, [], :void
