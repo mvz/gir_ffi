@@ -5,7 +5,6 @@ module GirFFI
       def self.included base
 	base.extend ClassMethods
         extend_classes(base)
-        attach_non_introspectable_functions(base)
         preload_methods(base)
         build_extra_classes(base)
       end
@@ -14,15 +13,6 @@ module GirFFI
         base::Closure.class_eval {
           include ClosureInstanceMethods
         }
-      end
-
-      def self.attach_non_introspectable_functions base
-        base::Lib.attach_function :g_signal_connect_data,
-          [:pointer, :string, base::Callback, :pointer, base::ClosureNotify,
-            base::ConnectFlags],
-            :ulong
-        base::Lib.attach_function :g_closure_set_marshal,
-          [:pointer, base::ClosureMarshal], :void
       end
 
       def self.preload_methods base

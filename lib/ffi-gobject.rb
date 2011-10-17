@@ -29,13 +29,23 @@ module GObject
     klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:gtype]}", 0
   end
 
+  load_class :Callback
+  load_class :ClosureNotify
+  load_class :ConnectFlags
+  load_class :ClosureMarshal
+
   module Lib
-    extend FFI::Library
-    ffi_lib "gobject-2.0"
     attach_function :g_type_init, [], :void
     attach_function :g_object_ref, [:pointer], :void
     attach_function :g_object_ref_sink, [:pointer], :void
     attach_function :g_object_unref, [:pointer], :void
     attach_function :g_object_is_floating, [:pointer], :bool
+
+    attach_function :g_signal_connect_data,
+      [:pointer, :string, Callback, :pointer, ClosureNotify,
+        ConnectFlags],
+        :ulong
+    attach_function :g_closure_set_marshal,
+      [:pointer, ClosureMarshal], :void
   end
 end
