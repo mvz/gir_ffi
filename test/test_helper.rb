@@ -13,6 +13,8 @@ Thread.abort_on_exception = true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
+require 'ffi-gobject_introspection'
+
 class MiniTest::Unit::TestCase
   include RR::Adapters::TestUnit
 
