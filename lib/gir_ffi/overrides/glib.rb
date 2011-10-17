@@ -8,12 +8,6 @@ module GirFFI
       end
 
       def self.extend_classes base
-        base::SList.class_eval {
-          attr_accessor :element_type
-          include ListInstanceMethods
-          extend ListClassMethods
-          include Enumerable
-        }
         base::List.class_eval {
           attr_accessor :element_type
           include ListInstanceMethods
