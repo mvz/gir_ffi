@@ -4,14 +4,7 @@ module GirFFI
 
       def self.included base
 	base.extend ClassMethods
-        extend_classes(base)
         build_extra_classes(base)
-      end
-
-      def self.extend_classes base
-        base::Closure.class_eval {
-          include ClosureInstanceMethods
-        }
       end
 
       def self.build_extra_classes base
@@ -220,15 +213,6 @@ module GirFFI
           else
             arg
           end
-        end
-      end
-
-      module ClosureInstanceMethods
-        def set_marshal marshal
-	  _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper(
-            "GObject", "ClosureMarshal", marshal)
-	  ::GObject::Lib::CALLBACKS << _v1
-	  ::GObject::Lib.g_closure_set_marshal self, _v1
         end
       end
     end

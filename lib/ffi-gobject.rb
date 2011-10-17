@@ -2,6 +2,7 @@ GirFFI.setup :GObject
 
 require 'ffi-gobject/value'
 require 'ffi-gobject/initially_unowned'
+require 'ffi-gobject/closure'
 
 module GObject
   def self.type_init
