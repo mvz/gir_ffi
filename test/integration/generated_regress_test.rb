@@ -182,7 +182,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
 	should "have a working #set_bare method" do
 	  obj = Regress::TestObj.new_from_file("bar")
-	  rv = @o.set_bare obj
+	  @o.set_bare obj
 	  # TODO: What is the correct value to retrieve from the fields?
 	  assert_equal obj.to_ptr, @o[:bare]
 	end
@@ -583,7 +583,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
       should "handle boolean user_data" do
 	a = false
-	result = Regress.test_callback_user_data Proc.new {|u|
+	Regress.test_callback_user_data Proc.new {|u|
 	  a = u
 	  5
 	}, true

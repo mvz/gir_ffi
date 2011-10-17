@@ -450,8 +450,6 @@ module GirFFI::Builder
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
-    attr_reader :cvar
-
     def cvar
       @cvar ||= @function_builder.new_var
     end

@@ -10,7 +10,7 @@ module GirFFI
         end
 
         def val_t
-          val_t = subtype_tag(1).inspect
+          subtype_tag(1).inspect
         end
       end
     end

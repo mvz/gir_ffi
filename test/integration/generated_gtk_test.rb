@@ -83,7 +83,7 @@ class GeneratedGtkTest < MiniTest::Spec
           assert_nothing_raised {
             btn = Gtk::RadioButton.new nil
             grp = btn.get_group
-            btn2 = Gtk::RadioButton.new grp
+            Gtk::RadioButton.new grp
           }
         end
       end

@@ -7,7 +7,7 @@ module GirFFI
         private
 
         def elm_t
-          elm_t = subtype_tag.inspect
+          subtype_tag.inspect
         end
       end
     end

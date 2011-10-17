@@ -74,7 +74,7 @@ module GirFFI
     def self.ptr_to_utf8_array ptr, size
       ptrs = ptr.read_array_of_pointer(size)
 
-      ptrs.map { |ptr| ptr_to_utf8 ptr }
+      ptrs.map { |pt| ptr_to_utf8 pt }
     end
 
     def self.ptr_to_interface_array klass, ptr, size
