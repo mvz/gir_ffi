@@ -78,4 +78,30 @@ module GLib
   def self.main_loop_new context, is_running
     ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
   end
+
+  load_class :HFunc
+  load_class :HashFunc
+  load_class :EqualFunc
+  module Lib
+    attach_function :g_slist_prepend, [:pointer, :pointer], :pointer
+
+    attach_function :g_list_append, [:pointer, :pointer], :pointer
+
+    attach_function :g_hash_table_foreach,
+      [:pointer, HFunc, :pointer], :void
+    attach_function :g_hash_table_new,
+      [HashFunc, EqualFunc], :pointer
+    attach_function :g_hash_table_insert,
+      [:pointer, :pointer, :pointer], :void
+
+    attach_function :g_byte_array_new, [], :pointer
+    attach_function :g_byte_array_append,
+      [:pointer, :pointer, :uint], :pointer
+
+    attach_function :g_array_new, [:int, :int, :uint], :pointer
+    attach_function :g_array_append_vals,
+      [:pointer, :pointer, :uint], :pointer
+
+    attach_function :g_main_loop_new, [:pointer, :bool], :pointer
+  end
 end
