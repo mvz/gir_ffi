@@ -568,12 +568,15 @@ describe "GIMarshallingTests" do
   it "has a working function #bytearray_full_return" do
     ret = GIMarshallingTests.bytearray_full_return
     assert_instance_of GLib::ByteArray, ret
-    assert_equal "0123", ret.to_string
+    assert_includes(
+	["0123".bytes.to_a, "\x001\xFF3".bytes.to_a],
+	ret.to_string.bytes.to_a)
   end
 
   it "has a working function #bytearray_none_in" do
+    val = GIMarshallingTests.bytearray_full_return.to_string
     ba = GLib.byte_array_new
-    GLib.byte_array_append ba, "0123"
+    GLib.byte_array_append ba, val
     GIMarshallingTests.bytearray_none_in ba
     pass
   end
