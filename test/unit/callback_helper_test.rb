@@ -14,7 +14,7 @@ describe GirFFI::CallbackHelper do
       mock(GirFFI::Builder).build_class(ifinfo) { struct_class }
       mock(struct_class).wrap("dummy") { "good-result" }
 
-      r = GirFFI::CallbackHelper.map_single_callback_arg "dummy", ainfo
+      r = GirFFI::CallbackHelper.map_single_callback_arg "dummy", ainfo.argument_type
 
       assert_equal "good-result", r
     end
