@@ -5,7 +5,6 @@ module GirFFI
       def self.included base
 	base.extend ClassMethods
         extend_classes(base)
-        preload_methods(base)
         build_extra_classes(base)
       end
 
@@ -13,10 +12,6 @@ module GirFFI
         base::Closure.class_eval {
           include ClosureInstanceMethods
         }
-      end
-
-      def self.preload_methods base
-        base._setup_method :signal_emitv
       end
 
       def self.build_extra_classes base

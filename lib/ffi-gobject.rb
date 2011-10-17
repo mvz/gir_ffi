@@ -34,6 +34,8 @@ module GObject
   load_class :ConnectFlags
   load_class :ClosureMarshal
 
+  _setup_method :signal_emitv
+
   module Lib
     attach_function :g_type_init, [], :void
     attach_function :g_object_ref, [:pointer], :void
