@@ -74,11 +74,6 @@ module GirFFI
     def setup_module
       @module.extend ModuleBase
       @module.const_set :GIR_FFI_BUILDER, self
-      begin
-        require "gir_ffi/overrides/#{@namespace.downcase}"
-        @module.class_eval "include GirFFI::Overrides::#{@namespace}"
-      rescue LoadError
-      end
     end
 
     def already_set_up
