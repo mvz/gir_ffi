@@ -106,9 +106,13 @@ module GirFFI
       info.info_type == :function ? info : nil
     end
 
+    public
+
     def function_definition info, libmodule
       Builder::Function.new(info, libmodule).generate
     end
+
+    private
 
     def gir
       unless defined? @gir
