@@ -57,6 +57,11 @@ module GirFFI
       @module
     end
 
+    def pretty_print
+      gir.infos @namespace
+      "module #{@safe_namespace}\nend\n"
+    end
+
     private
 
     def build_dependencies
