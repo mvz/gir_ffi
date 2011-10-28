@@ -1,3 +1,11 @@
+== 0.0.14 / 2011-10-28
+
+* Support GObject Introspection version 1.30:
+  - Add support for layouts with fixed-length arrays.
+  - Handle type names starting with underscores.
+  - Call g_signal_emitv directly to avoid conflict in introspection info
+    with earlier versions of GObject Introspection.
+
 == 0.0.13 / 2011-09-09
 
 * Remove IErrorDomain related code. This functinality was removed from
