@@ -8,18 +8,48 @@ http://www.github.com/mvz/ruby-gir-ffi
 
 Ruby bindings for GNOME using the GObject Introspection Repository.
 
-== Features/Problems
+== Features/Notes
 
-* Create bindings to GObject-based libraries at runtime
-* Almost, but not entirely done yet
+* Create bindings to any GObject-based library.
+* Supports both Gtk+ 2 and Gtk+ 3.
+* Bindings generated at runtime.
+* Provides overridden bindings for selected methods.
+* Require 'ffi-gtk2' or 'ffi-gtk3' to load overrides for Gtk2 or Gtk3.
+
+== Install
+
+* sudo gem install gir_ffi
 
 == Synopsis
 
+Basic usage:
+
   require 'gir_ffi'
 
-  GirFFI.setup :Gtk
+  GirFFI.setup :TheNamespace
+
+  TheNamespace.some_function
+
+  obj = TheNamespace::SomeClass.new
+  obj.some_method with, some, args
+
+Gtk2:
+
+  require 'ffi-gtk2'
   Gtk.init
   win = Gtk::Window.new :toplevel
+  win.show
+  GObject.signal_connect(win, "destroy") { Gtk.main_quit }
+  Gtk.main
+
+Gtk3:
+
+  require 'ffi-gtk3'
+  Gtk.init
+  win = Gtk::Window.new :toplevel
+  win.show
+  GObject.signal_connect(win, "destroy") { Gtk.main_quit }
+  Gtk.main
 
 See the `examples/` directory for more, well, examples.
 
@@ -40,10 +70,8 @@ On Debian and Ubuntu, the following set of packages should be enough to get
 
 == Hacking and contributing
 
-This is still very much a work in progress. You can start exploring by
-running the example programs in the `examples/` folder. Some illustrate
-what works, some are a test bed for how things should work. Have a look at
-the output of `rake notes`. Feel free to file bugs or send pull requests.
+If you want to help out, have a look at TODO.rdoc, and the output of `rake
+notes`. Feel free to file bugs or send pull requests.
 
 If you want to send pull requests or patches, please:
 
@@ -55,10 +83,6 @@ If you want to send pull requests or patches, please:
   have moved around since you forked.
 * Try not to include changes that are irrelevant to your feature in the
   same commit.
-
-== Install
-
-* sudo gem install gir_ffi
 
 == License
 

@@ -1,3 +1,9 @@
+== 0.1.0 / 2011-10-28
+
+* Put bindings for GObjectIntrospection in their own namespace.
+* GirFFI.setup no longer loads overrides.
+* Add ffi-gtk2 and ffi-gtk3 files for loading Gtk+ overrides.
+
 == 0.0.14 / 2011-10-28
 
 * Support GObject Introspection version 1.30:
