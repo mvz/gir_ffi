@@ -114,5 +114,16 @@ describe GirFFI::InOutPointer do
         assert_equal "Some value", ptr.to_value
       end
     end
+
+    describe "for an array of :gint32" do
+      before do
+        @result = GirFFI::InOutPointer.from_array :gint32, [1, 2, 3]
+      end
+
+      it "returns an array of integers with the correct values" do
+        assert_equal [1, 2, 3], @result.to_sized_array_value(3)
+      end
+    end
+
   end
 end
