@@ -100,19 +100,23 @@ module GirFFI
       optionally_define_constant(@lib, :CALLBACKS) { [] }
     end
 
+    def sub_builder info
+      Builder::Function.new(info, libmodule)
+    end
+
+    def libmodule
+      @module.const_get(:Lib)
+    end
+
     def function_introspection_data function
       info = gir.find_by_name @namespace, function.to_s
       return nil if info.nil?
       info.info_type == :function ? info : nil
     end
 
-    public
-
     def function_definition info, libmodule
       Builder::Function.new(info, libmodule).generate
     end
-
-    private
 
     def gir
       unless defined? @gir
