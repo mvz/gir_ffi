@@ -8,23 +8,11 @@ module GirFFI
       # triggered by a missing constant in the parent namespace.  The
       # constant will be attached to the appropriate namespace module.
       class Constant < Base
-        TYPE_TAG_TO_UNION_MEMBER = {
-          :gint32 => :v_int32,
-          :gdouble => :v_double,
-          :utf8 => :v_string
-        }
-
         private
 
         def instantiate_class
           @klass = optionally_define_constant namespace_module, @classname do
-            tag = info.constant_type.tag
-            val = info.value[TYPE_TAG_TO_UNION_MEMBER[tag]]
-            if RUBY_VERSION >= "1.9" and tag == :utf8
-              val.force_encoding("utf-8")
-            else
-              val
-            end
+            info.value
           end
         end
       end

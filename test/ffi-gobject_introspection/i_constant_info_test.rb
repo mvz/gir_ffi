@@ -11,7 +11,11 @@ describe GObjectIntrospection::IConstantInfo do
     end
 
     it "returns a value union with member :v_int32 with value 1" do
-      assert_equal 1, @info.value[:v_int32]
+      assert_equal 1, @info.value_union[:v_int32]
+    end
+
+    it "returns 1 as its value" do
+      assert_equal 1, @info.value
     end
   end
 end
