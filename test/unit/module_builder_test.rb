@@ -10,7 +10,7 @@ describe GirFFI::Builder::Module do
 
         builder = GirFFI::Builder::Module.new "Foo"
         res = builder.pretty_print
-        expected = "module Foo\nend\n"
+        expected = "module Foo\nend"
 
         assert_equal expected, res
       end
@@ -19,7 +19,7 @@ describe GirFFI::Builder::Module do
     describe "for a module with a function member" do
       it "returns a module block with pretty printed function inside" do
         stub(info = Object.new).info_type { :function }
-        mock(subbuilder = Object.new).pretty_print { "function_body\n" }
+        mock(subbuilder = Object.new).pretty_print { "def foo\n  function_body\nend" }
 
         gir = GObjectIntrospection::IRepository.default
         stub(gir).require("Foo", nil) { }
@@ -30,7 +30,7 @@ describe GirFFI::Builder::Module do
         mock(GirFFI::Builder::Function).new(info, :bla) { subbuilder }
 
         res = builder.pretty_print
-        expected = "module Foo\n  function_body\nend\n"
+        expected = "module Foo\n  def foo\n    function_body\n  end\nend"
 
         assert_equal expected, res
       end

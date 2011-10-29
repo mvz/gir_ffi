@@ -1,6 +1,7 @@
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/module_base'
 require 'gir_ffi/builder/function'
+require 'indentation'
 
 module GirFFI
   # Builds a module based on information found in the introspection
@@ -60,9 +61,10 @@ module GirFFI
     def pretty_print
       s = "module #{@safe_namespace}\n"
       gir.infos(@namespace).each do |info|
-        s << "  #{sub_builder(info).pretty_print}"
+        s << sub_builder(info).pretty_print.indent
+        s << "\n"
       end
-      s << "end\n"
+      s << "end"
     end
 
     private
