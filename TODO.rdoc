@@ -1,6 +1,10 @@
 = TODO
 
-== Separate bindings to GIRepository from dynamic binding generation.
+== Fix helper method names
+
+GirFFI adds some methods to all generated modules. For some of these, it
+avoids name clashes by prefixing an underscore. This is ugly and must be
+changed.
 
 == Remove code for passing generic pointers
 
@@ -21,10 +25,8 @@ gobject-introspection, and TestFundamentalObject in Regress.
 
 == Compatibility with all implementations.
 
-Currently, there are the following incompatibilities:
-
-* JRuby disables ObjectSpace by default, so using _id2ref for handling the
-  passing of generic pointers is not ideal.
+GirFFI is incompatible with Rubinius, but this is due to Rubinius' FFI
+implementation lagging behind the others.
 
 == See Also
 
