@@ -18,8 +18,10 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -z -- test`.split("\0")
 
   s.add_runtime_dependency(%q<ffi>, ["~> 1.0.8"])
+  s.add_runtime_dependency(%q<indentation>, ["~> 0.0.6"])
   s.add_development_dependency('minitest', [">= 2.0.2"])
   s.add_development_dependency('rr', ["~> 1.0.2"])
+  s.add_development_dependency('rake', ["~> 0.9.2"])
 
   s.require_paths = ["lib"]
 end
