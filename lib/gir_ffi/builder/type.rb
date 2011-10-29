@@ -27,6 +27,10 @@ module GirFFI
       def self.build info
         TYPE_MAP[info.info_type].new(info).build_class
       end
+
+      def self.builder_for info
+        TYPE_MAP[info.info_type].new(info)
+      end
     end
   end
 end

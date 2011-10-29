@@ -101,7 +101,11 @@ module GirFFI
     end
 
     def sub_builder info
-      Builder::Function.new(info, libmodule)
+      if info.info_type == :function
+        Builder::Function.new(info, libmodule)
+      else
+        Builder::Type.builder_for info
+      end
     end
 
     def libmodule

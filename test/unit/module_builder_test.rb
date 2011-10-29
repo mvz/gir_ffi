@@ -40,6 +40,19 @@ describe GirFFI::Builder::Module do
         assert_instance_of GirFFI::Builder::Function, result
       end
     end
+
+    describe "for an :object argument" do
+      it "creates a GirFFI::Builder::Type::Object object" do
+        builder = GirFFI::Builder::Module.new "Foo"
+
+        stub(info = Object.new).info_type { :object }
+        stub(info).namespace { "Foo" }
+        stub(info).safe_name { "FooClass" }
+
+        result = builder.send :sub_builder, info
+        assert_instance_of GirFFI::Builder::Type::Object, result
+      end
+    end
   end
 end
 
