@@ -28,6 +28,7 @@ module GirFFI
         TYPE_MAP[info.info_type].new(info).build_class
       end
 
+      # TODO: Pull up to include :function and :module
       def self.builder_for info
         TYPE_MAP[info.info_type].new(info)
       end
