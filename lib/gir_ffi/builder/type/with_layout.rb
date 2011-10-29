@@ -7,14 +7,6 @@ module GirFFI
       module WithLayout
         private
 
-        # TODO: Move to client classes.
-        def setup_class
-          setup_layout
-          setup_constants
-          stub_methods
-          setup_gtype_getter
-        end
-
         def setup_layout
           spec = layout_specification
           @structklass.class_eval { layout(*spec) }

@@ -14,15 +14,18 @@ module GirFFI
 
         private
 
+        def setup_class
+          setup_layout
+          setup_constants
+          stub_methods
+          setup_gtype_getter
+          provide_constructor
+        end
+
         def instantiate_class
           @klass = get_or_define_class namespace_module, @classname, superclass
           @structklass = get_or_define_class @klass, :Struct, FFI::Union
           setup_class unless already_set_up
-        end
-
-        def setup_class
-          super
-          provide_constructor
         end
       end
     end
