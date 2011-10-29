@@ -58,8 +58,11 @@ module GirFFI
     end
 
     def pretty_print
-      gir.infos @namespace
-      "module #{@safe_namespace}\nend\n"
+      s = "module #{@safe_namespace}\n"
+      gir.infos(@namespace).each do |info|
+        s << "  #{sub_builder(info).pretty_print}"
+      end
+      s << "end\n"
     end
 
     private
