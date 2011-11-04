@@ -10,6 +10,10 @@ module GirFFI
       class Interface < RegisteredType
         include WithMethods
 
+        def pretty_print
+          "module #{@classname}\n  extend InterfaceBase\nend"
+        end
+
         private
 
         # FIXME: The word 'class' is not really correct.
