@@ -9,10 +9,25 @@ module GirFFI
       class Callback < Base
         def instantiate_class
           @klass = optionally_define_constant namespace_module, @classname do
-            args = Builder.ffi_function_argument_types info
-            ret = Builder.ffi_function_return_type info
-            lib.callback @classname.to_sym, args, ret
+            lib.callback callback_sym, argument_types, return_type
           end
+        end
+
+        def pretty_print
+          return "#{@classname} = Lib.callback #{callback_sym.inspect}, " +
+            "#{argument_types.inspect}, #{return_type.inspect}"
+        end
+
+        def callback_sym
+          @classname.to_sym
+        end
+
+        def argument_types
+          Builder.ffi_function_argument_types info
+        end
+
+        def return_type
+          Builder.ffi_function_return_type info
         end
       end
     end
