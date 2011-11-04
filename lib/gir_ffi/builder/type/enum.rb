@@ -17,13 +17,14 @@ module GirFFI
         end
 
         def instantiate_class
-          if const_defined_for namespace_module, @classname
-            @klass = namespace_module.const_get @classname
-          else
-            @klass = namespace_module.const_set @classname,
-              lib.enum(@classname.to_sym, value_spec)
-            setup_gtype_getter
+          @klass = optionally_define_constant namespace_module, @classname do
+            lib.enum(@classname.to_sym, value_spec)
           end
+          setup_gtype_getter unless already_set_up
+        end
+
+        def already_set_up
+          @klass.respond_to? :get_gtype
         end
       end
     end
