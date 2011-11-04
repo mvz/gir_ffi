@@ -22,10 +22,8 @@ module GirFFI
           provide_constructor
         end
 
-        def instantiate_class
-          @klass = get_or_define_class namespace_module, @classname, superclass
-          @structklass = get_or_define_class @klass, :Struct, FFI::Union
-          setup_class unless already_set_up
+        def layout_superclass
+          FFI::Union
         end
       end
     end

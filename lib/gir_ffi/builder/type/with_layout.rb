@@ -30,6 +30,12 @@ module GirFFI
                 finfo.offset ]
           end
         end
+
+        def instantiate_class
+          @klass = get_or_define_class namespace_module, @classname, superclass
+          @structklass = get_or_define_class @klass, :Struct, layout_superclass
+          setup_class unless already_set_up
+        end
       end
     end
   end

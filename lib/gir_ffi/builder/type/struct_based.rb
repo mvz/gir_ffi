@@ -25,10 +25,8 @@ module GirFFI
           setup_gtype_getter
         end
 
-        def instantiate_class
-          @klass = get_or_define_class namespace_module, @classname, superclass
-          @structklass = get_or_define_class @klass, :Struct, FFI::Struct
-          setup_class unless already_set_up
+        def layout_superclass
+          FFI::Struct
         end
       end
     end
