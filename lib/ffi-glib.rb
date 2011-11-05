@@ -5,6 +5,7 @@ require 'ffi-glib/list'
 require 'ffi-glib/hash_table'
 require 'ffi-glib/byte_array'
 require 'ffi-glib/array'
+require 'ffi-glib/ptr_array'
 
 module GLib
   # FIXME: Turn into real constructor
@@ -101,6 +102,8 @@ module GLib
     attach_function :g_array_new, [:int, :int, :uint], :pointer
     attach_function :g_array_append_vals,
       [:pointer, :pointer, :uint], :pointer
+
+    attach_function :g_ptr_array_new, [], :pointer
 
     attach_function :g_main_loop_new, [:pointer, :bool], :pointer
   end
