@@ -631,7 +631,7 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_in_delta 5435.32, r, 0.001
     end
 
-    describe "#regress_test_garray_container_return" do
+    describe "#test_garray_container_return" do
       before do
         @arr = Regress.test_garray_container_return
       end
@@ -641,7 +641,10 @@ class GeneratedRegressTest < MiniTest::Spec
       end
 
       it "returns the correct values" do
-        @arr.to_a.must_be :== ["regress"]
+        @arr[:len].must_be :==, 1
+        ptr = @arr[:pdata]
+        ptr2 = ptr.read_pointer
+        ptr2.read_string.must_be :==, "regress"
       end
     end
 
