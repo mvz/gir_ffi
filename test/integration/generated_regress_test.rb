@@ -650,7 +650,7 @@ class GeneratedRegressTest < MiniTest::Spec
         @hash = Regress.test_ghash_container_return
       end
       
-      it "returns an instance of GLib::Hash" do
+      it "returns an instance of GLib::HashTable" do
         @hash.must_be_instance_of GLib::HashTable
       end
 

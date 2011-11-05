@@ -584,14 +584,14 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for GHashTable return values.
+  # Implements argument processing for GByteArray return values.
   class ByteArrayReturnValue < ReturnValue
     def post
       [ "#{retname} = GLib::ByteArray.wrap(#{cvar})" ]
     end
   end
 
-  # Implements argument processing for GHashTable return values.
+  # Implements argument processing for GArray return values.
   class ArrayReturnValue < ReturnValue
     include Argument::ListBase
 
