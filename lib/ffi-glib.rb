@@ -60,8 +60,8 @@ module GLib
     ffi_type = type == :utf8 ? :pointer : type
     arr = ::GLib::Array.wrap(
       ::GLib::Lib.g_array_new(0, 0, FFI.type_size(ffi_type)))
-      arr.element_type = type
-      arr
+    arr.element_type = type
+    arr
   end
 
   # FIXME: Turn into instance method
