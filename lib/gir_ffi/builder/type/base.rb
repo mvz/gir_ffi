@@ -1,6 +1,8 @@
 module GirFFI
   module Builder
     module Type
+
+      # Base class for type builders.
       class Base
         include BuilderHelper
 

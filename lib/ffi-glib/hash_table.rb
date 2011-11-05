@@ -1,6 +1,7 @@
 module GLib
   load_class :HashTable
 
+  # Overrides for GHashTable, GLib's hash table implementation.
   class HashTable
     include Enumerable
     attr_accessor :key_type

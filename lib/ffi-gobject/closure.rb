@@ -1,6 +1,7 @@
 module GObject
   load_class :Closure
 
+  # Overrides for GClosure, GObject's base class for closure objects.
   class Closure
     def set_marshal marshal
       _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper(

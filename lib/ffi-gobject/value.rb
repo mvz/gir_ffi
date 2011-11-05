@@ -1,6 +1,7 @@
 module GObject
   load_class :Value
 
+  # Overrides for GValue, GObject's generic value container structure.
   class Value
     def set_ruby_value val
       if current_gtype == 0

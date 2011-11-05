@@ -1,6 +1,7 @@
 module GLib
   load_class :Array
 
+  # Overrides for GArray, GLib's automatically growing array.
   class Array
     attr_accessor :element_type
 
@@ -10,5 +11,3 @@ module GLib
     end
   end
 end
-
-

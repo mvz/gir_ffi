@@ -1,6 +1,8 @@
 module GLib
   load_class :PtrArray
 
+  # Overrides for GPtrArray, GLib's automatically growing array of
+  # pointers.
   class PtrArray
     include Enumerable
 
