@@ -491,6 +491,8 @@ module GirFFI::Builder
                     ArrayReturnValue
                   when :byte_array
                     ByteArrayReturnValue
+                  else
+                    PtrArrayReturnValue
                   end
                 end
               when :glist
@@ -596,6 +598,13 @@ module GirFFI::Builder
     def post
       [ "#{retname} = GLib::Array.wrap(#{cvar})",
         "#{retname}.element_type = #{elm_t}" ]
+    end
+  end
+
+  # Implements argument processing for GPtrArray return values.
+  class PtrArrayReturnValue < ReturnValue
+    def post
+      [ "#{retname} = GLib::PtrArray.wrap(#{cvar})" ]
     end
   end
 

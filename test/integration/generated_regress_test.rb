@@ -631,6 +631,20 @@ class GeneratedRegressTest < MiniTest::Spec
       assert_in_delta 5435.32, r, 0.001
     end
 
+    describe "#regress_test_garray_container_return" do
+      before do
+        @arr = Regress.test_garray_container_return
+      end
+
+      it "returns an instance of GLib::PtrArray" do
+        @arr.must_be_instance_of GLib::PtrArray
+      end
+
+      it "returns the correct values" do
+        @arr.to_array.must_be :== ["regress"]
+      end
+    end
+
     describe "#test_ghash_container_return" do
       before do
         @hash = Regress.test_ghash_container_return
