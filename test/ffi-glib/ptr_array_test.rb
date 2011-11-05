@@ -15,4 +15,17 @@ describe GLib::PtrArray do
       assert_equal str, arr[:pdata].read_pointer.read_string
     end
   end
+
+  it "has a working #each method" do
+    arr = GLib::PtrArray.new :utf8
+
+    GLib::PtrArray.add arr, "test1"
+    GLib::PtrArray.add arr, "test2"
+    GLib::PtrArray.add arr, "test3"
+
+    a = []
+    arr.each {|v| a << v}
+
+    assert_equal ["test1", "test2", "test3"], a
+  end
 end

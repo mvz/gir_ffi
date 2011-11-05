@@ -83,6 +83,8 @@ module GLib
   load_class :HFunc
   load_class :HashFunc
   load_class :EqualFunc
+  load_class :Func
+
   module Lib
     attach_function :g_slist_prepend, [:pointer, :pointer], :pointer
 
@@ -105,6 +107,8 @@ module GLib
 
     attach_function :g_ptr_array_new, [], :pointer
     attach_function :g_ptr_array_add, [:pointer, :pointer], :void
+    attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer],
+      :pointer
 
     attach_function :g_main_loop_new, [:pointer, :bool], :pointer
   end
