@@ -2,6 +2,8 @@ module GLib
   load_class :PtrArray
 
   class PtrArray
+    include Enumerable
+
     attr_accessor :element_type
 
     def self.new type

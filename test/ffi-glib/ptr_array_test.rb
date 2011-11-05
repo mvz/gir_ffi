@@ -28,4 +28,18 @@ describe GLib::PtrArray do
 
     assert_equal ["test1", "test2", "test3"], a
   end
+
+  it "includes Enumerable" do
+    GLib::PtrArray.must_include Enumerable
+  end
+
+  it "has a working #to_a method" do
+    arr = GLib::PtrArray.new :utf8
+
+    GLib::PtrArray.add arr, "test1"
+    GLib::PtrArray.add arr, "test2"
+    GLib::PtrArray.add arr, "test3"
+
+    assert_equal ["test1", "test2", "test3"], arr.to_a
+  end
 end
