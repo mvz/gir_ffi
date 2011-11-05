@@ -641,7 +641,7 @@ class GeneratedRegressTest < MiniTest::Spec
       end
 
       it "returns the correct values" do
-        @arr.to_array.must_be :== ["regress"]
+        @arr.to_a.must_be :== ["regress"]
       end
     end
 
