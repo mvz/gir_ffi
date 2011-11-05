@@ -12,16 +12,12 @@ module GLib
     end
 
     def self.add array, data
-      ptr = cast_to_pointer array.element_type, data
-      ::GLib::Lib.g_ptr_array_add array, ptr
+      array.add data
     end
 
-    def self.cast_to_pointer type, it
-      if type == :utf8
-        GirFFI::InPointer.from :utf8, it
-      else
-        raise NotImplementedError
-      end
+    def add data
+      ptr = cast_to_pointer data
+      ::GLib::Lib.g_ptr_array_add self, ptr
     end
 
     def each
@@ -33,6 +29,15 @@ module GLib
     end
 
     private
+
+    def cast_to_pointer it
+      case element_type
+      when :utf8
+        GirFFI::InPointer.from :utf8, it
+      else
+        raise NotImplementedError
+      end
+    end
 
     def cast_from_pointer it
       case element_type

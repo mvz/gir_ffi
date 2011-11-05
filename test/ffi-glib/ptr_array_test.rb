@@ -42,4 +42,10 @@ describe GLib::PtrArray do
 
     assert_equal ["test1", "test2", "test3"], arr.to_a
   end
+
+  it "has #add as an instance method too" do
+    arr = GLib::PtrArray.new :utf8
+    arr.add "test1"
+    assert_equal ["test1"], arr.to_a
+  end
 end
