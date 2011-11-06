@@ -38,7 +38,10 @@ describe GLib::Array do
     end
   end
 
-  # TODO: Make GLib::Array a full Enumerable"
+  it "includes Enumerable" do
+    GLib::Array.must_include Enumerable
+  end
+
   it "has a working #to_a method" do
     arr = GLib::Array.new :int32
     arr.append_vals [1, 2, 3]

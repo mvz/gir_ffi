@@ -4,6 +4,8 @@ module GLib
   # Overrides for GArray, GLib's automatically growing array. It should not
   # be necessary to create objects of this class from Ruby directly.
   class Array
+    include Enumerable
+
     attr_accessor :element_type
 
     def self.new type
@@ -21,10 +23,12 @@ module GLib
 
     # FIXME: Make GirFII::InPointer support #each and use that.
     def each &block
-      to_a.each &block
+      to_typed_array.each(&block)
     end
 
-    def to_a
+    private
+
+    def to_typed_array
       GirFFI::ArgHelper.ptr_to_typed_array(self.element_type,
                                            self[:data], self[:len])
     end
