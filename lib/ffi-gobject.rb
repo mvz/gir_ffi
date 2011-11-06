@@ -51,25 +51,9 @@ module GObject
   end
 
   def self.signal_connect object, signal, data=nil, &block
-    sig = object.class._find_signal signal
-    if sig.nil?
-      raise "Signal #{signal} is invalid for #{object}"
-    end
-    if block.nil?
-      raise ArgumentError, "Block needed"
-    end
-
-    rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
-
-    argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
-
-    callback = FFI::Function.new rettype, argtypes,
-      &(Helper.signal_callback_args(sig, object.class, &block))
-    ::GObject::Lib::CALLBACKS << callback
-
+    callback = Helper.signal_callback object.class, signal, &block
     data_ptr = GirFFI::ArgHelper.object_to_inptr data
-
-    ::GObject::Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
+    Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 
   load_class :Callback
