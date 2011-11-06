@@ -56,25 +56,6 @@ module GLib
     ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_append arr.to_ptr, bytes, len)
   end
 
-  # FIXME: Turn into real constructor
-  def self.array_new type
-    ffi_type = type == :utf8 ? :pointer : type
-    arr = ::GLib::Array.wrap(
-      ::GLib::Lib.g_array_new(0, 0, FFI.type_size(ffi_type)))
-    arr.element_type = type
-    arr
-  end
-
-  # FIXME: Turn into instance method
-  def self.array_append_vals arr, data
-    bytes = GirFFI::InPointer.from_array arr.element_type, data
-    len = data.length
-    res = ::GLib::Array.wrap(
-      ::GLib::Lib.g_array_append_vals(arr.to_ptr, bytes, len))
-      res.element_type = arr.element_type
-      res
-  end
-
   # FIXME: Turn into real constructor?
   def self.main_loop_new context, is_running
     ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)

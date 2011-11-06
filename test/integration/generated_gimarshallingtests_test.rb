@@ -679,8 +679,8 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #garray_int_none_in" do
-    arr = GLib.array_new :int
-    GLib.array_append_vals arr, [-1, 0, 1, 2]
+    arr = GLib::Array.new :int
+    arr.append_vals [-1, 0, 1, 2]
     GIMarshallingTests.garray_int_none_in arr
     pass
   end
@@ -702,8 +702,8 @@ describe "GIMarshallingTests" do
 
   # TODO: Allow regular arrays as arguments directly.
   it "has a working function #garray_utf8_full_inout" do
-    arr = GLib.array_new :utf8
-    GLib.array_append_vals arr, ["0", "1", "2"]
+    arr = GLib::Array.new :utf8
+    arr.append_vals ["0", "1", "2"]
     res = GIMarshallingTests.garray_utf8_full_inout arr
     assert_equal ["-2", "-1", "0", "1"], res.to_a
   end
@@ -719,15 +719,15 @@ describe "GIMarshallingTests" do
   end
 
   it "has a working function #garray_utf8_none_in" do
-    arr = GLib.array_new :utf8
-    GLib.array_append_vals arr, ["0", "1", "2"]
+    arr = GLib::Array.new :utf8
+    arr.append_vals ["0", "1", "2"]
     GIMarshallingTests.garray_utf8_none_in arr
     pass
   end
 
   it "has a working function #garray_utf8_none_inout" do
-    arr = GLib.array_new :utf8
-    GLib.array_append_vals arr, ["0", "1", "2"]
+    arr = GLib::Array.new :utf8
+    arr.append_vals ["0", "1", "2"]
     res = GIMarshallingTests.garray_utf8_none_inout arr
     assert_equal ["-2", "-1", "0", "1"], res.to_a
   end
