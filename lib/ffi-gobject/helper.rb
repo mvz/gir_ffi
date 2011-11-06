@@ -91,24 +91,14 @@ module GObject
 
     # TODO: Generate cast back methods using existing Argument builders.
     def self.cast_back_signal_arguments signalinfo, klass, *args
-      result = []
+      instance = klass.wrap args.shift
+      user_data = GirFFI::ArgHelper::OBJECT_STORE[args.pop.address]
 
-      # Instance
-      instptr = args.shift
-      instance = klass.wrap instptr
-      result << instance
-
-      # Extra arguments
-      signalinfo.args.each do |info|
-        result << cast_signal_argument(info, args.shift)
+      extra_arguments = signalinfo.args.zip(args).map do |info, arg|
+        cast_signal_argument(info, arg)
       end
 
-      # User Data
-      arg = args.shift
-      arg = GirFFI::ArgHelper::OBJECT_STORE[arg.address]
-      result << arg
-
-      return result
+      return [instance, *extra_arguments, user_data]
     end
 
     def self.cast_signal_argument info, arg
