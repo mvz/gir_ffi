@@ -46,27 +46,8 @@ module GObject
     end
 
     def self.signal_argument_to_gvalue info, arg
-      arg_type = info.argument_type
-
-      val = gvalue_for_type_info arg_type
-
-      if arg_type.tag == :interface
-        interface = arg_type.interface
-        case interface.info_type
-        when :struct
-          val.set_boxed arg
-        when :object
-          val.set_instance arg
-        when :enum
-          val.set_enum arg
-        else
-          raise NotImplementedError, interface.info_type
-        end
-      else
-        val.set_ruby_value arg
-      end
-
-      return val
+      val = gvalue_for_type_info info.argument_type
+      val.set_value arg
     end
 
     def self.gvalue_for_type_info info

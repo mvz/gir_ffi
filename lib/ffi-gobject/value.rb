@@ -8,13 +8,23 @@ module GObject
         init_for_ruby_value val
       end
 
-      case current_gtype_name
-      when "gboolean"
+      set_value val
+    end
+
+    def set_value val
+      case current_fundamental_type
+      when TYPE_BOOLEAN
         set_boolean val
-      when "gint"
+      when TYPE_INT
         set_int val
-      when "gchararray"
+      when TYPE_STRING
         set_string val
+      when TYPE_BOXED
+        set_boxed val
+      when TYPE_OBJECT
+        set_instance val
+      when TYPE_ENUM
+        set_enum val
       else
         nil
       end
@@ -33,6 +43,10 @@ module GObject
 
     def current_gtype
       self[:g_type]
+    end
+
+    def current_fundamental_type
+      GObject.type_fundamental current_gtype
     end
 
     def current_gtype_name
