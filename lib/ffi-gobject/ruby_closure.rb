@@ -6,21 +6,21 @@ module GObject
   class RubyClosure < Closure
     BLOCK_STORE = {}
 
-    # Extend the standard GClosure layout with a field blockhash to store
+    # Extend the standard GClosure layout with a field block_id to store
     # the object_id of the associated block.
     class Struct < FFI::Struct
       layout :parent, Closure::Struct, 0,
-        :blockhash, :int64
+        :block_id, :int64
     end
 
     def block
-      BLOCK_STORE[self[:blockhash]]
+      BLOCK_STORE[self[:block_id]]
     end
 
     def block= block
-      h = block.object_id
-      BLOCK_STORE[h] = block
-      self[:blockhash] = h
+      id = block.object_id
+      BLOCK_STORE[id] = block
+      self[:block_id] = id
     end
 
     def invoke_block *args
