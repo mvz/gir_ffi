@@ -53,6 +53,9 @@ module GObject
   def self.signal_connect object, signal, data=nil, &block
     callback = Helper.signal_callback object.class, signal, &block
     data_ptr = GirFFI::ArgHelper.object_to_inptr data
+
+    Lib::CALLBACKS << callback
+
     Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 

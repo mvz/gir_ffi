@@ -34,6 +34,7 @@ module GirFFI
           if parent
             return superclass._find_signal signal_name
           end
+          raise "Signal #{signal_name} not found"
         end
 
         private

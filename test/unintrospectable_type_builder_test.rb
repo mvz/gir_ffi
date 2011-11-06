@@ -36,8 +36,14 @@ describe GirFFI::Builder::Type::Unintrospectable do
     end
 
     describe "its #find_signal method" do
-      it "works for a signal that doesn't exist" do
-        assert_nil @bldr.find_signal "foo"
+      it "raises correct error for a signal that doesn't exist" do
+        msg = nil
+        begin
+          @bldr.find_signal "foo"
+        rescue RuntimeError => e
+          msg = e.message
+        end
+        assert_match /^Signal/, msg
       end
     end
   end

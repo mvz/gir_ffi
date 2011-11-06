@@ -8,21 +8,16 @@ module GObject
 
     def self.signal_callback klass, signal, &block
       sig = klass._find_signal signal
-      raise "Signal #{signal} is invalid for #{klass}" if sig.nil?
-      raise ArgumentError, "Block needed" if block.nil?
 
       rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
       argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
+      callback_block = Helper.signal_callback_args(sig, klass, &block)
 
-      callback = FFI::Function.new rettype, argtypes,
-        &(Helper.signal_callback_args(sig, klass, &block))
-
-      Lib::CALLBACKS << callback
-
-      return callback
+      FFI::Function.new rettype, argtypes, &callback_block
     end
 
     def self.signal_callback_args sig, klass, &block
+      raise ArgumentError, "Block needed" if block.nil?
       return Proc.new do |*args|
         mapped = cast_back_signal_arguments sig, klass, *args
         block.call(*mapped)
