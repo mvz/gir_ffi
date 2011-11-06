@@ -54,20 +54,22 @@ module GObject
     end
 
     def ruby_value
-      case current_gtype_name.to_sym
-      when :gboolean
+      case current_fundamental_type
+      when TYPE_BOOLEAN
         get_boolean
-      when :gint
+      when TYPE_INT
         get_int
-      when :gchararray
+      when TYPE_STRING
         get_string
-      when :GDate
-        ::GLib::Date.wrap(get_boxed)
-      when :GStrv
-        # FIXME: Extract this method to even lower level module.
-        GirFFI::ArgHelper.strv_to_utf8_array get_boxed
-      else
-        nil
+      when TYPE_BOXED
+        boxed = get_boxed
+        case current_gtype_name.to_sym
+        when :GDate
+          ::GLib::Date.wrap(boxed)
+        when :GStrv
+          # FIXME: Extract this method to even lower level module.
+          GirFFI::ArgHelper.strv_to_utf8_array boxed
+        end
       end
     end
 
