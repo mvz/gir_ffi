@@ -9,8 +9,8 @@ module GLib
 
     def each
       prc = Proc.new {|keyptr, valptr, userdata|
-        key = cast_from_pointer key_type, keyptr
-        val = cast_from_pointer value_type, valptr
+        key = GirFFI::ArgHelper.cast_from_pointer key_type, keyptr
+        val = GirFFI::ArgHelper.cast_from_pointer value_type, valptr
         yield key, val
       }
       ::GLib::Lib.g_hash_table_foreach self.to_ptr, prc, nil
@@ -21,28 +21,9 @@ module GLib
     end
 
     def insert key, value
-      keyptr = cast_to_pointer key_type, key
-      valptr = cast_to_pointer value_type, value
+      keyptr = GirFFI::ArgHelper.cast_to_pointer key_type, key
+      valptr = GirFFI::ArgHelper.cast_to_pointer value_type, value
       ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
-    end
-
-    def cast_to_pointer type, it
-      if type == :utf8
-        GirFFI::InPointer.from :utf8, it
-      else
-        FFI::Pointer.new(it)
-      end
-    end
-
-    def cast_from_pointer type, it
-      case type
-      when :utf8
-        GirFFI::ArgHelper.ptr_to_utf8 it
-      when :gint32
-        GirFFI::ArgHelper.cast_pointer_to_int32 it
-      else
-        it.address
-      end
     end
 
     def self.wrap keytype, valtype, ptr
