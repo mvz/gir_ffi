@@ -11,10 +11,18 @@ module GLib
       list = self
       rval = nil
       until list.nil?
-        rval = yield GirFFI::ArgHelper.cast_from_pointer(element_type, list[:data])
-        list = self.class.wrap(element_type, list[:next])
+        rval = yield list.data
+        list = list.next
       end
       rval
+    end
+
+    def next
+      self.class.wrap(element_type, self[:next])
+    end
+
+    def data
+      GirFFI::ArgHelper.cast_from_pointer(element_type, self[:data])
     end
 
     module ClassMethods
