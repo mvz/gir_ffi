@@ -34,7 +34,10 @@ describe GLib::Array do
     end
 
     it "returns an enumerator if no block is given" do
-      assert_instance_of Enumerator, @arr.each
+      en = @arr.each
+      assert_equal 1, en.next
+      assert_equal 2, en.next
+      assert_equal 3, en.next
     end
   end
 

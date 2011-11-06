@@ -79,7 +79,7 @@ module GObject
         cast_signal_argument(info, arg)
       end
 
-      return [instance, *extra_arguments, user_data]
+      return [instance, *extra_arguments].push user_data
     end
 
     def self.cast_signal_argument info, arg
