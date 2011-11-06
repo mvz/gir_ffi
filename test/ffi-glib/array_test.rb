@@ -21,6 +21,23 @@ describe GLib::Array do
     end
   end
 
+  describe "#each" do
+    before do
+      @arr = GLib::Array.new(:int32).append_vals [1, 2, 3]
+    end
+
+    it "iterates over the values" do
+      a = []
+      @arr.each {|v| a << v }
+
+      assert_equal [1, 2, 3], a
+    end
+
+    it "returns an enumerator if no block is given" do
+      assert_instance_of Enumerator, @arr.each
+    end
+  end
+
   # TODO: Make GLib::Array a full Enumerable"
   it "has a working #to_a method" do
     arr = GLib::Array.new :int32

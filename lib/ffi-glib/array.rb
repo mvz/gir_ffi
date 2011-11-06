@@ -1,7 +1,8 @@
 module GLib
   load_class :Array
 
-  # Overrides for GArray, GLib's automatically growing array.
+  # Overrides for GArray, GLib's automatically growing array. It should not
+  # be necessary to create objects of this class from Ruby directly.
   class Array
     attr_accessor :element_type
 
@@ -16,6 +17,11 @@ module GLib
       len = data.length
       Lib.g_array_append_vals(self, bytes, len)
       self
+    end
+
+    # FIXME: Make GirFII::InPointer support #each and use that.
+    def each &block
+      to_a.each &block
     end
 
     def to_a
