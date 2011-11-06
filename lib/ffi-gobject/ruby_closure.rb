@@ -33,17 +33,15 @@ module GObject
 
     def self.marshaller(closure, return_value, n_param_values,
                         param_values, invocation_hint, marshal_data)
-      rclosure = self.wrap(closure.to_ptr)
+      rclosure = wrap(closure.to_ptr)
 
-      args = []
-      n_param_values.times {|i|
-        gv = ::GObject::Value.wrap(param_values.to_ptr +
-                                   i * ::GObject::Value::Struct.size)
-        args << gv.ruby_value
+      args = n_param_values.times.map {|idx|
+        Value.wrap(param_values.to_ptr + idx * Value::Struct.size).ruby_value
       }
 
-      r = rclosure.invoke_block(*args)
-      return_value.set_ruby_value r unless return_value.nil?
+      result = rclosure.invoke_block(*args)
+
+      return_value.set_ruby_value(result) unless return_value.nil?
     end
   end
 end
