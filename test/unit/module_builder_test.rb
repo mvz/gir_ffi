@@ -76,5 +76,20 @@ describe GirFFI::Builder::Module do
       end
     end
   end
+
+  describe "#build_namespaced_class" do
+    it "raises a clear error if the named class does not exist" do
+      gir = GObjectIntrospection::IRepository.default
+      stub(gir).require("Foo", nil) { }
+
+      builder = GirFFI::Builder::Module.new "Foo"
+
+      mock(gir).find_by_name("Foo", "Bar") { nil }
+
+      assert_raises NameError do
+        builder.build_namespaced_class :Bar
+      end
+    end
+  end
 end
 
