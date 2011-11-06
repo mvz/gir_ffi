@@ -14,7 +14,13 @@ module GObject
     end
 
     def block
-      self.class::BLOCK_STORE[self[:blockhash]]
+      BLOCK_STORE[self[:blockhash]]
+    end
+
+    def block= block
+      h = block.object_id
+      BLOCK_STORE[h] = block
+      self[:blockhash] = h
     end
 
     def invoke_block *args
@@ -23,12 +29,12 @@ module GObject
 
     def self.new &block
       raise ArgumentError unless block_given?
-      wrap(new_simple(self::Struct.size, nil).to_ptr).tap do |it|
-        h = block.object_id
-        self::BLOCK_STORE[h] = block
-        it[:blockhash] = h
-        it.set_marshal Proc.new {|*args| marshaller(*args)}
-      end
+
+      closure = wrap(new_simple(self::Struct.size, nil).to_ptr)
+      closure.block = block
+      closure.set_marshal Proc.new {|*args| marshaller(*args)}
+
+      return closure
     end
 
     def self.marshaller(closure, return_value, n_param_values,
