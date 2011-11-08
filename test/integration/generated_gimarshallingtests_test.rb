@@ -800,7 +800,7 @@ describe "GIMarshallingTests" do
     assert_equal({-1 => 1, 0 => 0, 1 => -1, 2 => -2}, gh.to_hash)
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #ghashtable_utf8_container_in"
 
   it "has a working function #ghashtable_utf8_container_inout" do
@@ -821,7 +821,7 @@ describe "GIMarshallingTests" do
                  res.to_hash)
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #ghashtable_utf8_full_in"
 
   it "has a working function #ghashtable_utf8_full_inout" do
@@ -876,7 +876,7 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], res.to_a
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #glist_utf8_container_in"
 
   it "has a working function #glist_utf8_container_inout" do
@@ -894,7 +894,7 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #glist_utf8_full_in"
 
   it "has a working function #glist_utf8_full_inout" do
@@ -941,7 +941,7 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], res.to_a
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #gslist_utf8_container_in"
 
   it "has a working function #gslist_utf8_container_inout" do
@@ -959,7 +959,7 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #gslist_utf8_full_in"
 
   it "has a working function #gslist_utf8_full_inout" do
@@ -1607,10 +1607,10 @@ describe "GIMarshallingTests" do
     assert_equal max_ulong, res
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #union_inout"
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #union_out"
 
   it "has a working function #union_returnv" do
@@ -1644,7 +1644,7 @@ describe "GIMarshallingTests" do
     assert_nil res
   end
 
-  # XXX: Only defined in header
+  # This function is defined in the header but not implemented.
   # it "has a working function #utf8_full_in"
 
   it "has a working function #utf8_full_inout" do
