@@ -121,25 +121,25 @@ module GirFFI
 
     def self.utf8_array_to_glist arr
       return nil if arr.nil?
-      arr.inject(GLib.list_new :utf8) { |lst, str|
+      arr.inject(GLib::List.new :utf8) { |lst, str|
         GLib.list_append lst, InPointer.from(:utf8, str) }
     end
 
     def self.gint32_array_to_glist arr
       return nil if arr.nil?
-      arr.inject(GLib.list_new :gint32) { |lst, int|
+      arr.inject(GLib::List.new :gint32) { |lst, int|
         GLib.list_append lst, cast_int32_to_pointer(int) }
     end
 
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
-      arr.reverse.inject(GLib.slist_new :utf8) { |lst, str|
+      arr.reverse.inject(GLib::SList.new :utf8) { |lst, str|
         GLib.slist_prepend lst, InPointer.from(:utf8, str) }
     end
 
     def self.gint32_array_to_gslist arr
       return nil if arr.nil?
-      arr.reverse.inject(GLib.slist_new :gint32) { |lst, int|
+      arr.reverse.inject(GLib::SList.new :gint32) { |lst, int|
         GLib.slist_prepend lst, cast_int32_to_pointer(int) }
     end
 

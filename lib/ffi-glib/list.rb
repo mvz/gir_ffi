@@ -6,5 +6,10 @@ module GLib
   # Overrides for GList, GLib's doubly linked list implementation.
   class List
     include ListMethods
+
+    def self.new type
+      _real_new(FFI::Pointer.new(0)).tap {|it|
+        it.element_type = type}
+    end
   end
 end

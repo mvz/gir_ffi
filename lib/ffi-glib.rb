@@ -8,21 +8,9 @@ require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
 
 module GLib
-  # FIXME: Turn into real constructor
-  def self.slist_new elmttype
-    ::GLib::List._real_new(FFI::Pointer.new(0)).tap {|it|
-      it.element_type = elmttype}
-  end
-
   # FIXME: Turn into instance method; Use element type.
   def self.slist_prepend slist, data
     ::GLib::SList.wrap(slist.element_type, ::GLib::Lib.g_slist_prepend(slist, data))
-  end
-
-  # FIXME: Turn into real constructor
-  def self.list_new elmttype
-    ::GLib::List._real_new(FFI::Pointer.new(0)).tap {|it|
-      it.element_type = elmttype}
   end
 
   # FIXME: Turn into instance method; Use element type.
