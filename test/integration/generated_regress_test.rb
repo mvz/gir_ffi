@@ -341,8 +341,9 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    # XXX: TestStructC is not typedef'd in regress.h
-    # describe "TestStructC"
+    describe "TestStructC" do
+      it "needs to be tested"
+    end
 
     describe "TestSubObj" do
       it "is created with #new" do
