@@ -134,13 +134,13 @@ module GirFFI
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
       arr.reverse.inject(GLib::SList.new :utf8) { |lst, str|
-        GLib.slist_prepend lst, InPointer.from(:utf8, str) }
+        lst.prepend str }
     end
 
     def self.gint32_array_to_gslist arr
       return nil if arr.nil?
       arr.reverse.inject(GLib::SList.new :gint32) { |lst, int|
-        GLib.slist_prepend lst, cast_int32_to_pointer(int) }
+        lst.prepend int }
     end
 
     def self.hash_to_ghash keytype, valtype, hash

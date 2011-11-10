@@ -9,11 +9,6 @@ require 'ffi-glib/ptr_array'
 
 module GLib
   # FIXME: Turn into instance method; Use element type.
-  def self.slist_prepend slist, data
-    ::GLib::SList.wrap(slist.element_type, ::GLib::Lib.g_slist_prepend(slist, data))
-  end
-
-  # FIXME: Turn into instance method; Use element type.
   def self.list_append list, data
     ::GLib::List.wrap(list.element_type, ::GLib::Lib.g_list_append(list, data))
   end
