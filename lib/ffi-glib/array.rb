@@ -9,7 +9,8 @@ module GLib
     attr_accessor :element_type
 
     def self.new type
-      ffi_type = type == :utf8 ? :pointer : type
+      # FIXME: Extract this type mapping as a method somewhere.
+      ffi_type = type == :utf8 ? :pointer : GirFFI::TypeMap.map_basic_type(type)
       wrap(Lib.g_array_new(0, 0, FFI.type_size(ffi_type))).tap {|it|
         it.element_type = type}
     end
