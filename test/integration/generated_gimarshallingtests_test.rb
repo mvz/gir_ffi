@@ -579,7 +579,7 @@ describe "GIMarshallingTests" do
   it "has a working function #bytearray_none_in" do
     val = GIMarshallingTests.bytearray_full_return.to_string
     ba = GLib::ByteArray.new
-    GLib.byte_array_append ba, val
+    ba = ba.append val
     GIMarshallingTests.bytearray_none_in ba
     pass
   end

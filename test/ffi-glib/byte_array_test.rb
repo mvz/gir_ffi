@@ -8,13 +8,13 @@ describe GLib::ByteArray do
 
   it "allows strings to be appended to it" do
     ba = GLib::ByteArray.new
-    GLib::byte_array_append ba, "abdc"
+    ba.append "abdc"
     pass
   end
 
-  it "has a working #to_s method" do
+  it "has a working #to_string method" do
     ba = GLib::ByteArray.new
-    ba = GLib::byte_array_append ba, "abdc"
+    ba = ba.append "abdc"
     assert_equal "abdc", ba.to_string
   end
 end

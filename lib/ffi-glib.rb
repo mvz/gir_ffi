@@ -8,13 +8,6 @@ require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
 
 module GLib
-  # FIXME: Turn into instance method
-  def self.byte_array_append arr, data
-    bytes = GirFFI::InPointer.from :utf8, data
-    len = data.bytesize
-    ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_append arr.to_ptr, bytes, len)
-  end
-
   # FIXME: Turn into real constructor?
   def self.main_loop_new context, is_running
     ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
