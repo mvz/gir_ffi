@@ -8,11 +8,6 @@ require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
 
 module GLib
-  # FIXME: Turn into real constructor?
-  def self.main_loop_new context, is_running
-    ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
-  end
-
   load_class :HFunc
   load_class :HashFunc
   load_class :EqualFunc

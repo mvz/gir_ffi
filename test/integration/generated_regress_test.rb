@@ -492,7 +492,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
     should "have correct test_async_ready_callback" do
       a = 1
-      main_loop = GLib.main_loop_new nil, false
+      main_loop = GLib::MainLoop.new nil, false
 
       Regress.test_async_ready_callback Proc.new {
 	main_loop.quit
