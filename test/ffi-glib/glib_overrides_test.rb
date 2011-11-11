@@ -33,25 +33,6 @@ describe "With the GLib overrides" do
       h.to_hash.must_be :==, {"foo" => "bar"}
     end
   end
-
-  describe "ByteArray" do
-    it "can be created (for now) with Glib.byte_array_new" do
-      ba = GLib.byte_array_new
-      assert_instance_of GLib::ByteArray, ba
-    end
-
-    it "allows strings to be appended to it" do
-      ba = GLib.byte_array_new
-      GLib::byte_array_append ba, "abdc"
-      pass
-    end
-
-    it "has a working #to_s method" do
-      ba = GLib.byte_array_new
-      ba = GLib::byte_array_append ba, "abdc"
-      assert_equal "abdc", ba.to_string
-    end
-  end
 end
 
 

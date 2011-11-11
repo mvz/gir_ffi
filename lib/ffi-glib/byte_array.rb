@@ -6,6 +6,10 @@ module GLib
     def to_string
       GirFFI::ArgHelper.ptr_to_utf8_length self[:data], self[:len]
     end
+
+    def self.new
+      wrap(Lib.g_byte_array_new)
+    end
   end
 end
 
