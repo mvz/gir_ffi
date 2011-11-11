@@ -26,8 +26,16 @@ module GirFFI
       TAG_TYPE_MAP[type] || type
     end
 
+    # FIXME: Make name more descriptive.
     def self.map_basic_type_or_string type
-      type == :utf8 ? :pointer : map_basic_type(type)
+      case type
+      when :gboolean
+        :int32
+      when :utf8
+        :pointer
+      else
+        map_basic_type(type)
+      end
     end
   end
 end

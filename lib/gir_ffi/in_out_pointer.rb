@@ -38,7 +38,7 @@ module GirFFI
     end
 
     def self.for type
-      ffi_type = type_to_ffi_type type
+      ffi_type = TypeMap.map_basic_type_or_string type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
       ptr.send "put_#{ffi_type}", 0, nil_value_for(type)
       self.new ptr, type, ffi_type
@@ -46,7 +46,7 @@ module GirFFI
 
     def self.from type, value, sub_type=nil
       value = adjust_value_in type, value
-      ffi_type = type_to_ffi_type type
+      ffi_type = TypeMap.map_basic_type_or_string type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
       ptr.send "put_#{ffi_type}", 0, value
       self.new ptr, type, ffi_type, sub_type
@@ -59,18 +59,6 @@ module GirFFI
     end
 
     class << self
-      # TODO: Make separate module to hold type info.
-      def type_to_ffi_type type
-        case type
-        when :gboolean
-          :int32
-        when :utf8
-          :pointer
-        else
-          TypeMap.map_basic_type type
-        end
-      end
-
       def adjust_value_in type, value
         case type
         when :gboolean
