@@ -120,7 +120,14 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     describe "TestInterface" do
-      it "must be tested"
+      it "is a module" do
+        assert_instance_of Module, Regress::TestInterface
+      end
+
+      it "extends InterfaceBase" do
+        metaclass = class << Regress::TestInterface; self; end
+        assert_includes metaclass.ancestors, GirFFI::InterfaceBase
+      end
     end
 
     context "the Regress::TestObj class" do
