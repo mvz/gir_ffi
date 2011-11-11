@@ -25,5 +25,9 @@ module GirFFI
     def self.map_basic_type type
       TAG_TYPE_MAP[type] || type
     end
+
+    def self.map_basic_type_or_string type
+      type == :utf8 ? :pointer : map_basic_type(type)
+    end
   end
 end
