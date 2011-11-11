@@ -9,20 +9,6 @@ require 'ffi-glib/ptr_array'
 
 module GLib
   # FIXME: Turn into real constructor
-  def self.hash_table_new keytype, valtype
-    hash_fn, eq_fn = case keytype
-                     when :utf8
-                       lib = ::GLib::Lib.ffi_libraries.first
-                       [ FFI::Function.new(:uint, [:pointer], lib.find_function("g_str_hash")),
-                         FFI::Function.new(:int, [:pointer, :pointer], lib.find_function("g_str_equal"))]
-                     else
-                       [nil, nil]
-                     end
-
-    ::GLib::HashTable.wrap(keytype, valtype, ::GLib::Lib.g_hash_table_new(hash_fn, eq_fn))
-  end
-
-  # FIXME: Turn into real constructor
   def self.byte_array_new
     ::GLib::ByteArray.wrap(::GLib::Lib.g_byte_array_new)
   end

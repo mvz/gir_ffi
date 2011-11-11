@@ -26,6 +26,18 @@ module GLib
       ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
     end
 
+    def self.new  keytype, valtype
+      hash_fn, eq_fn = case keytype
+                       when :utf8
+                         lib = ::GLib::Lib.ffi_libraries.first
+                         [ FFI::Function.new(:uint, [:pointer], lib.find_function("g_str_hash")),
+                           FFI::Function.new(:int, [:pointer, :pointer], lib.find_function("g_str_equal"))]
+                       else
+                         [nil, nil]
+                       end
+      wrap(keytype, valtype, Lib.g_hash_table_new(hash_fn, eq_fn))
+    end
+
     def self.wrap keytype, valtype, ptr
       super(ptr).tap do |it|
         break if it.nil?

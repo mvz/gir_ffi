@@ -147,7 +147,7 @@ module GirFFI
 
     def self.hash_to_ghash keytype, valtype, hash
       return nil if hash.nil?
-      ghash = GLib.hash_table_new keytype, valtype
+      ghash = GLib::HashTable.new keytype, valtype
       hash.each do |key, val|
         ghash.insert key, val
       end

@@ -27,13 +27,8 @@ describe "With the GLib overrides" do
   end
 
   describe "HashTable" do
-    it "can be created (for now) with Glib.hash_table_new" do
-      h = GLib.hash_table_new :utf8, :utf8
-      h.to_hash.must_be :==, {}
-    end
-
     it "allows key-value pairs to be inserted" do
-      h = GLib.hash_table_new :utf8, :utf8
+      h = GLib::HashTable.new :utf8, :utf8
       h.insert "foo", "bar"
       h.to_hash.must_be :==, {"foo" => "bar"}
     end
