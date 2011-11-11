@@ -17,7 +17,14 @@ module GirFFI
 
     def self.from type, val
       return nil if val.nil?
-      from_utf8 val
+      case type
+      when :utf8
+        from_utf8 val
+      when :gint32
+        self.new val
+      else
+        raise NotImplementedError
+      end
     end
 
     class << self

@@ -13,16 +13,7 @@ module GLib
     end
 
     def prepend data
-      data_ptr = case element_type
-                 when :gint32
-                   # FIXME: InPointer should handle that case also.
-                   GirFFI::ArgHelper.cast_int32_to_pointer(data)
-                 when :utf8
-                   GirFFI::InPointer.from(:utf8, data)
-                 else
-                   raise NotImplementedError
-                 end
-
+      data_ptr = GirFFI::InPointer.from(element_type, data)
       self.class.wrap(element_type, Lib.g_slist_prepend(self, data_ptr))
     end
 
