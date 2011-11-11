@@ -195,14 +195,6 @@ module GirFFI
       end
     end
 
-    def self.cast_to_pointer type, it
-      if type == :utf8
-        GirFFI::InPointer.from :utf8, it
-      else
-        FFI::Pointer.new(it)
-      end
-    end
-
     def self.cast_uint32_to_int32 val
       if val >= 0x80000000
         -(0x100000000-val)
@@ -213,10 +205,6 @@ module GirFFI
 
     def self.cast_pointer_to_int32 ptr
       cast_uint32_to_int32(ptr.address & 0xffffffff)
-    end
-
-    def self.cast_int32_to_pointer int
-      FFI::Pointer.new(int)
     end
   end
 end

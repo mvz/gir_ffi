@@ -18,7 +18,7 @@ module GLib
     end
 
     def add data
-      ptr = GirFFI::ArgHelper.cast_to_pointer element_type, data
+      ptr = GirFFI::InPointer.from element_type, data
       ::GLib::Lib.g_ptr_array_add self, ptr
     end
 

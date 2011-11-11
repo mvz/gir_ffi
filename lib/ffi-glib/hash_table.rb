@@ -21,8 +21,8 @@ module GLib
     end
 
     def insert key, value
-      keyptr = GirFFI::ArgHelper.cast_to_pointer key_type, key
-      valptr = GirFFI::ArgHelper.cast_to_pointer value_type, value
+      keyptr = GirFFI::InPointer.from key_type, key
+      valptr = GirFFI::InPointer.from value_type, value
       ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
     end
 
