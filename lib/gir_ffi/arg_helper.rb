@@ -119,18 +119,20 @@ module GirFFI
       return arr
     end
 
+    # TODO: Unify with other array_to_glist, using type argument.
     def self.utf8_array_to_glist arr
       return nil if arr.nil?
       arr.inject(GLib::List.new :utf8) { |lst, str|
-        GLib.list_append lst, InPointer.from(:utf8, str) }
+        lst.append str }
     end
 
     def self.gint32_array_to_glist arr
       return nil if arr.nil?
       arr.inject(GLib::List.new :gint32) { |lst, int|
-        GLib.list_append lst, cast_int32_to_pointer(int) }
+        lst.append int }
     end
 
+    # TODO: Unify with other array_to_gslist, using type argument.
     def self.utf8_array_to_gslist arr
       return nil if arr.nil?
       arr.reverse.inject(GLib::SList.new :utf8) { |lst, str|

@@ -8,11 +8,6 @@ require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
 
 module GLib
-  # FIXME: Turn into instance method; Use element type.
-  def self.list_append list, data
-    ::GLib::List.wrap(list.element_type, ::GLib::Lib.g_list_append(list, data))
-  end
-
   # FIXME: Turn into real constructor
   def self.hash_table_new keytype, valtype
     hash_fn, eq_fn = case keytype
