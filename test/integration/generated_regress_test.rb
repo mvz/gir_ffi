@@ -211,6 +211,16 @@ class GeneratedRegressTest < MiniTest::Spec
             assert_instance_of Regress::TestObj, obj2
           end
 
+          it "gets the 'boxed' property" do
+            tb = Regress::TestBoxed.new_alternative_constructor1 75
+            @o[:boxed] = tb
+
+            tb2 = @o.get_property("boxed")
+
+            assert_instance_of Regress::TestBoxed, tb2
+            assert_equal 75, tb2[:some_int8]
+          end
+
           it "gets the 'float' property" do
             @o[:some_float] = 3.14
             assert_in_epsilon 3.14, @o.get_property("float")

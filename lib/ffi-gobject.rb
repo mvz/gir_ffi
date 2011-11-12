@@ -29,6 +29,7 @@ module GObject
   end
 
   def self.type_from_instance_pointer inst_ptr
+    return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
     klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:gtype]}", 0
   end

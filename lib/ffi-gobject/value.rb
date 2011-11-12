@@ -75,6 +75,8 @@ module GObject
         when :GStrv
           # FIXME: Extract this method to even lower level module.
           return GirFFI::ArgHelper.strv_to_utf8_array boxed
+        else
+          return GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
         end
       end
       raise "Don't know how to handle #{current_gtype_name}"
