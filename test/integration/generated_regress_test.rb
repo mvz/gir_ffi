@@ -200,6 +200,13 @@ class GeneratedRegressTest < MiniTest::Spec
           end
         end
 
+        describe "#get_property" do
+          it "gets the 'float' property" do
+            @o[:some_float] = 3.14
+            assert_equal 3.14, @o.get_property("float")
+          end
+        end
+
 	should "have a reference count of 1" do
 	  assert_equal 1, ref_count(@o)
 	end
