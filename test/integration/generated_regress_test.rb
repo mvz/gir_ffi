@@ -443,10 +443,8 @@ class GeneratedRegressTest < MiniTest::Spec
 
 	should "get its boolean struct member with #get_property" do
 	  @obj[:testbool] = 1
-	  gv = GObject::Value.new
-	  gv.init GObject.type_from_name "gboolean"
-	  @obj.get_property "testbool", gv
-	  assert_equal true, gv.get_boolean
+	  val = @obj.get_property "testbool"
+	  assert_equal true, val
 	end
       end
     end
