@@ -111,6 +111,7 @@ module GObject
   TYPE_TAG_TO_GTYPE = {
     :void => TYPE_NONE,
     :gboolean => TYPE_BOOLEAN,
+    :gint32 => TYPE_INT,
     :gfloat => TYPE_FLOAT,
     :gdouble => TYPE_DOUBLE,
     :utf8 => TYPE_STRING,

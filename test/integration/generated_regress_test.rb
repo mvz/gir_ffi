@@ -241,6 +241,11 @@ class GeneratedRegressTest < MiniTest::Spec
             @o[:some_double] = 3.14
             assert_in_epsilon 3.14, @o.get_property("double")
           end
+
+          it "gets the 'int' property" do
+            @o[:some_int8] = 42
+            assert_equal 42, @o.get_property("int")
+          end
         end
 
 	should "have a reference count of 1" do
