@@ -49,7 +49,7 @@ describe GirFFI::InPointer do
       @result = GirFFI::InPointer.from :utf8, "foo"
     end
 
-    it "returns an pointers to the given string" do
+    it "returns a pointer to the given string" do
       ary = @result.read_array_of_pointer(3)
       assert_equal "foo", @result.read_string
     end
@@ -63,6 +63,11 @@ describe GirFFI::InPointer do
     it "returns nil when passed nil" do
       result = GirFFI::InPointer.from :foo, nil
       assert_nil result
+    end
+
+    it "sets the pointer's address to the passed value for type :gint8" do
+      result = GirFFI::InPointer.from :gint8, 23
+      assert_equal 23, result.address
     end
   end
 end

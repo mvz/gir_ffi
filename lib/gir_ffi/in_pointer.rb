@@ -20,7 +20,7 @@ module GirFFI
       case type
       when :utf8
         from_utf8 val
-      when :gint32
+      when :gint32, :gint8
         self.new val
       else
         raise NotImplementedError
