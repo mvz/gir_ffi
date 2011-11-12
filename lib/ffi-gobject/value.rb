@@ -34,9 +34,9 @@ module GObject
     def init_for_ruby_value val
       case val
       when true, false
-        init ::GObject.type_from_name("gboolean")
+        init TYPE_BOOLEAN
       when Integer
-        init ::GObject.type_from_name("gint")
+        init TYPE_INT
       end
       self
     end
@@ -50,7 +50,7 @@ module GObject
     end
 
     def current_gtype_name
-      ::GObject.type_name current_gtype
+      GObject.type_name current_gtype
     end
 
     def ruby_value
@@ -70,8 +70,6 @@ module GObject
       when TYPE_BOXED
         boxed = get_boxed
         case current_gtype_name.to_sym
-        when :GDate
-          return ::GLib::Date.wrap(boxed)
         when :GStrv
           # FIXME: Extract this method to even lower level module.
           return GirFFI::ArgHelper.strv_to_utf8_array boxed
