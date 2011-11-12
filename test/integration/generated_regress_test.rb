@@ -201,6 +201,16 @@ class GeneratedRegressTest < MiniTest::Spec
         end
 
         describe "#get_property" do
+          it "gets the 'bare' property" do
+            obj = Regress::TestObj.new_from_file("bar")
+            @o.set_bare obj
+
+            obj2 = @o.get_property("bare")
+
+            assert_equal obj.to_ptr, obj2.to_ptr
+            assert_instance_of Regress::TestObj, obj2
+          end
+
           it "gets the 'float' property" do
             @o[:some_float] = 3.14
             assert_in_epsilon 3.14, @o.get_property("float")

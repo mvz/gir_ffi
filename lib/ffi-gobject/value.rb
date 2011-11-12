@@ -65,6 +65,8 @@ module GObject
         return get_float
       when TYPE_DOUBLE
         return get_double
+      when TYPE_OBJECT
+        return get_object
       when TYPE_BOXED
         boxed = get_boxed
         case current_gtype_name.to_sym
