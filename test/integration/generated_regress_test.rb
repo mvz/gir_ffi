@@ -256,6 +256,10 @@ class GeneratedRegressTest < MiniTest::Spec
             assert_equal ["foo", "bar"], lst2.to_a
           end
 
+          it "gets the 'string' property" do
+            @o[:string] = GirFFI::InPointer.from :utf8, "foobar"
+            assert_equal "foobar", @o.get_property("string")
+          end
         end
 
 	should "have a reference count of 1" do
