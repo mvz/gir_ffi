@@ -246,6 +246,16 @@ class GeneratedRegressTest < MiniTest::Spec
             @o[:some_int8] = 42
             assert_equal 42, @o.get_property("int")
           end
+
+          it "gets the 'list' property" do
+            lst = GLib::List.new(:utf8).append("foo").append("bar")
+
+            @o[:list] = lst
+
+            lst2 = @o.get_property "list"
+            assert_equal ["foo", "bar"], lst2.to_a
+          end
+
         end
 
 	should "have a reference count of 1" do

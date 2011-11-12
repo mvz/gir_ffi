@@ -56,30 +56,33 @@ module GObject
     def ruby_value
       case current_fundamental_type
       when TYPE_BOOLEAN
-        return get_boolean
+        get_boolean
       when TYPE_INT
-        return get_int
+        get_int
       when TYPE_STRING
-        return get_string
+        get_string
       when TYPE_FLOAT
-        return get_float
+        get_float
       when TYPE_DOUBLE
-        return get_double
+        get_double
       when TYPE_OBJECT
-        return get_object
+        get_object
       when TYPE_BOXED
         boxed = get_boxed
         case current_gtype_name.to_sym
         when :GStrv
           # FIXME: Extract this method to even lower level module.
-          return GirFFI::ArgHelper.strv_to_utf8_array boxed
+          GirFFI::ArgHelper.strv_to_utf8_array boxed
         when :GHashTable
-          return GLib::HashTable.wrap :gpointer, :gpointer, boxed
+          GLib::HashTable.wrap :gpointer, :gpointer, boxed
         else
-          return GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
+          GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
         end
+      when TYPE_POINTER
+        get_pointer
+      else
+        raise "Don't know how to handle #{current_gtype_name}"
       end
-      raise "Don't know how to handle #{current_gtype_name}"
     end
 
     class << self

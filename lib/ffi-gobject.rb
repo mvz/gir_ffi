@@ -115,6 +115,7 @@ module GObject
     :gfloat => TYPE_FLOAT,
     :gdouble => TYPE_DOUBLE,
     :utf8 => TYPE_STRING,
-    :ghash => TYPE_HASH_TABLE
+    :ghash => TYPE_HASH_TABLE,
+    :glist => TYPE_POINTER
   }
 end
