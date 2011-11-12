@@ -38,8 +38,11 @@ module GirFFI
         end
 
         def find_property property_name
-          info.properties.find do |prop|
-            prop.name == property_name
+          info.properties.each do |prop|
+            return prop if prop.name == property_name
+          end
+          if parent
+            return superclass._find_property property_name
           end
         end
 

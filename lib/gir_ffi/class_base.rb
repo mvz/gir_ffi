@@ -50,6 +50,10 @@ module GirFFI
         _builder.find_signal name
       end
 
+      def _find_property name
+        _builder.find_property name
+      end
+
       def _setup_method name
         _builder.setup_method name
       end

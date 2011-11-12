@@ -25,5 +25,12 @@ describe GirFFI::Builder::Type::Object do
       prop = builder.find_property("int")
       assert_equal "int", prop.name
     end
+
+    it "finds a property specified on the parent class" do
+      builder = GirFFI::Builder::Type::Object.new(
+        get_introspection_data('Regress', 'TestSubObj'))
+      prop = builder.find_property("int")
+      assert_equal "int", prop.name
+    end
   end
 end
