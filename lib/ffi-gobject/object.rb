@@ -10,7 +10,13 @@ module GObject
       type = prop.property_type
       v = Helper.gvalue_for_type_info type
       get_property_without_override property_name, v
-      v.ruby_value
+      case type.tag
+      when :ghash
+        GLib::HashTable.wrap type.param_type(0).tag, type.param_type(1).tag,
+          v.ruby_value.to_ptr
+      else
+        v.ruby_value
+      end
     end
 
     alias get_property_without_override get_property

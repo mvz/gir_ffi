@@ -106,12 +106,14 @@ module GObject
   TYPE_OBJECT = type_from_name("GObject")
   TYPE_GTYPE = type_from_name("GType")
   TYPE_VARIANT = type_from_name("GVariant")
+  TYPE_HASH_TABLE = type_from_name("GHashTable")
 
   TYPE_TAG_TO_GTYPE = {
     :void => TYPE_NONE,
     :gboolean => TYPE_BOOLEAN,
     :gfloat => TYPE_FLOAT,
     :gdouble => TYPE_DOUBLE,
-    :utf8 => TYPE_STRING
+    :utf8 => TYPE_STRING,
+    :ghash => TYPE_HASH_TABLE
   }
 end

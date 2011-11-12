@@ -221,6 +221,17 @@ class GeneratedRegressTest < MiniTest::Spec
             assert_equal 75, tb2[:some_int8]
           end
 
+          it "gets the 'hash-table' property" do
+            ht = GLib::HashTable.new :utf8, :gint8
+            ht.insert "foo", 34
+            ht.insert "bar", 83
+
+            @o[:hash_table] = ht
+
+            ht2 = @o.get_property "hash-table"
+            assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
+          end
+
           it "gets the 'float' property" do
             @o[:some_float] = 3.14
             assert_in_epsilon 3.14, @o.get_property("float")
