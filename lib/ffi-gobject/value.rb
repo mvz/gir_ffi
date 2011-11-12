@@ -56,21 +56,24 @@ module GObject
     def ruby_value
       case current_fundamental_type
       when TYPE_BOOLEAN
-        get_boolean
+        return get_boolean
       when TYPE_INT
-        get_int
+        return get_int
       when TYPE_STRING
-        get_string
+        return get_string
+      when TYPE_FLOAT
+        return get_float
       when TYPE_BOXED
         boxed = get_boxed
         case current_gtype_name.to_sym
         when :GDate
-          ::GLib::Date.wrap(boxed)
+          return ::GLib::Date.wrap(boxed)
         when :GStrv
           # FIXME: Extract this method to even lower level module.
-          GirFFI::ArgHelper.strv_to_utf8_array boxed
+          return GirFFI::ArgHelper.strv_to_utf8_array boxed
         end
       end
+      raise "Don't know how to handle #{current_gtype_name}"
     end
 
     class << self

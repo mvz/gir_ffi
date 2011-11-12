@@ -1,11 +1,5 @@
 module GObject
   module Helper
-    TAG_TYPE_TO_GTYPE_NAME_MAP = {
-      :utf8 => "gchararray",
-      :gboolean => "gboolean",
-      :void => "void"
-    }
-
     def self.signal_callback klass, signal, &block
       sig = klass._find_signal signal
 
@@ -58,9 +52,10 @@ module GObject
               when :void
                 return nil
               else
-                ::GObject.type_from_name(TAG_TYPE_TO_GTYPE_NAME_MAP[tag])
+                TYPE_TAG_TO_GTYPE[tag]
               end
-      ::GObject::Value.new.tap {|val| val.init gtype}
+      raise "GType not found for type info with tag #{tag}" unless gtype
+      Value.new.tap {|val| val.init gtype}
     end
 
     def self.gvalue_for_signal_return_value signal, object

@@ -253,5 +253,9 @@ module GObjectIntrospection
     #
     attach_function :g_constant_info_get_type, [:pointer], :pointer
     attach_function :g_constant_info_get_value, [:pointer, :pointer], :int
+
+    # IPropertyInfo
+    #
+    attach_function :g_property_info_get_type, [:pointer], :pointer
   end
 end

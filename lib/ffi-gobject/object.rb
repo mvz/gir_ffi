@@ -6,7 +6,9 @@ module GObject
     _setup_instance_method "get_property"
 
     def get_property_with_override property_name
-      v = Value.new
+      prop = self.class._find_property property_name
+      type = prop.property_type
+      v = Helper.gvalue_for_type_info type
       get_property_without_override property_name, v
       v.ruby_value
     end

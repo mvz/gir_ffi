@@ -203,7 +203,7 @@ class GeneratedRegressTest < MiniTest::Spec
         describe "#get_property" do
           it "gets the 'float' property" do
             @o[:some_float] = 3.14
-            assert_equal 3.14, @o.get_property("float")
+            assert_in_epsilon 3.14, @o.get_property("float")
           end
         end
 

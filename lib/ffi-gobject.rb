@@ -105,4 +105,11 @@ module GObject
   TYPE_OBJECT = type_from_name("GObject")
   TYPE_GTYPE = type_from_name("GType")
   TYPE_VARIANT = type_from_name("GVariant")
+
+  TYPE_TAG_TO_GTYPE = {
+    :void => TYPE_NONE,
+    :gboolean => TYPE_BOOLEAN,
+    :gfloat => TYPE_FLOAT,
+    :utf8 => TYPE_STRING
+  }
 end
