@@ -115,6 +115,7 @@ class GeneratedRegressTest < MiniTest::Spec
       it "must exist" do
         Regress::TestFundamentalObject
       end
+
       it "does not have GObject::Object as an ancestor" do
         refute_includes Regress::TestFundamentalObject.ancestors,
           GObject::Object
@@ -123,16 +124,24 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     describe "TestFundamentalSubObject" do
+      before do
+        @so = Regress::TestFundamentalSubObject.new "foo"
+      end
+
       it "can be instantiated" do
-        so = Regress::TestFundamentalSubObject.new "foo"
+        pass
       end
+
       it "is a subclass of TestFundamentalObject" do
-        so = Regress::TestFundamentalSubObject.new "foo"
-        assert_kind_of Regress::TestFundamentalObject, so
+        assert_kind_of Regress::TestFundamentalObject, @so
       end
+
       it "stores the constructor parameter in the :data field" do
-        so = Regress::TestFundamentalSubObject.new "foo"
-        assert_equal "foo", so[:data].read_string
+        assert_equal "foo", @so[:data].read_string
+      end
+
+      it "has a refcount of 1" do
+        assert_equal 1, @so[:fundamental_object][:refcount]
       end
     end
 
