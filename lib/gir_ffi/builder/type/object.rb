@@ -44,6 +44,7 @@ module GirFFI
           if parent
             return superclass._find_property property_name
           end
+          raise "Property #{property_name} not found"
         end
 
         private

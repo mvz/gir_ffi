@@ -32,5 +32,13 @@ describe GirFFI::Builder::Type::Object do
       prop = builder.find_property("int")
       assert_equal "int", prop.name
     end
+
+    it "raises an error if the property is not found" do
+      builder = GirFFI::Builder::Type::Object.new(
+        get_introspection_data('Regress', 'TestSubObj'))
+      assert_raises RuntimeError do
+        builder.find_property("this-property-does-not-exist")
+      end
+    end
   end
 end
