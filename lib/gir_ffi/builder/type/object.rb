@@ -37,6 +37,12 @@ module GirFFI
           raise "Signal #{signal_name} not found"
         end
 
+        def find_property property_name
+          info.properties.find do |prop|
+            prop.name == property_name
+          end
+        end
+
         private
 
         def setup_instance_method_in_ancestor method

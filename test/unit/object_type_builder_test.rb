@@ -17,4 +17,13 @@ describe GirFFI::Builder::Type::Object do
       pass
     end
   end
+
+  describe "#find_property" do
+    it "finds a property specified on the class itself" do
+      builder = GirFFI::Builder::Type::Object.new(
+        get_introspection_data('Regress', 'TestObj'))
+      prop = builder.find_property("int")
+      assert_equal "int", prop.name
+    end
+  end
 end
