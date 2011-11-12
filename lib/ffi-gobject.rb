@@ -110,6 +110,7 @@ module GObject
     :void => TYPE_NONE,
     :gboolean => TYPE_BOOLEAN,
     :gfloat => TYPE_FLOAT,
+    :gdouble => TYPE_DOUBLE,
     :utf8 => TYPE_STRING
   }
 end
