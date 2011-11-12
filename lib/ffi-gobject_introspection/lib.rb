@@ -3,7 +3,12 @@ require 'ffi'
 module GObjectIntrospection
   module Lib
     extend FFI::Library
-    ffi_lib "girepository-1.0"
+
+    begin
+      ffi_lib "girepository-1.0"
+    rescue LoadError
+      ffi_lib "girepository-1.0.so.0"
+    end
 
     # IRepository
     enum :IRepositoryLoadFlags, [:LAZY, (1<<0)]
