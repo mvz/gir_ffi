@@ -8,10 +8,13 @@ module GLib
 
     attr_accessor :element_type
 
-    def self.new type
-      ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
-      wrap(Lib.g_array_new(0, 0, FFI.type_size(ffi_type))).tap {|it|
-        it.element_type = type}
+    class << self
+      undef :new
+      def new type
+        ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
+        wrap(Lib.g_array_new(0, 0, FFI.type_size(ffi_type))).tap {|it|
+          it.element_type = type}
+      end
     end
 
     def append_vals data

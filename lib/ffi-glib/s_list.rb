@@ -7,9 +7,12 @@ module GLib
   class SList
     include ListMethods
 
-    def self.new type
-      _real_new(FFI::Pointer.new(0)).tap {|it|
-        it.element_type = type}
+    class << self
+      undef :new
+      def new type
+        _real_new(FFI::Pointer.new(0)).tap {|it|
+          it.element_type = type}
+      end
     end
 
     def prepend data

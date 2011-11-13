@@ -13,8 +13,11 @@ module GLib
       self.class.wrap(Lib.g_byte_array_append self.to_ptr, bytes, len)
     end
 
-    def self.new
-      wrap(Lib.g_byte_array_new)
+    class << self
+      undef :new
+      def new
+        wrap(Lib.g_byte_array_new)
+      end
     end
   end
 end
