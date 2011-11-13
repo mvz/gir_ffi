@@ -43,7 +43,7 @@ describe GirFFI::Builder::Type::Unintrospectable do
         rescue RuntimeError => e
           msg = e.message
         end
-        assert_match /^Signal/, msg
+        assert_match(/^Signal/, msg)
       end
     end
   end

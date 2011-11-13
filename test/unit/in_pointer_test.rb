@@ -50,7 +50,6 @@ describe GirFFI::InPointer do
     end
 
     it "returns a pointer to the given string" do
-      ary = @result.read_array_of_pointer(3)
       assert_equal "foo", @result.read_string
     end
 

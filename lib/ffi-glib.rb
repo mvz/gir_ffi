@@ -37,7 +37,5 @@ module GLib
     attach_function :g_ptr_array_add, [:pointer, :pointer], :void
     attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer],
       :pointer
-
-    attach_function :g_main_loop_new, [:pointer, :bool], :pointer
   end
 end
