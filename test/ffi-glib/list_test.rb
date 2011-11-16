@@ -31,8 +31,16 @@ describe GLib::List do
     end
   end
 
-  it "can be created from an array" do
-    lst = GLib::List.from_array :gint32, [3, 2, 1]
-    assert_equal [3, 2, 1], lst.to_a
+  describe "::from_array" do
+    it "creates a GList from a Ruby array" do
+      lst = GLib::List.from_array :gint32, [3, 2, 1]
+      assert_equal [3, 2, 1], lst.to_a
+    end
+
+    it "return its argument if given a GList" do
+      lst = GLib::List.from_array :gint32, [3, 2, 1]
+      lst2 = GLib::List.from_array :gint32, lst
+      assert_equal lst, lst2
+    end
   end
 end
