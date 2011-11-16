@@ -16,8 +16,8 @@ module GLib
 
       def from_array type, arr
         return nil if arr.nil?
-        arr.inject(self.new type) { |lst, int|
-          lst.append int }
+        arr.inject(self.new type) { |lst, val|
+          lst.append val }
       end
     end
 

@@ -30,4 +30,9 @@ describe GLib::SList do
       assert_equal res.to_ptr, res2[:next]
     end
   end
+
+  it "can be created from an array" do
+    lst = GLib::SList.from_array :gint32, [3, 2, 1]
+    assert_equal [3, 2, 1], lst.to_a
+  end
 end

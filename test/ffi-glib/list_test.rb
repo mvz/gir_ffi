@@ -30,4 +30,9 @@ describe GLib::List do
       assert_equal 2, nxt[:data].address
     end
   end
+
+  it "can be created from an array" do
+    lst = GLib::List.from_array :gint32, [3, 2, 1]
+    assert_equal [3, 2, 1], lst.to_a
+  end
 end
