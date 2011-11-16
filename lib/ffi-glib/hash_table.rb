@@ -47,6 +47,16 @@ module GLib
           it.value_type = valtype
         end
       end
+
+      def from_hash keytype, valtype, hash
+        return nil if hash.nil?
+        return hash if hash.is_a? self
+        ghash = self.new keytype, valtype
+        hash.each do |key, val|
+          ghash.insert key, val
+        end
+        ghash
+      end
     end
   end
 end
