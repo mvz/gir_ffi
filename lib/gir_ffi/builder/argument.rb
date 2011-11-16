@@ -37,8 +37,10 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :glist, :gslist
+              when :glist
                 ListInArgument
+              when :gslist
+                SListInArgument
               when :ghash
                 HashTableInArgument
               when :utf8
@@ -84,6 +86,13 @@ module GirFFI::Builder
   # Implements argument processing for glist and gslist arguments with
   # direction :in.
   class ListInArgument < Argument::InBase
+    def pre
+      [ "#{callarg} = GLib::List.from_array #{subtype_tag.inspect}, #{@name}" ]
+    end
+  end
+
+  # Implements argument processing for gslist arguments with direction :in.
+  class SListInArgument < Argument::InBase
     def pre
       [ "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
     end
@@ -394,7 +403,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from_array(#{subtype_tag.inspect}, #{@name})" ]
     end
 
     def post
