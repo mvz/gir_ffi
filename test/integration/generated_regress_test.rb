@@ -264,8 +264,13 @@ class GeneratedRegressTest < MiniTest::Spec
 
         describe "#set_property" do
           it "sets the 'float' property" do
-            @o.set_property("float", 3.14)
+            @o.set_property "float", 3.14
             assert_in_epsilon 3.14, @o[:some_float]
+          end
+
+          it "sets the 'double' property" do
+            @o.set_property "double", 3.14
+            assert_in_epsilon 3.14, @o[:some_double]
           end
         end
 

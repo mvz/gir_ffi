@@ -21,6 +21,8 @@ module GObject
         set_string val
       when TYPE_FLOAT
         set_float val
+      when TYPE_DOUBLE
+        set_double val
       when TYPE_BOXED
         set_boxed val
       when TYPE_OBJECT
