@@ -272,6 +272,16 @@ class GeneratedRegressTest < MiniTest::Spec
             @o.set_property "double", 3.14
             assert_in_epsilon 3.14, @o[:some_double]
           end
+
+          it "sets the 'int' property" do
+            @o.set_property "int", 42
+            assert_equal 42, @o[:some_int8]
+          end
+
+          it "sets the 'string' property" do
+            @o.set_property "string", "foobar"
+            assert_equal "foobar", @o[:string].read_string
+          end
         end
 
 	should "have a reference count of 1" do
