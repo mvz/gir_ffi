@@ -32,7 +32,11 @@ module GObject
       case type.tag
       when :glist
         lst = GLib::List.from_array type.param_type(0).tag, value
-        v.set_pointer lst.to_ptr
+        v.set_value lst.to_ptr
+      when :ghash
+        hsh = GLib::HashTable.from_hash type.param_type(0).tag,
+          type.param_type(1).tag, value
+        v.set_value hsh.to_ptr
       else
         v.set_value value
       end
