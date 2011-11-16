@@ -262,6 +262,13 @@ class GeneratedRegressTest < MiniTest::Spec
           end
         end
 
+        describe "#set_property" do
+          it "sets the 'float' property" do
+            @o.set_property("float", 3.14)
+            assert_in_epsilon 3.14, @o[:some_float]
+          end
+        end
+
 	should "have a reference count of 1" do
 	  assert_equal 1, ref_count(@o)
 	end

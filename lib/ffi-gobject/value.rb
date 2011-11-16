@@ -19,6 +19,8 @@ module GObject
         set_int val
       when TYPE_STRING
         set_string val
+      when TYPE_FLOAT
+        set_float val
       when TYPE_BOXED
         set_boxed val
       when TYPE_OBJECT
@@ -26,7 +28,7 @@ module GObject
       when TYPE_ENUM
         set_enum val
       else
-        nil
+        raise "Don't know how to handle #{current_gtype_name}"
       end
       self
     end
