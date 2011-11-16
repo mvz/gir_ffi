@@ -13,6 +13,12 @@ module GLib
         _real_new(FFI::Pointer.new(0)).tap {|it|
           it.element_type = type}
       end
+
+      def from_array type, arr
+        return nil if arr.nil?
+        arr.inject(self.new type) { |lst, int|
+          lst.append int }
+      end
     end
 
     def append data

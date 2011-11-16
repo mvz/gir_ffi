@@ -28,7 +28,15 @@ module GObject
       prop = self.class._find_property property_name
       type = prop.property_type
       v = Helper.gvalue_for_type_info type
-      v.set_value value
+
+      case type.tag
+      when :glist
+        lst = GLib::List.from_array type.param_type(0).tag, value
+        v.set_pointer lst.to_ptr
+      else
+        v.set_value value
+      end
+
       set_property_without_override property_name, v
     end
 

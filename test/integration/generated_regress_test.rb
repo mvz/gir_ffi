@@ -278,6 +278,12 @@ class GeneratedRegressTest < MiniTest::Spec
             assert_equal 42, @o[:some_int8]
           end
 
+          it "gets the 'list' property" do
+            @o.set_property "list", ["foo", "bar"]
+            assert_equal ["foo", "bar"],
+              GLib::List.wrap(:utf8, @o[:list]).to_a
+          end
+
           it "sets the 'string' property" do
             @o.set_property "string", "foobar"
             assert_equal "foobar", @o[:string].read_string

@@ -27,6 +27,8 @@ module GObject
         set_boxed val
       when TYPE_OBJECT
         set_instance val
+      when TYPE_POINTER
+        set_pointer val
       when TYPE_ENUM
         set_enum val
       else
