@@ -83,7 +83,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for glist and gslist arguments with
+  # Implements argument processing for glist arguments with
   # direction :in.
   class ListInArgument < Argument::InBase
     def pre
@@ -94,7 +94,7 @@ module GirFFI::Builder
   # Implements argument processing for gslist arguments with direction :in.
   class SListInArgument < Argument::InBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag} #{@name}" ]
+      [ "#{callarg} = GLib::SList.from_array #{subtype_tag.inspect}, #{@name}" ]
     end
   end
 
@@ -413,12 +413,11 @@ module GirFFI::Builder
 
   # Implements argument processing for gslist arguments with direction
   # :inout.
-  # FIXME: Merge code with ListInOutArgument somehow.
   class SListInOutArgument < Argument::InOutBase
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.#{subtype_tag}_array_to_#{type_tag}(#{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from_array(#{subtype_tag.inspect}, #{@name})" ]
     end
 
     def post

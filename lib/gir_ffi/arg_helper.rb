@@ -119,19 +119,6 @@ module GirFFI
       return arr
     end
 
-    # TODO: Unify with other array_to_gslist, using type argument.
-    def self.utf8_array_to_gslist arr
-      return nil if arr.nil?
-      arr.reverse.inject(GLib::SList.new :utf8) { |lst, str|
-        lst.prepend str }
-    end
-
-    def self.gint32_array_to_gslist arr
-      return nil if arr.nil?
-      arr.reverse.inject(GLib::SList.new :gint32) { |lst, int|
-        lst.prepend int }
-    end
-
     def self.hash_to_ghash keytype, valtype, hash
       return nil if hash.nil?
       ghash = GLib::HashTable.new keytype, valtype
@@ -139,12 +126,6 @@ module GirFFI
         ghash.insert key, val
       end
       ghash
-    end
-
-    def self.void_array_to_gslist ary
-      return nil if ary.nil?
-      return ary if ary.is_a? GLib::SList
-      raise NotImplementedError
     end
 
     def self.check_error errpp
