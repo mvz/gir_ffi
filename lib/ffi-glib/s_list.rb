@@ -16,6 +16,7 @@ module GLib
 
       def from_array type, arr
         return nil if arr.nil?
+        return arr if arr.is_a? self
         arr.reverse.inject(self.new type) { |lst, val|
           lst.prepend val }
       end
