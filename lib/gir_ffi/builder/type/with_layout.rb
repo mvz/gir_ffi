@@ -31,6 +31,23 @@ module GirFFI
           end
         end
 
+        def setup_field_accessors
+          info.fields.each do |finfo|
+            @klass.class_eval getter_def(finfo)
+            @klass.class_eval setter_def(finfo)
+          end
+        end
+
+        def getter_def finfo
+          name = finfo.name
+          "def #{name}; @struct[#{name.to_sym.inspect}]; end"
+        end
+
+        def setter_def finfo
+          name = finfo.name
+          "def #{name}= value; @struct[#{name.to_sym.inspect}] = value; end"
+        end
+
         def instantiate_class
           @klass = get_or_define_class namespace_module, @classname, superclass
           @structklass = get_or_define_class @klass, :Struct, layout_superclass

@@ -12,6 +12,37 @@ describe GirFFI::Builder::Type::Struct do
     end
   end
 
+  describe "for a struct with a simple layout" do
+    before do
+      stub(@type = Object.new).pointer? { false }
+      stub(@type).tag { :gint32 }
+
+      stub(field = Object.new).field_type { @type }
+      stub(field).name { "bar" }
+      stub(field).offset { 0 }
+
+      stub(@struct = Object.new).safe_name { 'Bar' }
+      stub(@struct).namespace { 'Foo' }
+      stub(@struct).fields { [ field ] }
+
+      @builder = GirFFI::Builder::Type::Struct.new @struct
+    end
+
+    it "creates the correct layout specification" do
+      spec = @builder.send :layout_specification
+      assert_equal [:bar, :int32, 0], spec
+    end
+
+    it "creates getter and setter methods" do
+      c = Class.new
+      @builder.instance_eval { @klass = c }
+      @builder.send :setup_field_accessors
+      methods = c.instance_methods
+      assert_includes methods, :bar
+      assert_includes methods, :bar=
+    end
+  end
+
   describe "for a struct with a layout with a fixed-length array" do
     before do
       stub(subtype = Object.new).pointer? { false }

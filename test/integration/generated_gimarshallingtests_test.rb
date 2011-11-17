@@ -24,8 +24,8 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a field :long_" do
-        assert_equal 42, @bx[:long_]
+      it "has a field long_" do
+        assert_equal 42, @bx.long_
       end
 
       # TODO: More friendly access to array fields.

@@ -20,6 +20,7 @@ module GirFFI
 
         def setup_class
           setup_layout
+          setup_field_accessors
           setup_constants
           stub_methods
           setup_gtype_getter
