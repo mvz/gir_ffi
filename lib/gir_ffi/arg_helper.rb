@@ -119,15 +119,6 @@ module GirFFI
       return arr
     end
 
-    def self.hash_to_ghash keytype, valtype, hash
-      return nil if hash.nil?
-      ghash = GLib::HashTable.new keytype, valtype
-      hash.each do |key, val|
-        ghash.insert key, val
-      end
-      ghash
-    end
-
     def self.check_error errpp
       errp = errpp.read_pointer
       # FIXME: Do not depend on GError from GObjectIntrospection namespace.

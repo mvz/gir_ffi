@@ -101,7 +101,7 @@ module GirFFI::Builder
   # Implements argument processing for ghash arguments with direction :in.
   class HashTableInArgument < Argument::InBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.hash_to_ghash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
+      [ "#{callarg} = GLib::HashTable.from_hash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
     end
   end
 
@@ -431,7 +431,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GirFFI::ArgHelper.hash_to_ghash(#{key_t}, #{val_t}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::HashTable.from_hash(#{key_t}, #{val_t}, #{@name})" ]
     end
 
     def post
