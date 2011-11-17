@@ -33,7 +33,9 @@ module GirFFI
 
         def setup_field_accessors
           info.fields.each do |finfo|
-            @klass.class_eval getter_def(finfo)
+            unless @klass.method_defined? finfo.name
+              @klass.class_eval getter_def(finfo)
+            end
             @klass.class_eval setter_def(finfo)
           end
         end
