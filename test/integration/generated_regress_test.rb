@@ -263,6 +263,19 @@ class GeneratedRegressTest < MiniTest::Spec
         end
 
         describe "#set_property" do
+          it "sets the 'bare' property" do
+            obj = Regress::TestObj.new_from_file("bar")
+            @o.set_property "bare", obj
+            assert_equal obj.to_ptr, @o[:bare]
+          end
+
+          it "sets the 'boxed' property" do
+            tb = Regress::TestBoxed.new_alternative_constructor1 75
+            @o.set_property "boxed", tb
+            tb2 = Regress::TestBoxed.wrap(@o[:boxed])
+            assert_equal 75, tb2[:some_int8]
+          end
+
           it "sets the 'hash-table' property" do
             @o.set_property("hash-table", {"foo" => 34, "bar" => 83})
             assert_equal({"foo" => 34, "bar" => 83},
