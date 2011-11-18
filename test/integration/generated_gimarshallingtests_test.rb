@@ -16,7 +16,7 @@ describe "GIMarshallingTests" do
     describe "an instance" do
       before do
         @bx = GIMarshallingTests::BoxedStruct.new
-        @bx[:long_] = 42
+        @bx.long_ = 42
       end
 
       it "has a working method #inv" do
@@ -136,7 +136,7 @@ describe "GIMarshallingTests" do
     it "creates instances with #new" do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
-      assert_equal 42, ob[:int_]
+      assert_equal 42, ob.int_
     end
 
     it "has a working function #full_inout" do
@@ -196,7 +196,7 @@ describe "GIMarshallingTests" do
 
       it "has a working virtual method #method_with_default_implementation" do
         @obj.method_with_default_implementation 104
-        assert_equal 104, @obj[:int_]
+        assert_equal 104, @obj.int_
       end
 
       # This function is only found in the header
@@ -237,7 +237,7 @@ describe "GIMarshallingTests" do
       end
 
       it "has a working method #overridden_method" do
-        @obj[:int_] = 0
+        @obj.int_ = 0
         @obj.overridden_method
         pass
       end
@@ -249,7 +249,7 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field int_ containing the argument to #new" do
-        assert_equal 42, @obj[:int_]
+        assert_equal 42, @obj.int_
       end
     end
   end
@@ -275,7 +275,7 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field long_" do
-        assert_equal 0.0, @obj[:long_]
+        assert_equal 0.0, @obj.long_
       end
     end
   end
@@ -292,11 +292,11 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field long_" do
-        assert_equal 0.0, @ps[:long_]
+        assert_equal 0.0, @ps.long_
       end
 
       it "has a working method #inv" do
-        @ps[:long_] = 42.0
+        @ps.long_ = 42.0
         @ps.inv
         pass
       end
@@ -320,16 +320,16 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field long_" do
-        assert_equal 0, @ss[:long_]
+        assert_equal 0, @ss.long_
       end
 
       it "has a field int8" do
-        assert_equal 0, @ss[:int8]
+        assert_equal 0, @ss.int8
       end
 
       it "has a working method #inv" do
-        @ss[:long_] = 6
-        @ss[:int8] = 7
+        @ss.long_ = 6
+        @ss.int8 = 7
         @ss.inv
         pass
       end
@@ -463,7 +463,7 @@ describe "GIMarshallingTests" do
 
   it "has a working function #array_fixed_out_struct" do
     res = GIMarshallingTests.array_fixed_out_struct
-    assert_equal [[7, 6], [6, 7]], res.map {|s| [s[:long_], s[:int8]]}
+    assert_equal [[7, 6], [6, 7]], res.map {|s| [s.long_, s.int8]}
   end
 
   it "has a working function #array_fixed_short_in" do
@@ -574,20 +574,20 @@ describe "GIMarshallingTests" do
 
   it "has a working function #boxed_struct_inout" do
     bx = GIMarshallingTests::BoxedStruct.new
-    bx[:long_] = 42
+    bx.long_ = 42
     res = GIMarshallingTests.boxed_struct_inout bx
-    assert_equal 0, res[:long_]
+    assert_equal 0, res.long_
   end
 
   it "has a working function #boxed_struct_out" do
     res = GIMarshallingTests.boxed_struct_out
-    assert_equal 42, res[:long_]
+    assert_equal 42, res.long_
   end
 
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
-    assert_equal 42, res[:long_]
-    assert_equal ["0", "1", "2"], GirFFI::ArgHelper.strv_to_utf8_array(res[:g_strv])
+    assert_equal 42, res.long_
+    assert_equal ["0", "1", "2"], res.g_strv
   end
 
   it "has a working function #bytearray_full_return" do
@@ -1381,7 +1381,7 @@ describe "GIMarshallingTests" do
   it "has a working function #pointer_struct_returnv" do
     res = GIMarshallingTests.pointer_struct_returnv
     assert_instance_of GIMarshallingTests::PointerStruct, res
-    assert_equal 42, res[:long_]
+    assert_equal 42, res.long_
   end
 
   it "has a working function #short_in_max" do
@@ -1427,8 +1427,8 @@ describe "GIMarshallingTests" do
   it "has a working function #simple_struct_returnv" do
     res = GIMarshallingTests.simple_struct_returnv
     assert_instance_of GIMarshallingTests::SimpleStruct, res
-    assert_equal 6, res[:long_]
-    assert_equal 7, res[:int8]
+    assert_equal 6, res.long_
+    assert_equal 7, res.int8
   end
 
   it "has a working function #size_in" do
@@ -1638,7 +1638,7 @@ describe "GIMarshallingTests" do
   it "has a working function #union_returnv" do
     res = GIMarshallingTests.union_returnv
     assert_instance_of GIMarshallingTests::Union, res
-    assert_equal 42, res[:long_]
+    assert_equal 42, res.long_
   end
 
   it "has a working function #ushort_in" do
