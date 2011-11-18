@@ -245,7 +245,7 @@ describe "GIMarshallingTests" do
       it "has a property 'int'"
 
       it "has a field parent_instance containing the parent struct" do
-        assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
+        assert_instance_of GObject::Object, @obj.parent_instance
       end
 
       it "has a field int_ containing the argument to #new" do

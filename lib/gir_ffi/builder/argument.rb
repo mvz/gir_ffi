@@ -485,6 +485,19 @@ module GirFFI::Builder
     end
 
     def self.builder_for type, is_constructor
+      if type.tag == :interface and
+        [:interface, :object].include? type.interface.info_type
+        if is_constructor
+          ConstructorReturnValue
+        else
+          ObjectReturnValue
+        end
+      else
+        builder_for_field_getter type
+      end
+    end
+
+    def self.builder_for_field_getter type
       case type.tag
       when :void
         if type.pointer?
@@ -494,14 +507,8 @@ module GirFFI::Builder
         end
       when :interface
         case type.interface.info_type
-        when :struct, :union
+        when :struct, :union, :interface, :object
           InterfaceReturnValue
-        when :interface, :object
-          if is_constructor
-            ConstructorReturnValue
-          else
-            ObjectReturnValue
-          end
         else
           RegularReturnValue
         end
