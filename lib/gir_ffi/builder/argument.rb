@@ -48,7 +48,7 @@ module GirFFI::Builder
               else
                 RegularInArgument
               end
-      klass.new var_gen, arginfo, libmodule
+      klass.new var_gen, arginfo.name, arginfo, libmodule
     end
   end
 
@@ -160,7 +160,7 @@ module GirFFI::Builder
               else
                 RegularOutArgument
               end
-      klass.new var_gen, arginfo, libmodule
+      klass.new var_gen, arginfo.name, arginfo, libmodule
     end
   end
 
@@ -322,7 +322,7 @@ module GirFFI::Builder
                 RegularInOutArgument
               end
 
-      klass.new var_gen, arginfo, libmodule
+      klass.new var_gen, arginfo.name, arginfo, libmodule
     end
   end
 
@@ -473,7 +473,7 @@ module GirFFI::Builder
     def self.build var_gen, arginfo
       klass = builder_for(arginfo.return_type,
                                        arginfo.constructor?)
-      klass.new var_gen, arginfo, nil
+      klass.new var_gen, arginfo.name, arginfo, nil
     end
 
     def self.builder_for type, is_constructor

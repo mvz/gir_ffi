@@ -60,7 +60,7 @@ module GirFFI
           klass = Builder::ReturnValue.builder_for type, false
           fb = VariableNameGenerator.new
           arginfo = FakeArgumentInfo.new type
-          builder = klass.new fb, arginfo, nil
+          builder = klass.new fb, name, arginfo, nil
           return <<-CODE
           def #{name}
             #{builder.cvar} = @struct[#{name.to_sym.inspect}]

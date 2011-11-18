@@ -5,7 +5,6 @@ module GirFFI
       # with direction :in.
       class InBase < Base
         def prepare
-          @name = safe(@arginfo.name)
           @inarg = @name
         end
 
