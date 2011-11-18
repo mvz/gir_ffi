@@ -10,17 +10,17 @@ require 'gir_ffi/builder/argument/hash_table_base'
 
 module GirFFI::Builder
   module Argument
-    def self.build function_builder, arginfo, libmodule
+    def self.build var_gen, arginfo, libmodule
       {
         :inout => InOutArgument,
         :in => InArgument,
         :out => OutArgument
-      }[arginfo.direction].build function_builder, arginfo, libmodule
+      }[arginfo.direction].build var_gen, arginfo, libmodule
     end
   end
 
   module InArgument
-    def self.build function_builder, arginfo, libmodule
+    def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
               when :interface
@@ -48,7 +48,7 @@ module GirFFI::Builder
               else
                 RegularInArgument
               end
-      klass.new function_builder, arginfo, libmodule
+      klass.new var_gen, arginfo, libmodule
     end
   end
 
@@ -130,7 +130,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :out.
   module OutArgument
-    def self.build function_builder, arginfo, libmodule
+    def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
               when :interface
@@ -160,7 +160,7 @@ module GirFFI::Builder
               else
                 RegularOutArgument
               end
-      klass.new function_builder, arginfo, libmodule
+      klass.new var_gen, arginfo, libmodule
     end
   end
 
@@ -291,7 +291,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :inout.
   module InOutArgument
-    def self.build function_builder, arginfo, libmodule
+    def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
               when :interface
@@ -322,7 +322,7 @@ module GirFFI::Builder
                 RegularInOutArgument
               end
 
-      klass.new function_builder, arginfo, libmodule
+      klass.new var_gen, arginfo, libmodule
     end
   end
 
@@ -459,21 +459,21 @@ module GirFFI::Builder
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
     def cvar
-      @cvar ||= @function_builder.new_var
+      @cvar ||= @var_gen.new_var
     end
 
     def retname
-      @retname ||= @function_builder.new_var
+      @retname ||= @var_gen.new_var
     end
 
     def type_info
       @arginfo.return_type
     end
 
-    def self.build function_builder, arginfo
+    def self.build var_gen, arginfo
       klass = builder_for(arginfo.return_type,
                                        arginfo.constructor?)
-      klass.new function_builder, arginfo, nil
+      klass.new var_gen, arginfo, nil
     end
 
     def self.builder_for type, is_constructor
@@ -644,7 +644,7 @@ module GirFFI::Builder
   # presence is indicated by the 'throws' attribute of the function.
   class ErrorArgument < Argument::Base
     def callarg
-      @callarg ||= @function_builder.new_var
+      @callarg ||= @var_gen.new_var
     end
 
     def pre

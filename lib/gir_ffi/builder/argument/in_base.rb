@@ -10,7 +10,7 @@ module GirFFI
         end
 
         def callarg
-          @callarg ||= @function_builder.new_var
+          @callarg ||= @var_gen.new_var
         end
       end
     end

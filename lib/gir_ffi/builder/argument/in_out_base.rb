@@ -10,11 +10,11 @@ module GirFFI
         end
 
         def callarg
-          @callarg ||= @function_builder.new_var
+          @callarg ||= @var_gen.new_var
         end
 
         def retname
-          @retname ||= @function_builder.new_var
+          @retname ||= @var_gen.new_var
         end
       end
     end
