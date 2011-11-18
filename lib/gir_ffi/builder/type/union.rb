@@ -23,6 +23,7 @@ module GirFFI
           setup_constants
           stub_methods
           setup_gtype_getter
+          setup_field_accessors
           provide_constructor
         end
 

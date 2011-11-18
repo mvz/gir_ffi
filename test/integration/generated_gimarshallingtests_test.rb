@@ -424,17 +424,17 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field long_" do
-        assert_equal 0, @it[:long_]
+        assert_equal 0, @it.long_
       end
 
       it "has a working method #inv" do
-        @it[:long_] = 42
+        @it.long_ = 42
         @it.inv
         pass
       end
 
       it "has a working method #method" do
-        @it[:long_] = 42
+        @it.long_ = 42
         @it.method
         pass
       end
