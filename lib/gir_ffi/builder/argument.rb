@@ -22,33 +22,37 @@ module GirFFI::Builder
   module InArgument
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
-      klass = case type.tag
-              when :interface
-                if type.interface.info_type == :callback
-                  CallbackInArgument
-                else
-                  RegularInArgument
-                end
-              when :void
-                VoidInArgument
-              when :array
-                if type.array_type == :c
-                  CArrayInArgument
-                else
-                  RegularInArgument
-                end
-              when :glist
-                ListInArgument
-              when :gslist
-                SListInArgument
-              when :ghash
-                HashTableInArgument
-              when :utf8
-                Utf8InArgument
-              else
-                RegularInArgument
-              end
+      klass = builder_for type
       klass.new var_gen, arginfo.name, type, libmodule
+    end
+
+    def self.builder_for type
+      case type.tag
+      when :interface
+        if type.interface.info_type == :callback
+          CallbackInArgument
+        else
+          RegularInArgument
+        end
+      when :void
+        VoidInArgument
+      when :array
+        if type.array_type == :c
+          CArrayInArgument
+        else
+          RegularInArgument
+        end
+      when :glist
+        ListInArgument
+      when :gslist
+        SListInArgument
+      when :ghash
+        HashTableInArgument
+      when :utf8
+        Utf8InArgument
+      else
+        RegularInArgument
+      end
     end
   end
 

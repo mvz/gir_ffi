@@ -30,9 +30,10 @@ describe "GIMarshallingTests" do
         assert_equal 43, @bx.long_
       end
 
-      # TODO: More friendly access to array fields.
       it "has a field g_strv" do
-        assert_equal [],  @bx.g_strv
+        assert_equal [], @bx.g_strv
+        @bx.g_strv = ["foo", "bar"]
+        assert_equal ["foo", "bar"], @bx.g_strv
       end
     end
   end

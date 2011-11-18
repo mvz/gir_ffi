@@ -64,9 +64,24 @@ module GirFFI
           CODE
         end
 
+        def setter_builder finfo
+          type = finfo.field_type
+          klass = Builder::InArgument.builder_for type
+          vargen = VariableNameGenerator.new
+          klass.new vargen, "value", type, lib
+        end
+
         def setter_def finfo
+          builder = setter_builder finfo
+          builder.prepare
           name = finfo.name
-          "def #{name}= value; @struct[#{name.to_sym.inspect}] = value; end"
+
+          return <<-CODE
+          def #{name}= #{builder.inarg}
+            #{builder.pre.join("\n")}
+            @struct[#{name.to_sym.inspect}] = #{builder.callarg}
+          end
+          CODE
         end
 
         def instantiate_class

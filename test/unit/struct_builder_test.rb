@@ -34,7 +34,11 @@ describe GirFFI::Builder::Type::Struct do
     end
 
     it "creates getter and setter methods" do
+      m = Module.new { module Lib; end }
+      stub(GirFFI::Builder).build_module('Foo') { m }
+
       c = Class.new
+
       @builder.instance_eval { @klass = c }
       @builder.send :setup_field_accessors
       methods = c.instance_methods
