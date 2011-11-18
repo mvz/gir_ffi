@@ -13,7 +13,7 @@ describe GLib::Array do
     end
 
     it "appends values" do
-      assert_equal 3, @arr[:len]
+      assert_equal 3, @arr.len
     end
 
     it "returns self" do

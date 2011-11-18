@@ -49,7 +49,7 @@ module GObject
     arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
     rval = Helper.gvalue_for_signal_return_value signal, object
 
-    Lib.g_signal_emitv arr[:values], id, 0, rval
+    Lib.g_signal_emitv arr.values, id, 0, rval
 
     return rval
   end

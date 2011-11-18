@@ -5,7 +5,7 @@ module GirFFI
   class ClassBase
     # TODO: Make separate base for :struct, :union, :object.
     extend Forwardable
-    def_delegators :@struct, :[], :[]=, :to_ptr
+    def_delegators :@struct, :to_ptr
 
     def initialize(*args)
       @struct = ffi_structure.new(*args)

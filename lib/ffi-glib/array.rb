@@ -33,7 +33,7 @@ module GLib
 
     def to_typed_array
       GirFFI::ArgHelper.ptr_to_typed_array(self.element_type,
-                                           self[:data], self[:len])
+                                           @struct[:data], @struct[:len])
     end
   end
 end

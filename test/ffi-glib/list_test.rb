@@ -10,13 +10,13 @@ describe GLib::List do
     it "appends integer values" do
       lst = GLib::List.new :gint32
       res = lst.append 1
-      assert_equal 1, res[:data].address
+      assert_equal 1, res.data
     end
 
     it "appends string values" do
       lst = GLib::List.new :utf8
       res = lst.append "bla"
-      assert_equal "bla", res[:data].read_string
+      assert_equal "bla", res.data
     end
 
     it "appends multiple values into a single list" do
@@ -25,9 +25,9 @@ describe GLib::List do
       lst = lst.append 1
       lst = lst.append 2
 
-      assert_equal 1, lst[:data].address
-      nxt = GLib::List.wrap(:gint32, lst[:next])
-      assert_equal 2, nxt[:data].address
+      assert_equal 1, lst.data
+      nxt = lst.next
+      assert_equal 2, nxt.data
     end
   end
 

@@ -10,13 +10,13 @@ describe GLib::SList do
     it "prepends integer values" do
       lst = GLib::SList.new :gint32
       res = lst.prepend 1
-      assert_equal 1, res[:data].address
+      assert_equal 1, res.data
     end
 
     it "prepends string values" do
       lst = GLib::SList.new :utf8
       res = lst.prepend "bla"
-      assert_equal "bla", res[:data].read_string
+      assert_equal "bla", res.data
     end
 
     it "prepends multiple values into a single list" do
@@ -25,9 +25,9 @@ describe GLib::SList do
       res = lst.prepend 1
       res2 = res.prepend 2
 
-      assert_equal 2, res2[:data].address
-      assert_equal 1, res[:data].address
-      assert_equal res.to_ptr, res2[:next]
+      assert_equal 2, res2.data
+      assert_equal 1, res.data
+      assert_equal res.to_ptr, res2.next.to_ptr
     end
   end
 

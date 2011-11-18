@@ -48,7 +48,7 @@ module GObject
     end
 
     def current_gtype
-      self[:g_type]
+      @struct[:g_type]
     end
 
     def current_fundamental_type

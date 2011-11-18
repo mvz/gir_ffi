@@ -30,9 +30,9 @@ class GObjectOverridesTest < MiniTest::Spec
       should "pass in extra arguments" do
 	o = Regress::TestSubObj.new
 	sb = Regress::TestSimpleBoxedA.new
-	sb[:some_int8] = 31
-	sb[:some_double] = 2.42
-	sb[:some_enum] = :value2
+	sb.some_int8 = 31
+	sb.some_double = 2.42
+	sb.some_enum = :value2
 	b2 = nil
 
 	argtypes = [:pointer, :pointer, :pointer]
@@ -101,7 +101,7 @@ class GObjectOverridesTest < MiniTest::Spec
 
 	  o = Regress::TestSubObj.new
 	  sb = Regress::TestSimpleBoxedA.new
-	  sb[:some_int] = 23
+	  sb.some_int = 23
 
 	  GObject.signal_connect(o, "test-with-static-scope-arg", 2) { |i, object, d|
 	    @a = d
@@ -116,7 +116,7 @@ class GObjectOverridesTest < MiniTest::Spec
 
 	should "pass on the extra arguments" do
 	  assert_instance_of Regress::TestSimpleBoxedA, @b
-	  assert_equal 23, @b[:some_int]
+	  assert_equal 23, @b.some_int
 	end
       end
 
@@ -139,15 +139,15 @@ class GObjectOverridesTest < MiniTest::Spec
 	  end
 
 	  should "contain two values" do
-	    assert_equal 2, @gva[:n_values]
+	    assert_equal 2, @gva.n_values
 	  end
 
 	  should "have a first value with GType for TestSubObj" do
-	    assert_equal Regress::TestSubObj.get_gtype, (@gva.get_nth 0)[:g_type]
+	    assert_equal Regress::TestSubObj.get_gtype, (@gva.get_nth 0).current_gtype
 	  end
 
 	  should "have a second value with GType for TestSimpleBoxedA" do
-	    assert_equal Regress::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1)[:g_type]
+	    assert_equal Regress::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1).current_gtype
 	  end
 	end
       end

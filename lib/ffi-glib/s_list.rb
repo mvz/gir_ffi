@@ -7,6 +7,13 @@ module GLib
   class SList
     include ListMethods
 
+    # Override default field accessors.
+    undef :next
+    undef :data
+
+    alias :next :tail
+    alias :data :head
+
     class << self
       undef :new
       def new type

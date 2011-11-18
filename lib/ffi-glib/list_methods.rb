@@ -18,11 +18,11 @@ module GLib
     end
 
     def tail
-      self.class.wrap(element_type, self[:next])
+      self.class.wrap(element_type, @struct[:next])
     end
 
     def head
-      GirFFI::ArgHelper.cast_from_pointer(element_type, self[:data])
+      GirFFI::ArgHelper.cast_from_pointer(element_type, @struct[:data])
     end
 
     module ClassMethods

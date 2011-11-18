@@ -14,13 +14,13 @@ module GObject
     end
 
     def block
-      BLOCK_STORE[self[:block_id]]
+      BLOCK_STORE[@struct[:block_id]]
     end
 
     def block= block
       id = block.object_id
       BLOCK_STORE[id] = block
-      self[:block_id] = id
+      @struct[:block_id] = id
     end
 
     def invoke_block *args

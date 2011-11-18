@@ -12,7 +12,7 @@ describe GLib::PtrArray do
       str = "test"
       GLib::PtrArray.add arr, str
 
-      assert_equal str, arr[:pdata].read_pointer.read_string
+      assert_equal str, arr.pdata.read_pointer.read_string
     end
   end
 
