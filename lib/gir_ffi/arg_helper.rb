@@ -109,6 +109,7 @@ module GirFFI
       strv_to_utf8_array ptr.read_pointer
     end
 
+    # FIXME: Make GLib::Strv a class.
     def self.strv_to_utf8_array strv
       return [] if strv.null?
       arr, offset = [], 0

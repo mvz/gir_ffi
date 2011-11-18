@@ -26,11 +26,13 @@ describe "GIMarshallingTests" do
 
       it "has a field long_" do
         assert_equal 42, @bx.long_
+        @bx.long_ = 43
+        assert_equal 43, @bx.long_
       end
 
       # TODO: More friendly access to array fields.
-      it "has a field :g_strv" do
-        assert @bx[:g_strv].null?
+      it "has a field g_strv" do
+        assert_equal [],  @bx.g_strv
       end
     end
   end

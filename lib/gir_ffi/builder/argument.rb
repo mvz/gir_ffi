@@ -471,48 +471,56 @@ module GirFFI::Builder
     end
 
     def self.build function_builder, arginfo
-      type = arginfo.return_type
-      klass = case type.tag
-              when :void
-                VoidReturnValue
-              when :interface
-                case type.interface.info_type
-                when :struct, :union
-                  InterfaceReturnValue
-                when :interface, :object
-                  if arginfo.constructor?
-                    ConstructorReturnValue
-                  else
-                    ObjectReturnValue
-                  end
-                else
-                  RegularReturnValue
-                end
-              when :array
-                if type.zero_terminated?
-                  StrvReturnValue
-                else
-                  case type.array_type
-                  when :c
-                    CArrayReturnValue
-                  when :array
-                    ArrayReturnValue
-                  when :byte_array
-                    ByteArrayReturnValue
-                  else
-                    PtrArrayReturnValue
-                  end
-                end
-              when :glist
-                ListReturnValue
-              when :gslist
-                SListReturnValue
-              when :ghash
-                HashTableReturnValue
-              else
-                RegularReturnValue
-              end
+      klass = builder_for(arginfo.return_type,
+                                       arginfo.constructor?)
       klass.new function_builder, arginfo, nil
+    end
+
+    def self.builder_for type, is_constructor
+      case type.tag
+      when :void
+        if type.pointer?
+          RegularReturnValue
+        else
+          VoidReturnValue
+        end
+      when :interface
+        case type.interface.info_type
+        when :struct, :union
+          InterfaceReturnValue
+        when :interface, :object
+          if is_constructor
+            ConstructorReturnValue
+          else
+            ObjectReturnValue
+          end
+        else
+          RegularReturnValue
+        end
+      when :array
+        if type.zero_terminated?
+          StrvReturnValue
+        else
+          case type.array_type
+          when :c
+            CArrayReturnValue
+          when :array
+            ArrayReturnValue
+          when :byte_array
+            ByteArrayReturnValue
+          else
+            PtrArrayReturnValue
+          end
+        end
+      when :glist
+        ListReturnValue
+      when :gslist
+        SListReturnValue
+      when :ghash
+        HashTableReturnValue
+      else
+        RegularReturnValue
+      end
     end
 
     def inarg
