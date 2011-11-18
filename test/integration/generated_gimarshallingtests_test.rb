@@ -253,8 +253,9 @@ describe "GIMarshallingTests" do
         assert_raises(NoMethodError) { @obj.parent_instance = nil }
       end
 
-      it "has a field int_ containing the argument to #new" do
+      it "has a read-only field int_ containing the argument to #new" do
         assert_equal 42, @obj.int_
+        assert_raises(NoMethodError) { @obj.int_ = 1 }
       end
     end
   end
@@ -275,12 +276,14 @@ describe "GIMarshallingTests" do
         @obj = GIMarshallingTests::OverridesObject.new
       end
 
-      it "has a field parent_instance containing the parent struct" do
+      it "has a read-only field parent_instance containing the parent struct" do
         assert_instance_of GObject::Object, @obj.parent_instance
+        assert_raises(NoMethodError) { @obj.parent_instance = nil }
       end
 
-      it "has a field long_" do
+      it "has a read-only field long_" do
         assert_equal 0.0, @obj.long_
+        assert_raises(NoMethodError) { @obj.long_ = 1 }
       end
     end
   end
@@ -296,12 +299,14 @@ describe "GIMarshallingTests" do
         @ps = GIMarshallingTests::PointerStruct.new
       end
 
-      it "has a field long_" do
-        assert_equal 0.0, @ps.long_
+      it "has a writable field long_" do
+        assert_equal 0, @ps.long_
+        @ps.long_ = 1056
+        assert_equal 1056, @ps.long_
       end
 
       it "has a working method #inv" do
-        @ps.long_ = 42.0
+        @ps.long_ = 42
         @ps.inv
         pass
       end
@@ -324,12 +329,16 @@ describe "GIMarshallingTests" do
         @ss = GIMarshallingTests::SimpleStruct.new
       end
 
-      it "has a field long_" do
+      it "has a writable field long_" do
         assert_equal 0, @ss.long_
+        @ss.long_ = 1056
+        assert_equal 1056, @ss.long_
       end
 
-      it "has a field int8" do
+      it "has a writable field int8" do
         assert_equal 0, @ss.int8
+        @ss.int8 = -43
+        assert_equal(-43, @ss.int8)
       end
 
       it "has a working method #inv" do
@@ -362,8 +371,9 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a field parent_instance containing the parent struct" do
+      it "has a read-only field parent_instance containing the parent struct" do
         assert_instance_of GIMarshallingTests::Object, @so.parent_instance
+        assert_raises(NoMethodError) { @so.parent_instance = nil }
       end
 
       it "has a working inherited virtual method #method_int8_in"
@@ -428,8 +438,10 @@ describe "GIMarshallingTests" do
         @it = GIMarshallingTests::Union.new
       end
 
-      it "has a field long_" do
+      it "has a writable field long_" do
         assert_equal 0, @it.long_
+        @it.long_ = 1056
+        assert_equal 1056, @it.long_
       end
 
       it "has a working method #inv" do
