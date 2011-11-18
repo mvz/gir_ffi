@@ -41,11 +41,14 @@ describe GirFFI::Builder::Type::Struct do
 
       c = Class.new
 
+      refute c.method_defined?(:bar)
+      refute c.method_defined?(:bar=)
+
       @builder.instance_eval { @klass = c }
       @builder.send :setup_field_accessors
-      methods = c.instance_methods
-      assert_includes methods, :bar
-      assert_includes methods, :bar=
+
+      assert c.method_defined?(:bar)
+      assert c.method_defined?(:bar=)
     end
   end
 
