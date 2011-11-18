@@ -24,6 +24,7 @@ describe GirFFI::Builder::Type::Struct do
       stub(@struct = Object.new).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
       stub(@struct).fields { [ field ] }
+      stub(@struct).find_method { }
 
       @builder = GirFFI::Builder::Type::Struct.new @struct
     end

@@ -271,7 +271,7 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field parent_instance containing the parent struct" do
-        assert_instance_of GObject::Object::Struct, @obj[:parent_instance]
+        assert_instance_of GObject::Object, @obj.parent_instance
       end
 
       it "has a field long_" do
@@ -358,7 +358,7 @@ describe "GIMarshallingTests" do
       end
 
       it "has a field parent_instance containing the parent struct" do
-        assert_instance_of GIMarshallingTests::Object::Struct, @so[:parent_instance]
+        assert_instance_of GIMarshallingTests::Object, @so.parent_instance
       end
 
       it "has a working inherited virtual method #method_int8_in"
