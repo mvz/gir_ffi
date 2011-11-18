@@ -8,17 +8,6 @@ module GirFFI
       # Implements the creation of classes representing types with layout,
       # i.e., :union, :struct, :object.
       module WithLayout
-        # XXX Temporary fix
-        class FakeArgumentInfo
-          def initialize type
-            @type = type
-          end
-
-          def return_type
-            @type
-          end
-        end
-
         private
 
         def setup_layout
@@ -59,8 +48,7 @@ module GirFFI
           type = finfo.field_type
           klass = Builder::ReturnValue.builder_for type, false
           fb = VariableNameGenerator.new
-          arginfo = FakeArgumentInfo.new type
-          builder = klass.new fb, name, arginfo, nil
+          builder = klass.new fb, name, type, nil
           return <<-CODE
           def #{name}
             #{builder.cvar} = @struct[#{name.to_sym.inspect}]

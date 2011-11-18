@@ -17,8 +17,8 @@ module GirFFI
 
         attr_accessor :length_arg, :array_arg
 
-        def initialize var_gen, name, arginfo, libmodule
-          @arginfo = arginfo
+        def initialize var_gen, name, typeinfo, libmodule
+          @typeinfo = typeinfo
           @inarg = nil
           @callarg = nil
           @retname = nil
@@ -32,7 +32,7 @@ module GirFFI
         def prepare; end
 
         def type_info
-          @arginfo.argument_type
+          @typeinfo
         end
 
         def type_tag

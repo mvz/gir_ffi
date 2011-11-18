@@ -48,7 +48,7 @@ module GirFFI::Builder
               else
                 RegularInArgument
               end
-      klass.new var_gen, arginfo.name, arginfo, libmodule
+      klass.new var_gen, arginfo.name, type, libmodule
     end
   end
 
@@ -138,7 +138,11 @@ module GirFFI::Builder
                 when :enum, :flags
                   EnumOutArgument
                 else
-                  InterfaceOutArgument
+                  if arginfo.caller_allocates?
+                    AllocatedInterfaceOutArgument
+                  else
+                    InterfaceOutArgument
+                  end
                 end
               when :array
                 if type.zero_terminated?
@@ -160,7 +164,7 @@ module GirFFI::Builder
               else
                 RegularOutArgument
               end
-      klass.new var_gen, arginfo.name, arginfo, libmodule
+      klass.new var_gen, arginfo.name, type, libmodule
     end
   end
 
@@ -193,22 +197,26 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for interface arguments with direction
-  # :out (structs, objects, etc.).
-  class InterfaceOutArgument < Argument::OutBase
+  # :out (structs, objects, etc.), allocated by the caller.
+  class AllocatedInterfaceOutArgument < Argument::OutBase
     def pre
-      if @arginfo.caller_allocates?
-	[ "#{callarg} = #{argument_class_name}.allocate" ]
-      else
-	[ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
-      end
+      [ "#{callarg} = #{argument_class_name}.allocate" ]
     end
 
     def post
-      if @arginfo.caller_allocates?
-	[ "#{retname} = #{callarg}" ]
-      else
-	[ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
-      end
+      [ "#{retname} = #{callarg}" ]
+    end
+  end
+
+  # Implements argument processing for interface arguments with direction
+  # :out (structs, objects, etc.).
+  class InterfaceOutArgument < Argument::OutBase
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
+    end
+
+    def post
+      [ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
     end
   end
 
@@ -322,7 +330,7 @@ module GirFFI::Builder
                 RegularInOutArgument
               end
 
-      klass.new var_gen, arginfo.name, arginfo, libmodule
+      klass.new var_gen, arginfo.name, type, libmodule
     end
   end
 
@@ -466,14 +474,10 @@ module GirFFI::Builder
       @retname ||= @var_gen.new_var
     end
 
-    def type_info
-      @arginfo.return_type
-    end
-
     def self.build var_gen, arginfo
-      klass = builder_for(arginfo.return_type,
-                                       arginfo.constructor?)
-      klass.new var_gen, arginfo.name, arginfo, nil
+      type = arginfo.return_type
+      klass = builder_for(type, arginfo.constructor?)
+      klass.new var_gen, arginfo.name, type, nil
     end
 
     def self.builder_for type, is_constructor
