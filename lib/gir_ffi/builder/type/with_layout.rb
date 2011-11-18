@@ -43,12 +43,18 @@ module GirFFI
           end
         end
 
-        def getter_def finfo
-          name = finfo.name
+        # TODO: Extract to new FieldBuilder class.
+        def getter_builder finfo
           type = finfo.field_type
           klass = Builder::ReturnValue.builder_for type, false
-          fb = VariableNameGenerator.new
-          builder = klass.new fb, name, type, nil
+          vargen = VariableNameGenerator.new
+          klass.new vargen, finfo.name, type, nil
+        end
+
+        def getter_def finfo
+          builder = getter_builder finfo
+          name = finfo.name
+
           return <<-CODE
           def #{name}
             #{builder.cvar} = @struct[#{name.to_sym.inspect}]
