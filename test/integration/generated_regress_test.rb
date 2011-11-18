@@ -33,19 +33,19 @@ class GeneratedRegressTest < MiniTest::Spec
       should "create an instance using #new_alternative_constructor1" do
 	tb = Regress::TestBoxed.new_alternative_constructor1 1
 	assert_instance_of Regress::TestBoxed, tb
-	assert_equal 1, tb[:some_int8]
+	assert_equal 1, tb.some_int8
       end
 
       should "create an instance using #new_alternative_constructor2" do
 	tb = Regress::TestBoxed.new_alternative_constructor2 1, 2
 	assert_instance_of Regress::TestBoxed, tb
-	assert_equal 1 + 2, tb[:some_int8]
+	assert_equal 1 + 2, tb.some_int8
       end
 
       should "create an instance using #new_alternative_constructor3" do
 	tb = Regress::TestBoxed.new_alternative_constructor3 "54"
 	assert_instance_of Regress::TestBoxed, tb
-	assert_equal 54, tb[:some_int8]
+	assert_equal 54, tb.some_int8
       end
 
       should "have non-zero positive result for #get_gtype" do
@@ -72,12 +72,12 @@ class GeneratedRegressTest < MiniTest::Spec
 	  end
 
 	  should "copy fields" do
-	    assert_equal 123, @tb2[:some_int8]
+	    assert_equal 123, @tb2.some_int8
 	  end
 
 	  should "create a true copy" do
-	    @tb[:some_int8] = 89
-	    assert_equal 123, @tb2[:some_int8]
+	    @tb.some_int8 = 89
+	    assert_equal 123, @tb2.some_int8
 	  end
 	end
       end
@@ -141,7 +141,7 @@ class GeneratedRegressTest < MiniTest::Spec
       end
 
       it "has a refcount of 1" do
-        assert_equal 1, @so[:fundamental_object][:refcount]
+        assert_equal 1, @so.fundamental_object.refcount
       end
     end
 
@@ -213,12 +213,12 @@ class GeneratedRegressTest < MiniTest::Spec
 
           it "gets the 'boxed' property" do
             tb = Regress::TestBoxed.new_alternative_constructor1 75
-            @o[:boxed] = tb
+            @o.boxed = tb
 
             tb2 = @o.get_property("boxed")
 
             assert_instance_of Regress::TestBoxed, tb2
-            assert_equal 75, tb2[:some_int8]
+            assert_equal 75, tb2.some_int8
           end
 
           it "gets the 'hash-table' property" do
@@ -226,38 +226,38 @@ class GeneratedRegressTest < MiniTest::Spec
             ht.insert "foo", 34
             ht.insert "bar", 83
 
-            @o[:hash_table] = ht
+            @o.hash_table = ht
 
             ht2 = @o.get_property "hash-table"
             assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
           end
 
           it "gets the 'float' property" do
-            @o[:some_float] = 3.14
+            @o.some_float = 3.14
             assert_in_epsilon 3.14, @o.get_property("float")
           end
 
           it "gets the 'double' property" do
-            @o[:some_double] = 3.14
+            @o.some_double = 3.14
             assert_in_epsilon 3.14, @o.get_property("double")
           end
 
           it "gets the 'int' property" do
-            @o[:some_int8] = 42
+            @o.some_int8 = 42
             assert_equal 42, @o.get_property("int")
           end
 
           it "gets the 'list' property" do
             lst = GLib::List.new(:utf8).append("foo").append("bar")
 
-            @o[:list] = lst
+            @o.list = lst
 
             lst2 = @o.get_property "list"
             assert_equal ["foo", "bar"], lst2.to_a
           end
 
           it "gets the 'string' property" do
-            @o[:string] = GirFFI::InPointer.from :utf8, "foobar"
+            @o.string = "foobar"
             assert_equal "foobar", @o.get_property("string")
           end
         end
@@ -266,14 +266,14 @@ class GeneratedRegressTest < MiniTest::Spec
           it "sets the 'bare' property" do
             obj = Regress::TestObj.new_from_file("bar")
             @o.set_property "bare", obj
-            assert_equal obj.to_ptr, @o[:bare]
+            assert_equal obj.to_ptr, @o.bare.to_ptr
           end
 
           it "sets the 'boxed' property" do
             tb = Regress::TestBoxed.new_alternative_constructor1 75
             @o.set_property "boxed", tb
-            tb2 = Regress::TestBoxed.wrap(@o[:boxed])
-            assert_equal 75, tb2[:some_int8]
+            tb2 = @o.boxed
+            assert_equal 75, tb2.some_int8
           end
 
           it "sets the 'hash-table' property" do
@@ -284,17 +284,17 @@ class GeneratedRegressTest < MiniTest::Spec
 
           it "sets the 'float' property" do
             @o.set_property "float", 3.14
-            assert_in_epsilon 3.14, @o[:some_float]
+            assert_in_epsilon 3.14, @o.some_float
           end
 
           it "sets the 'double' property" do
             @o.set_property "double", 3.14
-            assert_in_epsilon 3.14, @o[:some_double]
+            assert_in_epsilon 3.14, @o.some_double
           end
 
           it "sets the 'int' property" do
             @o.set_property "int", 42
-            assert_equal 42, @o[:some_int8]
+            assert_equal 42, @o.some_int8
           end
 
           it "sets the 'list' property" do
@@ -326,7 +326,7 @@ class GeneratedRegressTest < MiniTest::Spec
 	  obj = Regress::TestObj.new_from_file("bar")
 	  @o.set_bare obj
 	  # TODO: What is the correct value to retrieve from the fields?
-	  assert_equal obj.to_ptr, @o[:bare]
+	  assert_equal obj.to_ptr, @o.bare.to_ptr
 	end
 
 	should "have a working #instance_method method" do
@@ -389,19 +389,19 @@ class GeneratedRegressTest < MiniTest::Spec
       context "an instance" do
 	setup do
 	  @obj = Regress::TestSimpleBoxedA.new
-	  @obj[:some_int] = 4236
-	  @obj[:some_int8] = 36
-	  @obj[:some_double] = 23.53
-	  @obj[:some_enum] = :value2
+	  @obj.some_int = 4236
+	  @obj.some_int8 = 36
+	  @obj.some_double = 23.53
+	  @obj.some_enum = :value2
 	end
 
 	context "its equals method" do
 	  setup do
 	    @ob2 = Regress::TestSimpleBoxedA.new
-	    @ob2[:some_int] = 4236
-	    @ob2[:some_int8] = 36
-	    @ob2[:some_double] = 23.53
-	    @ob2[:some_enum] = :value2
+	    @ob2.some_int = 4236
+	    @ob2.some_int8 = 36
+	    @ob2.some_double = 23.53
+	    @ob2.some_enum = :value2
 	  end
 
 	  should "return true if values are the same" do
@@ -409,12 +409,12 @@ class GeneratedRegressTest < MiniTest::Spec
 	  end
 
 	  should "return true if enum values differ" do
-	    @ob2[:some_enum] = :value3
+	    @ob2.some_enum = :value3
 	    assert_equal true, @obj.equals(@ob2)
 	  end
 
 	  should "return false if other values differ" do
-	    @ob2[:some_int] = 1
+	    @ob2.some_int = 1
 	    assert_equal false, @obj.equals(@ob2)
 	  end
 	end
@@ -429,15 +429,15 @@ class GeneratedRegressTest < MiniTest::Spec
 	  end
 
 	  should "copy fields" do
-	    assert_equal 4236, @ob2[:some_int]
-	    assert_equal 36, @ob2[:some_int8]
-	    assert_equal 23.53, @ob2[:some_double]
-	    assert_equal :value2, @ob2[:some_enum]
+	    assert_equal 4236, @ob2.some_int
+	    assert_equal 36, @ob2.some_int8
+	    assert_equal 23.53, @ob2.some_double
+	    assert_equal :value2, @ob2.some_enum
 	  end
 
 	  should "create a true copy" do
-	    @obj[:some_int8] = 89
-	    assert_equal 36, @ob2[:some_int8]
+	    @obj.some_int8 = 89
+	    assert_equal 36, @ob2.some_int8
 	  end
 	end
       end
@@ -447,17 +447,17 @@ class GeneratedRegressTest < MiniTest::Spec
       context "an instance" do
 	should "have a working clone method" do
 	  a = Regress::TestStructA.new
-	  a[:some_int] = 2556
-	  a[:some_int8] = -10
-	  a[:some_double] = 1.03455e20
-	  a[:some_enum] = :value2
+	  a.some_int = 2556
+	  a.some_int8 = -10
+	  a.some_double = 1.03455e20
+	  a.some_enum = :value2
 
 	  b = a.clone
 
-	  assert_equal 2556, b[:some_int]
-	  assert_equal(-10, b[:some_int8])
-	  assert_equal 1.03455e20, b[:some_double]
-	  assert_equal :value2, b[:some_enum]
+	  assert_equal 2556, b.some_int
+	  assert_equal(-10, b.some_int8)
+	  assert_equal 1.03455e20, b.some_double
+	  assert_equal :value2, b.some_enum
 	end
       end
     end
@@ -466,19 +466,19 @@ class GeneratedRegressTest < MiniTest::Spec
       describe "an instance" do
 	it "has a working method #clone" do
 	  a = Regress::TestStructB.new
-	  a[:some_int8] = 42
-	  a[:nested_a][:some_int] = 2556
-	  a[:nested_a][:some_int8] = -10
-	  a[:nested_a][:some_double] = 1.03455e20
-	  a[:nested_a][:some_enum] = :value2
+	  a.some_int8 = 42
+	  a.nested_a.some_int = 2556
+	  a.nested_a.some_int8 = -10
+	  a.nested_a.some_double = 1.03455e20
+	  a.nested_a.some_enum = :value2
 
 	  b = a.clone
 
-	  assert_equal 42, b[:some_int8]
-	  assert_equal 2556, b[:nested_a][:some_int]
-	  assert_equal(-10, b[:nested_a][:some_int8])
-	  assert_equal 1.03455e20, b[:nested_a][:some_double]
-	  assert_equal :value2, b[:nested_a][:some_enum]
+	  assert_equal 42, b.some_int8
+	  assert_equal 2556, b.nested_a.some_int
+	  assert_equal(-10, b.nested_a.some_int8)
+	  assert_equal 1.03455e20, b.nested_a.some_double
+	  assert_equal :value2, b.nested_a.some_enum
 	end
       end
     end
@@ -509,7 +509,7 @@ class GeneratedRegressTest < MiniTest::Spec
         end
 
         it "has a field parent_instance" do
-          assert_instance_of Regress::TestObj::Struct, @tso[:parent_instance]
+          assert_instance_of Regress::TestObj, @tso.parent_instance
         end
       end
     end
@@ -531,20 +531,20 @@ class GeneratedRegressTest < MiniTest::Spec
 
 	should "set its boolean struct member with #set_testbool" do
 	  @obj.set_testbool true
-	  assert_equal 1, @obj[:testbool]
+	  assert_equal 1, @obj.testbool
 	  @obj.set_testbool false
-	  assert_equal 0, @obj[:testbool]
+	  assert_equal 0, @obj.testbool
 	end
 
 	should "get its boolean struct member with #get_testbool" do
-	  @obj[:testbool] = 0
+	  @obj.testbool = 0
 	  assert_equal false, @obj.get_testbool
-	  @obj[:testbool] = 1
+	  @obj.testbool = 1
 	  assert_equal true, @obj.get_testbool
 	end
 
 	should "get its boolean struct member with #get_property" do
-	  @obj[:testbool] = 1
+	  @obj.testbool = 1
 	  val = @obj.get_property "testbool"
 	  assert_equal true, val
 	end
@@ -782,8 +782,8 @@ class GeneratedRegressTest < MiniTest::Spec
       end
 
       it "returns the correct values" do
-        @arr[:len].must_be :==, 1
-        ptr = @arr[:pdata]
+        @arr.len.must_be :==, 1
+        ptr = @arr.pdata
         ptr2 = ptr.read_pointer
         ptr2.read_string.must_be :==, "regress"
       end
@@ -1026,7 +1026,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
     should "have correct test_simple_boxed_a_const_return" do
       result = Regress.test_simple_boxed_a_const_return
-      assert_equal [5, 6, 7.0], [result[:some_int], result[:some_int8], result[:some_double]]
+      assert_equal [5, 6, 7.0], [result.some_int, result.some_int8, result.some_double]
     end
 
     describe "the #test_simple_callback function" do
