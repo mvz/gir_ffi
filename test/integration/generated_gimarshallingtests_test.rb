@@ -37,7 +37,7 @@ describe "GIMarshallingTests" do
       end
     end
 
-    it "has a warking function #inout" do
+    it "has a working function #inout" do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
 
@@ -46,9 +46,15 @@ describe "GIMarshallingTests" do
       assert_equal 0, res.long_
     end
 
-    it "has a warking function #out" do
+    it "has a working function #out" do
       res = GIMarshallingTests::BoxedStruct.out
       assert_equal 42, res.long_
+    end
+
+    it "has a working function #returnv" do
+      res = GIMarshallingTests::BoxedStruct.returnv
+      assert_equal 42, res.long_
+      assert_equal ["0", "1", "2"], res.g_strv
     end
   end
 
