@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/argument'
+require 'gir_ffi/variable_name_generator'
 
 module GirFFI::Builder
   # Implements the creation of a Ruby function definition out of a GIR
@@ -10,9 +11,9 @@ module GirFFI::Builder
     end
 
     def generate
-      setup_accumulators
-      @data = @info.args.map {|arg| Argument.build self, arg, @libmodule}
-      @rvdata = ReturnValue.build self, @info
+      vargen = GirFFI::VariableNameGenerator.new
+      @data = @info.args.map {|arg| Argument.build vargen, arg, @libmodule}
+      @rvdata = ReturnValue.build vargen, @info
 
       alldata = @data.dup << @rvdata
 
@@ -25,7 +26,7 @@ module GirFFI::Builder
         end
       }
 
-      adjust_accumulators
+      setup_error_argument vargen
       return filled_out_template
     end
 
@@ -35,13 +36,9 @@ module GirFFI::Builder
 
     private
 
-    def setup_accumulators
-      @varno = 0
-    end
-
-    def adjust_accumulators
+    def setup_error_argument vargen
       klass = @info.throws? ? ErrorArgument : NullArgument
-      @errarg = klass.new(self)
+      @errarg = klass.new(vargen)
       @errarg.prepare
     end
 
@@ -91,12 +88,5 @@ module GirFFI::Builder
 
       po.flatten
     end
-
-    def new_var
-      @varno += 1
-      "_v#{@varno}"
-    end
-
-    public :new_var
   end
 end

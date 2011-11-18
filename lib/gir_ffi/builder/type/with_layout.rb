@@ -1,3 +1,6 @@
+require 'gir_ffi/builder/argument'
+require 'gir_ffi/variable_name_generator'
+
 module GirFFI
   module Builder
     module Type
@@ -55,8 +58,7 @@ module GirFFI
           name = finfo.name
           type = finfo.field_type
           klass = Builder::ReturnValue.builder_for type, false
-          fb = Builder::Function.new nil, nil
-          fb.send :setup_accumulators
+          fb = VariableNameGenerator.new
           arginfo = FakeArgumentInfo.new type
           builder = klass.new fb, arginfo, nil
           return <<-CODE
