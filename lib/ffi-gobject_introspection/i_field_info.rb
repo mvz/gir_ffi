@@ -17,5 +17,13 @@ module GObjectIntrospection
     def field_type
       ITypeInfo.wrap(Lib.g_field_info_get_type @gobj)
     end
+
+    def readable?
+      flags & 1 != 0
+    end
+
+    def writable?
+      flags & 2 != 0
+    end
   end
 end

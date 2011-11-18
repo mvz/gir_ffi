@@ -20,6 +20,7 @@ describe GirFFI::Builder::Type::Struct do
       stub(field = Object.new).field_type { @type }
       stub(field).name { "bar" }
       stub(field).offset { 0 }
+      stub(field).writable? { true }
 
       stub(@struct = Object.new).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }

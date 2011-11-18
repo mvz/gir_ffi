@@ -213,7 +213,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
           it "gets the 'boxed' property" do
             tb = Regress::TestBoxed.new_alternative_constructor1 75
-            @o.boxed = tb
+            @o.set_property "boxed", tb
 
             tb2 = @o.get_property("boxed")
 
@@ -226,38 +226,38 @@ class GeneratedRegressTest < MiniTest::Spec
             ht.insert "foo", 34
             ht.insert "bar", 83
 
-            @o.hash_table = ht
+            @o.set_property "hash-table", ht
 
             ht2 = @o.get_property "hash-table"
             assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
           end
 
           it "gets the 'float' property" do
-            @o.some_float = 3.14
+            @o.set_property "float", 3.14
             assert_in_epsilon 3.14, @o.get_property("float")
           end
 
           it "gets the 'double' property" do
-            @o.some_double = 3.14
+            @o.set_property "double", 3.14
             assert_in_epsilon 3.14, @o.get_property("double")
           end
 
           it "gets the 'int' property" do
-            @o.some_int8 = 42
+            @o.set_property "int", 42
             assert_equal 42, @o.get_property("int")
           end
 
           it "gets the 'list' property" do
             lst = GLib::List.new(:utf8).append("foo").append("bar")
 
-            @o.list = lst
+            @o.set_property "list", lst
 
             lst2 = @o.get_property "list"
             assert_equal ["foo", "bar"], lst2.to_a
           end
 
           it "gets the 'string' property" do
-            @o.string = "foobar"
+            @o.set_property "string", "foobar"
             assert_equal "foobar", @o.get_property("string")
           end
         end
@@ -529,22 +529,22 @@ class GeneratedRegressTest < MiniTest::Spec
 	  @obj = Regress::TestWi8021x.new
 	end
 
-	should "set its boolean struct member with #set_testbool" do
+	it "sets its boolean field with #set_testbool" do
 	  @obj.set_testbool true
 	  assert_equal 1, @obj.testbool
 	  @obj.set_testbool false
 	  assert_equal 0, @obj.testbool
 	end
 
-	should "get its boolean struct member with #get_testbool" do
-	  @obj.testbool = 0
+	it "gets its boolean field with #get_testbool" do
+	  @obj.set_testbool false
 	  assert_equal false, @obj.get_testbool
-	  @obj.testbool = 1
+	  @obj.set_testbool true
 	  assert_equal true, @obj.get_testbool
 	end
 
-	should "get its boolean struct member with #get_property" do
-	  @obj.testbool = 1
+	it "gets its boolean field with #get_property" do
+	  @obj.set_testbool true
 	  val = @obj.get_property "testbool"
 	  assert_equal true, val
 	end

@@ -39,7 +39,7 @@ module GirFFI
             unless info.find_method finfo.name
               @klass.class_eval getter_def(finfo)
             end
-            @klass.class_eval setter_def(finfo)
+            @klass.class_eval setter_def(finfo) if finfo.writable?
           end
         end
 

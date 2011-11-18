@@ -160,7 +160,8 @@ module GObjectIntrospection
       :readable, (1 << 0),
       :writable, (1 << 1)
     ]
-    attach_function :g_field_info_get_flags, [:pointer], :IFieldInfoFlags
+    # TODO: return type is bitfield :IFieldInfoFlags
+    attach_function :g_field_info_get_flags, [:pointer], :int
     attach_function :g_field_info_get_size, [:pointer], :int
     attach_function :g_field_info_get_offset, [:pointer], :int
     attach_function :g_field_info_get_type, [:pointer], :pointer

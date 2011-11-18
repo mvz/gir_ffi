@@ -24,13 +24,13 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a field long_" do
+      it "has a writable field long_" do
         assert_equal 42, @bx.long_
         @bx.long_ = 43
         assert_equal 43, @bx.long_
       end
 
-      it "has a field g_strv" do
+      it "has a writable field g_strv" do
         assert_equal [], @bx.g_strv
         @bx.g_strv = ["foo", "bar"]
         assert_equal ["foo", "bar"], @bx.g_strv
@@ -236,16 +236,21 @@ describe "GIMarshallingTests" do
         pass
       end
 
+      it "has a property 'int'" do
+        assert_equal 42, @obj.get_property("int")
+        @obj.set_property("int", 13)
+        assert_equal 13, @obj.get_property("int")
+      end
+
       it "has a working method #overridden_method" do
-        @obj.int_ = 0
+        @obj.set_property("int", 0)
         @obj.overridden_method
         pass
       end
 
-      it "has a property 'int'"
-
-      it "has a field parent_instance containing the parent struct" do
+      it "has a read-only field parent_instance containing the parent struct" do
         assert_instance_of GObject::Object, @obj.parent_instance
+        assert_raises(NoMethodError) { @obj.parent_instance = nil }
       end
 
       it "has a field int_ containing the argument to #new" do
@@ -373,7 +378,7 @@ describe "GIMarshallingTests" do
       it "has a working inherited method #int8_out"
 
       it "has a working inherited method #method" do
-        @so.parent_instance.int_ = 42
+        @so.parent_instance.set_property("int", 42)
         @so.method
         pass
       end
@@ -399,13 +404,13 @@ describe "GIMarshallingTests" do
       end
 
       it "has a working inherited method #none_in" do
-        @so.parent_instance.int_ = 42
+        @so.parent_instance.set_property("int", 42)
         @so.none_in
         pass
       end
 
       it "has a working inherited method #overridden_method" do
-        @so.parent_instance.int_ = 0
+        @so.parent_instance.set_property("int", 0)
         @so.overridden_method
         pass
       end
