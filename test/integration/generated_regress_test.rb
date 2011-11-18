@@ -279,7 +279,7 @@ class GeneratedRegressTest < MiniTest::Spec
           it "sets the 'hash-table' property" do
             @o.set_property("hash-table", {"foo" => 34, "bar" => 83})
             assert_equal({"foo" => 34, "bar" => 83},
-              GLib::HashTable.wrap(:utf8, :gint32, @o[:hash_table]).to_hash)
+              GLib::HashTable.wrap(:utf8, :gint32, @o.hash_table.to_ptr).to_hash)
           end
 
           it "sets the 'float' property" do
@@ -300,7 +300,7 @@ class GeneratedRegressTest < MiniTest::Spec
           it "sets the 'list' property" do
             @o.set_property "list", ["foo", "bar"]
             assert_equal ["foo", "bar"],
-              GLib::List.wrap(:utf8, @o[:list]).to_a
+              GLib::List.wrap(:utf8, @o.list.to_ptr).to_a
           end
 
           it "sets the 'string' property" do
