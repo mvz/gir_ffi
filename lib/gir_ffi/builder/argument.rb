@@ -533,6 +533,8 @@ module GirFFI::Builder
         SListReturnValue
       when :ghash
         HashTableReturnValue
+      when :utf8
+        Utf8ReturnValue
       else
         RegularReturnValue
       end
@@ -585,6 +587,13 @@ module GirFFI::Builder
   class StrvReturnValue < ReturnValue
     def post
       [ "#{retname} = GirFFI::ArgHelper.strv_to_utf8_array #{cvar}" ]
+    end
+  end
+
+  # Implements argument processing for UTF8 string return values.
+  class Utf8ReturnValue < ReturnValue
+    def post
+      [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{@cvar}" ]
     end
   end
 
@@ -642,15 +651,7 @@ module GirFFI::Builder
   # Implements argument processing for other return values.
   class RegularReturnValue < ReturnValue
     def retval
-      if RUBY_VERSION < "1.9"
-        @cvar
-      else
-        if type_tag == :utf8
-          "#{cvar}.force_encoding('utf-8')"
-        else
-          @cvar
-        end
-      end
+      @cvar
     end
   end
 

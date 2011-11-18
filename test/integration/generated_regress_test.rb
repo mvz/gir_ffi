@@ -137,7 +137,7 @@ class GeneratedRegressTest < MiniTest::Spec
       end
 
       it "stores the constructor parameter in the :data field" do
-        assert_equal "foo", @so[:data].read_string
+        assert_equal "foo", @so.data
       end
 
       it "has a refcount of 1" do
@@ -305,7 +305,7 @@ class GeneratedRegressTest < MiniTest::Spec
 
           it "sets the 'string' property" do
             @o.set_property "string", "foobar"
-            assert_equal "foobar", @o[:string].read_string
+            assert_equal "foobar", @o.string
           end
         end
 

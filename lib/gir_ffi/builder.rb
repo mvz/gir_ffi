@@ -61,7 +61,6 @@ module GirFFI
 
     def self.ffi_function_return_type info
       rt = info.return_type
-      return :string if rt.tag == :utf8
       itypeinfo_to_ffitype rt
     end
 
