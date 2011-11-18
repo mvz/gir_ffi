@@ -366,14 +366,14 @@ describe "GIMarshallingTests" do
 
       it "has a working inherited virtual method #method_with_default_implementation" do
         @so.method_with_default_implementation 104
-        assert_equal 104, @so[:parent_instance][:int_]
+        assert_equal 104, @so.parent_instance.int_
       end
 
       it "has a working inherited method #int8_in"
       it "has a working inherited method #int8_out"
 
       it "has a working inherited method #method" do
-        @so[:parent_instance][:int_] = 42
+        @so.parent_instance.int_ = 42
         @so.method
         pass
       end
@@ -399,13 +399,13 @@ describe "GIMarshallingTests" do
       end
 
       it "has a working inherited method #none_in" do
-        @so[:parent_instance][:int_] = 42
+        @so.parent_instance.int_ = 42
         @so.none_in
         pass
       end
 
       it "has a working inherited method #overridden_method" do
-        @so[:parent_instance][:int_] = 0
+        @so.parent_instance.int_ = 0
         @so.overridden_method
         pass
       end
