@@ -111,9 +111,8 @@ describe "GIMarshallingTests" do
   describe "NestedStruct" do
     it "contains a SimpleStruct" do
       ns = GIMarshallingTests::NestedStruct.new
-      # FIXME: Make it an instance of SimpleStruct
-      assert_instance_of GIMarshallingTests::SimpleStruct::Struct,
-        ns[:simple_struct]
+      assert_instance_of GIMarshallingTests::SimpleStruct,
+        ns.simple_struct
     end
   end
 

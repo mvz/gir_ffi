@@ -67,6 +67,9 @@ module GirFFI
 
       def wrap ptr
 	return nil if ptr.nil? or ptr.null?
+        unless ptr.is_a? FFI::Pointer
+          ptr = ptr.to_ptr
+        end
 	_real_new ptr
       end
 
