@@ -34,6 +34,7 @@ module GirFFI
     # TODO: Move elsewhere, perhaps to Builder::Function.
     def self.attach_ffi_function lib, info
       sym = info.symbol
+      return if lib.method_defined? sym
       argtypes = ffi_function_argument_types info
       rt = ffi_function_return_type info
 

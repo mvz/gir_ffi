@@ -36,6 +36,20 @@ describe "GIMarshallingTests" do
         assert_equal ["foo", "bar"], @bx.g_strv
       end
     end
+
+    it "has a warking function #inout" do
+      bx = GIMarshallingTests::BoxedStruct.new
+      bx.long_ = 42
+
+      res = GIMarshallingTests::BoxedStruct.inout bx
+      assert_equal 42, bx.long_
+      assert_equal 0, res.long_
+    end
+
+    it "has a warking function #out" do
+      res = GIMarshallingTests::BoxedStruct.out
+      assert_equal 42, res.long_
+    end
   end
 
   it "has the constant CONSTANT_GERROR_CODE" do
