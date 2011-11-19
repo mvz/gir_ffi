@@ -386,7 +386,7 @@ module GirFFI::Builder
     def postpost
       tag = subtype_tag
       size = array_size
-      pst = [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{callarg}, #{size}" ]
+      pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
       pst
     end
 

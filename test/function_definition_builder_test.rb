@@ -14,7 +14,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
 	  _v2 = GirFFI::InOutPointer.from_array :utf8, argv
 	  ::Lib.gtk_init _v1, _v2
 	  _v3 = _v1.to_value
-	  _v4 = GirFFI::ArgHelper.outptr_to_utf8_array _v2, _v3
+	  _v4 = _v2.to_sized_array_value _v3
 	  return _v4
 	end
       "
@@ -119,7 +119,7 @@ class FunctionDefinitionBuilderTest < MiniTest::Spec
           _v2 = GirFFI::InOutPointer.from :gint32, length
           ::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
           _v3 = _v2.to_value
-          _v4 = GirFFI::ArgHelper.outptr_to_gint32_array _v1, _v3
+          _v4 = _v1.to_sized_array_value _v3
           return _v4
 	end"
 
