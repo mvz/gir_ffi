@@ -50,7 +50,9 @@ module GirFFI
     end
 
     def self.ptr_to_typed_array type, ptr, size
-      if type == :utf8
+      if type.is_a? Class
+        ptr_to_interface_array type, ptr, size
+      elsif type == :utf8
         ptr_to_utf8_array ptr, size
       else
         ffi_type = TypeMap.map_basic_type type

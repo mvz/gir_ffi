@@ -238,15 +238,12 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :out.
   class CArrayOutArgument < PointerLikeOutArgument
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.for_array #{subtype_tag_or_class_name}" ]
+    end
+
     def postpost
-      tag = subtype_tag
-
-      args = [callarg, array_size]
-      if tag == :interface or tag == :interface_pointer
-        args.unshift subtype_class_name
-      end
-
-      [ "#{retname} = GirFFI::ArgHelper.outptr_to_#{tag}_array #{args.join ', '}" ]
+      [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
     end
   end
 
@@ -384,7 +381,6 @@ module GirFFI::Builder
     end
 
     def postpost
-      tag = subtype_tag
       size = array_size
       pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
       pst

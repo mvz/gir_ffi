@@ -37,11 +37,11 @@ module GirFFI
       end
     end
 
-    def self.for type
+    def self.for type, sub_type=nil
       ffi_type = TypeMap.map_basic_type_or_string type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
       ptr.send "put_#{ffi_type}", 0, nil_value_for(type)
-      self.new ptr, type, ffi_type
+      self.new ptr, type, ffi_type, sub_type
     end
 
     def self.from type, value, sub_type=nil
@@ -56,6 +56,10 @@ module GirFFI
       return nil if array.nil?
       ptr = InPointer.from_array(type, array)
       self.from :pointer, ptr, type
+    end
+
+    def self.for_array type
+      self.for :pointer, type
     end
 
     class << self

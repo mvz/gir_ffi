@@ -59,9 +59,15 @@ module GirFFI
           "::#{iface.safe_namespace}::#{iface.name}"
         end
 
-        def subtype_class_name index=0
-          iface = type_info.param_type(index).interface
-          "::#{iface.safe_namespace}::#{iface.name}"
+        def subtype_tag_or_class_name index=0
+          type = type_info.param_type(index)
+          tag = type.tag
+          if tag == :interface
+            iface = type.interface
+            "::#{iface.safe_namespace}::#{iface.name}"
+          else
+            tag.inspect
+          end
         end
 
         def array_size
