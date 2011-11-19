@@ -1,3 +1,17 @@
+== 0.2.0 / 2011-11-19
+
+* Add support for properties, with #get_property and #set_property.
+* Add support for fields.
+  - Create field accessor methods.
+  - Get rid of #[] and #[]=.
+* Explicitely load libgirepository with ABI version 1.
+* Improve implementation of GLib container classes (GList etc.):
+  - Real constructors.
+  - #append and friends are instance methods now.
+  - Conversion methods to cast Ruby containers to GLib containers.
+* Start implementing pretty printing.
+* Various refactorings.
+
 == 0.1.0 / 2011-10-28
 
 * Put bindings for GObjectIntrospection in their own namespace.

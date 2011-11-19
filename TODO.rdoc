@@ -16,6 +16,9 @@ handling them can be removed.
 This is a big one. See commit 1e9822c7817062a9b853269b9418fd78782090b5 in
 gobject-introspection, and TestFundamentalObject in Regress.
 
+The tests for TestFundamentalObject accidentally pass, but there may be
+hidden issues.
+
 == Check binding of GObject:
 
 (11:37:03 PM) walters: the basic story is that GObject should be manually bound
