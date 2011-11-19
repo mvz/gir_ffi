@@ -23,32 +23,6 @@ module GirFFI
       FFI::Pointer.new(obj.object_id)
     end
 
-    # Converts an outptr to a string array.
-    def self.outptr_to_utf8_array ptr, size
-      block = ptr.read_pointer
-      return nil if block.null?
-      ptr_to_utf8_array block, size
-    end
-
-    # Converts an outptr to an array of int.
-    def self.outptr_to_int32_array ptr, size
-      block = ptr.read_pointer
-      return nil if block.null?
-      ptr_to_gint32_array block, size
-    end
-
-    # Converts an outptr to an array of the given class.
-    def self.outptr_to_interface_array klass, ptr, size
-      block = ptr.read_pointer
-      return nil if block.null?
-      ptr_to_interface_array klass, block, size
-    end
-
-    class << self
-      alias outptr_to_int_array outptr_to_int32_array
-      alias outptr_to_gint32_array outptr_to_int32_array
-    end
-
     def self.ptr_to_typed_array type, ptr, size
       if type.is_a? Class
         ptr_to_interface_array type, ptr, size
