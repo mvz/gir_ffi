@@ -2,6 +2,8 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.
   class InOutPointer < FFI::Pointer
+    attr_reader :value_type, :sub_type
+
     def initialize ptr, type, ffi_type, sub_type=nil
       super ptr
       @ffi_type = ffi_type
