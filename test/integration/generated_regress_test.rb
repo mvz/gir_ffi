@@ -560,6 +560,16 @@ class GeneratedRegressTest < MiniTest::Spec
       Regress.set_abort_on_error true
     end
 
+    describe "#test_array_fixed_out_objects" do
+      it "returns an array two TestObj objects" do
+        result = Regress.test_array_fixed_out_objects
+        assert_equal 2, result.length
+        result.each {|o|
+          assert_instance_of Regress::TestObj, o
+        }
+      end
+    end
+
     describe "#test_array_fixed_size_int_in" do
       should "return the correct result" do
 	assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
