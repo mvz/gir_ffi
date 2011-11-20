@@ -561,11 +561,24 @@ class GeneratedRegressTest < MiniTest::Spec
     end
 
     describe "#test_array_fixed_out_objects" do
-      it "returns an array two TestObj objects" do
-        result = Regress.test_array_fixed_out_objects
-        assert_equal 2, result.length
-        result.each {|o|
+      before do
+        @result = Regress.test_array_fixed_out_objects
+      end
+
+      it "returns an array of two items" do
+        assert_equal 2, @result.length
+      end
+
+      it "returns an array TestObj objects" do
+        @result.each {|o|
           assert_instance_of Regress::TestObj, o
+        }
+      end
+
+      it "returns objects with the correct GType" do
+        gtype = Regress::TestObj.get_gtype
+        @result.each {|o|
+          assert_equal gtype, GObject.type_from_instance(o)
         }
       end
     end
