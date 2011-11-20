@@ -56,17 +56,23 @@ module GirFFI
 
         def argument_class_name
           iface = type_info.interface
+          # FIXME: Extract to ITypeInfo.
           "::#{iface.safe_namespace}::#{iface.name}"
         end
 
         def subtype_tag_or_class_name index=0
           type = type_info.param_type(index)
           tag = type.tag
-          if tag == :interface
-            iface = type.interface
-            "::#{iface.safe_namespace}::#{iface.name}"
+          base = if tag == :interface
+                   iface = type.interface
+                   "::#{iface.safe_namespace}::#{iface.name}"
+                 else
+                   tag.inspect
+                 end
+          if type.pointer?
+            "[:pointer, #{base}]"
           else
-            tag.inspect
+            base
           end
         end
 
