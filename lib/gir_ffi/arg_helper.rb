@@ -26,6 +26,8 @@ module GirFFI
     def self.ptr_to_typed_array type, ptr, size
       if type.is_a? Class
         ptr_to_interface_array type, ptr, size
+      elsif type.is_a? Array
+        ptr_to_interface_pointer_array type[1], ptr, size
       elsif type == :utf8
         ptr_to_utf8_array ptr, size
       else
@@ -57,6 +59,13 @@ module GirFFI
       struct_size = klass.ffi_structure.size
       size.times.map do |idx|
         klass.wrap(ptr + struct_size * idx)
+      end
+    end
+
+    def self.ptr_to_interface_pointer_array klass, ptr, size
+      ptrs = ptr.read_array_of_pointer(size)
+      ptrs.map do |optr|
+        klass.wrap(optr)
       end
     end
 
