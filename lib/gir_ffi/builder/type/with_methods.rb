@@ -6,11 +6,8 @@ module GirFFI
       # :object, :interface.
       module WithMethods
         def setup_method method
-          klass = build_class
-          meta = (class << klass; self; end)
-
           go = method_introspection_data method
-          attach_and_define_method method, go, meta
+          attach_and_define_method method, go, meta_class
         end
 
         def setup_instance_method method
@@ -19,6 +16,11 @@ module GirFFI
         end
 
         private
+
+        def meta_class
+          klass = build_class
+          return (class << klass; self; end)
+        end
 
         def method_introspection_data method
           info.find_method method
