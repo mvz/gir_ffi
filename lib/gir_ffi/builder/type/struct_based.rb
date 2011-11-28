@@ -13,7 +13,9 @@ module GirFFI
         include WithLayout
 
         def pretty_print
-          "class #{@classname}\nend"
+          s = "class #{@classname}\n"
+          s << pretty_print_methods
+          s << "end"
         end
 
         private

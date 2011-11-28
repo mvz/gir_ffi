@@ -31,8 +31,12 @@ module GirFFI
           return !data.nil? && data.method? ? data : nil
         end
 
+        def function_definition_builder go
+          Builder::Function.new(go, lib)
+        end
+
         def function_definition go
-          Builder::Function.new(go, lib).generate
+          function_definition_builder(go).generate
         end
 
         def attach_and_define_method method, go, modul
@@ -57,6 +61,11 @@ module GirFFI
           "
         end
 
+        def pretty_print_methods
+          info.get_methods.map do |minfo|
+            function_definition_builder(minfo).pretty_print.indent + "\n"
+          end.join
+        end
       end
     end
   end
