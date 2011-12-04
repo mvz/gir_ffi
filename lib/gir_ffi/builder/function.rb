@@ -43,13 +43,13 @@ module GirFFI::Builder
     end
 
     def filled_out_template
-      return <<-CODE
-	def #{@info.name} #{inargs.join(', ')}
-	  #{pre.join("\n")}
-	  #{capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}
-	  #{post.join("\n")}
-	end
-      CODE
+      lines = pre
+      lines << "#{capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
+      lines << post
+
+      code = "def #{@info.name} #{inargs.join(', ')}\n"
+      code << lines.join("\n").indent
+      code << "\nend\n"
     end
 
     def inargs

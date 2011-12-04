@@ -16,15 +16,16 @@ describe GirFFI::Builder::Function do
     fbuilder = GirFFI::Builder::Function.new go, Lib
     code = fbuilder.generate
 
-    expected =
-      "def test_array_fixed_out_objects
+    expected = <<-CODE
+      def test_array_fixed_out_objects 
         _v1 = GirFFI::InOutPointer.for_array [:pointer, ::Regress::TestObj]
         ::Lib.regress_test_array_fixed_out_objects _v1
         _v2 = _v1.to_sized_array_value 2
         return _v2
-      end"
+      end
+      CODE
 
-    assert_equal cws(expected), cws(code)
+    assert_equal expected.reset_indentation, code
   end
 
 end
