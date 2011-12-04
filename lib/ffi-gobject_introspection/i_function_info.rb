@@ -30,7 +30,7 @@ module GObjectIntrospection
     end
 
     def safe_name
-      name
+      name == '' ? '_' : name
     end
   end
 end
