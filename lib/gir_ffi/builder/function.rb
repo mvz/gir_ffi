@@ -47,7 +47,7 @@ module GirFFI::Builder
       lines << "#{capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
       lines << post
 
-      code = "def #{@info.name} #{inargs.join(', ')}\n"
+      code = "def #{@info.safe_name} #{inargs.join(', ')}\n"
       code << lines.join("\n").indent
       code << "\nend\n"
     end
