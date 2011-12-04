@@ -28,5 +28,9 @@ module GObjectIntrospection
     def throws?
       flags & 32 != 0
     end
+
+    def safe_name
+      name
+    end
   end
 end
