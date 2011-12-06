@@ -14,8 +14,11 @@ module GirFFI
         end
 
         def pretty_print
+          args = argument_types.map do |arg|
+            arg.is_a?(FFI::Enum) ? arg.tag : arg.inspect
+          end
           return "#{@classname} = Lib.callback #{callback_sym.inspect}, " +
-            "#{argument_types.inspect}, #{return_type.inspect}"
+            "[#{args.join(', ')}], #{return_type.inspect}"
         end
 
         def callback_sym

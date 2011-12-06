@@ -13,6 +13,20 @@ describe GirFFI::Builder::Type::Callback do
       assert_equal "TheCallback = Lib.callback :TheCallback, [:baz, :qux], :ret_type",
         builder.pretty_print
     end
+
+    it "renders enum argument types by their tags" do
+      stub(enum = FFI::Enum.new([])).tag { :EnumTag }
+
+      mock(info = Object.new).safe_name { "TheCallback" }
+      stub(info).namespace { "Foo" }
+      mock(GirFFI::Builder).ffi_function_return_type(info) { :ret_type }
+      mock(GirFFI::Builder).ffi_function_argument_types(info) { [ enum ] }
+
+      builder = GirFFI::Builder::Type::Callback.new(info)
+
+      assert_equal "TheCallback = Lib.callback :TheCallback, [EnumTag], :ret_type",
+        builder.pretty_print
+    end
   end
 end
 
