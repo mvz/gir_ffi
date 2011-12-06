@@ -1,3 +1,10 @@
+== 0.2.2 / 2011-12-07
+
+* Fix issue #19: Check if a GLib::PtrArray.add method was generated
+  before attempting to remove it.
+* Fix two issues with pretty printing that made output for GLib have syntax
+  errors.
+
 == 0.2.1 / 2011-11-20
 
 * Fix handling of output parameters that are arrays of pointers to
