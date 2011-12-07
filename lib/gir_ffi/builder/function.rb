@@ -44,7 +44,7 @@ module GirFFI::Builder
 
     def filled_out_template
       lines = pre
-      lines << "#{capture}::#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
+      lines << "#{capture}#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
       lines << post
 
       code = "def #{@info.safe_name} #{inargs.join(', ')}\n"
