@@ -7,19 +7,7 @@ module GirFFI
       module WithMethods
         def setup_method method
           go = method_introspection_data method
-          # XXX: Temporary code while we change function definition
-          return false if go.nil?
-          fd = function_definition(go)
-          if fd =~ /def self\./
-            modul = build_class
-          else
-            modul = meta_class
-          end
-          return false if go.nil?
-          Builder.attach_ffi_function lib, go
-          meta_class.class_eval { remove_method method }
-          modul.class_eval function_definition(go)
-          true
+          attach_and_define_method method, go, meta_class
         end
 
         def setup_instance_method method
@@ -55,7 +43,7 @@ module GirFFI
           return false if go.nil?
           Builder.attach_ffi_function lib, go
           modul.class_eval { remove_method method }
-          modul.class_eval function_definition(go)
+          build_class.class_eval function_definition(go)
           true
         end
 

@@ -29,15 +29,7 @@ module GirFFI
       lib = modul.const_get(:Lib)
 
       Builder.attach_ffi_function lib, go
-
-      meta = (class << modul; self; end)
-      fd = function_definition(go, lib)
-      # XXX: Temporary check while we change function definition
-      if fd =~ /def self\./
-        modul.class_eval fd
-      else
-        meta.class_eval fd
-      end
+      modul.class_eval function_definition(go, lib)
 
       true
     end
