@@ -1,4 +1,6 @@
 module GirFFI
+  # Generates a sequence of unique variable names used in generating
+  # function definitions.
   class VariableNameGenerator
     def initialize
       @varno = 0
