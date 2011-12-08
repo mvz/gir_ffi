@@ -17,7 +17,7 @@ describe GirFFI::Builder::Function do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def test_array_fixed_out_objects 
+      def self.test_array_fixed_out_objects 
         _v1 = GirFFI::InOutPointer.for_array [:pointer, ::Regress::TestObj]
         Lib.regress_test_array_fixed_out_objects _v1
         _v2 = _v1.to_sized_array_value 2
@@ -28,13 +28,13 @@ describe GirFFI::Builder::Function do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds a correct definition for methods having a linked length argument" do
+  it "builds a correct definition for functions having a linked length argument" do
     go = get_introspection_data 'Regress', 'test_array_gint16_in'
     fbuilder = GirFFI::Builder::Function.new go, Lib
     code = fbuilder.generate
 
     expected = <<-CODE
-      def test_array_gint16_in ints
+      def self.test_array_gint16_in ints
         n_ints = ints.nil? ? 0 : ints.length
         _v1 = n_ints
         _v2 = GirFFI::InPointer.from_array :gint16, ints
@@ -46,13 +46,13 @@ describe GirFFI::Builder::Function do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds a correct definition for methods with callbacks" do
+  it "builds a correct definition for functions with callbacks" do
     go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
     fbuilder = GirFFI::Builder::Function.new go, Lib
     code = fbuilder.generate
 
     expected = <<-CODE
-      def test_callback_destroy_notify callback, user_data, notify
+      def self.test_callback_destroy_notify callback, user_data, notify
         _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
         Lib::CALLBACKS << _v1
         _v2 = GirFFI::ArgHelper.object_to_inptr user_data
@@ -72,7 +72,7 @@ describe GirFFI::Builder::Function do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def new_from_file x
+      def self.new_from_file x
         _v1 = GirFFI::InPointer.from :utf8, x
         _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
         _v3 = Lib.regress_test_obj_new_from_file _v1, _v2
@@ -85,13 +85,13 @@ describe GirFFI::Builder::Function do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds correct definition for methods with a nullable input array" do
+  it "builds correct definition for functions with a nullable input array" do
     go = get_introspection_data 'Regress', 'test_array_int_null_in'
     fbuilder = GirFFI::Builder::Function.new go, Lib
     code = fbuilder.generate
 
     expected = <<-CODE
-      def test_array_int_null_in arr
+      def self.test_array_int_null_in arr
         _v1 = GirFFI::InPointer.from_array :gint32, arr
         len = arr.nil? ? 0 : arr.length
         _v2 = len
@@ -103,13 +103,13 @@ describe GirFFI::Builder::Function do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds correct definition for methods with a nullable output array" do
+  it "builds correct definition for functions with a nullable output array" do
     go = get_introspection_data 'Regress', 'test_array_int_null_out'
     fbuilder = GirFFI::Builder::Function.new go, Lib
     code = fbuilder.generate
 
     expected = <<-CODE
-      def test_array_int_null_out 
+      def self.test_array_int_null_out 
         _v1 = GirFFI::InOutPointer.for_array :gint32
         _v2 = GirFFI::InOutPointer.for :gint32
         Lib.regress_test_array_int_null_out _v1, _v2

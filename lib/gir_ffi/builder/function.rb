@@ -47,7 +47,9 @@ module GirFFI::Builder
       lines << "#{capture}#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
       lines << post
 
-      code = "def #{@info.safe_name} #{inargs.join(', ')}\n"
+      meta = @info.method? ? '' : "self."
+
+      code = "def #{meta}#{@info.safe_name} #{inargs.join(', ')}\n"
       code << lines.join("\n").indent
       code << "\nend\n"
     end
