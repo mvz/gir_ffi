@@ -26,7 +26,7 @@ gir = GObjectIntrospection::IRepository.default
 gir.require "Gtk", "2.0"
 
 # Need a dummy module for some tests.
-module Lib
+module DummyLib
 end
 
 class MiniTest::Unit::TestCase

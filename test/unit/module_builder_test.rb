@@ -54,7 +54,7 @@ describe GirFFI::Builder::Module do
     describe "for a :function argument" do
       it "creates a GirFFI::Builder::Function object" do
         builder = GirFFI::Builder::Module.new "Foo"
-        mock(builder).libmodule { Lib }
+        mock(builder).libmodule { DummyLib }
 
         stub(info = Object.new).info_type { :function }
 
