@@ -74,16 +74,7 @@ module GObject
       when TYPE_OBJECT
         get_object
       when TYPE_BOXED
-        boxed = get_boxed
-        case current_gtype_name.to_sym
-        when :GStrv
-          # FIXME: Extract this method to even lower level module.
-          GirFFI::ArgHelper.strv_to_utf8_array boxed
-        when :GHashTable
-          GLib::HashTable.wrap :gpointer, :gpointer, boxed
-        else
-          GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
-        end
+        get_boxed_enhanced
       when TYPE_POINTER
         get_pointer
       else
@@ -94,6 +85,20 @@ module GObject
     class << self
       def wrap_ruby_value val
         self.new.set_ruby_value val
+      end
+    end
+
+    private
+
+    def get_boxed_enhanced
+      boxed = get_boxed
+      case current_gtype
+      when TYPE_STRV
+        GirFFI::ArgHelper.strv_to_utf8_array boxed
+      when TYPE_HASH_TABLE
+        GLib::HashTable.wrap :gpointer, :gpointer, boxed
+      else
+        GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
       end
     end
   end
