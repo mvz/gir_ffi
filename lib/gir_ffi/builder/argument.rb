@@ -450,7 +450,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from_array(#{elm_t}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from(#{elm_t}, #{@name})" ]
     end
 
     def post
@@ -464,7 +464,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from_array(#{elm_t}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from(#{elm_t}, #{@name})" ]
     end
 
     def post
