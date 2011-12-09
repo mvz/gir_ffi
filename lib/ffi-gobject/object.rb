@@ -40,7 +40,7 @@ module GObject
     def adjust_value_to_type val, type
       case type.tag
       when :ghash
-        GLib::HashTable.wrap [type.param_type(0).tag, type.param_type(1).tag],
+        GLib::HashTable.from [type.param_type(0).tag, type.param_type(1).tag],
           val
       when :glist
         GLib::List.from type.param_type(0).tag, val
