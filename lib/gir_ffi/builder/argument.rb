@@ -75,14 +75,15 @@ module GirFFI::Builder
     end
   end
 
-  class ListTypesProvider
+  class TypesProviderBase
     def initialize type
       @type = type
     end
 
     TAG_TO_CONTAINER_CLASS_MAP = {
       :glist => 'GLib::List',
-      :gslist => 'GLib::SList'
+      :gslist => 'GLib::SList',
+      :ghash => 'GLib::HashTable'
     }
 
     def class_name
@@ -98,13 +99,24 @@ module GirFFI::Builder
       when :interface
         return :interface_pointer if st.pointer?
         return :interface
+      when :void
+        #return :gpointer if st.pointer?
+        return :void
       else
         return t
       end
     end
+  end
 
+  class ListTypesProvider < TypesProviderBase
     def elm_t
       subtype_tag.inspect
+    end
+  end
+
+  class HashTableTypesProvider < TypesProviderBase
+    def elm_t
+      [subtype_tag(0), subtype_tag(1)].inspect
     end
   end
 
@@ -134,7 +146,7 @@ module GirFFI::Builder
     end
 
     def pre
-      [ "#{callarg} = #{class_name}.from_array #{elm_t}, #{@name}" ]
+      [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
     end
   end
 
