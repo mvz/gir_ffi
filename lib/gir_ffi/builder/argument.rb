@@ -21,7 +21,20 @@ module GirFFI::Builder
     end
   end
 
+  module ArgumentFactoryHelpers
+    def provider_for type
+      case type.tag
+      when :glist, :gslist
+        ListTypesProvider.new(type)
+      when :ghash
+        HashTableTypesProvider.new(type)
+      end
+    end
+  end
+
   module InArgument
+    extend ArgumentFactoryHelpers
+
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       builder_for var_gen, arginfo.name, type, libmodule
@@ -52,15 +65,6 @@ module GirFFI::Builder
                 RegularInArgument
               end
       return klass.new var_gen, name, type, libmodule
-    end
-
-    def self.provider_for type
-      case type.tag
-      when :glist, :gslist
-        ListTypesProvider.new(type)
-      when :ghash
-        HashTableTypesProvider.new(type)
-      end
     end
   end
 
@@ -348,6 +352,8 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :inout.
   module InOutArgument
+    extend ArgumentFactoryHelpers
+
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -369,12 +375,9 @@ module GirFFI::Builder
                     ArrayInOutArgument
                   end
                 end
-              when :glist
-                ListInOutArgument
-              when :gslist
-                SListInOutArgument
-              when :ghash
-                HashTableInOutArgument
+              when :glist, :gslist, :ghash
+                provider = provider_for type
+                return ListInOutArgument.new var_gen, arginfo.name, type, libmodule, provider
               else
                 RegularInOutArgument
               end
@@ -458,42 +461,20 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :inout.
   class ListInOutArgument < Argument::InOutBase
-    include Argument::ListBase
+    extend Forwardable
+    def_delegators :@elm_t_provider, :elm_t, :class_name
+
+    def initialize var_gen, name, typeinfo, libmodule, provider
+      super var_gen, name, typeinfo, libmodule
+      @elm_t_provider = provider
+    end
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from(#{elm_t}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{class_name}.from(#{elm_t}, #{@name})" ]
     end
 
     def post
-      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
-    end
-  end
-
-  # Implements argument processing for gslist arguments with direction
-  # :inout.
-  class SListInOutArgument < Argument::InOutBase
-    include Argument::ListBase
-
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from(#{elm_t}, #{@name})" ]
-    end
-
-    def post
-      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
-    end
-  end
-
-  # Implements argument processing for ghash arguments with direction
-  # :inout.
-  class HashTableInOutArgument < Argument::InOutBase
-    include Argument::HashTableBase
-
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::HashTable.from([#{key_t}, #{val_t}], #{@name})" ]
-    end
-
-    def post
-      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{callarg}.to_value" ]
+      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
