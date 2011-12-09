@@ -23,7 +23,10 @@ module GLib
 
       def from_array type, arr
         return nil if arr.nil?
-        return arr if arr.is_a? self
+        if arr.is_a? self
+          arr.element_type = type
+          return arr
+        end
         arr.reverse.inject(self.new type) { |lst, val|
           lst.prepend val }
       end

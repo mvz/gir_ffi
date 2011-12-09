@@ -41,16 +41,25 @@ module GLib
       end
 
       def wrap keytype, valtype, ptr
-        super(ptr).tap do |it|
-          break if it.nil?
-          it.key_type = keytype
-          it.value_type = valtype
+        return nil if ptr.nil?
+        if ptr.is_a? FFI::Pointer
+          super(ptr).tap do |it|
+            return nil if it.nil?
+            it.key_type = keytype
+            it.value_type = valtype
+          end
+        else
+          self.from_hash keytype, valtype, ptr
         end
       end
 
       def from_hash keytype, valtype, hash
         return nil if hash.nil?
-        return hash if hash.is_a? self
+        if hash.is_a? self
+          hash.key_type = keytype
+          hash.value_type = valtype
+          return hash
+        end
         ghash = self.new keytype, valtype
         hash.each do |key, val|
           ghash.insert key, val

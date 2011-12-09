@@ -7,41 +7,21 @@ module GObject
     _setup_instance_method "set_property"
 
     def get_property_with_override property_name
-      prop = self.class._find_property property_name
-      type = prop.property_type
-      v = Helper.gvalue_for_type_info type
-      get_property_without_override property_name, v
+      type = get_property_type property_name
+      gvalue = Helper.gvalue_for_type_info type
 
-      val = v.ruby_value
-      case type.tag
-      when :ghash
-        GLib::HashTable.wrap type.param_type(0).tag, type.param_type(1).tag,
-          val.to_ptr
-      when :glist
-        GLib::List.wrap type.param_type(0).tag, val
-      else
-        val
-      end
+      get_property_without_override property_name, gvalue
+
+      adjust_value_to_type gvalue.ruby_value, type
     end
 
     def set_property_with_override property_name, value
-      prop = self.class._find_property property_name
-      type = prop.property_type
-      v = Helper.gvalue_for_type_info type
+      type = get_property_type property_name
+      gvalue = Helper.gvalue_for_type_info type
 
-      case type.tag
-      when :glist
-        lst = GLib::List.from_array type.param_type(0).tag, value
-        v.set_value lst.to_ptr
-      when :ghash
-        hsh = GLib::HashTable.from_hash type.param_type(0).tag,
-          type.param_type(1).tag, value
-        v.set_value hsh.to_ptr
-      else
-        v.set_value value
-      end
+      gvalue.set_value adjust_value_to_type(value, type)
 
-      set_property_without_override property_name, v
+      set_property_without_override property_name, gvalue
     end
 
     alias get_property_without_override get_property
@@ -49,6 +29,24 @@ module GObject
 
     alias set_property_without_override set_property
     alias set_property set_property_with_override
+
+    private
+
+    def get_property_type property_name
+      prop = self.class._find_property property_name
+      prop.property_type
+    end
+
+    def adjust_value_to_type val, type
+      case type.tag
+      when :ghash
+        GLib::HashTable.wrap type.param_type(0).tag, type.param_type(1).tag,
+          val
+      when :glist
+        GLib::List.wrap type.param_type(0).tag, val
+      else
+        val
+      end
+    end
   end
 end
-

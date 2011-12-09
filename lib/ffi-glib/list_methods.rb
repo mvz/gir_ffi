@@ -27,9 +27,14 @@ module GLib
 
     module ClassMethods
       def wrap elmttype, ptr
-        super(ptr).tap do |it|
-          break if it.nil?
-          it.element_type = elmttype
+        return nil if ptr.nil?
+        if ptr.is_a? FFI::Pointer
+          super(ptr).tap do |it|
+            break if it.nil?
+            it.element_type = elmttype
+          end
+        else
+          self.from_array elmttype, ptr
         end
       end
     end
