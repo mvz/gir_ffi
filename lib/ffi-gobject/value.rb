@@ -11,26 +11,22 @@ module GObject
       set_value val
     end
 
+    TYPE_TO_SET_METHOD = {
+      TYPE_BOOLEAN => :set_boolean,
+      TYPE_INT => :set_int,
+      TYPE_STRING => :set_string,
+      TYPE_FLOAT => :set_float,
+      TYPE_DOUBLE => :set_double,
+      TYPE_OBJECT => :set_instance,
+      TYPE_BOXED => :set_boxed,
+      TYPE_POINTER => :set_pointer,
+      TYPE_ENUM => :set_enum
+    }
+
     def set_value val
-      case current_fundamental_type
-      when TYPE_BOOLEAN
-        set_boolean val
-      when TYPE_INT
-        set_int val
-      when TYPE_STRING
-        set_string val
-      when TYPE_FLOAT
-        set_float val
-      when TYPE_DOUBLE
-        set_double val
-      when TYPE_BOXED
-        set_boxed val
-      when TYPE_OBJECT
-        set_instance val
-      when TYPE_POINTER
-        set_pointer val
-      when TYPE_ENUM
-        set_enum val
+      method = TYPE_TO_SET_METHOD[current_fundamental_type]
+      if method
+        send method, val
       else
         raise "Don't know how to handle #{current_gtype_name}"
       end
