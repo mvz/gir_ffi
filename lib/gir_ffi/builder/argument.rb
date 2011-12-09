@@ -186,6 +186,8 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :out.
   module OutArgument
+    extend ArgumentFactoryHelpers
+
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -211,12 +213,9 @@ module GirFFI::Builder
                     ArrayOutArgument
                   end
                 end
-              when :glist
-                ListOutArgument
-              when :gslist
-                SListOutArgument
-              when :ghash
-                HashTableOutArgument
+              when :glist, :gslist, :ghash
+                provider = provider_for type
+                return ListOutArgument.new var_gen, arginfo.name, type, libmodule, provider
               else
                 RegularOutArgument
               end
@@ -320,30 +319,16 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with direction
   # :out.
   class ListOutArgument < PointerLikeOutArgument
-    include Argument::ListBase
+    extend Forwardable
+    def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def post
-      [ "#{retname} = GLib::List.wrap #{elm_t}, #{callarg}.to_value" ]
+    def initialize var_gen, name, typeinfo, libmodule, provider
+      super var_gen, name, typeinfo, libmodule
+      @elm_t_provider = provider
     end
-  end
-
-  # Implements argument processing for gslist arguments with direction
-  # :out.
-  class SListOutArgument < PointerLikeOutArgument
-    include Argument::ListBase
 
     def post
-      [ "#{retname} = GLib::SList.wrap #{elm_t}, #{callarg}.to_value" ]
-    end
-  end
-
-  # Implements argument processing for ghash arguments with direction
-  # :out.
-  class HashTableOutArgument < PointerLikeOutArgument
-    include Argument::HashTableBase
-
-    def post
-      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{callarg}.to_value" ]
+      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
