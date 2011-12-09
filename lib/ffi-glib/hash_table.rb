@@ -50,11 +50,12 @@ module GLib
             it.value_type = valtype
           end
         else
-          self.from_hash keytype, valtype, ptr
+          self.from_hash types, ptr
         end
       end
 
-      def from_hash keytype, valtype, hash
+      def from_hash types, hash
+        keytype, valtype = *types
         return nil if hash.nil?
         if hash.is_a? self
           hash.key_type = keytype
