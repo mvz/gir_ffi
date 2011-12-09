@@ -74,6 +74,30 @@ module GirFFI::Builder
     end
   end
 
+  class ElementTypeProvider
+    def initialize type
+      @type = type
+    end
+
+    def subtype_tag index=0
+      st = @type.param_type(index)
+      t = st.tag
+      case t
+      when :GType
+        return :gtype
+      when :interface
+        return :interface_pointer if st.pointer?
+        return :interface
+      else
+        return t
+      end
+    end
+
+    def elm_t
+      subtype_tag.inspect
+    end
+  end
+
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
     include Argument::ListBase
@@ -91,7 +115,14 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with
   # direction :in.
   class ListInArgument < Argument::InBase
-    include Argument::ListBase
+    extend Forwardable
+    def_delegators :@elm_t_provider, :elm_t
+
+    def initialize var_gen, name, typeinfo, libmodule
+      super var_gen, name, typeinfo, libmodule
+      @elm_t_provider = ElementTypeProvider.new(typeinfo)
+    end
+
     def pre
       [ "#{callarg} = GLib::List.from_array #{elm_t}, #{@name}" ]
     end
