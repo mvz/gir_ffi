@@ -37,10 +37,11 @@ module GLib
                          else
                            [nil, nil]
                          end
-        wrap(keytype, valtype, Lib.g_hash_table_new(hash_fn, eq_fn))
+        wrap [keytype, valtype], Lib.g_hash_table_new(hash_fn, eq_fn)
       end
 
-      def wrap keytype, valtype, ptr
+      def wrap types, ptr
+        keytype, valtype = *types
         return nil if ptr.nil?
         if ptr.is_a? FFI::Pointer
           super(ptr).tap do |it|

@@ -81,7 +81,7 @@ module GObject
       when TYPE_STRV
         GirFFI::ArgHelper.strv_to_utf8_array boxed
       when TYPE_HASH_TABLE
-        GLib::HashTable.wrap :gpointer, :gpointer, boxed
+        GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
         GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
       end

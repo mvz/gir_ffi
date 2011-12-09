@@ -331,7 +331,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def post
-      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
+      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{callarg}.to_value" ]
     end
   end
 
@@ -482,7 +482,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GLib::HashTable.wrap #{key_t}, #{val_t}, #{callarg}.to_value" ]
+      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{callarg}.to_value" ]
     end
   end
 
@@ -655,7 +655,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def post
-      [ "#{retname} = GLib::HashTable.wrap(#{key_t}, #{val_t}, #{cvar})" ]
+      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{cvar}" ]
     end
   end
 
