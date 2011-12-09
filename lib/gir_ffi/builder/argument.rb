@@ -142,7 +142,7 @@ module GirFFI::Builder
   class HashTableInArgument < Argument::InBase
     include Argument::HashTableBase
     def pre
-      [ "#{callarg} = GLib::HashTable.from_hash [#{key_t}, #{val_t}], #{@name}" ]
+      [ "#{callarg} = GLib::HashTable.from [#{key_t}, #{val_t}], #{@name}" ]
     end
   end
 
@@ -478,7 +478,7 @@ module GirFFI::Builder
     include Argument::HashTableBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::HashTable.from_hash([#{key_t}, #{val_t}], #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::HashTable.from([#{key_t}, #{val_t}], #{@name})" ]
     end
 
     def post
