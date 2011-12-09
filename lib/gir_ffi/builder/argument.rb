@@ -76,13 +76,14 @@ module GirFFI::Builder
 
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
+    include Argument::ListBase
     def pre
       pr = []
       size = type_info.array_fixed_size
       if size > -1
         pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
-      pr << "#{callarg} = GirFFI::InPointer.from_array #{subtype_tag.inspect}, #{@name}"
+      pr << "#{callarg} = GirFFI::InPointer.from_array #{elm_t}, #{@name}"
       pr
     end
   end
@@ -90,22 +91,25 @@ module GirFFI::Builder
   # Implements argument processing for glist arguments with
   # direction :in.
   class ListInArgument < Argument::InBase
+    include Argument::ListBase
     def pre
-      [ "#{callarg} = GLib::List.from_array #{subtype_tag.inspect}, #{@name}" ]
+      [ "#{callarg} = GLib::List.from_array #{elm_t}, #{@name}" ]
     end
   end
 
   # Implements argument processing for gslist arguments with direction :in.
   class SListInArgument < Argument::InBase
+    include Argument::ListBase
     def pre
-      [ "#{callarg} = GLib::SList.from_array #{subtype_tag.inspect}, #{@name}" ]
+      [ "#{callarg} = GLib::SList.from_array #{elm_t}, #{@name}" ]
     end
   end
 
   # Implements argument processing for ghash arguments with direction :in.
   class HashTableInArgument < Argument::InBase
+    include Argument::HashTableBase
     def pre
-      [ "#{callarg} = GLib::HashTable.from_hash #{subtype_tag(0).inspect}, #{subtype_tag(1).inspect}, #{@name}" ]
+      [ "#{callarg} = GLib::HashTable.from_hash #{key_t}, #{val_t}, #{@name}" ]
     end
   end
 
@@ -364,8 +368,9 @@ module GirFFI::Builder
   # Implements argument processing for strv arguments with direction
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
+    include Argument::ListBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
 
     def post
@@ -376,8 +381,9 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :inout.
   class CArrayInOutArgument < Argument::InOutBase
+    include Argument::ListBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from_array #{subtype_tag.inspect}, #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
 
     def postpost
@@ -411,7 +417,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from_array(#{subtype_tag.inspect}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::List.from_array(#{elm_t}, #{@name})" ]
     end
 
     def post
@@ -425,7 +431,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from_array(#{subtype_tag.inspect}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, GLib::SList.from_array(#{elm_t}, #{@name})" ]
     end
 
     def post
