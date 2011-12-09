@@ -66,9 +66,8 @@ module GirFFI
 
         def setter_builder finfo
           type = finfo.field_type
-          klass = Builder::InArgument.builder_for type
           vargen = VariableNameGenerator.new
-          klass.new vargen, "value", type, lib
+          Builder::InArgument.builder_for vargen, "value", type, lib
         end
 
         def setter_def finfo

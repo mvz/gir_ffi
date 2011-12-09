@@ -1,3 +1,5 @@
+require 'forwardable'
+
 require 'gir_ffi/in_pointer'
 require 'gir_ffi/in_out_pointer'
 
@@ -22,37 +24,37 @@ module GirFFI::Builder
   module InArgument
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
-      klass = builder_for type
-      klass.new var_gen, arginfo.name, type, libmodule
+      builder_for var_gen, arginfo.name, type, libmodule
     end
 
-    def self.builder_for type
-      case type.tag
-      when :interface
-        if type.interface.info_type == :callback
-          CallbackInArgument
-        else
-          RegularInArgument
-        end
-      when :void
-        VoidInArgument
-      when :array
-        if type.array_type == :c
-          CArrayInArgument
-        else
-          RegularInArgument
-        end
-      when :glist
-        ListInArgument
-      when :gslist
-        SListInArgument
-      when :ghash
-        HashTableInArgument
-      when :utf8
-        Utf8InArgument
-      else
-        RegularInArgument
-      end
+    def self.builder_for var_gen, name, type, libmodule
+      klass = case type.tag
+              when :interface
+                if type.interface.info_type == :callback
+                  CallbackInArgument
+                else
+                  RegularInArgument
+                end
+              when :void
+                VoidInArgument
+              when :array
+                if type.array_type == :c
+                  CArrayInArgument
+                else
+                  RegularInArgument
+                end
+              when :glist
+                ListInArgument
+              when :gslist
+                SListInArgument
+              when :ghash
+                HashTableInArgument
+              when :utf8
+                Utf8InArgument
+              else
+                RegularInArgument
+              end
+      return klass.new var_gen, name, type, libmodule
     end
   end
 
