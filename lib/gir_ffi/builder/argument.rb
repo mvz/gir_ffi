@@ -43,11 +43,9 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :glist
-                provider = ElementTypeProvider.new(type)
+              when :glist, :gslist
+                provider = ListTypesProvider.new(type)
                 return ListInArgument.new var_gen, name, type, libmodule, provider
-              when :gslist
-                SListInArgument
               when :ghash
                 HashTableInArgument
               when :utf8
@@ -77,9 +75,18 @@ module GirFFI::Builder
     end
   end
 
-  class ElementTypeProvider
+  class ListTypesProvider
     def initialize type
       @type = type
+    end
+
+    TAG_TO_CONTAINER_CLASS_MAP = {
+      :glist => 'GLib::List',
+      :gslist => 'GLib::SList'
+    }
+
+    def class_name
+      TAG_TO_CONTAINER_CLASS_MAP[@type.tag]
     end
 
     def subtype_tag index=0
@@ -119,7 +126,7 @@ module GirFFI::Builder
   # direction :in.
   class ListInArgument < Argument::InBase
     extend Forwardable
-    def_delegators :@elm_t_provider, :elm_t
+    def_delegators :@elm_t_provider, :elm_t, :class_name
 
     def initialize var_gen, name, typeinfo, libmodule, provider
       super var_gen, name, typeinfo, libmodule
@@ -127,15 +134,7 @@ module GirFFI::Builder
     end
 
     def pre
-      [ "#{callarg} = GLib::List.from_array #{elm_t}, #{@name}" ]
-    end
-  end
-
-  # Implements argument processing for gslist arguments with direction :in.
-  class SListInArgument < Argument::InBase
-    include Argument::ListBase
-    def pre
-      [ "#{callarg} = GLib::SList.from_array #{elm_t}, #{@name}" ]
+      [ "#{callarg} = #{class_name}.from_array #{elm_t}, #{@name}" ]
     end
   end
 
