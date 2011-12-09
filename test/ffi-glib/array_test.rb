@@ -41,6 +41,15 @@ describe GLib::Array do
     end
   end
 
+  describe "::wrap" do
+    it "wraps a pointer, taking the element type as the first argument" do
+      arr = GLib::Array.new :gint32
+      arr.append_vals [1, 2, 3]
+      arr2 = GLib::Array.wrap :gint32, arr.to_ptr
+      assert_equal arr.to_a, arr2.to_a
+    end
+  end
+
   it "includes Enumerable" do
     GLib::Array.must_include Enumerable
   end

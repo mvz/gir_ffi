@@ -313,10 +313,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def post
-      pp = []
-      pp << "#{retname} = GLib::Array.wrap #{callarg}.to_value"
-      pp << "#{retname}.element_type = #{elm_t}"
-      pp
+      [ "#{retname} = GLib::Array.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -451,10 +448,7 @@ module GirFFI::Builder
     end
 
     def post
-      pp = []
-      pp << "#{retname} = GLib::Array.wrap(#{callarg}.to_value)"
-      pp << "#{retname}.element_type = #{elm_t}"
-      pp
+      [ "#{retname} = GLib::Array.wrap(#{elm_t}, #{callarg}.to_value)" ]
     end
   end
 
@@ -663,8 +657,7 @@ module GirFFI::Builder
     include Argument::ListBase
 
     def post
-      [ "#{retname} = GLib::Array.wrap(#{cvar})",
-        "#{retname}.element_type = #{elm_t}" ]
+      [ "#{retname} = GLib::Array.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 

@@ -12,8 +12,8 @@ module GLib
       undef :new
       def new type
         ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
-        wrap(Lib.g_array_new(0, 0, FFI.type_size(ffi_type))).tap {|it|
-          it.element_type = type}
+        ptr = Lib.g_array_new(0, 0, FFI.type_size(ffi_type))
+        wrap type, ptr
       end
     end
 
@@ -27,6 +27,13 @@ module GLib
     # FIXME: Make GirFII::InPointer support #each and use that.
     def each &block
       to_typed_array.each(&block)
+    end
+
+    def self.wrap elmttype, ptr
+      super(ptr).tap do |it|
+        break if it.nil?
+        it.element_type = elmttype
+      end
     end
 
     private
