@@ -24,7 +24,7 @@ module GirFFI::Builder
   module ArgumentFactoryHelpers
     def provider_for type
       case type.tag
-      when :glist, :gslist
+      when :glist, :gslist, :array
         ListTypesProvider.new(type)
       when :ghash
         HashTableTypesProvider.new(type)
@@ -94,7 +94,8 @@ module GirFFI::Builder
     TAG_TO_CONTAINER_CLASS_MAP = {
       :glist => 'GLib::List',
       :gslist => 'GLib::SList',
-      :ghash => 'GLib::HashTable'
+      :ghash => 'GLib::HashTable',
+      :array => 'GLib::Array'
     }
 
     def class_name
@@ -210,7 +211,8 @@ module GirFFI::Builder
                   when :c
                     CArrayOutArgument
                   when :array
-                    ArrayOutArgument
+                    provider = provider_for type
+                    return ListOutArgument.new var_gen, arginfo.name, type, libmodule, provider
                   end
                 end
               when :glist, :gslist, :ghash
@@ -303,16 +305,6 @@ module GirFFI::Builder
   class StrvOutArgument < PointerLikeOutArgument
     def post
       [ "#{retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{callarg}" ]
-    end
-  end
-
-  # Implements argument processing for GArray arguments with direction
-  # :out.
-  class ArrayOutArgument < PointerLikeOutArgument
-    include Argument::ListBase
-
-    def post
-      [ "#{retname} = GLib::Array.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
