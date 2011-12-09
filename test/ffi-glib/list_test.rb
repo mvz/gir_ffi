@@ -43,4 +43,27 @@ describe GLib::List do
       assert_equal lst, lst2
     end
   end
+
+  describe "::from" do
+    it "creates a GList from a Ruby array" do
+      lst = GLib::List.from :gint32, [3, 2, 1]
+      assert_equal [3, 2, 1], lst.to_a
+    end
+
+    it "return its argument if given a GList" do
+      lst = GLib::List.from :gint32, [3, 2, 1]
+      lst2 = GLib::List.from :gint32, lst
+      assert_equal lst, lst2
+    end
+
+    it "wraps its argument if given a pointer" do
+      lst = GLib::List.from :gint32, [3, 2, 1]
+      pointer = lst.to_ptr
+      assert_instance_of FFI::Pointer, pointer
+      lst2 = GLib::List.from :gint32, pointer
+      assert_instance_of GLib::List, lst2
+      refute_equal lst, lst2
+      assert_equal lst.to_a, lst2.to_a
+    end
+  end
 end

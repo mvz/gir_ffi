@@ -37,8 +37,15 @@ module GLib
           self.from_array elmttype, ptr
         end
       end
+
+      def from elmttype, it
+        if it.is_a? FFI::Pointer
+          wrap elmttype, it
+        else
+          from_array elmttype, it
+        end
+      end
     end
   end
 end
-
 
