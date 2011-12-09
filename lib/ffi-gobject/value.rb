@@ -59,24 +59,21 @@ module GObject
       GObject.type_name current_gtype
     end
 
+    TYPE_TO_GET_METHOD = {
+      TYPE_BOOLEAN => :get_boolean,
+      TYPE_INT => :get_int,
+      TYPE_STRING => :get_string,
+      TYPE_FLOAT => :get_float,
+      TYPE_DOUBLE => :get_double,
+      TYPE_OBJECT => :get_object,
+      TYPE_BOXED => :get_boxed_enhanced,
+      TYPE_POINTER => :get_pointer
+    }
+
     def ruby_value
-      case current_fundamental_type
-      when TYPE_BOOLEAN
-        get_boolean
-      when TYPE_INT
-        get_int
-      when TYPE_STRING
-        get_string
-      when TYPE_FLOAT
-        get_float
-      when TYPE_DOUBLE
-        get_double
-      when TYPE_OBJECT
-        get_object
-      when TYPE_BOXED
-        get_boxed_enhanced
-      when TYPE_POINTER
-        get_pointer
+      method = TYPE_TO_GET_METHOD[current_fundamental_type]
+      if method
+        send method
       else
         raise "Don't know how to handle #{current_gtype_name}"
       end
