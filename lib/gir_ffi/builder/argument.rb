@@ -43,17 +43,24 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :glist, :gslist
-                provider = ListTypesProvider.new(type)
+              when :glist, :gslist, :ghash
+                provider = provider_for type
                 return ListInArgument.new var_gen, name, type, libmodule, provider
-              when :ghash
-                HashTableInArgument
               when :utf8
                 Utf8InArgument
               else
                 RegularInArgument
               end
       return klass.new var_gen, name, type, libmodule
+    end
+
+    def self.provider_for type
+      case type.tag
+      when :glist, :gslist
+        ListTypesProvider.new(type)
+      when :ghash
+        HashTableTypesProvider.new(type)
+      end
     end
   end
 
@@ -147,14 +154,6 @@ module GirFFI::Builder
 
     def pre
       [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
-    end
-  end
-
-  # Implements argument processing for ghash arguments with direction :in.
-  class HashTableInArgument < Argument::InBase
-    include Argument::HashTableBase
-    def pre
-      [ "#{callarg} = GLib::HashTable.from [#{key_t}, #{val_t}], #{@name}" ]
     end
   end
 
