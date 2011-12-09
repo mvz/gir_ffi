@@ -68,6 +68,14 @@ module GLib
         end
         ghash
       end
+
+      def from types, it
+        if it.is_a? FFI::Pointer
+          wrap types, it
+        else
+          from_hash types, it
+        end
+      end
     end
   end
 end
