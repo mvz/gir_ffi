@@ -25,11 +25,7 @@ module GObject
 
     def set_value val
       method = TYPE_TO_SET_METHOD[current_fundamental_type]
-      if method
-        send method, val
-      else
-        raise "Don't know how to handle #{current_gtype_name}"
-      end
+      call_or_raise method, val
       self
     end
 
@@ -68,11 +64,7 @@ module GObject
 
     def ruby_value
       method = TYPE_TO_GET_METHOD[current_fundamental_type]
-      if method
-        send method
-      else
-        raise "Don't know how to handle #{current_gtype_name}"
-      end
+      call_or_raise method
     end
 
     class << self
@@ -92,6 +84,14 @@ module GObject
         GLib::HashTable.wrap :gpointer, :gpointer, boxed
       else
         GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
+      end
+    end
+
+    def call_or_raise method, *args
+      if method
+        send method, *args
+      else
+        raise "Don't know how to handle #{current_gtype_name}"
       end
     end
   end
