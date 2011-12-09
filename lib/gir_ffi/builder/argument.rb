@@ -44,7 +44,8 @@ module GirFFI::Builder
                   RegularInArgument
                 end
               when :glist
-                ListInArgument
+                provider = ElementTypeProvider.new(type)
+                return ListInArgument.new var_gen, name, type, libmodule, provider
               when :gslist
                 SListInArgument
               when :ghash
@@ -120,9 +121,9 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t
 
-    def initialize var_gen, name, typeinfo, libmodule
+    def initialize var_gen, name, typeinfo, libmodule, provider
       super var_gen, name, typeinfo, libmodule
-      @elm_t_provider = ElementTypeProvider.new(typeinfo)
+      @elm_t_provider = provider
     end
 
     def pre
