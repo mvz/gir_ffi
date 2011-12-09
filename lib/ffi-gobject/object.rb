@@ -43,7 +43,7 @@ module GObject
         GLib::HashTable.wrap [type.param_type(0).tag, type.param_type(1).tag],
           val
       when :glist
-        GLib::List.wrap type.param_type(0).tag, val
+        GLib::List.from type.param_type(0).tag, val
       else
         val
       end
