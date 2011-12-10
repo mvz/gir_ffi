@@ -59,5 +59,32 @@ describe GLib::Array do
     arr.append_vals [1, 2, 3]
     assert_equal [1, 2, 3], arr.to_a
   end
+
+  describe "::from" do
+    it "creates a GArray from a Ruby array" do
+      arr = GLib::Array.from :gint32, [3, 2, 1]
+      assert_equal [3, 2, 1], arr.to_a
+    end
+
+    it "return its argument if given a GArray" do
+      arr = GLib::Array.new :gint32
+      arr.append_vals [3, 2, 1]
+      arr2 = GLib::Array.from :gint32, arr
+      assert_equal arr, arr2
+    end
+
+    # TODO: Make ::from fix the element type for the above case.
+
+    it "wraps its argument if given a pointer" do
+      arr = GLib::Array.new :gint32
+      arr.append_vals [3, 2, 1]
+      pointer = arr.to_ptr
+      assert_instance_of FFI::Pointer, pointer
+      arr2 = GLib::Array.from :gint32, pointer
+      assert_instance_of GLib::Array, arr2
+      refute_equal arr, arr2
+      assert_equal arr.to_a, arr2.to_a
+    end
+  end
 end
 

@@ -32,7 +32,16 @@ module GLib
     def self.wrap elmttype, ptr
       super(ptr).tap do |it|
         break if it.nil?
+        # TODO: Check element size?
         it.element_type = elmttype
+      end
+    end
+
+    def self.from elmtype, it
+      case it
+      when self then it
+      when FFI::Pointer then wrap elmtype, it
+      else self.new(elmtype).tap {|arr| arr.append_vals it }
       end
     end
 
