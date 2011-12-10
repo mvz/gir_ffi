@@ -346,7 +346,8 @@ module GirFFI::Builder
                   when :c
                     CArrayInOutArgument
                   when :array
-                    ArrayInOutArgument
+                    provider = provider_for type
+                    return ListInOutArgument.new var_gen, arginfo.name, type, libmodule, provider
                   end
                 end
               when :glist, :gslist, :ghash
@@ -413,20 +414,6 @@ module GirFFI::Builder
       pst
     end
 
-  end
-
-  # Implements argument processing for GArray arguments with direction
-  # :inout.
-  class ArrayInOutArgument < Argument::InOutBase
-    include Argument::ListBase
-
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}" ]
-    end
-
-    def post
-      [ "#{retname} = GLib::Array.wrap(#{elm_t}, #{callarg}.to_value)" ]
-    end
   end
 
   # Implements argument processing for glist arguments with direction
