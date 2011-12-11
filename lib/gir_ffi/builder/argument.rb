@@ -507,13 +507,9 @@ module GirFFI::Builder
                     PtrArrayReturnValue
                   end
                 end
-              when :glist
+              when :glist, :gslist, :ghash
                 provider = provider_for type
                 return ListReturnValue.new var_gen, name, type, provider
-              when :gslist
-                SListReturnValue
-              when :ghash
-                HashTableReturnValue
               when :utf8
                 Utf8ReturnValue
               else
@@ -605,25 +601,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GLib::List.wrap(#{elm_t}, #{cvar})" ]
-    end
-  end
-
-  # Implements argument processing for GSList return values.
-  class SListReturnValue < ReturnValue
-    include Argument::ListBase
-
-    def post
-      [ "#{retname} = GLib::SList.wrap(#{elm_t}, #{cvar})" ]
-    end
-  end
-
-  # Implements argument processing for GHashTable return values.
-  class HashTableReturnValue < ReturnValue
-    include Argument::HashTableBase
-
-    def post
-      [ "#{retname} = GLib::HashTable.wrap [#{key_t}, #{val_t}], #{cvar}" ]
+      [ "#{retname} = #{class_name}.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 
