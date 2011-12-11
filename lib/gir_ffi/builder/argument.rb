@@ -456,6 +456,8 @@ module GirFFI::Builder
   end
 
   module ReturnValueFactory
+    extend ArgumentFactoryHelpers
+
     def self.build var_gen, arginfo
       type = arginfo.return_type
       klass = builder_for(var_gen, arginfo.name, type, arginfo.constructor?)
@@ -506,7 +508,8 @@ module GirFFI::Builder
                   end
                 end
               when :glist
-                ListReturnValue
+                provider = provider_for type
+                return ListReturnValue.new var_gen, name, type, provider
               when :gslist
                 SListReturnValue
               when :ghash
@@ -596,9 +599,8 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def initialize var_gen, name, typeinfo
+    def initialize var_gen, name, typeinfo, provider
       super var_gen, name, typeinfo
-      provider = ListTypesProvider.new typeinfo
       @elm_t_provider = provider
     end
 
