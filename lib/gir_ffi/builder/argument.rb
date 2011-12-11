@@ -46,7 +46,7 @@ module GirFFI::Builder
       klass = case type.tag
               when :interface
                 if type.interface.info_type == :callback
-                  CallbackInArgument
+                  return CallbackInArgument.new var_gen, name, type, libmodule
                 else
                   RegularInArgument
                 end
@@ -60,19 +60,24 @@ module GirFFI::Builder
                 end
               when :glist, :gslist, :ghash
                 provider = provider_for type
-                return ListInArgument.new var_gen, name, type, libmodule, provider
+                return ListInArgument.new var_gen, name, type, provider
               when :utf8
                 Utf8InArgument
               else
                 RegularInArgument
               end
-      return klass.new var_gen, name, type, libmodule
+      return klass.new var_gen, name, type
     end
   end
 
   # Implements argument processing for callback arguments with direction
   # :in.
   class CallbackInArgument < Argument::InBase
+    def initialize var_gen, name, type, libmodule
+      super var_gen, name, type
+      @libmodule = libmodule
+    end
+
     def pre
       iface = type_info.interface
       [ "#{callarg} = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
@@ -154,8 +159,8 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def initialize var_gen, name, typeinfo, libmodule, provider
-      super var_gen, name, typeinfo, libmodule
+    def initialize var_gen, name, typeinfo, provider
+      super var_gen, name, typeinfo
       @elm_t_provider = provider
     end
 
@@ -214,16 +219,16 @@ module GirFFI::Builder
                     CArrayOutArgument
                   when :array
                     provider = provider_for type
-                    return ListOutArgument.new var_gen, arginfo.name, type, libmodule, provider
+                    return ListOutArgument.new var_gen, arginfo.name, type, provider
                   end
                 end
               when :glist, :gslist, :ghash
                 provider = provider_for type
-                return ListOutArgument.new var_gen, arginfo.name, type, libmodule, provider
+                return ListOutArgument.new var_gen, arginfo.name, type, provider
               else
                 RegularOutArgument
               end
-      klass.new var_gen, arginfo.name, type, libmodule
+      klass.new var_gen, arginfo.name, type
     end
   end
 
@@ -316,8 +321,8 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def initialize var_gen, name, typeinfo, libmodule, provider
-      super var_gen, name, typeinfo, libmodule
+    def initialize var_gen, name, typeinfo, provider
+      super var_gen, name, typeinfo
       @elm_t_provider = provider
     end
 
@@ -349,17 +354,17 @@ module GirFFI::Builder
                     CArrayInOutArgument
                   when :array
                     provider = provider_for type
-                    return ListInOutArgument.new var_gen, arginfo.name, type, libmodule, provider
+                    return ListInOutArgument.new var_gen, arginfo.name, type, provider
                   end
                 end
               when :glist, :gslist, :ghash
                 provider = provider_for type
-                return ListInOutArgument.new var_gen, arginfo.name, type, libmodule, provider
+                return ListInOutArgument.new var_gen, arginfo.name, type, provider
               else
                 RegularInOutArgument
               end
 
-      klass.new var_gen, arginfo.name, type, libmodule
+      klass.new var_gen, arginfo.name, type
     end
   end
 
@@ -424,8 +429,8 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def initialize var_gen, name, typeinfo, libmodule, provider
-      super var_gen, name, typeinfo, libmodule
+    def initialize var_gen, name, typeinfo, provider
+      super var_gen, name, typeinfo
       @elm_t_provider = provider
     end
 
@@ -524,10 +529,6 @@ module GirFFI::Builder
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
-    def initialize var_gen, name, type
-      super var_gen, name, type, nil
-    end
-
     def cvar
       @cvar ||= @var_gen.new_var
     end

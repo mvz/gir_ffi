@@ -17,14 +17,13 @@ module GirFFI
 
         attr_accessor :length_arg, :array_arg
 
-        def initialize var_gen, name, typeinfo, libmodule
+        def initialize var_gen, name, typeinfo
           @typeinfo = typeinfo
           @inarg = nil
           @callarg = nil
           @retname = nil
           @name = safe(name)
           @var_gen = var_gen
-          @libmodule = libmodule
           @length_arg = nil
           @array_arg = nil
         end

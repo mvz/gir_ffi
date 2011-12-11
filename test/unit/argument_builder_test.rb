@@ -9,7 +9,7 @@ describe GirFFI::Builder::Argument::Base do
 
         mock(info = Object.new).param_type(0) { subtype }
 
-        builder = GirFFI::Builder::Argument::Base.new nil, 'foo', info, nil
+        builder = GirFFI::Builder::Argument::Base.new nil, 'foo', info
         assert_equal ":void", builder.subtype_tag_or_class_name
       end
     end
@@ -21,7 +21,7 @@ describe GirFFI::Builder::Argument::Base do
 
         mock(info = Object.new).param_type(0) { subtype }
 
-        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info, nil
+        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info
         assert_equal ":foo", builder.subtype_tag_or_class_name
       end
     end
@@ -37,7 +37,7 @@ describe GirFFI::Builder::Argument::Base do
 
         mock(info = Object.new).param_type(0) { subtype }
 
-        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info, nil
+        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info
         assert_equal "::Foo::Bar", builder.subtype_tag_or_class_name
       end
     end
@@ -49,7 +49,7 @@ describe GirFFI::Builder::Argument::Base do
 
         mock(info = Object.new).param_type(0) { subtype }
 
-        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info, nil
+        builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info
         assert_equal "[:pointer, :foo]", builder.subtype_tag_or_class_name
       end
     end
