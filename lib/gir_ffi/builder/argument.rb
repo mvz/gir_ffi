@@ -469,7 +469,7 @@ module GirFFI::Builder
                 else
                   ObjectReturnValue
                 end
-        klass.new var_gen, name, type, nil
+        klass.new var_gen, name, type
       else
         builder_for_field_getter var_gen, name, type
       end
@@ -516,12 +516,16 @@ module GirFFI::Builder
               else
                 RegularReturnValue
               end
-      klass.new var_gen, name, type, nil
+      klass.new var_gen, name, type
     end
   end
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
+    def initialize var_gen, name, type
+      super var_gen, name, type, nil
+    end
+
     def cvar
       @cvar ||= @var_gen.new_var
     end
@@ -592,8 +596,8 @@ module GirFFI::Builder
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
-    def initialize var_gen, name, typeinfo, libmodule
-      super var_gen, name, typeinfo, libmodule
+    def initialize var_gen, name, typeinfo
+      super var_gen, name, typeinfo
       provider = ListTypesProvider.new typeinfo
       @elm_t_provider = provider
     end
