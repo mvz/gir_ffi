@@ -13,7 +13,7 @@ module GirFFI::Builder
     def generate
       vargen = GirFFI::VariableNameGenerator.new
       @data = @info.args.map {|arg| Argument.build vargen, arg, @libmodule}
-      @rvdata = ReturnValue.build vargen, @info
+      @rvdata = ReturnValueFactory.build vargen, @info
 
       alldata = @data.dup << @rvdata
 

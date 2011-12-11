@@ -455,16 +455,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for return values.
-  class ReturnValue < Argument::Base
-    def cvar
-      @cvar ||= @var_gen.new_var
-    end
-
-    def retname
-      @retname ||= @var_gen.new_var
-    end
-
+  module ReturnValueFactory
     def self.build var_gen, arginfo
       type = arginfo.return_type
       klass = builder_for(var_gen, arginfo.name, type, arginfo.constructor?)
@@ -526,6 +517,17 @@ module GirFFI::Builder
                 RegularReturnValue
               end
       klass.new var_gen, name, type, nil
+    end
+  end
+
+  # Implements argument processing for return values.
+  class ReturnValue < Argument::Base
+    def cvar
+      @cvar ||= @var_gen.new_var
+    end
+
+    def retname
+      @retname ||= @var_gen.new_var
     end
 
     def inarg

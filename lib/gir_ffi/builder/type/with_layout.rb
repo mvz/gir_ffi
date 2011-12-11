@@ -47,7 +47,7 @@ module GirFFI
         def getter_builder finfo
           type = finfo.field_type
           vargen = VariableNameGenerator.new
-          Builder::ReturnValue.builder_for_field_getter vargen, finfo.name, type
+          ReturnValueFactory.builder_for_field_getter vargen, finfo.name, type
         end
 
         def getter_def finfo
