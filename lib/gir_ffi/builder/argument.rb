@@ -459,8 +459,10 @@ module GirFFI::Builder
     extend ArgumentFactoryHelpers
 
     def self.build var_gen, arginfo
-      type = arginfo.return_type
-      klass = builder_for(var_gen, arginfo.name, type, arginfo.constructor?)
+      builder_for(var_gen,
+                  arginfo.name,
+                  arginfo.return_type,
+                  arginfo.constructor?)
     end
 
     def self.builder_for var_gen, name, type, is_constructor
