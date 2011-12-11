@@ -502,7 +502,8 @@ module GirFFI::Builder
                   when :c
                     CArrayReturnValue
                   when :array
-                    ArrayReturnValue
+                    provider = provider_for type
+                    return ListReturnValue.new var_gen, name, type, provider
                   when :byte_array
                     ByteArrayReturnValue
                   else
@@ -611,15 +612,6 @@ module GirFFI::Builder
   class ByteArrayReturnValue < ReturnValue
     def post
       [ "#{retname} = GLib::ByteArray.wrap(#{cvar})" ]
-    end
-  end
-
-  # Implements argument processing for GArray return values.
-  class ArrayReturnValue < ReturnValue
-    include Argument::ListBase
-
-    def post
-      [ "#{retname} = GLib::Array.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 
