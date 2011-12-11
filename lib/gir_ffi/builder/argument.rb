@@ -28,6 +28,8 @@ module GirFFI::Builder
         ListTypesProvider.new(type)
       when :ghash
         HashTableTypesProvider.new(type)
+      else
+        nil
       end
     end
   end
@@ -146,8 +148,8 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for glist arguments with
-  # direction :in.
+  # Implements argument processing for glist, gslist and ghash arguments
+  # with direction :in.
   class ListInArgument < Argument::InBase
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
@@ -465,64 +467,65 @@ module GirFFI::Builder
 
     def self.build var_gen, arginfo
       type = arginfo.return_type
-      klass = builder_for(type, arginfo.constructor?)
-      klass.new var_gen, arginfo.name, type, nil
+      klass = builder_for(var_gen, arginfo.name, type, arginfo.constructor?)
     end
 
-    def self.builder_for type, is_constructor
+    def self.builder_for var_gen, name, type, is_constructor
       if type.tag == :interface and
         [:interface, :object].include? type.interface.info_type
-        if is_constructor
-          ConstructorReturnValue
-        else
-          ObjectReturnValue
-        end
+        klass = if is_constructor
+                  ConstructorReturnValue
+                else
+                  ObjectReturnValue
+                end
+        klass.new var_gen, name, type, nil
       else
-        builder_for_field_getter type
+        builder_for_field_getter var_gen, name, type
       end
     end
 
-    def self.builder_for_field_getter type
-      case type.tag
-      when :void
-        if type.pointer?
-          RegularReturnValue
-        else
-          VoidReturnValue
-        end
-      when :interface
-        case type.interface.info_type
-        when :struct, :union, :interface, :object
-          InterfaceReturnValue
-        else
-          RegularReturnValue
-        end
-      when :array
-        if type.zero_terminated?
-          StrvReturnValue
-        else
-          case type.array_type
-          when :c
-            CArrayReturnValue
-          when :array
-            ArrayReturnValue
-          when :byte_array
-            ByteArrayReturnValue
-          else
-            PtrArrayReturnValue
-          end
-        end
-      when :glist
-        ListReturnValue
-      when :gslist
-        SListReturnValue
-      when :ghash
-        HashTableReturnValue
-      when :utf8
-        Utf8ReturnValue
-      else
-        RegularReturnValue
-      end
+    def self.builder_for_field_getter var_gen, name, type
+      klass = case type.tag
+              when :void
+                if type.pointer?
+                  RegularReturnValue
+                else
+                  VoidReturnValue
+                end
+              when :interface
+                case type.interface.info_type
+                when :struct, :union, :interface, :object
+                  InterfaceReturnValue
+                else
+                  RegularReturnValue
+                end
+              when :array
+                if type.zero_terminated?
+                  StrvReturnValue
+                else
+                  case type.array_type
+                  when :c
+                    CArrayReturnValue
+                  when :array
+                    ArrayReturnValue
+                  when :byte_array
+                    ByteArrayReturnValue
+                  else
+                    PtrArrayReturnValue
+                  end
+                end
+              when :glist
+                ListReturnValue
+              when :gslist
+                SListReturnValue
+              when :ghash
+                HashTableReturnValue
+              when :utf8
+                Utf8ReturnValue
+              else
+                RegularReturnValue
+              end
+      klass.new var_gen, name, type, nil
     end
 
     def inarg
@@ -584,7 +587,14 @@ module GirFFI::Builder
 
   # Implements argument processing for GList return values.
   class ListReturnValue < ReturnValue
-    include Argument::ListBase
+    extend Forwardable
+    def_delegators :@elm_t_provider, :elm_t, :class_name
+
+    def initialize var_gen, name, typeinfo, libmodule
+      super var_gen, name, typeinfo, libmodule
+      provider = ListTypesProvider.new typeinfo
+      @elm_t_provider = provider
+    end
 
     def post
       [ "#{retname} = GLib::List.wrap(#{elm_t}, #{cvar})" ]

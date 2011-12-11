@@ -46,9 +46,8 @@ module GirFFI
         # TODO: Extract to new FieldBuilder class.
         def getter_builder finfo
           type = finfo.field_type
-          klass = Builder::ReturnValue.builder_for_field_getter type
           vargen = VariableNameGenerator.new
-          klass.new vargen, finfo.name, type, nil
+          Builder::ReturnValue.builder_for_field_getter vargen, finfo.name, type
         end
 
         def getter_def finfo
