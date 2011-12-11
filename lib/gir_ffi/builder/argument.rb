@@ -235,28 +235,24 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
   class RegularOutArgument < Argument::OutBase
-    def post
-      [ "#{retname} = #{callarg}.to_value" ]
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.for #{type_tag.inspect}" ]
     end
 
-    private
-
-    def base_type
-      type_tag
+    def post
+      [ "#{retname} = #{callarg}.to_value" ]
     end
   end
 
   # Implements argument processing for arguments with direction
   # :out that are enums
-  class EnumOutArgument < RegularOutArgument
-    def post
-      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
+  class EnumOutArgument < Argument::OutBase
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.for :gint32" ]
     end
 
-    private
-
-    def base_type
-      :gint32
+    def post
+      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
   end
 
@@ -272,15 +268,15 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for interface arguments with direction
-  # :out (structs, objects, etc.).
-  class InterfaceOutArgument < Argument::OutBase
+  # Implements argument processing for array arguments with direction
+  # :out.
+  class CArrayOutArgument < Argument::OutBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
+      [ "#{callarg} = GirFFI::InOutPointer.for_array #{subtype_tag_or_class_name}" ]
     end
 
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
+    def postpost
+      [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
     end
   end
 
@@ -288,22 +284,16 @@ module GirFFI::Builder
   # a pointer: For these, a pointer to a pointer needs to be passed to the
   # C function.
   class PointerLikeOutArgument < Argument::OutBase
-    private
-
-    def base_type
-      :pointer
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
     end
   end
 
-  # Implements argument processing for array arguments with direction
-  # :out.
-  class CArrayOutArgument < PointerLikeOutArgument
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for_array #{subtype_tag_or_class_name}" ]
-    end
-
-    def postpost
-      [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
+  # Implements argument processing for interface arguments with direction
+  # :out (structs, objects, etc.).
+  class InterfaceOutArgument < PointerLikeOutArgument
+    def post
+      [ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
     end
   end
 

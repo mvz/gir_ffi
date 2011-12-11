@@ -14,10 +14,6 @@ module GirFFI
         def retname
           @retname ||= @var_gen.new_var
         end
-
-        def pre
-          [ "#{callarg} = GirFFI::InOutPointer.for #{base_type.inspect}" ]
-        end
       end
     end
   end
