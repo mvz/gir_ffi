@@ -8,7 +8,6 @@ require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
 require 'gir_ffi/builder/argument/in_out_base'
 require 'gir_ffi/builder/argument/list_base'
-require 'gir_ffi/builder/argument/hash_table_base'
 
 module GirFFI::Builder
   module Argument
