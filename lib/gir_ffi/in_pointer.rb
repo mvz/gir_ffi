@@ -8,18 +8,14 @@ module GirFFI
       return from_utf8_array ary if type == :utf8
       return from_interface_pointer_array ary if type == :interface_pointer
 
-      ffi_type = TypeMap.map_basic_type type
-      block = ArgHelper.allocate_array_of_type ffi_type, ary.length
-      block.send "put_array_of_#{ffi_type}", 0, ary
-
-      self.new block
+      return from_basic_type_array type, ary
     end
 
     def self.from type, val
       return nil if val.nil?
       case type
       when :utf8
-        from_utf8 val
+        from_utf8_string val
       when :gint32, :gint8
         self.new val
       else
@@ -43,11 +39,20 @@ module GirFFI
         self.from_array :pointer, ptr_ary
       end
 
-      def from_utf8 str
+      def from_utf8_string str
         len = str.bytesize
         ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
         self.new ptr
       end
+
+      def from_basic_type_array type, ary
+        ffi_type = TypeMap.map_basic_type type
+        block = ArgHelper.allocate_array_of_type ffi_type, ary.length
+        block.send "put_array_of_#{ffi_type}", 0, ary
+
+        self.new block
+      end
+
     end
   end
 end

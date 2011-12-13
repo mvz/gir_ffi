@@ -49,13 +49,14 @@ module GirFFI
 
         def stub_methods
           info.get_methods.each do |minfo|
-            @klass.class_eval method_stub(minfo.name, minfo.method?)
+            @klass.class_eval method_stub(minfo)
           end
         end
 
-        def method_stub symbol, is_instance_method
+        def method_stub minfo
+          symbol = minfo.name
           "
-            def #{is_instance_method ? '' : 'self.'}#{symbol} *args, &block
+            def #{minfo.method? ? '' : 'self.'}#{symbol} *args, &block
               setup_and_call :#{symbol}, *args, &block
             end
           "
