@@ -1,3 +1,5 @@
+require 'gir_ffi/method_stubber'
+
 module GirFFI
   module Builder
     module Type
@@ -49,17 +51,8 @@ module GirFFI
 
         def stub_methods
           info.get_methods.each do |minfo|
-            @klass.class_eval method_stub(minfo)
+            @klass.class_eval MethodStubber.new(minfo).method_stub
           end
-        end
-
-        def method_stub minfo
-          symbol = minfo.name
-          "
-            def #{minfo.method? ? '' : 'self.'}#{symbol} *args, &block
-              setup_and_call :#{symbol}, *args, &block
-            end
-          "
         end
 
         def pretty_print_methods
