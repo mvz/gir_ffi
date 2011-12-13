@@ -1,6 +1,4 @@
-require 'gir_ffi/builder/argument'
-require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/builder/field_getter'
+require 'gir_ffi/builder/field'
 
 module GirFFI
   module Builder
@@ -37,31 +35,12 @@ module GirFFI
 
         def setup_field_accessors
           info.fields.each do |finfo|
+            builder = Builder::Field.new(finfo, lib)
             unless info.find_method finfo.name
-              @klass.class_eval FieldGetter.new(finfo).getter_def
+              @klass.class_eval builder.getter_def
             end
-            @klass.class_eval setter_def(finfo) if finfo.writable?
+            @klass.class_eval builder.setter_def if finfo.writable?
           end
-        end
-
-        # TODO: Extract to new FieldBuilder class.
-        def setter_builder finfo
-          type = finfo.field_type
-          vargen = VariableNameGenerator.new
-          Builder::InArgument.builder_for vargen, "value", type, lib
-        end
-
-        def setter_def finfo
-          builder = setter_builder finfo
-          builder.prepare
-          name = finfo.name
-
-          return <<-CODE
-          def #{name}= #{builder.inarg}
-            #{builder.pre.join("\n")}
-            @struct[#{name.to_sym.inspect}] = #{builder.callarg}
-          end
-          CODE
         end
 
         def instantiate_class

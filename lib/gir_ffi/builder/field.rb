@@ -3,10 +3,11 @@ require 'gir_ffi/variable_name_generator'
 
 module GirFFI
   module Builder
-    # Creates field getter code for a given IFieldInfo.
-    class FieldGetter
-      def initialize field_info
+    # Creates field getter and setter code for a given IFieldInfo.
+    class Field
+      def initialize field_info, lib_module
         @info = field_info
+        @libmodule = lib_module
       end
 
       def getter_def
@@ -21,6 +22,19 @@ module GirFFI
         CODE
       end
 
+      def setter_def
+        builder = setter_builder
+        builder.prepare
+        name = @info.name
+
+        return <<-CODE
+        def #{name}= #{builder.inarg}
+          #{builder.pre.join("\n")}
+          @struct[#{name.to_sym.inspect}] = #{builder.callarg}
+        end
+        CODE
+      end
+
       private
 
       def field_symbol
@@ -30,6 +44,12 @@ module GirFFI
       def return_value_builder
         @rv_builder ||= ReturnValueFactory.builder_for_field_getter(
           VariableNameGenerator.new, @info.name, @info.field_type)
+      end
+
+      def setter_builder
+        type = @info.field_type
+        vargen = VariableNameGenerator.new
+        Builder::InArgument.builder_for vargen, "value", type, @libmodule
       end
     end
   end
