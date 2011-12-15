@@ -30,7 +30,7 @@ module GirFFI
 
         def instance_method_introspection_data method
           data = method_introspection_data method
-          return !data.nil? && data.method? ? data : nil
+          return data if data && data.method?
         end
 
         def function_definition_builder go
