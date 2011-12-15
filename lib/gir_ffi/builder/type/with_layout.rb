@@ -26,9 +26,7 @@ module GirFFI
         end
 
         def base_layout_specification
-          info.fields.inject([]) do |spec, finfo|
-            spec + finfo.layout_specification
-          end
+          info.fields.map { |finfo| finfo.layout_specification }.flatten(1)
         end
 
         def layout_specification
