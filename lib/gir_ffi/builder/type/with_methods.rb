@@ -17,6 +17,10 @@ module GirFFI
           attach_and_define_method method, go, build_class
         end
 
+        def has_instance_method method
+          !!instance_method_introspection_data(method)
+        end
+
         private
 
         def meta_class

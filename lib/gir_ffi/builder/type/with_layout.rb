@@ -6,6 +6,8 @@ module GirFFI
 
       # Implements the creation of classes representing types with layout,
       # i.e., :union, :struct, :object.
+      # Note: This module depends on the additional inclusion of
+      # WithMethods.
       module WithLayout
         private
 
@@ -14,32 +16,46 @@ module GirFFI
           @structklass.class_eval { layout(*spec) }
         end
 
+        def layout_specification_for_field_info finfo
+          [ finfo.name.to_sym,
+            itypeinfo_to_ffitype_for_struct(finfo.field_type),
+            finfo.offset ]
+        end
+
+        def dummy_layout_specification
+          if parent
+            [:parent, superclass.const_get(:Struct), 0]
+          else
+            [:dummy, :char, 0]
+          end
+        end
+
+        def base_layout_specification
+          info.fields.inject([]) do |spec, finfo|
+            spec + layout_specification_for_field_info(finfo)
+          end
+        end
+
         def layout_specification
-          fields = info.fields
-
-          if fields.empty?
-            if parent
-              return [:parent, superclass.const_get(:Struct), 0]
-            else
-              return [:dummy, :char, 0]
-            end
+          spec = base_layout_specification
+          if spec.empty?
+            dummy_layout_specification
+          else
+            spec
           end
+        end
 
-          fields.inject([]) do |spec, finfo|
-            spec +
-              [ finfo.name.to_sym,
-                itypeinfo_to_ffitype_for_struct(finfo.field_type),
-                finfo.offset ]
+        def setup_accessors_for_field_info finfo
+          builder = Builder::Field.new(finfo, lib)
+          unless has_instance_method finfo.name
+            @klass.class_eval builder.getter_def
           end
+          @klass.class_eval builder.setter_def if finfo.writable?
         end
 
         def setup_field_accessors
           info.fields.each do |finfo|
-            builder = Builder::Field.new(finfo, lib)
-            unless info.find_method finfo.name
-              @klass.class_eval builder.getter_def
-            end
-            @klass.class_eval builder.setter_def if finfo.writable?
+            setup_accessors_for_field_info finfo
           end
         end
 
