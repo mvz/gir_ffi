@@ -42,6 +42,10 @@ describe GirFFI::Builder::Type::Struct do
 
   describe "for a struct with a simple layout" do
     before do
+      # FIXME: Push down stubs only into tests that need them.
+      # FIXME: Test WithLayout directly.
+      # FIXME: Move tests to create individual field layout to IFieldInfo
+      #        tests.
       stub(@type = Object.new).pointer? { false }
       stub(@type).tag { :gint32 }
 
@@ -49,6 +53,7 @@ describe GirFFI::Builder::Type::Struct do
       stub(field).name { "bar" }
       stub(field).offset { 0 }
       stub(field).writable? { true }
+      stub(field).layout_specification { [:bar, :int32, 0] }
 
       stub(@struct = Object.new).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
@@ -82,6 +87,10 @@ describe GirFFI::Builder::Type::Struct do
 
   describe "for a struct with a layout with a fixed-length array" do
     before do
+      # FIXME: Push down stubs only into tests that need them.
+      # FIXME: Test WithLayout directly.
+      # FIXME: Move tests to create individual field layout to IFieldInfo
+      #        tests.
       stub(subtype = Object.new).pointer? { false }
       stub(subtype).tag { :foo }
 
@@ -93,17 +102,14 @@ describe GirFFI::Builder::Type::Struct do
       stub(field = Object.new).field_type { @type }
       stub(field).name { "bar" }
       stub(field).offset { 0 }
+      stub(field).layout_specification { [:bar, [:foo, 2], 0] }
 
       stub(@struct = Object.new).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
       stub(@struct).fields { [ field ] }
     end
 
-    it "creates the correct ffi type for the array" do
-      builder = GirFFI::Builder::Type::Struct.new @struct
-      spec = builder.send :itypeinfo_to_ffitype_for_struct, @type
-      assert_equal [:foo, 2], spec
-    end
+    # FIXME: Create test for ITypeInfo.ffitype_for_struct
 
     it "creates the correct layout specification" do
       builder = GirFFI::Builder::Type::Struct.new @struct

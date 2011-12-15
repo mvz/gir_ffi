@@ -11,22 +11,6 @@ module GirFFI
       class RegisteredType < Base
         private
 
-        # FIXME: Move this into a class with the other type knowledge.
-        def itypeinfo_to_ffitype_for_struct typeinfo
-          ffitype = Builder.itypeinfo_to_ffitype typeinfo
-          if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct
-            ffitype = ffitype.const_get :Struct
-          end
-          if ffitype == :bool
-            ffitype = :int
-          end
-          if ffitype == :array
-            subtype = itypeinfo_to_ffitype_for_struct typeinfo.param_type(0)
-            ffitype = [subtype, typeinfo.array_fixed_size]
-          end
-          ffitype
-        end
-
         def setup_constants
           @klass.const_set :GIR_INFO, info
           @klass.const_set :GIR_FFI_BUILDER, self

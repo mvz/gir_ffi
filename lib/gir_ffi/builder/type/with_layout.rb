@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/field'
+require 'gir_ffi/info_ext/i_field_info'
 
 module GirFFI
   module Builder
@@ -16,12 +17,6 @@ module GirFFI
           @structklass.class_eval { layout(*spec) }
         end
 
-        def layout_specification_for_field_info finfo
-          [ finfo.name.to_sym,
-            itypeinfo_to_ffitype_for_struct(finfo.field_type),
-            finfo.offset ]
-        end
-
         def dummy_layout_specification
           if parent
             [:parent, superclass.const_get(:Struct), 0]
@@ -32,7 +27,7 @@ module GirFFI
 
         def base_layout_specification
           info.fields.inject([]) do |spec, finfo|
-            spec + layout_specification_for_field_info(finfo)
+            spec + finfo.layout_specification
           end
         end
 
