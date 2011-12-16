@@ -7,7 +7,6 @@ require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/in_base'
 require 'gir_ffi/builder/argument/out_base'
 require 'gir_ffi/builder/argument/in_out_base'
-require 'gir_ffi/builder/argument/list_base'
 
 module GirFFI::Builder
   module Argument
@@ -92,11 +91,7 @@ module GirFFI::Builder
     end
   end
 
-  class TypesProviderBase
-    def initialize type
-      @type = type
-    end
-
+  module ContainerClassName
     TAG_TO_CONTAINER_CLASS_MAP = {
       :glist => 'GLib::List',
       :gslist => 'GLib::SList',
@@ -105,11 +100,23 @@ module GirFFI::Builder
     }
 
     def class_name
-      TAG_TO_CONTAINER_CLASS_MAP[@type.tag]
+      TAG_TO_CONTAINER_CLASS_MAP[type_info.tag]
+    end
+  end
+
+  module HasTypeInfo
+    def initialize type
+      @type = type
     end
 
+    def type_info
+      @type
+    end
+  end
+
+  module WithSubtTypeTag
     def subtype_tag index=0
-      st = @type.param_type(index)
+      st = type_info.param_type(index)
       t = st.tag
       case t
       when :GType
@@ -126,21 +133,35 @@ module GirFFI::Builder
     end
   end
 
-  class ListTypesProvider < TypesProviderBase
+  class TypesProviderBase
+    include HasTypeInfo
+    include ContainerClassName
+    include WithSubtTypeTag
+  end
+
+  module ListElementTypeProvider
     def elm_t
       subtype_tag.inspect
     end
   end
 
-  class HashTableTypesProvider < TypesProviderBase
+  class ListTypesProvider < TypesProviderBase
+    include ListElementTypeProvider
+  end
+
+  module HashTableElementTypeProvider
     def elm_t
       [subtype_tag(0), subtype_tag(1)].inspect
     end
   end
 
+  class HashTableTypesProvider < TypesProviderBase
+    include HashTableElementTypeProvider
+  end
+
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
-    include Argument::ListBase
+    include ListElementTypeProvider
     def pre
       pr = []
       size = type_info.array_fixed_size
@@ -386,7 +407,7 @@ module GirFFI::Builder
   # Implements argument processing for strv arguments with direction
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
-    include Argument::ListBase
+    include ListElementTypeProvider
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
@@ -399,7 +420,7 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :inout.
   class CArrayInOutArgument < Argument::InOutBase
-    include Argument::ListBase
+    include ListElementTypeProvider
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
