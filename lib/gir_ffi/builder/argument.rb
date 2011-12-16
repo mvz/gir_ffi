@@ -56,7 +56,14 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :glist, :gslist, :ghash
+              when :glist, :gslist
+                it = Argument::InBase.new var_gen, name, type
+                it.extend ContainerClassName
+                it.extend WithSubTypeTag
+                it.extend ListElementTypeProvider
+                it.extend WithTypedContainerPreArgument
+                return it
+              when :ghash
                 provider = provider_for type
                 return ListInArgument.new var_gen, name, type, provider
               when :utf8
@@ -114,7 +121,7 @@ module GirFFI::Builder
     end
   end
 
-  module WithSubtTypeTag
+  module WithSubTypeTag
     def subtype_tag index=0
       st = type_info.param_type(index)
       t = st.tag
@@ -133,19 +140,16 @@ module GirFFI::Builder
     end
   end
 
-  class TypesProviderBase
-    include HasTypeInfo
-    include ContainerClassName
-    include WithSubtTypeTag
-  end
-
   module ListElementTypeProvider
     def elm_t
       subtype_tag.inspect
     end
   end
 
-  class ListTypesProvider < TypesProviderBase
+  class ListTypesProvider
+    include HasTypeInfo
+    include ContainerClassName
+    include WithSubTypeTag
     include ListElementTypeProvider
   end
 
@@ -155,7 +159,10 @@ module GirFFI::Builder
     end
   end
 
-  class HashTableTypesProvider < TypesProviderBase
+  class HashTableTypesProvider
+    include HasTypeInfo
+    include ContainerClassName
+    include WithSubTypeTag
     include HashTableElementTypeProvider
   end
 
@@ -173,19 +180,22 @@ module GirFFI::Builder
     end
   end
 
+  module WithTypedContainerPreArgument
+    def pre
+      [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
+    end
+  end
+
   # Implements argument processing for glist, gslist and ghash arguments
   # with direction :in.
   class ListInArgument < Argument::InBase
+    include WithTypedContainerPreArgument
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
     def initialize var_gen, name, typeinfo, provider
       super var_gen, name, typeinfo
       @elm_t_provider = provider
-    end
-
-    def pre
-      [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
     end
   end
 
