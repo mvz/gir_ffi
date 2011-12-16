@@ -19,19 +19,6 @@ module GirFFI::Builder
     end
   end
 
-  module ArgumentFactoryHelpers
-    def provider_for type
-      case type.tag
-      when :glist, :gslist, :array
-        ListTypesProvider.new(type)
-      when :ghash
-        HashTableTypesProvider.new(type)
-      else
-        nil
-      end
-    end
-  end
-
   module InArgument
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
@@ -111,59 +98,16 @@ module GirFFI::Builder
     end
   end
 
-  module HasTypeInfo
-    def initialize type
-      @type = type
-    end
-
-    def type_info
-      @type
-    end
-  end
-
-  module WithSubTypeTag
-    def subtype_tag index=0
-      st = type_info.param_type(index)
-      t = st.tag
-      case t
-      when :GType
-        return :gtype
-      when :interface
-        return :interface_pointer if st.pointer?
-        return :interface
-      when :void
-        return :gpointer if st.pointer?
-        return :void
-      else
-        return t
-      end
-    end
-  end
-
   module ListElementTypeProvider
     def elm_t
       subtype_tag.inspect
     end
   end
 
-  class ListTypesProvider
-    include HasTypeInfo
-    include ContainerClassName
-    include WithSubTypeTag
-    include ListElementTypeProvider
-  end
-
   module HashTableElementTypeProvider
     def elm_t
       [subtype_tag(0), subtype_tag(1)].inspect
     end
-  end
-
-  class HashTableTypesProvider
-    include HasTypeInfo
-    include ContainerClassName
-    include WithSubTypeTag
-    include HashTableElementTypeProvider
   end
 
   # Implements argument processing for array arguments with direction :in.
@@ -466,8 +410,6 @@ module GirFFI::Builder
   end
 
   module ReturnValueFactory
-    extend ArgumentFactoryHelpers
-
     def self.build var_gen, arginfo
       builder_for(var_gen,
                   arginfo.name,

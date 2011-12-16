@@ -48,6 +48,9 @@ module GirFFI
           when :interface
             return :interface_pointer if st.pointer?
             return :interface
+          when :void
+            return :gpointer if st.pointer?
+            return :void
           else
             return t
           end
