@@ -7,17 +7,17 @@ module GirFFI
 
       def layout_specification_type
         ffitype = GirFFI::Builder.itypeinfo_to_ffitype self
-        if ffitype.kind_of?(Class) and const_defined_for ffitype, :Struct
-          ffitype = ffitype.const_get :Struct
-        end
-        if ffitype == :bool
-          ffitype = :int
-        end
-        if ffitype == :array
+        case ffitype
+        when Class
+          ffitype.const_get :Struct
+        when :bool
+          :int
+        when :array
           subtype = param_type(0).layout_specification_type
-          ffitype = [subtype, array_fixed_size]
+          [subtype, array_fixed_size]
+        else
+          ffitype
         end
-        ffitype
       end
     end
   end
