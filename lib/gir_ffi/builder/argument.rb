@@ -33,8 +33,6 @@ module GirFFI::Builder
   end
 
   module InArgument
-    extend ArgumentFactoryHelpers
-
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       builder_for var_gen, arginfo.name, type, libmodule
@@ -63,8 +61,11 @@ module GirFFI::Builder
                 it.extend WithTypedContainerPreMethod
                 return it
               when :ghash
-                provider = provider_for type
-                return ListInArgument.new var_gen, name, type, provider
+                it = Argument::InBase.new var_gen, name, type
+                it.extend ContainerClassName
+                it.extend HashTableElementTypeProvider
+                it.extend WithTypedContainerPreMethod
+                return it
               when :utf8
                 Utf8InArgument
               else
@@ -185,19 +186,6 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for glist, gslist and ghash arguments
-  # with direction :in.
-  class ListInArgument < Argument::InBase
-    include WithTypedContainerPreMethod
-    extend Forwardable
-    def_delegators :@elm_t_provider, :elm_t, :class_name
-
-    def initialize var_gen, name, typeinfo, provider
-      super var_gen, name, typeinfo
-      @elm_t_provider = provider
-    end
-  end
-
   # Implements argument processing for UTF8 string arguments with direction
   # :in.
   class Utf8InArgument < Argument::InBase
@@ -223,8 +211,6 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :out.
   module OutArgument
-    extend ArgumentFactoryHelpers
-
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -247,8 +233,11 @@ module GirFFI::Builder
                   when :c
                     CArrayOutArgument
                   when :array
-                    provider = provider_for type
-                    return ListOutArgument.new var_gen, arginfo.name, type, provider
+                    it = PointerLikeOutArgument.new var_gen, arginfo.name, type
+                    it.extend ContainerClassName
+                    it.extend ListElementTypeProvider
+                    it.extend WithTypedContainerPostMethod
+                    return it
                   end
                 end
               when :glist, :gslist
@@ -258,8 +247,11 @@ module GirFFI::Builder
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
-                provider = provider_for type
-                return ListOutArgument.new var_gen, arginfo.name, type, provider
+                it = PointerLikeOutArgument.new var_gen, arginfo.name, type
+                it.extend ContainerClassName
+                it.extend HashTableElementTypeProvider
+                it.extend WithTypedContainerPostMethod
+                return it
               else
                 RegularOutArgument
               end
@@ -346,23 +338,8 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for glist arguments with direction
-  # :out.
-  class ListOutArgument < PointerLikeOutArgument
-    include WithTypedContainerPostMethod
-    extend Forwardable
-    def_delegators :@elm_t_provider, :elm_t, :class_name
-
-    def initialize var_gen, name, typeinfo, provider
-      super var_gen, name, typeinfo
-      @elm_t_provider = provider
-    end
-  end
-
   # Implements argument processing for arguments with direction :inout.
   module InOutArgument
-    extend ArgumentFactoryHelpers
-
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       klass = case type.tag
@@ -381,8 +358,12 @@ module GirFFI::Builder
                   when :c
                     CArrayInOutArgument
                   when :array
-                    provider = provider_for type
-                    return ListInOutArgument.new var_gen, arginfo.name, type, provider
+                    it = Argument::InOutBase.new var_gen, arginfo.name, type
+                    it.extend ContainerClassName
+                    it.extend ListElementTypeProvider
+                    it.extend WithTypedContainerInOutPreMethod
+                    it.extend WithTypedContainerPostMethod
+                    return it
                   end
                 end
               when :glist, :gslist
@@ -393,8 +374,12 @@ module GirFFI::Builder
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
-                provider = provider_for type
-                return ListInOutArgument.new var_gen, arginfo.name, type, provider
+                it = Argument::InOutBase.new var_gen, arginfo.name, type
+                it.extend ContainerClassName
+                it.extend HashTableElementTypeProvider
+                it.extend WithTypedContainerInOutPreMethod
+                it.extend WithTypedContainerPostMethod
+                return it
               else
                 RegularInOutArgument
               end
@@ -460,20 +445,6 @@ module GirFFI::Builder
   module WithTypedContainerInOutPreMethod
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{class_name}.from(#{elm_t}, #{@name})" ]
-    end
-  end
-
-  # Implements argument processing for glist arguments with direction
-  # :inout.
-  class ListInOutArgument < Argument::InOutBase
-    include WithTypedContainerPostMethod
-    include WithTypedContainerInOutPreMethod
-    extend Forwardable
-    def_delegators :@elm_t_provider, :elm_t, :class_name
-
-    def initialize var_gen, name, typeinfo, provider
-      super var_gen, name, typeinfo
-      @elm_t_provider = provider
     end
   end
 
