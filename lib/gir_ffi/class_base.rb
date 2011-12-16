@@ -1,4 +1,6 @@
 require 'forwardable'
+require 'gir_ffi/ffi_ext/pointer'
+
 module GirFFI
   # Base class for all generated classes. Contains code for dealing with
   # the generated Struct classes.
@@ -67,10 +69,7 @@ module GirFFI
 
       def wrap ptr
 	return nil if ptr.nil? or ptr.null?
-        unless ptr.is_a? FFI::Pointer
-          ptr = ptr.to_ptr
-        end
-	_real_new ptr
+	_real_new ptr.to_ptr
       end
 
       # TODO: Only makes sense for :objects.
