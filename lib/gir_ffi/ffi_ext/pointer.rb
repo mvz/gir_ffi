@@ -4,6 +4,10 @@ module GirFFI
       def to_ptr
         self
       end
+
+      def to_value
+        self
+      end
     end
   end
 end

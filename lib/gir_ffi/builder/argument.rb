@@ -512,17 +512,29 @@ module GirFFI::Builder
                   when :c
                     CArrayReturnValue
                   when :array
-                    provider = provider_for type
-                    return ListReturnValue.new var_gen, name, type, provider
+                    it = ReturnValue.new var_gen, name, type
+                    it.extend ContainerClassName
+                    it.extend ListElementTypeProvider
+                    it.extend WithTypedContainerPostMethod
+                    return it
                   when :byte_array
                     ByteArrayReturnValue
                   else
                     PtrArrayReturnValue
                   end
                 end
-              when :glist, :gslist, :ghash
-                provider = provider_for type
-                return ListReturnValue.new var_gen, name, type, provider
+              when :glist, :gslist
+                it = ReturnValue.new var_gen, name, type
+                it.extend ContainerClassName
+                it.extend ListElementTypeProvider
+                it.extend WithTypedContainerPostMethod
+                return it
+              when :ghash
+                it = ReturnValue.new var_gen, name, type
+                it.extend ContainerClassName
+                it.extend HashTableElementTypeProvider
+                it.extend WithTypedContainerPostMethod
+                return it
               when :utf8
                 Utf8ReturnValue
               else
@@ -536,6 +548,10 @@ module GirFFI::Builder
   class ReturnValue < Argument::Base
     def cvar
       @cvar ||= @var_gen.new_var
+    end
+
+    def callarg
+      cvar
     end
 
     def retname
@@ -596,21 +612,6 @@ module GirFFI::Builder
   class Utf8ReturnValue < ReturnValue
     def post
       [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{@cvar}" ]
-    end
-  end
-
-  # Implements argument processing for GList return values.
-  class ListReturnValue < ReturnValue
-    extend Forwardable
-    def_delegators :@elm_t_provider, :elm_t, :class_name
-
-    def initialize var_gen, name, typeinfo, provider
-      super var_gen, name, typeinfo
-      @elm_t_provider = provider
-    end
-
-    def post
-      [ "#{retname} = #{class_name}.wrap(#{elm_t}, #{cvar})" ]
     end
   end
 
