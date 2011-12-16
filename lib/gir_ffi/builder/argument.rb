@@ -385,7 +385,14 @@ module GirFFI::Builder
                     return ListInOutArgument.new var_gen, arginfo.name, type, provider
                   end
                 end
-              when :glist, :gslist, :ghash
+              when :glist, :gslist
+                it = Argument::InOutBase.new var_gen, arginfo.name, type
+                it.extend ContainerClassName
+                it.extend ListElementTypeProvider
+                it.extend WithTypedContainerInOutPreMethod
+                it.extend WithTypedContainerPostMethod
+                return it
+              when :ghash
                 provider = provider_for type
                 return ListInOutArgument.new var_gen, arginfo.name, type, provider
               else
@@ -448,26 +455,25 @@ module GirFFI::Builder
       pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
       pst
     end
+  end
 
+  module WithTypedContainerInOutPreMethod
+    def pre
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{class_name}.from(#{elm_t}, #{@name})" ]
+    end
   end
 
   # Implements argument processing for glist arguments with direction
   # :inout.
   class ListInOutArgument < Argument::InOutBase
+    include WithTypedContainerPostMethod
+    include WithTypedContainerInOutPreMethod
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
     def initialize var_gen, name, typeinfo, provider
       super var_gen, name, typeinfo
       @elm_t_provider = provider
-    end
-
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{class_name}.from(#{elm_t}, #{@name})" ]
-    end
-
-    def post
-      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
