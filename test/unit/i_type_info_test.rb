@@ -1,6 +1,5 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
-# This suite tests extensions to ITypeInfo defined in gir_ffi.
 describe GirFFI::InfoExt::ITypeInfo do
   describe "#layout_specification_type" do
     it "returns an array with elements subtype and size for type :array" do

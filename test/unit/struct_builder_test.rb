@@ -1,5 +1,6 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
+# FIXME: Test WithLayout directly, rather than through Struct.
 describe GirFFI::Builder::Type::Struct do
   describe "#pretty_print" do
     describe "for a struct with no methods" do
@@ -16,7 +17,7 @@ describe GirFFI::Builder::Type::Struct do
 
     describe "for a struct with a method" do
       it "returns a class block with the pretty printed method inside" do
-        # FIXME: Loads of mocks. Make info objects create their own builders.
+        # FIXME: Loads of mocks.
 
         # Function info and its builder
         stub(func_info = Object.new).info_type { :function }
@@ -42,33 +43,34 @@ describe GirFFI::Builder::Type::Struct do
 
   describe "for a struct with a simple layout" do
     before do
-      # FIXME: Push down stubs only into tests that need them.
-      # FIXME: Test WithLayout directly.
-      # FIXME: Move tests to create individual field layout to IFieldInfo
-      #        tests.
-      stub(@type = Object.new).pointer? { false }
-      stub(@type).tag { :gint32 }
+      @field = Object.new
 
-      stub(field = Object.new).field_type { @type }
-      stub(field).name { "bar" }
-      stub(field).offset { 0 }
-      stub(field).writable? { true }
-      stub(field).layout_specification { [:bar, :int32, 0] }
-
-      stub(@struct = Object.new).safe_name { 'Bar' }
+      @struct = Object.new
+      stub(@struct).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
-      stub(@struct).fields { [ field ] }
-      stub(@struct).find_method { }
+      stub(@struct).fields { [ @field ] }
 
       @builder = GirFFI::Builder::Type::Struct.new @struct
     end
 
     it "creates the correct layout specification" do
+      mock(@field).layout_specification { [:bar, :int32, 0] }
       spec = @builder.send :layout_specification
       assert_equal [:bar, :int32, 0], spec
     end
 
     it "creates getter and setter methods" do
+      # FIXME: Loads of stubs.
+
+      stub(type = Object.new).pointer? { false }
+      stub(type).tag { :gint32 }
+
+      stub(@field).field_type { type }
+      stub(@field).name { "bar" }
+      stub(@field).writable? { true }
+
+      stub(@struct).find_method { }
+
       m = Module.new { module Lib; end }
       stub(GirFFI::Builder).build_module('Foo') { m }
 
@@ -85,34 +87,18 @@ describe GirFFI::Builder::Type::Struct do
     end
   end
 
-  describe "for a struct with a layout with a fixed-length array" do
-    before do
-      # FIXME: Push down stubs only into tests that need them.
-      # FIXME: Test WithLayout directly.
-      # FIXME: Move tests to create individual field layout to IFieldInfo
-      #        tests.
-      stub(subtype = Object.new).pointer? { false }
-      stub(subtype).tag { :foo }
+  describe "for a struct with a layout with a complex type" do
+    it "does not flatten the complex type specification" do
+      mock(simplefield = Object.new).layout_specification { [:bar, :foo, 0] }
+      mock(complexfield = Object.new).layout_specification { [:baz, [:qux, 2], 0] }
+      mock(struct = Object.new).fields { [ simplefield, complexfield ] }
 
-      stub(@type = Object.new).pointer? { false }
-      stub(@type).tag { :array }
-      stub(@type).array_fixed_size { 2 }
-      stub(@type).param_type { subtype }
+      stub(struct).safe_name { 'Bar' }
+      stub(struct).namespace { 'Foo' }
 
-      stub(field = Object.new).field_type { @type }
-      stub(field).name { "bar" }
-      stub(field).offset { 0 }
-      stub(field).layout_specification { [:bar, [:foo, 2], 0] }
-
-      stub(@struct = Object.new).safe_name { 'Bar' }
-      stub(@struct).namespace { 'Foo' }
-      stub(@struct).fields { [ field ] }
-    end
-
-    it "creates the correct layout specification" do
-      builder = GirFFI::Builder::Type::Struct.new @struct
+      builder = GirFFI::Builder::Type::Struct.new struct
       spec = builder.send :layout_specification
-      assert_equal [:bar, [:foo, 2], 0], spec
+      assert_equal [:bar, :foo, 0, :baz, [:qux, 2], 0], spec
     end
   end
 
@@ -134,5 +120,3 @@ describe GirFFI::Builder::Type::Struct do
     end
   end
 end
-
-
