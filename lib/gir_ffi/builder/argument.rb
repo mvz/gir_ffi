@@ -59,9 +59,8 @@ module GirFFI::Builder
               when :glist, :gslist
                 it = Argument::InBase.new var_gen, name, type
                 it.extend ContainerClassName
-                it.extend WithSubTypeTag
                 it.extend ListElementTypeProvider
-                it.extend WithTypedContainerPreArgument
+                it.extend WithTypedContainerPreMethod
                 return it
               when :ghash
                 provider = provider_for type
@@ -180,7 +179,7 @@ module GirFFI::Builder
     end
   end
 
-  module WithTypedContainerPreArgument
+  module WithTypedContainerPreMethod
     def pre
       [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
     end
@@ -189,7 +188,7 @@ module GirFFI::Builder
   # Implements argument processing for glist, gslist and ghash arguments
   # with direction :in.
   class ListInArgument < Argument::InBase
-    include WithTypedContainerPreArgument
+    include WithTypedContainerPreMethod
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
@@ -252,7 +251,13 @@ module GirFFI::Builder
                     return ListOutArgument.new var_gen, arginfo.name, type, provider
                   end
                 end
-              when :glist, :gslist, :ghash
+              when :glist, :gslist
+                it = PointerLikeOutArgument.new var_gen, arginfo.name, type
+                it.extend ContainerClassName
+                it.extend ListElementTypeProvider
+                it.extend WithTypedContainerPostMethod
+                return it
+              when :ghash
                 provider = provider_for type
                 return ListOutArgument.new var_gen, arginfo.name, type, provider
               else
@@ -335,19 +340,22 @@ module GirFFI::Builder
     end
   end
 
+  module WithTypedContainerPostMethod
+    def post
+      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
+    end
+  end
+
   # Implements argument processing for glist arguments with direction
   # :out.
   class ListOutArgument < PointerLikeOutArgument
+    include WithTypedContainerPostMethod
     extend Forwardable
     def_delegators :@elm_t_provider, :elm_t, :class_name
 
     def initialize var_gen, name, typeinfo, provider
       super var_gen, name, typeinfo
       @elm_t_provider = provider
-    end
-
-    def post
-      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
