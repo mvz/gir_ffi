@@ -109,8 +109,6 @@ describe GirFFI::Builder::Type::Struct do
       stub(@struct).fields { [ field ] }
     end
 
-    # FIXME: Create test for ITypeInfo.ffitype_for_struct
-
     it "creates the correct layout specification" do
       builder = GirFFI::Builder::Type::Struct.new @struct
       spec = builder.send :layout_specification

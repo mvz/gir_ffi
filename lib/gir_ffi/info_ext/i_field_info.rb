@@ -1,9 +1,15 @@
 require 'gir_ffi/info_ext/i_type_info'
-class GObjectIntrospection::IFieldInfo
-  def layout_specification
-    [ name.to_sym,
-      field_type.ffitype_for_struct,
-      offset ]
+
+module GirFFI
+  module InfoExt
+    module IFieldInfo
+      def layout_specification
+        [ name.to_sym,
+          field_type.layout_specification_type,
+          offset ]
+      end
+    end
   end
 end
 
+GObjectIntrospection::IFieldInfo.send :include, GirFFI::InfoExt::IFieldInfo
