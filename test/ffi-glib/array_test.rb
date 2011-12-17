@@ -53,7 +53,7 @@ describe GLib::Array do
       arr = GLib::Array.new :gint32
       arr.append_vals [1, 2, 3]
       assert_raises RuntimeError do
-        arr2 = GLib::Array.wrap :gint8, arr.to_ptr
+        GLib::Array.wrap :gint8, arr.to_ptr
       end
     end
   end

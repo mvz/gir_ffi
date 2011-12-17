@@ -272,7 +272,7 @@ module GirFFI::Builder
   # :out.
   class StrvOutArgument < PointerLikeOutArgument
     def post
-      [ "#{retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{callarg}" ]
+      [ "#{retname} = GLib::Strv.wrap #{callarg}.to_value" ]
     end
   end
 
@@ -367,7 +367,7 @@ module GirFFI::Builder
     end
 
     def post
-      [ "#{retname} = GirFFI::ArgHelper.outptr_strv_to_utf8_array #{callarg}" ]
+      [ "#{retname} = GLib::Strv.wrap(#{callarg}.to_value)" ]
     end
   end
 
@@ -546,7 +546,7 @@ module GirFFI::Builder
   # Implements argument processing for NULL-terminated string array return values.
   class StrvReturnValue < ReturnValue
     def post
-      [ "#{retname} = GirFFI::ArgHelper.strv_to_utf8_array #{cvar}" ]
+      [ "#{retname} = GLib::Strv.wrap(#{cvar})" ]
     end
   end
 

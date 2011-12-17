@@ -90,14 +90,6 @@ module GirFFI
       alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
     end
 
-    def self.outptr_strv_to_utf8_array ptr
-      GLib::Strv.new(ptr.read_pointer).to_a
-    end
-
-    def self.strv_to_utf8_array strv
-      GLib::Strv.new(strv).to_a
-    end
-
     def self.check_error errpp
       errp = errpp.read_pointer
       # FIXME: Do not depend on GError from GObjectIntrospection namespace.

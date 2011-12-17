@@ -31,9 +31,9 @@ describe "GIMarshallingTests" do
       end
 
       it "has a writable field g_strv" do
-        assert_equal [], @bx.g_strv
+        assert_equal [], @bx.g_strv.to_a
         @bx.g_strv = ["foo", "bar"]
-        assert_equal ["foo", "bar"], @bx.g_strv
+        assert_equal ["foo", "bar"], @bx.g_strv.to_a
       end
     end
 
@@ -54,7 +54,7 @@ describe "GIMarshallingTests" do
     it "has a working function #returnv" do
       res = GIMarshallingTests::BoxedStruct.returnv
       assert_equal 42, res.long_
-      assert_equal ["0", "1", "2"], res.g_strv
+      assert_equal ["0", "1", "2"], res.g_strv.to_a
     end
   end
 
@@ -541,12 +541,12 @@ describe "GIMarshallingTests" do
 
   it "has a working function #array_zero_terminated_out" do
     res = GIMarshallingTests.array_zero_terminated_out
-    assert_equal ["0", "1", "2"], res
+    assert_equal ["0", "1", "2"], res.to_a
   end
 
   it "has a working function #array_zero_terminated_return" do
     res = GIMarshallingTests.array_zero_terminated_return
-    assert_equal ["0", "1", "2"], res
+    assert_equal ["0", "1", "2"], res.to_a
   end
 
   it "has a working function #boolean_in_false" do
@@ -604,7 +604,7 @@ describe "GIMarshallingTests" do
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
     assert_equal 42, res.long_
-    assert_equal ["0", "1", "2"], res.g_strv
+    assert_equal ["0", "1", "2"], res.g_strv.to_a
   end
 
   it "has a working function #bytearray_full_return" do
@@ -1043,17 +1043,17 @@ describe "GIMarshallingTests" do
 
   it "has a working function #gstrv_inout" do
     res = GIMarshallingTests.gstrv_inout ["0", "1", "2"]
-    assert_equal ["-1", "0", "1", "2"], res
+    assert_equal ["-1", "0", "1", "2"], res.to_a
   end
 
   it "has a working function #gstrv_out" do
     res = GIMarshallingTests.gstrv_out
-    assert_equal ["0", "1", "2"], res
+    assert_equal ["0", "1", "2"], res.to_a
   end
 
   it "has a working function #gstrv_return" do
     res = GIMarshallingTests.gstrv_return
-    assert_equal ["0", "1", "2"], res
+    assert_equal ["0", "1", "2"], res.to_a
   end
 
   it "has a working function #gtype_inout" do

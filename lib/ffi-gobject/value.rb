@@ -79,7 +79,7 @@ module GObject
       boxed = get_boxed
       case current_gtype
       when TYPE_STRV
-        GirFFI::ArgHelper.strv_to_utf8_array boxed
+        GLib::Strv.wrap boxed
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
