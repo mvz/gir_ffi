@@ -48,6 +48,14 @@ describe GLib::Array do
       arr2 = GLib::Array.wrap :gint32, arr.to_ptr
       assert_equal arr.to_a, arr2.to_a
     end
+
+    it "raises an error if the element sizes don't match" do
+      arr = GLib::Array.new :gint32
+      arr.append_vals [1, 2, 3]
+      assert_raises RuntimeError do
+        arr2 = GLib::Array.wrap :gint8, arr.to_ptr
+      end
+    end
   end
 
   it "includes Enumerable" do
@@ -69,11 +77,9 @@ describe GLib::Array do
     it "return its argument if given a GArray" do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]
-      arr2 = GLib::Array.from :gint32, arr
+      arr2 = GLib::Array.from :foo, arr
       assert_equal arr, arr2
     end
-
-    # TODO: Make ::from fix the element type for the above case.
 
     it "wraps its argument if given a pointer" do
       arr = GLib::Array.new :gint32

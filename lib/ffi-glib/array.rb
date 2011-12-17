@@ -6,7 +6,11 @@ module GLib
   class Array
     include Enumerable
 
-    attr_accessor :element_type
+    attr_reader :element_type
+    def element_type= val
+      @element_type = val
+      check_element_size_match
+    end
 
     class << self
       undef :new
@@ -30,7 +34,11 @@ module GLib
           val = GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
           yielder << val
         end
-      end.each &block
+      end.each(&block)
+    end
+
+    def get_element_size
+      self.class.get_element_size self
     end
 
     def self.wrap elmttype, ptr
@@ -42,11 +50,13 @@ module GLib
 
     def self.from elmtype, it
       case it
-      when self then it # TODO: Set element type also?
+      when self then it
       when FFI::Pointer then wrap elmtype, it
       else self.new(elmtype).tap {|arr| arr.append_vals it }
       end
     end
+
+    private
 
     def self.element_type_size type
       ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
@@ -55,6 +65,12 @@ module GLib
 
     def element_type_size
       self.class.element_type_size self.element_type
+    end
+
+    def check_element_size_match
+      unless element_type_size == self.get_element_size
+        raise "Element sizes do not match"
+      end
     end
   end
 end
