@@ -105,7 +105,6 @@ module GirFFI
       AllocationHelper.safe_malloc FFI.type_size(type) * length
     end
 
-    # FIXME: Quasi-circular dependency on generated module
     def self.object_pointer_to_object optr
       gtype = GObject.type_from_instance_pointer optr
       wrap_object_pointer_by_gtype optr, gtype
