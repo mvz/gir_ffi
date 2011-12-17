@@ -15,7 +15,7 @@ module GLib
     class << self
       undef :new
       def new type
-        ptr = Lib.g_array_new(0, 0, element_type_size(type))
+        ptr = Lib.g_array_new(0, 0, calculated_element_size(type))
         wrap type, ptr
       end
     end
@@ -27,12 +27,16 @@ module GLib
       self
     end
 
+    # Re-implementation of the g_array_index macro
+    def index idx
+      ptr = @struct[:data].get_pointer(idx * get_element_size)
+      GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
+    end
+
     def each &block
       Enumerator.new do |yielder|
         @struct[:len].times.each do |idx|
-          ptr = @struct[:data].get_pointer(idx * element_type_size)
-          val = GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
-          yielder << val
+          yielder << index(idx)
         end
       end.each(&block)
     end
@@ -58,17 +62,17 @@ module GLib
 
     private
 
-    def self.element_type_size type
+    def self.calculated_element_size type
       ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
       FFI.type_size(ffi_type)
     end
 
-    def element_type_size
-      self.class.element_type_size self.element_type
+    def calculated_element_size
+      self.class.calculated_element_size self.element_type
     end
 
     def check_element_size_match
-      unless element_type_size == self.get_element_size
+      unless calculated_element_size == self.get_element_size
         raise "Element sizes do not match"
       end
     end
