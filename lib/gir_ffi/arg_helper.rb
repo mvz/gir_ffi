@@ -91,18 +91,11 @@ module GirFFI
     end
 
     def self.outptr_strv_to_utf8_array ptr
-      strv_to_utf8_array ptr.read_pointer
+      GLib::Strv.new(ptr.read_pointer).to_a
     end
 
-    # FIXME: Make GLib::Strv a class.
     def self.strv_to_utf8_array strv
-      return [] if strv.null?
-      arr, offset = [], 0
-      until (ptr = strv.get_pointer offset).null? do
-        arr << ptr.read_string
-        offset += POINTER_SIZE
-      end
-      return arr
+      GLib::Strv.new(strv).to_a
     end
 
     def self.check_error errpp
