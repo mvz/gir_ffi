@@ -33,12 +33,10 @@ module GLib
       GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
     end
 
-    def each &block
-      Enumerator.new do |yielder|
-        @struct[:len].times.each do |idx|
-          yielder << index(idx)
-        end
-      end.each(&block)
+    def each
+      @struct[:len].times.each do |idx|
+        yield index(idx)
+      end
     end
 
     def get_element_size

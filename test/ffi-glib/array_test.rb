@@ -32,13 +32,6 @@ describe GLib::Array do
 
       assert_equal [1, 2, 3], a
     end
-
-    it "returns an enumerator if no block is given" do
-      en = @arr.each
-      assert_equal 1, en.next
-      assert_equal 2, en.next
-      assert_equal 3, en.next
-    end
   end
 
   describe "::wrap" do
