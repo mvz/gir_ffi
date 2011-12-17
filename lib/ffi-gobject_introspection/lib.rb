@@ -239,6 +239,8 @@ module GObjectIntrospection
     attach_function :g_interface_info_get_iface_struct, [:pointer], :pointer
 
     class GIArgument < FFI::Union
+      signed_size_t = "int#{FFI.type_size(:size_t) * 8}".to_sym
+
       layout :v_boolean, :int,
         :v_int8, :int8,
         :v_uint8, :uint8,
@@ -256,7 +258,7 @@ module GObjectIntrospection
         :v_uint, :uint,
         :v_long, :long,
         :v_ulong, :ulong,
-        :v_ssize, :size_t, # FIXME: Needs to be signed.
+        :v_ssize, signed_size_t,
         :v_size, :size_t,
         :v_string, :string,
         :v_pointer, :pointer

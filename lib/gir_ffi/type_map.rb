@@ -4,6 +4,7 @@ module GirFFI
     gtype_type = "uint#{sz}".to_sym
 
     TAG_TYPE_MAP = {
+      #FIXME: Pick one: GType or gtype.
       :GType => :size_t,
       :gtype => gtype_type,
       :gboolean => :bool,
