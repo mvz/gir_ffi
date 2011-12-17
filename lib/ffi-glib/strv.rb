@@ -14,6 +14,7 @@ module GLib
     end
 
     def each
+      return if @ptr.null?
       offset = 0
       loop do
         ptr = @ptr.get_pointer offset

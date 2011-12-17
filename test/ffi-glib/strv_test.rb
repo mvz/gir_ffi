@@ -26,6 +26,13 @@ describe GLib::Strv do
       end
       assert_equal ["one", "two", "three"], arr
     end
+
+    it "yields zero times for a Strv wrapping a null pointer" do
+      strv = GLib::Strv.new FFI::Pointer.new(0)
+      strv.each do |str|
+        flunk
+      end
+    end
   end
 
   it "includes Enumerable" do
