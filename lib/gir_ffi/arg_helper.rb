@@ -91,9 +91,8 @@ module GirFFI
     end
 
     def self.check_error errpp
-      errp = errpp.read_pointer
-      # FIXME: Do not depend on GError from GObjectIntrospection namespace.
-      raise GObjectIntrospection::GError.new(errp)[:message] unless errp.null?
+      err = GLib::Error.wrap(errpp.read_pointer)
+      raise err.message unless err.nil?
     end
 
     def self.check_fixed_array_size size, arr, name
