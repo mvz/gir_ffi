@@ -15,7 +15,7 @@ module GirFFI
       return nil if val.nil?
       case type
       when :utf8
-        from_utf8_string val
+        from_utf8 val
       when :gint32, :gint8
         self.new val
       else
@@ -39,7 +39,7 @@ module GirFFI
         self.from_array :pointer, ptr_ary
       end
 
-      def from_utf8_string str
+      def from_utf8 str
         len = str.bytesize
         ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
         self.new ptr

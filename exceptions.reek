@@ -1,0 +1,5 @@
+---
+UncommunicativeMethodName: 
+  exclude:
+  - !ruby/regexp /int32$/
+  - !ruby/regexp /utf8$/
