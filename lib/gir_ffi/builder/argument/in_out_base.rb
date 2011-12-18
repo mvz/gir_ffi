@@ -8,10 +8,6 @@ module GirFFI
           @inarg = @name
         end
 
-        def callarg
-          @callarg ||= @var_gen.new_var
-        end
-
         def retname
           @retname ||= @var_gen.new_var
         end

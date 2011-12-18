@@ -8,10 +8,6 @@ module GirFFI
         def prepare
           @inarg = @name
         end
-
-        def callarg
-          @callarg ||= @var_gen.new_var
-        end
       end
     end
   end

@@ -7,10 +7,6 @@ module GirFFI
         def prepare
         end
 
-        def callarg
-          @callarg ||= @var_gen.new_var
-        end
-
         def retname
           @retname ||= @var_gen.new_var
         end

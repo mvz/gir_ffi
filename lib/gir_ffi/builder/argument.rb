@@ -489,11 +489,7 @@ module GirFFI::Builder
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
     def cvar
-      @cvar ||= @var_gen.new_var
-    end
-
-    def callarg
-      cvar
+      callarg
     end
 
     def retname
@@ -553,7 +549,7 @@ module GirFFI::Builder
   # Implements argument processing for UTF8 string return values.
   class Utf8ReturnValue < ReturnValue
     def post
-      [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{@cvar}" ]
+      [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{cvar}" ]
     end
   end
 
@@ -574,7 +570,7 @@ module GirFFI::Builder
   # Implements argument processing for other return values.
   class RegularReturnValue < ReturnValue
     def retval
-      @cvar
+      @callarg
     end
   end
 
@@ -582,10 +578,6 @@ module GirFFI::Builder
   # arguments are not part of the introspected signature, but their
   # presence is indicated by the 'throws' attribute of the function.
   class ErrorArgument < Argument::Base
-    def callarg
-      @callarg ||= @var_gen.new_var
-    end
-
     def pre
       [ "#{callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
     end
@@ -596,6 +588,11 @@ module GirFFI::Builder
   end
 
   # Argument builder that does nothing. Implements Null Object pattern.
-  class NullArgument < Argument::Base
+  class NullArgument
+    def initialize *args; end
+    def prepare; end
+    def pre; []; end
+    def post; []; end
+    def callarg; end
   end
 end

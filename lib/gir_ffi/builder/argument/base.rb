@@ -13,14 +13,13 @@ module GirFFI
           "until", "when", "while", "yield"
         ]
 
-        attr_reader :callarg, :name, :retname
+        attr_reader :name, :retname
 
         attr_accessor :length_arg, :array_arg
 
         def initialize var_gen, name, typeinfo
           @typeinfo = typeinfo
           @inarg = nil
-          @callarg = nil
           @retname = nil
           @name = safe(name)
           @var_gen = var_gen
@@ -100,6 +99,10 @@ module GirFFI
 
         def retval
           @array_arg.nil? ? @retname : nil
+        end
+
+        def callarg
+          @callarg ||= @var_gen.new_var
         end
 
         def pre
