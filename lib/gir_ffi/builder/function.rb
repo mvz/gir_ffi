@@ -18,7 +18,6 @@ module GirFFI::Builder
       alldata = @data.dup << @rvdata
 
       alldata.each {|data|
-        data.prepare
 	idx = data.type_info.array_length
         if idx > -1
           data.length_arg = @data[idx] 
@@ -39,7 +38,6 @@ module GirFFI::Builder
     def setup_error_argument vargen
       klass = @info.throws? ? ErrorArgument : NullArgument
       @errarg = klass.new vargen, nil, nil
-      @errarg.prepare
     end
 
     def filled_out_template

@@ -24,7 +24,6 @@ module GirFFI
 
       def setter_def
         builder = setter_builder
-        builder.prepare
         name = @info.name
 
         return <<-CODE

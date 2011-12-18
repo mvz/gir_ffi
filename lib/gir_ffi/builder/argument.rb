@@ -590,7 +590,6 @@ module GirFFI::Builder
   # Argument builder that does nothing. Implements Null Object pattern.
   class NullArgument
     def initialize *args; end
-    def prepare; end
     def pre; []; end
     def post; []; end
     def callarg; end

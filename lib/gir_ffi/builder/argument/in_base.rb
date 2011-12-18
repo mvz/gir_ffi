@@ -4,8 +4,8 @@ module GirFFI
       # Abstract base class implementing argument processing for arguments
       # with direction :in.
       class InBase < Base
-        # FIXME: Make class work without 'prepare' stage.
-        def prepare
+        def initialize var_gen, name, typeinfo
+          super var_gen, name, typeinfo
           @inarg = @name
         end
       end
