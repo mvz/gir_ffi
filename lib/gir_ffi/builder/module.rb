@@ -61,12 +61,12 @@ module GirFFI
     end
 
     def pretty_print
-      s = "module #{@safe_namespace}\n"
+      buf = "module #{@safe_namespace}\n"
       gir.infos(@namespace).each do |info|
-        s << sub_builder(info).pretty_print.indent
-        s << "\n"
+        buf << sub_builder(info).pretty_print.indent
+        buf << "\n"
       end
-      s << "end"
+      buf << "end"
     end
 
     private
