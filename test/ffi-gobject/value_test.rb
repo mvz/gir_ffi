@@ -3,7 +3,7 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 require 'ffi-gobject'
 
 describe GObject::Value do
-  describe "::wrap_ruby_value class" do
+  describe "::wrap_ruby_value" do
     it "wraps a boolean false" do
       gv = GObject::Value.wrap_ruby_value false
       assert_instance_of GObject::Value, gv
@@ -14,6 +14,16 @@ describe GObject::Value do
       gv = GObject::Value.wrap_ruby_value true
       assert_instance_of GObject::Value, gv
       assert_equal true, gv.get_boolean
+    end
+
+    it "wraps an Integer" do
+      gv = GObject::Value.wrap_ruby_value 42
+      assert_equal 42, gv.get_int
+    end
+
+    it "wraps a String" do
+      gv = GObject::Value.wrap_ruby_value "Some Random String"
+      assert_equal "Some Random String", gv.get_string
     end
   end
 

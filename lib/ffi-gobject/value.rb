@@ -11,7 +11,7 @@ module GObject
       set_value val
     end
 
-    TYPE_TO_SET_METHOD = {
+    TYPE_TO_SET_METHOD_MAP = {
       TYPE_BOOLEAN => :set_boolean,
       TYPE_INT => :set_int,
       TYPE_STRING => :set_string,
@@ -24,21 +24,26 @@ module GObject
     }
 
     def set_value val
-      method = TYPE_TO_SET_METHOD[current_fundamental_type]
+      method = TYPE_TO_SET_METHOD_MAP[current_fundamental_type]
       call_or_raise method, val
       self
     end
 
+    CLASS_TO_GTYPE_MAP = {
+      true => TYPE_BOOLEAN,
+      false => TYPE_BOOLEAN,
+      Integer => TYPE_INT,
+      String => TYPE_STRING
+    }
+
     def init_for_ruby_value val
-      case val
-      when true, false
-        init TYPE_BOOLEAN
-      when Integer
-        init TYPE_INT
-      else
-        raise "Can't handle #{val.inspect}"
+      CLASS_TO_GTYPE_MAP.each do |klass, type|
+        if klass === val
+          init type
+          return self
+        end
       end
-      self
+      raise "Can't handle #{val.class}"
     end
 
     def current_gtype
@@ -53,7 +58,7 @@ module GObject
       GObject.type_name current_gtype
     end
 
-    TYPE_TO_GET_METHOD = {
+    TYPE_TO_GET_METHOD_MAP = {
       TYPE_BOOLEAN => :get_boolean,
       TYPE_INT => :get_int,
       TYPE_STRING => :get_string,
@@ -65,7 +70,7 @@ module GObject
     }
 
     def ruby_value
-      method = TYPE_TO_GET_METHOD[current_fundamental_type]
+      method = TYPE_TO_GET_METHOD_MAP[current_fundamental_type]
       call_or_raise method
     end
 
