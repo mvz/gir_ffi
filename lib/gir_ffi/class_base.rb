@@ -80,6 +80,13 @@ module GirFFI
       def allocate
 	_real_new
       end
+
+      # Pass-through casting method. This may become a type checking
+      # method. It is overridden by GValue to implement wrapping of plain
+      # Ruby objects.
+      def from val
+        val
+      end
     end
   end
 end

@@ -35,6 +35,8 @@ module GObject
         init TYPE_BOOLEAN
       when Integer
         init TYPE_INT
+      else
+        raise "Can't handle #{val.inspect}"
       end
       self
     end
@@ -70,6 +72,17 @@ module GObject
     class << self
       def wrap_ruby_value val
         self.new.set_ruby_value val
+      end
+
+      def from val
+        case val
+        when self
+          val
+        when nil
+          nil
+        else
+          wrap_ruby_value val
+        end
       end
     end
 

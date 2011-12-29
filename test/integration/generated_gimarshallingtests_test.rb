@@ -1075,9 +1075,16 @@ describe "GIMarshallingTests" do
     assert_equal "void", name
   end
 
-  it "has a working function #gvalue_in" do
-    GIMarshallingTests.gvalue_in GObject::Value.wrap_ruby_value(42)
-    pass
+  describe "#gvalue_in" do
+    it "works when passed a GObject::Value object" do
+      GIMarshallingTests.gvalue_in GObject::Value.wrap_ruby_value(42)
+      pass
+    end
+
+    it "automatically converts a non-GValue object to a GValue" do
+      GIMarshallingTests.gvalue_in 42
+      pass
+    end
   end
 
   it "has a working function #gvalue_in_enum" do

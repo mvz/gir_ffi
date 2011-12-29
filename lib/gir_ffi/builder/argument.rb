@@ -28,8 +28,11 @@ module GirFFI::Builder
     def self.builder_for var_gen, name, type, libmodule
       klass = case type.tag
               when :interface
-                if type.interface.info_type == :callback
+                case type.interface.info_type
+                when :callback
                   return CallbackInArgument.new var_gen, name, type, libmodule
+                when :object, :struct
+                  ObjectInArgument
                 else
                   RegularInArgument
                 end
@@ -135,6 +138,14 @@ module GirFFI::Builder
   class Utf8InArgument < Argument::InBase
     def pre
       [ "#{callarg} = GirFFI::InPointer.from :utf8, #{@name}" ]
+    end
+  end
+
+  # Implements argument processing for arguments with direction :in that
+  # are GObjects.
+  class ObjectInArgument < Argument::InBase
+    def pre
+      [ "#{callarg} = #{argument_class_name}.from #{@name}" ]
     end
   end
 

@@ -85,6 +85,22 @@ describe GirFFI::Builder::Function do
     assert_equal expected.reset_indentation, code
   end
 
+  it "creates a call to GObject::Value#from for functions that take a GValue" do
+    go = get_introspection_data 'GIMarshallingTests', 'gvalue_in'
+    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    code = fbuilder.generate
+
+    expected = <<-CODE
+      def self.gvalue_in value
+        _v1 = ::GObject::Value.from value
+        DummyLib.gi_marshalling_tests_gvalue_in _v1
+        
+      end
+    CODE
+
+    assert_equal expected.reset_indentation, code
+  end
+
   it "builds correct definition for functions with a nullable input array" do
     go = get_introspection_data 'Regress', 'test_array_int_null_in'
     fbuilder = GirFFI::Builder::Function.new go, DummyLib

@@ -30,5 +30,20 @@ describe GObject::Value do
       assert_equal true, result
     end
   end
+
+  describe "::from" do
+    it "creates a gint GValue from a Ruby Integer" do
+      gv = GObject::Value.from 21
+      gv.current_gtype_name.must_equal "gint"
+      gv.ruby_value.must_equal 21
+    end
+
+    it "returns its argument if given a GValue" do
+      gv = GObject::Value.from 21
+      gv2 = GObject::Value.from gv
+      gv2.current_gtype_name.must_equal "gint"
+      gv2.ruby_value.must_equal 21
+    end
+  end
 end
 
