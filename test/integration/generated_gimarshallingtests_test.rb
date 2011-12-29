@@ -1095,9 +1095,16 @@ describe "GIMarshallingTests" do
     pass
   end
 
-  it "has a working function #gvalue_inout" do
-    res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    assert_equal "42", res.ruby_value
+  describe "#gvalue_inout" do
+    it "works when passed a GObject::Value object" do
+      res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
+      assert_equal "42", res.ruby_value
+    end
+
+    it "automatically converts a non-GValue input to a GValue" do
+      res = GIMarshallingTests.gvalue_inout 42
+      assert_equal "42", res.ruby_value
+    end
   end
 
   it "has a working function #gvalue_out" do

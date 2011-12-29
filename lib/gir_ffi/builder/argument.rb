@@ -361,7 +361,7 @@ module GirFFI::Builder
   # :inout (structs, objects, etc.).
   class InterfaceInOutArgument < Argument::InOutBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{@name}.to_ptr" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{argument_class_name}.from(#{@name}).to_ptr" ]
     end
 
     def post
