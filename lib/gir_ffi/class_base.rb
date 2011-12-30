@@ -22,9 +22,15 @@ module GirFFI
     end
 
     def setup_and_call method, *arguments, &block
-      unless _builder.setup_instance_method method.to_s
+      result = self.class.ancestors.any? do |klass|
+        klass.respond_to?(:_setup_instance_method) &&
+          klass._setup_instance_method(method.to_s)
+      end
+
+      unless result
         raise RuntimeError, "Unable to set up instance method #{method} in #{self}"
       end
+
       self.send method, *arguments, &block
     end
 
