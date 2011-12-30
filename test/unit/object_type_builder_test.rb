@@ -1,10 +1,6 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 describe GirFFI::Builder::Type::Object do
-  before do
-    GirFFI.setup :Regress
-  end
-
   describe "#setup_method" do
     it "sets up singleton methods defined in a class's parent" do
       info = get_introspection_data 'Regress', 'TestSubObj'
