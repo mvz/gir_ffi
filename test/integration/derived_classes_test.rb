@@ -13,8 +13,14 @@ describe "Class derivation" do
       @klass.send :include, GIMarshallingTests::Interface
     end
 
-    it "finds static methods in the superclass" do
+    it "finds class methods in the superclass" do
       @klass.returnv
+    end
+
+    it "finds instance methods in the superclass" do
+      obj = @klass.new
+      result = obj.method
+      result.must_equal 42
     end
   end
 
