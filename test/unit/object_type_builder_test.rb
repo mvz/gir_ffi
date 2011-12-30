@@ -13,8 +13,8 @@ describe GirFFI::Builder::Type::Object do
       assert_not_nil parent.find_method "static_method"
 
       b = GirFFI::Builder::Type::Object.new(info)
-      b.setup_method "static_method"
-      pass
+      result = b.setup_method "static_method"
+      assert_equal true, result
     end
   end
 
