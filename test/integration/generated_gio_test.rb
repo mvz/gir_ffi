@@ -27,12 +27,11 @@ describe "The generated Gio module" do
 
     it "is able to set up a method in a class that is not the first ancestor" do
       anc = @it.class.ancestors
-      assert_equal Gio::File, anc[1]
-      assert_equal GObject::Object, anc[2]
-      refute_includes Gio::File.instance_methods.map(&:to_s),
-        'get_qdata'
-      assert_includes GObject::Object.instance_methods.map(&:to_s),
-        'get_qdata'
+      assert_equal [Gio::File, GObject::Object], anc[1, 2]
+
+      refute_defines_instance_method Gio::File, :get_qdata
+      assert_defines_instance_method GObject::Object, :get_qdata
+
       @it.setup_and_call :get_qdata, 1
     end
   end

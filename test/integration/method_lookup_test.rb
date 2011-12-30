@@ -9,28 +9,18 @@ describe "Looking up methods" do
 
   describe "an instance method" do
     it "is found from a subclass" do
-      defined_in_subclass =
-        Regress::TestSubObj.instance_methods(false).map &:to_s
-
-      defined_in_subclass.wont_include 'forced_method'
+      assert_defines_instance_method Regress::TestObj, :forced_method
+      refute_defines_instance_method Regress::TestSubObj, :forced_method
 
       sub_object = Regress::TestSubObj.new
-
       sub_object.forced_method
     end
   end
 
   describe "a class method" do
     it "is found from a subclass" do
-      defined_in_subclass =
-        Regress::TestSubObj.singleton_methods(false).map &:to_s
-
-      defined_in_subclass.wont_include 'static_method'
-
-      defined_in_class =
-        Regress::TestObj.singleton_methods(false).map &:to_s
-
-      defined_in_class.must_include 'static_method'
+      assert_defines_singleton_method Regress::TestObj, :static_method
+      refute_defines_singleton_method Regress::TestSubObj, :static_method
 
       Regress::TestSubObj.static_method 42
     end

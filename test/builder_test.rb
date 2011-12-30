@@ -64,7 +64,7 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "create a Gtk::Window#to_ptr method" do
-	assert Gtk::Window.instance_methods.map(&:to_sym).include? :to_ptr
+	assert Gtk::Window.public_method_defined? :to_ptr
       end
 
       after do
@@ -126,7 +126,7 @@ class BuilderTest < MiniTest::Spec
 	end
 
 	GirFFI::Builder.send :attach_ffi_function, libmod, @go
-	assert libmod.public_methods.map(&:to_sym).include? :gtk_main
+        assert_defines_singleton_method libmod, :gtk_main
       end
     end
 
@@ -269,9 +269,10 @@ class BuilderTest < MiniTest::Spec
 	GirFFI::Builder.build_module 'Regress'
       end
 
-      should "have a method_missing method" do
-	ms = (Regress.public_methods - Module.public_methods).map(&:to_sym)
-	assert ms.include? :method_missing
+      should "autocreate singleton methods" do
+        refute_defines_singleton_method Regress, :test_uint
+        Regress.test_uint 31
+        assert_defines_singleton_method Regress, :test_uint
       end
 
       should "autocreate the TestObj class" do
