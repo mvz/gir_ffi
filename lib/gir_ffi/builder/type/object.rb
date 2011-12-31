@@ -5,26 +5,6 @@ module GirFFI
 
       # Implements the creation of a class representing a GObject Object.
       class Object < StructBased
-        def setup_method method
-          if super
-            return true
-          else
-            if parent
-              return superclass._setup_method method
-            else
-              return false
-            end
-          end
-        end
-
-        def setup_instance_method method
-          if super
-            return true
-          else
-            setup_instance_method_in_ancestor method
-          end
-        end
-
         def find_signal signal_name
           signal_definers.each do |inf|
             inf.signals.each do |sig|
@@ -48,19 +28,6 @@ module GirFFI
         end
 
         private
-
-        def setup_instance_method_in_ancestor method
-          interfaces.each do |iface|
-            if iface._setup_instance_method method
-              return true
-            end
-          end
-          if parent
-            return superclass._setup_instance_method method
-          else
-            return false
-          end
-        end
 
         def setup_class
           super

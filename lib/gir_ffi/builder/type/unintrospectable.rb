@@ -27,7 +27,7 @@ module GirFFI
         end
 
         def setup_instance_method method
-          setup_instance_method_in_ancestor method
+          false
         end
 
         private
