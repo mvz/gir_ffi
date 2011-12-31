@@ -106,25 +106,48 @@ module Gtk
   end
 
   class Button < Container
-    def initialize ptr
-      @gobj = ptr
-    end
     class << self
       alias :real_new :new
     end
-    def self.new
-      self.real_new Lib.gtk_button_new()
+
+    def self.new *args
+      obj = self.real_new *args
+      ptr = Lib.gtk_button_new()
+      obj.instance_variable_set :@gobj, ptr
+      obj
     end
-    def self.new_with_label text
-      self.real_new Lib.gtk_button_new_with_label(text)
+
+    def self.new_with_label text, *args
+      obj = self.real_new *args
+      ptr = Lib.gtk_button_new_with_label(text)
+      obj.instance_variable_set :@gobj, ptr
+      obj
+    end
+  end
+
+  class MyButton < Button
+    def initialize sym
+      puts "Initializing a #{self.class} with symbol #{sym}"
+    end
+
+    def self.new
+      super :foo
+    end
+
+    def self.new_with_label sym
+      super "Hello world", sym
     end
   end
 end
 
 (my_len, my_args) = Gtk.init ARGV.length + 1, [$0, *ARGV]
-p my_len, my_args
+p [my_len, my_args]
 win = Gtk::Window.new(:GTK_WINDOW_TOPLEVEL)
-btn = Gtk::Button.new_with_label('Hello World')
+
+#btn = Gtk::Button.new_with_label('Hello World')
+#btn = Gtk::MyButton.new
+btn = Gtk::MyButton.new_with_label :foobar2
+
 win.add btn
 
 quit_prc = Proc.new { Gtk.main_quit }
