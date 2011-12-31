@@ -19,7 +19,7 @@ describe GirFFI::InPointer do
   end
 
   describe "an instance created with .from_array" do
-    setup do
+    before do
       @result = GirFFI::InPointer.from_array :gint32, [24, 13]
     end
 

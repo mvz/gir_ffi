@@ -4,7 +4,7 @@ require 'gir_ffi/in_out_pointer'
 
 describe GirFFI::InOutPointer do
   describe "an instance created with .from" do
-    setup do
+    before do
       @result = GirFFI::InOutPointer.from :gint32, 23
     end
 
@@ -28,7 +28,7 @@ describe GirFFI::InOutPointer do
   end
 
   describe "an instance created with .from_array" do
-    setup do
+    before do
       @result = GirFFI::InOutPointer.from_array :gint32, [24, 13]
     end
 
@@ -67,7 +67,7 @@ describe GirFFI::InOutPointer do
   end
 
   describe "in instance created with .for" do
-    setup do
+    before do
       @result = GirFFI::InOutPointer.for :gint32
     end
 

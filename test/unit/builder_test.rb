@@ -3,7 +3,7 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 describe GirFFI::Builder do
   describe "::itypeinfo_to_callback_ffitype" do
     describe "for an :interface argument" do
-      setup do
+      before do
         @iface = Object.new
         stub(@info = Object.new).interface { @iface }
         stub(@info).tag { :interface }
