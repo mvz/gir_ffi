@@ -17,8 +17,11 @@ module GLib
     class << self
       undef :new
       def new type
-        _real_new(FFI::Pointer.new(0)).tap {|it|
-          it.element_type = type}
+        _real_new.tap do |it|
+          struct = ffi_structure.new(FFI::Pointer.new(0))
+          it.instance_variable_set :@struct, struct
+          it.element_type = type
+        end
       end
 
       def from_array type, arr

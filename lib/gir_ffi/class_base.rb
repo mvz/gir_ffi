@@ -9,10 +9,6 @@ module GirFFI
     extend Forwardable
     def_delegators :@struct, :to_ptr
 
-    def initialize(*args)
-      @struct = ffi_structure.new(*args)
-    end
-
     def ffi_structure
       self.class.ffi_structure
     end
@@ -81,7 +77,9 @@ module GirFFI
 
       def wrap ptr
 	return nil if ptr.nil? or ptr.null?
-	_real_new ptr.to_ptr
+	obj = _real_new
+        obj.instance_variable_set :@struct, ffi_structure.new(ptr.to_ptr)
+        obj
       end
 
       # TODO: Only makes sense for :objects.
@@ -90,7 +88,9 @@ module GirFFI
       end
 
       def allocate
-	_real_new
+	obj = _real_new
+        obj.instance_variable_set :@struct, ffi_structure.new
+        obj
       end
 
       # Pass-through casting method. This may become a type checking
