@@ -7,6 +7,16 @@ module GLib
 
     def self.included base
       base.extend ContainerClassMethods
+      # Override default field accessors.
+      replace_method base, :next, :tail
+      replace_method base, :data, :head
+    end
+
+    def self.replace_method base, old, new
+      base.class_eval do
+        remove_method old
+        alias_method old, new
+      end
     end
 
     def each

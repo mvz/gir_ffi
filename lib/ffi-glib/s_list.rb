@@ -7,13 +7,6 @@ module GLib
   class SList
     include ListMethods
 
-    # Override default field accessors.
-    undef :next
-    undef :data
-
-    alias :next :tail
-    alias :data :head
-
     class << self
       undef :new
     end
@@ -36,6 +29,5 @@ module GLib
       data_ptr = GirFFI::InPointer.from(elm_t, data)
       self.class.wrap(elm_t, Lib.g_slist_prepend(self, data_ptr))
     end
-
   end
 end

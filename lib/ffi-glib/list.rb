@@ -7,13 +7,6 @@ module GLib
   class List
     include ListMethods
 
-    # Override default field accessors.
-    undef :next
-    undef :data
-
-    alias :next :tail
-    alias :data :head
-
     class << self
       undef :new
     end
