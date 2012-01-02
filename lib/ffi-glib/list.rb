@@ -8,7 +8,7 @@ module GLib
     include ListMethods
 
     class << self
-      undef :new
+      remove_method :new
     end
 
     def self.new type
