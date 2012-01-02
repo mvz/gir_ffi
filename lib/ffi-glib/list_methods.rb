@@ -1,10 +1,12 @@
+require 'ffi-glib/container_class_methods'
+
 module GLib
   module ListMethods
     include Enumerable
     attr_accessor :element_type
 
     def self.included base
-      base.extend ClassMethods
+      base.extend ContainerClassMethods
     end
 
     def each
@@ -25,21 +27,9 @@ module GLib
       GirFFI::ArgHelper.cast_from_pointer(element_type, @struct[:data])
     end
 
-    module ClassMethods
-      def wrap elmttype, ptr
-        super(ptr).tap do |it|
-          break if it.nil?
-          it.element_type = elmttype
-        end
-      end
-
-      def from elmttype, it
-        if it.is_a? FFI::Pointer
-          wrap elmttype, it
-        else
-          from_array elmttype, it
-        end
-      end
+    def reset_typespec typespec
+      self.element_type = typespec
+      self
     end
   end
 end

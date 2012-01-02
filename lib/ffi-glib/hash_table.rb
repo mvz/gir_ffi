@@ -1,9 +1,13 @@
+require 'ffi-glib/container_class_methods'
+
 module GLib
   load_class :HashTable
 
   # Overrides for GHashTable, GLib's hash table implementation.
   class HashTable
     include Enumerable
+    extend ContainerClassMethods
+
     # TODO: Restructure so these can become attr_readers.
     attr_accessor :key_type
     attr_accessor :value_type
@@ -36,33 +40,13 @@ module GLib
         hash_function_for(keytype), equality_function_for(keytype))
     end
 
-    def self.wrap types, ptr
-      super(ptr).tap do |it|
-        return nil if it.nil?
-        reset_types types, it
-      end
+    def reset_typespec typespec
+      self.key_type, self.value_type = *typespec
+      self
     end
 
-    def self.from types, it
-      case it
-      when nil
-        nil
-      when FFI::Pointer
-        wrap types, it
-      when self
-        reset_types types, it
-      else
-        from_hash_like types, it
-      end
-    end
-
-    def self.reset_types types, hash
-      hash.key_type, hash.value_type = *types
-      return hash
-    end
-
-    def self.from_hash_like types, hash
-      ghash = self.new(*types)
+    def self.from_enumerable typespec, hash
+      ghash = self.new(*typespec)
       hash.each do |key, val|
         ghash.insert key, val
       end

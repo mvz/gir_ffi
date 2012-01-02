@@ -16,28 +16,25 @@ module GLib
 
     class << self
       undef :new
-      def new type
-        _real_new.tap do |it|
-          struct = ffi_structure.new(FFI::Pointer.new(0))
-          it.instance_variable_set :@struct, struct
-          it.element_type = type
-        end
-      end
+    end
 
-      def from_array type, arr
-        return nil if arr.nil?
-        if arr.is_a? self
-          arr.element_type = type
-          return arr
-        end
-        arr.reverse.inject(self.new type) { |lst, val|
-          lst.prepend val }
+    def self.new type
+      _real_new.tap do |it|
+        struct = ffi_structure.new(FFI::Pointer.new(0))
+        it.instance_variable_set :@struct, struct
+        it.element_type = type
       end
     end
 
+    def self.from_enumerable type, arr
+      arr.reverse.inject(self.new type) { |lst, val|
+        lst.prepend val }
+    end
+
     def prepend data
-      data_ptr = GirFFI::InPointer.from(element_type, data)
-      self.class.wrap(element_type, Lib.g_slist_prepend(self, data_ptr))
+      elm_t = element_type
+      data_ptr = GirFFI::InPointer.from(elm_t, data)
+      self.class.wrap(elm_t, Lib.g_slist_prepend(self, data_ptr))
     end
 
   end
