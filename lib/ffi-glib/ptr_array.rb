@@ -28,12 +28,17 @@ module GLib
       Lib.g_ptr_array_add self, ptr
     end
 
+    # Re-implementation of the g_ptr_array_index macro
+    def index idx
+      sz = FFI.type_size :pointer
+      ptr = @struct[:pdata].get_pointer(idx * sz)
+      GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
+    end
+
     def each
-      prc = Proc.new {|valptr, userdata|
-        val = GirFFI::ArgHelper.cast_from_pointer element_type, valptr
-        yield val
-      }
-      Lib.g_ptr_array_foreach self.to_ptr, prc, nil
+      @struct[:len].times.each do |idx|
+        yield index(idx)
+      end
     end
   end
 end
