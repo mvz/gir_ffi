@@ -154,6 +154,10 @@ class GeneratedRegressTest < MiniTest::Spec
         metaclass = class << Regress::TestInterface; self; end
         assert_includes metaclass.ancestors, GirFFI::InterfaceBase
       end
+
+      it "has non-zero positive result for #get_gtype" do
+        Regress::TestInterface.get_gtype.must_be :>, 0
+      end
     end
 
     context "the Regress::TestObj class" do

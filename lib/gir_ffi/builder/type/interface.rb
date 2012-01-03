@@ -28,6 +28,7 @@ module GirFFI
           @klass.extend InterfaceBase
           setup_constants
           stub_methods
+          setup_gtype_getter
         end
       end
     end
