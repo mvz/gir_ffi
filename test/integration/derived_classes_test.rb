@@ -2,6 +2,13 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 GirFFI.setup :Regress
 
+class Sequence
+  @@seq = 0
+  def self.next
+    @@seq += 1
+  end
+end
+
 # Tests deriving Ruby classes from GObject classes.
 describe "For derived classes" do
   describe "setting up methods when first called" do
@@ -42,6 +49,20 @@ describe "For derived classes" do
       obj = klass.new
       obj.must_be_instance_of klass
       obj.to_ptr.wont_be_nil
+    end
+  end
+
+  describe "GObject.type_register" do
+    before do
+      @klass = Class.new GIMarshallingTests::OverridesObject
+      Object.const_set "Derived#{Sequence.next}", @klass
+      @gtype = GObject.type_register @klass
+    end
+
+    it "returns a GType for the derived class" do
+      parent_gtype = GIMarshallingTests::OverridesObject.get_gtype
+      @gtype.wont_equal parent_gtype
+      GObject.type_name(@gtype).must_equal @klass.name
     end
   end
 end

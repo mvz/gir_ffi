@@ -65,6 +65,15 @@ module GObject
     Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 
+  def self.type_register klass
+    type_info = TypeInfo.new
+    parent_type = klass.get_gtype
+    query_result = GObject.type_query parent_type
+    type_info.class_size = query_result.class_size
+    type_info.instance_size = query_result.instance_size
+    type_register_static parent_type, klass.name, type_info, 0
+  end
+
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
