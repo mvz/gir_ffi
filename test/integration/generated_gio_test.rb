@@ -34,6 +34,11 @@ describe "The generated Gio module" do
 
       @it.setup_and_call :get_qdata, 1
     end
+
+    it "knows its GType" do
+      instance_gtype = GObject.type_from_instance @it
+      @it.class.get_gtype.must_equal instance_gtype
+    end
   end
 
   context "the FileInfo class" do

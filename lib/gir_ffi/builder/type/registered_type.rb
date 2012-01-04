@@ -20,10 +20,14 @@ module GirFFI
           const_defined_for @klass, :GIR_FFI_BUILDER
         end
 
+        def target_gtype
+          info.g_type
+        end
+
         # TODO: Rename the created method, or use a constant.
         # FIXME: Only used in some of the subclases. Make mixin?
         def setup_gtype_getter
-          gtype = info.g_type
+          gtype = target_gtype
           return if gtype.nil?
           @klass.instance_eval "
             def self.get_gtype
