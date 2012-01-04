@@ -66,12 +66,19 @@ module GObject
   end
 
   def self.type_register klass
-    type_info = TypeInfo.new
     parent_type = klass.get_gtype
     query_result = GObject.type_query parent_type
+
+    type_info = TypeInfo.new
     type_info.class_size = query_result.class_size
     type_info.instance_size = query_result.instance_size
-    type_register_static parent_type, klass.name, type_info, 0
+
+    new_type = type_register_static parent_type, klass.name, type_info, 0
+
+    GirFFI::Builder::Type::Unintrospectable::CACHE[new_type] = klass
+    GirFFI::Builder::Type::Unintrospectable.new(new_type).build_class
+
+    new_type
   end
 
   load_class :Callback

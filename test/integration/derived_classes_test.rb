@@ -64,5 +64,9 @@ describe "For derived classes" do
       @gtype.wont_equal parent_gtype
       GObject.type_name(@gtype).must_equal @klass.name
     end
+
+    it "makes #get_gtype on the registered class return the new GType" do
+      @klass.get_gtype.must_equal @gtype
+    end
   end
 end
