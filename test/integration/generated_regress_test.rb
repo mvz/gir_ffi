@@ -1,13 +1,10 @@
 # coding: utf-8
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
-# Tests generated methods and functions in the Regress namespace.
-class GeneratedRegressTest < MiniTest::Spec
-  context "The generated Regress module" do
-    setup do
-      GirFFI.setup :Regress
-    end
+GirFFI.setup :Regress
 
+# Tests generated methods and functions in the Regress namespace.
+describe Regress, "The generated Regress module" do
     it "has the constant DOUBLE_CONSTANT" do
       assert_equal 44.22, Regress::DOUBLE_CONSTANT
     end
@@ -160,17 +157,18 @@ class GeneratedRegressTest < MiniTest::Spec
       end
     end
 
-    context "the Regress::TestObj class" do
+  describe Regress::TestObj do
       should "create an instance using #new_from_file" do
 	o = Regress::TestObj.new_from_file("foo")
 	assert_instance_of Regress::TestObj, o
       end
 
-      # TODO: Test that callback is called
-      should "create an instance using #new_callback" do
-	o = Regress::TestObj.new_callback Proc.new { }, nil, nil
-	assert_instance_of Regress::TestObj, o
-      end
+    it "creates an instance using #new_callback" do
+      a = 1
+      o = Regress::TestObj.new_callback Proc.new { a = 2 }, nil, nil
+      assert_instance_of Regress::TestObj, o
+      a.must_equal 2
+    end
 
       should "have a working #static_method" do
 	rv = Regress::TestObj.static_method 623
@@ -1244,6 +1242,4 @@ class GeneratedRegressTest < MiniTest::Spec
         assert_equal "undefined method `this_method_does_not_exist' for Regress:Module", e.message
       end
     end
-  end
-
 end
