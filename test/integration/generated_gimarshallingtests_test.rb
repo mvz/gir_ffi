@@ -272,13 +272,10 @@ describe "GIMarshallingTests" do
         @obj = GIMarshallingTests::OverridesObject.new
       end
 
-      it "has a read-only field parent_instance containing the parent struct" do
-        assert_instance_of GObject::Object, @obj.parent_instance
+      it "does not have field accessor methods" do
+        assert_raises(NoMethodError) { @obj.parent_instance }
         assert_raises(NoMethodError) { @obj.parent_instance = nil }
-      end
-
-      it "has a read-only field long_" do
-        assert_equal 0.0, @obj.long_
+        assert_raises(NoMethodError) { @obj.long_ }
         assert_raises(NoMethodError) { @obj.long_ = 1 }
       end
     end
@@ -367,8 +364,8 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a read-only field parent_instance containing the parent struct" do
-        assert_instance_of GIMarshallingTests::Object, @so.parent_instance
+      it "does not have field accessors" do
+        assert_raises(NoMethodError) { @so.parent_instance }
         assert_raises(NoMethodError) { @so.parent_instance = nil }
       end
 

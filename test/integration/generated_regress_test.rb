@@ -138,11 +138,12 @@ describe Regress, "The generated Regress module" do
       assert_kind_of Regress::TestFundamentalObject, @so
     end
 
-    it "stores the constructor parameter in the :data field" do
+    it "has a field :data storing the constructor parameter" do
       assert_equal "foo", @so.data
     end
 
     it "has a refcount of 1" do
+      # FIXME: Should be able to do @so.refcount
       assert_equal 1, @so.fundamental_object.refcount
     end
   end
@@ -531,8 +532,8 @@ describe Regress, "The generated Regress module" do
         pass
       end
 
-      it "has a field parent_instance" do
-        assert_instance_of Regress::TestObj, @tso.parent_instance
+      it "does not have a field parent_instance" do
+        assert_raises(NoMethodError) { @tso.parent_instance }
       end
     end
   end

@@ -2,7 +2,7 @@ module GirFFI
   module InfoExt
     module IPropertyInfo
       def getter_name
-        name.gsub /-/, '_'
+        name.gsub(/-/, '_')
       end
     end
   end

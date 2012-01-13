@@ -37,10 +37,10 @@ module GirFFI
           setup_constants
           stub_methods
           setup_gtype_getter
-          if info.n_properties > 0
-            setup_property_accessors
-          else
+          if info.fundamental?
             setup_field_accessors
+          else
+            setup_property_accessors
           end
           setup_vfunc_invokers
           setup_interfaces

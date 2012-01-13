@@ -207,6 +207,7 @@ module GObjectIntrospection
     attach_function :g_object_info_get_n_constants, [:pointer], :int
     attach_function :g_object_info_get_constant, [:pointer, :int], :pointer
     attach_function :g_object_info_get_class_struct, [:pointer], :pointer
+    attach_function :g_object_info_get_fundamental, [:pointer], :bool
 
     # IVFuncInfo
 
