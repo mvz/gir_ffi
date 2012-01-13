@@ -3,6 +3,11 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 GirFFI.setup :Regress
 
+def get_field_value obj, field
+  struct = obj.instance_variable_get :@struct
+  struct[field]
+end
+
 # Tests generated methods and functions in the Regress namespace.
 describe Regress, "The generated Regress module" do
   it "has the constant DOUBLE_CONSTANT" do
@@ -290,17 +295,17 @@ describe Regress, "The generated Regress module" do
 
         it "sets the 'float' property" do
           @o.set_property "float", 3.14
-          assert_in_epsilon 3.14, @o.some_float
+          assert_in_epsilon 3.14, get_field_value(@o, :some_float)
         end
 
         it "sets the 'double' property" do
           @o.set_property "double", 3.14
-          assert_in_epsilon 3.14, @o.some_double
+          assert_in_epsilon 3.14, get_field_value(@o, :some_double)
         end
 
         it "sets the 'int' property" do
           @o.set_property "int", 42
-          assert_equal 42, @o.some_int8
+          assert_equal 42, get_field_value(@o, :some_int8)
         end
 
         it "sets the 'list' property" do
@@ -312,6 +317,18 @@ describe Regress, "The generated Regress module" do
         it "sets the 'string' property" do
           @o.set_property "string", "foobar"
           assert_equal "foobar", @o.string
+        end
+      end
+
+      describe "its 'int' property" do
+        it "is set with #int=" do
+          @o.int = 41
+          assert_equal 41, @o.get_property("int")
+        end
+
+        it "is retrieved with #int" do
+          @o.set_property "int", 43
+          assert_equal 43, @o.int
         end
       end
 
@@ -537,9 +554,9 @@ describe Regress, "The generated Regress module" do
 
       it "sets its boolean field with #set_testbool" do
         @obj.set_testbool true
-        assert_equal 1, @obj.testbool
+        assert_equal 1, get_field_value(@obj, :testbool)
         @obj.set_testbool false
-        assert_equal 0, @obj.testbool
+        assert_equal 0, get_field_value(@obj, :testbool)
       end
 
       it "gets its boolean field with #get_testbool" do
@@ -553,6 +570,20 @@ describe Regress, "The generated Regress module" do
         @obj.set_testbool true
         val = @obj.get_property "testbool"
         assert_equal true, val
+      end
+
+      it "gets its boolean field with #testbool" do
+        @obj.set_testbool true
+        assert_equal true, @obj.testbool
+        @obj.set_testbool false
+        assert_equal false, @obj.testbool
+      end
+
+      it "sets its boolean field with #testbool=" do
+        @obj.testbool = true
+        assert_equal true, @obj.testbool
+        @obj.testbool = false
+        assert_equal false, @obj.testbool
       end
     end
   end

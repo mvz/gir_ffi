@@ -136,7 +136,7 @@ describe "GIMarshallingTests" do
     it "creates instances with #new" do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
-      assert_equal 42, ob.int_
+      assert_equal 42, ob.int
     end
 
     it "has a working function #full_inout" do
@@ -196,7 +196,7 @@ describe "GIMarshallingTests" do
 
       it "has a working virtual method #method_with_default_implementation" do
         @obj.method_with_default_implementation 104
-        assert_equal 104, @obj.int_
+        assert_equal 104, @obj.int
       end
 
       # This function is only found in the header
@@ -236,7 +236,7 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a property 'int'" do
+      it "has a property 'int' containing the argument to #new" do
         assert_equal 42, @obj.get_property("int")
         @obj.set_property("int", 13)
         assert_equal 13, @obj.get_property("int")
@@ -248,14 +248,10 @@ describe "GIMarshallingTests" do
         pass
       end
 
-      it "has a read-only field parent_instance containing the parent struct" do
-        assert_instance_of GObject::Object, @obj.parent_instance
-        assert_raises(NoMethodError) { @obj.parent_instance = nil }
-      end
-
-      it "has a read-only field int_ containing the argument to #new" do
-        assert_equal 42, @obj.int_
-        assert_raises(NoMethodError) { @obj.int_ = 1 }
+      it "has property accessors for the int property" do
+        assert_equal 42, @obj.int
+        @obj.int = 1
+        assert_equal 1, @obj.int
       end
     end
   end
@@ -381,14 +377,14 @@ describe "GIMarshallingTests" do
 
       it "has a working inherited virtual method #method_with_default_implementation" do
         @so.method_with_default_implementation 104
-        assert_equal 104, @so.parent_instance.int_
+        assert_equal 104, @so.int
       end
 
       it "has a working inherited method #int8_in"
       it "has a working inherited method #int8_out"
 
       it "has a working inherited method #method" do
-        @so.parent_instance.set_property("int", 42)
+        @so.set_property("int", 42)
         @so.method
         pass
       end
@@ -414,13 +410,13 @@ describe "GIMarshallingTests" do
       end
 
       it "has a working inherited method #none_in" do
-        @so.parent_instance.set_property("int", 42)
+        @so.set_property("int", 42)
         @so.none_in
         pass
       end
 
       it "has a working inherited method #overridden_method" do
-        @so.parent_instance.set_property("int", 0)
+        @so.set_property("int", 0)
         @so.overridden_method
         pass
       end

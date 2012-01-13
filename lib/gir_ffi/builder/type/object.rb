@@ -1,4 +1,7 @@
 require 'gir_ffi/builder/type/struct_based'
+require 'gir_ffi/builder/property'
+require 'gir_ffi/info_ext/i_property_info'
+
 module GirFFI
   module Builder
     module Type
@@ -30,7 +33,15 @@ module GirFFI
         private
 
         def setup_class
-          super
+          setup_layout
+          setup_constants
+          stub_methods
+          setup_gtype_getter
+          if info.n_properties > 0
+            setup_property_accessors
+          else
+            setup_field_accessors
+          end
           setup_vfunc_invokers
           setup_interfaces
         end
@@ -45,6 +56,20 @@ module GirFFI
             end
           end
           @parent
+        end
+
+        def setup_property_accessors
+          info.properties.each do |prop|
+            setup_accessors_for_property_info prop
+          end
+        end
+
+        def setup_accessors_for_property_info prop
+          builder = Builder::Property.new prop
+          unless has_instance_method prop.getter_name
+            @klass.class_eval builder.getter_def
+          end
+          @klass.class_eval builder.setter_def
         end
 
         def setup_vfunc_invokers
