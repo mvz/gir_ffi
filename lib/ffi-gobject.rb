@@ -65,7 +65,7 @@ module GObject
     Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 
-  def self.type_register klass
+  def self.define_type klass
     parent_type = klass.get_gtype
     query_result = GObject.type_query parent_type
 

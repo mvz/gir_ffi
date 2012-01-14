@@ -52,11 +52,11 @@ describe "For derived classes" do
     end
   end
 
-  describe "GObject.type_register" do
+  describe "GObject.define_type" do
     before do
       @klass = Class.new GIMarshallingTests::OverridesObject
       Object.const_set "Derived#{Sequence.next}", @klass
-      @gtype = GObject.type_register @klass
+      @gtype = GObject.define_type @klass
     end
 
     it "returns a GType for the derived class" do
