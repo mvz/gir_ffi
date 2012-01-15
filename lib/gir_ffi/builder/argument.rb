@@ -546,7 +546,7 @@ module GirFFI::Builder
     def post
       size = array_size
 
-      [ "#{retname} = GirFFI::ArgHelper.ptr_to_#{subtype_tag}_array #{cvar}, #{size}" ]
+      [ "#{retname} = GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{cvar}, #{size}" ]
     end
   end
 

@@ -31,8 +31,7 @@ module GirFFI
       elsif type == :utf8
         ptr_to_utf8_array ptr, size
       else
-        ffi_type = TypeMap.map_basic_type type
-        ptr.send "get_array_of_#{ffi_type}", 0, size
+        self.send "ptr_to_#{type}_array", ptr, size
       end
     end
 
@@ -87,7 +86,7 @@ module GirFFI
     class << self
       sz = FFI.type_size(:size_t) * 8
       type = "guint#{sz}"
-      alias_method :ptr_to_gtype_array, "ptr_to_#{type}_array"
+      alias_method :ptr_to_GType_array, "ptr_to_#{type}_array"
     end
 
     def self.check_error errpp
