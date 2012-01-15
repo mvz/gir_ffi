@@ -49,6 +49,10 @@ module GirFFI
           nil
         end
 
+        def fields
+          info.fields
+        end
+
         def superclass
           unless defined? @superclass
             if parent

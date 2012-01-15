@@ -2,6 +2,15 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 require 'ffi-gobject'
 
+GirFFI.setup :GIMarshallingTests
+
+class Sequence
+  @@seq = 0
+  def self.next
+    @@seq += 1
+  end
+end
+
 describe GObject do
   it "has type_init as a public method" do
     assert GObject.respond_to?('type_init')
@@ -48,5 +57,59 @@ describe GObject do
     assert_equal "GStrv", GObject.type_name(GObject::TYPE_STRV)
     assert_equal "GHashTable", GObject.type_name(GObject::TYPE_HASH_TABLE)
   end
-end
 
+  describe "::define_type" do
+    describe "without a block" do
+      before do
+        @klass = Class.new GIMarshallingTests::OverridesObject
+        Object.const_set "Derived#{Sequence.next}", @klass
+        @gtype = GObject.define_type @klass
+      end
+
+      it "returns a GType for the derived class" do
+        parent_gtype = GIMarshallingTests::OverridesObject.get_gtype
+        @gtype.wont_equal parent_gtype
+        GObject.type_name(@gtype).must_equal @klass.name
+      end
+
+      it "makes #get_gtype on the registered class return the new GType" do
+        @klass.get_gtype.must_equal @gtype
+      end
+
+      it "registers a type with the same size as the parent" do
+        q = GObject.type_query @gtype
+        q.instance_size.must_equal GIMarshallingTests::OverridesObject::Struct.size
+      end
+
+      it "creates a struct class for the derived class with just one member" do
+        @klass::Struct.members.must_equal [:parent]
+      end
+    end
+
+    describe "with a block with a call to #install_property" do
+      before do
+        @klass = Class.new GIMarshallingTests::OverridesObject
+        Object.const_set "Derived#{Sequence.next}", @klass
+        @gtype = GObject.define_type @klass do
+          install_property GObject.param_spec_int("foo", "foo bar",
+                                                  "The Foo Bar Property",
+                                                  10, 20, 15,
+                                                  3)
+        end
+      end
+
+      it "registers a type that is bigger than the parent" do
+        skip
+        q = GObject.type_query @gtype
+        q.instance_size.must_be :>, GIMarshallingTests::OverridesObject::Struct.size
+      end
+
+      it "creates accessor functions for the property" do
+        skip
+        obj = @klass.new
+        obj.foo = 13
+        obj.foo.must_equal 13
+      end
+    end
+  end
+end

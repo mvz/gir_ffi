@@ -18,6 +18,7 @@ module GirFFI
         def instantiate_class
           CACHE[@gtype] ||= Class.new(superclass)
           @klass = CACHE[@gtype]
+          @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
         end
 
@@ -27,6 +28,7 @@ module GirFFI
 
         def setup_class
           setup_constants
+          setup_layout
           setup_interfaces
           setup_gtype_getter
         end
@@ -40,6 +42,10 @@ module GirFFI
         def parent
           parent_type = ::GObject.type_parent @gtype
           gir.find_by_gtype(parent_type)
+        end
+
+        def fields
+          []
         end
 
         def interface_infos

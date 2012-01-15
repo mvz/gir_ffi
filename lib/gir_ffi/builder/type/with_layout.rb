@@ -26,7 +26,7 @@ module GirFFI
         end
 
         def base_layout_specification
-          info.fields.map { |finfo| finfo.layout_specification }.flatten(1)
+          fields.map { |finfo| finfo.layout_specification }.flatten(1)
         end
 
         def layout_specification
@@ -47,7 +47,7 @@ module GirFFI
         end
 
         def setup_field_accessors
-          info.fields.each do |finfo|
+          fields.each do |finfo|
             setup_accessors_for_field_info finfo
           end
         end
