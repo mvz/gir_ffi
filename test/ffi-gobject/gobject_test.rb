@@ -58,6 +58,17 @@ describe GObject do
     assert_equal "GHashTable", GObject.type_name(GObject::TYPE_HASH_TABLE)
   end
 
+  describe "::object_class_from_instance" do
+    it "returns a GObject::ObjectClass with the correct GType" do
+      obj = GIMarshallingTests::OverridesObject.new
+      object_class = GObject.object_class_from_instance obj
+      gtype = object_class.g_type_class.g_type
+
+      object_class.must_be_instance_of GObject::ObjectClass
+      gtype.must_equal GIMarshallingTests::OverridesObject.get_gtype
+    end
+  end
+
   describe "::define_type" do
     describe "without a block" do
       before do

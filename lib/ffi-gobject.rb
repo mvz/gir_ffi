@@ -40,6 +40,16 @@ module GObject
     type_from_instance_pointer instance.to_ptr
   end
 
+  def self.object_class_from_instance instance
+    object_class_from_instance_pointer instance.to_ptr
+  end
+
+  def self.object_class_from_instance_pointer inst_ptr
+    return nil if inst_ptr.null?
+    klsptr = inst_ptr.get_pointer 0
+    ObjectClass.wrap klsptr
+  end
+
   _setup_method :signal_emitv
 
   def self.signal_lookup_from_instance signal, object
