@@ -69,6 +69,21 @@ describe GObject do
     end
   end
 
+  describe "creating ParamSpecs" do
+    describe "#param_spec_int" do
+      it "creates a GObject::ParamSpecInt" do
+        spec = GObject.param_spec_int("foo", "foo bar",
+                                      "The Foo Bar Property",
+                                      10, 20, 15,
+                                      3)
+        spec.must_be_instance_of GObject::ParamSpecInt
+        spec.minimum.must_equal 10
+        spec.maximum.must_equal 20
+        spec.default_value.must_equal 15
+      end
+    end
+  end
+
   describe "::define_type" do
     describe "without a block" do
       before do

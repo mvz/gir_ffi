@@ -91,10 +91,18 @@ module GObject
     new_type
   end
 
+  def self.param_spec_int(name, nick, blurb, minimum, maximum,
+                          default_value, flags)
+    ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
+                               default_value, flags)
+    ParamSpecInt.wrap(ptr)
+  end
+
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
   load_class :ClosureMarshal
+  load_class :ParamFlags
 
   module Lib
     attach_function :g_type_init, [], :void
@@ -109,6 +117,10 @@ module GObject
         :ulong
     attach_function :g_closure_set_marshal,
       [:pointer, ClosureMarshal], :void
+
+    attach_function :g_param_spec_int,
+      [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
+      :pointer
   end
 
 end
