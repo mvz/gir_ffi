@@ -8,6 +8,7 @@ require 'ffi-gobject/closure'
 require 'ffi-gobject/object'
 require 'ffi-gobject/ruby_closure'
 require 'ffi-gobject/helper'
+require 'gir_ffi/builder/type/user_defined'
 
 module GObject
   def self.type_init
@@ -76,19 +77,9 @@ module GObject
   end
 
   def self.define_type klass
-    parent_type = klass.get_gtype
-    query_result = GObject.type_query parent_type
+    GirFFI::Builder::Type::UserDefined.new(klass).build_class
 
-    type_info = TypeInfo.new
-    type_info.class_size = query_result.class_size
-    type_info.instance_size = query_result.instance_size
-
-    new_type = type_register_static parent_type, klass.name, type_info, 0
-
-    GirFFI::Builder::Type::Unintrospectable::CACHE[new_type] = klass
-    GirFFI::Builder::Type::Unintrospectable.new(new_type).build_class
-
-    new_type
+    klass.get_gtype
   end
 
   def self.param_spec_int(name, nick, blurb, minimum, maximum,
