@@ -1,6 +1,6 @@
 require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
-require 'ffi-gtk2'
+require 'ffi-gtk3'
 
 class TypeBuilderTest < MiniTest::Spec
   context "The Builder::Type class" do

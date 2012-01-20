@@ -1,6 +1,6 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
-require 'ffi-gtk2'
+require 'ffi-gtk3'
 
 describe Gtk do
   describe "::init" do

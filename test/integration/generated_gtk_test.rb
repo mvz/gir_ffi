@@ -1,7 +1,7 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 # Since the tests will call Gtk+ functions, Gtk+ must be initialized.
-require 'ffi-gtk2'
+require 'ffi-gtk3'
 Gtk.init
 
 # Tests generated methods and functions in the Gtk namespace.
