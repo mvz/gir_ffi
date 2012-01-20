@@ -38,13 +38,22 @@ namespace :test do
     t.ruby_opts += ["-w"]
   end
 
+  Rake::TestTask.new(:gtk) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/ffi-gtk/*_test.rb']
+    t.ruby_opts += ["-w"]
+  end
+
   desc 'Build Regress test library and typelib'
   task :lib => "test/lib/Makefile" do
     sh %{cd test/lib && make}
   end
 
-  task :integration => :lib
   task :run => :lib
+  task :unit => :lib
+  task :glib => :lib
+  task :gobject => :lib
+  task :integration => :lib
 
   desc 'Run rcov for the entire test suite'
   task :coverage => :lib do
@@ -63,4 +72,5 @@ end
 
 desc 'Run unit an integration tests'
 task :test => ['test:gobjectintrospection',
-  'test:unit', 'test:run', 'test:glib', 'test:gobject', 'test:integration']
+  'test:unit', 'test:run', 'test:glib', 'test:gobject', 'test:gtk',
+  'test:integration']

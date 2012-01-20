@@ -40,18 +40,18 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
-  describe "enumerating the infos for Gtk" do
+  describe "enumerating the infos for GObject" do
     setup do
       @gir = GObjectIntrospection::IRepository.default
-      @gir.require 'Gtk', "2.0"
+      @gir.require 'GObject', "2.0"
     end
 
     should "yield more than one object" do
-      assert_operator @gir.n_infos('Gtk'), :>, 0
+      assert_operator @gir.n_infos('GObject'), :>, 0
     end
 
     should "yield IBaseInfo objects" do
-      assert_kind_of GObjectIntrospection::IBaseInfo, @gir.info('Gtk', 0)
+      assert_kind_of GObjectIntrospection::IBaseInfo, @gir.info('GObject', 0)
     end
   end
 end

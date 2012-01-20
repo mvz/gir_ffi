@@ -159,14 +159,14 @@ describe GirFFI::Builder::Function do
   end
 
   it "builds a correct definition for a simple method" do
-    go = get_method_introspection_data 'Gtk', 'Widget', 'show'
+    go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
     fbuilder = GirFFI::Builder::Function.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
-      def show 
-        DummyLib.gtk_widget_show self
-        
+      def instance_method 
+        _v1 = DummyLib.regress_test_obj_instance_method self
+        return _v1
       end
     CODE
 

@@ -21,10 +21,6 @@ module GObjectIntrospection
   end
 end
 
-# Preload data for Gtk+ version 2.0.
-gir = GObjectIntrospection::IRepository.default
-gir.require "Gtk", "2.0"
-
 # Need a dummy module for some tests.
 module DummyLib
 end
