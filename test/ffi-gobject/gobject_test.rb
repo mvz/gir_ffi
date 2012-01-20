@@ -125,9 +125,12 @@ describe GObject do
       end
 
       it "registers a type that is bigger than the parent" do
-        skip
         q = GObject.type_query @gtype
         q.instance_size.must_be :>, GIMarshallingTests::OverridesObject::Struct.size
+      end
+
+      it "gives the types Struct the fields :parent and :foo" do
+        @klass::Struct.members.must_equal [:parent, :foo]
       end
 
       it "creates accessor functions for the property" do

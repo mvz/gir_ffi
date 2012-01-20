@@ -76,8 +76,8 @@ module GObject
     Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 
-  def self.define_type klass
-    GirFFI::Builder::Type::UserDefined.new(klass).build_class
+  def self.define_type klass, &block
+    GirFFI::Builder::Type::UserDefined.new(klass, &block).build_class
 
     klass.get_gtype
   end
