@@ -28,7 +28,10 @@ module GirFFI
         def setup_class
           super
           setup_constructor
+          setup_property_accessors
         end
+
+        private
 
         def install_property pspec
           properties << pspec
@@ -47,6 +50,25 @@ module GirFFI
             spec
           end.flatten(1)
           parent_spec + fields_spec
+        end
+
+        def setup_property_accessors
+          properties.each do |pspec|
+            setup_accessors_for_param_spec pspec
+          end
+        end
+
+        def setup_accessors_for_param_spec pspec
+          code = <<-CODE
+          def #{pspec.get_name}
+            @struct[:#{pspec.get_name}]
+          end
+          def #{pspec.get_name}= val
+            @struct[:#{pspec.get_name}] = val
+          end
+          CODE
+
+          @klass.class_eval code
         end
 
         def method_introspection_data method

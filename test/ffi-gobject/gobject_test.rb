@@ -140,7 +140,6 @@ describe GObject do
       end
 
       it "creates accessor functions for the property" do
-        skip
         obj = @klass.new
         obj.foo = 13
         obj.foo.must_equal 13
