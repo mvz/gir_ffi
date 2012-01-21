@@ -25,6 +25,11 @@ module GirFFI
           super new_type
         end
 
+        def setup_class
+          super
+          setup_constructor
+        end
+
         def install_property pspec
           properties << pspec
         end
@@ -42,6 +47,20 @@ module GirFFI
             spec
           end.flatten(1)
           parent_spec + fields_spec
+        end
+
+        def method_introspection_data method
+          nil
+        end
+
+        def setup_constructor
+          code = <<-CODE
+          def self.new
+            gptr = GObject::Lib.g_object_newv #{@gtype}, 0, nil
+            self.wrap(gptr)
+          end
+          CODE
+          @klass.class_eval code
         end
       end
     end

@@ -110,6 +110,12 @@ describe GObject do
       it "creates a struct class for the derived class with just one member" do
         @klass::Struct.members.must_equal [:parent]
       end
+
+      it "allows the new class to be instantiated" do
+        obj = @klass.new
+        type = GObject.type_from_instance obj
+        type.must_equal @gtype
+      end
     end
 
     describe "with a block with a call to #install_property" do
