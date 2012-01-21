@@ -13,6 +13,12 @@ module GirFFI
     module_name = module_name.to_s
     GirFFI::Builder.build_module module_name, version
   end
+
+  def self.define_type klass, &block
+    Builder::Type::UserDefined.new(klass, &block).build_class
+
+    klass.get_gtype
+  end
 end
 
 require 'ffi-glib'

@@ -76,12 +76,6 @@ module GObject
     Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
   end
 
-  def self.define_type klass, &block
-    GirFFI::Builder::Type::UserDefined.new(klass, &block).build_class
-
-    klass.get_gtype
-  end
-
   def self.param_spec_int(name, nick, blurb, minimum, maximum,
                           default_value, flags)
     ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
