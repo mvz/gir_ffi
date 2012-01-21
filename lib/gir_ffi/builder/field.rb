@@ -5,9 +5,10 @@ module GirFFI
   module Builder
     # Creates field getter and setter code for a given IFieldInfo.
     class Field
-      def initialize field_info, lib_module
+      def initialize field_info, lib_module, struct_class
         @info = field_info
         @libmodule = lib_module
+        @struct_class = struct_class
       end
 
       def getter_def
@@ -15,7 +16,8 @@ module GirFFI
 
         return <<-CODE
         def #{@info.name}
-          #{builder.cvar} = @struct[#{field_symbol.inspect}]
+          struct = #{@struct_class}.new @struct.to_ptr
+          #{builder.cvar} = struct[#{field_symbol.inspect}]
           #{builder.post.join("\n")}
           #{builder.retval}
         end
@@ -29,7 +31,8 @@ module GirFFI
         return <<-CODE
         def #{name}= #{builder.inarg}
           #{builder.pre.join("\n")}
-          @struct[#{name.to_sym.inspect}] = #{builder.callarg}
+          struct = #{@struct_class}.new @struct.to_ptr
+          struct[#{name.to_sym.inspect}] = #{builder.callarg}
         end
         CODE
       end

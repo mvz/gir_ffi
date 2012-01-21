@@ -75,11 +75,15 @@ describe GirFFI::Builder::Type::Struct do
       stub(GirFFI::Builder).build_module('Foo') { m }
 
       c = Class.new
+      c::Struct = Class.new
 
       refute c.method_defined?(:bar)
       refute c.method_defined?(:bar=)
 
-      @builder.instance_eval { @klass = c }
+      @builder.instance_eval {
+        @klass = c
+        @structklass = c::Struct
+      }
       @builder.send :setup_field_accessors
 
       assert c.method_defined?(:bar)

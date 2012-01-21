@@ -142,6 +142,12 @@ describe Regress, "The generated Regress module" do
       assert_equal "foo", @so.data
     end
 
+    it "can access its parent class' fields directly" do
+      assert_nothing_raised do
+        @so.flags
+      end
+    end
+
     it "has a refcount of 1" do
       # FIXME: Should be able to do @so.refcount
       assert_equal 1, @so.fundamental_object.refcount
