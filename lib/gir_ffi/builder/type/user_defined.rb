@@ -1,4 +1,5 @@
-require 'gir_ffi/builder/type/unintrospectable'
+require 'gir_ffi/user_defined/i_property_info'
+require 'gir_ffi/builder/type/object'
 
 module GirFFI
   module Builder
