@@ -15,6 +15,7 @@ module GirFFI
 
         def instantiate_class
           @klass = @klass_before_set_up
+          @info = GirFFI::UserDefined::IObjectInfo.new
 
           self.instance_eval(&@block) if @block
 
@@ -33,7 +34,6 @@ module GirFFI
 
           # TODO: Check that class ultimately derives from GObject.
           @gtype = new_type
-          @info = nil
           @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
         end
@@ -66,7 +66,7 @@ module GirFFI
         end
 
         def properties
-          @properties ||= []
+          info.properties
         end
 
         def layout_specification

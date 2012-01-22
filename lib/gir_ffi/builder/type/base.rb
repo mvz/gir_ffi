@@ -19,11 +19,9 @@ module GirFFI
           @klass
         end
 
-        private
+        attr_reader :info
 
-        def info
-          @info
-        end
+        private
 
         def namespace_module
           @namespace_module ||= Builder.build_module @namespace

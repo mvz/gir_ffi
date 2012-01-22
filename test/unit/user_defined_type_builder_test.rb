@@ -19,5 +19,23 @@ describe GirFFI::Builder::Type::UserDefined do
       props.length.must_equal 1
       props[0].must_be_instance_of GirFFI::UserDefined::IPropertyInfo
     end
+
+    describe "the info attribute" do
+      before do
+        @info = @builder.info
+      end
+
+      it "is an object of type GirFFI::UserDefined::IObjectInfo" do
+        @info.must_be_instance_of GirFFI::UserDefined::IObjectInfo
+      end
+
+      it "knows about the single property :foo" do
+        props = @info.properties
+        props.length.must_equal 1
+        foo_property = props[0]
+        foo_property.must_be_instance_of GirFFI::UserDefined::IPropertyInfo
+        foo_property.name.must_equal "foo"
+      end
+    end
   end
 end
