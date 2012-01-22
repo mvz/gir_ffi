@@ -1,4 +1,4 @@
-require File.expand_path('gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 describe GirFFI::Builder::Type::Unintrospectable do
   describe "building the GLocalFile type" do
