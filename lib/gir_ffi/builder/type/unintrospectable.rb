@@ -63,10 +63,6 @@ module GirFFI
         def signal_definers
           interface_infos
         end
-
-        def gir
-          @gir ||= GObjectIntrospection::IRepository.default
-        end
       end
     end
   end

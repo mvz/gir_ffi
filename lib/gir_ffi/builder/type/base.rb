@@ -38,6 +38,10 @@ module GirFFI
             Class.new parent
           }
         end
+
+        def gir
+          @gir ||= GObjectIntrospection::IRepository.default
+        end
       end
     end
   end

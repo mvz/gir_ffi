@@ -5,10 +5,11 @@ module GirFFI
     module Type
 
       # Implements the creation of GObject subclasses from Ruby.
-      class UserDefined < Unintrospectable
+      class UserDefined < Object
         def initialize klass, &block
           self.instance_eval(&block) if block_given?
           parent_type = klass.get_gtype
+          @parent = gir.find_by_gtype(parent_type)
           query_result = GObject.type_query parent_type
 
           type_info = GObject::TypeInfo.new
@@ -20,18 +21,38 @@ module GirFFI
 
           new_type = GObject.type_register_static parent_type, klass.name, type_info, 0
 
-          CACHE[new_type] = klass
+          # TODO: Check that class ultimately derives from GObject.
+          @klass_before_set_up = klass
+          @gtype = new_type
+          @info = nil
+        end
 
-          super new_type
+        def instantiate_class
+          @klass = @klass_before_set_up
+          @structklass = get_or_define_class @klass, :Struct, layout_superclass
+          setup_class unless already_set_up
         end
 
         def setup_class
-          super
-          setup_constructor
+          setup_layout
+          setup_constants
+          #stub_methods
+          setup_gtype_getter
           setup_property_accessors
+          #setup_vfunc_invokers
+          #setup_interfaces
+          setup_constructor
         end
 
         private
+
+        def target_gtype
+          @gtype
+        end
+
+        def parent
+          @parent
+        end
 
         def install_property pspec
           properties << pspec
