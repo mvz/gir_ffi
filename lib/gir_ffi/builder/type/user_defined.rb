@@ -7,11 +7,19 @@ module GirFFI
       # Implements the creation of GObject subclasses from Ruby.
       class UserDefined < Object
         def initialize klass, &block
-          self.instance_eval(&block) if block_given?
-          parent_type = klass.get_gtype
-          @parent = gir.find_by_gtype(parent_type)
-          query_result = GObject.type_query parent_type
+          @block = block
+          @klass_before_set_up = klass
+        end
 
+        def instantiate_class
+          @klass = @klass_before_set_up
+
+          self.instance_eval(&@block) if @block
+
+          parent_type = @klass.get_gtype
+          @parent = gir.find_by_gtype(parent_type)
+
+          query_result = GObject.type_query parent_type
           type_info = GObject::TypeInfo.new
           type_info.class_size = query_result.class_size
           type_info.instance_size = query_result.instance_size
@@ -19,16 +27,11 @@ module GirFFI
             type_info.instance_size += FFI.type_size(:int32)
           end
 
-          new_type = GObject.type_register_static parent_type, klass.name, type_info, 0
+          new_type = GObject.type_register_static parent_type, @klass.name, type_info, 0
 
           # TODO: Check that class ultimately derives from GObject.
-          @klass_before_set_up = klass
           @gtype = new_type
           @info = nil
-        end
-
-        def instantiate_class
-          @klass = @klass_before_set_up
           @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
         end
