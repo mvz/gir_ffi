@@ -1,3 +1,4 @@
+require 'gir_ffi/user_defined/i_object_info'
 require 'gir_ffi/user_defined/i_property_info'
 require 'gir_ffi/builder/type/object'
 
