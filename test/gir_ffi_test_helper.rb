@@ -25,6 +25,14 @@ end
 module DummyLib
 end
 
+# Global sequence provider. Needed to make unique class names.
+class Sequence
+  @@seq = 0
+  def self.next
+    @@seq += 1
+  end
+end
+
 class MiniTest::Unit::TestCase
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")

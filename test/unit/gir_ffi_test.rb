@@ -2,13 +2,6 @@ require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 GirFFI.setup :GIMarshallingTests
 
-class Sequence
-  @@seq = 0
-  def self.next
-    @@seq += 1
-  end
-end
-
 describe GirFFI do
   describe "::define_type" do
     describe "without a block" do
