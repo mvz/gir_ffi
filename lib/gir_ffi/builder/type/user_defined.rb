@@ -59,7 +59,9 @@ module GirFFI
         end
 
         def install_property pspec
-          properties << pspec
+          pinfo = GirFFI::UserDefined::IPropertyInfo.new
+          pinfo.name = pspec.get_name
+          properties << pinfo
         end
 
         def properties
@@ -69,8 +71,8 @@ module GirFFI
         def layout_specification
           parent_spec = [:parent, superclass::Struct, 0]
           offset = superclass::Struct.size
-          fields_spec = properties.map do |pspec|
-            spec = [pspec.get_name, :int32, offset]
+          fields_spec = properties.map do |pinfo|
+            spec = [pinfo.name, :int32, offset]
             offset += FFI.type_size(:int32)
             spec
           end.flatten(1)
@@ -78,18 +80,18 @@ module GirFFI
         end
 
         def setup_property_accessors
-          properties.each do |pspec|
-            setup_accessors_for_param_spec pspec
+          properties.each do |pinfo|
+            setup_accessors_for_param_info pinfo
           end
         end
 
-        def setup_accessors_for_param_spec pspec
+        def setup_accessors_for_param_info pinfo
           code = <<-CODE
-          def #{pspec.get_name}
-            @struct[:#{pspec.get_name}]
+          def #{pinfo.name}
+            @struct[:#{pinfo.name}]
           end
-          def #{pspec.get_name}= val
-            @struct[:#{pspec.get_name}] = val
+          def #{pinfo.name}= val
+            @struct[:#{pinfo.name}] = val
           end
           CODE
 

@@ -14,8 +14,10 @@ describe GirFFI::Builder::Type::UserDefined do
       @builder.build_class
     end
 
-    it "has one property" do
-      @builder.send(:properties).length.must_equal 1
+    it "has one property of type GirFFI::UserDefined::IPropertyInfo" do
+      props = @builder.send(:properties)
+      props.length.must_equal 1
+      props[0].must_be_instance_of GirFFI::UserDefined::IPropertyInfo
     end
   end
 end
