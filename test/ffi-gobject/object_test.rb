@@ -8,5 +8,9 @@ describe GObject::Object do
       assert_equal 1,
         GObject::Object.instance_method("get_property").arity
     end
+
+    it 'includes GObject::RubyStyle' do
+      assert GObject::Object.included_modules.include?(GObject::RubyStyle)
+    end
   end
 end
