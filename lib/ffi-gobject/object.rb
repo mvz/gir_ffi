@@ -1,8 +1,13 @@
+require 'ffi-gobject/ruby_style'
+
 module GObject
   load_class :Object
 
   # Overrides for GObject, GObject's generic base class.
   class Object
+
+    include RubyStyle
+
     _setup_method "new"
     _setup_instance_method "get_property"
     _setup_instance_method "set_property"
