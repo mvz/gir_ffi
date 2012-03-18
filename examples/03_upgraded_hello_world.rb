@@ -12,13 +12,14 @@ callback = lambda { |widget, data|
 Gtk.init
 
 win = Gtk::Window.new(:toplevel)
-win.set_title "Hello Buttons!"
+win.title= "Hello Buttons!"
 
 GObject.signal_connect win, "delete-event" do
   Gtk.main_quit
   false
 end
 
+# FIXME: #border_width= should work
 win.set_border_width 10
 
 box = Gtk::HBox.new(false, 0)

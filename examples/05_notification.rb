@@ -12,8 +12,8 @@ Notify.init "notification test"
 
 # Basic set up of the notification.
 nf = Notify::Notification.new "Hello!", "Hi there.", "gtk-dialog-info"
-nf.set_timeout 3000
-nf.set_urgency :critical
+nf.timeout = 3000
+nf.urgency = :critical
 
 # Show a button 'Test' in the notification, with a callback function.
 nf.add_action "test", "Test", Proc.new { |obj, action, user_data|

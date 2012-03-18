@@ -14,6 +14,7 @@ GObject.signal_connect win, "delete-event" do
 end
 
 GObject.signal_connect(win, "destroy") { Gtk.main_quit }
+# FIXME: #border_width= should work
 win.set_border_width 10
 
 but = Gtk::Button.new_with_label("Hello World")
