@@ -3,4 +3,4 @@ rvm:
   - 1.9.3
 before_install:
   - sudo apt-get update
-  - sudo apt-get install libgirepository1.0-dev gir1.2-gtk-2.0 libgtk2.0-dev
+  - sudo apt-get install libgirepository1.0-dev gobject-introspection gir1.2-gtk-2.0 libgtk2.0-dev
