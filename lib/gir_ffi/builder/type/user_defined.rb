@@ -61,7 +61,7 @@ module GirFFI
 
         def install_property pspec
           pinfo = GirFFI::UserDefined::IPropertyInfo.new
-          pinfo.name = pspec.get_name
+          pinfo.name = pspec.parent_instance.get_name
           properties << pinfo
         end
 
