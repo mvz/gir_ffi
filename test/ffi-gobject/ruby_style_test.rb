@@ -26,7 +26,6 @@ describe GObject::RubyStyle do
   end
 
   it 'delegates signal_connect to GObject' do
-    block = lambda {}
     mock(GObject).signal_connect(subject, 'some-event')
     subject.signal_connect('some-event') do
       nothing
