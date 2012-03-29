@@ -22,7 +22,8 @@ module GObject
   TYPE_OBJECT = type_from_name("GObject")
   TYPE_GTYPE = type_from_name("GType")
   TYPE_VARIANT = type_from_name("GVariant")
-  TYPE_STRV = GLib.strv_get_type
+  # XXX: The strv_get_type method is not available in older versions of GLib.
+  #TYPE_STRV = GLib.strv_get_type
   TYPE_HASH_TABLE = type_from_name("GHashTable")
 
   TYPE_TAG_TO_GTYPE = {
