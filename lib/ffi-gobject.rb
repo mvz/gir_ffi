@@ -96,6 +96,11 @@ module GObject
     attach_function :g_object_unref, [:pointer], :void
     attach_function :g_object_is_floating, [:pointer], :bool
 
+    # XXX: For Ubuntu 11.04.
+    unless method_defined? :g_object_newv
+      attach_function :g_object_newv, [:size_t, :uint, :pointer], :pointer
+    end
+
     attach_function :g_signal_connect_data,
       [:pointer, :string, Callback, :pointer, ClosureNotify,
         ConnectFlags],
