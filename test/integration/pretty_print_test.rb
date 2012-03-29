@@ -7,6 +7,8 @@ GirFFI.setup :Regress
 describe "Pretty-printing" do
   def assert_syntax_ok str
     tmp = Tempfile.new "gir_ffi"
+    # TODO: Make #pretty_print add this preamble.
+    tmp.write "# coding: utf-8\n"
     tmp.write str
     tmp.flush
     is_ok = `ruby -c #{tmp.path} 2>&1`
