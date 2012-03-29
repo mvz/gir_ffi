@@ -13,6 +13,7 @@ describe GirFFI::Builder::Function do
 
   it "builds a correct definition of Regress:test_array_fixed_out_objects" do
     go = get_introspection_data 'Regress', 'test_array_fixed_out_objects'
+    skip unless go
     fbuilder = GirFFI::Builder::Function.new go, DummyLib
     code = fbuilder.generate
 
@@ -23,7 +24,7 @@ describe GirFFI::Builder::Function do
         _v2 = _v1.to_sized_array_value 2
         return _v2
       end
-      CODE
+    CODE
 
     assert_equal expected.reset_indentation, code
   end
