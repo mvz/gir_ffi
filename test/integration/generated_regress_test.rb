@@ -513,9 +513,11 @@ describe Regress, "The generated Regress module" do
     end
   end
 
-  describe Regress::TestStructC do
-    it "needs to be tested"
-  end
+  # TODO: Test the following classes.
+  # Regress::TestStructC
+  # Regress::TestStructD
+  # Regress::TestStructE
+  # Regress::TestStructFixedArray
 
   describe Regress::TestSubObj do
     it "is created with #new" do
