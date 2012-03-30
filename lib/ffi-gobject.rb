@@ -96,10 +96,13 @@ module GObject
     attach_function :g_object_unref, [:pointer], :void
     attach_function :g_object_is_floating, [:pointer], :bool
 
-    # XXX: For Ubuntu 11.04.
+    # XXX: For older GObject/gobject-introspection.
     unless method_defined? :g_object_newv
       attach_function :g_object_newv, [:size_t, :uint, :pointer], :pointer
     end
+
+    attach_function :g_strv_get_type, [], :size_t
+    attach_function :g_hash_table_get_type, [], :size_t
 
     attach_function :g_signal_connect_data,
       [:pointer, :string, Callback, :pointer, ClosureNotify,
@@ -113,4 +116,17 @@ module GObject
       :pointer
   end
 
+  TYPE_STRV = Lib.g_strv_get_type
+  TYPE_HASH_TABLE = Lib.g_hash_table_get_type
+
+  TYPE_TAG_TO_GTYPE = {
+    :void => TYPE_NONE,
+    :gboolean => TYPE_BOOLEAN,
+    :gint32 => TYPE_INT,
+    :gfloat => TYPE_FLOAT,
+    :gdouble => TYPE_DOUBLE,
+    :utf8 => TYPE_STRING,
+    :ghash => TYPE_HASH_TABLE,
+    :glist => TYPE_POINTER
+  }
 end

@@ -95,17 +95,13 @@ module GObject
 
     def get_boxed_enhanced
       boxed = get_boxed
-      # FIXME: Simplify once GLib.strv_get_type is available on all common GLib
-      # installations.
-      if current_gtype_name == "GStrv"
+      case current_gtype
+      when TYPE_STRV
         GLib::Strv.wrap boxed
+      when TYPE_HASH_TABLE
+        GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
-        case current_gtype
-        when TYPE_HASH_TABLE
-          GLib::HashTable.wrap [:gpointer, :gpointer], boxed
-        else
-          GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
-        end
+        GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
       end
     end
 

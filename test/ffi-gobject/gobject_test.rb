@@ -47,9 +47,7 @@ describe GObject do
     assert_equal "GObject", GObject.type_name(GObject::TYPE_OBJECT)
     assert_equal "GType", GObject.type_name(GObject::TYPE_GTYPE)
     assert_equal "GVariant", GObject.type_name(GObject::TYPE_VARIANT)
-    # XXX: The gtype of GStrv cannot be retrieved automatically on older
-    # versions of GLib.
-    #assert_equal "GStrv", GObject.type_name(GObject::TYPE_STRV)
+    assert_equal "GStrv", GObject.type_name(GObject::TYPE_STRV)
     assert_equal "GHashTable", GObject.type_name(GObject::TYPE_HASH_TABLE)
   end
 
