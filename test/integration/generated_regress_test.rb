@@ -1073,8 +1073,9 @@ describe Regress, "The generated Regress module" do
   end
 
   it "has correct test_long" do
-    result = Regress.test_long 2300000000000
-    assert_equal 2300000000000, result
+    long_val = FFI.type_size == 8 ? 2_300_000_000_000 : 2_000_000_000
+    result = Regress.test_long long_val
+    assert_equal long_val, result
   end
 
   it "has correct test_multi_callback" do
