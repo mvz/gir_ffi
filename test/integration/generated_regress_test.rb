@@ -821,6 +821,7 @@ describe Regress, "The generated Regress module" do
   it "has a correct #test_date_in_gvalue function" do
     r = Regress.test_date_in_gvalue
     date = r.ruby_value
+    skip unless date.respond_to? :get_year
     assert_equal [1984, :december, 5],
       [date.get_year, date.get_month, date.get_day]
   end
