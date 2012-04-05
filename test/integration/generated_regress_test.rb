@@ -704,9 +704,14 @@ describe Regress, "The generated Regress module" do
   end
 
   it "has correct test_async_ready_callback" do
-    a = 1
-    main_loop = GLib::MainLoop.new nil, false
+    # XXX: Workaround for older GLib.
+    begin
+      main_loop = GLib::MainLoop.new nil, false
+    rescue ArgumentError
+      main_loop = GLib.main_loop_new nil, false
+    end
 
+    a = 1
     Regress.test_async_ready_callback Proc.new {
       main_loop.quit
       a = 2
