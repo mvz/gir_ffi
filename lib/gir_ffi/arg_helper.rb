@@ -40,6 +40,7 @@ module GirFFI
         ffi_type = TypeMap.map_basic_type type
         defn =
           "def self.ptr_to_#{type}_array ptr, size
+            return [] if ptr.nil? or ptr.null?
             ptr.get_array_of_#{ffi_type}(0, size)
           end"
         eval defn
@@ -49,12 +50,13 @@ module GirFFI
     setup_ptr_to_type_array_handler_for SIMPLE_G_TYPES
 
     def self.ptr_to_utf8_array ptr, size
+      return [] if ptr.nil? or ptr.null?
       ptrs = ptr.read_array_of_pointer(size)
-
       ptrs.map { |pt| ptr_to_utf8 pt }
     end
 
     def self.ptr_to_interface_array klass, ptr, size
+      return [] if ptr.nil? or ptr.null?
       struct_size = klass.ffi_structure.size
       size.times.map do |idx|
         klass.wrap(ptr + struct_size * idx)
@@ -62,6 +64,7 @@ module GirFFI
     end
 
     def self.ptr_to_interface_pointer_array klass, ptr, size
+      return [] if ptr.nil? or ptr.null?
       ptrs = ptr.read_array_of_pointer(size)
       ptrs.map do |optr|
         klass.wrap(optr)
