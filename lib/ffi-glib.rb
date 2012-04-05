@@ -9,6 +9,11 @@ require 'ffi-glib/ptr_array'
 require 'ffi-glib/strv'
 
 module GLib
+  # FIXME: Remove eventually.
+  def self.main_loop_new context, is_running
+    ::GLib::MainLoop.wrap(::GLib::Lib.g_main_loop_new context, is_running)
+  end
+
   load_class :HFunc
   load_class :HashFunc
   load_class :EqualFunc
@@ -38,5 +43,7 @@ module GLib
     attach_function :g_ptr_array_add, [:pointer, :pointer], :void
     attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer],
       :pointer
+
+    attach_function :g_main_loop_new, [:pointer, :bool], :pointer
   end
 end
