@@ -847,6 +847,7 @@ describe Regress, "The generated Regress module" do
 
   describe "#test_garray_container_return" do
     before do
+      skip unless get_introspection_data 'Regress', 'test_garray_container_return'
       @arr = Regress.test_garray_container_return
     end
 
@@ -866,7 +867,7 @@ describe Regress, "The generated Regress module" do
     before do
       @hash = Regress.test_ghash_container_return
     end
-    
+
     it "returns an instance of GLib::HashTable" do
       @hash.must_be_instance_of GLib::HashTable
     end
