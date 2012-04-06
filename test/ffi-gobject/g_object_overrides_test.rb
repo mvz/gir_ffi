@@ -164,42 +164,26 @@ class GObjectOverridesTest < MiniTest::Spec
         end
       end
 
-      context "#cast_back_signal_arguments" do
-	context "the result of casting pointers for the test-with-static-scope-arg signal" do
-	  setup do
-	    sig_name = "test-with-static-scope-arg"
-	    o = Regress::TestSubObj.new
-	    b = Regress::TestSimpleBoxedA.new
-	    ud = GirFFI::ArgHelper.object_to_inptr "Hello!"
-	    sig = o.class._find_signal sig_name
+      describe "#cast_back_signal_arguments" do
+        it "correctly casts back pointers for the test-with-static-scope-arg signal" do
+          o = Regress::TestSubObj.new
+          b = Regress::TestSimpleBoxedA.new
+          ud = GirFFI::ArgHelper.object_to_inptr "Hello!"
 
-	    @gva =
-	      GObject::Helper.cast_back_signal_arguments(
-		sig, o.class, o.to_ptr, b.to_ptr, ud)
-	  end
+          assert_equal "Hello!", GirFFI::ArgHelper::OBJECT_STORE[ud.address]
 
-	  should "have three elements" do
-	    assert_equal 3, @gva.length
-	  end
+          sig = o.class._find_signal "test-with-static-scope-arg"
 
-	  context "its first value" do
-	    should "be a TestSubObj" do
-	      assert_instance_of Regress::TestSubObj, @gva[0]
-	    end
-	  end
+          gva =
+            GObject::Helper.cast_back_signal_arguments(
+              sig, o.class, o.to_ptr, b.to_ptr, ud)
 
-	  context "its second value" do
-	    should "be a TestSimpleBoxedA" do
-	      assert_instance_of Regress::TestSimpleBoxedA, @gva[1]
-	    end
-	  end
-
-	  context "its third value" do
-	    should "be a 'Hello!'" do
-	      assert_equal "Hello!", @gva[2]
-	    end
-	  end
-	end
+          klasses = gva.map {|it| it.class}
+          klasses.must_equal [ Regress::TestSubObj,
+                               Regress::TestSimpleBoxedA,
+                               String ]
+          gva[2].must_equal "Hello!"
+        end
       end
 
       describe "#cast_signal_argument" do
