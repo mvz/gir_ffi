@@ -73,7 +73,7 @@ module GirFFI
           parent_spec = [:parent, superclass::Struct, 0]
           offset = superclass::Struct.size
           fields_spec = properties.map do |pinfo|
-            spec = [pinfo.name, :int32, offset]
+            spec = [pinfo.name.to_sym, :int32, offset]
             offset += FFI.type_size(:int32)
             spec
           end.flatten(1)
