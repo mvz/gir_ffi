@@ -9,10 +9,11 @@ Gdk.init []
 
 # Tests generated methods and functions in the Pango namespace.
 describe "Building classes in the Pango namespace" do
-  describe "the relevant font map subtype" do
-    it "is correctly generated" do
+  describe "the relevant Pango::FontMap subclass" do
+    it "is a descendant from Pango::FontMap" do
       ctx = Gdk.pango_context_get
-      ctx.get_font_map
+      result = ctx.get_font_map
+      result.class.ancestors.must_include Pango::FontMap
     end
   end
 end

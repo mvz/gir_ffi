@@ -39,9 +39,16 @@ module GirFFI
 
         private
 
+        def superclass
+          GirFFI::Builder.build_by_gtype parent_gtype
+        end
+
         def parent
-          parent_type = ::GObject.type_parent @gtype
-          gir.find_by_gtype(parent_type)
+          gir.find_by_gtype parent_gtype
+        end
+
+        def parent_gtype
+          GObject.type_parent @gtype
         end
 
         def fields
