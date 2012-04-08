@@ -47,4 +47,21 @@ describe GirFFI::Builder::Type::Unintrospectable do
       end
     end
   end
+
+  # FIXME: Testing a private method, and with rather a lot of
+  # mocking, too.
+  describe "#interfaces" do
+    it "skips interfaces that have no introspection data" do
+      bldr = GirFFI::Builder::Type::Unintrospectable.new(:some_type)
+
+      mock(bldr).interface_gtypes { [:foo, :bar ] }
+      mock(gir = Object.new).find_by_gtype(:foo) { :foo_info }
+      mock(gir).find_by_gtype(:bar) { nil }
+      bldr.instance_eval { @gir = gir }
+      mock(GirFFI::Builder).build_class(:foo_info) { :foo_module }
+
+      result = bldr.send :interfaces
+      result.must_equal [:foo_module]
+    end
+  end
 end

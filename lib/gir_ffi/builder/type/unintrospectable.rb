@@ -49,9 +49,13 @@ module GirFFI
         end
 
         def interface_infos
-          ::GObject.type_interfaces(@gtype).map do |gtype|
+          interface_gtypes.map do |gtype|
             gir.find_by_gtype gtype
-          end
+          end.compact
+        end
+
+        def interface_gtypes
+          ::GObject.type_interfaces(@gtype)
         end
 
         def interfaces
