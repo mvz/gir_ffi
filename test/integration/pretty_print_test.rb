@@ -12,7 +12,7 @@ describe "Pretty-printing" do
     tmp.write str
     tmp.flush
     is_ok = `ruby -c #{tmp.path} 2>&1`
-    assert_equal "Syntax OK\n", is_ok
+    is_ok.must_match /^Syntax OK/
   end
 
   describe "for the Regress module" do
