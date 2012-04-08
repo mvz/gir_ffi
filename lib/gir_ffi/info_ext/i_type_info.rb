@@ -14,6 +14,10 @@ module GirFFI
           :int
         when :array
           subtype = param_type(0).layout_specification_type
+          # XXX Don't use pointer directly to appease JRuby.
+          if subtype == :pointer
+            subtype = :"uint#{FFI.type_size(:pointer)*8}"
+          end
           [subtype, array_fixed_size]
         else
           ffitype
