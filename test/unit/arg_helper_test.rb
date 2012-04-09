@@ -78,6 +78,15 @@ describe GirFFI::ArgHelper do
 	assert_equal nil, GirFFI::ArgHelper.object_to_inptr(nil)
       end
     end
+
+    describe "when called with a string" do
+      it "stores the string in GirFFI::ArgHelper::OBJECT_STORE" do
+        str = "Foo"
+        ptr = GirFFI::ArgHelper.object_to_inptr(str)
+        result = GirFFI::ArgHelper::OBJECT_STORE[ptr.address]
+        result.must_equal str
+      end
+    end
   end
 
   describe "::object_pointer_to_object" do
