@@ -1,3 +1,17 @@
+== 0.3.0 / 2012-04-09
+
+* Improve process of defining initializers in derived classes.
+* Make interfaces know their GType.
+* Make classes created by the Unintrospectable builder know their GType.
+* Create property accessors instead of field accessors for GObjects.
+* Add Ruby-style getter and setter methods (by Antonio Terceiro).
+* Add #signal_connect instance method (by Antonio Terceiro).
+* Make GirFFI's tests pass with gobject-introspection 0.10.
+* Improve unintrospectable type handling.
+* Bug fixes and refactorings.
+* Start implementing #define_type, for creating descendent types that
+  the GObject system knows about.
+
 == 0.2.3 / 2011-12-31
 
 * Fix issue #7: methods that take GValues will autoconvert other values.
