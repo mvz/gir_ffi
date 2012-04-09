@@ -19,8 +19,8 @@ module GirFFI
       return nil if obj.nil?
       return obj if obj.is_a? FFI::Pointer
 
-      OBJECT_STORE[obj.object_id] = obj
-      FFI::Pointer.new(obj.object_id)
+      FFI::Pointer.new(obj.object_id).tap {|ptr|
+        OBJECT_STORE[ptr.address] = obj }
     end
 
     def self.ptr_to_typed_array type, ptr, size
