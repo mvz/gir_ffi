@@ -89,7 +89,6 @@ class BuilderTest < MiniTest::Spec
       end
 
       should "set up struct members with the correct types" do
-        skip "JRuby creates new type wrappers every time, so this test fails" if RUBY_PLATFORM == 'java'
 	tags = [:int, :int8, :double, Regress::TestEnum]
 	assert_equal tags.map {|t| FFI.find_type t},
 	  Regress::TestStructA::Struct.layout.fields.map {|f| f.type}
