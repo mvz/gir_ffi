@@ -1,0 +1,56 @@
+# Valgrind suppression file for Debian's Ruby 1.8.
+{
+   uninitialized_new_object_value
+   Memcheck:Value8
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   fun:rb_newobj
+}
+{
+   conditionl_jump_new_object_value_4_deep
+   Memcheck:Cond
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   fun:rb_newobj
+}
+{
+   conditionl_jump_new_object_value_3_deep
+   Memcheck:Cond
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   fun:rb_newobj
+}
+{
+   normal_ruby_alloc_leaks_possibly
+   Memcheck:Leak
+   fun:malloc
+   fun:ruby_xmalloc
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+}
+{
+   ffi_function_attach_leaks_8_bytes
+   Memcheck:Leak
+   fun:malloc
+   fun:ruby_xmalloc
+   fun:ruby_xcalloc
+   fun:rbffi_MethodHandle_Alloc
+   fun:function_attach
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+   obj:/usr/lib/libruby1.8.so.1.8.7
+}
