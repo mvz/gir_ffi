@@ -1,1 +1,1 @@
---private --protected lib/**/*.rb - README.rdoc DESIGN.rdoc TODO.rdoc
+--private --protected lib/**/*.rb - README.rdoc DESIGN.rdoc TODO.rdoc COPYING.LIB History.txt
