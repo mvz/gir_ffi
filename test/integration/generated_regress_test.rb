@@ -608,11 +608,8 @@ describe Regress, "The generated Regress module" do
 
   describe "#test_array_fixed_out_objects" do
     before do
-      begin
-        @result = Regress.test_array_fixed_out_objects
-      rescue NoMethodError
-        skip
-      end
+      skip unless get_introspection_data 'Regress', 'test_array_fixed_out_objects'
+      @result = Regress.test_array_fixed_out_objects
     end
 
     it "returns an array of two items" do
