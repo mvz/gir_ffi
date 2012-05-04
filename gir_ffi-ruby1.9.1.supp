@@ -181,10 +181,5 @@
    obj:/usr/lib/libruby-1.9.1.so.1.9.1
    obj:/usr/lib/libruby-1.9.1.so.1.9.1
    obj:/usr/lib/libruby-1.9.1.so.1.9.1
-   fun:rb_iseq_eval_main
-   obj:/usr/lib/libruby-1.9.1.so.1.9.1
-   fun:ruby_exec_node
-   fun:ruby_run_node
-   obj:/usr/bin/ruby1.9.1
 }
 
