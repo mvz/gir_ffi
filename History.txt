@@ -1,3 +1,7 @@
+== 0.3.1 / 2012-05-13
+
+* Correctly map Interface types in callbacks.
+
 == 0.3.0 / 2012-04-09
 
 * Improve process of defining initializers in derived classes.
