@@ -38,8 +38,8 @@ module GirFFI
     def self.map_interface_callback_arg arg, type
       iface = type.interface
       case iface.info_type
-      when :object
-        ArgHelper.object_pointer_to_object arg
+      when :object, :interface
+        arg.to_object
       when :struct
         klass = GirFFI::Builder.build_class iface
         klass.wrap arg

@@ -8,6 +8,11 @@ module GirFFI
       def to_value
         self
       end
+
+      def to_object
+        # TODO: Move implementation here.
+        ArgHelper.object_pointer_to_object self
+      end
     end
   end
 end
