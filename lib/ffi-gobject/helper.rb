@@ -85,6 +85,8 @@ module GObject
         case iface.info_type
         when :enum, :flags
           kls[arg]
+        when :interface
+          arg.to_object
         else
           kls.wrap(arg)
         end
