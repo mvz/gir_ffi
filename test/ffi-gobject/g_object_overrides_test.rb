@@ -200,6 +200,21 @@ class GObjectOverridesTest < MiniTest::Spec
             assert_equal :july, res
           end
         end
+
+        describe "with info for an interface" do
+          before do
+            ifaceinfo = get_introspection_data 'Regress', 'TestInterface'
+            stub(arg_t = Object.new).interface { ifaceinfo }
+            stub(arg_t).tag { :interface }
+            stub(@info = Object.new).argument_type { arg_t }
+          end
+
+          it "casts the argument by calling #to_object on it" do
+            mock(ptr = Object.new).to_object { "good-result" }
+            res = GObject::Helper.cast_signal_argument @info, ptr
+            res.must_equal "good-result"
+          end
+        end
       end
     end
 
