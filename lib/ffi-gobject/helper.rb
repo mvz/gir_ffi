@@ -3,7 +3,7 @@ module GObject
     def self.signal_callback klass, signal, &block
       sig = klass._find_signal signal
 
-      rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
+      rettype = GirFFI::Builder.itypeinfo_to_callback_ffitype sig.return_type
       argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
       callback_block = Helper.signal_callback_args(sig, klass, &block)
 
