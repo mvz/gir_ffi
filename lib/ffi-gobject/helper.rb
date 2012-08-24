@@ -1,15 +1,31 @@
 module GObject
   module Helper
+    # Create a signal hander callback. Wraps the given block in such a way that
+    # arguments and return value are cast correctly to the ruby world and back.
+    #
+    # @param  klass   The class of the object that will receive the signal.
+    # @param  signal  The name of the signal
+    # @param  &block  The body of the signal handler
+    #
+    # @returns [FFI::Function] The signal handler, ready to be passed as a
+    # callback to C.
     def self.signal_callback klass, signal, &block
-      sig = klass._find_signal signal
+      sig_info = klass._find_signal signal
 
-      rettype = GirFFI::Builder.itypeinfo_to_ffitype sig.return_type
-      argtypes = GirFFI::Builder.ffi_argument_types_for_signal sig
-      callback_block = Helper.signal_callback_args(sig, klass, &block)
+      callback_block = signal_callback_args(sig_info, klass, &block)
 
-      FFI::Function.new rettype, argtypes, &callback_block
+      builder.build_callback sig_info, &callback_block
     end
 
+    def self.builder= bldr
+      @builder = bldr
+    end
+
+    def self.builder
+      @builder ||= GirFFI::Builder
+    end
+
+    # FIXME: Move either to ISignalInfo or the base GObject class.
     def self.signal_callback_args sig, klass, &block
       raise ArgumentError, "Block needed" if block.nil?
       return Proc.new do |*args|
@@ -21,7 +37,7 @@ module GObject
     def self.signal_arguments_to_gvalue_array signal, instance, *rest
       sig = instance.class._find_signal signal
 
-      arr = ::GObject::ValueArray.new sig.n_args+1
+      arr = ::GObject::ValueArray.new sig.n_args + 1
 
       arr.append signal_reciever_to_gvalue instance
 

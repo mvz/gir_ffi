@@ -31,6 +31,13 @@ module GirFFI
       Builder::Module.new(namespace, version).build_module_non_recursive
     end
 
+    def self.build_callback callable_info, &block
+      rettype = GirFFI::Builder.itypeinfo_to_ffitype callable_info.return_type
+      argtypes = GirFFI::Builder.ffi_argument_types_for_signal callable_info
+
+      FFI::Function.new rettype, argtypes, &block
+    end
+
     # TODO: Move elsewhere, perhaps to Builder::Function.
     def self.attach_ffi_function lib, info
       sym = info.symbol
