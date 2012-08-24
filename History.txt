@@ -1,3 +1,7 @@
+== 0.4.0 / 2012-08-24
+
+* Move Gtk+ bindings to their own gem (gir_ffi-gtk).
+
 == 0.3.2 / 2012-08-24
 
 * Correctly set FFI return type when callbacks that return GObjects have

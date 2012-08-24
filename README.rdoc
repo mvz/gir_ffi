@@ -13,18 +13,16 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 == Features/Notes
 
 * Create bindings to any GObject-based library.
-* Supports both Gtk+ 2 and Gtk+ 3.
 * Bindings generated at runtime.
 * Provides overridden bindings for selected methods.
-* Require 'ffi-gtk2' or 'ffi-gtk3' to load overrides for Gtk2 or Gtk3.
+* Install 'gir_ffi-gtk' and require 'gir_ffi-gtk2' or 'gir_ffi-gtk3' to
+  load overrides for Gtk2 or Gtk3.
 
 == Install
 
 * sudo gem install gir_ffi
 
 == Synopsis
-
-Basic usage:
 
   require 'gir_ffi'
 
@@ -34,26 +32,6 @@ Basic usage:
 
   obj = TheNamespace::SomeClass.new
   obj.some_method with, some, args
-
-Gtk2:
-
-  require 'ffi-gtk2'
-  Gtk.init
-  win = Gtk::Window.new :toplevel
-  win.show
-  GObject.signal_connect(win, "destroy") { Gtk.main_quit }
-  Gtk.main
-
-Gtk3:
-
-  require 'ffi-gtk3'
-  Gtk.init
-  win = Gtk::Window.new :toplevel
-  win.show
-  GObject.signal_connect(win, "destroy") { Gtk.main_quit }
-  Gtk.main
-
-See the `examples/` directory for more, well, examples.
 
 == Requirements
 
@@ -66,9 +44,9 @@ available under the name ending in plain `.so`. If GirFFI complains that it
 cannot find the library, try installing development packages for those
 libraries.
 
-On Debian and Ubuntu, the following set of packages should be enough to get
-`rake test` working: `libgirepository1.0-dev` (at least version 0.10),
-`gir1.2-gtk-2.0` and `libgtk2.0-dev`.
+On Debian and Ubuntu, installing `libgirepository1.0-dev` and
+`gobject-introspection` (at least version 0.10) should be enough to get `rake
+test` working.
 
 == Hacking and contributing
 
