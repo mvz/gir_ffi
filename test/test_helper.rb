@@ -4,7 +4,7 @@ if RUBY_PLATFORM == 'java'
   require 'rubygems'
 end
 
-if RUBY_VERSION >= "1.9" and ENV["SIMPLECOV"]
+if RUBY_VERSION >= "1.9"
   require 'simplecov'
   SimpleCov.start
 end
