@@ -32,8 +32,8 @@ module GirFFI
     end
 
     def self.build_callback callable_info, &block
-      rettype = GirFFI::Builder.itypeinfo_to_ffitype callable_info.return_type
-      argtypes = GirFFI::Builder.ffi_argument_types_for_signal callable_info
+      rettype = ffi_callback_return_type callable_info
+      argtypes = ffi_callback_argument_types callable_info
 
       FFI::Function.new rettype, argtypes, &block
     end
@@ -59,11 +59,15 @@ module GirFFI
       types
     end
 
-    def self.ffi_argument_types_for_signal info
+    def self.ffi_callback_argument_types info
       types = info.args.map do |arg|
         itypeinfo_to_callback_ffitype arg.argument_type
       end
       types.unshift(:pointer).push(:pointer)
+    end
+
+    def self.ffi_callback_return_type info
+      ffi_function_return_type info
     end
 
     def self.ffi_function_return_type info
