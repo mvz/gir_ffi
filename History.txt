@@ -1,3 +1,8 @@
+== 0.3.2 / 2012-08-24
+
+* Correctly set FFI return type when callbacks that return GObjects have
+  incomplete type specification.
+
 == 0.3.1 / 2012-05-13
 
 * Correctly map Interface types in callbacks.
