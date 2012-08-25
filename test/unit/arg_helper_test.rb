@@ -91,7 +91,7 @@ describe GirFFI::ArgHelper do
 
   describe "::object_pointer_to_object" do
     it "finds the wrapping class by gtype and wraps the pointer in it" do
-      klsptr = GirFFI::InOutPointer.from :gtype, 0xdeadbeef
+      klsptr = GirFFI::InOutPointer.from :GType, 0xdeadbeef
       objptr = GirFFI::InOutPointer.from :pointer, klsptr
 
       object_class = Class.new

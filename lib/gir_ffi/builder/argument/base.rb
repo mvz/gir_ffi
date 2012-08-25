@@ -32,16 +32,13 @@ module GirFFI
         end
 
         def type_tag
-          tag = type_info.tag
-          tag == :GType ? :gtype : tag
+          type_info.tag
         end
 
         def subtype_tag index=0
           st = type_info.param_type(index)
           tag = st.tag
           case tag
-          when :GType
-            return :gtype
           when :interface
             return :interface_pointer if st.pointer?
             return :interface

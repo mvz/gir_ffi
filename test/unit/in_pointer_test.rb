@@ -9,8 +9,8 @@ describe GirFFI::InPointer do
       assert_nil result
     end
 
-    it "handles type tag :gtype" do
-      GirFFI::InPointer.from_array :gtype, [2]
+    it "handles type tag :GType" do
+      GirFFI::InPointer.from_array :GType, [2]
     end
 
     it "handles type tag :interface_pointer" do
