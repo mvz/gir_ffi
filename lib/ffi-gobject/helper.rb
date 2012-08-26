@@ -5,10 +5,10 @@ module GObject
     #
     # @param  klass   The class of the object that will receive the signal.
     # @param  signal  The name of the signal
-    # @param  &block  The body of the signal handler
+    # @param  block   The body of the signal handler
     #
-    # @returns [FFI::Function] The signal handler, ready to be passed as a
-    # callback to C.
+    # @return [FFI::Function] The signal handler, ready to be passed as a
+    #   callback to C.
     def self.signal_callback klass, signal, &block
       sig_info = klass.find_signal signal
 

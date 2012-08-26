@@ -36,7 +36,7 @@ module GirFFI
     end
 
     class << self
-      # FIXME: Compatibility function. Remove in version 0.5.0.
+      # @deprecated Compatibility function. Remove in version 0.5.0.
       def ffi_structure
         self::Struct
       end
@@ -45,7 +45,7 @@ module GirFFI
         self.const_get :GIR_INFO
       end
 
-      # FIXME: Compatibility function. Remove in version 0.5.0.
+      # @deprecated Compatibility function. Remove in version 0.5.0.
       def _builder
         gir_ffi_builder
       end
@@ -54,7 +54,7 @@ module GirFFI
         self.const_get :GIR_FFI_BUILDER
       end
 
-      # FIXME: Compatibility function. Remove in version 0.5.0.
+      # @deprecated Compatibility function. Remove in version 0.5.0.
       def _setup_method name
         setup_method name
       end
@@ -63,7 +63,7 @@ module GirFFI
         _builder.setup_method name
       end
 
-      # FIXME: Compatibility function. Remove in version 0.5.0.
+      # @deprecated Compatibility function. Remove in version 0.5.0.
       def _setup_instance_method name
         setup_instance_method name
       end
