@@ -38,10 +38,13 @@ module GObjectIntrospection
     end
 
     def safe_name
-      if name =~ /^_/
-        "Private__" + name
-      else
-        name.gsub(/^(.)/) { $1.upcase }
+      name.gsub(/^./) do |char|
+        case char
+        when "_"
+          "Private___"
+        else
+          char.upcase
+        end
       end
     end
 
