@@ -1,52 +1,44 @@
 require 'rake/testtask'
 
 namespace :test do
-  Rake::TestTask.new(:base) do |t|
-    t.libs = ['lib']
+  def define_test_task name
+    Rake::TestTask.new(name) do |t|
+      t.libs = ['lib']
+      t.ruby_opts += ["-w -Itest"]
+      yield t
+    end
+  end
+
+  define_test_task(:base) do |t|
     t.test_files = FileList['test/gir_ffi-base/**/*_test.rb']
-    t.ruby_opts += ["-w -Itest"]
   end
 
-  Rake::TestTask.new(:gobjectintrospection) do |t|
-    t.libs = ['lib']
+  define_test_task(:gobjectintrospection) do |t|
     t.test_files = FileList['test/ffi-gobject_introspection/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:gir_ffi) do |t|
-    t.libs = ['lib']
+  define_test_task(:gir_ffi) do |t|
     t.test_files = FileList['test/gir_ffi/**/*_test.rb']
-    t.ruby_opts += ["-w -Itest"]
   end
 
-  Rake::TestTask.new(:glib) do |t|
-    t.libs = ['lib']
+  define_test_task(:glib) do |t|
     t.test_files = FileList['test/ffi-glib/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:gobject) do |t|
-    t.libs = ['lib']
+  define_test_task(:gobject) do |t|
     t.test_files = FileList['test/ffi-gobject/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:run) do |t|
-    t.libs = ['lib']
+  define_test_task(:run) do |t|
     t.test_files = FileList['test/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:unit) do |t|
-    t.libs = ['lib']
+  define_test_task(:unit) do |t|
     t.test_files = FileList['test/unit/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:integration) do |t|
-    t.libs = ['lib']
+  define_test_task(:integration) do |t|
     t.test_files = FileList['test/integration/*_test.rb']
-    t.ruby_opts += ["-w"]
   end
 
   desc 'Build Regress test library and typelib'
