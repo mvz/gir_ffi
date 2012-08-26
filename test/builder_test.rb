@@ -34,10 +34,8 @@ class BuilderTest < MiniTest::Spec
 
     context "looking at Regress.test_callback_destroy_notify" do
       before do
-	save_module :GLib
 	save_module :GObject
 	save_module :Regress
-	GirFFI::Builder.build_module 'GLib'
 	GirFFI::Builder.build_module 'GObject'
 	GirFFI::Builder.build_module 'Regress'
 	@go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
@@ -68,7 +66,6 @@ class BuilderTest < MiniTest::Spec
       after do
 	restore_module :Regress
 	restore_module :GObject
-	restore_module :GLib
       end
     end
 

@@ -20,6 +20,8 @@ require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 
+require 'gir_ffi-base/glib/strv'
+
 module GObjectIntrospection
   GObjectLib::g_type_init
 
@@ -108,8 +110,9 @@ module GObjectIntrospection
     end
 
     def dependencies namespace
-      strv = Lib.g_irepository_get_dependencies @gobj, namespace
-      strv_to_utf8_array strv
+      strv_p = Lib.g_irepository_get_dependencies(@gobj, namespace)
+      strv = GLib::Strv.new strv_p
+      strv.to_a
     end
 
     def shared_library namespace
@@ -129,16 +132,6 @@ module GObjectIntrospection
 
     def wrap ptr
       IRepository.wrap_ibaseinfo_pointer ptr
-    end
-
-    def strv_to_utf8_array strv
-      return [] if strv.null?
-      arr, offset = [], 0
-      until (ptr = strv.get_pointer offset).null? do
-        arr << ptr.read_string
-        offset += POINTER_SIZE
-      end
-      return arr
     end
   end
 end
