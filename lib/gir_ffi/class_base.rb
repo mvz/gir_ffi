@@ -100,11 +100,6 @@ module GirFFI
         obj
       end
 
-      # TODO: Only makes sense for :objects.
-      def constructor_wrap ptr
-        wrap ptr
-      end
-
       def allocate
         obj = _real_new
         obj.instance_variable_set :@struct, self::Struct.new
