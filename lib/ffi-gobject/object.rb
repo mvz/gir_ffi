@@ -8,9 +8,9 @@ module GObject
 
     include RubyStyle
 
-    _setup_method "new"
-    _setup_instance_method "get_property"
-    _setup_instance_method "set_property"
+    setup_method "new"
+    setup_instance_method "get_property"
+    setup_instance_method "set_property"
 
     def get_property_with_override property_name
       type = get_property_type property_name
@@ -39,7 +39,7 @@ module GObject
     private
 
     def get_property_type property_name
-      prop = self.class._find_property property_name
+      prop = self.class.find_property property_name
       prop.property_type
     end
 

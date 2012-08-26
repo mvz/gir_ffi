@@ -55,24 +55,6 @@ module GirFFI
       end
 
       # FIXME: Compatibility function. Remove in version 0.5.0.
-      def _find_signal name
-        find_signal name
-      end
-
-      def find_signal name
-        _builder.find_signal name
-      end
-
-      # FIXME: Compatibility function. Remove in version 0.5.0.
-      def _find_property name
-        find_property name
-      end
-
-      def find_property name
-        _builder.find_property name
-      end
-
-      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _setup_method name
         setup_method name
       end

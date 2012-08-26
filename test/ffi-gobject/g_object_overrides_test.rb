@@ -172,7 +172,7 @@ class GObjectOverridesTest < MiniTest::Spec
 
           assert_equal "Hello!", GirFFI::ArgHelper::OBJECT_STORE[ud.address]
 
-          sig = o.class._find_signal "test-with-static-scope-arg"
+          sig = o.class.find_signal "test-with-static-scope-arg"
 
           gva =
             GObject::Helper.cast_back_signal_arguments(

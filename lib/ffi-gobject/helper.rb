@@ -10,7 +10,7 @@ module GObject
     # @returns [FFI::Function] The signal handler, ready to be passed as a
     # callback to C.
     def self.signal_callback klass, signal, &block
-      sig_info = klass._find_signal signal
+      sig_info = klass.find_signal signal
 
       callback_block = signal_callback_args(sig_info, klass, &block)
 
@@ -35,7 +35,7 @@ module GObject
     end
 
     def self.signal_arguments_to_gvalue_array signal, instance, *rest
-      sig = instance.class._find_signal signal
+      sig = instance.class.find_signal signal
 
       arr = ::GObject::ValueArray.new sig.n_args + 1
 
@@ -75,7 +75,7 @@ module GObject
     end
 
     def self.gvalue_for_signal_return_value signal, object
-      sig = object.class._find_signal signal
+      sig = object.class.find_signal signal
       rettypeinfo = sig.return_type
 
       gvalue_for_type_info rettypeinfo

@@ -16,7 +16,7 @@ module GirFFI
             end
           end
           if parent
-            return superclass._find_signal signal_name
+            return superclass.find_signal signal_name
           end
           raise "Signal #{signal_name} not found"
         end
@@ -26,7 +26,7 @@ module GirFFI
             return prop if prop.name == property_name
           end
           if parent
-            return superclass._find_property property_name
+            return superclass.find_property property_name
           end
           raise "Property #{property_name} not found"
         end
