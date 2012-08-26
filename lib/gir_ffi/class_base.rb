@@ -36,8 +36,9 @@ module GirFFI
     end
 
     class << self
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def ffi_structure
-        self.const_get(:Struct)
+        self::Struct
       end
 
       def gir_info
@@ -95,7 +96,7 @@ module GirFFI
       def wrap ptr
         return nil if ptr.nil? or ptr.null?
         obj = _real_new
-        obj.instance_variable_set :@struct, ffi_structure.new(ptr.to_ptr)
+        obj.instance_variable_set :@struct, self::Struct.new(ptr.to_ptr)
         obj
       end
 
@@ -106,7 +107,7 @@ module GirFFI
 
       def allocate
         obj = _real_new
-        obj.instance_variable_set :@struct, ffi_structure.new
+        obj.instance_variable_set :@struct, self::Struct.new
         obj
       end
 
