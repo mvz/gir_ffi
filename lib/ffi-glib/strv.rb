@@ -14,18 +14,27 @@ module GLib
     end
 
     def each
-      return if @ptr.null?
-      offset = 0
-      loop do
-        ptr = @ptr.get_pointer offset
-        break if ptr.null?
+      reset_iterator or return
+      while (ptr = next_ptr)
         yield ptr.read_string
-        offset += POINTER_SIZE
       end
     end
 
     def self.wrap ptr
       self.new ptr
+    end
+
+    private
+
+    def reset_iterator
+      return if @ptr.null?
+      @offset = 0
+    end
+
+    def next_ptr
+      ptr = @ptr.get_pointer @offset
+      @offset += POINTER_SIZE
+      ptr unless ptr.null?
     end
   end
 end
