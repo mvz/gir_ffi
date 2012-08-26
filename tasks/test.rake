@@ -7,9 +7,27 @@ namespace :test do
     t.ruby_opts += ["-w -Itest"]
   end
 
-  Rake::TestTask.new(:integration) do |t|
+  Rake::TestTask.new(:gobjectintrospection) do |t|
     t.libs = ['lib']
-    t.test_files = FileList['test/integration/*_test.rb']
+    t.test_files = FileList['test/ffi-gobject_introspection/*_test.rb']
+    t.ruby_opts += ["-w"]
+  end
+
+  Rake::TestTask.new(:gir_ffi) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/gir_ffi/**/*_test.rb']
+    t.ruby_opts += ["-w -Itest"]
+  end
+
+  Rake::TestTask.new(:glib) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/ffi-glib/*_test.rb']
+    t.ruby_opts += ["-w"]
+  end
+
+  Rake::TestTask.new(:gobject) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/ffi-gobject/*_test.rb']
     t.ruby_opts += ["-w"]
   end
 
@@ -25,27 +43,9 @@ namespace :test do
     t.ruby_opts += ["-w"]
   end
 
-  Rake::TestTask.new(:gobjectintrospection) do |t|
+  Rake::TestTask.new(:integration) do |t|
     t.libs = ['lib']
-    t.test_files = FileList['test/ffi-gobject_introspection/*_test.rb']
-    t.ruby_opts += ["-w"]
-  end
-
-  Rake::TestTask.new(:glib) do |t|
-    t.libs = ['lib']
-    t.test_files = FileList['test/ffi-glib/*_test.rb']
-    t.ruby_opts += ["-w"]
-  end
-
-  Rake::TestTask.new(:gobject) do |t|
-    t.libs = ['lib']
-    t.test_files = FileList['test/ffi-gobject/*_test.rb']
-    t.ruby_opts += ["-w"]
-  end
-
-  Rake::TestTask.new(:gtk) do |t|
-    t.libs = ['lib']
-    t.test_files = FileList['test/ffi-gtk/*_test.rb']
+    t.test_files = FileList['test/integration/*_test.rb']
     t.ruby_opts += ["-w"]
   end
 
@@ -54,10 +54,13 @@ namespace :test do
     sh %{cd test/lib && make}
   end
 
-  task :run => :lib
-  task :unit => :lib
+  task :gir_ffi => :lib
   task :glib => :lib
   task :gobject => :lib
+
+  task :run => :lib
+  task :unit => :lib
+
   task :integration => :lib
 
   desc 'Run rcov for the entire test suite'
@@ -76,6 +79,12 @@ file "test/lib/configure" do
 end
 
 desc 'Run unit an integration tests'
-task :test => ['test:base', 'test:gobjectintrospection',
-  'test:unit', 'test:run', 'test:glib', 'test:gobject', 'test:gtk',
-  'test:integration']
+task :test => [
+  'test:base',
+  'test:gobjectintrospection',
+  'test:glib',
+  'test:gobject',
+  'test:unit',
+  'test:run',
+  'test:integration',
+]
