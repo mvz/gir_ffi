@@ -1,8 +1,7 @@
 module GLib
   module ContainerClassMethods
     def wrap typespec, ptr
-      super(ptr).tap do |it|
-        break if it.nil?
+      if (it = super(ptr))
         it.reset_typespec typespec
       end
     end
