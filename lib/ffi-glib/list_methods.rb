@@ -20,13 +20,10 @@ module GLib
     end
 
     def each
-      list = self
-      rval = nil
-      until list.nil?
-        rval = yield list.head
-        list = list.tail
+      reset_iterator
+      while (elem = next_element)
+        yield elem
       end
-      rval
     end
 
     def tail
@@ -40,6 +37,19 @@ module GLib
     def reset_typespec typespec
       self.element_type = typespec
       self
+    end
+
+    private
+
+    def reset_iterator
+      @current = self
+    end
+
+    def next_element
+      return if @current.nil?
+      element = @current.head
+      @current = @current.tail
+      element
     end
   end
 end
