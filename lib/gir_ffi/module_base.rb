@@ -1,27 +1,37 @@
 module GirFFI
   module ModuleBase
     def method_missing method, *arguments, &block
-      result = _setup_method method.to_s
+      result = setup_method method.to_s
       return super unless result
       self.send method, *arguments, &block
     end
 
     def const_missing classname
-      klass = _builder.build_namespaced_class classname.to_s
+      klass = load_class classname
       return super if klass.nil?
       klass
     end
 
     def load_class classname
-      _builder.build_namespaced_class classname.to_s
+      gir_ffi_builder.build_namespaced_class classname.to_s
     end
 
+    # FIXME: Compatibility function. Remove in version 0.5.0.
     def _builder
+      gir_ffi_builder
+    end
+
+    def gir_ffi_builder
       self.const_get :GIR_FFI_BUILDER
     end
 
+    # FIXME: Compatibility function. Remove in version 0.5.0.
     def _setup_method name
-      _builder.setup_method name
+      setup_method name
+    end
+
+    def setup_method name
+      gir_ffi_builder.setup_method name
     end
   end
 end

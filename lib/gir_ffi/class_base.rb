@@ -9,14 +9,6 @@ module GirFFI
     extend Forwardable
     def_delegators :@struct, :to_ptr
 
-    def ffi_structure
-      self.class.ffi_structure
-    end
-
-    def _builder
-      self.class._builder
-    end
-
     def setup_and_call method, *arguments, &block
       result = self.class.ancestors.any? do |klass|
         klass.respond_to?(:_setup_instance_method) &&
@@ -45,30 +37,55 @@ module GirFFI
 
     class << self
       def ffi_structure
-	self.const_get(:Struct)
+        self.const_get(:Struct)
       end
 
       def gir_info
-	self.const_get :GIR_INFO
+        self.const_get :GIR_INFO
       end
 
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _builder
-	self.const_get :GIR_FFI_BUILDER
+        gir_ffi_builder
       end
 
+      def gir_ffi_builder
+        self.const_get :GIR_FFI_BUILDER
+      end
+
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _find_signal name
+        find_signal name
+      end
+
+      def find_signal name
         _builder.find_signal name
       end
 
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _find_property name
+        find_property name
+      end
+
+      def find_property name
         _builder.find_property name
       end
 
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _setup_method name
+        setup_method name
+      end
+
+      def setup_method name
         _builder.setup_method name
       end
 
+      # FIXME: Compatibility function. Remove in version 0.5.0.
       def _setup_instance_method name
+        setup_instance_method name
+      end
+
+      def setup_instance_method name
         _builder.setup_instance_method name
       end
 
@@ -76,8 +93,8 @@ module GirFFI
       undef new
 
       def wrap ptr
-	return nil if ptr.nil? or ptr.null?
-	obj = _real_new
+        return nil if ptr.nil? or ptr.null?
+        obj = _real_new
         obj.instance_variable_set :@struct, ffi_structure.new(ptr.to_ptr)
         obj
       end
@@ -88,7 +105,7 @@ module GirFFI
       end
 
       def allocate
-	obj = _real_new
+        obj = _real_new
         obj.instance_variable_set :@struct, ffi_structure.new
         obj
       end
