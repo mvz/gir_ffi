@@ -1,8 +1,18 @@
 module GObjectIntrospection
-  # Wraps GObject's GError struct.
-  class GError < FFI::Struct
-    layout :domain, :uint32,
-      :code, :int,
-      :message, :string
+  # Wraps GLib's GError struct.
+  class GError
+    class Struct < FFI::Struct
+      layout :domain, :uint32,
+        :code, :int,
+        :message, :string
+    end
+
+    def initialize ptr
+      @struct = self.class::Struct.new(ptr)
+    end
+
+    def message
+      @struct[:message]
+    end
   end
 end

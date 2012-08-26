@@ -80,7 +80,7 @@ module GObjectIntrospection
       Lib.g_irepository_require @gobj, namespace, version, flags, errpp
 
       errp = errpp.read_pointer
-      raise GError.new(errp)[:message] unless errp.null?
+      raise GError.new(errp).message unless errp.null?
     end
 
     def n_infos namespace
