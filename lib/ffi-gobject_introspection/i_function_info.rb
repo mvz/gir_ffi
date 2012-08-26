@@ -30,7 +30,9 @@ module GObjectIntrospection
     end
 
     def safe_name
-      name == '' ? '_' : name
+      name = self.name
+      return "_" if name.empty?
+      name
     end
   end
 end
