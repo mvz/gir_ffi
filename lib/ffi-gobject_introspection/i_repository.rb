@@ -1,6 +1,5 @@
 require 'singleton'
 require 'ffi-gobject_introspection/lib'
-require 'ffi-gobject_introspection/gobject_lib'
 require 'ffi-gobject_introspection/g_error'
 require 'ffi-gobject_introspection/i_base_info'
 require 'ffi-gobject_introspection/i_callable_info'
@@ -20,10 +19,11 @@ require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 
+require 'gir_ffi-base/gobject/lib'
 require 'gir_ffi-base/glib/strv'
 
 module GObjectIntrospection
-  GObjectLib::g_type_init
+  GObject::Lib::g_type_init
 
   # The Gobject Introspection Repository. This class is the point of
   # access to the introspection typelibs.

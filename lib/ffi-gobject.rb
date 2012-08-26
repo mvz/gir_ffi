@@ -90,7 +90,6 @@ module GObject
   load_class :ParamFlags
 
   module Lib
-    attach_function :g_type_init, [], :void
     attach_function :g_object_ref, [:pointer], :void
     attach_function :g_object_ref_sink, [:pointer], :void
     attach_function :g_object_unref, [:pointer], :void
