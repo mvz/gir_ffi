@@ -1,6 +1,8 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'test_helper'
 
-require 'ffi-glib/strv'
+require 'gir_ffi-base/glib/strv'
+require 'gir_ffi/type_map'
+require 'gir_ffi/arg_helper'
 
 describe GLib::Strv do
   it "wraps a pointer" do

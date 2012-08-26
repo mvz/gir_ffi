@@ -1,6 +1,11 @@
 require 'rake/testtask'
 
 namespace :test do
+  Rake::TestTask.new(:base) do |t|
+    t.libs = ['lib']
+    t.test_files = FileList['test/gir_ffi-base/**/*_test.rb']
+    t.ruby_opts += ["-w -Itest"]
+  end
 
   Rake::TestTask.new(:integration) do |t|
     t.libs = ['lib']
@@ -71,6 +76,6 @@ file "test/lib/configure" do
 end
 
 desc 'Run unit an integration tests'
-task :test => ['test:gobjectintrospection',
+task :test => ['test:base', 'test:gobjectintrospection',
   'test:unit', 'test:run', 'test:glib', 'test:gobject', 'test:gtk',
   'test:integration']
