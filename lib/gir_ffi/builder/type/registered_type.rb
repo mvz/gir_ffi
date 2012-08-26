@@ -54,19 +54,9 @@ module GirFFI
         end
 
         def superclass
-          unless defined? @superclass
-            if parent
-              @superclass = Builder.build_class parent
-            else
-              @superclass = GirFFI::ClassBase
-            end
-          end
-          @superclass
+          @superclass ||= ClassBase
         end
       end
     end
   end
 end
-
-
-

@@ -1,6 +1,7 @@
 require 'gir_ffi/builder/type/struct_based'
 require 'gir_ffi/builder/property'
 require 'gir_ffi/info_ext/i_property_info'
+require 'gir_ffi/object_base'
 
 module GirFFI
   module Builder
@@ -56,6 +57,17 @@ module GirFFI
             end
           end
           @parent
+        end
+
+        def superclass
+          unless defined? @superclass
+            if parent
+              @superclass = Builder.build_class parent
+            else
+              @superclass = ObjectBase
+            end
+          end
+          @superclass
         end
 
         def setup_property_accessors
