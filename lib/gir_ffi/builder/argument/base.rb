@@ -50,6 +50,18 @@ module GirFFI
           end
         end
 
+        TAG_TO_CONTAINER_CLASS_MAP = {
+          :glist => 'GLib::List',
+          :gslist => 'GLib::SList',
+          :ghash => 'GLib::HashTable',
+          :array => 'GLib::Array'
+        }
+
+        # FIXME: Merge with method below
+        def class_name
+          TAG_TO_CONTAINER_CLASS_MAP[type_info.tag]
+        end
+
         def argument_class_name
           iface = type_info.interface
           # FIXME: Extract to ITypeInfo.

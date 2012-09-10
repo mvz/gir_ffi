@@ -44,13 +44,11 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = Argument::InBase.new var_gen, name, type
-                it.extend ContainerClassName
                 it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPreMethod
                 return it
               when :ghash
                 it = Argument::InBase.new var_gen, name, type
-                it.extend ContainerClassName
                 it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPreMethod
                 return it
@@ -83,19 +81,6 @@ module GirFFI::Builder
   class VoidInArgument < Argument::InBase
     def pre
       [ "#{callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
-    end
-  end
-
-  module ContainerClassName
-    TAG_TO_CONTAINER_CLASS_MAP = {
-      :glist => 'GLib::List',
-      :gslist => 'GLib::SList',
-      :ghash => 'GLib::HashTable',
-      :array => 'GLib::Array'
-    }
-
-    def class_name
-      TAG_TO_CONTAINER_CLASS_MAP[type_info.tag]
     end
   end
 
@@ -194,7 +179,6 @@ module GirFFI::Builder
                     CArrayOutArgument
                   when :array
                     it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                    it.extend ContainerClassName
                     it.extend ListElementTypeProvider
                     it.extend WithTypedContainerPostMethod
                     return it
@@ -202,13 +186,11 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                it.extend ContainerClassName
                 it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                it.extend ContainerClassName
                 it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -319,7 +301,6 @@ module GirFFI::Builder
                     CArrayInOutArgument
                   when :array
                     it = Argument::InOutBase.new var_gen, arginfo.name, type
-                    it.extend ContainerClassName
                     it.extend ListElementTypeProvider
                     it.extend WithTypedContainerInOutPreMethod
                     it.extend WithTypedContainerPostMethod
@@ -328,14 +309,12 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = Argument::InOutBase.new var_gen, arginfo.name, type
-                it.extend ContainerClassName
                 it.extend ListElementTypeProvider
                 it.extend WithTypedContainerInOutPreMethod
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = Argument::InOutBase.new var_gen, arginfo.name, type
-                it.extend ContainerClassName
                 it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerInOutPreMethod
                 it.extend WithTypedContainerPostMethod
@@ -471,7 +450,6 @@ module GirFFI::Builder
                     CArrayReturnValue
                   when :array
                     it = ReturnValue.new var_gen, name, type
-                    it.extend ContainerClassName
                     it.extend ListElementTypeProvider
                     it.extend WithTypedContainerPostMethod
                     return it
@@ -483,13 +461,11 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = ReturnValue.new var_gen, name, type
-                it.extend ContainerClassName
                 it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = ReturnValue.new var_gen, name, type
-                it.extend ContainerClassName
                 it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
