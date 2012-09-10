@@ -23,6 +23,17 @@ module GirFFI
           ffitype
         end
       end
+
+      def element_type
+        case tag
+        when :glist, :gslist
+          param_type 0
+        when :ghash
+          [param_type(0), param_type(1)]
+        else
+          nil
+        end
+      end
     end
   end
 end
