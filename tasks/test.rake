@@ -74,6 +74,7 @@ desc 'Run unit an integration tests'
 task :test => [
   'test:base',
   'test:gobjectintrospection',
+  'test:gir_ffi',
   'test:glib',
   'test:gobject',
   'test:unit',
