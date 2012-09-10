@@ -31,8 +31,6 @@ module GirFFI::Builder
                 case type.interface.info_type
                 when :callback
                   return CallbackInArgument.new var_gen, name, type, libmodule
-                when :object, :struct
-                  ObjectInArgument
                 else
                   RegularInArgument
                 end
@@ -141,26 +139,33 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :in that
-  # are GObjects.
-  class ObjectInArgument < Argument::InBase
-    def pre
-      [ "#{callarg} = #{argument_class_name}.from #{@name}" ]
-    end
-  end
-
   # Implements argument processing for arguments with direction :in whose
   # type-specific processing is left to FFI (e.g., ints and floats, and
   # objects that implement to_ptr.).
+  #
+  # Implements argument processing for arguments with direction :in that
+  # are GObjects.
   class RegularInArgument < Argument::InBase
     def pre
       pr = []
+      assign_array_length(pr)
+      set_function_call_argument(pr)
+      pr
+    end
+
+    def assign_array_length(pr)
       if @array_arg
         arrname = @array_arg.name
-	pr << "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
+        pr << "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
-      pr << "#{callarg} = #{@name}"
-      pr
+    end
+
+    def set_function_call_argument(pr)
+      if type_tag == :interface && [:object, :struct].include?(type_info.interface.info_type)
+        pr << "#{callarg} = #{argument_class_name}.from #{@name}"
+      else
+        pr << "#{callarg} = #{@name}"
+      end
     end
   end
 
