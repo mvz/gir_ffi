@@ -24,12 +24,27 @@ module GirFFI
         end
       end
 
+      def subtype_tag index
+        st = param_type(index)
+        tag = st.tag
+        case tag
+        when :interface
+          return :interface_pointer if st.pointer?
+          return :interface
+        when :void
+          return :gpointer if st.pointer?
+          return :void
+        else
+          return tag
+        end
+      end
+
       def element_type
         case tag
-        when :glist, :gslist
-          param_type 0
+        when :glist, :gslist, :array
+          subtype_tag 0
         when :ghash
-          [param_type(0), param_type(1)]
+          [subtype_tag(0), subtype_tag(1)]
         else
           nil
         end

@@ -86,13 +86,13 @@ module GirFFI::Builder
 
   module ListElementTypeProvider
     def elm_t
-      subtype_tag.inspect
+      type_info.element_type.inspect
     end
   end
 
   module HashTableElementTypeProvider
     def elm_t
-      [subtype_tag(0), subtype_tag(1)].inspect
+      type_info.element_type.inspect
     end
   end
 

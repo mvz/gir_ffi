@@ -35,21 +35,6 @@ module GirFFI
           type_info.tag
         end
 
-        def subtype_tag index=0
-          st = type_info.param_type(index)
-          tag = st.tag
-          case tag
-          when :interface
-            return :interface_pointer if st.pointer?
-            return :interface
-          when :void
-            return :gpointer if st.pointer?
-            return :void
-          else
-            return tag
-          end
-        end
-
         TAG_TO_CONTAINER_CLASS_MAP = {
           :glist => 'GLib::List',
           :gslist => 'GLib::SList',

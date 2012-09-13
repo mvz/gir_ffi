@@ -5,7 +5,9 @@ describe GirFFI::Builder::ListElementTypeProvider do
     it "returns a string with just the first subtype tag" do
       builder = Object.new
       builder.extend GirFFI::Builder::ListElementTypeProvider
-      mock(builder).subtype_tag { :foo }
+
+      mock(type_info = Object.new).element_type { :foo }
+      mock(builder).type_info { type_info }
 
       assert_equal ":foo", builder.elm_t
     end

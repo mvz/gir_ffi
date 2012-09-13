@@ -6,8 +6,8 @@ describe GirFFI::Builder::HashTableElementTypeProvider do
       builder = Object.new
       builder.extend GirFFI::Builder::HashTableElementTypeProvider
 
-      stub(builder).subtype_tag(0) { :foo }
-      stub(builder).subtype_tag(1) { :bar }
+      mock(type_info = Object.new).element_type { [:foo, :bar] }
+      mock(builder).type_info { type_info }
 
       assert_equal "[:foo, :bar]", builder.elm_t
     end

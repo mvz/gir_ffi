@@ -1,18 +1,6 @@
 require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
 
 describe GirFFI::Builder::Argument::Base do
-  describe "#subtype_tag" do
-    it "returns :gpointer if the param_type is a pointer with tag :void" do
-      stub(subtype0 = Object.new).tag { :void }
-      stub(subtype0).pointer? { true }
-      stub(type = Object.new).param_type(0) { subtype0 }
-
-      provider = GirFFI::Builder::Argument::Base.new nil, nil, type
-
-      assert_equal :gpointer, provider.subtype_tag
-    end
-  end
-
   describe "#subtype_tag_or_class_name" do
     describe "for a simple type" do
       it "returns the string ':void'" do
