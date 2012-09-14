@@ -40,14 +40,6 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :glist, :gslist
-                it = Argument::InBase.new var_gen, name, type
-                it.extend WithTypedContainerPreMethod
-                return it
-              when :ghash
-                it = Argument::InBase.new var_gen, name, type
-                it.extend WithTypedContainerPreMethod
-                return it
               else
                 RegularInArgument
               end
@@ -121,6 +113,8 @@ module GirFFI::Builder
         pr << "#{callarg} = #{argument_class_name}.from #{@name}"
       elsif [:utf8, :void].include? type_tag
         pr << "#{callarg} = #{argument_class_name}.from #{type_tag.inspect}, #{@name}"
+      elsif [:glist, :gslist, :ghash].include? type_tag
+        pr << "#{callarg} = #{argument_class_name}.from #{elm_t}, #{@name}"
       else
         pr << "#{callarg} = #{@name}"
       end
