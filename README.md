@@ -1,16 +1,14 @@
-= GirFFI
+# GirFFI
 
 by Matijs van Zuijlen
 
-http://www.github.com/mvz/ruby-gir-ffi
+[![Build Status](https://secure.travis-ci.org/mvz/ruby-gir-ffi.png)](http://travis-ci.org/mvz/ruby-gir-ffi)
 
-{<img src="https://secure.travis-ci.org/mvz/ruby-gir-ffi.png" />}[http://travis-ci.org/mvz/ruby-gir-ffi]
-
-== Description
+## Description
 
 Ruby bindings for GNOME using the GObject Introspection Repository.
 
-== Features/Notes
+## Features/Notes
 
 * Create bindings to any GObject-based library.
 * Bindings generated at runtime.
@@ -18,37 +16,44 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 * Install 'gir_ffi-gtk' and require 'gir_ffi-gtk2' or 'gir_ffi-gtk3' to
   load overrides for Gtk2 or Gtk3.
 
-== Install
+## Usage
 
-* sudo gem install gir_ffi
+    require 'gir_ffi'
 
-== Synopsis
+    GirFFI.setup :TheNamespace
 
-  require 'gir_ffi'
+    TheNamespace.some_function
 
-  GirFFI.setup :TheNamespace
+    obj = TheNamespace::SomeClass.new
+    obj.some_method with, some, args
 
-  TheNamespace.some_function
+## Install
 
-  obj = TheNamespace::SomeClass.new
-  obj.some_method with, some, args
+    gem install gir_ffi
 
-== Requirements
+## Requirements
 
-* Ruby-FFI of course
-* gobject-introspection installed with some introspection data
-* The `rr` and `minitest` gems for testing
+GirFFI should work on MRI 1.8 and 1.9, and JRuby in both 1.8 and 1.9
+modes. It does not work on Rubinius yet.
+
+You will also need gobject-introspection installed with some
+introspection data.
 
 Depending on the GIR data, GirFFI needs the actual libraries to be
 available under the name ending in plain `.so`. If GirFFI complains that it
 cannot find the library, try installing development packages for those
 libraries.
 
-On Debian and Ubuntu, installing `libgirepository1.0-dev` and
-`gobject-introspection` (at least version 0.10) should be enough to get `rake
-test` working.
+GirFFI is developed on Debian sid, and tested through Travis CI on Ubuntu
+12.04. Older versions of gobject-introspection than the ones used there
+are therefore not officially supported (although they may work).
 
-== Hacking and contributing
+On Debian and Ubuntu, installing `libgirepository1.0-dev` and
+`gobject-introspection` should be enough to get `rake test` working.
+
+GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
+
+## Hacking and contributing
 
 If you want to help out, have a look at TODO.rdoc, and the output of `rake
 notes`. Feel free to file bugs or send pull requests.
@@ -64,9 +69,9 @@ If you want to send pull requests or patches, please:
 * Try not to include changes that are irrelevant to your feature in the
   same commit.
 
-== License
+## License
 
-Copyright (c) 2009--2012 Matijs van Zuijlen
+Copyright &copy; 2009&ndash;2012 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
