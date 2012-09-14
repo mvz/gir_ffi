@@ -97,7 +97,7 @@ module GirFFI::Builder
 
   module WithTypedContainerPreMethod
     def pre
-      [ "#{callarg} = #{class_name}.from #{elm_t}, #{@name}" ]
+      [ "#{callarg} = #{argument_class_name}.from #{elm_t}, #{@name}" ]
     end
   end
 
@@ -258,7 +258,7 @@ module GirFFI::Builder
 
   module WithTypedContainerPostMethod
     def post
-      [ "#{retname} = #{class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
+      [ "#{retname} = #{argument_class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
     end
   end
 
@@ -360,7 +360,7 @@ module GirFFI::Builder
 
   module WithTypedContainerInOutPreMethod
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{class_name}.from(#{elm_t}, #{@name})" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{argument_class_name}.from(#{elm_t}, #{@name})" ]
     end
   end
 

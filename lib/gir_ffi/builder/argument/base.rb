@@ -35,22 +35,22 @@ module GirFFI
           type_info.tag
         end
 
-        TAG_TO_CONTAINER_CLASS_MAP = {
+        TAG_TO_WRAPPER_CLASS_MAP = {
           :glist => 'GLib::List',
           :gslist => 'GLib::SList',
           :ghash => 'GLib::HashTable',
           :array => 'GLib::Array'
         }
 
-        # FIXME: Merge with method below
-        def class_name
-          TAG_TO_CONTAINER_CLASS_MAP[type_info.tag]
-        end
-
         def argument_class_name
-          iface = type_info.interface
-          # FIXME: Extract to ITypeInfo.
-          "::#{iface.safe_namespace}::#{iface.name}"
+          case type_tag
+          when :interface
+            iface = type_info.interface
+            # FIXME: Extract to ITypeInfo.
+            "::#{iface.safe_namespace}::#{iface.name}"
+          else
+            TAG_TO_WRAPPER_CLASS_MAP[type_info.tag]
+          end
         end
 
         def subtype_tag_or_class_name index=0
