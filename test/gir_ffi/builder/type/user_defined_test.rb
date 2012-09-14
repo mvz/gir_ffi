@@ -1,4 +1,6 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'gir_ffi_test_helper'
+
+GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builder::Type::UserDefined do
   describe "with a block with a call to #install_property" do

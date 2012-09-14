@@ -1,4 +1,4 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::Argument::Base do
   describe "#subtype_tag_or_class_name" do

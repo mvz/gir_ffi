@@ -33,10 +33,6 @@ namespace :test do
     t.test_files = FileList['test/*_test.rb']
   end
 
-  define_test_task(:unit) do |t|
-    t.test_files = FileList['test/unit/*_test.rb']
-  end
-
   define_test_task(:integration) do |t|
     t.test_files = FileList['test/integration/*_test.rb']
   end
@@ -51,7 +47,6 @@ namespace :test do
   task :gobject => :lib
 
   task :run => :lib
-  task :unit => :lib
 
   task :integration => :lib
 
@@ -77,7 +72,6 @@ task :test => [
   'test:gir_ffi',
   'test:glib',
   'test:gobject',
-  'test:unit',
   'test:run',
   'test:integration',
 ]

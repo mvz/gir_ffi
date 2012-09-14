@@ -1,6 +1,26 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::Type::Object do
+  describe '#find_signal' do
+    it 'finds the signal "test" for TestObj' do
+      builder = GirFFI::Builder::Type::Object.new get_introspection_data('Regress', 'TestObj')
+      sig = builder.find_signal 'test'
+      assert_equal 'test', sig.name
+    end
+
+    it 'finds the signal "test" for TestSubObj' do
+      builder = GirFFI::Builder::Type::Object.new get_introspection_data('Regress', 'TestSubObj')
+      sig = builder.find_signal 'test'
+      assert_equal 'test', sig.name
+    end
+
+    it 'finds the signal "changed" for Gtk::Entry' do
+      builder = GirFFI::Builder::Type::Object.new get_introspection_data('Gtk', 'Entry')
+      sig = builder.find_signal 'changed'
+      assert_equal 'changed', sig.name
+    end
+  end
+
   describe "#find_property" do
     it "finds a property specified on the class itself" do
       builder = GirFFI::Builder::Type::Object.new(
@@ -38,5 +58,4 @@ describe GirFFI::Builder::Type::Object do
     end
 
   end
-
 end

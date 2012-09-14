@@ -1,4 +1,4 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::Type::Callback do
   describe "#pretty_print" do
