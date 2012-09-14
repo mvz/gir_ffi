@@ -55,8 +55,9 @@ GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
 
 ## Hacking and contributing
 
-If you want to help out, have a look at TODO.rdoc, and the output of `rake
-notes`. Feel free to file bugs or send pull requests.
+If you want to help out, have a look at TODO.rdoc, and check the notes
+in the code (e.g., using `dnote`). Feel free to file bugs or send pull
+requests.
 
 If you want to send pull requests or patches, please:
 
