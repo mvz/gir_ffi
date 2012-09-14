@@ -28,7 +28,7 @@ describe GirFFI do
     describe "without a block" do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
-        Object.const_set "Derived#{Sequence.next}", @klass
+        Object.const_set "DerivedA#{Sequence.next}", @klass
         @gtype = GirFFI.define_type @klass
       end
 
@@ -61,7 +61,7 @@ describe GirFFI do
     describe "with a block with a call to #install_property" do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
-        Object.const_set "Derived#{Sequence.next}", @klass
+        Object.const_set "DerivedB#{Sequence.next}", @klass
         @gtype = GirFFI.define_type @klass do
           install_property GObject.param_spec_int("foo", "foo bar",
                                                   "The Foo Bar Property",

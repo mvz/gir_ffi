@@ -6,7 +6,7 @@ describe GirFFI::Builder::Type::UserDefined do
   describe "with a block with a call to #install_property" do
     before do
       @klass = Class.new GIMarshallingTests::OverridesObject
-      Object.const_set "Derived#{Sequence.next}", @klass
+      Object.const_set "DerivedC#{Sequence.next}", @klass
       @builder = GirFFI::Builder::Type::UserDefined.new @klass do
         install_property GObject.param_spec_int("foo", "foo bar",
                                                 "The Foo Bar Property",
