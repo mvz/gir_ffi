@@ -1,4 +1,4 @@
-require File.expand_path('../gir_ffi_test_helper.rb', File.dirname(__FILE__))
+require 'gir_ffi_test_helper'
 
 # Tests generated methods and functions in the Gio namespace.
 describe "The generated Gio module" do

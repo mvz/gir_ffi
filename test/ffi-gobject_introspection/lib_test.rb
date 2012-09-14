@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require 'test_helper'
 
 describe "loading the shared library" do
   before do

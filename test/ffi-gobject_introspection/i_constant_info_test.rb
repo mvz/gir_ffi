@@ -1,4 +1,4 @@
-require File.expand_path('../test_helper.rb', File.dirname(__FILE__))
+require 'test_helper'
 
 describe GObjectIntrospection::IConstantInfo do
   describe "for GLib::USEC_PER_SEC, a constant of type :gint32" do
