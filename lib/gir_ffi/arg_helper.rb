@@ -11,9 +11,11 @@ module GirFFI
     SIMPLE_G_TYPES = [
       :gint8, :gint16, :gint, :gint32, :gint64,
       :guint8, :guint16, :guint32, :guint64,
-      :gfloat, :gdouble]
+      :gfloat, :gdouble
+    ]
 
-    # FIXME: Hideous.
+    # FIXME: Hideous
+    # TODO: Move this implementation to InPointer
     def self.object_to_inptr obj
       return obj.to_ptr if obj.respond_to? :to_ptr
       return nil if obj.nil?

@@ -78,7 +78,7 @@ module GirFFI::Builder
   # direction :in.
   class VoidInArgument < Argument::InBase
     def pre
-      [ "#{callarg} = GirFFI::ArgHelper.object_to_inptr #{@name}" ]
+      [ "#{callarg} = GirFFI::InPointer.from :object, #{@name}" ]
     end
   end
 
