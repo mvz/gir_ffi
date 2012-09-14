@@ -1,3 +1,3 @@
 load 'tasks/setup.rb'
 
-task :default => 'test'
+task :default => 'test:all'
