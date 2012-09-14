@@ -39,7 +39,9 @@ module GirFFI
           :glist => 'GLib::List',
           :gslist => 'GLib::SList',
           :ghash => 'GLib::HashTable',
-          :array => 'GLib::Array'
+          :array => 'GLib::Array',
+          :utf8 => 'GirFFI::InPointer',
+          :void => 'GirFFI::InPointer'
         }
 
         def argument_class_name

@@ -56,7 +56,7 @@ describe GirFFI::Builder::Function do
       def self.test_callback_destroy_notify callback, user_data, notify
         _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
         DummyLib::CALLBACKS << _v1
-        _v2 = GirFFI::InPointer.from :object, user_data
+        _v2 = GirFFI::InPointer.from :void, user_data
         _v3 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
         DummyLib::CALLBACKS << _v3
         _v4 = DummyLib.regress_test_callback_destroy_notify _v1, _v2, _v3

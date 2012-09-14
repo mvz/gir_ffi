@@ -34,8 +34,6 @@ module GirFFI::Builder
                 else
                   RegularInArgument
                 end
-              when :void
-                VoidInArgument
               when :array
                 if type.array_type == :c
                   CArrayInArgument
@@ -50,8 +48,6 @@ module GirFFI::Builder
                 it = Argument::InBase.new var_gen, name, type
                 it.extend WithTypedContainerPreMethod
                 return it
-              when :utf8
-                Utf8InArgument
               else
                 RegularInArgument
               end
@@ -74,14 +70,6 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for void pointer arguments with
-  # direction :in.
-  class VoidInArgument < Argument::InBase
-    def pre
-      [ "#{callarg} = GirFFI::InPointer.from :object, #{@name}" ]
-    end
-  end
-
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
     def pre
@@ -101,20 +89,18 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for UTF8 string arguments with direction
-  # :in.
-  class Utf8InArgument < Argument::InBase
-    def pre
-      [ "#{callarg} = GirFFI::InPointer.from :utf8, #{@name}" ]
-    end
-  end
-
   # Implements argument processing for arguments with direction :in whose
   # type-specific processing is left to FFI (e.g., ints and floats, and
   # objects that implement to_ptr.).
   #
   # Implements argument processing for arguments with direction :in that
   # are GObjects.
+  #
+  # Implements argument processing for UTF8 string arguments with direction
+  # :in.
+  #
+  # Implements argument processing for void pointer arguments with
+  # direction :in.
   class RegularInArgument < Argument::InBase
     def pre
       pr = []
@@ -133,6 +119,8 @@ module GirFFI::Builder
     def set_function_call_argument(pr)
       if type_tag == :interface && [:object, :struct].include?(type_info.interface.info_type)
         pr << "#{callarg} = #{argument_class_name}.from #{@name}"
+      elsif [:utf8, :void].include? type_tag
+        pr << "#{callarg} = #{argument_class_name}.from #{type_tag.inspect}, #{@name}"
       else
         pr << "#{callarg} = #{@name}"
       end
