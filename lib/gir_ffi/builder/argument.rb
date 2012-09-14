@@ -44,12 +44,10 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = Argument::InBase.new var_gen, name, type
-                it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPreMethod
                 return it
               when :ghash
                 it = Argument::InBase.new var_gen, name, type
-                it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPreMethod
                 return it
               when :utf8
@@ -84,21 +82,8 @@ module GirFFI::Builder
     end
   end
 
-  module ListElementTypeProvider
-    def elm_t
-      type_info.element_type.inspect
-    end
-  end
-
-  module HashTableElementTypeProvider
-    def elm_t
-      type_info.element_type.inspect
-    end
-  end
-
   # Implements argument processing for array arguments with direction :in.
   class CArrayInArgument < Argument::InBase
-    include ListElementTypeProvider
     def pre
       pr = []
       size = type_info.array_fixed_size
@@ -179,19 +164,16 @@ module GirFFI::Builder
                     CArrayOutArgument
                   when :array
                     it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                    it.extend ListElementTypeProvider
                     it.extend WithTypedContainerPostMethod
                     return it
                   end
                 end
               when :glist, :gslist
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               else
@@ -301,7 +283,6 @@ module GirFFI::Builder
                     CArrayInOutArgument
                   when :array
                     it = Argument::InOutBase.new var_gen, arginfo.name, type
-                    it.extend ListElementTypeProvider
                     it.extend WithTypedContainerInOutPreMethod
                     it.extend WithTypedContainerPostMethod
                     return it
@@ -309,13 +290,11 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = Argument::InOutBase.new var_gen, arginfo.name, type
-                it.extend ListElementTypeProvider
                 it.extend WithTypedContainerInOutPreMethod
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = Argument::InOutBase.new var_gen, arginfo.name, type
-                it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerInOutPreMethod
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -356,7 +335,6 @@ module GirFFI::Builder
   # Implements argument processing for strv arguments with direction
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
-    include ListElementTypeProvider
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
@@ -369,7 +347,6 @@ module GirFFI::Builder
   # Implements argument processing for array arguments with direction
   # :inout.
   class CArrayInOutArgument < Argument::InOutBase
-    include ListElementTypeProvider
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
@@ -450,7 +427,6 @@ module GirFFI::Builder
                     CArrayReturnValue
                   when :array
                     it = ReturnValue.new var_gen, name, type
-                    it.extend ListElementTypeProvider
                     it.extend WithTypedContainerPostMethod
                     return it
                   when :byte_array
@@ -461,12 +437,10 @@ module GirFFI::Builder
                 end
               when :glist, :gslist
                 it = ReturnValue.new var_gen, name, type
-                it.extend ListElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               when :ghash
                 it = ReturnValue.new var_gen, name, type
-                it.extend HashTableElementTypeProvider
                 it.extend WithTypedContainerPostMethod
                 return it
               when :utf8

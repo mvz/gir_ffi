@@ -69,6 +69,10 @@ module GirFFI
           end
         end
 
+        def elm_t
+          type_info.element_type.inspect
+        end
+
         def array_size
           if @length_arg
             @length_arg.retname
