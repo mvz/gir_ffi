@@ -71,13 +71,7 @@ module GirFFI
     end
 
     def self.ffi_function_return_type info
-      rt = info.return_type
-      # FIXME: Workaround for older gobject-introspection not identifying all
-      # objects as being pointers.
-      if rt.tag == :interface and rt.interface.info_type == :object
-        return :pointer
-      end
-      itypeinfo_to_ffitype rt
+      itypeinfo_to_ffitype info.return_type
     end
 
     def self.itypeinfo_to_callback_ffitype info

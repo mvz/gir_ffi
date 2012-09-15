@@ -95,11 +95,6 @@ module GObject
     attach_function :g_object_unref, [:pointer], :void
     attach_function :g_object_is_floating, [:pointer], :bool
 
-    # XXX: For older GObject/gobject-introspection.
-    unless method_defined? :g_object_newv
-      attach_function :g_object_newv, [:size_t, :uint, :pointer], :pointer
-    end
-
     attach_function :g_strv_get_type, [], :size_t
     attach_function :g_hash_table_get_type, [], :size_t
 
