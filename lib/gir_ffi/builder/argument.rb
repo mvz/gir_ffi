@@ -75,12 +75,6 @@ module GirFFI::Builder
     end
   end
 
-  module WithTypedContainerPreMethod
-    def pre
-      [ "#{callarg} = #{argument_class_name}.from #{elm_t}, #{@name}" ]
-    end
-  end
-
   # Implements argument processing for arguments with direction :in whose
   # type-specific processing is left to FFI (e.g., ints and floats, and
   # objects that implement to_ptr.).
@@ -139,7 +133,7 @@ module GirFFI::Builder
                 end
               when :array
                 if type.zero_terminated?
-                  StrvOutArgument
+                  InterfaceOutArgument
                 else
                   case type.array_type
                   when :c
@@ -224,17 +218,12 @@ module GirFFI::Builder
 
   # Implements argument processing for interface arguments with direction
   # :out (structs, objects, etc.).
+  #
+  # Implements argument processing for strv arguments with direction
+  # :out.
   class InterfaceOutArgument < PointerLikeOutArgument
     def post
       [ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
-    end
-  end
-
-  # Implements argument processing for strv arguments with direction
-  # :out.
-  class StrvOutArgument < PointerLikeOutArgument
-    def post
-      [ "#{retname} = GLib::Strv.wrap #{callarg}.to_value" ]
     end
   end
 

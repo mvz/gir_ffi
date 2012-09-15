@@ -45,13 +45,19 @@ module GirFFI
         }
 
         def argument_class_name
-          case type_tag
+          case (tag = type_tag)
           when :interface
             iface = type_info.interface
             # FIXME: Extract to ITypeInfo.
             "::#{iface.safe_namespace}::#{iface.name}"
+          when :array
+            if type_info.zero_terminated?
+              'GLib::Strv'
+            else
+              'GLib::Array'
+            end
           else
-            TAG_TO_WRAPPER_CLASS_MAP[type_info.tag]
+            TAG_TO_WRAPPER_CLASS_MAP[tag]
           end
         end
 
