@@ -16,8 +16,6 @@ require 'ffi'
 
 Thread.abort_on_exception = true
 
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-
 class MiniTest::Unit::TestCase
   include RR::Adapters::TestUnit
 
