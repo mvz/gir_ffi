@@ -18,16 +18,8 @@ Thread.abort_on_exception = true
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-require 'ffi-gobject_introspection'
-
 class MiniTest::Unit::TestCase
   include RR::Adapters::TestUnit
-
-  def get_introspection_data namespace, name
-    gir = GObjectIntrospection::IRepository.default
-    gir.require namespace, nil
-    gir.find_by_name namespace, name
-  end
 
   def assert_nothing_raised
     yield

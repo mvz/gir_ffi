@@ -38,6 +38,12 @@ class MiniTest::Unit::TestCase
     code.gsub(/(^\s*|\s*$)/, "")
   end
 
+  def get_introspection_data namespace, name
+    gir = GObjectIntrospection::IRepository.default
+    gir.require namespace, nil
+    gir.find_by_name namespace, name
+  end
+
   def get_method_introspection_data namespace, klass, name
     get_introspection_data(namespace, klass).find_method name
   end

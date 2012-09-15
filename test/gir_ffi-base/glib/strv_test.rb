@@ -1,8 +1,6 @@
 require 'test_helper'
 
 require 'gir_ffi-base/glib/strv'
-require 'gir_ffi/type_map'
-require 'gir_ffi/arg_helper'
 
 describe GLib::Strv do
   it "wraps a pointer" do
@@ -20,8 +18,13 @@ describe GLib::Strv do
 
   describe "#each" do
     it "yields each string element" do
-      ptr = GirFFI::InPointer.from_array :utf8, ["one", "two", "three"]
-      strv = GLib::Strv.new ptr
+      ary = ["one", "two", "three"]
+      ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
+      ptrs << nil
+      block = FFI::MemoryPointer.new(:pointer, ptrs.length)
+      block.write_array_of_pointer ptrs
+
+      strv = GLib::Strv.new block
       arr = []
       strv.each do |str|
         arr << str
