@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'introspection_test_helper'
 
 describe GObjectIntrospection::IConstantInfo do
   describe "for GLib::USEC_PER_SEC, a constant of type :gint32" do

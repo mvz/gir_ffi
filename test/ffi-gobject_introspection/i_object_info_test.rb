@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'introspection_test_helper'
 
 module GirFFI
   class IObjectInfoTest < MiniTest::Spec

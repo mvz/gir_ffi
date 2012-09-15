@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'introspection_test_helper'
 
 describe "loading the shared library" do
   before do

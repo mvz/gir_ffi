@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'introspection_test_helper'
 
 describe GObjectIntrospection::IBaseInfo do
   describe "#safe_name" do
