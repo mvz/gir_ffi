@@ -10,7 +10,7 @@ require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
 
 module GLib
-  # FIXME: Compatibility function. Remove in version 0.5.0.
+  # @deprecated Compatibility function. Remove in version 0.5.0.
   def self.main_loop_new context, is_running
     GLib::MainLoop.new context, is_running
   end
