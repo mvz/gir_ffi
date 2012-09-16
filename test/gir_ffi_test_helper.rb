@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'introspection_test_helper'
 
 require 'gir_ffi'
 
@@ -36,12 +36,6 @@ end
 class MiniTest::Unit::TestCase
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
-  end
-
-  def get_introspection_data namespace, name
-    gir = GObjectIntrospection::IRepository.default
-    gir.require namespace, nil
-    gir.find_by_name namespace, name
   end
 
   def get_method_introspection_data namespace, klass, name

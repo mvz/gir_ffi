@@ -1,3 +1,5 @@
+require 'ffi'
+
 module GLib
   # Represents a null-terminated array of strings. GLib uses this
   # construction, but does not provide any actual functions for this class.

@@ -1,4 +1,7 @@
 require 'singleton'
+require 'ffi'
+require 'gir_ffi-base'
+
 require 'ffi-gobject_introspection/lib'
 require 'ffi-gobject_introspection/g_error'
 require 'ffi-gobject_introspection/i_base_info'
@@ -18,9 +21,6 @@ require 'ffi-gobject_introspection/i_value_info'
 require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
-
-require 'gir_ffi-base/gobject/lib'
-require 'gir_ffi-base/glib/strv'
 
 module GObjectIntrospection
   GObject::Lib::g_type_init

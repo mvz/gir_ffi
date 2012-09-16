@@ -12,7 +12,6 @@ end
 require 'minitest/spec'
 require 'minitest/autorun'
 require 'rr'
-require 'ffi'
 
 Thread.abort_on_exception = true
 
@@ -75,3 +74,5 @@ class MiniTest::Spec
     alias :context :describe
   end
 end
+
+require 'gir_ffi-base'

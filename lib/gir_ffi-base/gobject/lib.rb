@@ -1,3 +1,5 @@
+require 'ffi'
+
 module GObject
   module Lib
     extend FFI::Library

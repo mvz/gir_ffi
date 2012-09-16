@@ -1,3 +1,6 @@
+# NOTE: Do not require this file directly. Require 'gir_ffi' instead.
+#
+
 GirFFI.setup :GObject
 
 require 'ffi-gobject/base'

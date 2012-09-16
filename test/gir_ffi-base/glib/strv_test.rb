@@ -1,6 +1,4 @@
-require 'test_helper'
-
-require 'gir_ffi-base/glib/strv'
+require 'base_test_helper'
 
 describe GLib::Strv do
   it "wraps a pointer" do

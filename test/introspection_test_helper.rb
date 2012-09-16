@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'base_test_helper'
 
 require 'ffi-gobject_introspection'
 

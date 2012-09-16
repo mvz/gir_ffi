@@ -1,4 +1,5 @@
-require 'gir_ffi-base/glib/strv'
+# NOTE: Do not require this file directly. Require 'gir_ffi' instead.
+#
 
 GirFFI.setup :GLib
 
