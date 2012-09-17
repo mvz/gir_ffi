@@ -44,6 +44,17 @@ describe GirFFI::InPointer do
     end
   end
 
+  describe "an instance created with .from_array :filename" do
+    before do
+      @result = GirFFI::InPointer.from_array :filename, ["foo", "bar", "baz"]
+    end
+
+    it "returns an array of pointers to strings" do
+      ary = @result.read_array_of_pointer(3)
+      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+    end
+  end
+
   describe "an instance created with .from :utf8" do
     before do
       @result = GirFFI::InPointer.from :utf8, "foo"
@@ -55,6 +66,16 @@ describe GirFFI::InPointer do
 
     it "is an instance of GirFFI::InPointer" do
       assert_instance_of GirFFI::InPointer, @result
+    end
+  end
+
+  describe "an instance created with .from :filename" do
+    before do
+      @result = GirFFI::InPointer.from :filename, "foo"
+    end
+
+    it "returns a pointer to the given string" do
+      assert_equal "foo", @result.read_string
     end
   end
 

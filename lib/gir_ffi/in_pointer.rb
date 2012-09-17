@@ -5,16 +5,20 @@ module GirFFI
   class InPointer < FFI::Pointer
     def self.from_array type, ary
       return nil if ary.nil?
-      return from_utf8_array ary if type == :utf8
-      return from_interface_pointer_array ary if type == :interface_pointer
-
-      return from_basic_type_array type, ary
+      case type
+      when :utf8, :filename
+        from_utf8_array ary
+      when :interface_pointer
+        from_interface_pointer_array ary
+      else
+        from_basic_type_array type, ary
+      end
     end
 
     def self.from type, val
       return nil if val.nil?
       case type
-      when :utf8
+      when :utf8, :filename
         from_utf8 val
       when :gint32, :gint8
         self.new val
