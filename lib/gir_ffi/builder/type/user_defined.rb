@@ -36,6 +36,7 @@ module GirFFI
           @gtype = new_type
           @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
+          CACHE[@gtype] = @klass
         end
 
         def setup_class

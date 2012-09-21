@@ -56,6 +56,11 @@ describe GirFFI do
         type = GObject.type_from_instance obj
         type.must_equal @gtype
       end
+
+      it "makes GirFFI find the new class by GType" do
+        klass = GirFFI::Builder.build_by_gtype @gtype
+        klass.must_equal @klass
+      end
     end
 
     describe "with a block with a call to #install_property" do

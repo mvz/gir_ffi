@@ -7,8 +7,6 @@ module GirFFI
       # which no data is found in the GIR. Typically, these are created to
       # cast objects returned by a function that returns an interface.
       class Unintrospectable < Object
-        CACHE = {}
-
         # FIXME: Breaks parent interface.
         def initialize gtype
           @gtype = gtype

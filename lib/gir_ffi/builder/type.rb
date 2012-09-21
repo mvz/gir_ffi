@@ -13,6 +13,8 @@ module GirFFI
   # repository.
   module Builder
     module Type
+      CACHE = {}
+
       TYPE_MAP = {
         :callback => Callback,
         :constant => Constant,
