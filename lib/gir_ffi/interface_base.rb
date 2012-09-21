@@ -17,6 +17,10 @@ module GirFFI
     def setup_instance_method name
       _builder.setup_instance_method name
     end
+
+    def wrap ptr
+      GirFFI::ArgHelper.object_pointer_to_object ptr
+    end
   end
 end
 
