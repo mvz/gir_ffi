@@ -96,7 +96,7 @@ describe GirFFI::ArgHelper do
 
       object_class = Class.new
       mock(GirFFI::Builder).build_by_gtype(0xdeadbeef) { object_class }
-      mock(object_class).wrap(objptr) { "good-result" }
+      mock(object_class).direct_wrap(objptr) { "good-result" }
 
       r = GirFFI::ArgHelper.object_pointer_to_object objptr
       assert_equal "good-result", r

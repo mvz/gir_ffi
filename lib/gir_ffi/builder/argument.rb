@@ -456,7 +456,7 @@ module GirFFI::Builder
   # Implements argument processing for object return values.
   class ObjectReturnValue < ReturnValue
     def post
-      [ "#{retname} = GirFFI::ArgHelper.object_pointer_to_object(#{cvar})" ]
+      [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
     end
   end
 

@@ -149,8 +149,7 @@ describe Regress, "The generated Regress module" do
     end
 
     it "has a refcount of 1" do
-      # FIXME: Should be able to do @so.refcount
-      assert_equal 1, @so.fundamental_object.refcount
+      assert_equal 1, @so.refcount
     end
   end
 

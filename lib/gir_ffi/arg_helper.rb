@@ -117,7 +117,7 @@ module GirFFI
     def self.wrap_object_pointer_by_gtype optr, gtype
       return nil if optr.null?
       klass = Builder.build_by_gtype gtype
-      klass.wrap optr
+      klass.direct_wrap optr
     end
 
     def self.cast_from_pointer type, it
