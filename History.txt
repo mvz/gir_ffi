@@ -1,3 +1,8 @@
+== 0.4.2 / 2012-09-22
+
+* Make objects and interfaces wrap poiners in the class that matches
+  their GType.
+
 == 0.4.1 / 2012-09-18
 
 * Remove workarounds for older versions of gobject-introspection
