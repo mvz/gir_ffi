@@ -366,7 +366,7 @@ module GirFFI::Builder
         klass = if is_constructor
                   ConstructorReturnValue
                 else
-                  ObjectReturnValue
+                  InterfaceReturnValue
                 end
         klass.new var_gen, name, type
       else
@@ -447,14 +447,10 @@ module GirFFI::Builder
   # Implements argument processing for interface return values (interfaces
   # and structs, but not objects, which need special handling for
   # polymorphism and constructors).
+  #
+  # Implements argument processing for object return values when the method is
+  # not a constructor.
   class InterfaceReturnValue < ReturnValue
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
-    end
-  end
-
-  # Implements argument processing for object return values.
-  class ObjectReturnValue < ReturnValue
     def post
       [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
     end
