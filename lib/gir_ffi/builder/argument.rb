@@ -401,7 +401,7 @@ module GirFFI::Builder
                     it.extend WithTypedContainerPostMethod
                     return it
                   when :byte_array
-                    ByteArrayReturnValue
+                    WrappingReturnValue
                   else
                     PtrArrayReturnValue
                   end
@@ -452,6 +452,8 @@ module GirFFI::Builder
   # not a constructor.
   #
   # Implements argument processing for NULL-terminated string array return values.
+  #
+  # Implements argument processing for GByteArray return values.
   class WrappingReturnValue < ReturnValue
     def post
       [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
@@ -478,13 +480,6 @@ module GirFFI::Builder
   class Utf8ReturnValue < ReturnValue
     def post
       [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{cvar}" ]
-    end
-  end
-
-  # Implements argument processing for GByteArray return values.
-  class ByteArrayReturnValue < ReturnValue
-    def post
-      [ "#{retname} = GLib::ByteArray.wrap(#{cvar})" ]
     end
   end
 

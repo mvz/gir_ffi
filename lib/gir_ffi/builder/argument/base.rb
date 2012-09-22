@@ -52,9 +52,15 @@ module GirFFI
             "::#{iface.safe_namespace}::#{iface.name}"
           when :array
             if type_info.zero_terminated?
+              # TODO: Move under array_type :c
               'GLib::Strv'
             else
-              'GLib::Array'
+              case type_info.array_type
+              when :byte_array
+                'GLib::ByteArray'
+              else
+                'GLib::Array'
+              end
             end
           else
             TAG_TO_WRAPPER_CLASS_MAP[tag]
