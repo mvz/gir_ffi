@@ -58,8 +58,10 @@ module GirFFI
               case type_info.array_type
               when :byte_array
                 'GLib::ByteArray'
-              else
+              when :array
                 'GLib::Array'
+              else
+                'GLib::PtrArray'
               end
             end
           else

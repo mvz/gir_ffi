@@ -144,11 +144,7 @@ module GirFFI::Builder
                     return it
                   end
                 end
-              when :glist, :gslist
-                it = PointerLikeOutArgument.new var_gen, arginfo.name, type
-                it.extend WithTypedContainerPostMethod
-                return it
-              when :ghash
+              when :glist, :gslist, :ghash
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -259,12 +255,7 @@ module GirFFI::Builder
                     return it
                   end
                 end
-              when :glist, :gslist
-                it = Argument::InOutBase.new var_gen, arginfo.name, type
-                it.extend WithTypedContainerInOutPreMethod
-                it.extend WithTypedContainerPostMethod
-                return it
-              when :ghash
+              when :glist, :gslist, :ghash
                 it = Argument::InOutBase.new var_gen, arginfo.name, type
                 it.extend WithTypedContainerInOutPreMethod
                 it.extend WithTypedContainerPostMethod
@@ -400,17 +391,11 @@ module GirFFI::Builder
                     it = ReturnValue.new var_gen, name, type
                     it.extend WithTypedContainerPostMethod
                     return it
-                  when :byte_array
-                    WrappingReturnValue
                   else
-                    PtrArrayReturnValue
+                    WrappingReturnValue
                   end
                 end
-              when :glist, :gslist
-                it = ReturnValue.new var_gen, name, type
-                it.extend WithTypedContainerPostMethod
-                return it
-              when :ghash
+              when :glist, :gslist, :ghash
                 it = ReturnValue.new var_gen, name, type
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -454,6 +439,8 @@ module GirFFI::Builder
   # Implements argument processing for NULL-terminated string array return values.
   #
   # Implements argument processing for GByteArray return values.
+  #
+  # Implements argument processing for GPtrArray return values.
   class WrappingReturnValue < ReturnValue
     def post
       [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
@@ -480,13 +467,6 @@ module GirFFI::Builder
   class Utf8ReturnValue < ReturnValue
     def post
       [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{cvar}" ]
-    end
-  end
-
-  # Implements argument processing for GPtrArray return values.
-  class PtrArrayReturnValue < ReturnValue
-    def post
-      [ "#{retname} = GLib::PtrArray.wrap(#{cvar})" ]
     end
   end
 
