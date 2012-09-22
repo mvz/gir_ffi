@@ -366,7 +366,7 @@ module GirFFI::Builder
         klass = if is_constructor
                   ConstructorReturnValue
                 else
-                  InterfaceReturnValue
+                  WrappingReturnValue
                 end
         klass.new var_gen, name, type
       else
@@ -385,13 +385,13 @@ module GirFFI::Builder
               when :interface
                 case type.interface.info_type
                 when :struct, :union, :interface, :object
-                  InterfaceReturnValue
+                  WrappingReturnValue
                 else
                   RegularReturnValue
                 end
               when :array
                 if type.zero_terminated?
-                  StrvReturnValue
+                  WrappingReturnValue
                 else
                   case type.array_type
                   when :c
@@ -450,7 +450,9 @@ module GirFFI::Builder
   #
   # Implements argument processing for object return values when the method is
   # not a constructor.
-  class InterfaceReturnValue < ReturnValue
+  #
+  # Implements argument processing for NULL-terminated string array return values.
+  class WrappingReturnValue < ReturnValue
     def post
       [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
     end
@@ -469,13 +471,6 @@ module GirFFI::Builder
       size = array_size
 
       [ "#{retname} = GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{cvar}, #{size}" ]
-    end
-  end
-
-  # Implements argument processing for NULL-terminated string array return values.
-  class StrvReturnValue < ReturnValue
-    def post
-      [ "#{retname} = GLib::Strv.wrap(#{cvar})" ]
     end
   end
 
