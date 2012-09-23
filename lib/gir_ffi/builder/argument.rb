@@ -98,7 +98,7 @@ module GirFFI::Builder
     end
 
     def retname
-      if @direction == :inout
+      if has_output_value?
         @retname ||= @var_gen.new_var
       end
     end
@@ -111,7 +111,7 @@ module GirFFI::Builder
     end
 
     def post
-      if @direction == :inout
+      if has_output_value?
         [ "#{retname} = #{argument_class_name}.wrap(#{output_conversion_arguments})" ]
       else
         []
@@ -124,17 +124,22 @@ module GirFFI::Builder
       @array_arg
     end
 
+    def has_output_value?
+      @direction == :inout
+    end
+
     def array_length_assignment
       arrname = @array_arg.name
       "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
     end
 
     def set_function_call_argument
-      if needs_ingoing_parameter_conversion?
-        "#{callarg} = #{parameter_conversion}"
-      else
-        "#{callarg} = #{@name}"
-      end
+      value = if needs_ingoing_parameter_conversion?
+                parameter_conversion
+              else
+                @name
+              end
+      "#{callarg} = #{value}"
     end
 
     def needs_ingoing_parameter_conversion?
@@ -148,7 +153,7 @@ module GirFFI::Builder
 
     def parameter_conversion
       base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
-      if @direction == :inout
+      if has_output_value?
         "GirFFI::InOutPointer.from :pointer, #{base}"
       else
         base
@@ -166,12 +171,16 @@ module GirFFI::Builder
     def conversion_arguments name
       case type_tag
       when :utf8, :void
-        "#{type_tag.inspect}, #{name}"
+        "#{self_t}, #{name}"
       when :glist, :gslist, :ghash, :array
         "#{elm_t}, #{name}"
       else
         "#{name}"
       end
+    end
+
+    def self_t
+      type_tag.inspect
     end
   end
 
