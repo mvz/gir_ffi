@@ -37,7 +37,7 @@ module GirFFI::Builder
 
     def setup_error_argument vargen
       klass = @info.throws? ? ErrorArgument : NullArgument
-      @errarg = klass.new vargen, nil, nil
+      @errarg = klass.new vargen, nil, nil, :error
     end
 
     def filled_out_template

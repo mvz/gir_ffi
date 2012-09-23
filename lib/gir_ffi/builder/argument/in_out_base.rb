@@ -4,8 +4,8 @@ module GirFFI
       # Abstract base class implementing argument processing for arguments
       # with direction :inout.
       class InOutBase < Base
-        def initialize var_gen, name, typeinfo
-          super var_gen, name, typeinfo
+        def initialize var_gen, name, typeinfo, direction
+          super var_gen, name, typeinfo, direction
           @inarg = @name
         end
 
@@ -16,6 +16,3 @@ module GirFFI
     end
   end
 end
-
-
-

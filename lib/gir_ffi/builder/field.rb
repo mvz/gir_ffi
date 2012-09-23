@@ -45,13 +45,13 @@ module GirFFI
 
       def return_value_builder
         @rv_builder ||= ReturnValueFactory.builder_for_field_getter(
-          VariableNameGenerator.new, @info.name, @info.field_type)
+          VariableNameGenerator.new, @info.name, @info.field_type, :return)
       end
 
       def setter_builder
         type = @info.field_type
         vargen = VariableNameGenerator.new
-        Builder::InArgument.builder_for vargen, "value", type, @libmodule
+        Builder::InArgument.builder_for vargen, "value", type, :in, @libmodule
       end
     end
   end
