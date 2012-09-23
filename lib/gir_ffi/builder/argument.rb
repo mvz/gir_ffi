@@ -351,7 +351,7 @@ module GirFFI::Builder
   # :inout.
   class StrvInOutArgument < Argument::InOutBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.from #{type_specification}, #{@name}" ]
     end
 
     def post

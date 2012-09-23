@@ -60,6 +60,10 @@ module GirFFI
           end
         end
 
+        def type_specification
+          "[#{type_info.tag.inspect}, #{elm_t}]"
+        end
+
         TAG_TO_WRAPPER_CLASS_MAP = {
           :glist => 'GLib::List',
           :gslist => 'GLib::SList',

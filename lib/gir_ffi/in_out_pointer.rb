@@ -26,19 +26,6 @@ module GirFFI
       ArgHelper.ptr_to_typed_array @sub_type, block, size
     end
 
-    private
-
-    def adjust_value_out value
-      case @value_type
-      when :gboolean
-        (value != 0)
-      when :utf8
-        ArgHelper.ptr_to_utf8 value
-      else
-        value
-      end
-    end
-
     def self.for type, sub_type=nil
       ffi_type = TypeMap.map_basic_type_or_string type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
@@ -47,6 +34,11 @@ module GirFFI
     end
 
     def self.from type, value, sub_type=nil
+      if Array === type
+        base, sub = *type
+        raise "Kaboom" unless base == :array
+        return self.from_array sub, value
+      end
       value = adjust_value_in type, value
       ffi_type = TypeMap.map_basic_type_or_string type
       ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
@@ -85,6 +77,20 @@ module GirFFI
         end
       end
     end
+
+    private
+
+    def adjust_value_out value
+      case @value_type
+      when :gboolean
+        (value != 0)
+      when :utf8
+        ArgHelper.ptr_to_utf8 value
+      else
+        value
+      end
+    end
+
   end
 end
 
