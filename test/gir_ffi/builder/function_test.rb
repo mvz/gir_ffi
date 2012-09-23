@@ -56,7 +56,7 @@ describe GirFFI::Builder::Function do
       def self.test_callback_destroy_notify callback, user_data, notify
         _v1 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"Regress\", \"TestCallbackUserData\", callback
         DummyLib::CALLBACKS << _v1
-        _v2 = GirFFI::InPointer.from :void, user_data
+        _v2 = GirFFI::InPointer.from(:void, user_data)
         _v3 = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"GLib\", \"DestroyNotify\", notify
         DummyLib::CALLBACKS << _v3
         _v4 = DummyLib.regress_test_callback_destroy_notify _v1, _v2, _v3
@@ -74,7 +74,7 @@ describe GirFFI::Builder::Function do
 
     expected = <<-CODE
       def self.new_from_file x
-        _v1 = GirFFI::InPointer.from :utf8, x
+        _v1 = GirFFI::InPointer.from(:utf8, x)
         _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
         _v3 = DummyLib.regress_test_obj_new_from_file _v1, _v2
         GirFFI::ArgHelper.check_error(_v2)
@@ -93,7 +93,7 @@ describe GirFFI::Builder::Function do
 
     expected = <<-CODE
       def self.gvalue_in value
-        _v1 = ::GObject::Value.from value
+        _v1 = ::GObject::Value.from(value)
         DummyLib.gi_marshalling_tests_gvalue_in _v1
         
       end

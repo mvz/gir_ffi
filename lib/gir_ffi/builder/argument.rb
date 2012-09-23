@@ -32,16 +32,16 @@ module GirFFI::Builder
                 when :callback
                   return CallbackInArgument.new var_gen, name, type, libmodule
                 else
-                  RegularInArgument
+                  RegularArgument
                 end
               when :array
                 if type.array_type == :c
                   CArrayInArgument
                 else
-                  RegularInArgument
+                  RegularArgument
                 end
               else
-                RegularInArgument
+                RegularArgument
               end
       return klass.new var_gen, name, type, direction
     end
@@ -87,12 +87,35 @@ module GirFFI::Builder
   #
   # Implements argument processing for void pointer arguments with
   # direction :in.
-  class RegularInArgument < Argument::InBase
+  #
+  # Implements argument processing for interface arguments with direction
+  # :inout (structs, objects, etc.).
+  class RegularArgument < Argument::Base
+    def initialize var_gen, name, typeinfo, direction
+      super var_gen, name, typeinfo, direction
+      @direction = direction
+      @inarg = @name
+    end
+
+    def retname
+      if @direction == :inout
+        @retname ||= @var_gen.new_var
+      end
+    end
+
     def pre
       pr = []
       pr << array_length_assignment if is_array_length_parameter?
       pr << set_function_call_argument
       pr
+    end
+
+    def post
+      if @direction == :inout
+        [ "#{retname} = #{argument_class_name}.wrap(#{callarg}.to_value)" ]
+      else
+        []
+      end
     end
 
     private
@@ -124,7 +147,12 @@ module GirFFI::Builder
     end
 
     def parameter_conversion
-      "#{argument_class_name}.from #{parameter_conversion_arguments}"
+      base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
+      if @direction == :inout
+        "GirFFI::InOutPointer.from :pointer, #{base}"
+      else
+        base
+      end
     end
 
     def parameter_conversion_arguments
@@ -265,7 +293,7 @@ module GirFFI::Builder
                 when :enum, :flags
                   EnumInOutArgument
                 else
-                  InterfaceInOutArgument
+                  RegularArgument
                 end
               when :array
                 if type.zero_terminated?
@@ -305,18 +333,6 @@ module GirFFI::Builder
 
     def post
       [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
-    end
-  end
-
-  # Implements argument processing for interface arguments with direction
-  # :inout (structs, objects, etc.).
-  class InterfaceInOutArgument < Argument::InOutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{argument_class_name}.from(#{@name}).to_ptr" ]
-    end
-
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap(#{callarg}.to_value)" ]
     end
   end
 
