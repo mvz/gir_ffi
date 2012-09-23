@@ -50,7 +50,6 @@ describe GirFFI::Builder::Argument::Base do
         assert_equal "[:pointer, :foo]", builder.subtype_tag_or_class_name
       end
     end
-
   end
 end
 

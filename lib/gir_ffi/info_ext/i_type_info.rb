@@ -39,6 +39,38 @@ module GirFFI
         interface.full_type_name
       end
 
+      def type_specification
+        tag = self.tag
+        if tag == :array
+          "[#{flattened_array_type.inspect}, #{element_type.inspect}]"
+        else
+          tag.inspect
+        end
+      end
+
+      def flattened_tag
+        case tag
+        when :interface
+          interface_type
+        when :array
+          flattened_array_type
+        else
+          tag
+        end
+      end
+
+      def interface_type
+        interface.info_type
+      end
+
+      def flattened_array_type
+        if zero_terminated?
+          :strv
+        else
+          array_type
+        end
+      end
+
       private
 
       def subtype_tag index

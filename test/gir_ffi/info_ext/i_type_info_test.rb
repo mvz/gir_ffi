@@ -67,4 +67,25 @@ describe GirFFI::InfoExt::ITypeInfo do
       assert_equal :gpointer, type_info.element_type
     end
   end
+
+  describe "#type_specification" do
+    describe "for a simple type" do
+      it "returns the type tag" do
+	type_info = testclass.new
+	mock(type_info).tag { :uint32 }
+	type_info.type_specification.must_equal ":uint32"
+      end
+    end
+
+    describe "for a zero-terminated array" do
+      it "returns the pair [:strv, element_type]" do
+	type_info = testclass.new
+	mock(type_info).tag { :array }
+	stub(type_info).element_type { :utf8 }
+	stub(type_info).zero_terminated? { true }
+	stub(type_info).array_type { :c }
+	type_info.type_specification.must_equal "[:strv, :utf8]"
+      end
+    end
+  end
 end
