@@ -35,6 +35,29 @@ module GirFFI
           type_info.tag
         end
 
+        def specialized_type_tag
+          case type_tag
+          when :interface
+            interface_type
+          when :array
+            array_type
+          else
+            type_tag
+          end
+        end
+
+        def interface_type
+          type_info.interface.info_type
+        end
+
+        def array_type
+          if type_info.zero_terminated?
+            :strv
+          else
+            type_info.array_type
+          end
+        end
+
         TAG_TO_WRAPPER_CLASS_MAP = {
           :glist => 'GLib::List',
           :gslist => 'GLib::SList',

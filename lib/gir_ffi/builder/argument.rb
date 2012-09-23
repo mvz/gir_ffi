@@ -90,27 +90,51 @@ module GirFFI::Builder
   class RegularInArgument < Argument::InBase
     def pre
       pr = []
-      assign_array_length(pr)
-      set_function_call_argument(pr)
+      pr << array_length_assignment if is_array_length_parameter?
+      pr << set_function_call_argument
       pr
     end
 
-    def assign_array_length(pr)
-      if @array_arg
-        arrname = @array_arg.name
-        pr << "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
+    private
+
+    def is_array_length_parameter?
+      @array_arg
+    end
+
+    def array_length_assignment
+      arrname = @array_arg.name
+      "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
+    end
+
+    def set_function_call_argument
+      if needs_ingoing_parameter_conversion?
+        "#{callarg} = #{parameter_conversion}"
+      else
+        "#{callarg} = #{@name}"
       end
     end
 
-    def set_function_call_argument(pr)
-      if type_tag == :interface && [:object, :struct].include?(type_info.interface.info_type)
-        pr << "#{callarg} = #{argument_class_name}.from #{@name}"
-      elsif [:utf8, :void].include? type_tag
-        pr << "#{callarg} = #{argument_class_name}.from #{type_tag.inspect}, #{@name}"
-      elsif [:glist, :gslist, :ghash].include? type_tag
-        pr << "#{callarg} = #{argument_class_name}.from #{elm_t}, #{@name}"
+    def needs_ingoing_parameter_conversion?
+      case specialized_type_tag
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash
+        true
       else
-        pr << "#{callarg} = #{@name}"
+        false
+      end
+    end
+
+    def parameter_conversion
+      "#{argument_class_name}.from #{parameter_conversion_arguments}"
+    end
+
+    def parameter_conversion_arguments
+      case type_tag
+      when :utf8, :void
+        "#{type_tag.inspect}, #{@name}"
+      when :glist, :gslist, :ghash
+        "#{elm_t}, #{@name}"
+      else
+        "#{@name}"
       end
     end
   end
