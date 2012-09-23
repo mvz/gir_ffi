@@ -26,19 +26,16 @@ describe GirFFI::Builder::Argument::Base do
       end
     end
 
-    describe "for an array of interface class Foo::Bar" do
-      it "returns the string '::Foo::Bar'" do
-        mock(interface = Object.new).safe_namespace { "Foo" }
-        mock(interface).name { "Bar" }
-
+    describe "for an array of an interface class" do
+      it "returns the interface's full class name" do
         mock(subtype = Object.new).tag { :interface }
-        mock(subtype).interface { interface }
+        mock(subtype).interface_type_name { "-full-type-name-" }
         mock(subtype).pointer? { false }
 
         mock(info = Object.new).param_type(0) { subtype }
 
         builder = GirFFI::Builder::Argument::Base.new nil, 'bar', info, :direction
-        assert_equal "::Foo::Bar", builder.subtype_tag_or_class_name
+        assert_equal "-full-type-name-", builder.subtype_tag_or_class_name
       end
     end
 

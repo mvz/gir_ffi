@@ -1,3 +1,5 @@
+require 'gir_ffi/info_ext/i_registered_type_info'
+
 module GirFFI
   module Builder
     module Argument
@@ -70,9 +72,7 @@ module GirFFI
         def argument_class_name
           case (tag = type_tag)
           when :interface
-            iface = type_info.interface
-            # FIXME: Extract to ITypeInfo.
-            "::#{iface.safe_namespace}::#{iface.name}"
+            type_info.interface_type_name
           when :array
             if type_info.zero_terminated?
               # TODO: Move under array_type :c
@@ -96,8 +96,7 @@ module GirFFI
           type = type_info.param_type(index)
           tag = type.tag
           base = if tag == :interface
-                   iface = type.interface
-                   "::#{iface.safe_namespace}::#{iface.name}"
+                   type.interface_type_name
                  else
                    tag.inspect
                  end

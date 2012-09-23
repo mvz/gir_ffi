@@ -21,19 +21,6 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe "#subtype_tag" do
-    it "returns :gpointer if the param_type is a pointer with tag :void" do
-      type_info = testclass.new
-
-      stub(subtype0 = Object.new).tag { :void }
-      stub(subtype0).pointer? { true }
-
-      mock(type_info).param_type(0) { subtype0 }
-
-      assert_equal :gpointer, type_info.subtype_tag(0)
-    end
-  end
-
   describe "#element_type" do
     it "returns the element type for lists" do
       type_info = testclass.new
@@ -66,6 +53,18 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       result = type_info.element_type
       result.must_be_nil
+    end
+
+    it "returns :gpointer if the element type is a pointer with tag :void" do
+      type_info = testclass.new
+
+      stub(elm_type = Object.new).tag { :void }
+      stub(elm_type).pointer? { true }
+
+      mock(type_info).tag {:glist}
+      mock(type_info).param_type(0) { elm_type }
+
+      assert_equal :gpointer, type_info.element_type
     end
   end
 end

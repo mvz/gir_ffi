@@ -24,6 +24,23 @@ module GirFFI
         end
       end
 
+      def element_type
+        case tag
+        when :glist, :gslist, :array
+          subtype_tag 0
+        when :ghash
+          [subtype_tag(0), subtype_tag(1)]
+        else
+          nil
+        end
+      end
+
+      def interface_type_name
+        interface.full_type_name
+      end
+
+      private
+
       def subtype_tag index
         st = param_type(index)
         tag = st.tag
@@ -36,17 +53,6 @@ module GirFFI
           return :void
         else
           return tag
-        end
-      end
-
-      def element_type
-        case tag
-        when :glist, :gslist, :array
-          subtype_tag 0
-        when :ghash
-          [subtype_tag(0), subtype_tag(1)]
-        else
-          nil
         end
       end
     end
