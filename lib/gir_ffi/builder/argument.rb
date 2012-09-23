@@ -112,7 +112,7 @@ module GirFFI::Builder
 
     def post
       if @direction == :inout
-        [ "#{retname} = #{argument_class_name}.wrap(#{callarg}.to_value)" ]
+        [ "#{retname} = #{argument_class_name}.wrap(#{output_conversion_arguments})" ]
       else
         []
       end
@@ -139,7 +139,7 @@ module GirFFI::Builder
 
     def needs_ingoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array
         true
       else
         false
@@ -155,14 +155,22 @@ module GirFFI::Builder
       end
     end
 
+    def output_conversion_arguments
+      conversion_arguments "#{callarg}.to_value"
+    end
+
     def parameter_conversion_arguments
+      conversion_arguments @name
+    end
+
+    def conversion_arguments name
       case type_tag
       when :utf8, :void
-        "#{type_tag.inspect}, #{@name}"
-      when :glist, :gslist, :ghash
-        "#{elm_t}, #{@name}"
+        "#{type_tag.inspect}, #{name}"
+      when :glist, :gslist, :ghash, :array
+        "#{elm_t}, #{name}"
       else
-        "#{@name}"
+        "#{name}"
       end
     end
   end
@@ -303,17 +311,11 @@ module GirFFI::Builder
                   when :c
                     CArrayInOutArgument
                   when :array
-                    it = Argument::InOutBase.new var_gen, arginfo.name, type, direction
-                    it.extend WithTypedContainerInOutPreMethod
-                    it.extend WithTypedContainerPostMethod
-                    return it
+                    RegularArgument
                   end
                 end
               when :glist, :gslist, :ghash
-                it = Argument::InOutBase.new var_gen, arginfo.name, type, direction
-                it.extend WithTypedContainerInOutPreMethod
-                it.extend WithTypedContainerPostMethod
-                return it
+                RegularArgument
               else
                 RegularInOutArgument
               end
@@ -359,12 +361,6 @@ module GirFFI::Builder
       size = array_size
       pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
       pst
-    end
-  end
-
-  module WithTypedContainerInOutPreMethod
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from :pointer, #{argument_class_name}.from(#{elm_t}, #{@name})" ]
     end
   end
 
