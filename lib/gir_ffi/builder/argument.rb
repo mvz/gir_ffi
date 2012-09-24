@@ -70,7 +70,7 @@ module GirFFI::Builder
       if size > -1
         pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
       end
-      pr << "#{callarg} = GirFFI::InPointer.from_array #{elm_t}, #{@name}"
+      pr << "#{callarg} = GirFFI::InPointer.from #{type_specification}, #{@name}"
       pr
     end
   end

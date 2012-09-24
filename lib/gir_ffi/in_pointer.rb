@@ -18,6 +18,10 @@ module GirFFI
     def self.from type, val
       return nil if val.nil?
       case type
+      when Array
+        arr_t, sub_t = *type
+        # TODO: Take array type into account (zero-terminated or not)
+        self.from_array sub_t, val
       when :utf8, :filename
         from_utf8 val
       when :gint32, :gint8

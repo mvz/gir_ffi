@@ -42,7 +42,7 @@ module GirFFI
         end
 
         def type_specification
-          "[#{type_info.tag.inspect}, #{elm_t}]"
+          type_info.type_specification
         end
 
         TAG_TO_WRAPPER_CLASS_MAP = {

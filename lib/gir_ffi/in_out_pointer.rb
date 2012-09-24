@@ -35,9 +35,9 @@ module GirFFI
 
     def self.from type, value, sub_type=nil
       if Array === type
-        base, sub = *type
-        raise "Kaboom" unless base == :array
-        return self.from_array sub, value
+        arr_t, sub_t = *type
+        # TODO: Take array type into account (zero-terminated or not)
+        return self.from_array sub_t, value
       end
       value = adjust_value_in type, value
       ffi_type = TypeMap.map_basic_type_or_string type
