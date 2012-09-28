@@ -65,7 +65,13 @@ module GirFFI
 
       def flattened_array_type
         if zero_terminated?
-          :strv
+          if element_type == :utf8
+            :strv
+          else
+            # TODO: Check that array_type == :c
+            # TODO: Perhaps distinguish :c from zero-terminated :c
+            :c
+          end
         else
           array_type
         end

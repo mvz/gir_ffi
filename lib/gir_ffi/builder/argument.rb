@@ -34,12 +34,6 @@ module GirFFI::Builder
                 else
                   RegularArgument
                 end
-              when :array
-                if type.array_type == :c
-                  CArrayInArgument
-                else
-                  RegularArgument
-                end
               else
                 RegularArgument
               end
@@ -59,19 +53,6 @@ module GirFFI::Builder
       iface = type_info.interface
       [ "#{callarg} = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
         "#{@libmodule}::CALLBACKS << #{callarg}" ]
-    end
-  end
-
-  # Implements argument processing for array arguments with direction :in.
-  class CArrayInArgument < Argument::InBase
-    def pre
-      pr = []
-      size = type_info.array_fixed_size
-      if size > -1
-        pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
-      end
-      pr << "#{callarg} = GirFFI::InPointer.from #{type_specification}, #{@name}"
-      pr
     end
   end
 
@@ -105,6 +86,12 @@ module GirFFI::Builder
 
     def pre
       pr = []
+      if type_tag == :array
+        size = type_info.array_fixed_size
+        if size > -1
+          pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
+        end
+      end
       pr << array_length_assignment if is_array_length_parameter?
       pr << set_function_call_argument
       pr
@@ -144,7 +131,7 @@ module GirFFI::Builder
 
     def needs_ingoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :strv
         true
       else
         false
@@ -169,11 +156,15 @@ module GirFFI::Builder
     end
 
     def conversion_arguments name
-      case type_tag
+      case specialized_type_tag
       when :utf8, :void
         "#{self_t}, #{name}"
       when :glist, :gslist, :ghash, :array
         "#{elm_t}, #{name}"
+      when :c
+        "#{type_specification}, #{name}"
+      when :strv
+        "#{name}"
       else
         "#{name}"
       end

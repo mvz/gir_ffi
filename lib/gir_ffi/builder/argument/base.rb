@@ -59,17 +59,22 @@ module GirFFI
           when :interface
             type_info.interface_type_name
           when :array
-            if type_info.zero_terminated?
-              # TODO: Move under array_type :c
-              'GLib::Strv'
-            else
-              case type_info.array_type
-              when :byte_array
-                'GLib::ByteArray'
-              when :array
-                'GLib::Array'
+            case type_info.array_type
+            when :byte_array
+              'GLib::ByteArray'
+            when :array
+              'GLib::Array'
+            when :ptr_array
+              'GLib::PtrArray'
+            else # :c
+              if type_info.zero_terminated?
+                if type_info.element_type == :utf8
+                  'GLib::Strv'
+                else
+                  'GirFFI::InPointer'
+                end
               else
-                'GLib::PtrArray'
+                'GirFFI::InPointer'
               end
             end
           else

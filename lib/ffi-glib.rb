@@ -9,6 +9,7 @@ require 'ffi-glib/hash_table'
 require 'ffi-glib/byte_array'
 require 'ffi-glib/array'
 require 'ffi-glib/ptr_array'
+require 'ffi-glib/strv'
 
 module GLib
   # @deprecated Compatibility function. Remove in version 0.5.0.
