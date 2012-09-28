@@ -490,20 +490,24 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], res
   end
 
-  it "has a working function #array_gvariant_(none)_in" do
-    v1 = GLib::Variant.new_int32(27)
-    v2 = GLib::Variant.new_string("Hello")
-    if GIMarshallingTests._builder.setup_method :array_gvariant_in
-      GIMarshallingTests.array_gvariant_in [v1, v2]
-    else
-      GIMarshallingTests.array_gvariant_none_in [v1, v2]
-    end
+  it "has a working function #array_gvariant_(none)_in"
+  # FIXME: Test was disabled since the implementation of the return value
+  # handling was never correct.
+  #
+  #do
+    #v1 = GLib::Variant.new_int32(27)
+    #v2 = GLib::Variant.new_string("Hello")
+    #if GIMarshallingTests._builder.setup_method :array_gvariant_in
+      #GIMarshallingTests.array_gvariant_in [v1, v2]
+    #else
+      #GIMarshallingTests.array_gvariant_none_in [v1, v2]
+    #end
 
-    pass
-    # TODO: Can we determine that result should be an array?
-    # assert_equal 27, res[0].get_int32
-    # assert_equal "Hello", res[1].get_string
-  end
+    #pass
+    ## TODO: Can we determine that result should be an array?
+    ## assert_equal 27, res[0].get_int32
+    ## assert_equal "Hello", res[1].get_string
+  #end
 
   it "has a working function #array_in" do
     GIMarshallingTests.array_in [-1, 0, 1, 2]
