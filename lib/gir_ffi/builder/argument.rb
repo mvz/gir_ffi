@@ -71,11 +71,19 @@ module GirFFI::Builder
   #
   # Implements argument processing for interface arguments with direction
   # :inout (structs, objects, etc.).
+  #
+  # Implements argument processing for arguments with direction
+  # :out that are neither arrays nor 'interfaces'.
   class RegularArgument < Argument::Base
     def initialize var_gen, name, typeinfo, direction
       super var_gen, name, typeinfo, direction
       @direction = direction
-      @inarg = @name
+    end
+
+    def inarg
+      unless @direction == :out
+        @array_arg.nil? ? @name : nil
+      end
     end
 
     def retname
@@ -86,20 +94,25 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      if type_tag == :array
-        size = type_info.array_fixed_size
-        if size > -1
-          pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
+      unless @direction == :out
+        if type_tag == :array
+          size = type_info.array_fixed_size
+          if size > -1
+            pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
+          end
         end
+        pr << array_length_assignment if is_array_length_parameter?
       end
-      pr << array_length_assignment if is_array_length_parameter?
       pr << set_function_call_argument
       pr
     end
 
     def post
-      if has_output_value?
+      case @direction
+      when :inout
         [ "#{retname} = #{argument_class_name}.wrap(#{output_conversion_arguments})" ]
+      when :out
+        [ "#{retname} = #{callarg}.to_value"]
       else
         []
       end
@@ -112,7 +125,7 @@ module GirFFI::Builder
     end
 
     def has_output_value?
-      @direction == :inout
+      @direction == :inout || @direction == :out
     end
 
     def array_length_assignment
@@ -121,12 +134,25 @@ module GirFFI::Builder
     end
 
     def set_function_call_argument
-      value = if needs_ingoing_parameter_conversion?
-                parameter_conversion
+      value = if @direction == :out
+                "GirFFI::InOutPointer.for #{type_tag.inspect}"
               else
-                @name
+                if needs_ingoing_parameter_conversion?
+                  parameter_conversion
+                else
+                  @name
+                end
               end
       "#{callarg} = #{value}"
+    end
+
+    def needs_outgoing_parameter_conversion?
+      case specialized_type_tag
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :strv
+        true
+      else
+        false
+      end
     end
 
     def needs_ingoing_parameter_conversion?
@@ -210,21 +236,9 @@ module GirFFI::Builder
                 it.extend WithTypedContainerPostMethod
                 return it
               else
-                RegularOutArgument
+                RegularArgument
               end
       klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for arguments with direction
-  # :out that are neither arrays nor 'interfaces'.
-  class RegularOutArgument < Argument::OutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for #{type_tag.inspect}" ]
-    end
-
-    def post
-      [ "#{retname} = #{callarg}.to_value" ]
     end
   end
 
