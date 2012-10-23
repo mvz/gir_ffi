@@ -81,7 +81,7 @@ module GirFFI::Builder
     end
 
     def inarg
-      unless @direction == :out
+      if has_input_value?
         @array_arg.nil? ? @name : nil
       end
     end
@@ -94,13 +94,8 @@ module GirFFI::Builder
 
     def pre
       pr = []
-      unless @direction == :out
-        if type_tag == :array
-          size = type_info.array_fixed_size
-          if size > -1
-            pr << "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
-          end
-        end
+      if has_input_value?
+        pr << fixed_array_size_check if needs_size_check?
         pr << array_length_assignment if is_array_length_parameter?
       end
       pr << set_function_call_argument
@@ -108,14 +103,17 @@ module GirFFI::Builder
     end
 
     def post
-      case @direction
-      when :inout
-        [ "#{retname} = #{argument_class_name}.wrap(#{output_conversion_arguments})" ]
-      when :out
-        [ "#{retname} = #{callarg}.to_value"]
-      else
-        []
+      result = []
+      if has_output_value?
+        value = case @direction
+                when :inout
+                  "#{argument_class_name}.wrap(#{output_conversion_arguments})"
+                when :out
+                  "#{callarg}.to_value"
+                end
+        result << "#{retname} = #{value}"
       end
+      result
     end
 
     private
@@ -124,8 +122,26 @@ module GirFFI::Builder
       @array_arg
     end
 
+    def needs_size_check?
+      if type_tag == :array
+        size = type_info.array_fixed_size
+        if size > -1
+          true
+        end
+      end
+    end
+
+    def fixed_array_size_check
+      size = type_info.array_fixed_size
+      "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
+    end
+
     def has_output_value?
       @direction == :inout || @direction == :out
+    end
+
+    def has_input_value?
+      @direction == :inout || @direction == :in
     end
 
     def array_length_assignment
