@@ -19,7 +19,7 @@ libgimarshallingtests_la_LDFLAGS = -module -avoid-version
 # g-i doesn't ship these as shared libraries anymore; we build them here
 Regress-1.0.gir: libregress.la Makefile
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
-	--namespace=Regress --nsversion=1.0 \
+	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
 	--library=libregress.la \
 	--libtool="$(top_builddir)/libtool" \
