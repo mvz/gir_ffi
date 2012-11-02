@@ -1,3 +1,9 @@
+== 0.4.3 / 2012-11-02
+
+* Remove gobject-introspection version check
+* Make tests pass with gobject-introspection 1.34
+* Ongoing refactoring
+
 == 0.4.2 / 2012-09-22
 
 * Make objects and interfaces wrap poiners in the class that matches
