@@ -19,7 +19,7 @@ module GirFFI
       return nil if val.nil?
       case type
       when Array
-        arr_t, sub_t = *type
+        _, sub_t = *type
         # TODO: Take array type into account (zero-terminated or not)
         self.from_array sub_t, val
       when :utf8, :filename

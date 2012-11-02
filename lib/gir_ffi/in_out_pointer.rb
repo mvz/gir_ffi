@@ -35,7 +35,7 @@ module GirFFI
 
     def self.from type, value, sub_type=nil
       if Array === type
-        arr_t, sub_t = *type
+        _, sub_t = *type
         # TODO: Take array type into account (zero-terminated or not)
         return self.from_array sub_t, value
       end
