@@ -3,19 +3,7 @@ require 'ffi'
 module GObjectIntrospection
   module Lib
     extend FFI::Library
-    begin
-      ffi_lib "girepository-1.0.so.1"
-    rescue LoadError
-      begin
-        ffi_lib "girepository-1.0.so.0"
-        warn "This old version of gobject-introspection is not supported by GirFFI."
-        warn "Please upgrade to at least version 0.10.0."
-      rescue LoadError
-        ffi_lib "girepository-1.0"
-        warn "This platform and/or version of gobject-introspection are not supported by GirFFI."
-        warn "Please file bugs for any errors found."
-      end
-    end
+    ffi_lib "girepository-1.0"
 
     # IRepository
     enum :IRepositoryLoadFlags, [:LAZY, (1<<0)]
