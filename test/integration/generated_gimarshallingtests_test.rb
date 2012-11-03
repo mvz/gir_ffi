@@ -370,54 +370,8 @@ describe "GIMarshallingTests" do
         assert_raises(NoMethodError) { @so.parent_instance = nil }
       end
 
-      it "has a working inherited virtual method #method_int8_in"
-      it "has a working inherited virtual method #method_int8_out"
 
-      it "has a working inherited virtual method #method_with_default_implementation" do
-        @so.method_with_default_implementation 104
-        assert_equal 104, @so.int
-      end
 
-      it "has a working inherited method #int8_in"
-      it "has a working inherited method #int8_out"
-
-      it "has a working inherited method #method" do
-        @so.set_property("int", 42)
-        @so.method
-        pass
-      end
-
-      it "has a working inherited method #method_array_in" do
-        @so.method_array_in [-1, 0, 1, 2]
-        pass
-      end
-
-      it "has a working inherited method #method_array_inout" do
-        res = @so.method_array_inout [-1, 0, 1, 2]
-        assert_equal [-2, -1, 0, 1, 2], res
-      end
-
-      it "has a working inherited method #method_array_out" do
-        res = @so.method_array_out
-        assert_equal [-1, 0, 1, 2], res
-      end
-
-      it "has a working inherited method #method_array_return" do
-        res = @so.method_array_return
-        assert_equal [-1, 0, 1, 2], res
-      end
-
-      it "has a working inherited method #none_in" do
-        @so.set_property("int", 42)
-        @so.none_in
-        pass
-      end
-
-      it "has a working inherited method #overridden_method" do
-        @so.set_property("int", 0)
-        @so.overridden_method
-        pass
-      end
     end
   end
 
