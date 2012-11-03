@@ -182,11 +182,6 @@ describe "GIMarshallingTests" do
       pass
     end
 
-    it "has a working function #static_method" do
-      GIMarshallingTests::Object.static_method
-      pass
-    end
-
     describe "an instance" do
       before do
         @obj = GIMarshallingTests::Object.new 42
