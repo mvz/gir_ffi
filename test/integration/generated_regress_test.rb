@@ -9,13 +9,46 @@ def get_field_value obj, field
 end
 
 # Tests generated methods and functions in the Regress namespace.
-describe Regress, "The generated Regress module" do
+describe Regress  do
+  describe Regress::ATestError do
+    it "has the member :code0" do
+      skip
+    end
+    it "has the member :code1" do
+      skip
+    end
+    it "has the member :code2" do
+      skip
+    end
+  end
+
   it "has the constant DOUBLE_CONSTANT" do
     assert_equal 44.22, Regress::DOUBLE_CONSTANT
   end
 
+  it "has the constant GUINT64_CONSTANT" do
+    skip
+  end
+  it "has the constant GUINT64_CONSTANTA" do
+    skip
+  end
+
+  it "has the constant G_GINT64_CONSTANT" do
+    skip
+  end
+
   it "has the constant INT_CONSTANT" do
     assert_equal 4422, Regress::INT_CONSTANT
+  end
+
+  it "has the constant LONG_STRING_CONSTANT" do
+    skip
+  end
+
+  describe Regress::LikeGnomeKeyringPasswordSchema do
+    it "must be tested" do
+      skip
+    end
   end
 
   it "has the constant Mixed_Case_Constant" do
@@ -24,6 +57,24 @@ describe Regress, "The generated Regress module" do
 
   it "has the constant STRING_CONSTANT" do
     assert_equal "Some String", Regress::STRING_CONSTANT
+  end
+
+  describe Regress::TestABCError do
+    it "has the member :code1" do
+      skip
+    end
+
+    it "has the member :code2" do
+      skip
+    end
+
+    it "has the member :code3" do
+      skip
+    end
+
+    it "has a working function #quark" do
+      skip
+    end
   end
 
   describe Regress::TestBoxed do
@@ -54,50 +105,113 @@ describe Regress, "The generated Regress module" do
       assert Regress::TestBoxed.get_gtype > 0
     end
 
-    describe "an instance" do
-      setup do
-        @tb = Regress::TestBoxed.new_alternative_constructor1 123
-      end
+    let(:instance) { Regress::TestBoxed.new_alternative_constructor1 123 }
 
-      it "has a working equals method" do
-        tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
-        assert_equal true, @tb.equals(tb2)
-      end
+    it "has a working method #copy" do
+      tb2 = instance.copy
+      assert_instance_of Regress::TestBoxed, tb2
+      assert_equal 123, tb2.some_int8
+      instance.some_int8 = 89
+      assert_equal 123, tb2.some_int8
+    end
 
-      describe "its copy method" do
-        setup do
-          @tb2 = @tb.copy
-        end
-
-        it "returns an instance of TestBoxed" do
-          assert_instance_of Regress::TestBoxed, @tb2
-        end
-
-        it "copies fields" do
-          assert_equal 123, @tb2.some_int8
-        end
-
-        it "creates a true copy" do
-          @tb.some_int8 = 89
-          assert_equal 123, @tb2.some_int8
-        end
-      end
+    it "has a working method #equals" do
+      tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
+      assert_equal true, instance.equals(tb2)
     end
   end
 
-  describe "the Regress::TestEnum type" do
-    it "is of type FFI::Enum" do
-      assert_instance_of FFI::Enum, Regress::TestEnum
+  describe Regress::TestBoxedB do
+    it "creates an instance using #new" do
+      skip
+    end
+    it "has a working method #copy" do
+      skip
+    end
+  end
+  describe Regress::TestBoxedC do
+    it "creates an instance using #new" do
+      skip
+    end
+  end
+  describe Regress::TestDEFError do
+    it "has the member :code0" do
+      skip
+    end
+    it "has the member :code1" do
+      skip
+    end
+    it "has the member :code2" do
+      skip
+    end
+  end
+  describe Regress::TestEnum do
+    it "has the member :value1" do
+      skip
+    end
+    it "has the member :value2" do
+      skip
+    end
+    it "has the member :value3" do
+      skip
+    end
+    it "has the member :value4" do
+      skip
+    end
+    it "has a working function #param" do
+      skip
+    end
+  end
+  describe Regress::TestEnumNoGEnum do
+    it "has the member :evalue1" do
+      skip
+    end
+    it "has the member :evalue2" do
+      skip
+    end
+    it "has the member :evalue3" do
+      skip
+    end
+  end
+  describe Regress::TestEnumUnsigned do
+    it "has the member :value1" do
+      skip
+    end
+    it "has the member :value2" do
+      skip
+    end
+  end
+  describe Regress::TestError do
+    it "has the member :code1" do
+      skip
+    end
+    it "has the member :code2" do
+      skip
+    end
+    it "has the member :code3" do
+      skip
+    end
+    it "has a working function #quark" do
+      skip
     end
   end
 
-  it "has the bitfield TestFlags" do
-    assert_equal 1, Regress::TestFlags[:flag1]
-    assert_equal 2, Regress::TestFlags[:flag2]
-    assert_equal 4, Regress::TestFlags[:flag3]
+  describe Regress::TestFlags do
+    it "has the member :flag1" do
+      assert_equal 1, Regress::TestFlags[:flag1]
+    end
+    it "has the member :flag2" do
+      assert_equal 2, Regress::TestFlags[:flag2]
+    end
+    it "has the member :flag3" do
+      assert_equal 4, Regress::TestFlags[:flag3]
+    end
   end
 
   describe Regress::TestFloating do
+    it "creates an instance using #new" do
+      skip
+    end
     describe "an instance" do
       setup do
         @o = Regress::TestFloating.new
@@ -113,19 +227,24 @@ describe Regress, "The generated Regress module" do
     end
   end
 
-  describe "TestFundamentalObject" do
-    it "must exist" do
-      Regress::TestFundamentalObject
-    end
-
+  describe Regress::TestFundamentalObject do
     it "does not have GObject::Object as an ancestor" do
       refute_includes Regress::TestFundamentalObject.ancestors,
         GObject::Object
     end
     # TODO: Test more, if possible (e.g., cannot be instantiated).
+    it "has a working method #ref" do
+      skip
+    end
+    it "has a working method #unref" do
+      skip
+    end
   end
 
-  describe "TestFundamentalSubObject" do
+  describe Regress::TestFundamentalSubObject do
+    it "creates an instance using #new" do
+      skip
+    end
     before do
       @so = Regress::TestFundamentalSubObject.new "foo"
     end
@@ -169,11 +288,12 @@ describe Regress, "The generated Regress module" do
   end
 
   describe Regress::TestObj do
-    it "creates an instance using #new_from_file" do
-      o = Regress::TestObj.new_from_file("foo")
-      assert_instance_of Regress::TestObj, o
+    it "creates an instance using #constructor" do
+      skip
     end
-
+    it "creates an instance using #new" do
+      skip
+    end
     it "creates an instance using #new_callback" do
       a = 1
       o = Regress::TestObj.new_callback Proc.new { a = 2 }, nil, nil
@@ -181,219 +301,254 @@ describe Regress, "The generated Regress module" do
       a.must_equal 2
     end
 
-    it "has a working #static_method" do
+    it "creates an instance using #new_from_file" do
+      o = Regress::TestObj.new_from_file("foo")
+      assert_instance_of Regress::TestObj, o
+    end
+
+    it "has a working function #null_out" do
+      skip
+    end
+
+    it "has a working function #static_method" do
       rv = Regress::TestObj.static_method 623
       assert_equal 623.0, rv
     end
 
-    describe "#static_method_callback" do
-      it "works when called with a Proc" do
-        a = 1
-        Regress::TestObj.static_method_callback Proc.new { a = 2 }
-        assert_equal 2, a
-      end
+    it "has a working function #static_method_callback" do
+      a = 1
+      Regress::TestObj.static_method_callback Proc.new { a = 2 }
+      assert_equal 2, a
+    end
 
-      it "works when called with nil" do
-        assert_nothing_raised do
-          Regress::TestObj.static_method_callback nil
-        end
+    let(:instance) { Regress::TestObj.new_from_file("foo") }
+
+    describe "its gtype" do
+      it "can be found through get_gtype and GObject.type_from_instance" do
+        gtype = Regress::TestObj.get_gtype
+        r = GObject.type_from_instance instance
+        assert_equal gtype, r
       end
     end
 
-    describe "an instance" do
-      setup do
-        @o = Regress::TestObj.new_from_file("foo")
-      end
-
-      describe "its gtype" do
-        it "can be found through get_gtype and GObject.type_from_instance" do
-          gtype = Regress::TestObj.get_gtype
-          r = GObject.type_from_instance @o
-          assert_equal gtype, r
-        end
-      end
-
-      describe "#get_property" do
-        it "gets the 'bare' property" do
-          obj = Regress::TestObj.new_from_file("bar")
-          @o.set_bare obj
-
-          obj2 = @o.get_property("bare")
-
-          assert_equal obj.to_ptr, obj2.to_ptr
-          assert_instance_of Regress::TestObj, obj2
-        end
-
-        it "gets the 'boxed' property" do
-          tb = Regress::TestBoxed.new_alternative_constructor1 75
-          @o.set_property "boxed", tb
-
-          tb2 = @o.get_property("boxed")
-
-          assert_instance_of Regress::TestBoxed, tb2
-          assert_equal 75, tb2.some_int8
-        end
-
-        it "gets the 'hash-table' property" do
-          ht = GLib::HashTable.new :utf8, :gint8
-          ht.insert "foo", 34
-          ht.insert "bar", 83
-
-          @o.set_property "hash-table", ht
-
-          ht2 = @o.get_property "hash-table"
-          assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
-        end
-
-        it "gets the 'float' property" do
-          @o.set_property "float", 3.14
-          assert_in_epsilon 3.14, @o.get_property("float")
-        end
-
-        it "gets the 'double' property" do
-          @o.set_property "double", 3.14
-          assert_in_epsilon 3.14, @o.get_property("double")
-        end
-
-        it "gets the 'int' property" do
-          @o.set_property "int", 42
-          assert_equal 42, @o.get_property("int")
-        end
-
-        it "gets the 'list' property" do
-          lst = GLib::List.new(:utf8).append("foo").append("bar")
-
-          @o.set_property "list", lst
-
-          lst2 = @o.get_property "list"
-          assert_equal ["foo", "bar"], lst2.to_a
-        end
-
-        it "gets the 'string' property" do
-          @o.set_property "string", "foobar"
-          assert_equal "foobar", @o.get_property("string")
-        end
-      end
-
-      describe "#set_property" do
-        it "sets the 'bare' property" do
-          obj = Regress::TestObj.new_from_file("bar")
-          @o.set_property "bare", obj
-          assert_equal obj.to_ptr, @o.bare.to_ptr
-        end
-
-        it "sets the 'boxed' property" do
-          tb = Regress::TestBoxed.new_alternative_constructor1 75
-          @o.set_property "boxed", tb
-          tb2 = @o.boxed
-          assert_equal 75, tb2.some_int8
-        end
-
-        it "sets the 'hash-table' property" do
-          @o.set_property("hash-table", {"foo" => 34, "bar" => 83})
-
-          ht = @o.hash_table
-          ht.key_type = :utf8
-          ht.value_type = :gint32
-
-          assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
-        end
-
-        it "sets the 'float' property" do
-          @o.set_property "float", 3.14
-          assert_in_epsilon 3.14, get_field_value(@o, :some_float)
-        end
-
-        it "sets the 'double' property" do
-          @o.set_property "double", 3.14
-          assert_in_epsilon 3.14, get_field_value(@o, :some_double)
-        end
-
-        it "sets the 'int' property" do
-          @o.set_property "int", 42
-          assert_equal 42, get_field_value(@o, :some_int8)
-        end
-
-        it "sets the 'list' property" do
-          @o.set_property "list", ["foo", "bar"]
-          assert_equal ["foo", "bar"],
-            GLib::List.wrap(:utf8, @o.list.to_ptr).to_a
-        end
-
-        it "sets the 'string' property" do
-          @o.set_property "string", "foobar"
-          assert_equal "foobar", @o.string
-        end
-      end
-
-      describe "its 'int' property" do
-        it "is set with #int=" do
-          @o.int = 41
-          assert_equal 41, @o.get_property("int")
-        end
-
-        it "is retrieved with #int" do
-          @o.set_property "int", 43
-          assert_equal 43, @o.int
-        end
-      end
-
-      it "has a reference count of 1" do
-        assert_equal 1, ref_count(@o)
-      end
-
-      it "does not float" do
-        assert !is_floating?(@o)
-      end
-
-      it "has a working (virtual) #matrix method" do
-        rv = @o.matrix "bar"
-        assert_equal 42, rv
-      end
-
-      it "has a working #set_bare method" do
+    describe "#get_property" do
+      it "gets the 'bare' property" do
         obj = Regress::TestObj.new_from_file("bar")
-        @o.set_bare obj
-        # TODO: What is the correct value to retrieve from the fields?
-        assert_equal obj.to_ptr, @o.bare.to_ptr
+        instance.set_bare obj
+
+        obj2 = instance.get_property("bare")
+
+        assert_equal obj.to_ptr, obj2.to_ptr
+        assert_instance_of Regress::TestObj, obj2
       end
 
-      it "has a working #instance_method method" do
-        rv = @o.instance_method
-        assert_equal(-1, rv)
+      it "gets the 'boxed' property" do
+        tb = Regress::TestBoxed.new_alternative_constructor1 75
+        instance.set_property "boxed", tb
+
+        tb2 = instance.get_property("boxed")
+
+        assert_instance_of Regress::TestBoxed, tb2
+        assert_equal 75, tb2.some_int8
       end
 
-      it "has a working #torture_signature_0 method" do
-        y, z, q = @o.torture_signature_0(-21, "hello", 13)
-        assert_equal [-21, 2 * -21, "hello".length + 13],
-          [y, z, q]
+      it "gets the 'hash-table' property" do
+        ht = GLib::HashTable.new :utf8, :gint8
+        ht.insert "foo", 34
+        ht.insert "bar", 83
+
+        instance.set_property "hash-table", ht
+
+        ht2 = instance.get_property "hash-table"
+        assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
       end
 
-      describe "its #torture_signature_1 method" do
-        it "works for m even" do
-          ret, y, z, q = @o.torture_signature_1(-21, "hello", 12)
-          assert_equal [true, -21, 2 * -21, "hello".length + 12],
-            [ret, y, z, q]
-        end
-
-        it "throws an exception for m odd" do
-          assert_raises RuntimeError do
-            @o.torture_signature_1(-21, "hello", 11)
-          end
-        end
+      it "gets the 'float' property" do
+        instance.set_property "float", 3.14
+        assert_in_epsilon 3.14, instance.get_property("float")
       end
 
-      it "has a working #instance_method_callback method" do
-        a = 1
-        @o.instance_method_callback Proc.new { a = 2 }
-        assert_equal 2, a
+      it "gets the 'double' property" do
+        instance.set_property "double", 3.14
+        assert_in_epsilon 3.14, instance.get_property("double")
       end
 
-      it "does not respond to #static_method" do
-        assert_raises(NoMethodError) { @o.static_method 1 }
+      it "gets the 'int' property" do
+        instance.set_property "int", 42
+        assert_equal 42, instance.get_property("int")
       end
-      # TODO: Test instance's fields and properies.
+
+      it "gets the 'list' property" do
+        lst = GLib::List.new(:utf8).append("foo").append("bar")
+
+        instance.set_property "list", lst
+
+        lst2 = instance.get_property "list"
+        assert_equal ["foo", "bar"], lst2.to_a
+      end
+
+      it "gets the 'string' property" do
+        instance.set_property "string", "foobar"
+        assert_equal "foobar", instance.get_property("string")
+      end
     end
+
+    describe "#set_property" do
+      it "sets the 'bare' property" do
+        obj = Regress::TestObj.new_from_file("bar")
+        instance.set_property "bare", obj
+        assert_equal obj.to_ptr, instance.bare.to_ptr
+      end
+
+      it "sets the 'boxed' property" do
+        tb = Regress::TestBoxed.new_alternative_constructor1 75
+        instance.set_property "boxed", tb
+        tb2 = instance.boxed
+        assert_equal 75, tb2.some_int8
+      end
+
+      it "sets the 'hash-table' property" do
+        instance.set_property("hash-table", {"foo" => 34, "bar" => 83})
+
+        ht = instance.hash_table
+        ht.key_type = :utf8
+        ht.value_type = :gint32
+
+        assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
+      end
+
+      it "sets the 'float' property" do
+        instance.set_property "float", 3.14
+        assert_in_epsilon 3.14, get_field_value(instance, :some_float)
+      end
+
+      it "sets the 'double' property" do
+        instance.set_property "double", 3.14
+        assert_in_epsilon 3.14, get_field_value(instance, :some_double)
+      end
+
+      it "sets the 'int' property" do
+        instance.set_property "int", 42
+        assert_equal 42, get_field_value(instance, :some_int8)
+      end
+
+      it "sets the 'list' property" do
+        instance.set_property "list", ["foo", "bar"]
+        assert_equal ["foo", "bar"],
+          GLib::List.wrap(:utf8, instance.list.to_ptr).to_a
+      end
+
+      it "sets the 'string' property" do
+        instance.set_property "string", "foobar"
+        assert_equal "foobar", instance.string
+      end
+    end
+
+    describe "its 'int' property" do
+      it "is set with #int=" do
+        instance.int = 41
+        assert_equal 41, instance.get_property("int")
+      end
+
+      it "is retrieved with #int" do
+        instance.set_property "int", 43
+        assert_equal 43, instance.int
+      end
+    end
+
+    it "has a reference count of 1" do
+      assert_equal 1, ref_count(instance)
+    end
+
+    it "does not float" do
+      assert !is_floating?(instance)
+    end
+
+    it "has a working method #matrix" do
+      rv = instance.matrix "bar"
+      assert_equal 42, rv
+    end
+
+    it "has a working method #do_matrix" do
+      skip
+    end
+    it "has a working method #emit_sig_with_foreign_struct" do
+      skip
+    end
+    it "has a working method #emit_sig_with_int64" do
+      skip
+    end
+    it "has a working method #emit_sig_with_obj" do
+      skip
+    end
+    it "has a working method #emit_sig_with_uint64" do
+      skip
+    end
+    it "has a working method #forced_method" do
+      skip
+    end
+    it "has a working method #instance_method" do
+      rv = instance.instance_method
+      assert_equal(-1, rv)
+    end
+
+    it "has a working method #instance_method_callback" do
+      a = 1
+      instance.instance_method_callback Proc.new { a = 2 }
+      assert_equal 2, a
+    end
+
+    it "has a working method #set_bare" do
+      obj = Regress::TestObj.new_from_file("bar")
+      instance.set_bare obj
+      # TODO: What is the correct value to retrieve from the fields?
+      assert_equal obj.to_ptr, instance.bare.to_ptr
+    end
+
+    it "has a working method #skip_inout_param" do
+      skip
+    end
+    it "has a working method #skip_out_param" do
+      skip
+    end
+    it "has a working method #skip_param" do
+      skip
+    end
+    it "has a working method #skip_return_val" do
+      skip
+    end
+    it "has a working method #skip_return_val_no_out" do
+      skip
+    end
+    it "has a working method #torture_signature_0" do
+      y, z, q = instance.torture_signature_0(-21, "hello", 13)
+      assert_equal [-21, 2 * -21, "hello".length + 13],
+        [y, z, q]
+    end
+
+    it "has a working method #torture_signature_1" do
+      # TODO: Merge with below
+      skip
+    end
+
+    describe "its #torture_signature_1" do
+      it "works for m even" do
+        ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
+        assert_equal [true, -21, 2 * -21, "hello".length + 12],
+          [ret, y, z, q]
+      end
+
+      it "throws an exception for m odd" do
+        assert_raises RuntimeError do
+          instance.torture_signature_1(-21, "hello", 11)
+        end
+      end
+    end
+
+    it "does not respond to #static_method" do
+      assert_raises(NoMethodError) { instance.static_method 1 }
+    end
+    # TODO: Test instance's fields and properies.
 
     describe "its 'test' signal" do
       it "properly passes its arguments" do
@@ -409,10 +564,44 @@ describe Regress, "The generated Regress module" do
     # TODO: Test other signals.
   end
 
+  describe Regress::TestOtherError do
+    it "has the member :code1" do
+      skip
+    end
+    it "has the member :code2" do
+      skip
+    end
+    it "has the member :code3" do
+      skip
+    end
+    it "has a working function #quark" do
+      skip
+    end
+  end
+  describe Regress::TestPrivateEnum do
+    it "has the member :public_enum_before" do
+      skip
+    end
+    it "has the member :public_enum_after" do
+      skip
+    end
+  end
+  describe Regress::TestPrivateStruct do
+  end
   describe Regress::TestSimpleBoxedA do
     it "creates an instance using #new" do
       obj = Regress::TestSimpleBoxedA.new
       assert_instance_of Regress::TestSimpleBoxedA, obj
+    end
+
+    it "has a working method #copy" do
+      skip
+    end
+    it "has a working method #equals" do
+      skip
+    end
+    it "has a working function #const_return" do
+      skip
     end
 
     describe "an instance" do
@@ -472,76 +661,98 @@ describe Regress, "The generated Regress module" do
     end
   end
 
+  describe Regress::TestSimpleBoxedB do
+    it "has a working method #copy" do
+      skip
+    end
+  end
+
   describe Regress::TestStructA do
-    describe "an instance" do
-      it "has a working clone method" do
-        a = Regress::TestStructA.new
-        a.some_int = 2556
-        a.some_int8 = -10
-        a.some_double = 1.03455e20
-        a.some_enum = :value2
+    it "has a working method #clone" do
+      a = Regress::TestStructA.new
+      a.some_int = 2556
+      a.some_int8 = -10
+      a.some_double = 1.03455e20
+      a.some_enum = :value2
 
-        b = a.clone
+      b = a.clone
 
-        assert_equal 2556, b.some_int
-        assert_equal(-10, b.some_int8)
-        assert_equal 1.03455e20, b.some_double
-        assert_equal :value2, b.some_enum
-      end
+      assert_equal 2556, b.some_int
+      assert_equal(-10, b.some_int8)
+      assert_equal 1.03455e20, b.some_double
+      assert_equal :value2, b.some_enum
+    end
+
+    it "has a working function #parse" do
+      skip
     end
   end
 
   describe Regress::TestStructB do
-    describe "an instance" do
-      it "has a working method #clone" do
-        a = Regress::TestStructB.new
-        a.some_int8 = 42
-        a.nested_a.some_int = 2556
-        a.nested_a.some_int8 = -10
-        a.nested_a.some_double = 1.03455e20
-        a.nested_a.some_enum = :value2
+    it "has a working method #clone" do
+      a = Regress::TestStructB.new
+      a.some_int8 = 42
+      a.nested_a.some_int = 2556
+      a.nested_a.some_int8 = -10
+      a.nested_a.some_double = 1.03455e20
+      a.nested_a.some_enum = :value2
 
-        b = a.clone
+      b = a.clone
 
-        assert_equal 42, b.some_int8
-        assert_equal 2556, b.nested_a.some_int
-        assert_equal(-10, b.nested_a.some_int8)
-        assert_equal 1.03455e20, b.nested_a.some_double
-        assert_equal :value2, b.nested_a.some_enum
-      end
+      assert_equal 42, b.some_int8
+      assert_equal 2556, b.nested_a.some_int
+      assert_equal(-10, b.nested_a.some_int8)
+      assert_equal 1.03455e20, b.nested_a.some_double
+      assert_equal :value2, b.nested_a.some_enum
     end
   end
 
-  # TODO: Test the following classes.
-  # Regress::TestStructC
-  # Regress::TestStructD
-  # Regress::TestStructE
-  # Regress::TestStructFixedArray
+  describe Regress::TestStructC do
+    it "must be tested" do
+      skip
+    end
+  end
+  describe Regress::TestStructD do
+    it "must be tested" do
+      skip
+    end
+  end
+  describe Regress::TestStructE do
+    it "must be tested" do
+      skip
+    end
+  end
+  describe Regress::TestStructF do
+    it "must be tested" do
+      skip
+    end
+  end
+  describe Regress::TestStructFixedArray do
+    it "has a working method #frob" do
+      skip
+    end
+  end
 
   describe Regress::TestSubObj do
-    it "is created with #new" do
+    it "creates an instance using #new" do
       tso = Regress::TestSubObj.new
       assert_instance_of Regress::TestSubObj, tso
     end
 
-    describe "an instance" do
-      before do
-        @tso = Regress::TestSubObj.new
-      end
+    let(:instance) { Regress::TestSubObj.new }
 
-      it "has a working method #instance_method" do
-        res = @tso.instance_method
-        assert_equal 0, res
-      end
+    it "has a working method #instance_method" do
+      res = instance.instance_method
+      assert_equal 0, res
+    end
 
-      it "has a working method #unset_bare" do
-        @tso.unset_bare
-        pass
-      end
+    it "has a working method #unset_bare" do
+      instance.unset_bare
+      pass
+    end
 
-      it "does not have a field parent_instance" do
-        assert_raises(NoMethodError) { @tso.parent_instance }
-      end
+    it "does not have a field parent_instance" do
+      assert_raises(NoMethodError) { instance.parent_instance }
     end
   end
 
@@ -551,27 +762,29 @@ describe Regress, "The generated Regress module" do
       assert_instance_of Regress::TestWi8021x, o
     end
 
-    it "has a working #static_method" do
+    it "has a working function #static_method" do
       assert_equal(-84, Regress::TestWi8021x.static_method(-42))
+    end
+
+    let(:instance) { Regress::TestWi8021x.new }
+
+    it "has a working method #get_testbool" do
+      instance.set_testbool false
+      assert_equal false, instance.get_testbool
+      instance.set_testbool true
+      assert_equal true, instance.get_testbool
+    end
+
+    it "has a working method #set_testbool" do
+      instance.set_testbool true
+      assert_equal 1, get_field_value(instance, :testbool)
+      instance.set_testbool false
+      assert_equal 0, get_field_value(instance, :testbool)
     end
 
     describe "an instance" do
       setup do
-        @obj = Regress::TestWi8021x.new
-      end
-
-      it "sets its boolean field with #set_testbool" do
-        @obj.set_testbool true
-        assert_equal 1, get_field_value(@obj, :testbool)
-        @obj.set_testbool false
-        assert_equal 0, get_field_value(@obj, :testbool)
-      end
-
-      it "gets its boolean field with #get_testbool" do
-        @obj.set_testbool false
-        assert_equal false, @obj.get_testbool
-        @obj.set_testbool true
-        assert_equal true, @obj.get_testbool
+        @obj = instance
       end
 
       it "gets its boolean field with #get_property" do
@@ -600,106 +813,115 @@ describe Regress, "The generated Regress module" do
     assert_equal "const ♥ utf8", Regress::UTF8_CONSTANT
   end
 
-  it "has the function #set_abort_on_error" do
+  it "has a working function #aliased_caller_alloc" do
+    skip
+  end
+  it "has a working function #atest_error_quark" do
+    skip
+  end
+  it "has a working function #func_obj_null_in" do
+    skip
+  end
+  it "has a working function #global_get_flags_out" do
+    skip
+  end
+  it "has a working function #has_parameter_named_attrs" do
+    skip
+  end
+  it "has a working function #introspectable_via_alias" do
+    skip
+  end
+
+  it "has a working function #set_abort_on_error" do
     Regress.set_abort_on_error false
     Regress.set_abort_on_error true
   end
 
-  describe "#test_array_fixed_out_objects" do
-    before do
-      skip unless get_introspection_data 'Regress', 'test_array_fixed_out_objects'
-      @result = Regress.test_array_fixed_out_objects
-    end
-
-    it "returns an array of two items" do
-      assert_equal 2, @result.length
-    end
-
-    it "returns an array TestObj objects" do
-      @result.each {|o|
-        assert_instance_of Regress::TestObj, o
-      }
-    end
-
-    it "returns objects with the correct GType" do
-      gtype = Regress::TestObj.get_gtype
-      @result.each {|o|
-        assert_equal gtype, GObject.type_from_instance(o)
-      }
-    end
+  it "has a working function #test_abc_error_quark" do
+    skip
+  end
+  it "has a working function #test_array_callback" do
+    skip
   end
 
-  describe "#test_array_fixed_size_int_in" do
-    it "returns the correct result" do
-      assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
-    end
+  it "has a working function #test_array_fixed_out_objects" do
+    result = Regress.test_array_fixed_out_objects
 
-    it "raises an error when called with the wrong number of arguments" do
-      assert_raises ArgumentError do
-        Regress.test_array_fixed_size_int_in [2]
-      end
-    end
+    assert_equal 2, result.length
+
+    result.each {|o|
+      assert_instance_of Regress::TestObj, o
+    }
+
+    gtype = Regress::TestObj.get_gtype
+    result.each {|o|
+      assert_equal gtype, GObject.type_from_instance(o)
+    }
   end
 
-  it "has correct test_array_fixed_size_int_out" do
+  it "has a working function #test_array_fixed_size_int_in" do
+    assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
+  end
+
+  it "has a working function #test_array_fixed_size_int_out" do
     assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out
   end
 
-  it "has correct test_array_fixed_size_int_return" do
+  it "has a working function #test_array_fixed_size_int_return" do
     assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_return
   end
 
-  it "has correct test_array_gint16_in" do
+  it "has a working function #test_array_gint16_in" do
     assert_equal 5 + 4 + 3, Regress.test_array_gint16_in([5, 4, 3])
   end
 
-  it "has correct test_array_gint32_in" do
+  it "has a working function #test_array_gint32_in" do
     assert_equal 5 + 4 + 3, Regress.test_array_gint32_in([5, 4, 3])
   end
 
-  it "has correct test_array_gint64_in" do
+  it "has a working function #test_array_gint64_in" do
     assert_equal 5 + 4 + 3, Regress.test_array_gint64_in([5, 4, 3])
   end
 
-  it "has correct test_array_gint8_in" do
+  it "has a working function #test_array_gint8_in" do
     assert_equal 5 + 4 + 3, Regress.test_array_gint8_in([5, 4, 3])
   end
 
-  it "has correct test_array_gtype_in" do
+  it "has a working function #test_array_gtype_in" do
     t1 = GObject.type_from_name "gboolean"
     t2 = GObject.type_from_name "gint64"
     assert_equal "[gboolean,gint64,]", Regress.test_array_gtype_in([t1, t2])
   end
 
-  it "has correct test_array_int_full_out" do
+  it "has a working function #test_array_int_full_out" do
     assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_full_out
   end
 
-  it "has correct test_array_int_in" do
+  it "has a working function #test_array_int_in" do
     assert_equal 5 + 4 + 3, Regress.test_array_int_in([5, 4, 3])
   end
 
-  it "has correct test_array_int_inout" do
+  it "has a working function #test_array_int_inout" do
     assert_equal [3, 4], Regress.test_array_int_inout([5, 2, 3])
   end
 
-  it "has correct test_array_int_none_out" do
+  it "has a working function #test_array_int_none_out" do
     assert_equal [1, 2, 3, 4, 5], Regress.test_array_int_none_out
   end
 
-  it "has correct test_array_int_null_in" do
+  it "has a working function #test_array_int_null_in" do
     assert_nothing_raised { Regress.test_array_int_null_in nil }
   end
 
-  it "has correct test_array_int_null_out" do
+  it "has a working function #test_array_int_null_out" do
     assert_equal nil, Regress.test_array_int_null_out
   end
 
-  it "has correct test_array_int_out" do
+  it "has a working function #test_array_int_out" do
     assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_out
   end
 
-  it "has correct test_async_ready_callback" do
+  it "has a working function #test_async_ready_callback" do
     main_loop = GLib::MainLoop.new nil, false
 
     a = 1
@@ -713,55 +935,55 @@ describe Regress, "The generated Regress module" do
     assert_equal 2, a
   end
 
-  it "has correct test_boolean" do
+  it "has a working function #test_boolean" do
     assert_equal false, Regress.test_boolean(false)
     assert_equal true, Regress.test_boolean(true)
   end
 
-  it "has correct test_boolean_false" do
+  it "has a working function #test_boolean_false" do
     assert_equal false, Regress.test_boolean_false(false)
   end
 
-  it "has correct test_boolean_true" do
+  it "has a working function #test_boolean_true" do
     assert_equal true, Regress.test_boolean_true(true)
   end
 
-  it "has correct #test_cairo_context_full_return" do
+  it "has a working function #test_cairo_context_full_return" do
     ct = Regress.test_cairo_context_full_return
     assert_instance_of Cairo::Context, ct
   end
 
-  it "has correct #test_cairo_context_none_in" do
+  it "has a working function #test_cairo_context_none_in" do
     ct = Regress.test_cairo_context_full_return
     Regress.test_cairo_context_none_in ct
   end
 
-  it "has correct #test_cairo_surface_full_out" do
+  it "has a working function #test_cairo_surface_full_out" do
     cs = Regress.test_cairo_surface_full_out
     assert_instance_of Cairo::Surface, cs
   end
 
-  it "has correct #test_cairo_surface_full_return" do
+  it "has a working function #test_cairo_surface_full_return" do
     cs = Regress.test_cairo_surface_full_return
     assert_instance_of Cairo::Surface, cs
   end
 
-  it "has correct #test_cairo_surface_none_in" do
+  it "has a working function #test_cairo_surface_none_in" do
     cs = Regress.test_cairo_surface_full_return
     Regress.test_cairo_surface_none_in cs
   end
 
-  it "has correct #test_cairo_surface_none_return" do
+  it "has a working function #test_cairo_surface_none_return" do
     cs = Regress.test_cairo_surface_none_return
     assert_instance_of Cairo::Surface, cs
   end
 
-  it "has correct test_callback" do
+  it "has a working function #test_callback" do
     result = Regress.test_callback Proc.new { 5 }
     assert_equal 5, result
   end
 
-  it "has correct test_callback_async" do
+  it "has a working function #test_callback_async" do
     a = 1
     Regress.test_callback_async Proc.new {|b|
       a = 2
@@ -772,7 +994,7 @@ describe Regress, "The generated Regress module" do
     assert_equal 2, a
   end
 
-  it "has correct test_callback_destroy_notify" do
+  it "has a working function #test_callback_destroy_notify" do
     a = 1
     r1 = Regress.test_callback_destroy_notify Proc.new {|b|
       a = 2
@@ -785,35 +1007,43 @@ describe Regress, "The generated Regress module" do
     assert_equal 42, r2
   end
 
-  describe "the #test_callback_user_data function" do
-    it "returns the callbacks return value" do
-      result = Regress.test_callback_user_data Proc.new {|u| 5 }, nil
-      assert_equal 5, result
-    end
-
-    it "handles boolean user_data" do
-      a = false
-      Regress.test_callback_user_data Proc.new {|u|
-        a = u
-        5
-      }, true
-      assert_equal true, a
-    end
+  it "has a working function #test_callback_destroy_notify_no_user_data" do
+    skip
+  end
+  it "has a working function #test_callback_thaw_async" do
+    skip
+  end
+  it "has a working function #test_callback_thaw_notifications" do
+    skip
   end
 
-  it "has correct test_closure" do
+  it "has a working function #test_callback_user_data" do
+    a = "old-value"
+    result = Regress.test_callback_user_data Proc.new {|u|
+      a = u
+      5
+    }, "new-value"
+    a.must_equal "new-value"
+    result.must_equal 5
+  end
+
+  it "has a working function #test_closure" do
     c = GObject::RubyClosure.new { 5235 }
     r = Regress.test_closure c
     assert_equal 5235, r
   end
 
-  it "has correct test_closure_one_arg" do
+  it "has a working function #test_closure_one_arg" do
     c = GObject::RubyClosure.new { |a| a * 2 }
     r = Regress.test_closure_one_arg c, 2
     assert_equal 4, r
   end
 
-  it "has a correct #test_date_in_gvalue function" do
+  it "has a working function #test_closure_variant" do
+    skip
+  end
+
+  it "has a working function #test_date_in_gvalue" do
     r = Regress.test_date_in_gvalue
     date = r.ruby_value
     skip unless date.respond_to? :get_year
@@ -821,247 +1051,258 @@ describe Regress, "The generated Regress module" do
       [date.get_year, date.get_month, date.get_day]
   end
 
-  it "has correct test_double" do
+  it "has a working function #test_def_error_quark" do
+    skip
+  end
+
+  it "has a working function #test_double" do
     r = Regress.test_double 5435.32
     assert_equal 5435.32, r
   end
 
-  it "has correct test_enum_param" do
+  it "has a working function #test_enum_param" do
     r = Regress.test_enum_param :value3
     assert_equal "value3", r
   end
 
+  it "has a working function #test_error_quark" do
+    skip
+  end
+
   # TODO: Find a way to test encoding issues.
-  it "has correct #test_filename_return" do
+  it "has a working function #test_filename_return" do
     arr = Regress.test_filename_return
     assert_equal ["åäö", "/etc/fstab"], arr.to_a
   end
 
-  it "has correct test_float" do
+  it "has a working function #test_float" do
     r = Regress.test_float 5435.32
     assert_in_delta 5435.32, r, 0.001
   end
 
-  describe "#test_garray_container_return" do
-    before do
-      skip unless get_introspection_data 'Regress', 'test_garray_container_return'
-      @arr = Regress.test_garray_container_return
-    end
+  it "has a working function #test_garray_container_return" do
+    arr = Regress.test_garray_container_return
+    arr.must_be_instance_of GLib::PtrArray
+    arr.len.must_equal 1
 
-    it "returns an instance of GLib::PtrArray" do
-      @arr.must_be_instance_of GLib::PtrArray
-    end
-
-    it "returns the correct values" do
-      @arr.len.must_be :==, 1
-      ptr = @arr.pdata
-      ptr2 = ptr.read_pointer
-      ptr2.read_string.must_be :==, "regress"
-    end
+    ptr = arr.pdata
+    ptr2 = ptr.read_pointer
+    ptr2.read_string.must_be :==, "regress"
   end
 
-  describe "#test_ghash_container_return" do
-    before do
-      @hash = Regress.test_ghash_container_return
-    end
-
-    it "returns an instance of GLib::HashTable" do
-      @hash.must_be_instance_of GLib::HashTable
-    end
-
-    it "returns the correct values" do
-      @hash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
-    end
+  it "has a working function #test_garray_full_return" do
+    skip
+  end
+  it "has a working function #test_gerror_callback" do
+    skip
   end
 
-  it "has correct #test_ghash_everything_return" do
+  it "has a working function #test_ghash_container_return" do
+    hash = Regress.test_ghash_container_return
+    hash.must_be_instance_of GLib::HashTable
+    hash.to_hash.must_equal("foo" => "bar",
+                            "baz" => "bat",
+                            "qux" => "quux")
+  end
+
+  it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
     ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
         "qux" => "quux"}
   end
 
-  it "has correct test_ghash_nested_everything_return"
-  it "has correct test_ghash_nested_everything_return2"
+  it "has a working function #test_ghash_gvalue_in" do
+    skip
+  end
+  it "has a working function #test_ghash_gvalue_return" do
+    skip
+  end
+  it "has a working function #test_ghash_nested_everything_return" do
+    skip
+  end
+  it "has a working function #test_ghash_nested_everything_return2" do
+    skip
+  end
 
-  it "has correct #test_ghash_nothing_in" do
+  it "has a working function #test_ghash_nothing_in" do
     Regress.test_ghash_nothing_in({"foo" => "bar", "baz" => "bat",
         "qux" => "quux"})
   end
 
-  it "has correct #test_ghash_nothing_in2" do
+  it "has a working function #test_ghash_nothing_in2" do
     Regress.test_ghash_nothing_in2({"foo" => "bar", "baz" => "bat",
         "qux" => "quux"})
   end
 
-  it "has correct #test_ghash_nothing_return" do
+  it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
     ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
         "qux" => "quux"}
   end
 
-  it "has correct #test_ghash_nothing_return2" do
+  it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
     ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
         "qux" => "quux"}
   end
 
-  it "has correct #test_ghash_null_in" do
+  it "has a working function #test_ghash_null_in" do
     Regress.test_ghash_null_in(nil)
   end
 
-  it "has correct #test_ghash_null_out" do
+  it "has a working function #test_ghash_null_out" do
     ghash = Regress.test_ghash_null_out
     ghash.must_be_nil
   end
 
-  it "has correct #test_ghash_null_return" do
+  it "has a working function #test_ghash_null_return" do
     ghash = Regress.test_ghash_null_return
     ghash.must_be_nil
   end
 
-  describe "#test_glist_container_return" do
-    setup do
-      @list = Regress.test_glist_container_return
-    end
-
-    it "returns an instance of GLib::SList" do
-      assert_instance_of GLib::List, @list
-    end
-
-    it "returns the correct values" do
-      assert_equal ["1", "2", "3"], @list.to_a
-    end
+  it "has a working function #test_glist_container_return" do
+    list = Regress.test_glist_container_return
+    assert_instance_of GLib::List, list
+    assert_equal ["1", "2", "3"], list.to_a
   end
 
-  it "has correct test_glist_everything_return" do
+  it "has a working function #test_glist_everything_return" do
     list = Regress.test_glist_everything_return
     assert_equal ["1", "2", "3"], list.to_a
   end
 
-  it "has correct test_glist_nothing_in" do
+  it "has a working function #test_glist_nothing_in" do
     assert_nothing_raised {
       Regress.test_glist_nothing_in ["1", "2", "3"]
     }
   end
 
-  it "has correct test_glist_nothing_in2" do
+  it "has a working function #test_glist_nothing_in2" do
     assert_nothing_raised {
       Regress.test_glist_nothing_in2 ["1", "2", "3"]
     }
   end
 
-  it "has correct test_glist_nothing_return" do
+  it "has a working function #test_glist_nothing_return" do
     list = Regress.test_glist_nothing_return
     assert_equal ["1", "2", "3"], list.to_a
   end
 
-  it "has correct test_glist_nothing_return2" do
+  it "has a working function #test_glist_nothing_return2" do
     list = Regress.test_glist_nothing_return2
     assert_equal ["1", "2", "3"], list.to_a
   end
 
-  it "has correct test_glist_null_in" do
+  it "has a working function #test_glist_null_in" do
     assert_nothing_raised {
       Regress.test_glist_null_in nil
     }
   end
 
-  it "has correct test_glist_null_out" do
+  it "has a working function #test_glist_null_out" do
     result = Regress.test_glist_null_out
     assert_equal nil, result
   end
 
-  describe "#test_gslist_container_return" do
-    setup do
-      @slist = Regress.test_gslist_container_return
-    end
-
-    it "returns a GLib::SList object" do
-      assert_instance_of GLib::SList, @slist
-    end
-
-    it "returns the correct values" do
-      assert_equal ["1", "2", "3"], @slist.to_a
-    end
+  it "has a working function #test_gslist_container_return" do
+    slist = Regress.test_gslist_container_return
+    assert_instance_of GLib::SList, slist
+    assert_equal ["1", "2", "3"], slist.to_a
   end
 
-  it "has correct test_gslist_everything_return" do
+  it "has a working function #test_gslist_everything_return" do
     slist = Regress.test_gslist_everything_return
     assert_equal ["1", "2", "3"], slist.to_a
   end
 
-  it "has correct test_gslist_nothing_in" do
+  it "has a working function #test_gslist_nothing_in" do
     assert_nothing_raised {
       Regress.test_gslist_nothing_in ["1", "2", "3"]
     }
   end
 
-  it "has correct test_gslist_nothing_in2" do
+  it "has a working function #test_gslist_nothing_in2" do
     assert_nothing_raised {
       Regress.test_gslist_nothing_in2 ["1", "2", "3"]
     }
   end
 
-  it "has correct test_gslist_nothing_return" do
+  it "has a working function #test_gslist_nothing_return" do
     slist = Regress.test_gslist_nothing_return
     assert_equal ["1", "2", "3"], slist.to_a
   end
 
-  it "has correct test_gslist_nothing_return2" do
+  it "has a working function #test_gslist_nothing_return2" do
     slist = Regress.test_gslist_nothing_return2
     assert_equal ["1", "2", "3"], slist.to_a
   end
 
-  it "has correct test_gslist_null_in" do
+  it "has a working function #test_gslist_null_in" do
     assert_nothing_raised {
       Regress.test_gslist_null_in nil
     }
   end
 
-  describe "#test_gslist_null_out" do
-    it "returns nil" do
-      result = Regress.test_gslist_null_out
-      assert_equal nil, result
-    end
+  it "has a working function #test_gslist_null_out" do
+    result = Regress.test_gslist_null_out
+    assert_equal nil, result
   end
 
-  it "has correct test_gtype" do
+  it "has a working function #test_gtype" do
     result = Regress.test_gtype 23
     assert_equal 23, result
   end
 
-  it "has correct test_int" do
+  it "has a working function #test_gvariant_as" do
+    skip
+  end
+  it "has a working function #test_gvariant_asv" do
+    skip
+  end
+  it "has a working function #test_gvariant_i" do
+    skip
+  end
+  it "has a working function #test_gvariant_s" do
+    skip
+  end
+  it "has a working function #test_gvariant_v" do
+    skip
+  end
+  it "has a working function #test_hash_table_callback" do
+    skip
+  end
+
+  it "has a working function #test_int" do
     result = Regress.test_int 23
     assert_equal 23, result
   end
 
-  it "has correct test_int16" do
+  it "has a working function #test_int16" do
     result = Regress.test_int16 23
     assert_equal 23, result
   end
 
-  it "has correct test_int32" do
+  it "has a working function #test_int32" do
     result = Regress.test_int32 23
     assert_equal 23, result
   end
 
-  it "has correct test_int64" do
+  it "has a working function #test_int64" do
     result = Regress.test_int64 2300000000000
     assert_equal 2300000000000, result
   end
 
-  it "has correct test_int8" do
+  it "has a working function #test_int8" do
     result = Regress.test_int8 23
     assert_equal 23, result
   end
 
-  it "has correct test_int_out_utf8" do
+  it "has a working function #test_int_out_utf8" do
     len = Regress.test_int_out_utf8 "How long?"
     assert_equal 9, len
   end
 
-  it "has correct test_int_value_arg" do
+  it "has a working function #test_int_value_arg" do
     gv = GObject::Value.new
     gv.init GObject.type_from_name "gint"
     gv.set_int 343
@@ -1069,13 +1310,13 @@ describe Regress, "The generated Regress module" do
     assert_equal 343, result
   end
 
-  it "has correct test_long" do
+  it "has a working function #test_long" do
     long_val = FFI.type_size(:long) == 8 ? 2_300_000_000_000 : 2_000_000_000
     result = Regress.test_long long_val
     assert_equal long_val, result
   end
 
-  it "has correct test_multi_callback" do
+  it "has a working function #test_multi_callback" do
     a = 1
     result = Regress.test_multi_callback Proc.new {
       a += 1
@@ -1085,102 +1326,104 @@ describe Regress, "The generated Regress module" do
     assert_equal 3, a
   end
 
-  it "has correct test_multi_double_args" do
+  it "has a working function #test_multi_double_args" do
     one, two = Regress.test_multi_double_args 23.1
     assert_equal 2 * 23.1, one
     assert_equal 3 * 23.1, two
   end
 
-  it "has correct test_short" do
+  it "has a working function #test_multiline_doc_comments" do
+    skip
+  end
+  it "has a working function #test_nested_parameter" do
+    skip
+  end
+  it "has a working function #test_null_gerror_callback" do
+    skip
+  end
+  it "has a working function #test_owned_gerror_callback" do
+    skip
+  end
+
+  it "has a working function #test_short" do
     result = Regress.test_short 23
     assert_equal 23, result
   end
 
-  it "has correct test_simple_boxed_a_const_return" do
+  it "has a working function #test_simple_boxed_a_const_return" do
     result = Regress.test_simple_boxed_a_const_return
     assert_equal [5, 6, 7.0], [result.some_int, result.some_int8, result.some_double]
   end
 
-  describe "the #test_simple_callback function" do
-    it "calls the passed-in proc" do
-      a = 0
-      Regress.test_simple_callback Proc.new { a = 1 }
-      assert_equal 1, a
-    end
-
-    # XXX: The scope data does not seem to be reliable enough.
-    if false
-    it "does not store the proc in CALLBACKS" do
-      n = Regress::Lib::CALLBACKS.length
-      Regress.test_simple_callback Proc.new { }
-      assert_equal n, Regress::Lib::CALLBACKS.length
-    end
-    end
+  it "has a working function #test_simple_callback" do
+    a = 0
+    Regress.test_simple_callback Proc.new { a = 1 }
+    assert_equal 1, a
   end
 
-  it "has correct test_size" do
+  it "has a working function #test_size" do
     assert_equal 2354, Regress.test_size(2354)
   end
 
-  it "has correct test_ssize" do
+  it "has a working function #test_ssize" do
     assert_equal(-2_000_000, Regress.test_ssize(-2_000_000))
   end
 
-  it "has correct test_strv_in" do
+  it "has a working function #test_struct_a_parse" do
+    skip
+  end
+
+  it "has a working function #test_strv_in" do
     assert_equal true, Regress.test_strv_in(['1', '2', '3'])
   end
 
-  it "has correct #test_strv_in_gvalue" do
+  it "has a working function #test_strv_in_gvalue" do
     gv = Regress.test_strv_in_gvalue
     assert_equal ['one', 'two', 'three'], gv.ruby_value.to_a
   end
 
-  it "has correct #test_strv_out" do
+  it "has a working function #test_strv_out" do
     arr = Regress.test_strv_out
     assert_equal ["thanks", "for", "all", "the", "fish"], arr.to_a
   end
 
-  it "has correct #test_strv_out_c" do
+  it "has a working function #test_strv_out_c" do
     arr = Regress.test_strv_out_c
     assert_equal ["thanks", "for", "all", "the", "fish"], arr.to_a
   end
 
-  it "has correct #test_strv_out_container" do
+  it "has a working function #test_strv_out_container" do
     arr = Regress.test_strv_out_container
     assert_equal ['1', '2', '3'], arr.to_a
   end
 
-  it "has correct #test_strv_outarg" do
+  it "has a working function #test_strv_outarg" do
     arr = Regress.test_strv_outarg
     assert_equal ['1', '2', '3'], arr.to_a
   end
 
-  it "has correct test_timet" do
+  it "has a working function #test_timet" do
     # Time rounded to seconds.
     t = Time.at(Time.now.to_i)
     result = Regress.test_timet(t.to_i)
     assert_equal t, Time.at(result)
   end
 
-  it "has correct test_torture_signature_0" do
+  it "has a working function #test_torture_signature_0" do
     y, z, q = Regress.test_torture_signature_0 86, "foo", 2
     assert_equal [86, 2*86, 3+2], [y, z, q]
   end
 
-  describe "its #test_torture_signature_1 method" do
-    it "works for m even" do
-      ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
-      assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
-    end
+  it "has a working function #test_torture_signature_1" do
+    ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
+    assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
 
-    it "throws an exception for m odd" do
-      assert_raises RuntimeError do
-        Regress.test_torture_signature_1(-21, "hello", 11)
-      end
+    assert_raises RuntimeError do
+      Regress.test_torture_signature_1(-21, "hello", 11)
     end
   end
-    
-  it "has correct test_torture_signature_2" do
+
+  it "has a working function #test_torture_signature_2" do
     a = 1
     y, z, q = Regress.test_torture_signature_2 244,
       Proc.new {|u| a = u }, 2, Proc.new { a = 3 },
@@ -1189,93 +1432,101 @@ describe Regress, "The generated Regress module" do
     assert_equal 3, a
   end
 
-  it "has correct test_uint" do
+  it "has a working function #test_uint" do
     assert_equal 31, Regress.test_uint(31)
   end
 
-  it "has correct test_uint16" do
+  it "has a working function #test_uint16" do
     assert_equal 31, Regress.test_uint16(31)
   end
 
-  it "has correct test_uint32" do
+  it "has a working function #test_uint32" do
     assert_equal 540000, Regress.test_uint32(540000)
   end
 
-  it "has correct test_uint64" do
+  it "has a working function #test_uint64" do
     assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
   end
 
-  it "has correct test_uint8" do
+  it "has a working function #test_uint8" do
     assert_equal 31, Regress.test_uint8(31)
   end
 
-  it "has correct test_ulong" do
+  it "has a working function #test_ulong" do
     assert_equal 54_000_000_000_000, Regress.test_uint64(54_000_000_000_000)
   end
 
-  it "has a correct #test_unichar" do
+  it "has a working function #test_unconventional_error_quark" do
+    skip
+  end
+
+  it "has a working function #test_unichar" do
     assert_equal 120, Regress.test_unichar(120)
     assert_equal 540_000, Regress.test_unichar(540_000)
   end
 
-  it "has a correct #test_unsigned_enum_param" do
+  it "has a working function #test_unsigned_enum_param" do
     assert_equal "value1", Regress.test_unsigned_enum_param(:value1)
     assert_equal "value2", Regress.test_unsigned_enum_param(:value2)
   end
 
-  it "has correct test_ushort" do
+  it "has a working function #test_ushort" do
     assert_equal 54_000_000, Regress.test_uint64(54_000_000)
   end
 
-  it "has correct test_utf8_const_in" do
+  it "has a working function #test_utf8_const_in" do
     assert_nothing_raised do
       Regress.test_utf8_const_in("const \xe2\x99\xa5 utf8")
     end
   end
 
-  it "has correct test_utf8_const_return" do
+  it "has a working function #test_utf8_const_return" do
     result = Regress.test_utf8_const_return
     assert_equal "const \xe2\x99\xa5 utf8", result
   end
 
-  it "has correct test_utf8_inout" do
+  it "has a working function #test_utf8_inout" do
     result = Regress.test_utf8_inout "const \xe2\x99\xa5 utf8"
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
-  it "has correct test_utf8_nonconst_return" do
+  it "has a working function #test_utf8_nonconst_return" do
     result = Regress.test_utf8_nonconst_return
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
-  it "has correct test_utf8_null_in" do
+  it "has a working function #test_utf8_null_in" do
     assert_nothing_raised do
       Regress.test_utf8_null_in nil
     end
   end
 
-  it "has correct test_utf8_null_out" do
+  it "has a working function #test_utf8_null_out" do
     assert_equal nil, Regress.test_utf8_null_out
   end
 
-  it "has correct test_utf8_out" do
+  it "has a working function #test_utf8_out" do
     result = Regress.test_utf8_out
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
-  it "has correct test_utf8_out_nonconst_return" do
+  it "has a working function #test_utf8_out_nonconst_return" do
     r, out = Regress.test_utf8_out_nonconst_return
     assert_equal ["first", "second"], [r, out]
   end
 
-  it "has correct test_utf8_out_out" do
+  it "has a working function #test_utf8_out_out" do
     out0, out1 = Regress.test_utf8_out_nonconst_return
     assert_equal ["first", "second"], [out0, out1]
   end
 
-  it "has correct test_value_return" do
+  it "has a working function #test_value_return" do
     result = Regress.test_value_return 3423
     assert_equal 3423, result.get_int
+  end
+
+  it "has a working function #test_versioning" do
+    skip
   end
 
   it "raises an appropriate NoMethodError when a function is not found" do
