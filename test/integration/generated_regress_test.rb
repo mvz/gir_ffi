@@ -1503,7 +1503,7 @@ describe Regress  do
 
   it "has a working function #test_unconventional_error_quark" do
     result = Regress.test_unconventional_error_quark
-    result.must_equal "regress-test-other-error"
+    GLib.quark_to_string(result).must_equal "regress-test-other-error"
   end
 
   it "has a working function #test_unichar" do
