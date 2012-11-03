@@ -182,7 +182,7 @@ describe Regress  do
     end
 
     it "has the member :value3" do
-      Regress::TestEnum[:value3].must_equal -1
+      Regress::TestEnum[:value3].must_equal(-1)
     end
 
     it "has the member :value4" do

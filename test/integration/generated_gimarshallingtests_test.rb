@@ -428,7 +428,7 @@ describe GIMarshallingTests do
       assert_instance_of GIMarshallingTests::PointerStruct, ps
     end
 
-    let (:instance) { GIMarshallingTests::PointerStruct.new }
+    let(:instance) { GIMarshallingTests::PointerStruct.new }
 
     it "has a working method #inv" do
       instance.long_ = 42
