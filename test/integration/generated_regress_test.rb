@@ -12,13 +12,13 @@ end
 describe Regress  do
   describe Regress::ATestError do
     it "has the member :code0" do
-      skip
+      Regress::ATestError[:code0].must_equal 0
     end
     it "has the member :code1" do
-      skip
+      Regress::ATestError[:code1].must_equal 1
     end
     it "has the member :code2" do
-      skip
+      Regress::ATestError[:code2].must_equal 2
     end
   end
 
@@ -27,14 +27,15 @@ describe Regress  do
   end
 
   it "has the constant GUINT64_CONSTANT" do
-    skip
+    Regress::GUINT64_CONSTANT.must_equal 18446744073709551615
   end
+
   it "has the constant GUINT64_CONSTANTA" do
-    skip
+    Regress::GUINT64_CONSTANTA.must_equal 18446744073709551615
   end
 
   it "has the constant G_GINT64_CONSTANT" do
-    skip
+    Regress::G_GINT64_CONSTANT.must_equal 1000
   end
 
   it "has the constant INT_CONSTANT" do
@@ -42,7 +43,17 @@ describe Regress  do
   end
 
   it "has the constant LONG_STRING_CONSTANT" do
-    skip
+    Regress::LONG_STRING_CONSTANT.must_equal %w(TYPE VALUE ENCODING CHARSET
+                                                LANGUAGE DOM INTL POSTAL PARCEL
+                                                HOME WORK PREF VOICE FAX MSG
+                                                CELL PAGER BBS MODEM CAR ISDN
+                                                VIDEO AOL APPLELINK ATTMAIL CIS
+                                                EWORLD INTERNET IBMMAIL MCIMAIL
+                                                POWERSHARE PRODIGY TLX X400 GIF
+                                                CGM WMF BMP MET PMB DIB PICT
+                                                TIFF PDF PS JPEG QTIME MPEG
+                                                MPEG2 AVI WAVE AIFF PCM X509
+                                                PGP).join(",")
   end
 
   describe Regress::LikeGnomeKeyringPasswordSchema do
@@ -61,15 +72,15 @@ describe Regress  do
 
   describe Regress::TestABCError do
     it "has the member :code1" do
-      skip
+      Regress::TestABCError[:code1].must_equal 1
     end
 
     it "has the member :code2" do
-      skip
+      Regress::TestABCError[:code2].must_equal 2
     end
 
     it "has the member :code3" do
-      skip
+      Regress::TestABCError[:code3].must_equal 3
     end
 
     it "has a working function #quark" do
@@ -123,74 +134,104 @@ describe Regress  do
 
   describe Regress::TestBoxedB do
     it "creates an instance using #new" do
-      skip
+      tb = Regress::TestBoxedB.new 8, 42
+      assert_instance_of Regress::TestBoxedB, tb
     end
+
+    let(:instance) { Regress::TestBoxedB.new 8, 42 }
+
     it "has a working method #copy" do
-      skip
+      cp = instance.copy
+      cp.must_be_instance_of Regress::TestBoxedB
+      cp.some_int8.must_equal 8
+      cp.some_long.must_equal 42
+      instance.some_int8 = 2
+      cp.some_int8.must_equal 8
     end
   end
+
   describe Regress::TestBoxedC do
     it "creates an instance using #new" do
-      skip
+      tb = Regress::TestBoxedC.new
+      assert_instance_of Regress::TestBoxedC, tb
     end
   end
+
   describe Regress::TestDEFError do
     it "has the member :code0" do
+      Regress::TestDEFError[:code0].must_equal 0
       skip
     end
+
     it "has the member :code1" do
-      skip
+      Regress::TestDEFError[:code1].must_equal 1
     end
+
     it "has the member :code2" do
-      skip
+      Regress::TestDEFError[:code2].must_equal 2
     end
   end
+
   describe Regress::TestEnum do
     it "has the member :value1" do
-      skip
+      Regress::TestEnum[:value1].must_equal 0
     end
+
     it "has the member :value2" do
-      skip
+      Regress::TestEnum[:value2].must_equal 1
     end
+
     it "has the member :value3" do
-      skip
+      Regress::TestEnum[:value3].must_equal -1
     end
+
     it "has the member :value4" do
-      skip
+      Regress::TestEnum[:value4].must_equal 48
     end
+
     it "has a working function #param" do
       skip
     end
   end
+
   describe Regress::TestEnumNoGEnum do
     it "has the member :evalue1" do
-      skip
+      Regress::TestEnumNoGEnum[:evalue1].must_equal 0
     end
+
     it "has the member :evalue2" do
-      skip
+      Regress::TestEnumNoGEnum[:evalue2].must_equal 42
     end
+
     it "has the member :evalue3" do
-      skip
+      Regress::TestEnumNoGEnum[:evalue3].must_equal 48
     end
   end
+
   describe Regress::TestEnumUnsigned do
     it "has the member :value1" do
-      skip
+      Regress::TestEnumUnsigned[:value1].must_equal 1
     end
+
     it "has the member :value2" do
-      skip
+      skip "In c, the positive and negative values are not distinguished"
+      Regress::TestEnumUnsigned[:value2].must_equal 2147483648
     end
   end
+
   describe Regress::TestError do
     it "has the member :code1" do
-      skip
+      Regress::TestError[:code1].must_equal 1
     end
+
     it "has the member :code2" do
-      skip
+      Regress::TestError[:code2].must_equal 2
     end
+
     it "has the member :code3" do
-      skip
+      Regress::TestError[:code3].must_equal 3
     end
+
     it "has a working function #quark" do
       skip
     end
@@ -210,8 +251,10 @@ describe Regress  do
 
   describe Regress::TestFloating do
     it "creates an instance using #new" do
-      skip
+      o = Regress::TestFloating.new
+      o.must_be_instance_of Regress::TestFloating
     end
+
     describe "an instance" do
       setup do
         @o = Regress::TestFloating.new
@@ -232,7 +275,9 @@ describe Regress  do
       refute_includes Regress::TestFundamentalObject.ancestors,
         GObject::Object
     end
+
     # TODO: Test more, if possible (e.g., cannot be instantiated).
+
     it "has a working method #ref" do
       skip
     end
@@ -1526,7 +1571,8 @@ describe Regress  do
   end
 
   it "has a working function #test_versioning" do
-    skip
+    Regress.test_versioning
+    pass
   end
 
   it "raises an appropriate NoMethodError when a function is not found" do
