@@ -57,8 +57,28 @@ describe Regress  do
   end
 
   describe Regress::LikeGnomeKeyringPasswordSchema do
-    it "must be tested" do
-      skip
+    it "creates an instance using #new" do
+      obj = Regress::LikeGnomeKeyringPasswordSchema.new
+      obj.must_be_instance_of Regress::LikeGnomeKeyringPasswordSchema
+    end
+
+    let(:instance) { Regress::LikeGnomeKeyringPasswordSchema.new }
+
+    it "has a writable field dummy" do
+      instance.dummy.must_equal 0
+      instance.dummy = 42
+      instance.dummy.must_equal 42
+    end
+
+    it "has a writable field attributes" do
+      skip "This does not work yet"
+      instance.attributes
+    end
+
+    it "has a writable field dummy2" do
+      instance.dummy2.must_equal 0.0
+      instance.dummy2 = 42.42
+      instance.dummy2.must_equal 42.42
     end
   end
 
