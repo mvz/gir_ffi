@@ -23,7 +23,7 @@ class Listener
     case name
     when "constant"
       result.puts "  it \"has the constant #{obj_name}\" do"
-    when "record", "class", "enumeration", "bitfield"
+    when "record", "class", "enumeration", "bitfield", "interface"
       result.puts "  describe #{namespace}::#{obj_name} do"
       @inside_class = true
     when "constructor"
@@ -41,7 +41,7 @@ class Listener
 
   def tag_end name
     case name
-    when "record", "class", "enumeration", "bitfield"
+    when "record", "class", "enumeration", "bitfield", "interface"
       @inside_class = false
     end
   end
