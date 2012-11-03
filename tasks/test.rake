@@ -1,5 +1,52 @@
 require 'rake/testtask'
 
+require 'rexml/document'
+require 'rexml/streamlistener'
+
+# Listener class used to process GIR xml data, for creating test stubs.
+class Listener
+  include REXML::StreamListener
+
+  def initialize
+    @inside_class = false
+  end
+
+  attr_accessor :result
+  attr_accessor :namespace
+
+  def tag_start name, attrs
+    return if attrs['disguised'] == '1'
+    return if attrs['introspectable'] == '0'
+    return if attrs['glib:is-gtype-struct-for']
+
+    obj_name = attrs['name']
+    case name
+    when "constant"
+      result.puts "  it \"has the constant #{obj_name}\" do"
+    when "record", "class", "enumeration", "bitfield"
+      result.puts "  describe #{namespace}::#{obj_name} do"
+      @inside_class = true
+    when "constructor"
+      result.puts "    it \"creates an instance using ##{obj_name}\" do"
+    when "function", "method"
+      spaces = @inside_class ? "  " : ""
+      result.puts "  #{spaces}it \"has a working #{name} ##{obj_name}\" do"
+    when "member"
+      result.puts "    it \"has the member :#{obj_name}\" do"
+    when "type", "return-value", "parameters", "parameter", "doc", "array"
+    else
+      puts "Skipping #{name}"
+    end
+  end
+
+  def tag_end name
+    case name
+    when "record", "class", "enumeration", "bitfield"
+      @inside_class = false
+    end
+  end
+end
+
 namespace :test do
   def define_test_task name
     Rake::TestTask.new(name) do |t|
@@ -54,6 +101,20 @@ namespace :test do
                    :main,
                    :overrides,
                    :integration]
+
+  task :stub => :lib do
+    file = File.new 'test/lib/Regress-1.0.gir'
+    listener = Listener.new
+    listener.result = File.open('tmp/regress_lines.rb', 'w')
+    listener.namespace = "Regress"
+    REXML::Document.parse_stream file, listener
+
+    file = File.new 'test/lib/GIMarshallingTests-1.0.gir'
+    listener = Listener.new
+    listener.result = File.open('tmp/gimarshallingtests_lines.rb', 'w')
+    listener.namespace = "GIMarshallingTests"
+    REXML::Document.parse_stream file, listener
+  end
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do
