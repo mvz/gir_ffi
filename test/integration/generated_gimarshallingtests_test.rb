@@ -6,22 +6,25 @@ require 'gir_ffi'
 GirFFI.setup :GIMarshallingTests
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
-describe "GIMarshallingTests" do
-  describe "BoxedStruct" do
-    it "is created with #new" do
+describe GIMarshallingTests do
+  describe GIMarshallingTests::BoxedStruct do
+    it "creates an instance using #new" do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
     end
 
+    let(:instance) { GIMarshallingTests::BoxedStruct.new }
+
+    it "has a working method #inv" do
+      instance.long_ = 42
+      instance.inv
+      pass
+    end
+
     describe "an instance" do
       before do
-        @bx = GIMarshallingTests::BoxedStruct.new
+        @bx = instance
         @bx.long_ = 42
-      end
-
-      it "has a working method #inv" do
-        @bx.inv
-        pass
       end
 
       it "has a writable field long_" do
@@ -63,6 +66,10 @@ describe "GIMarshallingTests" do
     assert_equal 5, GIMarshallingTests::CONSTANT_GERROR_CODE
   end
 
+  it "has the constant CONSTANT_GERROR_DEBUG_MESSAGE" do
+    skip
+  end
+
   it "has the constant CONSTANT_GERROR_DOMAIN" do
     assert_equal "gi-marshalling-tests-gerror-domain",
       GIMarshallingTests::CONSTANT_GERROR_DOMAIN
@@ -81,35 +88,101 @@ describe "GIMarshallingTests" do
     assert_equal "const ♥ utf8", GIMarshallingTests::CONSTANT_UTF8
   end
 
-  it "has the enum Enum" do
-    assert_equal 0, GIMarshallingTests::Enum[:value1]
-    assert_equal 1, GIMarshallingTests::Enum[:value2]
-    assert_equal 42, GIMarshallingTests::Enum[:value3]
+  describe GIMarshallingTests::Enum do
+    it "has the member :value1" do
+      assert_equal 0, GIMarshallingTests::Enum[:value1]
+    end
+
+    it "has the member :value2" do
+      assert_equal 1, GIMarshallingTests::Enum[:value2]
+    end
+
+    it "has the member :value3" do
+      assert_equal 42, GIMarshallingTests::Enum[:value3]
+    end
   end
 
-  it "has the bitfield Flags" do
-    assert_equal 1, GIMarshallingTests::Flags[:value1]
-    assert_equal 2, GIMarshallingTests::Flags[:value2]
-    assert_equal 4, GIMarshallingTests::Flags[:value3]
-    assert_equal 3, GIMarshallingTests::Flags[:mask]
-    assert_equal 3, GIMarshallingTests::Flags[:mask2]
+  describe GIMarshallingTests::Flags do
+    it "has the member :value1" do
+      assert_equal 1, GIMarshallingTests::Flags[:value1]
+    end
+
+    it "has the member :value2" do
+      assert_equal 2, GIMarshallingTests::Flags[:value2]
+    end
+
+    it "has the member :value3" do
+      assert_equal 4, GIMarshallingTests::Flags[:value3]
+    end
+
+    it "has the member :mask" do
+      assert_equal 3, GIMarshallingTests::Flags[:mask]
+    end
+
+    it "has the member :mask2" do
+      assert_equal 3, GIMarshallingTests::Flags[:mask2]
+    end
+
+    it "has a working function #in" do
+      skip
+    end
+    it "has a working function #in_zero" do
+      skip
+    end
+    it "has a working function #inout" do
+      skip
+    end
+    it "has a working function #out" do
+      skip
+    end
+    it "has a working function #returnv" do
+      skip
+    end
   end
 
-  it "has the enum GEnum" do
-    assert_equal 0, GIMarshallingTests::GEnum[:value1]
-    assert_equal 1, GIMarshallingTests::GEnum[:value2]
-    assert_equal 42, GIMarshallingTests::GEnum[:value3]
+  describe GIMarshallingTests::GEnum do
+    it "has the member :value1" do
+      assert_equal 0, GIMarshallingTests::GEnum[:value1]
+    end
+    it "has the member :value2" do
+      assert_equal 1, GIMarshallingTests::GEnum[:value2]
+    end
+    it "has the member :value3" do
+      assert_equal 42, GIMarshallingTests::GEnum[:value3]
+    end
+    it "has a working function #in" do
+      skip
+    end
+    it "has a working function #inout" do
+      skip
+    end
+    it "has a working function #out" do
+      skip
+    end
+    it "has a working function #returnv" do
+      skip
+    end
   end
 
-  describe "Interface" do
-    it "must be tested"
+  describe GIMarshallingTests::Interface do
+    it "has a working method #test_int8_in" do
+      skip
+    end
   end
 
-  describe "Interface2" do
-    it "must be tested"
+  describe GIMarshallingTests::Interface2 do
+    it "must be tested" do
+      skip
+    end
   end
 
-  describe "NestedStruct" do
+  describe GIMarshallingTests::Interface3 do
+    it "has a working method #test_variant_array_in" do
+      skip
+    end
+  end
+
+  describe GIMarshallingTests::NestedStruct do
     it "contains a SimpleStruct" do
       ns = GIMarshallingTests::NestedStruct.new
       assert_instance_of GIMarshallingTests::SimpleStruct,
@@ -117,15 +190,25 @@ describe "GIMarshallingTests" do
     end
   end
 
-  it "has the bitfield NoTypeFlags" do
-    assert_equal 1, GIMarshallingTests::NoTypeFlags[:value1]
-    assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
-    assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
-    assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask]
-    assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask2]
+  describe GIMarshallingTests::NoTypeFlags do
+    it "has the member :value1" do
+      assert_equal 1, GIMarshallingTests::NoTypeFlags[:value1]
+    end
+    it "has the member :value2" do
+      assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
+    end
+    it "has the member :value3" do
+      assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
+    end
+    it "has the member :mask" do
+      assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask]
+    end
+    it "has the member :mask2" do
+      assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask2]
+    end
   end
 
-  describe "NotSimpleStruct" do
+  describe GIMarshallingTests::NotSimpleStruct do
     it "must be tested"
   end
 
@@ -133,8 +216,8 @@ describe "GIMarshallingTests" do
     assert_equal 42, GIMarshallingTests::OVERRIDES_CONSTANT
   end
 
-  describe "Object" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::Object do
+    it "creates an instance using #new" do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
       assert_equal 42, ob.int
@@ -157,8 +240,9 @@ describe "GIMarshallingTests" do
       assert_instance_of GIMarshallingTests::Object, res
     end
 
-    # This function is only found in the header
-    # it "has a working function #inout_same"
+    it "has a working function #inout_same" do
+      skip "This function is only found in the header"
+    end
 
     it "has a working function #none_inout" do
       ob = GIMarshallingTests::Object.new 42
@@ -182,133 +266,154 @@ describe "GIMarshallingTests" do
       pass
     end
 
-    describe "an instance" do
-      before do
-        @obj = GIMarshallingTests::Object.new 42
-      end
+    let(:instance) { GIMarshallingTests::Object.new 42 }
 
-      it "has a working method #call_vfunc_with_callback"
+    it "has a working method #call_vfunc_with_callback" do
+      skip
+    end
 
-      # This function is only found in the header
-      # it "has a working method #full_in"
+    it "has a working method #full_in" do
+      skip "This function is only found in the header"
+    end
 
-      it "has a working method #int8_in"
-      it "has a working method #int8_out"
+    it "has a working method #int8_in" do
+      skip
+    end
+    it "has a working method #int8_out" do
+      skip
+    end
 
-      # TODO: Avoid using common method names?
-      it "has a working method #method" do
-        @obj.method
-        pass
-      end
+    # TODO: Avoid using common method names?
+    it "has a working method #method" do
+      instance.method
+      pass
+    end
 
-      it "has a working method #method_array_in" do
-        @obj.method_array_in [-1, 0, 1, 2]
-        pass
-      end
+    it "has a working method #method_array_in" do
+      instance.method_array_in [-1, 0, 1, 2]
+      pass
+    end
 
-      it "has a working method #method_array_inout" do
-        res = @obj.method_array_inout [-1, 0, 1, 2]
-        assert_equal [-2, -1, 0, 1, 2], res
-      end
+    it "has a working method #method_array_inout" do
+      res = instance.method_array_inout [-1, 0, 1, 2]
+      assert_equal [-2, -1, 0, 1, 2], res
+    end
 
-      it "has a working method #method_array_out" do
-        res = @obj.method_array_out
-        assert_equal [-1, 0, 1, 2], res
-      end
+    it "has a working method #method_array_out" do
+      res = instance.method_array_out
+      assert_equal [-1, 0, 1, 2], res
+    end
 
-      it "has a working method #method_array_return" do
-        res = @obj.method_array_return
-        assert_equal [-1, 0, 1, 2], res
-      end
+    it "has a working method #method_array_return" do
+      res = instance.method_array_return
+      assert_equal [-1, 0, 1, 2], res
+    end
 
-      it "has a working method #method_int8_in"
-      it "has a working method #method_int8_out"
-      it "has a working method #method_variant_array_in"
+    it "has a working method #method_int8_in" do
+      skip
+    end
+    it "has a working method #method_int8_out" do
+      skip
+    end
+    it "has a working method #method_variant_array_in" do
+      skip
+    end
 
-      it "has a working method #method_with_default_implementation" do
-        @obj.method_with_default_implementation 104
-        assert_equal 104, @obj.int
-      end
+    it "has a working method #method_with_default_implementation" do
+      instance.method_with_default_implementation 104
+      assert_equal 104, instance.int
+    end
 
-      it "has a working method #none_in" do
-        @obj.none_in
-        pass
-      end
+    it "has a working method #none_in" do
+      instance.none_in
+      pass
+    end
 
-      it "has a working method #overridden_method" do
-        @obj.set_property("int", 0)
-        @obj.overridden_method
-        pass
-      end
+    it "has a working method #overridden_method" do
+      instance.set_property("int", 0)
+      instance.overridden_method
+      pass
+    end
 
-      it "has a working method #vfunc_caller_allocated_out_parameter"
-      it "has a working method #vfunc_meth_with_error"
-      it "has a working method #vfunc_multiple_out_parameters"
-      it "has a working method #vfunc_one_out_parameter"
-      it "has a working method #vfunc_return_value_and_multiple_out_parameters"
-      it "has a working method #vfunc_return_value_and_one_out_parameter"
-      it "has a working method #vfunc_return_value_only"
-      it "has a working method #vfunc_with_callback"
+    it "has a working method #vfunc_caller_allocated_out_parameter" do
+      skip
+    end
+    it "has a working method #vfunc_meth_with_error" do
+      skip
+    end
+    it "has a working method #vfunc_multiple_out_parameters" do
+      skip
+    end
+    it "has a working method #vfunc_one_out_parameter" do
+      skip
+    end
+    it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
+      skip
+    end
+    it "has a working method #vfunc_return_value_and_one_out_parameter" do
+      skip
+    end
+    it "has a working method #vfunc_return_value_only" do
+      skip
+    end
+    it "has a working method #vfunc_with_callback" do
+      skip
+    end
 
-      it "has a property 'int' containing the argument to #new" do
-        assert_equal 42, @obj.get_property("int")
-        @obj.set_property("int", 13)
-        assert_equal 13, @obj.get_property("int")
-      end
+    it "has a property 'int' containing the argument to #new" do
+      assert_equal 42, instance.get_property("int")
+      instance.set_property("int", 13)
+      assert_equal 13, instance.get_property("int")
+    end
 
-      it "has property accessors for the int property" do
-        assert_equal 42, @obj.int
-        @obj.int = 1
-        assert_equal 1, @obj.int
-      end
+    it "has property accessors for the int property" do
+      assert_equal 42, instance.int
+      instance.int = 1
+      assert_equal 1, instance.int
     end
   end
 
-  describe "OverridesObject" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::OverridesObject do
+    it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesObject.new
       assert_instance_of GIMarshallingTests::OverridesObject, ob
     end
 
-    it "creates instances with #returnv" do
+    it "has a working function #returnv" do
       ob = GIMarshallingTests::OverridesObject.returnv
       assert_instance_of GIMarshallingTests::OverridesObject, ob
     end
 
-    describe "an instance" do
-      before do
-        @obj = GIMarshallingTests::OverridesObject.new
-      end
+    let(:instance) { GIMarshallingTests::OverridesObject.new }
 
-      it "has a working method #method" do
-        result = @obj.method
-        result.must_equal 42
-      end
+    it "has a working method #method" do
+      result = instance.method
+      result.must_equal 42
+    end
 
-      it "does not have field accessor methods" do
-        assert_raises(NoMethodError) { @obj.parent_instance }
-        assert_raises(NoMethodError) { @obj.parent_instance = nil }
-        assert_raises(NoMethodError) { @obj.long_ }
-        assert_raises(NoMethodError) { @obj.long_ = 1 }
-      end
+    it "does not have field accessor methods" do
+      assert_raises(NoMethodError) { instance.parent_instance }
+      assert_raises(NoMethodError) { instance.parent_instance = nil }
+      assert_raises(NoMethodError) { instance.long_ }
+      assert_raises(NoMethodError) { instance.long_ = 1 }
     end
   end
 
-  describe "OverridesStruct" do
+  describe GIMarshallingTests::OverridesStruct do
     let(:instance) { GIMarshallingTests::OverridesStruct.new }
 
-    it "creates instances with #new" do
+    it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesStruct.new
-      assert_instance_of GIMarshallingTests::OverridesStruct, ob
-    end
-
-    it "creates instances with #returnv" do
-      ob = GIMarshallingTests::OverridesStruct.returnv
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
     end
 
     it "has a working method #method" do
       instance.method.must_equal 42
+    end
+
+    it "has a working function #returnv" do
+      ob = GIMarshallingTests::OverridesStruct.returnv
+      assert_instance_of GIMarshallingTests::OverridesStruct, ob
     end
 
     it "has a writable field long_" do
@@ -317,38 +422,34 @@ describe "GIMarshallingTests" do
     end
   end
 
-  describe "PointerStruct" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::PointerStruct do
+    it "creates an instance using #new" do
       ps = GIMarshallingTests::PointerStruct.new
       assert_instance_of GIMarshallingTests::PointerStruct, ps
     end
 
-    it "creates instances with #returnv" do
+    let (:instance) { GIMarshallingTests::PointerStruct.new }
+
+    it "has a working method #inv" do
+      instance.long_ = 42
+      instance.inv
+      pass
+    end
+
+    it "has a writable field long_" do
+      assert_equal 0, instance.long_
+      instance.long_ = 1056
+      assert_equal 1056, instance.long_
+    end
+
+    it "has a working function #returnv" do
       ob = GIMarshallingTests::PointerStruct.returnv
       assert_instance_of GIMarshallingTests::PointerStruct, ob
     end
-
-    describe "an instance" do
-      before do
-        @ps = GIMarshallingTests::PointerStruct.new
-      end
-
-      it "has a writable field long_" do
-        assert_equal 0, @ps.long_
-        @ps.long_ = 1056
-        assert_equal 1056, @ps.long_
-      end
-
-      it "has a working method #inv" do
-        @ps.long_ = 42
-        @ps.inv
-        pass
-      end
-    end
   end
 
-  describe "PropertiesObject" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::PropertiesObject do
+    it "creates an instance using #new" do
       ob = GIMarshallingTests::PropertiesObject.new
       assert_instance_of GIMarshallingTests::PropertiesObject, ob
     end
@@ -368,85 +469,81 @@ describe "GIMarshallingTests" do
     it "has the property 'some-ulong'"
   end
 
-  it "has the enum SecondEnum" do
-    assert_equal 0, GIMarshallingTests::SecondEnum[:secondvalue1]
-    assert_equal 1, GIMarshallingTests::SecondEnum[:secondvalue2]
+  describe GIMarshallingTests::SecondEnum do
+    it "has the member :secondvalue1" do
+      assert_equal 0, GIMarshallingTests::SecondEnum[:secondvalue1]
+    end
+    it "has the member :secondvalue2" do
+      assert_equal 1, GIMarshallingTests::SecondEnum[:secondvalue2]
+    end
   end
 
-  describe "SimpleStruct" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::SimpleStruct do
+    it "creates an instance using #new" do
       ss = GIMarshallingTests::SimpleStruct.new
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
     end
 
-    it "creates instances with #returnv" do
+    let(:instance) { GIMarshallingTests::SimpleStruct.new }
+
+    it "has a working method #inv" do
+      instance.long_ = 6
+      instance.int8 = 7
+      instance.inv
+      pass
+    end
+
+    it "has a working method #method" do
+      instance.long_ = 6
+      instance.int8 = 7
+      instance.method
+      pass
+    end
+
+    it "has a writable field long_" do
+      assert_equal 0, instance.long_
+      instance.long_ = 1056
+      assert_equal 1056, instance.long_
+    end
+
+    it "has a writable field int8" do
+      assert_equal 0, instance.int8
+      instance.int8 = -43
+      assert_equal(-43, instance.int8)
+    end
+
+    it "has a working function #returnv" do
       ss = GIMarshallingTests::SimpleStruct.returnv
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
     end
-
-    describe "an instance" do
-      before do
-        @ss = GIMarshallingTests::SimpleStruct.new
-      end
-
-      it "has a working method #method" do
-        @ss.long_ = 6
-        @ss.int8 = 7
-        @ss.method
-        pass
-      end
-
-      it "has a working method #inv" do
-        @ss.long_ = 6
-        @ss.int8 = 7
-        @ss.inv
-        pass
-      end
-
-      it "has a writable field long_" do
-        assert_equal 0, @ss.long_
-        @ss.long_ = 1056
-        assert_equal 1056, @ss.long_
-      end
-
-      it "has a writable field int8" do
-        assert_equal 0, @ss.int8
-        @ss.int8 = -43
-        assert_equal(-43, @ss.int8)
-      end
-    end
   end
 
-  describe "SubObject" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::SubObject do
+    it "creates an instance using #new" do
       so = GIMarshallingTests::SubObject.new 42
       assert_instance_of GIMarshallingTests::SubObject, so
     end
 
-    describe "an instance" do
-      before do
-        @so = GIMarshallingTests::SubObject.new 0
-      end
+    let(:instance) { GIMarshallingTests::SubObject.new 0 }
 
-      it "has a working method #overwritten_method" do
-        @so.overwritten_method
-        pass
-      end
+    it "has a working method #overwritten_method" do
+      instance.overwritten_method
+      pass
+    end
 
-      it "has a working method #sub_method" do
-        @so.sub_method
-        pass
-      end
+    it "has a working method #sub_method" do
+      instance.sub_method
+      pass
+    end
 
-      it "does not have field accessors" do
-        assert_raises(NoMethodError) { @so.parent_instance }
-        assert_raises(NoMethodError) { @so.parent_instance = nil }
-      end
+    it "does not have field accessors" do
+      assert_raises(NoMethodError) { instance.parent_instance }
+      assert_raises(NoMethodError) { instance.parent_instance = nil }
     end
   end
 
-  describe "SubSubObject" do
-    it "creates instances with #new" do
+  describe GIMarshallingTests::SubSubObject do
+    it "creates an instance using #new" do
       so = GIMarshallingTests::SubSubObject.new 42
       assert_instance_of GIMarshallingTests::SubSubObject, so
     end
@@ -459,49 +556,49 @@ describe "GIMarshallingTests" do
     end
   end
 
-  describe "Union" do
+  describe GIMarshallingTests::Union do
     it "creates an instance with #new" do
       u = GIMarshallingTests::Union.new
       assert_instance_of GIMarshallingTests::Union, u
     end
 
-    it "creates an instance with #returnv" do
+    let(:instance) { GIMarshallingTests::Union.new }
+
+    it "has a writable field long_" do
+      assert_equal 0, instance.long_
+      instance.long_ = 1056
+      assert_equal 1056, instance.long_
+    end
+
+    it "has a working method #inv" do
+      instance.long_ = 42
+      instance.inv
+      pass
+    end
+
+    it "has a working method #method" do
+      instance.long_ = 42
+      instance.method
+      pass
+    end
+
+    it "has a working function #inout" do
+      skip "This function is defined in the header but not implemented"
+    end
+
+    it "has a working function #out" do
+      skip "This function is defined in the header but not implemented"
+    end
+
+    it "has a working function #returnv" do
       u = GIMarshallingTests::Union.returnv
       assert_instance_of GIMarshallingTests::Union, u
     end
-
-    # This function is defined in the header but not implemented.
-    # it "has a working function #inout"
-
-    # This function is defined in the header but not implemented.
-    # it "has a working function #out"
-
-    describe "an instance" do
-      before do
-        @it = GIMarshallingTests::Union.new
-      end
-
-      it "has a writable field long_" do
-        assert_equal 0, @it.long_
-        @it.long_ = 1056
-        assert_equal 1056, @it.long_
-      end
-
-      it "has a working method #inv" do
-        @it.long_ = 42
-        @it.inv
-        pass
-      end
-
-      it "has a working method #method" do
-        @it.long_ = 42
-        @it.method
-        pass
-      end
-    end
   end
 
-  it "has a working function #array_enum_in"
+  it "has a working function #array_enum_in" do
+    skip
+  end
 
   it "has a working function #array_fixed_inout" do
     res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
@@ -538,62 +635,84 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], res
   end
 
-  it "has a working function #array_gvariant_container_in"
-  it "has a working function #array_gvariant_full_in"
-  it "has a working function #array_gvariant_none_in"
-  # FIXME: Test was disabled since the implementation of the return value
-  # handling was never correct.
-  #
-  #do
-    #v1 = GLib::Variant.new_int32(27)
-    #v2 = GLib::Variant.new_string("Hello")
-    #if GIMarshallingTests._builder.setup_method :array_gvariant_in
-      #GIMarshallingTests.array_gvariant_in [v1, v2]
-    #else
-      #GIMarshallingTests.array_gvariant_none_in [v1, v2]
-    #end
+  it "has a working function #array_gvariant_container_in" do
+    skip
+  end
+  it "has a working function #array_gvariant_full_in" do
+    skip
+  end
 
-    #pass
-    ## TODO: Can we determine that result should be an array?
-    ## assert_equal 27, res[0].get_int32
-    ## assert_equal "Hello", res[1].get_string
-  #end
+  it "has a working function #array_gvariant_none_in" do
+    skip "Test was disabled the return value was never correct"
+    v1 = GLib::Variant.new_int32(27)
+    v2 = GLib::Variant.new_string("Hello")
+    GIMarshallingTests.array_gvariant_none_in [v1, v2]
+
+    pass
+    # TODO: Can we determine that result should be an array?
+    # assert_equal 27, res[0].get_int32
+    # assert_equal "Hello", res[1].get_string
+  end
 
   it "has a working function #array_in" do
     GIMarshallingTests.array_in [-1, 0, 1, 2]
     pass
   end
 
-  it "has a working function #array_in_guint64_len"
-  it "has a working function #array_in_guint8_len"
-  it "has a working function #array_in_len_before"
-  it "has a working function #array_in_len_zero_terminated"
-  it "has a working function #array_in_nonzero_nonlen"
+  it "has a working function #array_in_guint64_len" do
+    skip
+  end
+  it "has a working function #array_in_guint8_len" do
+    skip
+  end
+  it "has a working function #array_in_len_before" do
+    skip
+  end
+  it "has a working function #array_in_len_zero_terminated" do
+    skip
+  end
+  it "has a working function #array_in_nonzero_nonlen" do
+    skip
+  end
 
   it "has a working function #array_inout" do
     res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
     assert_equal [-2, -1, 0, 1, 2], res
   end
 
-  it "has a working function #array_inout_etc"
+  it "has a working function #array_inout_etc" do
+    skip
+  end
 
   it "has a working function #array_out" do
     res = GIMarshallingTests.array_out
     assert_equal  [-1, 0, 1, 2], res
   end
 
-  it "has a working function #array_out_etc"
+  it "has a working function #array_out_etc" do
+    skip
+  end
 
   it "has a working function #array_return" do
     res = GIMarshallingTests.array_return
     assert_equal  [-1, 0, 1, 2], res
   end
 
-  it "has a working function #array_return_etc"
-  it "has a working function #array_simple_struct_in"
-  it "has a working function #array_string_in"
-  it "has a working function #array_struct_in"
-  it "has a working function #array_struct_take_in"
+  it "has a working function #array_return_etc" do
+    skip
+  end
+  it "has a working function #array_simple_struct_in" do
+    skip
+  end
+  it "has a working function #array_string_in" do
+    skip
+  end
+  it "has a working function #array_struct_in" do
+    skip
+  end
+  it "has a working function #array_struct_take_in" do
+    skip
+  end
 
   it "has a working function #array_uint8_in" do
     arr = "abcd".bytes.to_a
@@ -606,7 +725,9 @@ describe "GIMarshallingTests" do
     pass
   end
 
-  it "has a working function #array_zero_terminated_inout"
+  it "has a working function #array_zero_terminated_inout" do
+    skip
+  end
 
   it "has a working function #array_zero_terminated_out" do
     res = GIMarshallingTests.array_zero_terminated_out
@@ -618,8 +739,12 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
-  it "has a working function #array_zero_terminated_return_null"
-  it "has a working function #array_zero_terminated_return_struct"
+  it "has a working function #array_zero_terminated_return_null" do
+    skip
+  end
+  it "has a working function #array_zero_terminated_return_struct" do
+    skip
+  end
 
   it "has a working function #boolean_in_false" do
     GIMarshallingTests.boolean_in_false false
@@ -695,11 +820,21 @@ describe "GIMarshallingTests" do
     pass
   end
 
-  it "has a working function #callback_multiple_out_parameters"
-  it "has a working function #callback_one_out_parameter"
-  it "has a working function #callback_return_value_and_multiple_out_parameters"
-  it "has a working function #callback_return_value_and_one_out_parameter"
-  it "has a working function #callback_return_value_only"
+  it "has a working function #callback_multiple_out_parameters" do
+    skip
+  end
+  it "has a working function #callback_one_out_parameter" do
+    skip
+  end
+  it "has a working function #callback_return_value_and_multiple_out_parameters" do
+    skip
+  end
+  it "has a working function #callback_return_value_and_one_out_parameter" do
+    skip
+  end
+  it "has a working function #callback_return_value_only" do
+    skip
+  end
 
   it "has a working function #double_in" do
     GIMarshallingTests.double_in Float::MAX
@@ -807,10 +942,15 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], arr.to_a
   end
 
-  it "has a working function #garray_uint64_none_in"
-  it "has a working function #garray_uint64_none_return"
-
-  it "has a working function #garray_utf8_container_inout"
+  it "has a working function #garray_uint64_none_in" do
+    skip
+  end
+  it "has a working function #garray_uint64_none_return" do
+    skip
+  end
+  it "has a working function #garray_utf8_container_inout" do
+    skip
+  end
 
   it "has a working function #garray_utf8_container_out" do
     res = GIMarshallingTests.garray_utf8_container_out
@@ -912,9 +1052,15 @@ describe "GIMarshallingTests" do
     end
   end
 
-  it "has a working function #gerror_out"
-  it "has a working function #gerror_out_transfer_none"
-  it "has a working function #gerror_return"
+  it "has a working function #gerror_out" do
+    skip
+  end
+  it "has a working function #gerror_out_transfer_none" do
+    skip
+  end
+  it "has a working function #gerror_return" do
+    skip
+  end
 
   it "has a working function #ghashtable_int_none_in" do
     GIMarshallingTests.ghashtable_int_none_in(
@@ -926,8 +1072,9 @@ describe "GIMarshallingTests" do
     assert_equal({-1 => 1, 0 => 0, 1 => -1, 2 => -2}, gh.to_hash)
   end
 
-  # This function is defined in the header but not implemented.
-  # it "has a working function #ghashtable_utf8_container_in"
+  it "has a working function #ghashtable_utf8_container_in" do
+    skip "This function is defined in the header but not implemented"
+  end
 
   it "has a working function #ghashtable_utf8_container_inout" do
     hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
@@ -947,8 +1094,9 @@ describe "GIMarshallingTests" do
                  res.to_hash)
   end
 
-  # This function is defined in the header but not implemented.
-  # it "has a working function #ghashtable_utf8_full_in"
+  it "has a working function #ghashtable_utf8_full_in" do
+    skip "This function is defined in the header but not implemented"
+  end
 
   it "has a working function #ghashtable_utf8_full_inout" do
     hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
@@ -1002,8 +1150,12 @@ describe "GIMarshallingTests" do
     assert_equal [-1, 0, 1, 2], res.to_a
   end
 
-  it "has a working function #glist_uint32_none_in"
-  it "has a working function #glist_uint32_none_return"
+  it "has a working function #glist_uint32_none_in" do
+    skip
+  end
+  it "has a working function #glist_uint32_none_return" do
+    skip
+  end
 
   it "has a working function #glist_utf8_container_inout" do
     res = GIMarshallingTests.glist_utf8_container_inout ["0", "1", "2"]
@@ -1054,16 +1206,36 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
-  it "has a working function #gptrarray_utf8_container_inout"
-  it "has a working function #gptrarray_utf8_container_out"
-  it "has a working function #gptrarray_utf8_container_return"
-  it "has a working function #gptrarray_utf8_full_inout"
-  it "has a working function #gptrarray_utf8_full_out"
-  it "has a working function #gptrarray_utf8_full_return"
-  it "has a working function #gptrarray_utf8_none_in"
-  it "has a working function #gptrarray_utf8_none_inout"
-  it "has a working function #gptrarray_utf8_none_out"
-  it "has a working function #gptrarray_utf8_none_return"
+  it "has a working function #gptrarray_utf8_container_inout" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_container_out" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_container_return" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_full_inout" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_full_out" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_full_return" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_none_in" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_none_inout" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_none_out" do
+    skip
+  end
+  it "has a working function #gptrarray_utf8_none_return" do
+    skip
+  end
 
   it "has a working function #gslist_int_none_in" do
     GIMarshallingTests.gslist_int_none_in [-1, 0, 1, 2]
@@ -1145,7 +1317,9 @@ describe "GIMarshallingTests" do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
-  it "has a working function #gtype_in"
+  it "has a working function #gtype_in" do
+    skip
+  end
 
   it "has a working function #gtype_inout" do
     none = GObject.type_from_name "void"
@@ -1166,23 +1340,26 @@ describe "GIMarshallingTests" do
     assert_equal "void", name
   end
 
-  it "has a working function #gtype_string_in"
-  it "has a working function #gtype_string_out"
-  it "has a working function #gtype_string_return"
+  it "has a working function #gtype_string_in" do
+    skip
+  end
+  it "has a working function #gtype_string_out" do
+    skip
+  end
+  it "has a working function #gtype_string_return" do
+    skip
+  end
+  it "has a working function #gvalue_flat_array" do
+    skip
+  end
+  it "has a working function #gvalue_flat_array_round_trip" do
+    skip
+  end
 
-  it "has a working function #gvalue_flat_array"
-  it "has a working function #gvalue_flat_array_round_trip"
-
-  describe "#gvalue_in" do
-    it "works when passed a GObject::Value object" do
-      GIMarshallingTests.gvalue_in GObject::Value.wrap_ruby_value(42)
-      pass
-    end
-
-    it "automatically converts a non-GValue object to a GValue" do
-      GIMarshallingTests.gvalue_in 42
-      pass
-    end
+  it "has a working function #gvalue_in" do
+    GIMarshallingTests.gvalue_in GObject::Value.wrap_ruby_value(42)
+    GIMarshallingTests.gvalue_in 42
+    pass
   end
 
   it "has a working function #gvalue_in_enum" do
@@ -1193,36 +1370,42 @@ describe "GIMarshallingTests" do
     pass
   end
 
-  it "has a working function #gvalue_in_with_type"
-
-  describe "#gvalue_inout" do
-    it "works when passed a GObject::Value object" do
-      res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-      assert_equal "42", res.ruby_value
-    end
-
-    it "automatically converts a non-GValue input to a GValue" do
-      res = GIMarshallingTests.gvalue_inout 42
-      assert_equal "42", res.ruby_value
-    end
+  it "has a working function #gvalue_in_with_type" do
+    skip
   end
 
-  it "has a working function #gvalue_int64_in"
-  it "has a working function #gvalue_int64_out"
+  it "has a working function #gvalue_inout" do
+    res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
+    assert_equal "42", res.ruby_value
+
+    res = GIMarshallingTests.gvalue_inout 42
+    assert_equal "42", res.ruby_value
+  end
+
+  it "has a working function #gvalue_int64_in" do
+    skip
+  end
+  it "has a working function #gvalue_int64_out" do
+    skip
+  end
 
   it "has a working function #gvalue_out" do
     res = GIMarshallingTests.gvalue_out
     assert_equal 42, res.ruby_value
   end
 
-  it "has a working function #gvalue_out_caller_allocates"
+  it "has a working function #gvalue_out_caller_allocates" do
+    skip
+  end
 
   it "has a working function #gvalue_return" do
     res = GIMarshallingTests.gvalue_return
     assert_equal 42, res.ruby_value
   end
 
-  it "has a working function #init_function"
+  it "has a working function #init_function" do
+    skip
+  end
 
   it "has a working function #int16_in_max" do
     GIMarshallingTests.int16_in_max 0x7fff
@@ -1479,7 +1662,9 @@ describe "GIMarshallingTests" do
     assert_equal min_long, res
   end
 
-  it "has a working function #multi_array_key_value_in"
+  it "has a working function #multi_array_key_value_in" do
+    skip
+  end
 
   it "has a working function #no_type_flags_in" do
     GIMarshallingTests.no_type_flags_in :value2
@@ -1506,9 +1691,15 @@ describe "GIMarshallingTests" do
     assert_equal :value2, res
   end
 
-  it "has a working function #overrides_struct_returnv"
-  it "has a working function #param_spec_out"
-  it "has a working function #param_spec_return"
+  it "has a working function #overrides_struct_returnv" do
+    skip
+  end
+  it "has a working function #param_spec_out" do
+    skip
+  end
+  it "has a working function #param_spec_return" do
+    skip
+  end
 
   it "has a working function #pointer_in_return" do
     ptr = FFI::MemoryPointer.new 1
@@ -1528,7 +1719,9 @@ describe "GIMarshallingTests" do
     assert_equal 42, res.long_
   end
 
-  it "has a working function #return_gvalue_flat_array"
+  it "has a working function #return_gvalue_flat_array" do
+    skip
+  end
 
   it "has a working function #short_in_max" do
     GIMarshallingTests.short_in_max 0x7fff
@@ -1636,7 +1829,9 @@ describe "GIMarshallingTests" do
     assert_equal min_ssize_t, res
   end
 
-  it "has a working function #test_interface_test_int8_in"
+  it "has a working function #test_interface_test_int8_in" do
+    skip
+  end
 
   it "has a working function #time_t_in" do
     GIMarshallingTests.time_t_in 1234567890
@@ -1775,11 +1970,13 @@ describe "GIMarshallingTests" do
     assert_equal max_ulong, res
   end
 
-  # This function is defined in the header but not implemented.
-  # it "has a working function #union_inout"
+  it "has a working function #union_inout" do
+    skip "This function is defined in the header but not implemented"
+  end
 
-  # This function is defined in the header but not implemented.
-  # it "has a working function #union_out"
+  it "has a working function #union_out" do
+    skip "This function is defined in the header but not implemented"
+  end
 
   it "has a working function #union_returnv" do
     res = GIMarshallingTests.union_returnv
@@ -1812,8 +2009,10 @@ describe "GIMarshallingTests" do
     assert_nil res
   end
 
-  # This function is defined in the header but not implemented.
-  # it "has a working function #utf8_full_in"
+  it "has a working function #utf8_full_in" do
+    skip "This function is defined in the header but not implemented"
+  end
+
 
   it "has a working function #utf8_full_inout" do
     res = GIMarshallingTests.utf8_full_inout "const ♥ utf8"
@@ -1850,4 +2049,3 @@ describe "GIMarshallingTests" do
     assert_equal "const ♥ utf8", res
   end
 end
-
