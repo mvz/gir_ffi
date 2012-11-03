@@ -38,7 +38,6 @@ describe "GIMarshallingTests" do
     end
 
     it "has a working function #inout" do
-      skip unless get_method_introspection_data 'GIMarshallingTests', 'BoxedStruct', 'inout'
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
 
@@ -49,13 +48,11 @@ describe "GIMarshallingTests" do
     end
 
     it "has a working function #out" do
-      skip unless get_method_introspection_data 'GIMarshallingTests', 'BoxedStruct', 'out'
       res = GIMarshallingTests::BoxedStruct.out
       assert_equal 42, res.long_
     end
 
     it "has a working function #returnv" do
-      skip unless get_method_introspection_data 'GIMarshallingTests', 'BoxedStruct', 'returnv'
       res = GIMarshallingTests::BoxedStruct.returnv
       assert_equal 42, res.long_
       assert_equal ["0", "1", "2"], res.g_strv.to_a
