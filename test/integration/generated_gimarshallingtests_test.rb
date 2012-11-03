@@ -187,13 +187,6 @@ describe "GIMarshallingTests" do
         @obj = GIMarshallingTests::Object.new 42
       end
 
-      it "has a working virtual method #method_int8_in"
-      it "has a working virtual method #method_int8_out"
-
-      it "has a working virtual method #method_with_default_implementation" do
-        @obj.method_with_default_implementation 104
-        assert_equal 104, @obj.int
-      end
 
       # This function is only found in the header
       # it "has a working method #full_in"
