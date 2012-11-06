@@ -68,6 +68,9 @@ module GirFFI::Builder
   #
   # Implements argument processing for arguments with direction
   # :out that are neither arrays nor 'interfaces'.
+  #
+  # Implements argument processing for arguments with direction
+  # :out that are enums
   class RegularArgument < Argument::Base
     def initialize var_gen, name, typeinfo, direction
       super var_gen, name, typeinfo, direction
@@ -103,7 +106,12 @@ module GirFFI::Builder
                 when :inout
                   "#{argument_class_name}.wrap(#{output_conversion_arguments})"
                 when :out
-                  "#{callarg}.to_value"
+                  case specialized_type_tag
+                  when :enum, :flags
+                    "#{argument_class_name}[#{callarg}.to_value]"
+                  else
+                    "#{callarg}.to_value"
+                  end
                 end
         result << "#{retname} = #{value}"
       end
@@ -145,7 +153,7 @@ module GirFFI::Builder
 
     def set_function_call_argument
       value = if @direction == :out
-                "GirFFI::InOutPointer.for #{type_tag.inspect}"
+                "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
               else
                 if needs_ingoing_parameter_conversion?
                   parameter_conversion
@@ -217,8 +225,6 @@ module GirFFI::Builder
       type = arginfo.argument_type
       direction = arginfo.direction
       klass = case type.flattened_tag
-              when :enum, :flags
-                EnumOutArgument
               when :object, :struct
                 if arginfo.caller_allocates?
                   AllocatedInterfaceOutArgument
@@ -237,18 +243,6 @@ module GirFFI::Builder
                 RegularArgument
               end
       klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for arguments with direction
-  # :out that are enums
-  class EnumOutArgument < Argument::OutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for :gint32" ]
-    end
-
-    def post
-      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
   end
 

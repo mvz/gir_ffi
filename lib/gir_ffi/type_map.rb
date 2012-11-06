@@ -4,6 +4,8 @@ module GirFFI
     gtype_type = "uint#{sz}".to_sym
 
     TAG_TYPE_MAP = {
+      :enum => :int32,
+      :flags => :int32,
       :GType => gtype_type,
       :gboolean => :bool,
       :gunichar => :uint32,
