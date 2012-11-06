@@ -233,8 +233,6 @@ module GirFFI::Builder
                 else
                   InterfaceOutArgument
                 end
-              when :zero_terminated
-                InterfaceOutArgument
               when :c
                 CArrayOutArgument
               when :array, :glist, :gslist, :ghash
