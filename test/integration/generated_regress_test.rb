@@ -9,14 +9,20 @@ def get_field_value obj, field
 end
 
 # Tests generated methods and functions in the Regress namespace.
-describe Regress  do
-  describe Regress::ATestError do
+describe Regress do
+  describe "Regress::ATestError" do
+    before do
+      skip unless get_introspection_data 'Regress', 'ATestError'
+    end
+
     it "has the member :code0" do
       Regress::ATestError[:code0].must_equal 0
     end
+
     it "has the member :code1" do
       Regress::ATestError[:code1].must_equal 1
     end
+
     it "has the member :code2" do
       Regress::ATestError[:code2].must_equal 2
     end
