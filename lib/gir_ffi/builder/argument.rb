@@ -109,6 +109,8 @@ module GirFFI::Builder
                   case specialized_type_tag
                   when :enum, :flags
                     "#{argument_class_name}[#{callarg}.to_value]"
+                  when :strv
+                    "#{argument_class_name}.wrap(#{callarg}.to_value)"
                   else
                     "#{callarg}.to_value"
                   end
@@ -231,7 +233,7 @@ module GirFFI::Builder
                 else
                   InterfaceOutArgument
                 end
-              when :strv, :zero_terminated
+              when :zero_terminated
                 InterfaceOutArgument
               when :c
                 CArrayOutArgument

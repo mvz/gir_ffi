@@ -59,23 +59,17 @@ module GirFFI
           when :interface
             type_info.interface_type_name
           when :array
-            case type_info.array_type
+            case type_info.flattened_tag
             when :byte_array
               'GLib::ByteArray'
             when :array
               'GLib::Array'
             when :ptr_array
               'GLib::PtrArray'
+            when :strv
+              'GLib::Strv'
             else # :c
-              if type_info.zero_terminated?
-                if type_info.element_type == :utf8
-                  'GLib::Strv'
-                else
-                  'GirFFI::InPointer'
-                end
-              else
-                'GirFFI::InPointer'
-              end
+              'GirFFI::InPointer'
             end
           else
             TAG_TO_WRAPPER_CLASS_MAP[tag]
