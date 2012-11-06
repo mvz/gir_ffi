@@ -943,6 +943,14 @@ describe Regress  do
     assert_equal 5 + 4 + 3 + 2 + 1, Regress.test_array_fixed_size_int_in([5, 4, 3, 2, 1])
   end
 
+  describe "#test_array_fixed_size_int_in" do
+    it "raises an error when called with the wrong number of arguments" do
+      assert_raises ArgumentError do
+        Regress.test_array_fixed_size_int_in [2]
+      end
+    end
+  end
+
   it "has a working function #test_array_fixed_size_int_out" do
     assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out
   end
@@ -1105,6 +1113,17 @@ describe Regress  do
     }, "new-value"
     a.must_equal "new-value"
     result.must_equal 5
+  end
+
+  describe "the #test_callback_user_data function" do
+    it "handles boolean user_data" do
+      a = false
+      Regress.test_callback_user_data Proc.new {|u|
+        a = u
+        5
+      }, true
+      assert_equal true, a
+    end
   end
 
   it "has a working function #test_closure" do
