@@ -71,6 +71,12 @@ module GirFFI::Builder
   #
   # Implements argument processing for arguments with direction
   # :out that are enums
+  #
+  # Implements argument processing for interface arguments with direction
+  # :out (structs, objects, etc.).
+  #
+  # Implements argument processing for strv arguments with direction
+  # :out.
   class RegularArgument < Argument::Base
     def initialize var_gen, name, typeinfo, direction
       super var_gen, name, typeinfo, direction
@@ -109,7 +115,7 @@ module GirFFI::Builder
                   case specialized_type_tag
                   when :enum, :flags
                     "#{argument_class_name}[#{callarg}.to_value]"
-                  when :strv
+                  when :strv, :object, :struct
                     "#{argument_class_name}.wrap(#{callarg}.to_value)"
                   else
                     "#{callarg}.to_value"
@@ -231,7 +237,7 @@ module GirFFI::Builder
                 if arginfo.caller_allocates?
                   AllocatedInterfaceOutArgument
                 else
-                  InterfaceOutArgument
+                  RegularArgument
                 end
               when :c
                 CArrayOutArgument
@@ -276,17 +282,6 @@ module GirFFI::Builder
   class PointerLikeOutArgument < Argument::OutBase
     def pre
       [ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
-    end
-  end
-
-  # Implements argument processing for interface arguments with direction
-  # :out (structs, objects, etc.).
-  #
-  # Implements argument processing for strv arguments with direction
-  # :out.
-  class InterfaceOutArgument < PointerLikeOutArgument
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap #{callarg}.to_value" ]
     end
   end
 

@@ -1,14 +1,17 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::RegularArgument do
-  describe "for an argument with direction :out" do
-    let(:var_gen) { GirFFI::VariableNameGenerator.new }
-    let(:type_info) { Object.new }
-    let(:builder) { GirFFI::Builder::RegularArgument.new var_gen, 'foo', type_info, :out }
+  let(:type_info) { Object.new }
+  let(:var_gen) { GirFFI::VariableNameGenerator.new }
+  let(:builder) { GirFFI::Builder::RegularArgument.new(var_gen, 'foo',
+                                                       type_info, direction) }
 
-    before do
-      stub(type_info).interface_type_name { 'Bar::Foo' }
-    end
+  before do
+    stub(type_info).interface_type_name { 'Bar::Foo' }
+  end
+
+  describe "for an argument with direction :out" do
+    let(:direction) { :out }
 
     describe "for :enum" do
       before do
@@ -40,6 +43,36 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :object" do
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).flattened_tag { :object }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :object" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
+      end
+    end
+
+    describe "for :struct" do
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).flattened_tag { :struct }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :struct" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
+      end
+    end
+
     describe "for :strv" do
       before do
         stub(type_info).tag { :array }
@@ -54,7 +87,6 @@ describe GirFFI::Builder::RegularArgument do
         builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1.to_value)" ]
       end
     end
-
   end
 end
 
