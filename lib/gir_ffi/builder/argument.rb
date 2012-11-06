@@ -26,18 +26,12 @@ module GirFFI::Builder
     end
 
     def self.builder_for var_gen, name, type, direction, libmodule
-      klass = case type.tag
-              when :interface
-                case type.interface.info_type
-                when :callback
-                  return CallbackInArgument.new var_gen, name, type, libmodule
-                else
-                  RegularArgument
-                end
-              else
-                RegularArgument
-              end
-      return klass.new var_gen, name, type, direction
+      case type.flattened_tag
+      when :callback
+        return CallbackInArgument.new var_gen, name, type, libmodule
+      else
+        return RegularArgument.new var_gen, name, type, direction
+      end
     end
   end
 
@@ -222,32 +216,20 @@ module GirFFI::Builder
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       direction = arginfo.direction
-      klass = case type.tag
-              when :interface
-                case type.interface.info_type
-                when :enum, :flags
-                  EnumOutArgument
+      klass = case type.flattened_tag
+              when :enum, :flags
+                EnumOutArgument
+              when :object, :struct
+                if arginfo.caller_allocates?
+                  AllocatedInterfaceOutArgument
                 else
-                  if arginfo.caller_allocates?
-                    AllocatedInterfaceOutArgument
-                  else
-                    InterfaceOutArgument
-                  end
-                end
-              when :array
-                if type.zero_terminated?
                   InterfaceOutArgument
-                else
-                  case type.array_type
-                  when :c
-                    CArrayOutArgument
-                  when :array
-                    it = PointerLikeOutArgument.new var_gen, arginfo.name, type, direction
-                    it.extend WithTypedContainerPostMethod
-                    return it
-                  end
                 end
-              when :glist, :gslist, :ghash
+              when :strv, :zero_terminated
+                InterfaceOutArgument
+              when :c
+                CArrayOutArgument
+              when :array, :glist, :gslist, :ghash
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type, direction
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -325,26 +307,14 @@ module GirFFI::Builder
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       direction = arginfo.direction
-      klass = case type.tag
-              when :interface
-                case type.interface.info_type
-                when :enum, :flags
-                  EnumInOutArgument
-                else
-                  RegularArgument
-                end
-              when :array
-                if type.zero_terminated?
-                  StrvInOutArgument
-                else
-                  case type.array_type
-                  when :c
-                    CArrayInOutArgument
-                  when :array
-                    RegularArgument
-                  end
-                end
-              when :glist, :gslist, :ghash
+      klass = case type.flattened_tag
+              when :enum, :flags
+                EnumInOutArgument
+              when :c
+                CArrayInOutArgument
+              when :strv
+                StrvInOutArgument
+              when :object, :struct, :array, :glist, :gslist, :ghash
                 RegularArgument
               else
                 RegularInOutArgument
@@ -421,8 +391,8 @@ module GirFFI::Builder
     end
 
     def self.builder_for var_gen, name, type, direction, is_constructor
-      if type.tag == :interface and
-        [:interface, :object].include? type.interface.info_type
+      case type.flattened_tag
+      when :interface, :object
         klass = if is_constructor
                   ConstructorReturnValue
                 else
@@ -435,36 +405,19 @@ module GirFFI::Builder
     end
 
     def self.builder_for_field_getter var_gen, name, type, direction
-      klass = case type.tag
+      klass = case type.flattened_tag
               when :void
                 if type.pointer?
                   RegularReturnValue
                 else
                   VoidReturnValue
                 end
-              when :interface
-                case type.interface.info_type
-                when :struct, :union, :interface, :object
-                  WrappingReturnValue
-                else
-                  RegularReturnValue
-                end
-              when :array
-                if type.zero_terminated?
-                  WrappingReturnValue
-                else
-                  case type.array_type
-                  when :c
-                    CArrayReturnValue
-                  when :array
-                    it = ReturnValue.new var_gen, name, type, direction
-                    it.extend WithTypedContainerPostMethod
-                    return it
-                  else
-                    WrappingReturnValue
-                  end
-                end
-              when :glist, :gslist, :ghash
+              when :struct, :union, :interface, :object, :strv,
+                :zero_terminated, :byte_array, :ptr_array
+                WrappingReturnValue
+              when :c
+                CArrayReturnValue
+              when :array, :glist, :gslist, :ghash
                 it = ReturnValue.new var_gen, name, type, direction
                 it.extend WithTypedContainerPostMethod
                 return it
