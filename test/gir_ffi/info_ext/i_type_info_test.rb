@@ -77,14 +77,25 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
-    describe "for a zero-terminated array" do
-      it "returns the pair [:strv, element_type]" do
+    describe "for a zero-terminated utf8 array" do
+      it "returns the pair [:strv, :utf8]" do
 	type_info = testclass.new
 	mock(type_info).tag { :array }
 	stub(type_info).element_type { :utf8 }
 	stub(type_info).zero_terminated? { true }
 	stub(type_info).array_type { :c }
 	type_info.type_specification.must_equal "[:strv, :utf8]"
+      end
+    end
+
+    describe "for a zero-terminated array" do
+      it "returns the pair [:zero_terminated, element_type]" do
+	type_info = testclass.new
+	mock(type_info).tag { :array }
+	stub(type_info).element_type { :foo }
+	stub(type_info).zero_terminated? { true }
+	stub(type_info).array_type { :c }
+	type_info.type_specification.must_equal "[:zero_terminated, :foo]"
       end
     end
   end

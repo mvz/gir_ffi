@@ -164,7 +164,7 @@ module GirFFI::Builder
 
     def needs_outgoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :strv
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :zero_terminated, :strv
         true
       else
         false
@@ -173,7 +173,7 @@ module GirFFI::Builder
 
     def needs_ingoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :strv
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :zero_terminated, :strv
         true
       else
         false
@@ -203,7 +203,7 @@ module GirFFI::Builder
         "#{self_t}, #{name}"
       when :glist, :gslist, :ghash, :array
         "#{elm_t}, #{name}"
-      when :c
+      when :c, :zero_terminated
         "#{type_specification}, #{name}"
       when :strv
         "#{name}"
