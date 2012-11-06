@@ -7,7 +7,7 @@ GirFFI.setup :GIMarshallingTests
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
-  describe GIMarshallingTests::BoxedStruct do
+  describe "GIMarshallingTests::BoxedStruct" do
     it "creates an instance using #new" do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
@@ -88,7 +88,7 @@ describe GIMarshallingTests do
     assert_equal "const ♥ utf8", GIMarshallingTests::CONSTANT_UTF8
   end
 
-  describe GIMarshallingTests::Enum do
+  describe "GIMarshallingTests::Enum" do
     it "has the member :value1" do
       assert_equal 0, GIMarshallingTests::Enum[:value1]
     end
@@ -102,7 +102,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::Flags do
+  describe "GIMarshallingTests::Flags" do
     it "has the member :value1" do
       assert_equal 1, GIMarshallingTests::Flags[:value1]
     end
@@ -140,7 +140,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::GEnum do
+  describe "GIMarshallingTests::GEnum" do
     it "has the member :value1" do
       assert_equal 0, GIMarshallingTests::GEnum[:value1]
     end
@@ -164,25 +164,25 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::Interface do
+  describe "GIMarshallingTests::Interface" do
     it "has a working method #test_int8_in" do
       skip
     end
   end
 
-  describe GIMarshallingTests::Interface2 do
+  describe "GIMarshallingTests::Interface2" do
     it "must be tested" do
       skip
     end
   end
 
-  describe GIMarshallingTests::Interface3 do
+  describe "GIMarshallingTests::Interface3" do
     it "has a working method #test_variant_array_in" do
       skip
     end
   end
 
-  describe GIMarshallingTests::NestedStruct do
+  describe "GIMarshallingTests::NestedStruct" do
     it "contains a SimpleStruct" do
       ns = GIMarshallingTests::NestedStruct.new
       assert_instance_of GIMarshallingTests::SimpleStruct,
@@ -190,7 +190,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::NoTypeFlags do
+  describe "GIMarshallingTests::NoTypeFlags" do
     it "has the member :value1" do
       assert_equal 1, GIMarshallingTests::NoTypeFlags[:value1]
     end
@@ -208,7 +208,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::NotSimpleStruct do
+  describe "GIMarshallingTests::NotSimpleStruct" do
     it "must be tested"
   end
 
@@ -216,7 +216,7 @@ describe GIMarshallingTests do
     assert_equal 42, GIMarshallingTests::OVERRIDES_CONSTANT
   end
 
-  describe GIMarshallingTests::Object do
+  describe "GIMarshallingTests::Object" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
@@ -373,7 +373,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::OverridesObject do
+  describe "GIMarshallingTests::OverridesObject" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesObject.new
       assert_instance_of GIMarshallingTests::OverridesObject, ob
@@ -399,7 +399,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::OverridesStruct do
+  describe "GIMarshallingTests::OverridesStruct" do
     let(:instance) { GIMarshallingTests::OverridesStruct.new }
 
     it "creates an instance using #new" do
@@ -422,7 +422,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::PointerStruct do
+  describe "GIMarshallingTests::PointerStruct" do
     it "creates an instance using #new" do
       ps = GIMarshallingTests::PointerStruct.new
       assert_instance_of GIMarshallingTests::PointerStruct, ps
@@ -448,7 +448,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::PropertiesObject do
+  describe "GIMarshallingTests::PropertiesObject" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::PropertiesObject.new
       assert_instance_of GIMarshallingTests::PropertiesObject, ob
@@ -469,7 +469,7 @@ describe GIMarshallingTests do
     it "has the property 'some-ulong'"
   end
 
-  describe GIMarshallingTests::SecondEnum do
+  describe "GIMarshallingTests::SecondEnum" do
     it "has the member :secondvalue1" do
       assert_equal 0, GIMarshallingTests::SecondEnum[:secondvalue1]
     end
@@ -478,7 +478,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::SimpleStruct do
+  describe "GIMarshallingTests::SimpleStruct" do
     it "creates an instance using #new" do
       ss = GIMarshallingTests::SimpleStruct.new
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
@@ -518,7 +518,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::SubObject do
+  describe "GIMarshallingTests::SubObject" do
     it "creates an instance using #new" do
       so = GIMarshallingTests::SubObject.new 42
       assert_instance_of GIMarshallingTests::SubObject, so
@@ -542,7 +542,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::SubSubObject do
+  describe "GIMarshallingTests::SubSubObject" do
     it "creates an instance using #new" do
       so = GIMarshallingTests::SubSubObject.new 42
       assert_instance_of GIMarshallingTests::SubSubObject, so
@@ -556,7 +556,7 @@ describe GIMarshallingTests do
     end
   end
 
-  describe GIMarshallingTests::Union do
+  describe "GIMarshallingTests::Union" do
     it "creates an instance with #new" do
       u = GIMarshallingTests::Union.new
       assert_instance_of GIMarshallingTests::Union, u
