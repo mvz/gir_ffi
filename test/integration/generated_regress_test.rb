@@ -62,7 +62,7 @@ describe Regress do
                                                 PGP).join(",")
   end
 
-  describe Regress::LikeGnomeKeyringPasswordSchema do
+  describe "Regress::LikeGnomeKeyringPasswordSchema" do
     it "creates an instance using #new" do
       obj = Regress::LikeGnomeKeyringPasswordSchema.new
       obj.must_be_instance_of Regress::LikeGnomeKeyringPasswordSchema
@@ -96,7 +96,7 @@ describe Regress do
     assert_equal "Some String", Regress::STRING_CONSTANT
   end
 
-  describe Regress::TestABCError do
+  describe "Regress::TestABCError" do
     it "has the member :code1" do
       Regress::TestABCError[:code1].must_equal 1
     end
@@ -114,7 +114,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestBoxed do
+  describe "Regress::TestBoxed" do
     it "creates an instance using #new" do
       tb = Regress::TestBoxed.new
       assert_instance_of Regress::TestBoxed, tb
@@ -158,7 +158,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestBoxedB do
+  describe "Regress::TestBoxedB" do
     it "creates an instance using #new" do
       tb = Regress::TestBoxedB.new 8, 42
       assert_instance_of Regress::TestBoxedB, tb
@@ -176,14 +176,14 @@ describe Regress do
     end
   end
 
-  describe Regress::TestBoxedC do
+  describe "Regress::TestBoxedC" do
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
       assert_instance_of Regress::TestBoxedC, tb
     end
   end
 
-  describe Regress::TestDEFError do
+  describe "Regress::TestDEFError" do
     it "has the member :code0" do
       Regress::TestDEFError[:code0].must_equal 0
     end
@@ -197,7 +197,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestEnum do
+  describe "Regress::TestEnum" do
     it "has the member :value1" do
       Regress::TestEnum[:value1].must_equal 0
     end
@@ -219,7 +219,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestEnumNoGEnum do
+  describe "Regress::TestEnumNoGEnum" do
     it "has the member :evalue1" do
       Regress::TestEnumNoGEnum[:evalue1].must_equal 0
     end
@@ -233,7 +233,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestEnumUnsigned do
+  describe "Regress::TestEnumUnsigned" do
     it "has the member :value1" do
       Regress::TestEnumUnsigned[:value1].must_equal 1
     end
@@ -244,7 +244,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestError do
+  describe "Regress::TestError" do
     it "has the member :code1" do
       Regress::TestError[:code1].must_equal 1
     end
@@ -262,7 +262,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestFlags do
+  describe "Regress::TestFlags" do
     it "has the member :flag1" do
       assert_equal 1, Regress::TestFlags[:flag1]
     end
@@ -274,7 +274,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestFloating do
+  describe "Regress::TestFloating" do
     it "creates an instance using #new" do
       o = Regress::TestFloating.new
       o.must_be_instance_of Regress::TestFloating
@@ -295,7 +295,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestFundamentalObject do
+  describe "Regress::TestFundamentalObject" do
     it "does not have GObject::Object as an ancestor" do
       refute_includes Regress::TestFundamentalObject.ancestors,
         GObject::Object
@@ -311,7 +311,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestFundamentalSubObject do
+  describe "Regress::TestFundamentalSubObject" do
     it "creates an instance using #new" do
       obj = Regress::TestFundamentalSubObject.new "foo"
       obj.must_be_instance_of Regress::TestFundamentalSubObject
@@ -343,7 +343,7 @@ describe Regress do
     end
   end
 
-  describe "TestInterface" do
+  describe "Regress::TestInterface" do
     it "is a module" do
       assert_instance_of Module, Regress::TestInterface
     end
@@ -358,7 +358,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestObj do
+  describe "Regress::TestObj" do
     it "creates an instance using #constructor" do
       obj = Regress::TestObj.constructor
       obj.must_be_instance_of Regress::TestObj
@@ -650,7 +650,7 @@ describe Regress do
     # TODO: Test other signals.
   end
 
-  describe Regress::TestOtherError do
+  describe "Regress::TestOtherError" do
     it "has the member :code1" do
       skip
     end
@@ -664,7 +664,7 @@ describe Regress do
       skip
     end
   end
-  describe Regress::TestPrivateEnum do
+  describe "Regress::TestPrivateEnum" do
     it "has the member :public_enum_before" do
       skip
     end
@@ -672,9 +672,9 @@ describe Regress do
       skip
     end
   end
-  describe Regress::TestPrivateStruct do
+  describe "Regress::TestPrivateStruct" do
   end
-  describe Regress::TestSimpleBoxedA do
+  describe "Regress::TestSimpleBoxedA" do
     it "creates an instance using #new" do
       obj = Regress::TestSimpleBoxedA.new
       assert_instance_of Regress::TestSimpleBoxedA, obj
@@ -747,13 +747,13 @@ describe Regress do
     end
   end
 
-  describe Regress::TestSimpleBoxedB do
+  describe "Regress::TestSimpleBoxedB" do
     it "has a working method #copy" do
       skip
     end
   end
 
-  describe Regress::TestStructA do
+  describe "Regress::TestStructA" do
     it "has a working method #clone" do
       a = Regress::TestStructA.new
       a.some_int = 2556
@@ -774,7 +774,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestStructB do
+  describe "Regress::TestStructB" do
     it "has a working method #clone" do
       a = Regress::TestStructB.new
       a.some_int8 = 42
@@ -793,33 +793,38 @@ describe Regress do
     end
   end
 
-  describe Regress::TestStructC do
+  describe "Regress::TestStructC" do
     it "must be tested" do
       skip
     end
   end
-  describe Regress::TestStructD do
+  describe "Regress::TestStructD" do
     it "must be tested" do
       skip
     end
   end
-  describe Regress::TestStructE do
+  describe "Regress::TestStructE" do
     it "must be tested" do
       skip
     end
   end
-  describe Regress::TestStructF do
+  describe "Regress::TestStructE__some_union__union" do
     it "must be tested" do
       skip
     end
   end
-  describe Regress::TestStructFixedArray do
+  describe "Regress::TestStructF" do
+    it "must be tested" do
+      skip
+    end
+  end
+  describe "Regress::TestStructFixedArray" do
     it "has a working method #frob" do
       skip
     end
   end
 
-  describe Regress::TestSubObj do
+  describe "Regress::TestSubObj" do
     it "creates an instance using #new" do
       tso = Regress::TestSubObj.new
       assert_instance_of Regress::TestSubObj, tso
@@ -842,7 +847,7 @@ describe Regress do
     end
   end
 
-  describe Regress::TestWi8021x do
+  describe "Regress::TestWi8021x" do
     it "creates an instance using #new" do
       o = Regress::TestWi8021x.new
       assert_instance_of Regress::TestWi8021x, o

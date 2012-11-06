@@ -24,7 +24,7 @@ class Listener
     when "constant"
       result.puts "  it \"has the constant #{obj_name}\" do"
     when "record", "class", "enumeration", "bitfield", "interface", "union"
-      result.puts "  describe #{namespace}::#{obj_name} do"
+      result.puts "  describe \"#{namespace}::#{obj_name}\" do"
       @inside_class = true
     when "constructor"
       result.puts "    it \"creates an instance using ##{obj_name}\" do"
