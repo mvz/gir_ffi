@@ -180,7 +180,6 @@ describe Regress  do
   describe Regress::TestDEFError do
     it "has the member :code0" do
       Regress::TestDEFError[:code0].must_equal 0
-      skip
     end
 
     it "has the member :code1" do
@@ -233,9 +232,9 @@ describe Regress  do
       Regress::TestEnumUnsigned[:value1].must_equal 1
     end
 
+    # NOTE In c, the positive and negative values are not distinguished
     it "has the member :value2" do
-      skip "In c, the positive and negative values are not distinguished"
-      Regress::TestEnumUnsigned[:value2].must_equal 2147483648
+      Regress::TestEnumUnsigned[:value2].must_equal(-2147483648)
     end
   end
 
@@ -308,32 +307,33 @@ describe Regress  do
 
   describe Regress::TestFundamentalSubObject do
     it "creates an instance using #new" do
-      skip
-    end
-    before do
-      @so = Regress::TestFundamentalSubObject.new "foo"
+      obj = Regress::TestFundamentalSubObject.new "foo"
+      obj.must_be_instance_of Regress::TestFundamentalSubObject
     end
 
+    let(:instance) { Regress::TestFundamentalSubObject.new "foo" }
+
     it "can be instantiated" do
+      instance
       pass
     end
 
     it "is a subclass of TestFundamentalObject" do
-      assert_kind_of Regress::TestFundamentalObject, @so
+      assert_kind_of Regress::TestFundamentalObject, instance
     end
 
     it "has a field :data storing the constructor parameter" do
-      assert_equal "foo", @so.data
+      assert_equal "foo", instance.data
     end
 
     it "can access its parent class' fields directly" do
       assert_nothing_raised do
-        @so.flags
+        instance.flags
       end
     end
 
     it "has a refcount of 1" do
-      assert_equal 1, @so.refcount
+      assert_equal 1, instance.refcount
     end
   end
 
@@ -354,11 +354,16 @@ describe Regress  do
 
   describe Regress::TestObj do
     it "creates an instance using #constructor" do
-      skip
+      obj = Regress::TestObj.constructor
+      obj.must_be_instance_of Regress::TestObj
     end
+
     it "creates an instance using #new" do
-      skip
+      o1 = Regress::TestObj.constructor
+      o2 = Regress::TestObj.new o1
+      o2.must_be_instance_of Regress::TestObj
     end
+
     it "creates an instance using #new_callback" do
       a = 1
       o = Regress::TestObj.new_callback Proc.new { a = 2 }, nil, nil
@@ -372,7 +377,8 @@ describe Regress  do
     end
 
     it "has a working function #null_out" do
-      skip
+      obj = Regress::TestObj.null_out
+      obj.must_be_nil
     end
 
     it "has a working function #static_method" do
@@ -529,20 +535,29 @@ describe Regress  do
       assert !is_floating?(instance)
     end
 
+    # FIXME: Should it be possible to invoke this method by its virtual name?
     it "has a working method #matrix" do
       rv = instance.matrix "bar"
       assert_equal 42, rv
     end
 
     it "has a working method #do_matrix" do
-      skip
+      result = instance.do_matrix "bar"
+      result.must_equal 42
     end
+
     it "has a working method #emit_sig_with_foreign_struct" do
       skip
     end
+
     it "has a working method #emit_sig_with_int64" do
-      skip
+      skip "This does not work yet"
+      instance.signal_connect "sig-with-int64-prop" do |obj, int, ud|
+        int
+      end
+      instance.emit_sig_with_int64
     end
+
     it "has a working method #emit_sig_with_obj" do
       skip
     end
