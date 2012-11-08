@@ -33,14 +33,17 @@ describe Regress do
   end
 
   it "has the constant GUINT64_CONSTANT" do
+    skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANT'
     Regress::GUINT64_CONSTANT.must_equal 18446744073709551615
   end
 
   it "has the constant GUINT64_CONSTANTA" do
+    skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANTA'
     Regress::GUINT64_CONSTANTA.must_equal 18446744073709551615
   end
 
   it "has the constant G_GINT64_CONSTANT" do
+    skip unless get_introspection_data 'Regress', 'G_GINT64_CONSTANT'
     Regress::G_GINT64_CONSTANT.must_equal 1000
   end
 
@@ -63,6 +66,9 @@ describe Regress do
   end
 
   describe "Regress::LikeGnomeKeyringPasswordSchema" do
+    before do
+      skip unless get_introspection_data 'Regress', 'LikeGnomeKeyringPasswordSchema'
+    end
     it "creates an instance using #new" do
       obj = Regress::LikeGnomeKeyringPasswordSchema.new
       obj.must_be_instance_of Regress::LikeGnomeKeyringPasswordSchema
@@ -97,6 +103,10 @@ describe Regress do
   end
 
   describe "Regress::TestABCError" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestABCError'
+    end
+
     it "has the member :code1" do
       Regress::TestABCError[:code1].must_equal 1
     end
@@ -177,6 +187,9 @@ describe Regress do
   end
 
   describe "Regress::TestBoxedC" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestBoxedC'
+    end
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
       assert_instance_of Regress::TestBoxedC, tb
@@ -184,6 +197,9 @@ describe Regress do
   end
 
   describe "Regress::TestDEFError" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestDEFError'
+    end
     it "has the member :code0" do
       Regress::TestDEFError[:code0].must_equal 0
     end
@@ -245,6 +261,10 @@ describe Regress do
   end
 
   describe "Regress::TestError" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestError'
+    end
+
     it "has the member :code1" do
       Regress::TestError[:code1].must_equal 1
     end
@@ -1567,6 +1587,7 @@ describe Regress do
   end
 
   it "has a working function #test_unconventional_error_quark" do
+    skip unless get_introspection_data 'Regress', 'test_unconventional_error_quark'
     result = Regress.test_unconventional_error_quark
     GLib.quark_to_string(result).must_equal "regress-test-other-error"
   end
@@ -1637,6 +1658,7 @@ describe Regress do
   end
 
   it "has a working function #test_versioning" do
+    skip unless get_introspection_data 'Regress', 'test_versioning'
     Regress.test_versioning
     pass
   end
