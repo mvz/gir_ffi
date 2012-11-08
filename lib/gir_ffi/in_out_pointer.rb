@@ -4,11 +4,17 @@ module GirFFI
   class InOutPointer < FFI::Pointer
     attr_reader :value_type, :sub_type
 
-    def initialize ptr, type, ffi_type, sub_type=nil
-      super ptr
-      @ffi_type = ffi_type
+    def initialize value, type, sub_type=nil
+      @ffi_type = TypeMap.map_basic_type_or_string type
       @value_type = type
       @sub_type = sub_type
+
+      value = adjust_value_in value
+
+      ptr = AllocationHelper.safe_malloc(FFI.type_size @ffi_type)
+      ptr.send "put_#{@ffi_type}", 0, value
+
+      super ptr
     end
 
     private :initialize
@@ -27,10 +33,7 @@ module GirFFI
     end
 
     def self.for type, sub_type=nil
-      ffi_type = TypeMap.map_basic_type_or_string type
-      ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
-      ptr.send "put_#{ffi_type}", 0, nil_value_for_ffi_type(ffi_type)
-      self.new ptr, type, ffi_type, sub_type
+      self.new nil, type, sub_type
     end
 
     def self.from type, value, sub_type=nil
@@ -39,11 +42,7 @@ module GirFFI
         # TODO: Take array type into account (zero-terminated or not)
         return self.from_array sub_t, value
       end
-      value = adjust_value_in type, value
-      ffi_type = TypeMap.map_basic_type_or_string type
-      ptr = AllocationHelper.safe_malloc(FFI.type_size ffi_type)
-      ptr.send "put_#{ffi_type}", 0, value
-      self.new ptr, type, ffi_type, sub_type
+      self.new value, type, sub_type
     end
 
     def self.from_array type, array
@@ -56,24 +55,24 @@ module GirFFI
       self.for :pointer, type
     end
 
-    class << self
-      def adjust_value_in type, value
-        case type
-        when :gboolean
-          (value ? 1 : 0)
-        when :utf8
-          InPointer.from :utf8, value
-        else
-          value
-        end
-      end
+    private
 
-      def nil_value_for_ffi_type ffi_type
-        ffi_type == :pointer ? nil : 0
+    def adjust_value_in value
+      return nil_value if value.nil?
+
+      case @value_type
+      when :gboolean
+        (value ? 1 : 0)
+      when :utf8
+        InPointer.from :utf8, value
+      else
+        value
       end
     end
 
-    private
+    def nil_value
+      @ffi_type == :pointer ? nil : 0
+    end
 
     def adjust_value_out value
       case @value_type
