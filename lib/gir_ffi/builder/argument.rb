@@ -83,23 +83,15 @@ module GirFFI::Builder
     def post
       result = []
       if has_output_value?
-        value = case @direction
-                when :inout
+        value = if needs_outgoing_parameter_conversion?
                   case specialized_type_tag
                   when :enum, :flags
-                    "#{argument_class_name}[#{callarg}.to_value]"
+                    "#{argument_class_name}[#{output_conversion_arguments}]"
                   else
                     "#{argument_class_name}.wrap(#{output_conversion_arguments})"
                   end
-                when :out
-                  case specialized_type_tag
-                  when :enum, :flags
-                    "#{argument_class_name}[#{callarg}.to_value]"
-                  when :strv, :object, :struct
-                    "#{argument_class_name}.wrap(#{callarg}.to_value)"
-                  else
-                    "#{callarg}.to_value"
-                  end
+                else
+                  "#{callarg}.to_value"
                 end
         result << "#{retname} = #{value}"
       end
@@ -140,42 +132,30 @@ module GirFFI::Builder
     end
 
     def set_function_call_argument
-      value = case @direction
-              when :out
+      value = if @direction == :out
                 "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
-              when :in
+              else
                 if needs_ingoing_parameter_conversion?
-                  parameter_conversion
+                  ingoing_parameter_conversion
                 else
                   @name
                 end
-              when :inout
-                parameter_conversion
               end
       "#{callarg} = #{value}"
     end
 
     def needs_outgoing_parameter_conversion?
-      case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
-        :zero_terminated, :strv
-        true
-      else
-        false
-      end
+      @direction == :inout ||
+        [ :enum, :flags, :object, :struct, :strv ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
-      case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
-        :zero_terminated, :strv
-        true
-      else
-        false
-      end
+      @direction == :inout ||
+        [ :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
+          :zero_terminated, :strv ].include?(specialized_type_tag)
     end
 
-    def parameter_conversion
+    def ingoing_parameter_conversion
       case specialized_type_tag
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
