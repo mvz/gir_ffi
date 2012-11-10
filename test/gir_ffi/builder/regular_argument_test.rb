@@ -122,6 +122,21 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :gint32" do
+      before do
+        stub(type_info).tag { :gint32 }
+        stub(type_info).flattened_tag { :gint32 }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :gint32, foo" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = _v1.to_value" ]
+      end
+    end
+
     describe "for :strv" do
       before do
         stub(type_info).tag { :array }

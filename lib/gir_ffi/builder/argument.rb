@@ -139,9 +139,14 @@ module GirFFI::Builder
       "#{callarg} = #{value}"
     end
 
+
     def needs_outgoing_parameter_conversion?
-      @direction == :inout ||
+      if @direction == :inout
+        [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
+          :strv ].include?(specialized_type_tag)
+      else
         [ :enum, :flags, :object, :struct, :strv ].include?(specialized_type_tag)
+      end
     end
 
     def needs_ingoing_parameter_conversion?
@@ -155,7 +160,8 @@ module GirFFI::Builder
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
-      else
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
+          :zero_terminated, :strv
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
           if specialized_type_tag == :strv
@@ -166,6 +172,9 @@ module GirFFI::Builder
         else
           base
         end
+      else
+        base = "#{parameter_conversion_arguments}"
+        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       end
     end
 
