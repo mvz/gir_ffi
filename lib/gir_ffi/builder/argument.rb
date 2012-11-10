@@ -105,12 +105,7 @@ module GirFFI::Builder
     end
 
     def needs_size_check?
-      if type_tag == :array
-        size = type_info.array_fixed_size
-        if size > -1
-          true
-        end
-      end
+      specialized_type_tag == :c && type_info.array_fixed_size > -1
     end
 
     def fixed_array_size_check
@@ -163,7 +158,11 @@ module GirFFI::Builder
       else
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
-          "GirFFI::InOutPointer.from :pointer, #{base}"
+          if specialized_type_tag == :strv
+            "GirFFI::InOutPointer.from #{type_specification}, #{base}"
+          else
+            "GirFFI::InOutPointer.from :pointer, #{base}"
+          end
         else
           base
         end
@@ -270,28 +269,14 @@ module GirFFI::Builder
       klass = case type.flattened_tag
               when :c
                 CArrayInOutArgument
-              when :strv
-                StrvInOutArgument
               when :enum, :flags, :object, :struct, :array,
-                :glist, :gslist, :ghash
+                :glist, :gslist, :ghash, :strv
                 RegularArgument
               else
                 RegularInOutArgument
               end
 
       klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for strv arguments with direction
-  # :inout.
-  class StrvInOutArgument < Argument::InOutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from #{type_specification}, #{@name}" ]
-    end
-
-    def post
-      [ "#{retname} = GLib::Strv.wrap(#{callarg}.to_value)" ]
     end
   end
 

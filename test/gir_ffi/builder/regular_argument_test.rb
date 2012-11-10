@@ -121,6 +121,22 @@ describe GirFFI::Builder::RegularArgument do
         builder.post.must_equal [ "_v2 = Bar::Foo[_v1.to_value]" ]
       end
     end
+
+    describe "for :strv" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).flattened_tag { :strv }
+        stub(type_info).type_specification { [:strv, :utf8] }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:strv, :utf8], GLib::Strv.from(foo)" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1.to_value)" ]
+      end
+    end
   end
 end
 
