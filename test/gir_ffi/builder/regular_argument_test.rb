@@ -88,5 +88,39 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
   end
+
+  describe "for an argument with direction :inout" do
+    let(:direction) { :inout }
+
+    describe "for :enum" do
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).flattened_tag { :enum }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :enum, Bar::Foo[foo]" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = Bar::Foo[_v1.to_value]" ]
+      end
+    end
+
+    describe "for :flags" do
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).flattened_tag { :flags }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :flags, Bar::Foo[foo]" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = Bar::Foo[_v1.to_value]" ]
+      end
+    end
+  end
 end
 

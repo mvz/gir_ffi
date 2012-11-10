@@ -50,33 +50,8 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :in whose
-  # type-specific processing is left to FFI (e.g., ints and floats, and
-  # objects that implement to_ptr.).
-  #
-  # Implements argument processing for arguments with direction :in that
-  # are GObjects.
-  #
-  # Implements argument processing for UTF8 string arguments with direction
-  # :in.
-  #
-  # Implements argument processing for void pointer arguments with
-  # direction :in.
-  #
-  # Implements argument processing for interface arguments with direction
-  # :inout (structs, objects, etc.).
-  #
-  # Implements argument processing for arguments with direction
-  # :out that are neither arrays nor 'interfaces'.
-  #
-  # Implements argument processing for arguments with direction
-  # :out that are enums
-  #
-  # Implements argument processing for interface arguments with direction
-  # :out (structs, objects, etc.).
-  #
-  # Implements argument processing for strv arguments with direction
-  # :out.
+  # Implements argument processing for arguments not handled by more specific
+  # builders.
   class RegularArgument < Argument::Base
     def initialize var_gen, name, typeinfo, direction
       super var_gen, name, typeinfo, direction
@@ -110,7 +85,12 @@ module GirFFI::Builder
       if has_output_value?
         value = case @direction
                 when :inout
-                  "#{argument_class_name}.wrap(#{output_conversion_arguments})"
+                  case specialized_type_tag
+                  when :enum, :flags
+                    "#{argument_class_name}[#{callarg}.to_value]"
+                  else
+                    "#{argument_class_name}.wrap(#{output_conversion_arguments})"
+                  end
                 when :out
                   case specialized_type_tag
                   when :enum, :flags
@@ -160,21 +140,25 @@ module GirFFI::Builder
     end
 
     def set_function_call_argument
-      value = if @direction == :out
+      value = case @direction
+              when :out
                 "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
-              else
+              when :in
                 if needs_ingoing_parameter_conversion?
                   parameter_conversion
                 else
                   @name
                 end
+              when :inout
+                parameter_conversion
               end
       "#{callarg} = #{value}"
     end
 
     def needs_outgoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :zero_terminated, :strv
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
+        :zero_terminated, :strv
         true
       else
         false
@@ -183,7 +167,8 @@ module GirFFI::Builder
 
     def needs_ingoing_parameter_conversion?
       case specialized_type_tag
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c, :zero_terminated, :strv
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
+        :zero_terminated, :strv
         true
       else
         false
@@ -191,11 +176,17 @@ module GirFFI::Builder
     end
 
     def parameter_conversion
-      base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
-      if has_output_value?
-        "GirFFI::InOutPointer.from :pointer, #{base}"
+      case specialized_type_tag
+      when :enum, :flags
+        base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
+        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       else
-        base
+        base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
+        if has_output_value?
+          "GirFFI::InOutPointer.from :pointer, #{base}"
+        else
+          base
+        end
       end
     end
 
@@ -297,33 +288,18 @@ module GirFFI::Builder
       type = arginfo.argument_type
       direction = arginfo.direction
       klass = case type.flattened_tag
-              when :enum, :flags
-                EnumInOutArgument
               when :c
                 CArrayInOutArgument
               when :strv
                 StrvInOutArgument
-              when :object, :struct, :array, :glist, :gslist, :ghash
+              when :enum, :flags, :object, :struct, :array,
+                :glist, :gslist, :ghash
                 RegularArgument
               else
                 RegularInOutArgument
               end
 
       klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for arguments with direction
-  # :inout that are enums.
-  class EnumInOutArgument < Argument::InOutBase
-    def pre
-      pr = []
-      pr << "#{callarg} = GirFFI::InOutPointer.from :gint32, #{argument_class_name}[#{@name}]"
-      pr
-    end
-
-    def post
-      [ "#{retname} = #{argument_class_name}[#{callarg}.to_value]" ]
     end
   end
 
