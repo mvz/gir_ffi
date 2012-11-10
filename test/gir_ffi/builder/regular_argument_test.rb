@@ -137,6 +137,25 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for an array length" do
+      let(:array_argument) { Object.new }
+      before do
+        stub(type_info).tag { :gint32 }
+        stub(type_info).flattened_tag { :gint32 }
+        stub(array_argument).name { "foo_array" }
+        builder.array_arg = array_argument
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "foo = foo_array.nil? ? 0 : foo_array.length",
+                                 "_v1 = GirFFI::InOutPointer.from :gint32, foo" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = _v1.to_value" ]
+      end
+    end
+
     describe "for :strv" do
       before do
         stub(type_info).tag { :array }

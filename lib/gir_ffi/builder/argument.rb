@@ -278,11 +278,10 @@ module GirFFI::Builder
       klass = case type.flattened_tag
               when :c
                 CArrayInOutArgument
-              when :enum, :flags, :object, :struct, :array,
-                :glist, :gslist, :ghash, :strv
-                RegularArgument
-              else
+              when :utf8
                 RegularInOutArgument
+              else
+                RegularArgument
               end
 
       klass.new var_gen, arginfo.name, type, direction
