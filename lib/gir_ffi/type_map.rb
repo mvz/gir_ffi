@@ -9,6 +9,7 @@ module GirFFI
       :ghash => :pointer,
       :glist => :pointer,
       :gslist => :pointer,
+      :array => :pointer,
       :strv => :pointer,
       :object => :pointer,
       :struct => :pointer,

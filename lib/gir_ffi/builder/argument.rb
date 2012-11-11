@@ -145,7 +145,7 @@ module GirFFI::Builder
         [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
           :strv ].include?(specialized_type_tag)
       else
-        [ :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
+        [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
           :strv ].include?(specialized_type_tag)
       end
     end
@@ -221,10 +221,6 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayOutArgument
-              when :array
-                it = PointerLikeOutArgument.new var_gen, arginfo.name, type, direction
-                it.extend WithTypedContainerPostMethod
-                return it
               else
                 RegularArgument
               end
@@ -253,15 +249,6 @@ module GirFFI::Builder
 
     def postpost
       [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
-    end
-  end
-
-  # Base class for arguments with direction :out for which the base type is
-  # a pointer: For these, a pointer to a pointer needs to be passed to the
-  # C function.
-  class PointerLikeOutArgument < Argument::OutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for :pointer" ]
     end
   end
 

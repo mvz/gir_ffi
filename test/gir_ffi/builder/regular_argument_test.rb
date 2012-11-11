@@ -88,6 +88,22 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :array" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).flattened_tag { :array }
+        stub(type_info).element_type { :foo }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :array" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::Array.wrap(:foo, _v1.to_value)" ]
+      end
+    end
+
     describe "for :glist" do
       before do
         stub(type_info).tag { :glist }
