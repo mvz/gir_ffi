@@ -6,6 +6,7 @@ module GirFFI
     TAG_TYPE_MAP = {
       :enum => :int32,
       :flags => :int32,
+      :ghash => :pointer,
       :glist => :pointer,
       :gslist => :pointer,
       :strv => :pointer,
