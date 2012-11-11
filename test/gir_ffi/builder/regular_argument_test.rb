@@ -87,6 +87,22 @@ describe GirFFI::Builder::RegularArgument do
         builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1.to_value)" ]
       end
     end
+
+    describe "for :glist" do
+      before do
+        stub(type_info).tag { :glist }
+        stub(type_info).flattened_tag { :glist }
+        stub(type_info).element_type { :foo }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :glist" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::List.wrap(:foo, _v1.to_value)" ]
+      end
+    end
   end
 
   describe "for an argument with direction :inout" do

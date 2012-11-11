@@ -145,7 +145,7 @@ module GirFFI::Builder
         [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
           :strv ].include?(specialized_type_tag)
       else
-        [ :enum, :flags, :object, :struct, :strv ].include?(specialized_type_tag)
+        [ :enum, :flags, :glist, :object, :struct, :strv ].include?(specialized_type_tag)
       end
     end
 
@@ -220,7 +220,7 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayOutArgument
-              when :array, :glist, :gslist, :ghash
+              when :array, :gslist, :ghash
                 it = PointerLikeOutArgument.new var_gen, arginfo.name, type, direction
                 it.extend WithTypedContainerPostMethod
                 return it
