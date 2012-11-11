@@ -7,6 +7,7 @@ module GirFFI
       :enum => :int32,
       :flags => :int32,
       :glist => :pointer,
+      :gslist => :pointer,
       :strv => :pointer,
       :object => :pointer,
       :struct => :pointer,
