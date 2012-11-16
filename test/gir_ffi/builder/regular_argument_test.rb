@@ -224,7 +224,7 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :array }
         stub(type_info).flattened_tag { :strv }
-        stub(type_info).type_specification { [:strv, :utf8] }
+        stub(type_info).type_specification { "[:strv, :utf8]" }
       end
 
       it "has the correct value for #pre" do
