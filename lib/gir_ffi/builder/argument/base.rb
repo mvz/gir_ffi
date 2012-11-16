@@ -76,19 +76,8 @@ module GirFFI
           end
         end
 
-        def subtype_tag_or_class_name index=0
-          type = type_info.param_type(index)
-          tag = type.tag
-          base = if tag == :interface
-                   type.interface_type_name
-                 else
-                   tag.inspect
-                 end
-          if type.pointer?
-            "[:pointer, #{base}]"
-          else
-            base
-          end
+        def subtype_tag_or_class_name
+          type_info.subtype_tag_or_class_name
         end
 
         def elm_t

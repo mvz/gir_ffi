@@ -71,6 +71,21 @@ module GirFFI
         end
       end
 
+      def subtype_tag_or_class_name
+        type = self.param_type 0
+        tag = type.tag
+        base = if tag == :interface
+                 type.interface_type_name
+               else
+                 tag.inspect
+               end
+        if type.pointer?
+          "[:pointer, #{base}]"
+        else
+          base
+        end
+      end
+
       private
 
       def zero_terminated_array_type
