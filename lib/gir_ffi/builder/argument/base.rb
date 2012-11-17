@@ -120,10 +120,6 @@ module GirFFI
           []
         end
 
-        def postpost
-          []
-        end
-
         def cleanup
           []
         end

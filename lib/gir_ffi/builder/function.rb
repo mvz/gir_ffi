@@ -78,7 +78,10 @@ module GirFFI::Builder
     end
 
     def post
-      po = (@data.map(&:post) + @data.map(&:postpost) + @rvdata.post)
+      args = @data.sort_by {|arg| arg.type_info.array_length}
+
+      po = args.map {|arg|arg.post} +
+        @rvdata.post
       po.unshift @errarg.post
 
       po += @data.map {|item| item.cleanup}

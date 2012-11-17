@@ -255,7 +255,7 @@ module GirFFI::Builder
       [ "#{callarg} = GirFFI::InOutPointer.for [:c, #{subtype_tag_or_class_name}]" ]
     end
 
-    def postpost
+    def post
       [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
     end
   end
@@ -291,7 +291,7 @@ module GirFFI::Builder
       [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
     end
 
-    def postpost
+    def post
       size = array_size
       pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
       pst
