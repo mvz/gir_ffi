@@ -40,9 +40,10 @@ module GirFFI
       end
 
       def type_specification
-        tag = self.tag
-        if tag == :array
-          "[#{flattened_array_type.inspect}, #{element_type.inspect}]"
+        tag = self.flattened_tag
+        case tag
+        when :strv, :zero_terminated, :c
+          "[#{tag.inspect}, #{element_type.inspect}]"
         else
           tag.inspect
         end

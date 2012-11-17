@@ -17,6 +17,7 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :interface }
         stub(type_info).flattened_tag { :enum }
+        stub(type_info).type_specification { ":enum" }
       end
 
       it "has the correct value for #pre" do
@@ -32,6 +33,7 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :interface }
         stub(type_info).flattened_tag { :flags }
+        stub(type_info).type_specification { ":flags" }
       end
 
       it "has the correct value for #pre" do
@@ -47,6 +49,7 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :interface }
         stub(type_info).flattened_tag { :object }
+        stub(type_info).type_specification { ":object" }
       end
 
       it "has the correct value for #pre" do
@@ -62,6 +65,7 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :interface }
         stub(type_info).flattened_tag { :struct }
+        stub(type_info).type_specification { ":struct" }
       end
 
       it "has the correct value for #pre" do
@@ -77,10 +81,11 @@ describe GirFFI::Builder::RegularArgument do
       before do
         stub(type_info).tag { :array }
         stub(type_info).flattened_tag { :strv }
+        stub(type_info).type_specification { "[:strv, :utf8]" }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :strv" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:strv, :utf8]" ]
       end
 
       it "has the correct value for #post" do
@@ -93,6 +98,7 @@ describe GirFFI::Builder::RegularArgument do
         stub(type_info).tag { :array }
         stub(type_info).flattened_tag { :array }
         stub(type_info).element_type { :foo }
+        stub(type_info).type_specification { ":array" }
       end
 
       it "has the correct value for #pre" do
@@ -104,11 +110,31 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :c" do
+      describe "with fixed size" do
+        before do
+          stub(type_info).tag { :array }
+          stub(type_info).flattened_tag { :c }
+          stub(type_info).type_specification { "[:c, :foo]" }
+          stub(type_info).array_fixed_size { 3 }
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:c, :foo]" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value 3" ]
+        end
+      end
+    end
+
     describe "for :glist" do
       before do
         stub(type_info).tag { :glist }
         stub(type_info).flattened_tag { :glist }
         stub(type_info).element_type { :foo }
+        stub(type_info).type_specification { ":glist" }
       end
 
       it "has the correct value for #pre" do
@@ -125,6 +151,7 @@ describe GirFFI::Builder::RegularArgument do
         stub(type_info).tag { :gslist }
         stub(type_info).flattened_tag { :gslist }
         stub(type_info).element_type { :foo }
+        stub(type_info).type_specification { ":gslist" }
       end
 
       it "has the correct value for #pre" do
@@ -141,6 +168,7 @@ describe GirFFI::Builder::RegularArgument do
         stub(type_info).tag { :ghash }
         stub(type_info).flattened_tag { :ghash }
         stub(type_info).element_type { [:foo, :bar] }
+        stub(type_info).type_specification { ":ghash" }
       end
 
       it "has the correct value for #pre" do

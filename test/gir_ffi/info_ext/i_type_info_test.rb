@@ -72,7 +72,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe "for a simple type" do
       it "returns the type tag" do
 	type_info = testclass.new
-	mock(type_info).tag { :uint32 }
+	stub(type_info).tag { :uint32 }
 	type_info.type_specification.must_equal ":uint32"
       end
     end
@@ -98,6 +98,18 @@ describe GirFFI::InfoExt::ITypeInfo do
 	type_info.type_specification.must_equal "[:zero_terminated, :foo]"
       end
     end
+
+    describe "for a fixed length c-like array of type :foo" do
+      it "returns the pair [:c, :foo]" do
+	type_info = testclass.new
+	mock(type_info).tag { :array }
+	stub(type_info).element_type { :foo }
+	stub(type_info).zero_terminated? { false }
+	stub(type_info).array_type { :c }
+	type_info.type_specification.must_equal "[:c, :foo]"
+      end
+    end
+
   end
 
   describe "#subtype_tag_or_class_name" do
