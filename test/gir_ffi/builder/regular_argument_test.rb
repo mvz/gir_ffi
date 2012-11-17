@@ -129,6 +129,28 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :c" do
+      describe "with separate size parameter" do
+        let(:length_argument) { Object.new }
+        before do
+          stub(type_info).tag { :array }
+          stub(type_info).flattened_tag { :c }
+          stub(type_info).type_specification { "[:c, :foo]" }
+          stub(type_info).array_fixed_size { -1 }
+          stub(length_argument).retname { "bar" }
+          builder.length_arg = length_argument
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:c, :foo]" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value bar" ]
+        end
+      end
+    end
+
     describe "for :glist" do
       before do
         stub(type_info).tag { :glist }

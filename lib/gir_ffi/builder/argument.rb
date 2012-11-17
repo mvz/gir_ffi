@@ -73,7 +73,7 @@ module GirFFI::Builder
     def pre
       pr = []
       if has_input_value?
-        pr << fixed_array_size_check if is_fixed_length_array?
+        pr << fixed_array_size_check if needs_size_check?
         pr << array_length_assignment if is_array_length_parameter?
       end
       pr << set_function_call_argument
@@ -91,7 +91,7 @@ module GirFFI::Builder
                     "#{argument_class_name}.wrap(#{output_conversion_arguments})"
                   end
                 elsif is_fixed_length_array?
-                  "#{callarg}.to_sized_array_value #{type_info.array_fixed_size}"
+                  "#{callarg}.to_sized_array_value #{array_size}"
                 else
                   "#{callarg}.to_value"
                 end
@@ -106,8 +106,12 @@ module GirFFI::Builder
       @array_arg
     end
 
-    def is_fixed_length_array?
+    def needs_size_check?
       specialized_type_tag == :c && type_info.array_fixed_size > -1
+    end
+
+    def is_fixed_length_array?
+      specialized_type_tag == :c
     end
 
     def fixed_array_size_check
