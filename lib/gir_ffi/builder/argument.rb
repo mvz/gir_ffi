@@ -215,6 +215,8 @@ module GirFFI::Builder
       klass = case type.flattened_tag
               when :object, :struct
                 if arginfo.caller_allocates?
+                  # FIXME: This type can only be merged with RegularArgument by
+                  # changing the arguments to #initialize.
                   AllocatedInterfaceOutArgument
                 else
                   RegularArgument
@@ -244,7 +246,7 @@ module GirFFI::Builder
   # :out.
   class CArrayOutArgument < Argument::OutBase
     def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for_array #{subtype_tag_or_class_name}" ]
+      [ "#{callarg} = GirFFI::InOutPointer.for [:c, #{subtype_tag_or_class_name}]" ]
     end
 
     def postpost

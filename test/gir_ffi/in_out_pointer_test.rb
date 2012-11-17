@@ -90,26 +90,6 @@ describe GirFFI::InOutPointer do
     end
   end
 
-  describe "::for_array" do
-    it "handles :gint32" do
-      @ptr = GirFFI::InOutPointer.for_array :gint32
-      assert_equal :pointer, @ptr.value_type
-      assert_equal :gint32, @ptr.sub_type
-    end
-
-    it "handles GObject" do
-      @ptr = GirFFI::InOutPointer.for_array GObject::Object
-      assert_equal :pointer, @ptr.value_type
-      assert_equal GObject::Object, @ptr.sub_type
-    end
-
-    it "handles pointer to GObject" do
-      @ptr = GirFFI::InOutPointer.for_array [:pointer, GObject::Object]
-      assert_equal :pointer, @ptr.value_type
-      assert_equal [:pointer, GObject::Object], @ptr.sub_type
-    end
-  end
-
   describe "#to_value" do
     it "returns the held value" do
       ptr = GirFFI::InOutPointer.from :gint32, 123

@@ -19,7 +19,7 @@ describe GirFFI::Builder::Function do
 
     expected = <<-CODE
       def self.test_array_fixed_out_objects 
-        _v1 = GirFFI::InOutPointer.for_array [:pointer, ::Regress::TestObj]
+        _v1 = GirFFI::InOutPointer.for [:c, [:pointer, ::Regress::TestObj]]
         DummyLib.regress_test_array_fixed_out_objects _v1
         _v2 = _v1.to_sized_array_value 2
         return _v2
@@ -127,7 +127,7 @@ describe GirFFI::Builder::Function do
 
     expected = <<-CODE
       def self.test_array_int_null_out 
-        _v1 = GirFFI::InOutPointer.for_array :gint32
+        _v1 = GirFFI::InOutPointer.for [:c, :gint32]
         _v2 = GirFFI::InOutPointer.for :gint32
         DummyLib.regress_test_array_int_null_out _v1, _v2
         _v3 = _v2.to_value

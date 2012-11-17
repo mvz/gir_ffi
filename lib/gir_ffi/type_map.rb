@@ -11,6 +11,7 @@ module GirFFI
       :gslist => :pointer,
       :array => :pointer,
       :strv => :pointer,
+      :c => :pointer,
       :object => :pointer,
       :struct => :pointer,
       :GType => gtype_type,

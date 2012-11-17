@@ -26,13 +26,16 @@ module GirFFI
 
     def to_sized_array_value size
       # FIXME: Simulated Polymorphism.
-      raise "Not allowed" if @value_type != :pointer or @sub_type.nil?
+      raise "Not allowed" if @ffi_type != :pointer or @sub_type.nil?
       block = self.read_pointer
       return nil if block.null?
       ArgHelper.ptr_to_typed_array @sub_type, block, size
     end
 
     def self.for type, sub_type=nil
+      if Array === type
+        return self.new nil, *type
+      end
       self.new nil, type, sub_type
     end
 
@@ -49,10 +52,6 @@ module GirFFI
       return nil if array.nil?
       ptr = InPointer.from_array(type, array)
       self.from :pointer, ptr, type
-    end
-
-    def self.for_array type
-      self.for :pointer, type
     end
 
     private
