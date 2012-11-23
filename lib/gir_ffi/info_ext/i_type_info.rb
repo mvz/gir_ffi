@@ -43,7 +43,7 @@ module GirFFI
         tag = self.flattened_tag
         case tag
         when :strv, :zero_terminated, :c
-          "[#{tag.inspect}, #{element_type.inspect}]"
+          "[#{tag.inspect}, #{subtype_tag_or_class_name}]"
         else
           tag.inspect
         end
@@ -80,7 +80,7 @@ module GirFFI
                else
                  tag.inspect
                end
-        if type.pointer?
+        if type.pointer? && tag != :utf8
           "[:pointer, #{base}]"
         else
           base

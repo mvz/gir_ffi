@@ -227,8 +227,6 @@ module GirFFI::Builder
                 else
                   RegularArgument
                 end
-              when :c
-                CArrayOutArgument
               else
                 RegularArgument
               end
@@ -245,18 +243,6 @@ module GirFFI::Builder
 
     def post
       [ "#{retname} = #{callarg}" ]
-    end
-  end
-
-  # Implements argument processing for array arguments with direction
-  # :out.
-  class CArrayOutArgument < Argument::OutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.for [:c, #{subtype_tag_or_class_name}]" ]
-    end
-
-    def post
-      [ "#{retname} = #{callarg}.to_sized_array_value #{array_size}" ]
     end
   end
 
