@@ -1,4 +1,5 @@
 module GirFFI
+  # TODO: Turn module into a class, use instance methods.
   module CallbackHelper
     CALLBACKS = []
 
@@ -56,6 +57,10 @@ module GirFFI
       else
         GirFFI::ArgHelper::OBJECT_STORE[arg.address]
       end
+    end
+
+    def self.store_callback prc
+      CALLBACKS << prc
     end
   end
 end

@@ -43,10 +43,6 @@ describe GirFFI::Builder do
       assert_equal [expected], GObject::Lib.ffi_libraries.map(&:name)
     end
 
-    should "create an array CALLBACKS inside the GObject::Lib module" do
-      assert_equal [], GObject::Lib::CALLBACKS
-    end
-
     should "not replace existing classes" do
       oldclass = GObject::Object
       GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
@@ -331,10 +327,6 @@ describe GirFFI::Builder do
       gir = GObjectIntrospection::IRepository.default
       expected = [gir.shared_library('Regress')]
       assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
-    end
-
-    it "creates an array CALLBACKS inside the Regress::Lib module" do
-      assert_equal [], Regress::Lib::CALLBACKS
     end
 
     it "does not replace existing module" do

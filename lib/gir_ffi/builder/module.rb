@@ -103,8 +103,6 @@ module GirFFI
           @lib.ffi_lib(*libspec.split(/,/))
         end
       end
-
-      optionally_define_constant(@lib, :CALLBACKS) { [] }
     end
 
     def sub_builder info
