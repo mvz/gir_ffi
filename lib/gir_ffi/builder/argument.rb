@@ -167,8 +167,8 @@ module GirFFI::Builder
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
-          :zero_terminated, :strv
+      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array,
+        :zero_terminated, :strv
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
           if specialized_type_tag == :strv
@@ -178,6 +178,12 @@ module GirFFI::Builder
           end
         else
           base
+        end
+      when :c
+        if has_output_value?
+          "GirFFI::InOutPointer.from #{parameter_conversion_arguments}"
+        else
+          "GirFFI::InPointer.from(#{parameter_conversion_arguments})"
         end
       else
         base = "#{parameter_conversion_arguments}"
@@ -258,8 +264,6 @@ module GirFFI::Builder
       type = arginfo.argument_type
       direction = arginfo.direction
       klass = case type.flattened_tag
-              when :c
-                CArrayInOutArgument
               when :utf8
                 RegularInOutArgument
               else
@@ -267,20 +271,6 @@ module GirFFI::Builder
               end
 
       klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for array arguments with direction
-  # :inout.
-  class CArrayInOutArgument < Argument::InOutBase
-    def pre
-      [ "#{callarg} = GirFFI::InOutPointer.from_array #{elm_t}, #{@name}" ]
-    end
-
-    def post
-      size = array_size
-      pst = [ "#{retname} = #{callarg}.to_sized_array_value #{size}" ]
-      pst
     end
   end
 

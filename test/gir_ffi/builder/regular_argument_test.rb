@@ -127,9 +127,7 @@ describe GirFFI::Builder::RegularArgument do
           builder.post.must_equal [ "_v2 = _v1.to_sized_array_value 3" ]
         end
       end
-    end
 
-    describe "for :c" do
       describe "with separate size parameter" do
         let(:length_argument) { Object.new }
         before do
@@ -283,6 +281,49 @@ describe GirFFI::Builder::RegularArgument do
 
       it "has the correct value for #post" do
         builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1.to_value)" ]
+      end
+    end
+
+    describe "for :c" do
+      describe "with fixed size" do
+        before do
+          stub(type_info).tag { :array }
+          stub(type_info).flattened_tag { :c }
+          stub(type_info).type_specification { "[:c, :bar]" }
+          stub(type_info).array_fixed_size { 3 }
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [
+            "GirFFI::ArgHelper.check_fixed_array_size 3, foo, \"foo\"",
+            "_v1 = GirFFI::InOutPointer.from [:c, :bar], foo"
+          ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value 3" ]
+        end
+      end
+
+      describe "with separate size parameter" do
+        let(:length_argument) { Object.new }
+        before do
+          stub(type_info).tag { :array }
+          stub(type_info).flattened_tag { :c }
+          stub(type_info).type_specification { "[:c, :bar]" }
+          stub(type_info).array_fixed_size { -1 }
+          stub(length_argument).retname { "baz" }
+          builder.length_arg = length_argument
+        end
+
+        it "has the correct value for #pre" do
+          # TODO: Perhaps this should include a length check as well.
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:c, :bar], foo" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value baz" ]
+        end
       end
     end
   end
