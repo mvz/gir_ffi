@@ -53,7 +53,9 @@ module GirFFI::Builder
     def post
       result = []
       if has_output_value?
-        value = if needs_outgoing_parameter_conversion?
+        value = if is_caller_allocated_object?
+                  callarg
+                elsif needs_outgoing_parameter_conversion?
                   case specialized_type_tag
                   when :enum, :flags
                     "#{argument_class_name}[#{output_conversion_arguments}]"
@@ -104,7 +106,11 @@ module GirFFI::Builder
 
     def set_function_call_argument
       value = if @direction == :out
-                "GirFFI::InOutPointer.for #{type_specification}"
+                if is_caller_allocated_object?
+                  "#{argument_class_name}.allocate"
+                else
+                  "GirFFI::InOutPointer.for #{type_specification}"
+                end
               else
                 if needs_ingoing_parameter_conversion?
                   ingoing_parameter_conversion
@@ -115,6 +121,9 @@ module GirFFI::Builder
       "#{callarg} = #{value}"
     end
 
+    def is_caller_allocated_object?
+      specialized_type_tag == :object && @arginfo.caller_allocates?
+    end
 
     def needs_outgoing_parameter_conversion?
       if @direction == :inout
@@ -199,8 +208,6 @@ module GirFFI::Builder
       klass = case type.flattened_tag
               when :object, :struct
                 if arginfo.caller_allocates?
-                  # FIXME: This type can only be merged with RegularArgument by
-                  # changing the arguments to #initialize.
                   AllocatedInterfaceOutArgument
                 else
                   RegularArgument
