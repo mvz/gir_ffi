@@ -4,22 +4,6 @@ require 'gir_ffi/builder/argument/base'
 require 'gir_ffi/builder/argument/out_base'
 
 module GirFFI::Builder
-  module Argument
-    def self.build var_gen, arginfo
-      {
-        :inout => InOutArgument,
-        :in => InArgument,
-        :out => OutArgument
-      }[arginfo.direction].build var_gen, arginfo
-    end
-  end
-
-  module InArgument
-    def self.build var_gen, arginfo
-      RegularArgument.new var_gen, arginfo
-    end
-  end
-
   # Implements argument processing for arguments not handled by more specific
   # builders.
   class RegularArgument < Argument::Base
@@ -202,23 +186,9 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for arguments with direction :out.
-  module OutArgument
-    def self.build var_gen, arginfo
-      RegularArgument.new var_gen, arginfo
-    end
-  end
-
   module WithTypedContainerPostMethod
     def post
       [ "#{retname} = #{argument_class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
-    end
-  end
-
-  # Implements argument processing for arguments with direction :inout.
-  module InOutArgument
-    def self.build var_gen, arginfo
-      RegularArgument.new var_gen, arginfo
     end
   end
 

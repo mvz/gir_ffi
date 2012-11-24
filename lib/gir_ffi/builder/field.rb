@@ -52,7 +52,7 @@ module GirFFI
       def setter_builder
         vargen = VariableNameGenerator.new
         argument_info = SetterArgumentInfo.new "value", @info.field_type
-        Builder::Argument.build vargen, argument_info
+        RegularArgument.new vargen, argument_info
       end
     end
   end
