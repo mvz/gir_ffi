@@ -1,12 +1,15 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::RegularArgument do
+  let(:argument_info) { Object.new }
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:builder) { GirFFI::Builder::RegularArgument.new(var_gen, 'foo',
-                                                       type_info, direction) }
+  let(:builder) { GirFFI::Builder::RegularArgument.new(var_gen, argument_info) }
 
   before do
+    stub(argument_info).name { 'foo' }
+    stub(argument_info).argument_type { type_info }
+    stub(argument_info).direction { direction }
     stub(type_info).interface_type_name { 'Bar::Foo' }
   end
 

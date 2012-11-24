@@ -20,11 +20,15 @@ module GirFFI
         attr_accessor :length_arg, :array_arg
 
         def initialize var_gen, name, typeinfo, direction
+          @var_gen = var_gen
+
           @typeinfo = typeinfo
+          @direction = direction
+          @name = safe(name)
+
           @inarg = nil
           @retname = nil
-          @name = safe(name)
-          @var_gen = var_gen
+
           @length_arg = nil
           @array_arg = nil
         end

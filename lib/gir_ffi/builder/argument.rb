@@ -16,17 +16,16 @@ module GirFFI::Builder
 
   module InArgument
     def self.build var_gen, arginfo
-      type = arginfo.argument_type
-      RegularArgument.new var_gen, arginfo.name, type, arginfo.direction
+      RegularArgument.new var_gen, arginfo
     end
   end
 
   # Implements argument processing for arguments not handled by more specific
   # builders.
   class RegularArgument < Argument::Base
-    def initialize var_gen, name, typeinfo, direction
-      super var_gen, name, typeinfo, direction
-      @direction = direction
+    def initialize var_gen, arginfo
+      super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
+      @arginfo = arginfo
     end
 
     def inarg
@@ -197,7 +196,6 @@ module GirFFI::Builder
   module OutArgument
     def self.build var_gen, arginfo
       type = arginfo.argument_type
-      direction = arginfo.direction
       klass = case type.flattened_tag
               when :object, :struct
                 if arginfo.caller_allocates?
@@ -210,13 +208,18 @@ module GirFFI::Builder
               else
                 RegularArgument
               end
-      klass.new var_gen, arginfo.name, type, direction
+      klass.new var_gen, arginfo
     end
   end
 
   # Implements argument processing for interface arguments with direction
   # :out (structs, objects, etc.), allocated by the caller.
   class AllocatedInterfaceOutArgument < Argument::OutBase
+    def initialize var_gen, arginfo
+      super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
+      @arginfo = arginfo
+    end
+
     def pre
       [ "#{callarg} = #{argument_class_name}.allocate" ]
     end
@@ -235,9 +238,7 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction :inout.
   module InOutArgument
     def self.build var_gen, arginfo
-      type = arginfo.argument_type
-      direction = arginfo.direction
-      RegularArgument.new var_gen, arginfo.name, type, direction
+      RegularArgument.new var_gen, arginfo
     end
   end
 
