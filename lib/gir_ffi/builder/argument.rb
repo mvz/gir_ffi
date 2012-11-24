@@ -167,7 +167,7 @@ module GirFFI::Builder
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
-      when :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array,
+      when :object, :struct, :void, :glist, :gslist, :ghash, :array,
         :zero_terminated, :strv
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
@@ -179,7 +179,7 @@ module GirFFI::Builder
         else
           base
         end
-      when :c
+      when :c, :utf8
         if has_output_value?
           "GirFFI::InOutPointer.from #{parameter_conversion_arguments}"
         else
@@ -263,31 +263,7 @@ module GirFFI::Builder
     def self.build var_gen, arginfo, libmodule
       type = arginfo.argument_type
       direction = arginfo.direction
-      klass = case type.flattened_tag
-              when :utf8
-                RegularInOutArgument
-              else
-                RegularArgument
-              end
-
-      klass.new var_gen, arginfo.name, type, direction
-    end
-  end
-
-  # Implements argument processing for arguments with direction
-  # :inout that are neither arrays nor 'interfaces'.
-  class RegularInOutArgument < Argument::InOutBase
-    def pre
-      pr = []
-      if @array_arg
-        pr << "#{@name} = #{@array_arg.name}.length"
-      end
-      pr << "#{callarg} = GirFFI::InOutPointer.from #{type_tag.inspect}, #{@name}"
-      pr
-    end
-
-    def post
-      [ "#{retname} = #{callarg}.to_value" ]
+      RegularArgument.new var_gen, arginfo.name, type, direction
     end
   end
 

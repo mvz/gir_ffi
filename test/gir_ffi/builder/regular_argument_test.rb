@@ -284,6 +284,22 @@ describe GirFFI::Builder::RegularArgument do
       end
     end
 
+    describe "for :utf8" do
+      before do
+        stub(type_info).tag { :utf8 }
+        stub(type_info).flattened_tag { :utf8 }
+        stub(type_info).type_specification { ":utf8" }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :utf8, foo" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = _v1.to_value" ]
+      end
+    end
+
     describe "for :c" do
       describe "with fixed size" do
         before do
