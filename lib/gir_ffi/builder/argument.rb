@@ -5,22 +5,22 @@ require 'gir_ffi/builder/argument/out_base'
 
 module GirFFI::Builder
   module Argument
-    def self.build var_gen, arginfo, libmodule
+    def self.build var_gen, arginfo
       {
         :inout => InOutArgument,
         :in => InArgument,
         :out => OutArgument
-      }[arginfo.direction].build var_gen, arginfo, libmodule
+      }[arginfo.direction].build var_gen, arginfo
     end
   end
 
   module InArgument
-    def self.build var_gen, arginfo, libmodule
+    def self.build var_gen, arginfo
       type = arginfo.argument_type
-      builder_for var_gen, arginfo.name, type, arginfo.direction, libmodule
+      builder_for var_gen, arginfo.name, type, arginfo.direction
     end
 
-    def self.builder_for var_gen, name, type, direction, libmodule
+    def self.builder_for var_gen, name, type, direction
       return RegularArgument.new var_gen, name, type, direction
     end
   end
@@ -199,7 +199,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :out.
   module OutArgument
-    def self.build var_gen, arginfo, libmodule
+    def self.build var_gen, arginfo
       type = arginfo.argument_type
       direction = arginfo.direction
       klass = case type.flattened_tag
@@ -238,7 +238,7 @@ module GirFFI::Builder
 
   # Implements argument processing for arguments with direction :inout.
   module InOutArgument
-    def self.build var_gen, arginfo, libmodule
+    def self.build var_gen, arginfo
       type = arginfo.argument_type
       direction = arginfo.direction
       RegularArgument.new var_gen, arginfo.name, type, direction
