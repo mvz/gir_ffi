@@ -57,7 +57,12 @@ module GirFFI
         def argument_class_name
           case (tag = type_tag)
           when :interface
-            type_info.interface_type_name
+            case type_info.flattened_tag
+            when :struct, :union, :object, :interface, :enum, :flags
+              type_info.interface_type_name
+            else
+              'GirFFI::Callback'
+            end
           when :array
             case type_info.flattened_tag
             when :byte_array

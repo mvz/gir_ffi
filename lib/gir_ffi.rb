@@ -6,6 +6,8 @@ require 'gir_ffi/type_map'
 require 'ffi-gobject_introspection'
 
 require 'gir_ffi/arg_helper'
+require 'gir_ffi/callback'
+require 'gir_ffi/callback_helper'
 require 'gir_ffi/builder'
 
 module GirFFI

@@ -10,6 +10,30 @@ describe GirFFI::Builder::RegularArgument do
     stub(type_info).interface_type_name { 'Bar::Foo' }
   end
 
+  describe "for an argument with direction :in" do
+    let(:direction) { :in }
+
+    describe "for :callback" do
+      before do
+        stub(interface_type_info = Object.new).namespace { "Bar" }
+        stub(interface_type_info).name { "Foo" }
+
+        stub(type_info).tag { :interface }
+        stub(type_info).flattened_tag { :callback }
+        stub(type_info).type_specification { ":callback" }
+        stub(type_info).interface { interface_type_info }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::Callback.from(\"Bar\", \"Foo\", foo)" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ ]
+      end
+    end
+  end
+
   describe "for an argument with direction :out" do
     let(:direction) { :out }
 

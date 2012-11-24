@@ -7,7 +7,7 @@ module GirFFI
       return prc if FFI::Function === prc
       return nil if prc.nil?
       info = GObjectIntrospection::IRepository.default.find_by_name namespace, name
-      return Proc.new do |*args|
+      return Callback.new do |*args|
 	prc.call(*map_callback_args(args, info))
       end
     end

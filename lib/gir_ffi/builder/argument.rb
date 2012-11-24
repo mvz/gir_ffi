@@ -26,27 +26,7 @@ module GirFFI::Builder
     end
 
     def self.builder_for var_gen, name, type, direction, libmodule
-      case type.flattened_tag
-      when :callback
-        return CallbackInArgument.new var_gen, name, type, libmodule
-      else
-        return RegularArgument.new var_gen, name, type, direction
-      end
-    end
-  end
-
-  # Implements argument processing for callback arguments with direction
-  # :in.
-  class CallbackInArgument < Argument::InBase
-    def initialize var_gen, name, type, libmodule
-      super var_gen, name, type, :in
-      @libmodule = libmodule
-    end
-
-    def pre
-      iface = type_info.interface
-      [ "#{callarg} = GirFFI::CallbackHelper.wrap_in_callback_args_mapper \"#{iface.namespace}\", \"#{iface.name}\", #{@name}",
-        "GirFFI::CallbackHelper.store_callback #{callarg}" ]
+      return RegularArgument.new var_gen, name, type, direction
     end
   end
 
@@ -158,8 +138,8 @@ module GirFFI::Builder
 
     def needs_ingoing_parameter_conversion?
       @direction == :inout ||
-        [ :object, :struct, :utf8, :void, :glist, :gslist, :ghash, :array, :c,
-          :zero_terminated, :strv ].include?(specialized_type_tag)
+        [ :object, :struct, :callback, :utf8, :void, :glist, :gslist, :ghash,
+          :array, :c, :zero_terminated, :strv ].include?(specialized_type_tag)
     end
 
     def ingoing_parameter_conversion
@@ -168,7 +148,7 @@ module GirFFI::Builder
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       when :object, :struct, :void, :glist, :gslist, :ghash, :array,
-        :zero_terminated, :strv
+        :zero_terminated, :strv, :callback
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
           if specialized_type_tag == :strv
@@ -207,6 +187,9 @@ module GirFFI::Builder
         "#{elm_t}, #{name}"
       when :c, :zero_terminated
         "#{type_specification}, #{name}"
+      when :callback
+        iface = type_info.interface
+        "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
       when :strv
         "#{name}"
       else
