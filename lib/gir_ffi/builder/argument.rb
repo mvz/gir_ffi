@@ -17,11 +17,7 @@ module GirFFI::Builder
   module InArgument
     def self.build var_gen, arginfo
       type = arginfo.argument_type
-      builder_for var_gen, arginfo.name, type, arginfo.direction
-    end
-
-    def self.builder_for var_gen, name, type, direction
-      return RegularArgument.new var_gen, name, type, direction
+      RegularArgument.new var_gen, arginfo.name, type, arginfo.direction
     end
   end
 

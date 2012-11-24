@@ -51,7 +51,7 @@ module GirFFI
       def setter_builder
         type = @info.field_type
         vargen = VariableNameGenerator.new
-        Builder::InArgument.builder_for vargen, "value", type, :in
+        Builder::RegularArgument.new vargen, "value", type, :in
       end
     end
   end
