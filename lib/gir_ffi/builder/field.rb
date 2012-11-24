@@ -1,5 +1,6 @@
 require 'gir_ffi/builder/argument'
 require 'gir_ffi/variable_name_generator'
+require 'gir_ffi/setter_argument_info'
 
 module GirFFI
   module Builder
@@ -49,9 +50,9 @@ module GirFFI
       end
 
       def setter_builder
-        type = @info.field_type
         vargen = VariableNameGenerator.new
-        Builder::RegularArgument.new vargen, "value", type, :in
+        argument_info = SetterArgumentInfo.new "value", @info.field_type
+        Builder::Argument.build vargen, argument_info
       end
     end
   end
