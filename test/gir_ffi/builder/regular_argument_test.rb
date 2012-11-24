@@ -115,12 +115,32 @@ describe GirFFI::Builder::RegularArgument do
         stub(type_info).type_specification { ":struct" }
       end
 
-      it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :struct" ]
+      describe "when not allocated by the caller" do
+        before do
+          stub(argument_info).caller_allocates? { false }
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :struct" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
+        end
       end
 
-      it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
+      describe "when allocated by the caller" do
+        before do
+          stub(argument_info).caller_allocates? { true }
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = Bar::Foo.allocate" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1" ]
+        end
       end
     end
 

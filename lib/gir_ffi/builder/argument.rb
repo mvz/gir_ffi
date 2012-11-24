@@ -122,7 +122,8 @@ module GirFFI::Builder
     end
 
     def is_caller_allocated_object?
-      specialized_type_tag == :object && @arginfo.caller_allocates?
+      [:object, :struct].include?(specialized_type_tag) &&
+        @arginfo.caller_allocates?
     end
 
     def needs_outgoing_parameter_conversion?
@@ -204,35 +205,7 @@ module GirFFI::Builder
   # Implements argument processing for arguments with direction :out.
   module OutArgument
     def self.build var_gen, arginfo
-      type = arginfo.argument_type
-      klass = case type.flattened_tag
-              when :object, :struct
-                if arginfo.caller_allocates?
-                  AllocatedInterfaceOutArgument
-                else
-                  RegularArgument
-                end
-              else
-                RegularArgument
-              end
-      klass.new var_gen, arginfo
-    end
-  end
-
-  # Implements argument processing for interface arguments with direction
-  # :out (structs, objects, etc.), allocated by the caller.
-  class AllocatedInterfaceOutArgument < Argument::OutBase
-    def initialize var_gen, arginfo
-      super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
-      @arginfo = arginfo
-    end
-
-    def pre
-      [ "#{callarg} = #{argument_class_name}.allocate" ]
-    end
-
-    def post
-      [ "#{retname} = #{callarg}" ]
+      RegularArgument.new var_gen, arginfo
     end
   end
 
