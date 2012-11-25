@@ -279,4 +279,39 @@ describe GirFFI::Builder::RegularReturnValue do
       builder.retval.must_equal "_v2"
     end
   end
+
+  describe "for :void pointer" do
+    before do
+      stub(type_info).flattened_tag { :void }
+      stub(type_info).pointer? { true }
+    end
+
+    it "has no statements in #post" do
+      builder.post.must_equal []
+    end
+
+    it "returns the result of the c function directly" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v1"
+    end
+  end
+
+  describe "for :void" do
+    before do
+      stub(type_info).flattened_tag { :void }
+      stub(type_info).pointer? { false }
+    end
+
+    it "has no statements in #post" do
+      builder.post.must_equal []
+    end
+
+    it "does not capture the result of the c function" do
+      builder.cvar.must_be_nil
+    end
+
+    it "returns nothing" do
+      builder.retval.must_be_nil
+    end
+  end
 end

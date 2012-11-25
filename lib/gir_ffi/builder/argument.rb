@@ -186,17 +186,7 @@ module GirFFI::Builder
     end
 
     def self.builder_for_field_getter var_gen, name, type, direction
-      klass = case type.flattened_tag
-              when :void
-                if type.pointer?
-                  RegularReturnValue
-                else
-                  VoidReturnValue
-                end
-              else
-                RegularReturnValue
-              end
-      klass.new var_gen, name, type
+      RegularReturnValue.new var_gen, name, type
     end
   end
 
@@ -217,12 +207,6 @@ module GirFFI::Builder
     def inarg
       nil
     end
-  end
-
-  # Null object to represent the case where no actual value is returned.
-  class VoidReturnValue < ReturnValue
-    def cvar; end
-    def retname; end
   end
 
   # Implements argument processing for object constructors.
@@ -254,9 +238,16 @@ module GirFFI::Builder
       end
     end
 
+    # TODO: Rename
+    def cvar
+      callarg unless is_void_return_value?
+    end
+
     def retval
       if has_conversion?
         super
+      elsif is_void_return_value?
+        nil
       else
         callarg
       end
@@ -272,6 +263,10 @@ module GirFFI::Builder
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
         :byte_array, :ptr_array, :glist, :gslist, :ghash, :array
       ].include?(specialized_type_tag)
+    end
+
+    def is_void_return_value?
+      specialized_type_tag == :void && !type_info.pointer?
     end
 
     def return_value_conversion_arguments
