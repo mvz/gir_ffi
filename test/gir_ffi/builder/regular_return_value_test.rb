@@ -204,4 +204,21 @@ describe GirFFI::Builder::RegularReturnValue do
       builder.retval.must_equal "_v2"
     end
   end
+
+  describe "for :array" do
+    before do
+      stub(type_info).flattened_tag { :array }
+      stub(type_info).element_type { :foo }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::Array.wrap(:foo, _v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
 end

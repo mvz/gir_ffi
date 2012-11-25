@@ -162,12 +162,6 @@ module GirFFI::Builder
     end
   end
 
-  module WithTypedContainerPostMethod
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap #{elm_t}, #{callarg}.to_value" ]
-    end
-  end
-
   module ReturnValueFactory
     def self.build var_gen, arginfo
       builder_for(var_gen,
@@ -201,10 +195,6 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayReturnValue
-              when :array
-                it = ReturnValue.new var_gen, name, type
-                it.extend WithTypedContainerPostMethod
-                return it
               when :utf8
                 Utf8ReturnValue
               else
@@ -288,7 +278,7 @@ module GirFFI::Builder
 
     def needs_wrapping?
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
-        :byte_array, :ptr_array, :glist, :gslist, :ghash
+        :byte_array, :ptr_array, :glist, :gslist, :ghash, :array
       ].include?(specialized_type_tag)
     end
 
