@@ -208,7 +208,7 @@ module GirFFI::Builder
                 else
                   WrappingReturnValue
                 end
-        klass.new var_gen, name, type, direction
+        klass.new var_gen, name, type
       else
         builder_for_field_getter var_gen, name, type, direction
       end
@@ -228,7 +228,7 @@ module GirFFI::Builder
               when :c
                 CArrayReturnValue
               when :array, :glist, :gslist, :ghash
-                it = ReturnValue.new var_gen, name, type, direction
+                it = ReturnValue.new var_gen, name, type
                 it.extend WithTypedContainerPostMethod
                 return it
               when :utf8
@@ -236,12 +236,16 @@ module GirFFI::Builder
               else
                 RegularReturnValue
               end
-      klass.new var_gen, name, type, direction
+      klass.new var_gen, name, type
     end
   end
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
+    def initialize var_gen, name, type_info
+      super var_gen, name, type_info, :return
+    end
+
     def cvar
       callarg
     end
