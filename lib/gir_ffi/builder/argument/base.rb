@@ -140,8 +140,6 @@ module GirFFI
           when :callback
             iface = type_info.interface
             "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
-          when :strv
-            "#{name}"
           else
             "#{name}"
           end

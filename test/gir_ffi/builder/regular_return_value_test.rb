@@ -112,6 +112,7 @@ describe GirFFI::Builder::RegularReturnValue do
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
+      # FIXME: This is almost certainly wrong, but matches original behavior.
       builder.post.must_equal [ "_v2 = GirFFI::InPointer.wrap(_v1)" ]
     end
 

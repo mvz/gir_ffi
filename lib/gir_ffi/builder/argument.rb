@@ -266,16 +266,18 @@ module GirFFI::Builder
   class RegularReturnValue < ReturnValue
     def post
       if needs_wrapping?
-        [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
-      elsif specialized_type_tag == :glist
-        [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
+        if specialized_type_tag == :zero_terminated
+          [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
+        else
+          [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
+        end
       else
         []
       end
     end
 
     def retval
-      if needs_wrapping? || specialized_type_tag == :glist
+      if needs_wrapping?
         super
       else
         callarg
@@ -286,7 +288,7 @@ module GirFFI::Builder
 
     def needs_wrapping?
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
-        :byte_array, :ptr_array ].include?(specialized_type_tag)
+        :byte_array, :ptr_array, :glist ].include?(specialized_type_tag)
     end
 
     def return_value_conversion_arguments
