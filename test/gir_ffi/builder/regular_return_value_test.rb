@@ -221,4 +221,20 @@ describe GirFFI::Builder::RegularReturnValue do
       builder.retval.must_equal "_v2"
     end
   end
+
+  describe "for :utf8" do
+    before do
+      stub(type_info).flattened_tag { :utf8 }
+    end
+
+    it "converts the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_utf8(_v1)" ]
+    end
+
+    it "returns the converted result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
 end

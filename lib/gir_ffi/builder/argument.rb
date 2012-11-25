@@ -195,8 +195,6 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayReturnValue
-              when :utf8
-                Utf8ReturnValue
               else
                 RegularReturnValue
               end
@@ -245,29 +243,27 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for UTF8 string return values.
-  class Utf8ReturnValue < ReturnValue
-    def post
-      [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8 #{cvar}" ]
-    end
-  end
-
   # Implements argument processing for return values.
   class RegularReturnValue < ReturnValue
     def post
       if needs_wrapping?
         if specialized_type_tag == :zero_terminated
+          # FIXME: This is almost certainly wrong and needs the be the same as
+          # the other branch of this if statement.
           [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
         else
           [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
         end
+      elsif specialized_type_tag == :utf8
+        # TODO: Re-use methods in InOutPointer for this conversion
+        [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8(#{cvar})" ]
       else
         []
       end
     end
 
     def retval
-      if needs_wrapping?
+      if has_conversion?
         super
       else
         callarg
@@ -275,6 +271,10 @@ module GirFFI::Builder
     end
 
     private
+
+    def has_conversion?
+      needs_wrapping? || specialized_type_tag == :utf8
+    end
 
     def needs_wrapping?
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
