@@ -126,6 +126,26 @@ module GirFFI
         def cleanup
           []
         end
+
+        private
+
+        def conversion_arguments name
+          case specialized_type_tag
+          when :utf8, :void
+            "#{self_t}, #{name}"
+          when :glist, :gslist, :ghash, :array
+            "#{elm_t}, #{name}"
+          when :c, :zero_terminated
+            "#{type_specification}, #{name}"
+          when :callback
+            iface = type_info.interface
+            "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
+          when :strv
+            "#{name}"
+          else
+            "#{name}"
+          end
+        end
       end
     end
   end

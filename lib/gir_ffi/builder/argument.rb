@@ -157,24 +157,6 @@ module GirFFI::Builder
       conversion_arguments @name
     end
 
-    def conversion_arguments name
-      case specialized_type_tag
-      when :utf8, :void
-        "#{self_t}, #{name}"
-      when :glist, :gslist, :ghash, :array
-        "#{elm_t}, #{name}"
-      when :c, :zero_terminated
-        "#{type_specification}, #{name}"
-      when :callback
-        iface = type_info.interface
-        "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
-      when :strv
-        "#{name}"
-      else
-        "#{name}"
-      end
-    end
-
     def self_t
       type_tag.inspect
     end
@@ -219,7 +201,7 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayReturnValue
-              when :array, :glist, :gslist, :ghash
+              when :array, :gslist, :ghash
                 it = ReturnValue.new var_gen, name, type
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -285,13 +267,15 @@ module GirFFI::Builder
     def post
       if needs_wrapping?
         [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
+      elsif specialized_type_tag == :glist
+        [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
       else
         []
       end
     end
 
     def retval
-      if needs_wrapping?
+      if needs_wrapping? || specialized_type_tag == :glist
         super
       else
         callarg
@@ -303,6 +287,10 @@ module GirFFI::Builder
     def needs_wrapping?
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
         :byte_array, :ptr_array ].include?(specialized_type_tag)
+    end
+
+    def return_value_conversion_arguments
+      conversion_arguments cvar
     end
   end
 
