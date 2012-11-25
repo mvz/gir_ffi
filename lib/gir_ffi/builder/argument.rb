@@ -163,15 +163,15 @@ module GirFFI::Builder
   end
 
   module ReturnValueFactory
-    def self.build var_gen, arginfo
-      builder_for(var_gen,
-                  arginfo.name,
-                  arginfo.return_type,
-                  :return,
-                  arginfo.constructor?)
+    def self.build var_gen, function_info
+      builder_for(var_gen, function_info)
     end
 
-    def self.builder_for var_gen, name, type, direction, is_constructor
+    def self.builder_for var_gen, arginfo
+
+      type = arginfo.return_type
+      is_constructor = arginfo.constructor?
+
       case type.flattened_tag
       when :interface, :object
         klass = if is_constructor
@@ -179,21 +179,21 @@ module GirFFI::Builder
                 else
                   RegularReturnValue
                 end
-        klass.new var_gen, name, type
+        klass.new var_gen, type
       else
-        builder_for_field_getter var_gen, name, type, direction
+        builder_for_field_getter var_gen, type
       end
     end
 
-    def self.builder_for_field_getter var_gen, name, type, direction
-      RegularReturnValue.new var_gen, name, type
+    def self.builder_for_field_getter var_gen, type
+      RegularReturnValue.new var_gen, type
     end
   end
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
-    def initialize var_gen, name, type_info
-      super var_gen, name, type_info, :return
+    def initialize var_gen, type_info
+      super var_gen, nil, type_info, :return
     end
 
     def cvar

@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builder::RegularReturnValue do
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:builder) { GirFFI::Builder::RegularReturnValue.new(var_gen, 'foo',
+  let(:builder) { GirFFI::Builder::RegularReturnValue.new(var_gen,
                                                           type_info) }
 
   before do
