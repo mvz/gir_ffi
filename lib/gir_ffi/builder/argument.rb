@@ -201,7 +201,7 @@ module GirFFI::Builder
         klass = if is_constructor
                   ConstructorReturnValue
                 else
-                  WrappingReturnValue
+                  RegularReturnValue
                 end
         klass.new var_gen, name, type
       else
@@ -217,9 +217,6 @@ module GirFFI::Builder
                 else
                   VoidReturnValue
                 end
-              when :union, :interface, :object, :strv,
-                :zero_terminated, :byte_array, :ptr_array
-                WrappingReturnValue
               when :c
                 CArrayReturnValue
               when :array, :glist, :gslist, :ghash
@@ -260,24 +257,6 @@ module GirFFI::Builder
     def retname; end
   end
 
-  # Implements argument processing for interface return values (interfaces
-  # and structs, but not objects, which need special handling for
-  # polymorphism and constructors).
-  #
-  # Implements argument processing for object return values when the method is
-  # not a constructor.
-  #
-  # Implements argument processing for NULL-terminated string array return values.
-  #
-  # Implements argument processing for GByteArray return values.
-  #
-  # Implements argument processing for GPtrArray return values.
-  class WrappingReturnValue < ReturnValue
-    def post
-      [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
-    end
-  end
-
   # Implements argument processing for object constructors.
   class ConstructorReturnValue < ReturnValue
     def post
@@ -301,7 +280,7 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for other return values.
+  # Implements argument processing for return values.
   class RegularReturnValue < ReturnValue
     def post
       if needs_wrapping?
@@ -322,7 +301,8 @@ module GirFFI::Builder
     private
 
     def needs_wrapping?
-      [ :struct ].include?(specialized_type_tag)
+      [ :struct, :union, :interface, :object, :strv, :zero_terminated,
+        :byte_array, :ptr_array ].include?(specialized_type_tag)
     end
   end
 

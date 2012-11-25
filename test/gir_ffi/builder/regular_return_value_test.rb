@@ -40,4 +40,116 @@ describe GirFFI::Builder::RegularReturnValue do
       builder.retval.must_equal "_v2"
     end
   end
+
+  describe "for :union" do
+    before do
+      stub(type_info).flattened_tag { :union }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :interface" do
+    before do
+      stub(type_info).flattened_tag { :interface }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :object" do
+    before do
+      stub(type_info).flattened_tag { :object }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :strv" do
+    before do
+      stub(type_info).flattened_tag { :strv }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :zero_terminated" do
+    before do
+      stub(type_info).flattened_tag { :zero_terminated }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GirFFI::InPointer.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :byte_array" do
+    before do
+      stub(type_info).flattened_tag { :byte_array }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::ByteArray.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :ptr_array" do
+    before do
+      stub(type_info).flattened_tag { :ptr_array }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
 end
