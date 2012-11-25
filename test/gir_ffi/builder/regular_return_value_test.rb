@@ -170,4 +170,38 @@ describe GirFFI::Builder::RegularReturnValue do
       builder.retval.must_equal "_v2"
     end
   end
+
+  describe "for :gslist" do
+    before do
+      stub(type_info).flattened_tag { :gslist }
+      stub(type_info).element_type { :foo }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::SList.wrap(:foo, _v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
+  describe "for :ghash" do
+    before do
+      stub(type_info).flattened_tag { :ghash }
+      stub(type_info).element_type { [:foo, :bar] }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::HashTable.wrap([:foo, :bar], _v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
 end

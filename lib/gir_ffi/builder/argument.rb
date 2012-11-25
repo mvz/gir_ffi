@@ -201,7 +201,7 @@ module GirFFI::Builder
                 end
               when :c
                 CArrayReturnValue
-              when :array, :gslist, :ghash
+              when :array
                 it = ReturnValue.new var_gen, name, type
                 it.extend WithTypedContainerPostMethod
                 return it
@@ -288,7 +288,8 @@ module GirFFI::Builder
 
     def needs_wrapping?
       [ :struct, :union, :interface, :object, :strv, :zero_terminated,
-        :byte_array, :ptr_array, :glist ].include?(specialized_type_tag)
+        :byte_array, :ptr_array, :glist, :gslist, :ghash
+      ].include?(specialized_type_tag)
     end
 
     def return_value_conversion_arguments
