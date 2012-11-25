@@ -193,8 +193,6 @@ module GirFFI::Builder
                 else
                   VoidReturnValue
                 end
-              when :c
-                CArrayReturnValue
               else
                 RegularReturnValue
               end
@@ -234,15 +232,6 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for array return values.
-  class CArrayReturnValue < ReturnValue
-    def post
-      size = array_size
-
-      [ "#{retname} = GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{cvar}, #{size}" ]
-    end
-  end
-
   # Implements argument processing for return values.
   class RegularReturnValue < ReturnValue
     def post
@@ -257,6 +246,9 @@ module GirFFI::Builder
       elsif specialized_type_tag == :utf8
         # TODO: Re-use methods in InOutPointer for this conversion
         [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8(#{cvar})" ]
+      elsif specialized_type_tag == :c
+        size = array_size
+        [ "#{retname} = GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{cvar}, #{size}" ]
       else
         []
       end
@@ -273,7 +265,7 @@ module GirFFI::Builder
     private
 
     def has_conversion?
-      needs_wrapping? || specialized_type_tag == :utf8
+      needs_wrapping? || [ :utf8, :c ].include?(specialized_type_tag)
     end
 
     def needs_wrapping?

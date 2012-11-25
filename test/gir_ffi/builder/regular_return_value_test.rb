@@ -222,6 +222,48 @@ describe GirFFI::Builder::RegularReturnValue do
     end
   end
 
+  describe "for :c" do
+    describe "with fixed size" do
+      before do
+        stub(type_info).flattened_tag { :c }
+        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).array_fixed_size { 3 }
+      end
+
+      it "converts the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_typed_array :foo, _v1, 3" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
+    end
+
+    describe "with separate size parameter" do
+      let(:length_argument) { Object.new }
+      before do
+        stub(type_info).flattened_tag { :c }
+        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).array_fixed_size { -1 }
+
+        stub(length_argument).retname { "bar" }
+        builder.length_arg = length_argument
+      end
+
+      it "converts the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_typed_array :foo, _v1, bar" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
+    end
+  end
+
   describe "for :utf8" do
     before do
       stub(type_info).flattened_tag { :utf8 }
