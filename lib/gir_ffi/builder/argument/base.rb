@@ -59,27 +59,21 @@ module GirFFI
         }
 
         def argument_class_name
-          case (tag = type_tag)
-          when :interface
-            case type_info.flattened_tag
-            when :struct, :union, :object, :interface, :enum, :flags
-              type_info.interface_type_name
-            else
-              'GirFFI::Callback'
-            end
+          case (tag = type_info.flattened_tag)
+          when :struct, :union, :object, :interface, :enum, :flags
+            type_info.interface_type_name
+          when :callback
+            'GirFFI::Callback'
+          when :byte_array
+            'GLib::ByteArray'
           when :array
-            case type_info.flattened_tag
-            when :byte_array
-              'GLib::ByteArray'
-            when :array
-              'GLib::Array'
-            when :ptr_array
-              'GLib::PtrArray'
-            when :strv
-              'GLib::Strv'
-            else # :c
-              'GirFFI::InPointer'
-            end
+            'GLib::Array'
+          when :ptr_array
+            'GLib::PtrArray'
+          when :strv
+            'GLib::Strv'
+          when :c, :zero_terminated
+            'GirFFI::InPointer'
           else
             TAG_TO_WRAPPER_CLASS_MAP[tag]
           end
@@ -114,7 +108,7 @@ module GirFFI
         end
 
         def retval
-          @array_arg.nil? ? @retname : nil
+          @array_arg.nil? ? retname : nil
         end
 
         def callarg

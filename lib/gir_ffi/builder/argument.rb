@@ -110,13 +110,8 @@ module GirFFI::Builder
     end
 
     def needs_outgoing_parameter_conversion?
-      if @direction == :inout
-        [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
-          :strv ].include?(specialized_type_tag)
-      else
-        [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
-          :strv ].include?(specialized_type_tag)
-      end
+      [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
+        :strv ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
@@ -222,7 +217,7 @@ module GirFFI::Builder
                 else
                   VoidReturnValue
                 end
-              when :struct, :union, :interface, :object, :strv,
+              when :union, :interface, :object, :strv,
                 :zero_terminated, :byte_array, :ptr_array
                 WrappingReturnValue
               when :c
@@ -308,8 +303,26 @@ module GirFFI::Builder
 
   # Implements argument processing for other return values.
   class RegularReturnValue < ReturnValue
+    def post
+      if needs_wrapping?
+        [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
+      else
+        []
+      end
+    end
+
     def retval
-      @callarg
+      if needs_wrapping?
+        super
+      else
+        callarg
+      end
+    end
+
+    private
+
+    def needs_wrapping?
+      [ :struct ].include?(specialized_type_tag)
     end
   end
 
