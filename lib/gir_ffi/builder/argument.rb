@@ -1,7 +1,6 @@
 require 'forwardable'
 
 require 'gir_ffi/builder/argument/base'
-require 'gir_ffi/builder/argument/out_base'
 
 module GirFFI::Builder
   # Implements argument processing for arguments not handled by more specific
