@@ -45,8 +45,8 @@ module GirFFI
       end
 
       def return_value_builder
-        @rv_builder ||= ReturnValueFactory.builder_for_field_getter(
-          VariableNameGenerator.new, @info.field_type)
+        vargen = VariableNameGenerator.new
+        @rv_builder ||= RegularReturnValue.new vargen, @info.field_type, false
       end
 
       def setter_builder

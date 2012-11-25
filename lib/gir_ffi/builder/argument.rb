@@ -164,36 +164,15 @@ module GirFFI::Builder
 
   module ReturnValueFactory
     def self.build var_gen, function_info
-      builder_for(var_gen, function_info)
-    end
-
-    def self.builder_for var_gen, arginfo
-
-      type = arginfo.return_type
-      is_constructor = arginfo.constructor?
-
-      case type.flattened_tag
-      when :interface, :object
-        klass = if is_constructor
-                  ConstructorReturnValue
-                else
-                  RegularReturnValue
-                end
-        klass.new var_gen, type
-      else
-        builder_for_field_getter var_gen, type
-      end
-    end
-
-    def self.builder_for_field_getter var_gen, type
-      RegularReturnValue.new var_gen, type
+      RegularReturnValue.new var_gen, function_info.return_type, function_info.constructor?
     end
   end
 
   # Implements argument processing for return values.
   class ReturnValue < Argument::Base
-    def initialize var_gen, type_info
+    def initialize var_gen, type_info, is_constructor
       super var_gen, nil, type_info, :return
+      @is_constructor = is_constructor
     end
 
     def cvar
@@ -209,13 +188,6 @@ module GirFFI::Builder
     end
   end
 
-  # Implements argument processing for object constructors.
-  class ConstructorReturnValue < ReturnValue
-    def post
-      [ "#{retname} = self.constructor_wrap(#{cvar})" ]
-    end
-  end
-
   # Implements argument processing for return values.
   class RegularReturnValue < ReturnValue
     def post
@@ -224,6 +196,8 @@ module GirFFI::Builder
           # FIXME: This is almost certainly wrong and needs the be the same as
           # the other branch of this if statement.
           [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
+        elsif [ :interface, :object ].include?(specialized_type_tag) && @is_constructor
+          [ "#{retname} = self.constructor_wrap(#{cvar})" ]
         else
           [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
         end

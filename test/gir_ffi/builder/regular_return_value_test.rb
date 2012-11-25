@@ -3,8 +3,10 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builder::RegularReturnValue do
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
+  let(:for_constructor) { "irrelevant" }
   let(:builder) { GirFFI::Builder::RegularReturnValue.new(var_gen,
-                                                          type_info) }
+                                                          type_info,
+                                                          for_constructor) }
 
   before do
     stub(type_info).interface_type_name { 'Bar::Foo' }
@@ -62,14 +64,32 @@ describe GirFFI::Builder::RegularReturnValue do
       stub(type_info).flattened_tag { :interface }
     end
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+    describe "when the method is not a constructor" do
+      let(:for_constructor) { false }
+
+      it "wraps the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
     end
 
-    it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+    describe "when the method is a constructor" do
+      let(:for_constructor) { true }
+
+      it "wraps the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = self.constructor_wrap(_v1)" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
     end
   end
 
@@ -78,14 +98,32 @@ describe GirFFI::Builder::RegularReturnValue do
       stub(type_info).flattened_tag { :object }
     end
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+    describe "when the method is not a constructor" do
+      let(:for_constructor) { false }
+
+      it "wraps the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
     end
 
-    it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+    describe "when the method is a constructor" do
+      let(:for_constructor) { true }
+
+      it "wraps the result in #post" do
+        builder.callarg.must_equal "_v1"
+        builder.post.must_equal [ "_v2 = self.constructor_wrap(_v1)" ]
+      end
+
+      it "returns the wrapped result" do
+        builder.callarg.must_equal "_v1"
+        builder.retval.must_equal "_v2"
+      end
     end
   end
 
