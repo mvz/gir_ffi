@@ -9,7 +9,8 @@ describe GObject do
     should "emit a signal" do
       a = 1
       o = Regress::TestSubObj.new
-      ::GObject::Lib.g_signal_connect_data o, "test", Proc.new { a = 2 }, nil, nil, 0
+      callback = Proc.new { a = 2 }
+      ::GObject::Lib.g_signal_connect_data o, "test", callback, nil, nil, 0
       GObject.signal_emit o, "test"
       assert_equal 2, a
     end
