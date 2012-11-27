@@ -169,32 +169,16 @@ module GirFFI::Builder
   end
 
   # Implements argument processing for return values.
-  class ReturnValue < Argument::Base
+  class RegularReturnValue < Argument::Base
     def initialize var_gen, type_info, is_constructor
       super var_gen, nil, type_info, :return
       @is_constructor = is_constructor
     end
 
-    def cvar
-      callarg
-    end
-
-    def retname
-      @retname ||= @var_gen.new_var
-    end
-
-    def inarg
-      nil
-    end
-  end
-
-  # Implements argument processing for return values.
-  class RegularReturnValue < ReturnValue
     def post
       if needs_wrapping?
         if specialized_type_tag == :zero_terminated
-          # FIXME: This is almost certainly wrong and needs the be the same as
-          # the other branch of this if statement.
+          # FIXME: This is almost certainly wrong.
           [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
         elsif [ :interface, :object ].include?(specialized_type_tag) && @is_constructor
           [ "#{retname} = self.constructor_wrap(#{cvar})" ]
@@ -210,6 +194,10 @@ module GirFFI::Builder
       else
         []
       end
+    end
+
+    def inarg
+      nil
     end
 
     # TODO: Rename
@@ -228,6 +216,10 @@ module GirFFI::Builder
     end
 
     private
+
+    def retname
+      @retname ||= @var_gen.new_var
+    end
 
     def has_conversion?
       needs_wrapping? || [ :utf8, :c ].include?(specialized_type_tag)
