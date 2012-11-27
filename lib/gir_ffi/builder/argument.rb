@@ -162,12 +162,6 @@ module GirFFI::Builder
     end
   end
 
-  module ReturnValueFactory
-    def self.build var_gen, function_info
-      RegularReturnValue.new var_gen, function_info.return_type, function_info.constructor?
-    end
-  end
-
   # Implements argument processing for return values.
   class RegularReturnValue < Argument::Base
     def initialize var_gen, type_info, is_constructor
