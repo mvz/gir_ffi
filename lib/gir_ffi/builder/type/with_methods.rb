@@ -38,7 +38,7 @@ module GirFFI
         end
 
         def function_definition_builder go
-          Builder::Function.new(go, lib)
+          FunctionBuilder.new(go, lib)
         end
 
         def function_definition go

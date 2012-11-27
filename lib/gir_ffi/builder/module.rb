@@ -1,6 +1,6 @@
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/module_base'
-require 'gir_ffi/builder/function'
+require 'gir_ffi/function_builder'
 require 'indentation'
 
 module GirFFI
@@ -107,7 +107,7 @@ module GirFFI
 
     def sub_builder info
       if info.info_type == :function
-        Builder::Function.new(info, libmodule)
+        FunctionBuilder.new(info, libmodule)
       else
         Builder::Type.builder_for info
       end
@@ -124,7 +124,7 @@ module GirFFI
     end
 
     def function_definition info, libmodule
-      Builder::Function.new(info, libmodule).generate
+      FunctionBuilder.new(info, libmodule).generate
     end
 
     def gir

@@ -1,10 +1,10 @@
 require 'gir_ffi_test_helper'
 
-describe GirFFI::Builder::RegularArgument do
+describe GirFFI::ArgumentBuilder do
   let(:argument_info) { Object.new }
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:builder) { GirFFI::Builder::RegularArgument.new(var_gen, argument_info) }
+  let(:builder) { GirFFI::ArgumentBuilder.new(var_gen, argument_info) }
 
   before do
     stub(argument_info).name { 'foo' }

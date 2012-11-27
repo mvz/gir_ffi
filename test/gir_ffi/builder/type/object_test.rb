@@ -51,9 +51,9 @@ describe GirFFI::Builder::Type::Object do
       @go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
     end
 
-    it "delegates definition to Builder::Function" do
+    it "delegates definition to FunctionBuilder" do
       code = @cbuilder.send :function_definition, @go
-      expected = GirFFI::Builder::Function.new(@go, Regress::Lib).generate
+      expected = GirFFI::FunctionBuilder.new(@go, Regress::Lib).generate
       assert_equal cws(expected), cws(code)
     end
 

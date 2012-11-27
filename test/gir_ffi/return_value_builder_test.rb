@@ -1,12 +1,12 @@
 require 'gir_ffi_test_helper'
 
-describe GirFFI::Builder::RegularReturnValue do
+describe GirFFI::ReturnValueBuilder do
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:for_constructor) { "irrelevant" }
-  let(:builder) { GirFFI::Builder::RegularReturnValue.new(var_gen,
-                                                          type_info,
-                                                          for_constructor) }
+  let(:builder) { GirFFI::ReturnValueBuilder.new(var_gen,
+                                                 type_info,
+                                                 for_constructor) }
 
   before do
     stub(type_info).interface_type_name { 'Bar::Foo' }

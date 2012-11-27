@@ -1,9 +1,9 @@
 require 'gir_ffi_test_helper'
 
-describe GirFFI::Builder::Function do
+describe GirFFI::FunctionBuilder do
   describe "#pretty_print" do
     it "delegates to #generate" do
-      builder = GirFFI::Builder::Function.new(:info, :libmodule)
+      builder = GirFFI::FunctionBuilder.new(:info, :libmodule)
 
       mock(builder).generate { 'result_from_generate' }
 
@@ -14,7 +14,7 @@ describe GirFFI::Builder::Function do
   it "builds a correct definition of Regress:test_array_fixed_out_objects" do
     go = get_introspection_data 'Regress', 'test_array_fixed_out_objects'
     skip unless go
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -31,7 +31,7 @@ describe GirFFI::Builder::Function do
 
   it "builds a correct definition for functions having a linked length argument" do
     go = get_introspection_data 'Regress', 'test_array_gint16_in'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -49,7 +49,7 @@ describe GirFFI::Builder::Function do
 
   it "builds a correct definition for functions with callbacks" do
     go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -67,7 +67,7 @@ describe GirFFI::Builder::Function do
 
   it "builds correct definition for constructors" do
     go = get_method_introspection_data 'Regress', 'TestObj', 'new_from_file'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -86,7 +86,7 @@ describe GirFFI::Builder::Function do
 
   it "creates a call to GObject::Value#from for functions that take a GValue" do
     go = get_introspection_data 'GIMarshallingTests', 'gvalue_in'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -102,7 +102,7 @@ describe GirFFI::Builder::Function do
 
   it "builds correct definition for functions with a nullable input array" do
     go = get_introspection_data 'Regress', 'test_array_int_null_in'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -120,7 +120,7 @@ describe GirFFI::Builder::Function do
 
   it "builds correct definition for functions with a nullable output array" do
     go = get_introspection_data 'Regress', 'test_array_int_null_out'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -139,7 +139,7 @@ describe GirFFI::Builder::Function do
 
   it "builds the correct definition for a method with an inout array with size argument" do
     go = get_method_introspection_data 'GIMarshallingTests', 'Object', 'method_array_inout'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE
@@ -159,7 +159,7 @@ describe GirFFI::Builder::Function do
 
   it "builds a correct definition for a simple method" do
     go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
-    fbuilder = GirFFI::Builder::Function.new go, DummyLib
+    fbuilder = GirFFI::FunctionBuilder.new go, DummyLib
     code = fbuilder.generate
 
     expected = <<-CODE

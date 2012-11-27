@@ -27,7 +27,7 @@ describe GirFFI::Builder::Module do
 
         builder = GirFFI::Builder::Module.new "Foo"
         stub(builder).libmodule { :bla }
-        mock(GirFFI::Builder::Function).new(info, :bla) { subbuilder }
+        mock(GirFFI::FunctionBuilder).new(info, :bla) { subbuilder }
 
         res = builder.pretty_print
         expected = "module Foo\n  def foo\n    function_body\n  end\nend"
@@ -38,11 +38,11 @@ describe GirFFI::Builder::Module do
   end
 
   describe "#function_definition" do
-    it "delegates to GirFFI::Builder::Function#generate" do
+    it "delegates to GirFFI::FunctionBuilder#generate" do
       builder = GirFFI::Builder::Module.new "Foo"
 
       mock(fb = Object.new).generate { "function body" }
-      mock(GirFFI::Builder::Function).new("info", "lib") { fb }
+      mock(GirFFI::FunctionBuilder).new("info", "lib") { fb }
 
       result = builder.send :function_definition, "info", "lib"
 
@@ -52,14 +52,14 @@ describe GirFFI::Builder::Module do
 
   describe "#sub_builder" do
     describe "for a :function argument" do
-      it "creates a GirFFI::Builder::Function object" do
+      it "creates a GirFFI::FunctionBuilder object" do
         builder = GirFFI::Builder::Module.new "Foo"
         mock(builder).libmodule { DummyLib }
 
         stub(info = Object.new).info_type { :function }
 
         result = builder.send :sub_builder, info
-        assert_instance_of GirFFI::Builder::Function, result
+        assert_instance_of GirFFI::FunctionBuilder, result
       end
     end
 

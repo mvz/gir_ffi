@@ -1,10 +1,13 @@
-require 'gir_ffi/builder/argument'
+require 'gir_ffi/argument_builder'
+require 'gir_ffi/return_value_builder'
+require 'gir_ffi/error_argument_builder'
+require 'gir_ffi/null_argument_builder'
 require 'gir_ffi/variable_name_generator'
 
-module GirFFI::Builder
+module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
-  class Function
+  class FunctionBuilder
     def initialize info, libmodule
       @info = info
       @libmodule = libmodule
@@ -12,8 +15,8 @@ module GirFFI::Builder
 
     def generate
       vargen = GirFFI::VariableNameGenerator.new
-      @data = @info.args.map {|arg| RegularArgument.new vargen, arg }
-      @rvdata = RegularReturnValue.new(vargen, @info.return_type,
+      @data = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
+      @rvdata = ReturnValueBuilder.new(vargen, @info.return_type,
                                        @info.constructor?)
 
       alldata = @data.dup << @rvdata
@@ -37,7 +40,7 @@ module GirFFI::Builder
     private
 
     def setup_error_argument vargen
-      klass = @info.throws? ? ErrorArgument : NullArgument
+      klass = @info.throws? ? ErrorArgumentBuilder : NullArgumentBuilder
       @errarg = klass.new vargen, nil, nil, :error
     end
 

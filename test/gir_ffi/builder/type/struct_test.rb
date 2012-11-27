@@ -22,7 +22,7 @@ describe GirFFI::Builder::Type::Struct do
         # Function info and its builder
         stub(func_info = Object.new).info_type { :function }
         mock(func_builder = Object.new).pretty_print { "def foo\n  function_body\nend" }
-        mock(GirFFI::Builder::Function).new(func_info, :bla) { func_builder }
+        mock(GirFFI::FunctionBuilder).new(func_info, :bla) { func_builder }
 
         # Struct info
         mock(info = Object.new).safe_name { "Bar" }

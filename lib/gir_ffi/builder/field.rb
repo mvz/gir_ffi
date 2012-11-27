@@ -1,4 +1,5 @@
-require 'gir_ffi/builder/argument'
+require 'gir_ffi/argument_builder'
+require 'gir_ffi/return_value_builder'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/setter_argument_info'
 
@@ -46,13 +47,13 @@ module GirFFI
 
       def return_value_builder
         vargen = VariableNameGenerator.new
-        @rv_builder ||= RegularReturnValue.new vargen, @info.field_type, false
+        @rv_builder ||= ReturnValueBuilder.new vargen, @info.field_type, false
       end
 
       def setter_builder
         vargen = VariableNameGenerator.new
         argument_info = SetterArgumentInfo.new "value", @info.field_type
-        RegularArgument.new vargen, argument_info
+        ArgumentBuilder.new vargen, argument_info
       end
     end
   end
