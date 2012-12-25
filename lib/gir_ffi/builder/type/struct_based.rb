@@ -12,12 +12,6 @@ module GirFFI
         include WithMethods
         include WithLayout
 
-        def pretty_print
-          buf = "class #{@classname}\n"
-          buf << pretty_print_methods
-          buf << "end"
-        end
-
         private
 
         def setup_class

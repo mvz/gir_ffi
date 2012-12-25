@@ -60,15 +60,6 @@ module GirFFI
       @module
     end
 
-    def pretty_print
-      buf = "module #{@safe_namespace}\n"
-      gir.infos(@namespace).each do |info|
-        buf << sub_builder(info).pretty_print.indent
-        buf << "\n"
-      end
-      buf << "end"
-    end
-
     private
 
     def build_dependencies

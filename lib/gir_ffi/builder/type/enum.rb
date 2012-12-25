@@ -7,10 +7,6 @@ module GirFFI
       # attached to the appropriate namespace module, and will be defined
       # as an enum for FFI.
       class Enum < RegisteredType
-        def pretty_print
-          "#{@classname} = Lib.enum #{enum_sym.inspect}, #{value_spec.inspect}"
-        end
-
         private
 
         def enum_sym

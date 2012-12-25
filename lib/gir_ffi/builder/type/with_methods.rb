@@ -58,12 +58,6 @@ module GirFFI
             @klass.class_eval MethodStubber.new(minfo).method_stub
           end
         end
-
-        def pretty_print_methods
-          info.get_methods.map do |minfo|
-            function_definition_builder(minfo).pretty_print.indent + "\n"
-          end.join
-        end
       end
     end
   end

@@ -1,16 +1,6 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::FunctionBuilder do
-  describe "#pretty_print" do
-    it "delegates to #generate" do
-      builder = GirFFI::FunctionBuilder.new(:info, :libmodule)
-
-      mock(builder).generate { 'result_from_generate' }
-
-      assert_equal "result_from_generate", builder.pretty_print
-    end
-  end
-
   it "builds a correct definition of Regress:test_array_fixed_out_objects" do
     go = get_introspection_data 'Regress', 'test_array_fixed_out_objects'
     skip unless go

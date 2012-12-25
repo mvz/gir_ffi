@@ -1,42 +1,6 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder::Module do
-  describe "#pretty_print" do
-    describe "for a module with no members" do
-      it "returns just a module block" do
-        gir = GObjectIntrospection::IRepository.default
-        stub(gir).require("Foo", nil) { }
-        mock(gir).infos("Foo") { [] }
-
-        builder = GirFFI::Builder::Module.new "Foo"
-        res = builder.pretty_print
-        expected = "module Foo\nend"
-
-        assert_equal expected, res
-      end
-    end
-
-    describe "for a module with a function member" do
-      it "returns a module block with pretty printed function inside" do
-        stub(info = Object.new).info_type { :function }
-        mock(subbuilder = Object.new).pretty_print { "def foo\n  function_body\nend" }
-
-        gir = GObjectIntrospection::IRepository.default
-        stub(gir).require("Foo", nil) { }
-        mock(gir).infos("Foo") { [info] }
-
-        builder = GirFFI::Builder::Module.new "Foo"
-        stub(builder).libmodule { :bla }
-        mock(GirFFI::FunctionBuilder).new(info, :bla) { subbuilder }
-
-        res = builder.pretty_print
-        expected = "module Foo\n  def foo\n    function_body\n  end\nend"
-
-        assert_equal expected, res
-      end
-    end
-  end
-
   describe "#function_definition" do
     it "delegates to GirFFI::FunctionBuilder#generate" do
       builder = GirFFI::Builder::Module.new "Foo"

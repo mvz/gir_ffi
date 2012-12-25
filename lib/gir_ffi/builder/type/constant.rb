@@ -8,10 +8,6 @@ module GirFFI
       # triggered by a missing constant in the parent namespace.  The
       # constant will be attached to the appropriate namespace module.
       class Constant < Base
-        def pretty_print
-          "#{@classname} = #{info.value.inspect}"
-        end
-
         private
 
         def instantiate_class

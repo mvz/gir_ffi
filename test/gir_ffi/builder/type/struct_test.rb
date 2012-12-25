@@ -2,45 +2,6 @@ require 'gir_ffi_test_helper'
 
 # FIXME: Test WithLayout directly, rather than through Struct.
 describe GirFFI::Builder::Type::Struct do
-  describe "#pretty_print" do
-    describe "for a struct with no methods" do
-      it "returns a class block" do
-        mock(info = Object.new).safe_name { "Bar" }
-        stub(info).namespace { "Foo" }
-        stub(info).get_methods { [] }
-
-        builder = GirFFI::Builder::Type::Struct.new(info)
-
-        assert_equal "class Bar\nend", builder.pretty_print
-      end
-    end
-
-    describe "for a struct with a method" do
-      it "returns a class block with the pretty printed method inside" do
-        # FIXME: Loads of mocks.
-
-        # Function info and its builder
-        stub(func_info = Object.new).info_type { :function }
-        mock(func_builder = Object.new).pretty_print { "def foo\n  function_body\nend" }
-        mock(GirFFI::FunctionBuilder).new(func_info, :bla) { func_builder }
-
-        # Struct info
-        mock(info = Object.new).safe_name { "Bar" }
-        stub(info).namespace { "Foo" }
-        mock(info).get_methods { [func_info] }
-
-        # Struct builder
-        builder = GirFFI::Builder::Type::Struct.new(info)
-        stub(builder).lib { :bla }
-
-        res = builder.pretty_print
-        expected = "class Bar\n  def foo\n    function_body\n  end\nend"
-
-        assert_equal expected, res
-      end
-    end
-  end
-
   describe "for a struct with a simple layout" do
     before do
       @field = Object.new

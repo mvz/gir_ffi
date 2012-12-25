@@ -33,10 +33,6 @@ module GirFFI
       return filled_out_template
     end
 
-    def pretty_print
-      generate
-    end
-
     private
 
     def setup_error_argument vargen
