@@ -1,5 +1,3 @@
-require 'gir_ffi/info_ext/i_registered_type_info'
-
 module GirFFI
   # Abstract parent class of the argument building classes. These
   # classes are used by FunctionBuilder to create the code that

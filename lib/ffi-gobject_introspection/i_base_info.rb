@@ -37,17 +37,6 @@ module GObjectIntrospection
       Lib.g_base_info_get_name @gobj
     end
 
-    def safe_name
-      name.gsub(/^./) do |char|
-        case char
-        when "_"
-          "Private___"
-        else
-          char.upcase
-        end
-      end
-    end
-
     def info_type
       Lib.g_base_info_get_type @gobj
     end

@@ -1,5 +1,5 @@
 module GObjectIntrospection
-  # Wraps a GIConstantInfo struct; represents an constant.
+  # Wraps a GIConstantInfo struct; represents a constant.
   class IConstantInfo < IBaseInfo
     TYPE_TAG_TO_UNION_MEMBER = {
       :gint8 => :v_int8,

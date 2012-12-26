@@ -1,6 +1,5 @@
 require 'gir_ffi/builder/type/struct_based'
 require 'gir_ffi/builder/property'
-require 'gir_ffi/info_ext/i_property_info'
 require 'gir_ffi/object_base'
 
 module GirFFI

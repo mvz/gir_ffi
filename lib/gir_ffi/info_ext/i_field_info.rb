@@ -1,5 +1,3 @@
-require 'gir_ffi/info_ext/i_type_info'
-
 module GirFFI
   module InfoExt
     module IFieldInfo

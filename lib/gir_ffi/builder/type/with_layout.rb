@@ -1,5 +1,4 @@
 require 'gir_ffi/builder/field'
-require 'gir_ffi/info_ext/i_field_info'
 
 module GirFFI
   module Builder

@@ -4,6 +4,7 @@ require 'gir_ffi/class_base'
 require 'gir_ffi/type_map'
 
 require 'ffi-gobject_introspection'
+require 'gir_ffi/info_ext'
 
 require 'gir_ffi/in_pointer'
 require 'gir_ffi/in_out_pointer'

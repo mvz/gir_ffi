@@ -1,5 +1,3 @@
-require 'gir_ffi/info_ext/i_property_info'
-
 module GirFFI
   module Builder
     # Creates property getter and setter code for a given IPropertyInfo.

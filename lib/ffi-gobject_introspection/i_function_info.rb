@@ -28,11 +28,5 @@ module GObjectIntrospection
     def throws?
       flags & 32 != 0
     end
-
-    def safe_name
-      name = self.name
-      return "_" if name.empty?
-      name
-    end
   end
 end
