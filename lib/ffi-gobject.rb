@@ -54,7 +54,7 @@ module GObject
     ObjectClass.wrap klsptr
   end
 
-  _setup_method :signal_emitv
+  setup_method :signal_emitv
 
   def self.signal_lookup_from_instance signal, object
     signal_lookup signal, type_from_instance(object)

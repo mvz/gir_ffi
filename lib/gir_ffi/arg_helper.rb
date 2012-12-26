@@ -59,7 +59,7 @@ module GirFFI
 
     def self.ptr_to_interface_array klass, ptr, size
       return [] if ptr.nil? or ptr.null?
-      struct_size = klass.ffi_structure.size
+      struct_size = klass::Struct.size
       size.times.map do |idx|
         klass.wrap(ptr + struct_size * idx)
       end

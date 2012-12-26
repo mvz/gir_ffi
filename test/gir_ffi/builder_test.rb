@@ -70,7 +70,7 @@ describe GirFFI::Builder do
     end
 
     should "define ffi callback types :Callback and :ClosureNotify" do
-      Regress._setup_method 'test_callback_destroy_notify'
+      Regress.setup_method 'test_callback_destroy_notify'
       tcud = Regress::Lib.find_type :TestCallbackUserData
       dn = GLib::Lib.find_type :DestroyNotify
 
@@ -176,7 +176,7 @@ describe GirFFI::Builder do
     end
 
     should "know its own module builder" do
-      assert GirFFI::Builder::Module === Regress._builder
+      assert GirFFI::Builder::Module === Regress.gir_ffi_builder
     end
 
     after do
@@ -211,7 +211,7 @@ describe GirFFI::Builder do
     end
 
     should "know its own class builder" do
-      assert GirFFI::Builder::Type::Base === Regress::TestObj._builder
+      assert GirFFI::Builder::Type::Base === Regress::TestObj.gir_ffi_builder
     end
 
     describe "its #torture_signature_0 method" do

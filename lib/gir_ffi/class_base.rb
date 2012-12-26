@@ -11,8 +11,8 @@ module GirFFI
 
     def setup_and_call method, *arguments, &block
       result = self.class.ancestors.any? do |klass|
-        klass.respond_to?(:_setup_instance_method) &&
-          klass._setup_instance_method(method.to_s)
+        klass.respond_to?(:setup_instance_method) &&
+          klass.setup_instance_method(method.to_s)
       end
 
       unless result
@@ -24,8 +24,8 @@ module GirFFI
 
     def self.setup_and_call method, *arguments, &block
       result = self.ancestors.any? do |klass|
-        klass.respond_to?(:_setup_method) &&
-          klass._setup_method(method.to_s)
+        klass.respond_to?(:setup_method) &&
+          klass.setup_method(method.to_s)
       end
 
       unless result
@@ -36,40 +36,20 @@ module GirFFI
     end
 
     class << self
-      # @deprecated Compatibility function. Remove in version 0.5.0.
-      def ffi_structure
-        self::Struct
-      end
-
       def gir_info
         self.const_get :GIR_INFO
-      end
-
-      # @deprecated Compatibility function. Remove in version 0.5.0.
-      def _builder
-        gir_ffi_builder
       end
 
       def gir_ffi_builder
         self.const_get :GIR_FFI_BUILDER
       end
 
-      # @deprecated Compatibility function. Remove in version 0.5.0.
-      def _setup_method name
-        setup_method name
-      end
-
       def setup_method name
-        _builder.setup_method name
-      end
-
-      # @deprecated Compatibility function. Remove in version 0.5.0.
-      def _setup_instance_method name
-        setup_instance_method name
+        gir_ffi_builder.setup_method name
       end
 
       def setup_instance_method name
-        _builder.setup_instance_method name
+        gir_ffi_builder.setup_instance_method name
       end
 
       alias_method :_real_new, :new

@@ -12,11 +12,6 @@ require 'ffi-glib/ptr_array'
 require 'ffi-glib/strv'
 
 module GLib
-  # @deprecated Compatibility function. Remove in version 0.5.0.
-  def self.main_loop_new context, is_running
-    GLib::MainLoop.new context, is_running
-  end
-
   load_class :HFunc
   load_class :HashFunc
   load_class :EqualFunc

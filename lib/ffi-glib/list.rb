@@ -13,7 +13,7 @@ module GLib
 
     def self.new type
       _real_new.tap do |it|
-        struct = ffi_structure.new(FFI::Pointer.new(0))
+        struct = self::Struct.new(FFI::Pointer.new(0))
         it.instance_variable_set :@struct, struct
         it.element_type = type
       end
