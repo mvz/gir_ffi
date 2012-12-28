@@ -1,10 +1,18 @@
 = TODO
 
-== Fix helper method names
+== Memory managment
 
-GirFFI adds some methods to all generated modules. For some of these, it
-avoids name clashes by prefixing an underscore. This is ugly and must be
-changed.
+GirFFI does not attempt to free any memory at the moment, or lower the
+reference count of any objects it gets from GObject. This task therefore involves two parts:
+
+- Free non-GObject pointers as needed (at garbage-collection time)
+- Lower reference count of GObjects (at garbage-collection time)
+
+== Persistent Ruby GObject identity
+
+GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
+object already exists, the existing object is returned. This involves the use
+of WeakRef, no doubt.
 
 == Remove code for passing generic pointers
 
