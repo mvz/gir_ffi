@@ -22,15 +22,17 @@ describe GObjectIntrospection::IBaseInfo do
   describe "upon garbage collection" do
     it "calls g_base_info_unref" do
       mock(ptr = Object.new).null? { false }
-      mock(ptr).null? { false }
       mock(lib = Object.new).g_base_info_unref(ptr) { nil }
-
       described_class.new ptr, lib
 
-      # Yes, the next two lines are needed. https://gist.github.com/4277829
-      stub(lib).g_base_info_unref(ptr) { nil }
-      described_class.new ptr, lib
+      GC.start
 
+      # Yes, the next three lines are needed. https://gist.github.com/4277829
+      stub(ptr2 = Object.new).null? { false }
+      stub(lib).g_base_info_unref(ptr2) { nil }
+      described_class.new ptr2, lib
+
+      GC.start
       GC.start
     end
   end
