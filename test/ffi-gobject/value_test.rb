@@ -3,6 +3,21 @@ require 'gir_ffi_test_helper'
 require 'ffi-gobject'
 
 describe GObject::Value do
+  describe "::Struct" do
+    describe "layout" do
+      let(:layout) { GObject::Value::Struct.layout }
+
+      it "consists of :g_type and :data" do
+        layout.members.must_equal [:g_type, :data]
+      end
+
+      it "has an array as its second element" do
+        types = layout.fields.map(&:type)
+        types[1].class.must_equal FFI::Type::Array
+      end
+    end
+  end
+
   describe "::wrap_ruby_value" do
     it "wraps a boolean false" do
       gv = GObject::Value.wrap_ruby_value false

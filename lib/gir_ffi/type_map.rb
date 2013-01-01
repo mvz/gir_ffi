@@ -9,7 +9,6 @@ module GirFFI
       :ghash => :pointer,
       :glist => :pointer,
       :gslist => :pointer,
-      :array => :pointer,
       :strv => :pointer,
       :c => :pointer,
       :object => :pointer,
@@ -40,7 +39,7 @@ module GirFFI
       case type
       when :gboolean
         :int32
-      when :utf8
+      when :utf8, :array
         :pointer
       else
         map_basic_type(type)
