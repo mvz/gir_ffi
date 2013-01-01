@@ -1,6 +1,4 @@
 if RUBY_PLATFORM == 'java'
-  require 'java'
-  JRuby.objectspace = true
   require 'rubygems'
 end
 
