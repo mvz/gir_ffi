@@ -72,7 +72,7 @@ If you want to send pull requests or patches, please:
 
 ## License
 
-Copyright &copy; 2009&ndash;2012 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2013 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for

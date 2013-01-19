@@ -1,3 +1,11 @@
+== 0.5.0 / 2013-01-19
+
+* Update ffi dependency
+* Add finalizer to release memory for IBaseInfo and descendents
+* Remove deprecated methods
+* Remove pretty-printing functionality
+* Refactor argument handling
+
 == 0.4.3 / 2012-11-02
 
 * Remove gobject-introspection version check
