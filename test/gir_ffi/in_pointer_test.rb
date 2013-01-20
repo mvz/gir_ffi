@@ -22,6 +22,15 @@ describe GirFFI::InPointer do
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
       ptr.read_array_of_int32(3).must_equal [1, 0, 2]
     end
+
+    it "handles typed pointers" do
+      p1 = GirFFI::InPointer.from :gint32, 42
+      p2 = GirFFI::InPointer.from :gint32, 24
+
+      ptr = GirFFI::InPointer.from_array [:pointer, :uint32], [p1, p2]
+
+      ptr.read_array_of_pointer(2).must_equal [p1, p2]
+    end
   end
 
   describe "an instance created with .from_array" do

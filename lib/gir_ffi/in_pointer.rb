@@ -14,8 +14,10 @@ module GirFFI
         from_basic_type_array type, ary
       when FFI::Enum
         from_enum_array type, ary
+      when Array
+        from_interface_pointer_array ary
       else
-        raise NotImplementedError
+        raise NotImplementedError, type
       end
     end
 
