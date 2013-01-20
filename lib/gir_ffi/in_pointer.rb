@@ -10,8 +10,12 @@ module GirFFI
         from_utf8_array ary
       when :interface_pointer
         from_interface_pointer_array ary
-      else
+      when Symbol
         from_basic_type_array type, ary
+      when FFI::Enum
+        from_enum_array type, ary
+      else
+        raise NotImplementedError
       end
     end
 
@@ -47,6 +51,10 @@ module GirFFI
         ptr_ary = ary.map {|ifc| ifc.to_ptr}
         ptr_ary << nil
         self.from_array :pointer, ptr_ary
+      end
+
+      def from_enum_array type, ary
+        self.from_array :int32, ary.map {|sym| type.to_native sym, nil }
       end
 
       def from_utf8 str

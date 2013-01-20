@@ -605,7 +605,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_enum_in" do
-    skip
+    GIMarshallingTests.array_enum_in [:value1, :value2, :value3]
   end
 
   it "has a working function #array_fixed_inout" do

@@ -16,6 +16,12 @@ describe GirFFI::InPointer do
     it "handles type tag :interface_pointer" do
       GirFFI::InPointer.from_array :interface_pointer, []
     end
+
+    it "handles enum types" do
+      e = FFI::Enum.new [:foo, :bar, :baz]
+      ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
+      ptr.read_array_of_int32(3).must_equal [1, 0, 2]
+    end
   end
 
   describe "an instance created with .from_array" do
