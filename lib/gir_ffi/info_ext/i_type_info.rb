@@ -80,7 +80,7 @@ module GirFFI
                else
                  tag.inspect
                end
-        if type.pointer? && tag != :utf8
+        if type.pointer? && tag != :utf8 && tag != :filename
           "[:pointer, #{base}]"
         else
           base
@@ -90,7 +90,8 @@ module GirFFI
       private
 
       def zero_terminated_array_type
-        if element_type == :utf8
+        case element_type
+        when :utf8, :filename
           :strv
         else
           # TODO: Check that array_type == :c

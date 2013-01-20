@@ -87,6 +87,20 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for a zero-terminated filename array" do
+      it "returns the pair [:strv, :filename]" do
+        stub(elmtype_info).tag { :filename }
+        stub(elmtype_info).pointer? { true }
+
+	stub(type_info).tag { :array }
+	stub(type_info).param_type(0) { elmtype_info }
+	stub(type_info).zero_terminated? { true }
+	stub(type_info).array_type { :c }
+
+	type_info.type_specification.must_equal "[:strv, :filename]"
+      end
+    end
+
     describe "for a zero-terminated array" do
       it "returns the pair [:zero_terminated, element_type]" do
         stub(elmtype_info).tag { :foo }
