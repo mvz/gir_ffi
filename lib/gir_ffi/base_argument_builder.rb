@@ -68,8 +68,10 @@ module GirFFI
         'GLib::PtrArray'
       when :strv
         'GLib::Strv'
-      when :c, :zero_terminated
+      when :c
         'GirFFI::InPointer'
+      when :zero_terminated
+        'GirFFI::ZeroTerminated'
       else
         TAG_TO_WRAPPER_CLASS_MAP[tag]
       end
@@ -129,9 +131,9 @@ module GirFFI
       case specialized_type_tag
       when :utf8, :void
         "#{self_t}, #{name}"
-      when :glist, :gslist, :ghash, :array
+      when :glist, :gslist, :ghash, :array, :zero_terminated
         "#{elm_t}, #{name}"
-      when :c, :zero_terminated
+      when :c
         "#{type_specification}, #{name}"
       when :callback
         iface = type_info.interface

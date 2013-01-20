@@ -146,12 +146,12 @@ describe GirFFI::ReturnValueBuilder do
   describe "for :zero_terminated" do
     before do
       stub(type_info).flattened_tag { :zero_terminated }
+      stub(type_info).element_type { :foo }
     end
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      # FIXME: This is almost certainly wrong, but matches original behavior.
-      builder.post.must_equal [ "_v2 = GirFFI::InPointer.wrap(_v1)" ]
+      builder.post.must_equal [ "_v2 = GirFFI::ZeroTerminated.wrap(:foo, _v1)" ]
     end
 
     it "returns the wrapped result" do

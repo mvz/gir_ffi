@@ -10,10 +10,7 @@ module GirFFI
 
     def post
       if needs_wrapping?
-        if specialized_type_tag == :zero_terminated
-          # FIXME: This is almost certainly wrong.
-          [ "#{retname} = #{argument_class_name}.wrap(#{cvar})" ]
-        elsif [ :interface, :object ].include?(specialized_type_tag) && @is_constructor
+        if [ :interface, :object ].include?(specialized_type_tag) && @is_constructor
           [ "#{retname} = self.constructor_wrap(#{cvar})" ]
         else
           [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]

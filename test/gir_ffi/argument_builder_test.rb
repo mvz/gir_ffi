@@ -35,6 +35,22 @@ describe GirFFI::ArgumentBuilder do
         builder.post.must_equal [ ]
       end
     end
+
+    describe "for :zero_terminated" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).flattened_tag { :zero_terminated }
+        stub(type_info).element_type { :foo }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::ZeroTerminated.from(:foo, foo)" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ ]
+      end
+    end
   end
 
   describe "for an argument with direction :out" do
