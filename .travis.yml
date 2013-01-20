@@ -5,12 +5,6 @@ rvm:
   - 1.9.3
   - jruby-18mode
   - jruby-19mode
-jdk:
-  - openjdk6
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection
-matrix:
-  allow_failures:
-    - rvm: jruby-18mode
-    - rvm: jruby-19mode
