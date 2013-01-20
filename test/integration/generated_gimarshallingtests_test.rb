@@ -67,7 +67,8 @@ describe GIMarshallingTests do
   end
 
   it "has the constant CONSTANT_GERROR_DEBUG_MESSAGE" do
-    skip
+    GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE.must_equal(
+      "we got an error, life is shit")
   end
 
   it "has the constant CONSTANT_GERROR_DOMAIN" do
@@ -124,19 +125,19 @@ describe GIMarshallingTests do
     end
 
     it "has a working function #in" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #in_zero" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #inout" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #out" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #returnv" do
-      skip
+      skip "methods on enums are not supported yet"
     end
   end
 
@@ -151,16 +152,16 @@ describe GIMarshallingTests do
       assert_equal 42, GIMarshallingTests::GEnum[:value3]
     end
     it "has a working function #in" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #inout" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #out" do
-      skip
+      skip "methods on enums are not supported yet"
     end
     it "has a working function #returnv" do
-      skip
+      skip "methods on enums are not supported yet"
     end
   end
 
@@ -269,7 +270,11 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it "has a working method #call_vfunc_with_callback" do
-      skip
+      # NOTE: To call this method, the callback slot vfunc_with_callback has to
+      # be filled in the GIMarshallingTests::Object class structure. The
+      # GIMarshallingTests library doesn't do this.
+      # FIXME: Guard agains accidental invocation of undefined vfuncs.
+      skip "Needs vfunc setup"
     end
 
     it "has a working method #full_in" do
@@ -277,10 +282,11 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #int8_in" do
-      skip
+      skip "Needs vfunc setup"
     end
+
     it "has a working method #int8_out" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     # TODO: Avoid using common method names?
@@ -310,13 +316,15 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_in" do
-      skip
+      skip "Needs vfunc setup"
     end
+
     it "has a working method #method_int8_out" do
-      skip
+      skip "Needs vfunc setup"
     end
+
     it "has a working method #method_variant_array_in" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     it "has a working method #method_with_default_implementation" do
@@ -336,28 +344,28 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_meth_with_error" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_multiple_out_parameters" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_one_out_parameter" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_return_value_only" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_with_callback" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     it "has a property 'int' containing the argument to #new" do
@@ -704,9 +712,12 @@ describe GIMarshallingTests do
   it "has a working function #array_simple_struct_in" do
     skip
   end
+
   it "has a working function #array_string_in" do
-    skip
+    GIMarshallingTests.array_string_in ["foo", "bar"]
+    pass
   end
+
   it "has a working function #array_struct_in" do
     skip
   end
