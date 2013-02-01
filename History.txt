@@ -1,3 +1,8 @@
+== 0.5.1 / 2013-02-01
+
+* Properly handle zero-terminated arrays of :filename
+* Loosen dependencies on ffi and minitest
+
 == 0.5.0 / 2013-01-19
 
 * Update ffi dependency
