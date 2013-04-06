@@ -17,6 +17,7 @@ module GObject
       TYPE_STRING => :set_string,
       TYPE_FLOAT => :set_float,
       TYPE_DOUBLE => :set_double,
+      TYPE_PARAM => :set_param,
       TYPE_OBJECT => :set_instance,
       TYPE_BOXED => :set_boxed,
       TYPE_POINTER => :set_pointer,

@@ -43,6 +43,18 @@ describe GObject do
       sb2 = Regress::TestSimpleBoxedA.wrap b2
       assert sb.equals(sb2)
     end
+
+    should "allow specifying signal detail" do
+      a = 1
+      o = Regress::TestSubObj.new
+
+      callback = FFI::Function.new(:void, [:pointer, :pointer, :pointer]) { a = 2 }
+      ::GObject::Lib.g_signal_connect_data o, "notify::detail", callback, nil, nil, 0
+
+      GObject.signal_emit o, "notify::detail"
+
+      a.must_equal 2
+    end
   end
 
   describe "::signal_connect" do
@@ -90,6 +102,14 @@ describe GObject do
       assert_raises ArgumentError do
         GObject.signal_connect o, "test"
       end
+    end
+
+    should "allow specifying signal detail" do
+      a = 1
+      o = Regress::TestSubObj.new
+      GObject.signal_connect(o, "notify::detail", 2) { |i, _, d| a = d }
+      GObject.signal_emit o, "notify::detail"
+      assert_equal 2, a
     end
 
     describe "connecting a signal with extra arguments" do

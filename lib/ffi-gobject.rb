@@ -60,22 +60,26 @@ module GObject
     signal_lookup signal, type_from_instance(object)
   end
 
-  def self.signal_emit object, signal, *args
+  def self.signal_emit object, detailed_signal, *args
+    signal, detail = detailed_signal.split('::')
+
     id = signal_lookup_from_instance signal, object
+    detail_quark = GLib.quark_from_string(detail)
     arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
     rval = Helper.gvalue_for_signal_return_value signal, object
 
-    Lib.g_signal_emitv arr.values, id, 0, rval
+    Lib.g_signal_emitv arr.values, id, detail_quark, rval
 
     return rval
   end
 
-  def self.signal_connect object, signal, data=nil, &block
+  def self.signal_connect object, detailed_signal, data=nil, &block
+    signal, _ = detailed_signal.split('::')
     callback = Helper.signal_callback object.class, signal, &block
     GirFFI::CallbackHelper.store_callback callback
     data_ptr = GirFFI::ArgHelper.object_to_inptr data
 
-    Lib.g_signal_connect_data object, signal, callback, data_ptr, nil, 0
+    Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end
 
   def self.param_spec_int(name, nick, blurb, minimum, maximum,
