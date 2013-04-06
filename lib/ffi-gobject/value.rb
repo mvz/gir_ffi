@@ -18,7 +18,7 @@ module GObject
       TYPE_FLOAT => :set_float,
       TYPE_DOUBLE => :set_double,
       TYPE_PARAM => :set_param,
-      TYPE_OBJECT => :set_instance,
+      TYPE_OBJECT => :set_instance_enhanced,
       TYPE_BOXED => :set_boxed,
       TYPE_POINTER => :set_pointer,
       TYPE_ENUM => :set_enum
@@ -93,6 +93,18 @@ module GObject
     end
 
     private
+
+    def set_instance_enhanced val
+      check_type_compatibility val
+      set_instance val
+    end
+
+    def check_type_compatibility val
+      return if val.nil?
+      if !GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
+        raise ArgumentError, "#{val.class} is incompatible with #{current_gtype_name}"
+      end
+    end
 
     def get_boxed_enhanced
       boxed = get_boxed

@@ -70,5 +70,17 @@ describe GObject::Value do
       gv2.ruby_value.must_equal 21
     end
   end
+
+  describe "#set_value" do
+    before do
+      GirFFI.setup :GIMarshallingTests
+    end
+
+    it "raises an error when setting an incompatible object type" do
+      o = GIMarshallingTests::Object.new 1
+      v = GObject::Value.new.init(GIMarshallingTests::OverridesObject.get_gtype)
+      proc { v.set_value o }.must_raise ArgumentError
+    end
+  end
 end
 
