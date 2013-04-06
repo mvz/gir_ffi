@@ -2,6 +2,7 @@ module GObject
 
   module RubyStyle
 
+    # TODO: Generate accessor methods from GIR at class definition time
     def method_missing(method, *args)
       if respond_to?("get_#{method}")
         return send("get_#{method}", *args)
@@ -12,6 +13,7 @@ module GObject
       super
     end
 
+    # TODO: Move to definition of GObject::Object
     def signal_connect(event, &block)
       GObject.signal_connect(self, event, &block)
     end
