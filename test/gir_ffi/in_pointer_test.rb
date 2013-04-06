@@ -33,7 +33,7 @@ describe GirFFI::InPointer do
     end
   end
 
-  describe "an instance created with .from_array" do
+  describe "an instance created with .from_array :gint32" do
     before do
       @result = GirFFI::InPointer.from_array :gint32, [24, 13]
     end
@@ -45,6 +45,10 @@ describe GirFFI::InPointer do
 
     it "is an instance of GirFFI::InPointer" do
       assert_instance_of GirFFI::InPointer, @result
+    end
+
+    it "is zero-terminated" do
+      assert_equal 0, @result.get_int(8)
     end
   end
 
