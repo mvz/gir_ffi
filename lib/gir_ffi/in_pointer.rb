@@ -69,7 +69,9 @@ module GirFFI
         ffi_type = TypeMap.map_basic_type type
         block = ArgHelper.allocate_array_of_type ffi_type, ary.length + 1
         block.send "put_array_of_#{ffi_type}", 0, ary
-        block.send "put_#{ffi_type}", ary.length * FFI.type_size(ffi_type), 0
+        block.send("put_#{ffi_type}",
+                   ary.length * FFI.type_size(ffi_type),
+                   (ffi_type == :pointer ? nil : 0))
 
         self.new block
       end
