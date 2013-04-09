@@ -54,6 +54,17 @@ describe GObject::Value do
       result = gv.ruby_value
       assert_equal true, result
     end
+
+    it "works with a ByteArray" do
+      ba = GLib::ByteArray.new.append("some bytes")
+      v = GObject::Value.new.init(GObject.type_from_name("GByteArray"))
+      v.set_boxed ba
+
+      result = v.ruby_value
+
+      result.to_string.must_equal "some bytes"
+      result.must_be_kind_of GLib::ByteArray
+    end
   end
 
   describe "::from" do
@@ -81,6 +92,12 @@ describe GObject::Value do
       v = GObject::Value.new.init(GIMarshallingTests::OverridesObject.get_gtype)
       proc { v.set_value o }.must_raise ArgumentError
     end
+
+    it "works with a ByteArray" do
+      ba = GLib::ByteArray.new.append("some bytes")
+      v = GObject::Value.new.init(GObject.type_from_name("GByteArray"))
+      v.set_value ba
+      v.ruby_value.to_string.must_equal "some bytes"
+    end
   end
 end
-
