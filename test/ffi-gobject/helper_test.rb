@@ -58,7 +58,7 @@ describe GObject::Helper do
 
       gva =
         GObject::Helper.cast_back_signal_arguments(
-          sig, o.class, o.to_ptr, b.to_ptr, ud)
+          sig, o.to_ptr, b.to_ptr, ud)
 
       klasses = gva.map {|it| it.class}
       klasses.must_equal [ Regress::TestSubObj,
