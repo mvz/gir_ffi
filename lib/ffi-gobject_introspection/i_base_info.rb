@@ -33,11 +33,11 @@ module GObjectIntrospection
       single ||= method[0..-2]
       count = method.sub(/^(get_)?/, "\\1n_")
       self.class_eval <<-CODE
-	def #{method}
-	  (0..(#{count} - 1)).map do |i|
-	    #{single} i
-	  end
-	end
+        def #{method}
+          (0..(#{count} - 1)).map do |i|
+            #{single} i
+          end
+        end
       CODE
     end
 

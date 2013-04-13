@@ -168,7 +168,7 @@ module GObjectIntrospection
     attach_function :g_union_info_find_method, [:pointer, :string], :pointer
     attach_function :g_union_info_get_size, [:pointer], :int
     attach_function :g_union_info_get_alignment, [:pointer], :int
- 
+
     # IRegisteredTypeInfo
     attach_function :g_registered_type_info_get_type_name, [:pointer], :string
     attach_function :g_registered_type_info_get_type_init, [:pointer], :string

@@ -4,7 +4,7 @@ module GirFFI
   module InfoExt
     module IRegisteredTypeInfo
       def full_type_name
-	"::#{safe_namespace}::#{name}"
+        "::#{safe_namespace}::#{name}"
       end
     end
   end

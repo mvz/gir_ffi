@@ -67,9 +67,9 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe "#type_specification" do
     describe "for a simple type" do
       it "returns the type tag" do
-	stub(type_info).tag { :uint32 }
+        stub(type_info).tag { :uint32 }
 
-	type_info.type_specification.must_equal ":uint32"
+        type_info.type_specification.must_equal ":uint32"
       end
     end
 
@@ -78,12 +78,12 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(elmtype_info).tag { :utf8 }
         stub(elmtype_info).pointer? { true }
 
-	stub(type_info).tag { :array }
-	stub(type_info).param_type(0) { elmtype_info }
-	stub(type_info).zero_terminated? { true }
-	stub(type_info).array_type { :c }
+        stub(type_info).tag { :array }
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(type_info).zero_terminated? { true }
+        stub(type_info).array_type { :c }
 
-	type_info.type_specification.must_equal "[:strv, :utf8]"
+        type_info.type_specification.must_equal "[:strv, :utf8]"
       end
     end
 
@@ -92,12 +92,12 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(elmtype_info).tag { :filename }
         stub(elmtype_info).pointer? { true }
 
-	stub(type_info).tag { :array }
-	stub(type_info).param_type(0) { elmtype_info }
-	stub(type_info).zero_terminated? { true }
-	stub(type_info).array_type { :c }
+        stub(type_info).tag { :array }
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(type_info).zero_terminated? { true }
+        stub(type_info).array_type { :c }
 
-	type_info.type_specification.must_equal "[:strv, :filename]"
+        type_info.type_specification.must_equal "[:strv, :filename]"
       end
     end
 
@@ -106,12 +106,12 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(elmtype_info).tag { :foo }
         stub(elmtype_info).pointer? { false }
 
-	stub(type_info).tag { :array }
+        stub(type_info).tag { :array }
         stub(type_info).param_type(0) { elmtype_info }
-	stub(type_info).zero_terminated? { true }
-	stub(type_info).array_type { :c }
+        stub(type_info).zero_terminated? { true }
+        stub(type_info).array_type { :c }
 
-	type_info.type_specification.must_equal "[:zero_terminated, :foo]"
+        type_info.type_specification.must_equal "[:zero_terminated, :foo]"
       end
     end
 
@@ -120,12 +120,12 @@ describe GirFFI::InfoExt::ITypeInfo do
         mock(elmtype_info).tag { :foo }
         mock(elmtype_info).pointer? { false }
 
-	mock(type_info).tag { :array }
+        mock(type_info).tag { :array }
         stub(type_info).param_type(0) { elmtype_info }
-	stub(type_info).zero_terminated? { false }
-	stub(type_info).array_type { :c }
+        stub(type_info).zero_terminated? { false }
+        stub(type_info).array_type { :c }
 
-	type_info.type_specification.must_equal "[:c, :foo]"
+        type_info.type_specification.must_equal "[:c, :foo]"
       end
     end
 

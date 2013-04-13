@@ -22,9 +22,9 @@ module GirFFI
       alldata = @data.dup << @rvdata
 
       alldata.each {|data|
-	idx = data.type_info.array_length
+        idx = data.type_info.array_length
         if idx > -1
-          data.length_arg = @data[idx] 
+          data.length_arg = @data[idx]
           @data[idx].array_arg = data
         end
       }

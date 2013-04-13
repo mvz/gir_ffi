@@ -8,13 +8,13 @@ module GirFFI
       return nil if prc.nil?
       info = GObjectIntrospection::IRepository.default.find_by_name namespace, name
       return Callback.new do |*args|
-	prc.call(*map_callback_args(args, info))
+        prc.call(*map_callback_args(args, info))
       end
     end
 
     def self.map_callback_args args, info
       args.zip(info.args).map { |arg, inf|
-	map_single_callback_arg arg, inf.argument_type }
+        map_single_callback_arg arg, inf.argument_type }
     end
 
     # TODO: Use GirFFI::ReturnValue classes for mapping.
@@ -23,18 +23,18 @@ module GirFFI
       when :interface
         map_interface_callback_arg arg, type
       when :utf8
-	ArgHelper.ptr_to_utf8 arg
+        ArgHelper.ptr_to_utf8 arg
       when :void
         map_void_callback_arg arg
       when :array
-	subtype = type.param_type(0)
+        subtype = type.param_type(0)
         if subtype.tag == :interface and arg.is_a?(FFI::Pointer)
-	  map_interface_callback_arg arg, subtype
-	else
-	  raise NotImplementedError
-	end
+          map_interface_callback_arg arg, subtype
+        else
+          raise NotImplementedError
+        end
       else
-	arg
+        arg
       end
     end
 

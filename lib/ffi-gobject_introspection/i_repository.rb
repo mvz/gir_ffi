@@ -95,7 +95,7 @@ module GObjectIntrospection
     # Utility method
     def infos namespace
       (0..(n_infos(namespace) - 1)).map do |idx|
-	info namespace, idx
+        info namespace, idx
       end
     end
 

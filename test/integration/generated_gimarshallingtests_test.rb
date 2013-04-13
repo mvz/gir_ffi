@@ -819,8 +819,8 @@ describe GIMarshallingTests do
     ret = GIMarshallingTests.bytearray_full_return
     assert_instance_of GLib::ByteArray, ret
     assert_includes(
-	["0123".bytes.to_a, "\x001\xFF3".bytes.to_a],
-	ret.to_string.bytes.to_a)
+      ["0123".bytes.to_a, "\x001\xFF3".bytes.to_a],
+      ret.to_string.bytes.to_a)
   end
 
   it "has a working function #bytearray_none_in" do

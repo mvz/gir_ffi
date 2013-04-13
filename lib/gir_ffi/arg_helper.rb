@@ -101,7 +101,7 @@ module GirFFI
 
     def self.check_fixed_array_size size, arr, name
       unless arr.size == size
-	raise ArgumentError, "#{name} should have size #{size}"
+        raise ArgumentError, "#{name} should have size #{size}"
       end
     end
 

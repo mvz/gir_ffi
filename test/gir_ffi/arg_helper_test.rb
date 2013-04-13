@@ -67,15 +67,15 @@ describe GirFFI::ArgHelper do
   describe "#object_to_inptr" do
     describe "when called with an object implementing to_ptr" do
       it "returns the result of to_ptr" do
-	obj = Object.new
-	def obj.to_ptr; :test_value; end
-	assert_equal :test_value, GirFFI::ArgHelper.object_to_inptr(obj)
+        obj = Object.new
+        def obj.to_ptr; :test_value; end
+        assert_equal :test_value, GirFFI::ArgHelper.object_to_inptr(obj)
       end
     end
 
     describe "when called with nil" do
       it "returns nil" do
-	assert_equal nil, GirFFI::ArgHelper.object_to_inptr(nil)
+        assert_equal nil, GirFFI::ArgHelper.object_to_inptr(nil)
       end
     end
 
