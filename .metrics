@@ -1,4 +1,0 @@
-MetricFu::Configuration.run do |config|
-  config.rcov[:test_files] = ['test/**/*_test.rb']
-  config.flay[:minimum_score] = 35
-end
