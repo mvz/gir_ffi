@@ -57,15 +57,13 @@ module GirFFI
     private
 
     def adjust_value_in value
-      return nil_value if value.nil?
-
       case @value_type
       when :gboolean
         (value ? 1 : 0)
       when :utf8
         InPointer.from :utf8, value
       else
-        value
+        value || nil_value
       end
     end
 

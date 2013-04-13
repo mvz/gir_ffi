@@ -96,7 +96,7 @@ module GirFFI
 
     def self.check_error errpp
       err = GLib::Error.wrap(errpp.read_pointer)
-      raise err.message unless err.nil?
+      raise err.message if err
     end
 
     def self.check_fixed_array_size size, arr, name

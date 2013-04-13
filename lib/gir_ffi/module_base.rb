@@ -7,9 +7,7 @@ module GirFFI
     end
 
     def const_missing classname
-      klass = load_class classname
-      return super if klass.nil?
-      klass
+      load_class(classname) || super
     end
 
     def load_class classname
