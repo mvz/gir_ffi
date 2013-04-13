@@ -80,11 +80,6 @@ describe GirFFI::Builder do
       assert_equal [FFI.find_type(:pointer)], dn.param_types
     end
 
-    # FIXME: Test passes but does not test what it claims to test.
-    should "define ffi enum type ConnectFlags" do
-      assert_equal({:after => 1, :swapped => 2}, GObject::ConnectFlags.to_h)
-    end
-
     after do
       restore_module :Regress
       restore_module :GObject
