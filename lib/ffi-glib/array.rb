@@ -40,7 +40,7 @@ module GLib
     end
 
     def get_element_size
-      GLib.array_get_element_size self
+      Lib.g_array_get_element_size self
     end
 
     def self.wrap elmttype, ptr
