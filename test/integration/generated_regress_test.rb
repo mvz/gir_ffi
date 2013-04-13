@@ -561,15 +561,12 @@ describe Regress do
       assert !is_floating?(instance)
     end
 
-    # FIXME: Should it be possible to invoke this method by its virtual name?
     it "has a working method #matrix" do
-      rv = instance.matrix "bar"
-      assert_equal 42, rv
+      instance.matrix("bar").must_equal 42
     end
 
     it "has a working method #do_matrix" do
-      result = instance.do_matrix "bar"
-      result.must_equal 42
+      instance.do_matrix("bar").must_equal 42
     end
 
     it "has a working method #emit_sig_with_foreign_struct" do
