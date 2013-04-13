@@ -28,7 +28,7 @@ module GObject
     def self.signal_callback_args sig, klass, &block
       raise ArgumentError, "Block needed" if block.nil?
       return Proc.new do |*args|
-        mapped = cast_back_signal_arguments sig, *args
+        mapped = sig.cast_back_signal_arguments(*args)
         block.call(*mapped)
       end
     end
@@ -78,18 +78,6 @@ module GObject
       rettypeinfo = sig.return_type
 
       gvalue_for_type_info rettypeinfo
-    end
-
-    # TODO: Generate cast back methods using existing Argument builders.
-    def self.cast_back_signal_arguments signalinfo, *args
-      instance = GirFFI::ArgHelper.object_pointer_to_object args.shift
-      user_data = GirFFI::ArgHelper::OBJECT_STORE[args.pop.address]
-
-      extra_arguments = signalinfo.args.zip(args).map do |info, arg|
-        cast_signal_argument(info, arg)
-      end
-
-      return [instance, *extra_arguments].push user_data
     end
 
     def self.cast_signal_argument info, arg
