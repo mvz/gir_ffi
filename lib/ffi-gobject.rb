@@ -10,7 +10,6 @@ require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'
 require 'ffi-gobject/object'
 require 'ffi-gobject/ruby_closure'
-require 'ffi-gobject/helper'
 require 'gir_ffi/builder/type/user_defined'
 
 module GObject
