@@ -11,9 +11,8 @@ describe GObject::Helper do
         o = Regress::TestSubObj.new
         b = Regress::TestSimpleBoxedA.new
 
-        @gva =
-          GObject::Helper.signal_arguments_to_gvalue_array(
-            "test-with-static-scope-arg", o, b)
+        @gva = GObject::Helper.signal_arguments_to_gvalue_array(
+          "test-with-static-scope-arg", o, b)
       end
 
       should "be a GObject::ValueArray" do
@@ -36,11 +35,9 @@ describe GObject::Helper do
 
   describe "#signal_argument_to_gvalue" do
     it "maps a :utf8 argument to a string-valued GValue" do
-      stub(arg_t = Object.new).tag { :utf8 }
+      stub(arg_t = Object.new).g_type { GObject::TYPE_STRING }
       stub(info = Object.new).argument_type { arg_t }
-      val =
-        GObject::Helper.signal_argument_to_gvalue(
-          info, "foo")
+      val = GObject::Helper.signal_argument_to_gvalue(info, "foo")
       assert_instance_of GObject::Value, val
       assert_equal "foo", val.get_string
     end

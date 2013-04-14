@@ -27,16 +27,8 @@ module GObject
     end
 
     def self.gvalue_for_type_info info
-      tag = info.tag
-      gtype = case tag
-              when :interface
-                info.interface.g_type
-              when :void
-                return nil
-              else
-                TYPE_TAG_TO_GTYPE[tag]
-              end
-      raise "GType not found for type info with tag #{tag}" unless gtype
+      gtype = info.g_type
+      return nil if gtype == TYPE_NONE
       Value.new.tap {|val| val.init gtype}
     end
 

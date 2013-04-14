@@ -5,6 +5,16 @@ module GirFFI
     module ITypeInfo
       include BuilderHelper
 
+      def g_type
+        tag = self.tag
+        case tag
+        when :interface
+          interface.g_type
+        else
+          GObject::TYPE_TAG_TO_GTYPE[tag]
+        end
+      end
+
       def layout_specification_type
         ffitype = GirFFI::Builder.itypeinfo_to_ffitype self
         case ffitype
