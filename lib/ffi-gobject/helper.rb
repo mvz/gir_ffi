@@ -17,12 +17,5 @@ module GObject
       return nil if gtype == TYPE_NONE
       Value.new.tap {|val| val.init gtype}
     end
-
-    def self.gvalue_for_signal_return_value signal, object
-      sig = object.class.find_signal signal
-      rettypeinfo = sig.return_type
-
-      gvalue_for_type_info rettypeinfo
-    end
   end
 end

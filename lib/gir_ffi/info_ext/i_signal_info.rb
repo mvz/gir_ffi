@@ -43,6 +43,10 @@ module GirFFI
 
         arr
       end
+
+      def gvalue_for_signal_return_value
+        GObject::Helper.gvalue_for_type_info return_type
+      end
     end
   end
 end

@@ -68,7 +68,7 @@ module GObject
     detail_quark = GLib.quark_from_string(detail)
 
     arr = sig_info.signal_arguments_to_gvalue_array object, *args
-    rval = Helper.gvalue_for_signal_return_value signal, object
+    rval = sig_info.gvalue_for_signal_return_value
 
     Lib.g_signal_emitv arr.values, id, detail_quark, rval
 
