@@ -273,7 +273,6 @@ describe GIMarshallingTests do
       # NOTE: To call this method, the callback slot vfunc_with_callback has to
       # be filled in the GIMarshallingTests::Object class structure. The
       # GIMarshallingTests library doesn't do this.
-      # FIXME: Guard agains accidental invocation of undefined vfuncs.
       skip "Needs vfunc setup"
     end
 

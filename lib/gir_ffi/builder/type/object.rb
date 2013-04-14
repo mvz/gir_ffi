@@ -83,6 +83,7 @@ module GirFFI
           @klass.class_eval builder.setter_def
         end
 
+        # TODO: Guard agains accidental invocation of undefined vfuncs.
         def setup_vfunc_invokers
           info.vfuncs.each do |vfinfo|
             invoker = vfinfo.invoker
