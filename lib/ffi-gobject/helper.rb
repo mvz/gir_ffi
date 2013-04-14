@@ -12,7 +12,7 @@ module GObject
     def self.signal_callback klass, signal, &block
       sig_info = klass.find_signal signal
 
-      callback_block = signal_callback_args(sig_info, klass, &block)
+      callback_block = sig_info.signal_callback_args(&block)
 
       builder.build_callback sig_info, &callback_block
     end
@@ -23,14 +23,6 @@ module GObject
 
     def self.builder
       @builder ||= GirFFI::Builder
-    end
-
-    def self.signal_callback_args sig, klass, &block
-      raise ArgumentError, "Block needed" if block.nil?
-      return Proc.new do |*args|
-        mapped = sig.cast_back_signal_arguments(*args)
-        block.call(*mapped)
-      end
     end
 
     def self.signal_arguments_to_gvalue_array signal, instance, *rest
@@ -78,24 +70,6 @@ module GObject
       rettypeinfo = sig.return_type
 
       gvalue_for_type_info rettypeinfo
-    end
-
-    def self.cast_signal_argument info, arg
-      arg_t = info.argument_type
-      if arg_t.tag == :interface
-        iface = arg_t.interface
-        kls = GirFFI::Builder.build_class iface
-        case iface.info_type
-        when :enum, :flags
-          kls[arg]
-        when :interface
-          arg.to_object
-        else
-          kls.wrap(arg)
-        end
-      else
-        arg
-      end
     end
   end
 end

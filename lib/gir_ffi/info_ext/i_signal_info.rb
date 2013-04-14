@@ -7,10 +7,18 @@ module GirFFI
         user_data = GirFFI::ArgHelper::OBJECT_STORE[arguments.pop.address]
 
         extra_arguments = self.args.zip(arguments).map do |info, arg|
-          GObject::Helper.cast_signal_argument(info, arg)
+          info.cast_signal_argument(arg)
         end
 
         return [instance, *extra_arguments].push user_data
+      end
+
+      def signal_callback_args &block
+        raise ArgumentError, "Block needed" unless block
+        return Proc.new do |*args|
+          mapped = cast_back_signal_arguments(*args)
+          block.call(*mapped)
+        end
       end
     end
   end
