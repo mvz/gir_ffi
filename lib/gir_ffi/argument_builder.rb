@@ -31,28 +31,32 @@ module GirFFI
     end
 
     def post
-      result = []
       if has_output_value?
-        value = if is_caller_allocated_object?
-                  callarg
-                elsif needs_outgoing_parameter_conversion?
-                  case specialized_type_tag
-                  when :enum, :flags
-                    "#{argument_class_name}[#{output_conversion_arguments}]"
-                  else
-                    "#{argument_class_name}.wrap(#{output_conversion_arguments})"
-                  end
-                elsif is_fixed_length_array?
-                  "#{callarg}.to_sized_array_value #{array_size}"
-                else
-                  "#{callarg}.to_value"
-                end
-        result << "#{retname} = #{value}"
+        value = output_value
+        ["#{retname} = #{value}"]
+      else
+        []
       end
-      result
     end
 
     private
+
+    def output_value
+      if is_caller_allocated_object?
+        callarg
+      elsif needs_outgoing_parameter_conversion?
+        case specialized_type_tag
+        when :enum, :flags
+          "#{argument_class_name}[#{output_conversion_arguments}]"
+        else
+          "#{argument_class_name}.wrap(#{output_conversion_arguments})"
+        end
+      elsif is_fixed_length_array?
+        "#{callarg}.to_sized_array_value #{array_size}"
+      else
+        "#{callarg}.to_value"
+      end
+    end
 
     def is_array_length_parameter?
       @array_arg

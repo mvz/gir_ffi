@@ -30,10 +30,9 @@ module GirFFI
             type_info.instance_size += FFI.type_size(:int32)
           end
 
-          new_type = GObject.type_register_static parent_type, @klass.name, type_info, 0
+          @gtype = GObject.type_register_static(parent_type, @klass.name,
+                                                type_info, 0)
 
-          # TODO: Check that class ultimately derives from GObject.
-          @gtype = new_type
           @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
           CACHE[@gtype] = @klass
