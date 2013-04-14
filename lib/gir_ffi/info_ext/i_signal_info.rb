@@ -31,6 +31,18 @@ module GirFFI
           block.call(*mapped)
         end
       end
+
+      def signal_arguments_to_gvalue_array instance, *rest
+        arr = ::GObject::ValueArray.new self.n_args + 1
+
+        arr.append GObject::Helper.signal_reciever_to_gvalue instance
+
+        self.args.zip(rest).each do |info, arg|
+          arr.append GObject::Helper.signal_argument_to_gvalue info, arg
+        end
+
+        arr
+      end
     end
   end
 end

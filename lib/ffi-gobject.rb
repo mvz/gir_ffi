@@ -62,10 +62,12 @@ module GObject
 
   def self.signal_emit object, detailed_signal, *args
     signal, detail = detailed_signal.split('::')
+    sig_info = object.class.find_signal signal
 
     id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
-    arr = Helper.signal_arguments_to_gvalue_array signal, object, *args
+
+    arr = sig_info.signal_arguments_to_gvalue_array object, *args
     rval = Helper.gvalue_for_signal_return_value signal, object
 
     Lib.g_signal_emitv arr.values, id, detail_quark, rval

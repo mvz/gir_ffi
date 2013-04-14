@@ -20,5 +20,32 @@ describe GirFFI::InfoExt::ISignalInfo do
       gva[2].must_equal "Hello!"
     end
   end
-end
 
+  describe "#signal_arguments_to_gvalue_array" do
+    describe "the result of wrapping test-with-static-scope-arg" do
+      setup do
+        o = Regress::TestSubObj.new
+        b = Regress::TestSimpleBoxedA.new
+        sig = o.class.find_signal "test-with-static-scope-arg"
+
+        @gva = sig.signal_arguments_to_gvalue_array(o, b)
+      end
+
+      should "be a GObject::ValueArray" do
+        assert_instance_of GObject::ValueArray, @gva
+      end
+
+      should "contain two values" do
+        assert_equal 2, @gva.n_values
+      end
+
+      should "have a first value with GType for TestSubObj" do
+        assert_equal Regress::TestSubObj.get_gtype, (@gva.get_nth 0).current_gtype
+      end
+
+      should "have a second value with GType for TestSimpleBoxedA" do
+        assert_equal Regress::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1).current_gtype
+      end
+    end
+  end
+end

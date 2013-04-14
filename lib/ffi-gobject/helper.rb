@@ -1,19 +1,5 @@
 module GObject
   module Helper
-    def self.signal_arguments_to_gvalue_array signal, instance, *rest
-      sig = instance.class.find_signal signal
-
-      arr = ::GObject::ValueArray.new sig.n_args + 1
-
-      arr.append signal_reciever_to_gvalue instance
-
-      sig.args.zip(rest).each do |info, arg|
-        arr.append signal_argument_to_gvalue info, arg
-      end
-
-      arr
-    end
-
     def self.signal_reciever_to_gvalue instance
       val = ::GObject::Value.new
       val.init ::GObject.type_from_instance instance
