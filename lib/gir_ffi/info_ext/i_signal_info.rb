@@ -1,6 +1,17 @@
 module GirFFI
   module InfoExt
     module ISignalInfo
+      # Create a signal hander callback. Wraps the given block in such a way that
+      # arguments and return value are cast correctly to the ruby world and back.
+      #
+      # @param  block   The body of the signal handler
+      #
+      # @return [FFI::Function] The signal handler, ready to be passed as a
+      #   callback to C.
+      def signal_callback &block
+        GirFFI::Builder.build_callback self, &signal_callback_args(&block)
+      end
+
       # TODO: Generate cast back methods using existing Argument builders.
       def cast_back_signal_arguments *arguments
         instance = GirFFI::ArgHelper.object_pointer_to_object arguments.shift

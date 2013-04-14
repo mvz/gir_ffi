@@ -75,10 +75,10 @@ module GObject
 
   def self.signal_connect object, detailed_signal, data=nil, &block
     signal, _ = detailed_signal.split('::')
-    callback = Helper.signal_callback object.class, signal, &block
+    sig_info = object.class.find_signal signal
+    callback = sig_info.signal_callback(&block)
     GirFFI::CallbackHelper.store_callback callback
     data_ptr = GirFFI::ArgHelper.object_to_inptr data
-
     Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end
 
