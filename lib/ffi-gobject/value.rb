@@ -90,6 +90,11 @@ module GObject
           wrap_ruby_value val
         end
       end
+
+      def for_g_type g_type
+        return nil if g_type == TYPE_NONE
+        self.new.tap {|it| it.init g_type }
+      end
     end
 
     private

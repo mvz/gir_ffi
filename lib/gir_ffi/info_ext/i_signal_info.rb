@@ -38,14 +38,14 @@ module GirFFI
         arr.append GObject::Helper.signal_reciever_to_gvalue instance
 
         self.args.zip(rest).each do |info, arg|
-          arr.append GObject::Helper.signal_argument_to_gvalue info, arg
+          arr.append info.argument_type.make_g_value.set_value(arg)
         end
 
         arr
       end
 
       def gvalue_for_signal_return_value
-        GObject::Helper.gvalue_for_type_info return_type
+        GObject::Value.for_g_type return_type.g_type
       end
     end
   end

@@ -14,7 +14,7 @@ module GObject
 
     def get_property_with_override property_name
       type = get_property_type property_name
-      gvalue = Helper.gvalue_for_type_info type
+      gvalue = type.make_g_value
 
       get_property_without_override property_name, gvalue
 
@@ -23,7 +23,7 @@ module GObject
 
     def set_property_with_override property_name, value
       type = get_property_type property_name
-      gvalue = Helper.gvalue_for_type_info type
+      gvalue = type.make_g_value
 
       gvalue.set_value adjust_value_to_type(value, type)
 

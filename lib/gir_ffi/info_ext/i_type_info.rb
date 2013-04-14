@@ -15,6 +15,10 @@ module GirFFI
         end
       end
 
+      def make_g_value
+        GObject::Value.for_g_type g_type
+      end
+
       def layout_specification_type
         ffitype = GirFFI::Builder.itypeinfo_to_ffitype self
         case ffitype
