@@ -1,5 +1,6 @@
 module GirFFI
   module InfoExt
+    # Extensions for GObjectIntrospection::ISignalInfo needed by GirFFI
     module ISignalInfo
       # Create a signal hander callback. Wraps the given block in such a way that
       # arguments and return value are cast correctly to the ruby world and back.

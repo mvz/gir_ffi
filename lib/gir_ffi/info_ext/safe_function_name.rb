@@ -1,5 +1,6 @@
 module GirFFI
   module InfoExt
+    # Extension module provinding a #safe_name method suitable for functions.
     module SafeFunctionName
       def safe_name
         name = self.name

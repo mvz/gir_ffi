@@ -2,6 +2,7 @@ require 'gir_ffi/builder_helper'
 
 module GirFFI
   module InfoExt
+    # Extensions for GObjectIntrospection::IArgInfo needed by GirFFI
     module ITypeInfo
       include BuilderHelper
 

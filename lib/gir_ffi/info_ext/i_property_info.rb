@@ -1,5 +1,6 @@
 module GirFFI
   module InfoExt
+    # Extensions for GObjectIntrospection::IPropertyInfo needed by GirFFI
     module IPropertyInfo
       def getter_name
         name.gsub(/-/, '_')

@@ -1,5 +1,6 @@
 module GirFFI
   module InfoExt
+    # Extension module provinding a #safe_name method suitable for types.
     module SafeConstantName
       def safe_name
         name.gsub(/^./) do |char|

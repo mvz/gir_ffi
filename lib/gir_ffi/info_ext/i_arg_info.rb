@@ -1,5 +1,6 @@
 module GirFFI
   module InfoExt
+    # Extensions for GObjectIntrospection::IArgInfo needed by GirFFI
     module IArgInfo
       def cast_signal_argument arg
         arg_t = self.argument_type
