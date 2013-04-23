@@ -1,3 +1,11 @@
+== 0.5.2 / 2013-04-23
+
+* Handle signal details in GObject.signal_connect and .signal_emit
+* Make GValue#set_value check object GType compatibility
+* Eliminate GObject::Helper module
+* Handle more argument types
+* Support Ruby 2.0.0
+
 == 0.5.1 / 2013-02-01
 
 * Properly handle zero-terminated arrays of :filename
