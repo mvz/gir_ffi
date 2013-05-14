@@ -21,7 +21,10 @@ describe GObjectIntrospection::IBaseInfo do
 
   describe "upon garbage collection" do
     it "calls g_base_info_unref" do
-      skip "cannot be reliably tested on JRuby" if RUBY_PLATFORM == 'java'
+      if defined?(RUBY_ENGINE) && ['jruby', 'rbx'].include?(RUBY_ENGINE)
+        skip "cannot be reliably tested on JRuby and Rubinius"
+      end
+
       mock(ptr = Object.new).null? { false }
       mock(lib = Object.new).g_base_info_unref(ptr) { nil }
       described_class.new ptr, lib
