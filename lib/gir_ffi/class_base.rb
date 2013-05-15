@@ -70,7 +70,7 @@ module GirFFI
         obj
       end
 
-      def allocate
+      def _allocate
         obj = _real_new
         obj.instance_variable_set :@struct, self::Struct.new
         obj

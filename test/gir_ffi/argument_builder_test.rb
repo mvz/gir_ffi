@@ -115,7 +115,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = Bar::Foo.allocate" ]
+          builder.pre.must_equal [ "_v1 = Bar::Foo._allocate" ]
         end
 
         it "has the correct value for #post" do
@@ -151,7 +151,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = Bar::Foo.allocate" ]
+          builder.pre.must_equal [ "_v1 = Bar::Foo._allocate" ]
         end
 
         it "has the correct value for #post" do
