@@ -27,10 +27,6 @@ module GirFFI
       Builder::Module.new(namespace, version).generate
     end
 
-    def self.build_module_non_recursive namespace, version=nil
-      Builder::Module.new(namespace, version).build_module_non_recursive
-    end
-
     def self.build_callback callable_info, &block
       rettype = ffi_callback_return_type callable_info
       argtypes = ffi_callback_argument_types callable_info

@@ -46,13 +46,6 @@ module GirFFI
     def build_module
       unless defined? @module
         build_dependencies
-        build_module_non_recursive
-      end
-      @module
-    end
-
-    def build_module_non_recursive
-      unless defined? @module
         instantiate_module
         setup_lib_for_ffi
         setup_module unless already_set_up
