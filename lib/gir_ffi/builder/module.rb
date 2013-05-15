@@ -66,7 +66,7 @@ module GirFFI
       deps = gir.dependencies @namespace
       deps.each {|dep|
         name, version = dep.split '-'
-        Builder.build_module_non_recursive name, version
+        Builder.build_module name, version
       }
     end
 
