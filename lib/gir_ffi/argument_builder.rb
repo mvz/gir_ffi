@@ -91,7 +91,7 @@ module GirFFI
     def set_function_call_argument
       value = if @direction == :out
                 if is_caller_allocated_object?
-                  "#{argument_class_name}.allocate"
+                  "#{argument_class_name}._allocate"
                 else
                   "GirFFI::InOutPointer.for #{type_specification}"
                 end
