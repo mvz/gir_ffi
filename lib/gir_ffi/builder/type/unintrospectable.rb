@@ -1,4 +1,6 @@
 require 'gir_ffi/builder/type/object'
+require 'gir_ffi/unintrospectable_type_info'
+
 module GirFFI
   module Builder
     module Type
@@ -10,7 +12,7 @@ module GirFFI
         # FIXME: Breaks parent interface.
         def initialize gtype
           @gtype = gtype
-          @info = nil
+          @info = UnintrospectableTypeInfo.new @gtype
         end
 
         def instantiate_class
@@ -53,24 +55,8 @@ module GirFFI
           []
         end
 
-        def interface_infos
-          interface_gtypes.map do |gtype|
-            gir.find_by_gtype gtype
-          end.compact
-        end
-
-        def interface_gtypes
-          ::GObject.type_interfaces(@gtype)
-        end
-
-        def interfaces
-          interface_infos.map do |info|
-            GirFFI::Builder.build_class info
-          end
-        end
-
         def signal_definers
-          interface_infos
+          info.interfaces
         end
       end
     end
