@@ -1664,7 +1664,7 @@ describe Regress do
     begin
       Regress.this_method_does_not_exist
     rescue => e
-      e.message.must_match /^undefined method `this_method_does_not_exist' (for Regress:Module|on Regress \(Module\))$/
+      e.message.must_match(/^undefined method `this_method_does_not_exist' (for Regress:Module|on Regress \(Module\))$/)
     end
   end
 end
