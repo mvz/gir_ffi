@@ -1,4 +1,6 @@
-require 'gir_ffi/builder/type/struct_based'
+require 'gir_ffi/builder/type/registered_type'
+require 'gir_ffi/builder/type/with_layout'
+require 'gir_ffi/builder/type/with_methods'
 require 'gir_ffi/builder/property'
 require 'gir_ffi/object_base'
 
@@ -7,7 +9,10 @@ module GirFFI
     module Type
 
       # Implements the creation of a class representing a GObject Object.
-      class Object < StructBased
+      class Object < RegisteredType
+        include WithMethods
+        include WithLayout
+
         def find_signal signal_name
           signal_definers.each do |inf|
             inf.signals.each do |sig|
@@ -44,6 +49,11 @@ module GirFFI
           end
           setup_vfunc_invokers
           setup_interfaces
+        end
+
+        # FIXME: Private method only in subclass
+        def layout_superclass
+          FFI::Struct
         end
 
         def parent
