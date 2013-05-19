@@ -13,6 +13,7 @@ module GirFFI
         def initialize gtype
           @gtype = gtype
           @info = UnintrospectableTypeInfo.new @gtype
+          super @info
         end
 
         def instantiate_class
@@ -34,18 +35,6 @@ module GirFFI
         end
 
         private
-
-        def superclass
-          GirFFI::Builder.build_by_gtype parent_gtype
-        end
-
-        def parent
-          gir.find_by_gtype parent_gtype
-        end
-
-        def parent_gtype
-          GObject.type_parent @gtype
-        end
 
         def signal_definers
           info.interfaces

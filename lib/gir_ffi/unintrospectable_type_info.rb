@@ -8,6 +8,18 @@ module GirFFI
       @gobject = gobject
     end
 
+    def safe_name
+      @gobject.type_name @g_type
+    end
+
+    def parent
+      @gir.find_by_gtype @gobject.type_parent(@g_type)
+    end
+
+    def namespace
+      parent.namespace
+    end
+
     def interfaces
       @gobject.type_interfaces(@g_type).map do |gtype|
         @gir.find_by_gtype gtype
