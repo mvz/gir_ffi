@@ -22,10 +22,6 @@ module GirFFI
           setup_class unless already_set_up
         end
 
-        def target_gtype
-          @gtype
-        end
-
         def setup_class
           setup_constants
           setup_layout

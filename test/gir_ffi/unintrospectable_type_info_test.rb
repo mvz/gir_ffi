@@ -29,4 +29,11 @@ describe GirFFI::UnintrospectableTypeInfo do
       info.interfaces.must_equal [:foo_info]
     end
   end
+
+  describe "#g_type" do
+    it "returns the passed-in gtype" do
+      info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
+      info.g_type.must_equal :some_type
+    end
+  end
 end
