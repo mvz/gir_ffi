@@ -13,5 +13,9 @@ module GirFFI
         @gir.find_by_gtype gtype
       end.compact
     end
+
+    def fields
+      []
+    end
   end
 end

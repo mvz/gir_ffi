@@ -47,10 +47,6 @@ module GirFFI
           GObject.type_parent @gtype
         end
 
-        def fields
-          []
-        end
-
         def signal_definers
           info.interfaces
         end

@@ -36,4 +36,11 @@ describe GirFFI::UnintrospectableTypeInfo do
       info.g_type.must_equal :some_type
     end
   end
+
+  describe "#fields" do
+    it "returns an empty array" do
+      info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
+      info.fields.must_equal []
+    end
+  end
 end
