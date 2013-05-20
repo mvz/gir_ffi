@@ -1,6 +1,7 @@
 require 'gir_ffi/builder/type'
 require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
+require 'gir_ffi/unintrospectable_type_info'
 
 module GirFFI
   # Builds modules and classes based on information found in the

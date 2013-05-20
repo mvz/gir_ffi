@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/type/registered_type'
+
 module GirFFI
   module Builder
     module Type

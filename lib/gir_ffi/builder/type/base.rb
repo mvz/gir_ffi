@@ -1,3 +1,5 @@
+require 'gir_ffi/builder_helper'
+
 module GirFFI
   module Builder
     module Type

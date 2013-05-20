@@ -1,5 +1,4 @@
 require 'gir_ffi/builder/type/object'
-require 'gir_ffi/unintrospectable_type_info'
 
 module GirFFI
   module Builder
