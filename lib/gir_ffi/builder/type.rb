@@ -7,6 +7,7 @@ require 'gir_ffi/builder/type/union'
 require 'gir_ffi/builder/type/object'
 require 'gir_ffi/builder/type/struct'
 require 'gir_ffi/builder/type/interface'
+require 'gir_ffi/builder/type/unintrospectable'
 
 module GirFFI
   # Builds a class based on information found in the introspection
@@ -23,7 +24,8 @@ module GirFFI
         :interface => Interface,
         :object => Object,
         :struct => Struct,
-        :union => Union
+        :union => Union,
+        :unintrospectable => Unintrospectable
       }
 
       def self.build info

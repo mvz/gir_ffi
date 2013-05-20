@@ -8,6 +8,10 @@ module GirFFI
       @gobject = gobject
     end
 
+    def info_type
+      :unintrospectable
+    end
+
     def safe_name
       @gobject.type_name @g_type
     end

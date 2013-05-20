@@ -2,6 +2,13 @@ require 'gir_ffi_test_helper'
 require 'gir_ffi/unintrospectable_type_info'
 
 describe GirFFI::UnintrospectableTypeInfo do
+  describe "#info_type" do
+    it "returns :unintrospectable" do
+      info = GirFFI::UnintrospectableTypeInfo.new :some_type
+      info.info_type.must_equal :unintrospectable
+    end
+  end
+
   describe "#parent" do
     it "finds the parent's info by gtype" do
       gobject = Object.new

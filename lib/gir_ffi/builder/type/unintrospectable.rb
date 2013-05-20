@@ -9,16 +9,10 @@ module GirFFI
       # which no data is found in the GIR. Typically, these are created to
       # cast objects returned by a function that returns an interface.
       class Unintrospectable < Object
-        # FIXME: Breaks parent interface.
-        def initialize gtype
-          @gtype = gtype
-          @info = UnintrospectableTypeInfo.new @gtype
-          super @info
-        end
-
         def instantiate_class
-          CACHE[@gtype] ||= Class.new(superclass)
-          @klass = CACHE[@gtype]
+          gtype = target_gtype
+          CACHE[gtype] ||= Class.new(superclass)
+          @klass = CACHE[gtype]
           @structklass = get_or_define_class @klass, :Struct, layout_superclass
           setup_class unless already_set_up
         end

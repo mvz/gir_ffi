@@ -1,5 +1,4 @@
 require 'gir_ffi/builder/type'
-require 'gir_ffi/builder/type/unintrospectable'
 require 'gir_ffi/builder/module'
 require 'gir_ffi/builder_helper'
 
@@ -16,11 +15,9 @@ module GirFFI
 
     def self.build_by_gtype gtype
       info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
-      if info.nil?
-        Builder::Type::Unintrospectable.new(gtype).build_class
-      else
-        build_class info
-      end
+      info ||= UnintrospectableTypeInfo.new gtype
+
+      build_class info
     end
 
     def self.build_module namespace, version=nil

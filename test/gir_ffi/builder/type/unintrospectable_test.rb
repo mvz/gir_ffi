@@ -12,7 +12,8 @@ describe GirFFI::Builder::Type::Unintrospectable do
       Gio::Lib.g_file_new_for_path(ptr)
 
       @gtype = GObject.type_from_name 'GLocalFile'
-      @bldr = GirFFI::Builder::Type::Unintrospectable.new(@gtype)
+      @info = GirFFI::UnintrospectableTypeInfo.new(@gtype)
+      @bldr = GirFFI::Builder::Type::Unintrospectable.new(@info)
       @klass = @bldr.build_class
     end
 
@@ -29,7 +30,7 @@ describe GirFFI::Builder::Type::Unintrospectable do
     end
 
     it "returns the same class when built again" do
-      other_bldr = GirFFI::Builder::Type::Unintrospectable.new(@gtype)
+      other_bldr = GirFFI::Builder::Type::Unintrospectable.new(@info)
       other_klass = other_bldr.build_class
 
       assert_equal @klass, other_klass
