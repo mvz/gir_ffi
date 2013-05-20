@@ -8,16 +8,12 @@ module GirFFI
 
       # Implements the creation of GObject subclasses from Ruby.
       class UserDefined < Object
-        def initialize klass, &block
-          @block = block
-          @klass_before_set_up = klass
+        def initialize info
+          @info = info
         end
 
         def instantiate_class
-          @klass = @klass_before_set_up
-          @info = GirFFI::UserDefined::IObjectInfo.new
-
-          self.instance_eval(&@block) if @block
+          @klass = @info.described_class
 
           parent_type = @klass.get_gtype
           @parent = gir.find_by_gtype(parent_type)
