@@ -1,4 +1,5 @@
 require 'gir_ffi_test_helper'
+require 'gir_ffi/user_defined/i_object_info'
 
 describe GirFFI::UserDefined::IObjectInfo do
   it "has the attribute #properties" do

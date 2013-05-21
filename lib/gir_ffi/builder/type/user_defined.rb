@@ -1,5 +1,3 @@
-require 'gir_ffi/user_defined/i_object_info'
-require 'gir_ffi/user_defined/i_property_info'
 require 'gir_ffi/builder/type/object'
 
 module GirFFI
@@ -53,12 +51,6 @@ module GirFFI
 
         def parent
           @parent
-        end
-
-        def install_property pspec
-          pinfo = GirFFI::UserDefined::IPropertyInfo.new
-          pinfo.name = pspec.get_name
-          properties << pinfo
         end
 
         def properties

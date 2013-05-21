@@ -1,4 +1,5 @@
 require 'gir_ffi_test_helper'
+require 'gir_ffi/user_defined/i_property_info'
 
 describe GirFFI::UserDefined::IPropertyInfo do
   it "has the attribute #property_type" do
