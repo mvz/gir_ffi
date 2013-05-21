@@ -1,6 +1,8 @@
 require 'gir_ffi/user_defined_property_info'
 
 module GirFFI
+  # Represents a user defined type, conforming, as needed, to the interface of
+  # GObjectIntrospection::IObjectInfo.
   class UserDefinedTypeInfo
     def initialize klass, &block
       @klass = klass

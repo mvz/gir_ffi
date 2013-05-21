@@ -1,4 +1,6 @@
 module GirFFI
+  # Represents a type not found in the GIR, conforming, as needed, to the
+  # interface of GObjectIntrospection::IObjectInfo.
   class UnintrospectableTypeInfo
     attr_reader :g_type
 
