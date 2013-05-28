@@ -61,15 +61,13 @@ module GObject
 
   def self.signal_emit object, detailed_signal, *args
     signal, detail = detailed_signal.split('::')
-    sig_info = object.class.find_signal signal
-
-    id = signal_lookup_from_instance signal, object
+    signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
-
+    sig_info = object.class.find_signal signal
     arr = sig_info.signal_arguments_to_gvalue_array object, *args
     rval = sig_info.gvalue_for_signal_return_value
 
-    Lib.g_signal_emitv arr.values, id, detail_quark, rval
+    Lib.g_signal_emitv arr.values, signal_id, detail_quark, rval
 
     return rval
   end
@@ -79,10 +77,13 @@ module GObject
     sig_info = object.class.find_signal signal
     callback = sig_info.signal_callback(&block)
     GirFFI::CallbackHelper.store_callback callback
+
     data_ptr = GirFFI::ArgHelper.object_to_inptr data
+
     Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end
 
+  # Smells of :reek:LongParameterList: due to the C interface.
   def self.param_spec_int(name, nick, blurb, minimum, maximum,
                           default_value, flags)
     ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,

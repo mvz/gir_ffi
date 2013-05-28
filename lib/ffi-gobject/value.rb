@@ -25,8 +25,7 @@ module GObject
     }
 
     def set_value val
-      method = TYPE_TO_SET_METHOD_MAP[current_fundamental_type]
-      call_or_raise method, val
+      send set_method, val
       self
     end
 
@@ -71,8 +70,7 @@ module GObject
     }
 
     def ruby_value
-      method = TYPE_TO_GET_METHOD_MAP[current_fundamental_type]
-      call_or_raise method
+      send get_method
     end
 
     class << self
@@ -100,12 +98,11 @@ module GObject
     private
 
     def set_instance_enhanced val
-      check_type_compatibility val
+      check_type_compatibility val if val
       set_instance val
     end
 
     def check_type_compatibility val
-      return if val.nil?
       if !GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
         raise ArgumentError, "#{val.class} is incompatible with #{current_gtype_name}"
       end
@@ -113,22 +110,26 @@ module GObject
 
     def get_boxed_enhanced
       boxed = get_boxed
-      case current_gtype
+      gtype = current_gtype
+
+      case gtype
       when TYPE_STRV
         GLib::Strv.wrap boxed
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
-        GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, current_gtype
+        GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, gtype
       end
     end
 
-    def call_or_raise method, *args
-      if method
-        send method, *args
-      else
-        raise "Don't know how to handle #{current_gtype_name}"
-      end
+    def get_method
+      TYPE_TO_GET_METHOD_MAP[current_fundamental_type] or
+        raise "Can't find method to get #{current_gtype_name}"
+    end
+
+    def set_method
+      TYPE_TO_SET_METHOD_MAP[current_fundamental_type] or
+        raise "Can't find method to set #{current_gtype_name}"
     end
   end
 end

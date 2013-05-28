@@ -3,10 +3,6 @@ require 'introspection_test_helper'
 describe GObjectIntrospection::IBaseInfo do
   let(:described_class) { GObjectIntrospection::IBaseInfo }
   describe "#initialize" do
-    it "raises an error if nil is passed" do
-      proc { described_class.new nil }.must_raise ArgumentError
-    end
-
     it "raises an error if a null pointer is passed" do
       mock(ptr = Object.new).null? { true }
       proc { described_class.new ptr }.must_raise ArgumentError

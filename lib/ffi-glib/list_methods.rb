@@ -46,7 +46,7 @@ module GLib
     end
 
     def next_element
-      return if @current.nil?
+      return if !@current
       element = @current.head
       @current = @current.tail
       element

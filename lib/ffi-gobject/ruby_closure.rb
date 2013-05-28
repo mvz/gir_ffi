@@ -37,8 +37,9 @@ module GObject
       return closure
     end
 
+    # TODO: Use invocation_hint and marshal_data
     def self.marshaller(closure, return_value, n_param_values,
-                        param_values, invocation_hint, marshal_data)
+                        param_values, _invocation_hint, _marshal_data)
       rclosure = wrap(closure.to_ptr)
 
       args = n_param_values.times.map {|idx|
@@ -47,7 +48,7 @@ module GObject
 
       result = rclosure.invoke_block(*args)
 
-      return_value.set_ruby_value(result) unless return_value.nil?
+      return_value.set_ruby_value(result) if return_value
     end
   end
 end

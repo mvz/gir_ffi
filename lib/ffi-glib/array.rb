@@ -44,9 +44,8 @@ module GLib
     end
 
     def self.wrap elmttype, ptr
-      super(ptr).tap do |it|
-        break if it.nil?
-        it.element_type = elmttype
+      super(ptr).tap do |array|
+        array.element_type = elmttype if array
       end
     end
 
