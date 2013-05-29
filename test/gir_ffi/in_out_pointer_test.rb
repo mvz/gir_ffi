@@ -109,9 +109,9 @@ describe GirFFI::InOutPointer do
     end
 
     describe "for :utf8 values" do
-      it "returns the held value" do
+      it "returns a pointer to the held value" do
         ptr = GirFFI::InOutPointer.from :utf8, "Some value"
-        assert_equal "Some value", ptr.to_value
+        assert_equal "Some value", ptr.to_value.read_string
       end
     end
   end

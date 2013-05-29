@@ -48,6 +48,8 @@ module GirFFI
         case specialized_type_tag
         when :enum, :flags
           "#{argument_class_name}[#{output_conversion_arguments}]"
+        when :utf8
+          "ArgHelper.ptr_to_utf8 #{callarg}.to_value"
         else
           "#{argument_class_name}.wrap(#{output_conversion_arguments})"
         end
@@ -112,7 +114,7 @@ module GirFFI
 
     def needs_outgoing_parameter_conversion?
       [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
-        :strv ].include?(specialized_type_tag)
+        :strv, :utf8 ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
@@ -125,9 +127,9 @@ module GirFFI
       case specialized_type_tag
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
-        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
+        "GirFFI::InOutPointer.from #{type_specification}, #{base}"
       when :object, :struct, :void, :glist, :gslist, :ghash, :array,
-        :zero_terminated, :strv, :callback
+        :zero_terminated, :strv, :callback, :utf8
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
           if specialized_type_tag == :strv
@@ -138,7 +140,7 @@ module GirFFI
         else
           base
         end
-      when :c, :utf8
+      when :c
         if has_output_value?
           "GirFFI::InOutPointer.from #{parameter_conversion_arguments}"
         else
@@ -146,7 +148,7 @@ module GirFFI
         end
       else
         base = "#{parameter_conversion_arguments}"
-        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
+        "GirFFI::InOutPointer.from #{type_specification}, #{base}"
       end
     end
 
@@ -156,10 +158,6 @@ module GirFFI
 
     def parameter_conversion_arguments
       conversion_arguments @name
-    end
-
-    def self_t
-      type_tag.inspect
     end
   end
 end

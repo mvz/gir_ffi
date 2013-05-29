@@ -75,8 +75,6 @@ module GirFFI
       case @value_type
       when :gboolean
         (value != 0)
-      when :utf8
-        ArgHelper.ptr_to_utf8 value
       else
         value
       end

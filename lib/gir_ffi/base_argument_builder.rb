@@ -33,10 +33,6 @@ module GirFFI
       @typeinfo
     end
 
-    def type_tag
-      type_info.tag
-    end
-
     def specialized_type_tag
       type_info.flattened_tag
     end
@@ -129,12 +125,10 @@ module GirFFI
 
     def conversion_arguments name
       case specialized_type_tag
-      when :utf8, :void
-        "#{self_t}, #{name}"
+      when :utf8, :void, :c
+        "#{type_specification}, #{name}"
       when :glist, :gslist, :ghash, :array, :zero_terminated
         "#{elm_t}, #{name}"
-      when :c
-        "#{type_specification}, #{name}"
       when :callback
         iface = type_info.interface
         "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
@@ -144,5 +138,3 @@ module GirFFI
     end
   end
 end
-
-
