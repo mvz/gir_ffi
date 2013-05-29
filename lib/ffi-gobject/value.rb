@@ -3,6 +3,7 @@ module GObject
 
   # Overrides for GValue, GObject's generic value container structure.
   class Value
+    # TODO: Give more generic name
     def set_ruby_value val
       if current_gtype == 0
         init_for_ruby_value val
@@ -69,11 +70,13 @@ module GObject
       TYPE_POINTER => :get_pointer
     }
 
+    # TODO: Rename to get_value
     def ruby_value
       send get_method
     end
 
     class << self
+      # TODO: Give more generic name
       def wrap_ruby_value val
         self.new.set_ruby_value val
       end
@@ -93,6 +96,14 @@ module GObject
         return nil if g_type == TYPE_NONE
         self.new.tap {|it| it.init g_type }
       end
+    end
+
+    # TODO: Combine with wrap_ruby_value
+    def self.wrap_instance instance
+      self.new.tap {|it|
+        it.init GObject.type_from_instance instance
+        it.set_instance instance
+      }
     end
 
     private

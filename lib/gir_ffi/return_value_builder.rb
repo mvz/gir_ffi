@@ -9,18 +9,8 @@ module GirFFI
     end
 
     def post
-      if needs_wrapping?
-        if [ :interface, :object ].include?(specialized_type_tag) && @is_constructor
-          [ "#{retname} = self.constructor_wrap(#{cvar})" ]
-        else
-          [ "#{retname} = #{argument_class_name}.wrap(#{return_value_conversion_arguments})" ]
-        end
-      elsif specialized_type_tag == :utf8
-        # TODO: Re-use methods in InOutPointer for this conversion
-        [ "#{retname} = GirFFI::ArgHelper.ptr_to_utf8(#{cvar})" ]
-      elsif specialized_type_tag == :c
-        size = array_size
-        [ "#{retname} = GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{cvar}, #{size}" ]
+      if has_conversion?
+        [ "#{retname} = #{post_conversion}" ]
       else
         []
       end
@@ -47,6 +37,24 @@ module GirFFI
 
     private
 
+    def post_conversion
+      raw = cvar
+
+      if needs_constructor_wrap?
+        "self.constructor_wrap(#{raw})"
+      elsif needs_wrapping?
+        "#{argument_class_name}.wrap(#{conversion_arguments raw})"
+      else
+        case specialized_type_tag
+        when :utf8
+          # TODO: Re-use methods in InOutPointer for this conversion
+          "GirFFI::ArgHelper.ptr_to_utf8(#{raw})"
+        when :c
+          "GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{raw}, #{array_size}"
+        end
+      end
+    end
+
     def retname
       @retname ||= @var_gen.new_var
     end
@@ -61,12 +69,12 @@ module GirFFI
       ].include?(specialized_type_tag)
     end
 
-    def is_void_return_value?
-      specialized_type_tag == :void && !type_info.pointer?
+    def needs_constructor_wrap?
+      @is_constructor && [ :interface, :object ].include?(specialized_type_tag)
     end
 
-    def return_value_conversion_arguments
-      conversion_arguments cvar
+    def is_void_return_value?
+      specialized_type_tag == :void && !type_info.pointer?
     end
   end
 end

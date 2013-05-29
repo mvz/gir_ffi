@@ -3,6 +3,7 @@ module GirFFI
   module CallbackHelper
     CALLBACKS = []
 
+    # TODO: Move to Callback, since it is only used there
     def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
       return nil if prc.nil?

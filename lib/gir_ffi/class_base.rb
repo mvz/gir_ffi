@@ -64,7 +64,7 @@ module GirFFI
       # Wrap the passed pointer in an instance of the current class. Will not
       # do any casting to subtypes.
       def direct_wrap ptr
-        return nil if ptr.nil? or ptr.null?
+        return nil if !ptr or ptr.null?
         obj = _real_new
         obj.instance_variable_set :@struct, self::Struct.new(ptr.to_ptr)
         obj

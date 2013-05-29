@@ -1,6 +1,7 @@
 module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ISignalInfo needed by GirFFI
+    # TODO: Rename methods to not include 'signal' everywhere.
     module ISignalInfo
       # Create a signal hander callback. Wraps the given block in such a way that
       # arguments and return value are cast correctly to the ruby world and back.
@@ -36,7 +37,7 @@ module GirFFI
       def signal_arguments_to_gvalue_array instance, *rest
         arr = ::GObject::ValueArray.new self.n_args + 1
 
-        arr.append signal_reciever_to_gvalue instance
+        arr.append GObject::Value.wrap_instance(instance)
 
         self.args.zip(rest).each do |info, arg|
           arr.append info.argument_type.make_g_value.set_value(arg)
@@ -48,16 +49,6 @@ module GirFFI
       def gvalue_for_signal_return_value
         GObject::Value.for_g_type return_type.g_type
       end
-
-      private
-
-      def signal_reciever_to_gvalue instance
-        val = ::GObject::Value.new
-        val.init ::GObject.type_from_instance instance
-        val.set_instance instance
-        return val
-      end
-
     end
   end
 end
