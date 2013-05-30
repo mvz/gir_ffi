@@ -49,7 +49,6 @@ module GirFFI
     end
 
     def self.from_array type, array
-      return nil if array.nil?
       ptr = InPointer.from_array(type, array)
       self.from :pointer, ptr, type
     end

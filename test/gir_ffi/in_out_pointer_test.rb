@@ -48,9 +48,9 @@ describe GirFFI::InOutPointer do
   end
 
   describe ".from_array" do
-    it "returns nil when passed nil" do
+    it "returns pointer to null pointer when passed nil" do
       result = GirFFI::InOutPointer.from_array :gint32, nil
-      assert_nil result
+      result.to_value.must_be :null?
     end
   end
 
