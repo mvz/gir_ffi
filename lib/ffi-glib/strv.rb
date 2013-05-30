@@ -1,5 +1,5 @@
 module GLib
-  # Extra methods for GLib::Strv.
+  # Extra methods for GLib::Strv. The bulk is defined in `gir_ffi-base/glib/strv.rb`
   class Strv
     def self.from it
       case it
