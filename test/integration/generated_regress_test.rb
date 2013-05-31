@@ -953,7 +953,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_fixed_out_objects" do
-    result = Regress.test_array_fixed_out_objects
+    result = Regress.test_array_fixed_out_objects.to_a
 
     assert_equal 2, result.length
 
@@ -980,7 +980,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_fixed_size_int_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out
+    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out.to_a
   end
 
   it "has a working function #test_array_fixed_size_int_return" do
@@ -1018,11 +1018,11 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_inout" do
-    assert_equal [3, 4], Regress.test_array_int_inout([5, 2, 3])
+    assert_equal [3, 4], Regress.test_array_int_inout([5, 2, 3]).to_a
   end
 
   it "has a working function #test_array_int_none_out" do
-    assert_equal [1, 2, 3, 4, 5], Regress.test_array_int_none_out
+    assert_equal [1, 2, 3, 4, 5], Regress.test_array_int_none_out.to_a
   end
 
   it "has a working function #test_array_int_null_in" do
@@ -1034,7 +1034,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_out
+    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_out.to_a
   end
 
   it "has a working function #test_async_ready_callback" do

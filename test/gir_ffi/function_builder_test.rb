@@ -11,7 +11,7 @@ describe GirFFI::FunctionBuilder do
       def self.test_array_fixed_out_objects 
         _v1 = GirFFI::InOutPointer.for [:c, [:pointer, ::Regress::TestObj]]
         DummyLib.regress_test_array_fixed_out_objects _v1
-        _v2 = _v1.to_sized_array_value 2
+        _v2 = GLib::SizedArray.wrap([:pointer, ::Regress::TestObj], 2, _v1.to_value)
         return _v2
       end
     CODE
@@ -119,7 +119,7 @@ describe GirFFI::FunctionBuilder do
         _v2 = GirFFI::InOutPointer.for :gint32
         DummyLib.regress_test_array_int_null_out _v1, _v2
         _v3 = _v2.to_value
-        _v4 = _v1.to_sized_array_value _v3
+        _v4 = GLib::SizedArray.wrap(:gint32, _v3, _v1.to_value)
         return _v4
       end
     CODE
@@ -139,7 +139,7 @@ describe GirFFI::FunctionBuilder do
         _v2 = GirFFI::InOutPointer.from :gint32, length
         DummyLib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
         _v3 = _v2.to_value
-        _v4 = _v1.to_sized_array_value _v3
+        _v4 = GLib::SizedArray.wrap(:gint32, _v3, _v1.to_value)
         return _v4
       end
     CODE

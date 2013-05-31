@@ -54,7 +54,7 @@ module GirFFI
           "#{argument_class_name}.wrap(#{output_conversion_arguments})"
         end
       elsif is_fixed_length_array?
-        "#{callarg}.to_sized_array_value #{array_size}"
+        "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{callarg}.to_value)"
       else
         "#{callarg}.to_value"
       end

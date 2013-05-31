@@ -186,10 +186,14 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :c" do
+      before do
+        stub(type_info).flattened_tag { :c }
+        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).type_specification { "[:c, :foo]" }
+      end
+
       describe "with fixed size" do
         before do
-          stub(type_info).flattened_tag { :c }
-          stub(type_info).type_specification { "[:c, :foo]" }
           stub(type_info).array_fixed_size { 3 }
         end
 
@@ -198,15 +202,13 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value 3" ]
+          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, 3, _v1.to_value)" ]
         end
       end
 
       describe "with separate size parameter" do
         let(:length_argument) { Object.new }
         before do
-          stub(type_info).flattened_tag { :c }
-          stub(type_info).type_specification { "[:c, :foo]" }
           stub(type_info).array_fixed_size { -1 }
           stub(length_argument).retname { "bar" }
           builder.length_arg = length_argument
@@ -217,7 +219,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value bar" ]
+          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, bar, _v1.to_value)" ]
         end
       end
     end
@@ -369,10 +371,14 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :c" do
+      before do
+        stub(type_info).flattened_tag { :c }
+        stub(type_info).subtype_tag_or_class_name { ":bar" }
+        stub(type_info).type_specification { "[:c, :bar]" }
+      end
+
       describe "with fixed size" do
         before do
-          stub(type_info).flattened_tag { :c }
-          stub(type_info).type_specification { "[:c, :bar]" }
           stub(type_info).array_fixed_size { 3 }
         end
 
@@ -384,15 +390,13 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value 3" ]
+          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:bar, 3, _v1.to_value)" ]
         end
       end
 
       describe "with separate size parameter" do
         let(:length_argument) { Object.new }
         before do
-          stub(type_info).flattened_tag { :c }
-          stub(type_info).type_specification { "[:c, :bar]" }
           stub(type_info).array_fixed_size { -1 }
           stub(length_argument).retname { "baz" }
           builder.length_arg = length_argument
@@ -404,7 +408,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = _v1.to_sized_array_value baz" ]
+          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:bar, baz, _v1.to_value)" ]
         end
       end
     end

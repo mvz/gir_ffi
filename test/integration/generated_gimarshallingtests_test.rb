@@ -301,12 +301,12 @@ describe GIMarshallingTests do
 
     it "has a working method #method_array_inout" do
       res = instance.method_array_inout [-1, 0, 1, 2]
-      assert_equal [-2, -1, 0, 1, 2], res
+      assert_equal [-2, -1, 0, 1, 2], res.to_a
     end
 
     it "has a working method #method_array_out" do
       res = instance.method_array_out
-      assert_equal [-1, 0, 1, 2], res
+      assert_equal [-1, 0, 1, 2], res.to_a
     end
 
     it "has a working method #method_array_return" do
@@ -609,7 +609,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_inout" do
     res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
-    assert_equal [2, 1, 0, -1], res
+    assert_equal [2, 1, 0, -1], res.to_a
   end
 
   it "has a working function #array_fixed_int_in" do
@@ -624,7 +624,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_out" do
     res = GIMarshallingTests.array_fixed_out
-    assert_equal [-1, 0, 1, 2], res
+    assert_equal [-1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_fixed_out_struct" do
@@ -684,7 +684,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_inout" do
     res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
-    assert_equal [-2, -1, 0, 1, 2], res
+    assert_equal [-2, -1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_inout_etc" do
@@ -693,7 +693,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_out" do
     res = GIMarshallingTests.array_out
-    assert_equal  [-1, 0, 1, 2], res
+    assert_equal  [-1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_out_etc" do
@@ -702,7 +702,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_return" do
     res = GIMarshallingTests.array_return
-    assert_equal  [-1, 0, 1, 2], res
+    assert_equal  [-1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_return_etc" do
