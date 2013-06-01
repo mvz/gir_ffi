@@ -50,7 +50,7 @@ module GirFFI
           # TODO: Re-use methods in InOutPointer for this conversion
           "GirFFI::ArgHelper.ptr_to_utf8(#{raw})"
         when :c
-          "GirFFI::ArgHelper.ptr_to_typed_array #{subtype_tag_or_class_name}, #{raw}, #{array_size}"
+          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{raw})"
         end
       end
     end

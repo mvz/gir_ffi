@@ -270,7 +270,7 @@ describe GirFFI::ReturnValueBuilder do
 
       it "converts the result in #post" do
         builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_typed_array :foo, _v1, 3" ]
+        builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, 3, _v1)" ]
       end
 
       it "returns the wrapped result" do
@@ -292,7 +292,7 @@ describe GirFFI::ReturnValueBuilder do
 
       it "converts the result in #post" do
         builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_typed_array :foo, _v1, bar" ]
+        builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, bar, _v1)" ]
       end
 
       it "returns the wrapped result" do

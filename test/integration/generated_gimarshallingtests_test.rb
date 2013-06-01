@@ -311,7 +311,7 @@ describe GIMarshallingTests do
 
     it "has a working method #method_array_return" do
       res = instance.method_array_return
-      assert_equal [-1, 0, 1, 2], res
+      assert_equal [-1, 0, 1, 2], res.to_a
     end
 
     it "has a working method #method_int8_in" do
@@ -619,7 +619,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_int_return" do
     res = GIMarshallingTests.array_fixed_int_return
-    assert_equal [-1, 0, 1, 2], res
+    assert_equal [-1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_fixed_out" do
@@ -639,7 +639,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_short_return" do
     res = GIMarshallingTests.array_fixed_short_return
-    assert_equal [-1, 0, 1, 2], res
+    assert_equal [-1, 0, 1, 2], res.to_a
   end
 
   it "has a working function #array_gvariant_container_in" do

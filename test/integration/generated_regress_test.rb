@@ -984,7 +984,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_fixed_size_int_return" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_return
+    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_return.to_a
   end
 
   it "has a working function #test_array_gint16_in" do
@@ -1010,7 +1010,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_full_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_full_out
+    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_full_out.to_a
   end
 
   it "has a working function #test_array_int_in" do
