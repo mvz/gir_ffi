@@ -347,7 +347,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:strv, :utf8], GLib::Strv.from(foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :pointer, GLib::Strv.from(foo)" ]
       end
 
       it "has the correct value for #post" do

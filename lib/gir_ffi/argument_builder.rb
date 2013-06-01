@@ -132,11 +132,7 @@ module GirFFI
         :zero_terminated, :strv, :callback, :utf8
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
         if has_output_value?
-          if specialized_type_tag == :strv
-            "GirFFI::InOutPointer.from #{type_specification}, #{base}"
-          else
-            "GirFFI::InOutPointer.from :pointer, #{base}"
-          end
+          "GirFFI::InOutPointer.from :pointer, #{base}"
         else
           base
         end
