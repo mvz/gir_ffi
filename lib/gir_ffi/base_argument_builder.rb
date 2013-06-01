@@ -42,32 +42,25 @@ module GirFFI
     end
 
     TAG_TO_WRAPPER_CLASS_MAP = {
+      :array => 'GLib::Array',
+      :byte_array => 'GLib::ByteArray',
+      :c => 'GirFFI::InPointer',
+      :callback => 'GirFFI::Callback',
+      :ghash => 'GLib::HashTable',
       :glist => 'GLib::List',
       :gslist => 'GLib::SList',
-      :ghash => 'GLib::HashTable',
-      :array => 'GLib::Array',
+      :ptr_array => 'GLib::PtrArray',
+      :strv => 'GLib::Strv',
       :utf8 => 'GirFFI::InPointer',
-      :void => 'GirFFI::InPointer'
+      :void => 'GirFFI::InPointer',
+      :zero_terminated => 'GirFFI::ZeroTerminated'
     }
 
+    # TODO: Use class rather than class name
     def argument_class_name
       case (tag = type_info.flattened_tag)
       when :struct, :union, :object, :interface, :enum, :flags
         type_info.interface_type_name
-      when :callback
-        'GirFFI::Callback'
-      when :byte_array
-        'GLib::ByteArray'
-      when :array
-        'GLib::Array'
-      when :ptr_array
-        'GLib::PtrArray'
-      when :strv
-        'GLib::Strv'
-      when :c
-        'GirFFI::InPointer'
-      when :zero_terminated
-        'GirFFI::ZeroTerminated'
       else
         TAG_TO_WRAPPER_CLASS_MAP[tag]
       end
