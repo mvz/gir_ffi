@@ -36,6 +36,41 @@ describe GLib::SizedArray do
     end
   end
 
+  describe "::from" do
+    context "from a Ruby array" do
+      it "creates a GLib::SizedArray with the same elements" do
+        arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
+        arr.must_be_instance_of GLib::SizedArray
+        assert_equal [3, 2, 1], arr.to_a
+      end
+
+      it "raises an error if the array has the wrong number of elements" do
+        lambda { GLib::SizedArray.from :gint32, 4, [3, 2, 1] }.must_raise ArgumentError
+      end
+    end
+
+    context "from a GLib::SizedArray" do
+      it "return its argument" do
+        arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
+        arr2 = GLib::SizedArray.from :gint32, 3, arr
+        assert_equal arr, arr2
+      end
+
+      it "raises an error if the argument has the wrong number of elements" do
+        arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
+        lambda { GLib::SizedArray.from :gint32, 4, arr }.must_raise ArgumentError
+      end
+    end
+
+    it "wraps its argument if given a pointer" do
+      arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
+      arr2 = GLib::SizedArray.from :gint32, 3, arr.to_ptr
+      assert_instance_of GLib::SizedArray, arr2
+      refute_equal arr, arr2
+      assert_equal arr.to_a, arr2.to_a
+    end
+  end
+
   it "includes Enumerable" do
     GLib::SizedArray.must_include Enumerable
   end

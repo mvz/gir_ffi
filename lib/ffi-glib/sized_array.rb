@@ -28,5 +28,37 @@ module GLib
     def self.wrap element_type, size, pointer
       new element_type, size, pointer unless pointer.null?
     end
+
+    class << self
+      def from element_type, size, it
+        case it
+        when FFI::Pointer
+          wrap element_type, size, it
+        when self
+          from_sized_array size, it
+        else
+          from_enumerable element_type, size, it
+        end
+      end
+
+      private
+
+      def from_sized_array size, sized_array
+        check_size(size, sized_array.size)
+        sized_array
+      end
+
+      def from_enumerable element_type, size, arr
+        check_size(size, arr.size)
+        ptr = GirFFI::InPointer.from_array element_type, arr
+        self.wrap element_type, size, ptr
+      end
+
+      def check_size(expected_size, size)
+        unless size == expected_size
+          raise ArgumentError, "Expected size #{expected_size}, got #{size}"
+        end
+      end
+    end
   end
 end
