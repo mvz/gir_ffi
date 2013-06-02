@@ -1,5 +1,4 @@
 require 'base_test_helper'
-require 'ffi-glib/sized_array'
 
 describe GLib::SizedArray do
   describe "::wrap" do
