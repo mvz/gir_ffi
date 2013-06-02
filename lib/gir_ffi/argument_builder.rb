@@ -129,15 +129,8 @@ module GirFFI
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
         "GirFFI::InOutPointer.from #{type_specification}, #{base}"
       when :object, :struct, :void, :glist, :gslist, :ghash, :array,
-        :zero_terminated, :strv, :callback, :utf8
+        :zero_terminated, :strv, :callback, :utf8, :c
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
-        if has_output_value?
-          "GirFFI::InOutPointer.from :pointer, #{base}"
-        else
-          base
-        end
-      when :c
-        base = "GLib::SizedArray.from(#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{@name})"
         if has_output_value?
           "GirFFI::InOutPointer.from :pointer, #{base}"
         else

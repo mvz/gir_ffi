@@ -44,7 +44,7 @@ module GirFFI
     TAG_TO_WRAPPER_CLASS_MAP = {
       :array => 'GLib::Array',
       :byte_array => 'GLib::ByteArray',
-      :c => 'GirFFI::InPointer',
+      :c => 'GLib::SizedArray',
       :callback => 'GirFFI::Callback',
       :ghash => 'GLib::HashTable',
       :glist => 'GLib::List',
@@ -118,8 +118,10 @@ module GirFFI
 
     def conversion_arguments name
       case specialized_type_tag
-      when :utf8, :void, :c
+      when :utf8, :void
         "#{type_specification}, #{name}"
+      when :c
+        "#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{name}"
       when :glist, :gslist, :ghash, :array, :zero_terminated
         "#{elm_t}, #{name}"
       when :callback
