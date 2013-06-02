@@ -4,7 +4,9 @@ module GirFFI
   class UnintrospectableTypeInfo
     attr_reader :g_type
 
-    def initialize gtype, gir = GObjectIntrospection::IRepository.default, gobject = ::GObject
+    def initialize(gtype,
+                   gir = GObjectIntrospection::IRepository.default,
+                   gobject = ::GObject)
       @g_type = gtype
       @gir = gir
       @gobject = gobject

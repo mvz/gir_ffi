@@ -233,6 +233,7 @@ module GObjectIntrospection
     attach_function :g_interface_info_get_constant, [:pointer, :int], :pointer
     attach_function :g_interface_info_get_iface_struct, [:pointer], :pointer
 
+    # Union type representing an argument value
     class GIArgument < FFI::Union
       signed_size_t = "int#{FFI.type_size(:size_t) * 8}".to_sym
 

@@ -1,6 +1,7 @@
 module GObjectIntrospection
   # Wraps GLib's GError struct.
   class GError
+    # GLib's GError struct.
     class Struct < FFI::Struct
       layout :domain, :uint32,
         :code, :int,

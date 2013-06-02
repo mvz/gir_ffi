@@ -56,7 +56,9 @@ module GLib
     def self.hash_function_for keytype
       case keytype
       when :utf8
-        FFI::Function.new(:uint, [:pointer], find_support_funtion("g_str_hash"))
+        FFI::Function.new(:uint,
+                          [:pointer],
+                          find_support_function("g_str_hash"))
       else
         nil
       end
@@ -65,13 +67,15 @@ module GLib
     def self.equality_function_for keytype
       case keytype
       when :utf8
-        FFI::Function.new(:int, [:pointer, :pointer], find_support_funtion("g_str_equal"))
+        FFI::Function.new(:int,
+                          [:pointer, :pointer],
+                          find_support_function("g_str_equal"))
       else
         nil
       end
     end
 
-    def self.find_support_funtion name
+    def self.find_support_function name
       lib = ::GLib::Lib.ffi_libraries.first
       lib.find_function(name)
     end
