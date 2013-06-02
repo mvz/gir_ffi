@@ -59,6 +59,7 @@ module GirFFI
       case @value_type
       when :gboolean
         (value ? 1 : 0)
+      # TODO: Remove all references to :utf8 from this class
       when :utf8
         InPointer.from :utf8, value
       else

@@ -13,6 +13,7 @@ module GLib
       when FFI::Pointer
         wrap typespec, it
       when self
+        # TODO: Reset or check?
         it.reset_typespec typespec
       else
         from_enumerable typespec, it
