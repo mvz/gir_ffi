@@ -27,45 +27,6 @@ describe GirFFI::InOutPointer do
     end
   end
 
-  describe "an instance created with .from_array" do
-    before do
-      @result = GirFFI::InOutPointer.from_array :gint32, [24, 13]
-    end
-
-    it "holds a pointer to a non-null pointer" do
-      ptr = @result.read_pointer
-      refute ptr.null?
-    end
-
-    it "holds a pointer to a pointer to the correct input values" do
-      ptr = @result.read_pointer
-      assert_equal [24, 13], [ptr.get_int(0), ptr.get_int(4)]
-    end
-
-    it "is an instance of GirFFI::InPointer" do
-      assert_instance_of GirFFI::InOutPointer, @result
-    end
-  end
-
-  describe ".from_array" do
-    it "returns pointer to null pointer when passed nil" do
-      result = GirFFI::InOutPointer.from_array :gint32, nil
-      result.to_value.must_be :null?
-    end
-  end
-
-  describe "an instance created with .from_array :utf8" do
-    before do
-      @result = GirFFI::InOutPointer.from_array :utf8, ["foo", "bar", "baz"]
-    end
-
-    it "returns a pointer to an array of pointers to strings" do
-      ptr = @result.read_pointer
-      ary = ptr.read_array_of_pointer(3)
-      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
-    end
-  end
-
   describe "in instance created with .for" do
     before do
       @result = GirFFI::InOutPointer.for :gint32
@@ -112,18 +73,6 @@ describe GirFFI::InOutPointer do
       it "returns a pointer to the held value" do
         ptr = GirFFI::InOutPointer.from :utf8, "Some value"
         assert_equal "Some value", ptr.to_value.read_string
-      end
-    end
-  end
-
-  describe "#to_sized_array_value" do
-    describe "for an array of :gint32" do
-      before do
-        @ptr = GirFFI::InOutPointer.from_array :gint32, [1, 2, 3]
-      end
-
-      it "returns an array of integers with the correct values" do
-        assert_equal [1, 2, 3], @ptr.to_sized_array_value(3)
       end
     end
   end
