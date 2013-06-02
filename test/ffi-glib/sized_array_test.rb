@@ -47,6 +47,11 @@ describe GLib::SizedArray do
       it "raises an error if the array has the wrong number of elements" do
         lambda { GLib::SizedArray.from :gint32, 4, [3, 2, 1] }.must_raise ArgumentError
       end
+
+      it "uses the array's size if passed -1 as the size" do
+        arr = GLib::SizedArray.from :gint32, -1, [3, 2, 1]
+        arr.size.must_equal 3
+      end
     end
 
     context "from a GLib::SizedArray" do

@@ -51,11 +51,11 @@ module GLib
       def from_enumerable element_type, size, arr
         check_size(size, arr.size)
         ptr = GirFFI::InPointer.from_array element_type, arr
-        self.wrap element_type, size, ptr
+        self.wrap element_type, arr.size, ptr
       end
 
       def check_size(expected_size, size)
-        unless size == expected_size
+        if expected_size > 0 && size != expected_size
           raise ArgumentError, "Expected size #{expected_size}, got #{size}"
         end
       end
