@@ -30,14 +30,16 @@ module GLib
     end
 
     class << self
-      def from element_type, size, it
-        case it
+      def from element_type, size, item
+        return unless item
+
+        case item
         when FFI::Pointer
-          wrap element_type, size, it
+          wrap element_type, size, item
         when self
-          from_sized_array size, it
+          from_sized_array size, item
         else
-          from_enumerable element_type, size, it
+          from_enumerable element_type, size, item
         end
       end
 

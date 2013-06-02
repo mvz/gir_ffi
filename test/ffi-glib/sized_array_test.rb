@@ -67,6 +67,11 @@ describe GLib::SizedArray do
       end
     end
 
+    it "returns nil when passed nil" do
+      arr = GLib::SizedArray.from :gint32, 0, nil
+      arr.must_be_nil
+    end
+
     it "wraps its argument if given a pointer" do
       arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
       arr2 = GLib::SizedArray.from :gint32, 3, arr.to_ptr
