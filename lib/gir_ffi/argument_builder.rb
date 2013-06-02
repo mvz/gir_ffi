@@ -137,10 +137,11 @@ module GirFFI
           base
         end
       when :c
+        base = "GLib::SizedArray.from(#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{@name})"
         if has_output_value?
-          "GirFFI::InOutPointer.from #{parameter_conversion_arguments}"
+          "GirFFI::InOutPointer.from :pointer, #{base}"
         else
-          "GLib::SizedArray.from(#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{@name})"
+          base
         end
       else
         base = "#{parameter_conversion_arguments}"
