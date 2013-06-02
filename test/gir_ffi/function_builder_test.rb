@@ -28,7 +28,7 @@ describe GirFFI::FunctionBuilder do
       def self.test_array_gint16_in ints
         n_ints = ints.nil? ? 0 : ints.length
         _v1 = n_ints
-        _v2 = GirFFI::InPointer.from([:c, :gint16], ints)
+        _v2 = GLib::SizedArray.from(:gint16, -1, ints)
         _v3 = DummyLib.regress_test_array_gint16_in _v1, _v2
         return _v3
       end
@@ -97,7 +97,7 @@ describe GirFFI::FunctionBuilder do
 
     expected = <<-CODE
       def self.test_array_int_null_in arr
-        _v1 = GirFFI::InPointer.from([:c, :gint32], arr)
+        _v1 = GLib::SizedArray.from(:gint32, -1, arr)
         len = arr.nil? ? 0 : arr.length
         _v2 = len
         DummyLib.regress_test_array_int_null_in _v1, _v2

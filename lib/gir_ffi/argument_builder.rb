@@ -140,7 +140,7 @@ module GirFFI
         if has_output_value?
           "GirFFI::InOutPointer.from #{parameter_conversion_arguments}"
         else
-          "GirFFI::InPointer.from(#{parameter_conversion_arguments})"
+          "GLib::SizedArray.from(#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{@name})"
         end
       else
         base = "#{parameter_conversion_arguments}"
