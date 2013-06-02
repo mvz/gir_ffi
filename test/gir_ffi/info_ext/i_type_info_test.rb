@@ -64,68 +64,54 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe "#type_specification" do
+  describe "#flattened_tag" do
     describe "for a simple type" do
       it "returns the type tag" do
         stub(type_info).tag { :uint32 }
 
-        type_info.type_specification.must_equal ":uint32"
+        type_info.flattened_tag.must_equal :uint32
       end
     end
 
-    describe "for a zero-terminated utf8 array" do
-      it "returns the pair [:strv, :utf8]" do
-        stub(elmtype_info).tag { :utf8 }
-        stub(elmtype_info).pointer? { true }
-
+    context "for a zero-terminated array" do
+      before do
         stub(type_info).tag { :array }
         stub(type_info).param_type(0) { elmtype_info }
         stub(type_info).zero_terminated? { true }
-        stub(type_info).array_type { :c }
+      end
 
-        type_info.type_specification.must_equal "[:strv, :utf8]"
+      context "of utf8" do
+        it "returns :strv" do
+          stub(elmtype_info).tag { :utf8 }
+
+          type_info.flattened_tag.must_equal :strv
+        end
+      end
+
+      context "of filename" do
+        it "returns :strv" do
+          stub(elmtype_info).tag { :filename }
+
+          type_info.flattened_tag.must_equal :strv
+        end
+      end
+
+      context "of another type" do
+        it "returns :zero_terminated" do
+          stub(elmtype_info).tag { :foo }
+
+          type_info.flattened_tag.must_equal :zero_terminated
+        end
       end
     end
 
-    describe "for a zero-terminated filename array" do
-      it "returns the pair [:strv, :filename]" do
-        stub(elmtype_info).tag { :filename }
-        stub(elmtype_info).pointer? { true }
-
-        stub(type_info).tag { :array }
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(type_info).zero_terminated? { true }
-        stub(type_info).array_type { :c }
-
-        type_info.type_specification.must_equal "[:strv, :filename]"
-      end
-    end
-
-    describe "for a zero-terminated array" do
-      it "returns the pair [:zero_terminated, element_type]" do
-        stub(elmtype_info).tag { :foo }
-        stub(elmtype_info).pointer? { false }
-
-        stub(type_info).tag { :array }
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(type_info).zero_terminated? { true }
-        stub(type_info).array_type { :c }
-
-        type_info.type_specification.must_equal "[:zero_terminated, :foo]"
-      end
-    end
-
-    describe "for a fixed length c-like array of type :foo" do
-      it "returns the pair [:c, :foo]" do
-        mock(elmtype_info).tag { :foo }
-        mock(elmtype_info).pointer? { false }
-
+    describe "for a fixed length c-like array" do
+      it "returns :c" do
         mock(type_info).tag { :array }
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(type_info).zero_terminated? { false }
-        stub(type_info).array_type { :c }
+        mock(type_info).zero_terminated? { false }
+        mock(type_info).array_type { :c }
 
-        type_info.type_specification.must_equal "[:c, :foo]"
+        type_info.flattened_tag.must_equal :c
       end
     end
 

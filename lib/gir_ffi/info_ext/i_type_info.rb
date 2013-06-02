@@ -54,16 +54,6 @@ module GirFFI
         interface.full_type_name
       end
 
-      def type_specification
-        tag = self.flattened_tag
-        case tag
-        when :strv, :zero_terminated, :c
-          "[#{tag.inspect}, #{subtype_tag_or_class_name}]"
-        else
-          tag.inspect
-        end
-      end
-
       def flattened_tag
         case tag
         when :interface

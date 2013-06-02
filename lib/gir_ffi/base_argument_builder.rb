@@ -37,10 +37,6 @@ module GirFFI
       type_info.flattened_tag
     end
 
-    def type_specification
-      type_info.type_specification
-    end
-
     TAG_TO_WRAPPER_CLASS_MAP = {
       :array => 'GLib::Array',
       :byte_array => 'GLib::ByteArray',
@@ -119,7 +115,7 @@ module GirFFI
     def conversion_arguments name
       case specialized_type_tag
       when :utf8, :void
-        "#{type_specification}, #{name}"
+        "#{specialized_type_tag.inspect}, #{name}"
       when :c
         "#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{name}"
       when :glist, :gslist, :ghash, :array, :zero_terminated

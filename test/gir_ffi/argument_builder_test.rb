@@ -22,7 +22,6 @@ describe GirFFI::ArgumentBuilder do
         stub(interface_type_info).name { "Foo" }
 
         stub(type_info).flattened_tag { :callback }
-        stub(type_info).type_specification { ":callback" }
         stub(type_info).interface { interface_type_info }
       end
 
@@ -57,7 +56,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :enum" do
       before do
         stub(type_info).flattened_tag { :enum }
-        stub(type_info).type_specification { ":enum" }
       end
 
       it "has the correct value for #pre" do
@@ -72,7 +70,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :flags" do
       before do
         stub(type_info).flattened_tag { :flags }
-        stub(type_info).type_specification { ":flags" }
       end
 
       it "has the correct value for #pre" do
@@ -87,7 +84,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :object" do
       before do
         stub(type_info).flattened_tag { :object }
-        stub(type_info).type_specification { ":object" }
       end
 
       describe "when not allocated by the caller" do
@@ -122,7 +118,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :struct" do
       before do
         stub(type_info).flattened_tag { :struct }
-        stub(type_info).type_specification { ":struct" }
       end
 
       describe "when not allocated by the caller" do
@@ -157,11 +152,10 @@ describe GirFFI::ArgumentBuilder do
     describe "for :strv" do
       before do
         stub(type_info).flattened_tag { :strv }
-        stub(type_info).type_specification { "[:strv, :utf8]" }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:strv, :utf8]" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :strv" ]
       end
 
       it "has the correct value for #post" do
@@ -173,7 +167,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :array }
         stub(type_info).element_type { :foo }
-        stub(type_info).type_specification { ":array" }
       end
 
       it "has the correct value for #pre" do
@@ -189,7 +182,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :c }
         stub(type_info).subtype_tag_or_class_name { ":foo" }
-        stub(type_info).type_specification { "[:c, :foo]" }
       end
 
       describe "with fixed size" do
@@ -198,7 +190,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:c, :foo]" ]
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :c" ]
         end
 
         it "has the correct value for #post" do
@@ -215,7 +207,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:c, :foo]" ]
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :c" ]
         end
 
         it "has the correct value for #post" do
@@ -228,7 +220,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :glist }
         stub(type_info).element_type { :foo }
-        stub(type_info).type_specification { ":glist" }
       end
 
       it "has the correct value for #pre" do
@@ -244,7 +235,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :gslist }
         stub(type_info).element_type { :foo }
-        stub(type_info).type_specification { ":gslist" }
       end
 
       it "has the correct value for #pre" do
@@ -260,7 +250,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :ghash }
         stub(type_info).element_type { [:foo, :bar] }
-        stub(type_info).type_specification { ":ghash" }
       end
 
       it "has the correct value for #pre" do
@@ -279,7 +268,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :enum" do
       before do
         stub(type_info).flattened_tag { :enum }
-        stub(type_info).type_specification { ':enum' }
       end
 
       it "has the correct value for #pre" do
@@ -294,7 +282,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :flags" do
       before do
         stub(type_info).flattened_tag { :flags }
-        stub(type_info).type_specification { ':flags' }
       end
 
       it "has the correct value for #pre" do
@@ -309,7 +296,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :gint32" do
       before do
         stub(type_info).flattened_tag { :gint32 }
-        stub(type_info).type_specification { ':gint32' }
       end
 
       it "has the correct value for #pre" do
@@ -325,7 +311,6 @@ describe GirFFI::ArgumentBuilder do
       let(:array_argument) { Object.new }
       before do
         stub(type_info).flattened_tag { :gint32 }
-        stub(type_info).type_specification { ':gint32' }
         stub(array_argument).name { "foo_array" }
         builder.array_arg = array_argument
       end
@@ -343,7 +328,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :strv" do
       before do
         stub(type_info).flattened_tag { :strv }
-        stub(type_info).type_specification { "[:strv, :utf8]" }
       end
 
       it "has the correct value for #pre" do
@@ -358,7 +342,6 @@ describe GirFFI::ArgumentBuilder do
     describe "for :utf8" do
       before do
         stub(type_info).flattened_tag { :utf8 }
-        stub(type_info).type_specification { ":utf8" }
       end
 
       it "has the correct value for #pre" do
@@ -374,7 +357,6 @@ describe GirFFI::ArgumentBuilder do
       before do
         stub(type_info).flattened_tag { :c }
         stub(type_info).subtype_tag_or_class_name { ":bar" }
-        stub(type_info).type_specification { "[:c, :bar]" }
       end
 
       describe "with fixed size" do

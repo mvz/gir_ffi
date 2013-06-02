@@ -95,7 +95,7 @@ module GirFFI
                 if is_caller_allocated_object?
                   "#{argument_class_name}._allocate"
                 else
-                  "GirFFI::InOutPointer.for #{type_specification}"
+                  "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
                 end
               else
                 if needs_ingoing_parameter_conversion?
@@ -127,7 +127,7 @@ module GirFFI
       case specialized_type_tag
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
-        "GirFFI::InOutPointer.from #{type_specification}, #{base}"
+        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       when :object, :struct, :void, :glist, :gslist, :ghash, :array,
         :zero_terminated, :strv, :callback, :utf8, :c
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
@@ -138,7 +138,7 @@ module GirFFI
         end
       else
         base = "#{parameter_conversion_arguments}"
-        "GirFFI::InOutPointer.from #{type_specification}, #{base}"
+        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       end
     end
 
