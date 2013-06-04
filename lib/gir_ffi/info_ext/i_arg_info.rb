@@ -19,6 +19,11 @@ module GirFFI
           arg
         end
       end
+
+      def to_ffitype
+        return :pointer if direction != :in
+        return argument_type.to_ffitype
+      end
     end
   end
 end

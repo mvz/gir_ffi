@@ -36,7 +36,7 @@ module GirFFI
     end
 
     def self.ffi_function_argument_types info
-      types = info.args.map { |arg| iarginfo_to_ffitype arg }
+      types = info.args.map { |arg| arg.to_ffitype }
 
       if info.info_type == :function
         types.unshift :pointer if info.method?
@@ -77,11 +77,6 @@ module GirFFI
       else
         return TypeMap.map_basic_type tag
       end
-    end
-
-    def self.iarginfo_to_ffitype info
-      return :pointer if info.direction != :in
-      return info.argument_type.to_ffitype
     end
   end
 end
