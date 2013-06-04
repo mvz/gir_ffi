@@ -11,7 +11,11 @@ module GirFFI
       # @return [FFI::Function] The signal handler, ready to be passed as a
       #   callback to C.
       def signal_callback &block
-        GirFFI::Builder.build_callback self, &signal_callback_args(&block)
+        rettype = Builder.ffi_callback_return_type self
+        argtypes = Builder.ffi_callback_argument_types self
+
+        # TODO: Create signal handler type?
+        FFI::Function.new rettype, argtypes, &signal_callback_args(&block)
       end
 
       # TODO: Generate cast back methods using existing Argument builders.

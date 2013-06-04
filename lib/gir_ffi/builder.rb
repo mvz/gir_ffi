@@ -25,13 +25,6 @@ module GirFFI
       Builder::Module.new(namespace, version).generate
     end
 
-    def self.build_callback callable_info, &block
-      rettype = ffi_callback_return_type callable_info
-      argtypes = ffi_callback_argument_types callable_info
-
-      FFI::Function.new rettype, argtypes, &block
-    end
-
     # TODO: Move elsewhere, perhaps to Builder::Function.
     def self.attach_ffi_function lib, info
       sym = info.symbol
