@@ -21,7 +21,7 @@ module GirFFI
       end
 
       def layout_specification_type
-        ffitype = GirFFI::Builder.itypeinfo_to_ffitype self
+        ffitype = self.to_ffitype
         case ffitype
         when Class
           ffitype.const_get :Struct
@@ -89,6 +89,16 @@ module GirFFI
           "[:pointer, #{base}]"
         else
           base
+        end
+      end
+
+      def to_ffitype
+        return :pointer if pointer?
+
+        if tag == :interface
+          return Builder.build_class interface
+        else
+          return TypeMap.map_basic_type tag
         end
       end
 

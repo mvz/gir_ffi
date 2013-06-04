@@ -58,7 +58,7 @@ module GirFFI
     end
 
     def self.ffi_function_return_type info
-      itypeinfo_to_ffitype info.return_type
+      info.return_type.to_ffitype
     end
 
     def self.itypeinfo_to_callback_ffitype info
@@ -79,20 +79,9 @@ module GirFFI
       end
     end
 
-    def self.itypeinfo_to_ffitype info
-      return :pointer if info.pointer?
-
-      tag = info.tag
-      if tag == :interface
-        return build_class info.interface
-      else
-        return TypeMap.map_basic_type tag
-      end
-    end
-
     def self.iarginfo_to_ffitype info
       return :pointer if info.direction != :in
-      return itypeinfo_to_ffitype info.argument_type
+      return info.argument_type.to_ffitype
     end
   end
 end

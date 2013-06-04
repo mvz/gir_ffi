@@ -11,12 +11,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe "#layout_specification_type" do
     it "returns an array with elements subtype and size for type :array" do
-      mock(elmtype_info).layout_specification_type { :foo }
-
+      mock(type_info).pointer? { false }
+      stub(type_info).tag { :array }
       mock(type_info).array_fixed_size { 2 }
-      mock(type_info).param_type(0) { elmtype_info }
 
-      mock(GirFFI::Builder).itypeinfo_to_ffitype(type_info) { :array }
+      mock(elmtype_info).layout_specification_type { :foo }
+      mock(type_info).param_type(0) { elmtype_info }
 
       result = type_info.layout_specification_type
       assert_equal [:foo, 2], result
