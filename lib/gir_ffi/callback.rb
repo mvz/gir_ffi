@@ -1,5 +1,6 @@
 module GirFFI
   # Specialized kind of Proc to be used for callback arguments.
+  # TODO: Create superclass for all actual callback types that does the wrapping for this.
   class Callback < Proc
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
@@ -9,6 +10,8 @@ module GirFFI
       end
     end
 
+    # TODO: Create actual callback class from the callback info, so no lookup
+    # is needed. This class can then also perform the argument mapping.
     def self.wrap_in_callback_args_mapper namespace, name, prc
       return prc if FFI::Function === prc
       return nil if prc.nil?
