@@ -174,4 +174,77 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
   end
+
+  describe "#subtype_tag_or_class" do
+    describe "for a simple type" do
+      it "returns the symbol :void" do
+        mock(subtype = Object.new).tag { :void }
+        mock(subtype).pointer? { false }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal :void
+      end
+    end
+
+    describe "for an array of simple type :foo" do
+      it "returns the symbol :foo" do
+        mock(subtype = Object.new).tag { :foo }
+        mock(subtype).pointer? { false }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal :foo
+      end
+    end
+
+    describe "for an array of utf8 strings" do
+      it "returns the tag :utf8" do
+        mock(subtype = Object.new).tag { :utf8 }
+        mock(subtype).pointer? { true }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal :utf8
+      end
+    end
+
+    describe "for an array of filename strings" do
+      it "returns the tag :filename" do
+        mock(subtype = Object.new).tag { :filename }
+        mock(subtype).pointer? { true }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal :filename
+      end
+    end
+
+    describe "for an array of an interface class" do
+      it "returns the interface's full class name" do
+        interface_info = Object.new
+        interface = Object.new
+
+        mock(subtype = Object.new).tag { :interface }
+        mock(subtype).interface { interface_info }
+        mock(GirFFI::Builder).build_class(interface_info) { interface }
+        mock(subtype).pointer? { false }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal interface
+      end
+    end
+
+    describe "for an array of pointer to simple type :foo" do
+      it "returns the string '[:pointer, :foo]'" do
+        mock(subtype = Object.new).tag { :foo }
+        mock(subtype).pointer? { true }
+
+        mock(info = testclass.new).param_type(0) { subtype }
+
+        info.subtype_tag_or_class.must_equal [:pointer, :foo]
+      end
+    end
+  end
 end
