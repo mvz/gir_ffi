@@ -13,10 +13,6 @@ describe GirFFI::InPointer do
       GirFFI::InPointer.from_array :GType, [2]
     end
 
-    it "handles type tag :interface_pointer" do
-      GirFFI::InPointer.from_array :interface_pointer, []
-    end
-
     it "handles enum types" do
       e = FFI::Enum.new [:foo, :bar, :baz]
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
