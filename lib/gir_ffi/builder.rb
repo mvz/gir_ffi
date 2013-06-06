@@ -32,38 +32,5 @@ module GirFFI
 
       lib.attach_function sym, info.argument_ffi_types, info.return_ffi_type
     end
-
-    def self.ffi_function_argument_types info
-      info.argument_ffi_types
-    end
-
-    def self.ffi_callback_argument_types info
-      types = info.args.map do |arg|
-        itypeinfo_to_callback_ffitype arg.argument_type
-      end
-      types.unshift(:pointer).push(:pointer)
-    end
-
-    def self.ffi_callback_return_type info
-      info.return_ffi_type
-    end
-
-    def self.itypeinfo_to_callback_ffitype info
-      tag = info.tag
-
-      return :string if tag == :utf8
-      return :pointer if info.pointer?
-
-      if tag == :interface
-        case info.interface.info_type
-        when :enum, :flags
-          :int32
-        else
-          :pointer
-        end
-      else
-        return TypeMap.map_basic_type tag
-      end
-    end
   end
 end
