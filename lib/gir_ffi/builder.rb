@@ -29,21 +29,14 @@ module GirFFI
     def self.attach_ffi_function lib, info
       sym = info.symbol
       return if lib.method_defined? sym
-      argtypes = ffi_function_argument_types info
+      argtypes = info.argument_ffi_types
       rt = ffi_function_return_type info
 
       lib.attach_function sym, argtypes, rt
     end
 
     def self.ffi_function_argument_types info
-      types = info.args.map { |arg| arg.to_ffitype }
-
-      if info.info_type == :function
-        types.unshift :pointer if info.method?
-        types << :pointer if info.throws?
-      end
-
-      types
+      info.argument_ffi_types
     end
 
     def self.ffi_callback_argument_types info

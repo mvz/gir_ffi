@@ -18,7 +18,7 @@ module GirFFI
         end
 
         def argument_types
-          Builder.ffi_function_argument_types info
+          @info.argument_ffi_types
         end
 
         def return_type

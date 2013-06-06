@@ -63,12 +63,6 @@ describe GirFFI::Builder do
       @go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
     end
 
-    should "have the correct types of the arguments for the attached function" do
-      argtypes = GirFFI::Builder.send(:ffi_function_argument_types, @go)
-      assert_equal [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
-        argtypes
-    end
-
     should "define ffi callback types :Callback and :ClosureNotify" do
       Regress.setup_method 'test_callback_destroy_notify'
       tcud = Regress::Lib.find_type :TestCallbackUserData
@@ -78,6 +72,13 @@ describe GirFFI::Builder do
       assert_equal FFI.find_type(:void), dn.result_type
       assert_equal [FFI.find_type(:pointer)], tcud.param_types
       assert_equal [FFI.find_type(:pointer)], dn.param_types
+    end
+
+    it "calls attach_function with the correct types" do
+      argtypes = [ Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify ]
+      mock(Regress::Lib).attach_function("regress_test_callback_destroy_notify",
+                                         argtypes, :int32) { true }
+      GirFFI::Builder.attach_ffi_function(Regress::Lib, @go)
     end
 
     after do
@@ -210,11 +211,26 @@ describe GirFFI::Builder do
     end
 
     describe "its #torture_signature_0 method" do
-      should "have the correct types of the arguments for the attached function" do
+      it "is attached with the correct ffi types" do
         info = get_method_introspection_data 'Regress', 'TestObj',
           'torture_signature_0'
-        assert_equal [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
-          GirFFI::Builder.send(:ffi_function_argument_types, info)
+
+        argtypes = [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32]
+        mock(Regress::Lib).attach_function("regress_test_obj_torture_signature_0",
+                                           argtypes, :void) { true }
+        GirFFI::Builder.attach_ffi_function(Regress::Lib, info)
+      end
+    end
+
+    describe "its #instance_method method" do
+      setup do
+      end
+
+      it "is attached with the correct ffi types" do
+        info = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
+        mock(Regress::Lib).attach_function("regress_test_obj_instance_method",
+                                           [:pointer], :int32) { true }
+        GirFFI::Builder.attach_ffi_function(Regress::Lib, info)
       end
     end
 
@@ -356,30 +372,19 @@ describe GirFFI::Builder do
     end
 
     it "attaches function to Regress::Lib" do
-      GirFFI::Builder.send :attach_ffi_function, Regress::Lib, @go
+      GirFFI::Builder.attach_ffi_function Regress::Lib, @go
       assert_defines_singleton_method Regress::Lib, :regress_test_array_gint32_in
     end
 
-    it "has :pointer, :pointer as types of the arguments for the attached function" do
-      assert_equal [:int32, :pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
-    end
-
-    it "has :void as return type for the attached function" do
-      assert_equal :int32, GirFFI::Builder.send(:ffi_function_return_type, @go)
+    it "calls attach_function with the correct types" do
+      argtypes = [:int32, :pointer]
+      mock(Regress::Lib).attach_function("regress_test_array_gint32_in",
+                                         argtypes, :int32) { true }
+      GirFFI::Builder.attach_ffi_function(Regress::Lib, @go)
     end
 
     after do
       restore_module :Regress
-    end
-  end
-
-  describe "looking at Regress::TestObj#instance_method" do
-    setup do
-      @go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
-    end
-
-    it "has :pointer as types of the arguments for the attached function" do
-      assert_equal [:pointer], GirFFI::Builder.send(:ffi_function_argument_types, @go)
     end
   end
 end
