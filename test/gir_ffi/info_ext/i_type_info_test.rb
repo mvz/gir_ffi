@@ -26,6 +26,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe "#element_type" do
     it "returns the element type for lists" do
       mock(elmtype_info).tag { :foo }
+      mock(elmtype_info).pointer? { false }
 
       mock(type_info).tag {:glist}
       mock(type_info).param_type(0) { elmtype_info }
@@ -36,7 +37,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     it "returns the key and value types for ghashes" do
       mock(keytype_info).tag { :foo }
+      mock(keytype_info).pointer? { false }
       mock(valtype_info).tag { :bar }
+      mock(valtype_info).pointer? { false }
 
       mock(type_info).tag {:ghash}
       mock(type_info).param_type(0) { keytype_info }
@@ -53,14 +56,14 @@ describe GirFFI::InfoExt::ITypeInfo do
       result.must_be_nil
     end
 
-    it "returns :gpointer if the element type is a pointer with tag :void" do
+    it "returns [:pointer, :void] if the element type is a pointer with tag :void" do
       stub(elm_type = Object.new).tag { :void }
       stub(elm_type).pointer? { true }
 
       mock(type_info).tag {:glist}
       mock(type_info).param_type(0) { elm_type }
 
-      assert_equal :gpointer, type_info.element_type
+      assert_equal [:pointer, :void], type_info.element_type
     end
   end
 
@@ -83,6 +86,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       context "of utf8" do
         it "returns :strv" do
           stub(elmtype_info).tag { :utf8 }
+          stub(elmtype_info).pointer? { true }
 
           type_info.flattened_tag.must_equal :strv
         end
@@ -91,6 +95,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       context "of filename" do
         it "returns :strv" do
           stub(elmtype_info).tag { :filename }
+          stub(elmtype_info).pointer? { true }
 
           type_info.flattened_tag.must_equal :strv
         end
@@ -99,6 +104,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       context "of another type" do
         it "returns :zero_terminated" do
           stub(elmtype_info).tag { :foo }
+          stub(elmtype_info).pointer? { false }
 
           type_info.flattened_tag.must_equal :zero_terminated
         end

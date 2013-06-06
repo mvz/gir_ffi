@@ -42,9 +42,9 @@ module GirFFI
       def element_type
         case tag
         when :glist, :gslist, :array
-          subtype_tag 0
+          subtype_tag_or_class 0
         when :ghash
-          [subtype_tag(0), subtype_tag(1)]
+          [subtype_tag_or_class(0), subtype_tag_or_class(1)]
         else
           nil
         end
@@ -126,21 +126,6 @@ module GirFFI
         else
           # TODO: Check that array_type == :c
           :zero_terminated
-        end
-      end
-
-      def subtype_tag index
-        st = param_type(index)
-        tag = st.tag
-        case tag
-        when :interface
-          return :interface_pointer if st.pointer?
-          return :interface
-        when :void
-          return :gpointer if st.pointer?
-          return :void
-        else
-          return tag
         end
       end
     end
