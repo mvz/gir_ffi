@@ -5,6 +5,10 @@ module GirFFI
       def argument_ffi_types
         args.map { |arg| arg.to_ffitype }
       end
+
+      def return_ffi_type
+        return_type.to_ffitype
+      end
     end
   end
 end

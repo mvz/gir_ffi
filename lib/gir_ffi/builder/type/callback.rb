@@ -22,7 +22,7 @@ module GirFFI
         end
 
         def return_type
-          Builder.ffi_function_return_type info
+          @info.return_ffi_type
         end
       end
     end

@@ -29,10 +29,8 @@ module GirFFI
     def self.attach_ffi_function lib, info
       sym = info.symbol
       return if lib.method_defined? sym
-      argtypes = info.argument_ffi_types
-      rt = ffi_function_return_type info
 
-      lib.attach_function sym, argtypes, rt
+      lib.attach_function sym, info.argument_ffi_types, info.return_ffi_type
     end
 
     def self.ffi_function_argument_types info
@@ -47,11 +45,7 @@ module GirFFI
     end
 
     def self.ffi_callback_return_type info
-      ffi_function_return_type info
-    end
-
-    def self.ffi_function_return_type info
-      info.return_type.to_ffitype
+      info.return_ffi_type
     end
 
     def self.itypeinfo_to_callback_ffitype info
