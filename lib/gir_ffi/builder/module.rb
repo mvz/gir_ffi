@@ -29,7 +29,8 @@ module GirFFI
       lib = modul.const_get(:Lib)
 
       Builder.attach_ffi_function lib, go
-      modul.class_eval function_definition(go, lib)
+      definition = function_definition(go, lib)
+      modul.class_eval definition
 
       true
     end

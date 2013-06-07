@@ -253,4 +253,57 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
   end
+
+  describe "#tag_or_class" do
+    describe "for a simple type" do
+      it "returns the type's tag" do
+        mock(type_info).tag { :foo }
+        mock(type_info).pointer? { false }
+
+        type_info.tag_or_class.must_equal :foo
+      end
+    end
+
+    describe "for utf8 strings" do
+      it "returns the tag :utf8" do
+        mock(type_info).tag { :utf8 }
+        mock(type_info).pointer? { true }
+
+        type_info.tag_or_class.must_equal :utf8
+      end
+    end
+
+    describe "for filename strings" do
+      it "returns the tag :filename" do
+        mock(type_info).tag { :filename }
+        mock(type_info).pointer? { true }
+
+        type_info.tag_or_class.must_equal :filename
+      end
+    end
+
+    describe "for an interface class" do
+      it "returns the class built from the interface" do
+        interface_info = Object.new
+        interface = Object.new
+
+        mock(type_info).tag { :interface }
+        mock(type_info).interface { interface_info }
+        mock(type_info).pointer? { false }
+
+        mock(GirFFI::Builder).build_class(interface_info) { interface }
+
+        type_info.tag_or_class.must_equal interface
+      end
+    end
+
+    describe "for a pointer to simple type :foo" do
+      it "returns [:pointer, :foo]" do
+        mock(type_info).tag { :foo }
+        mock(type_info).pointer? { true }
+
+        type_info.tag_or_class.must_equal [:pointer, :foo]
+      end
+    end
+  end
 end
