@@ -95,17 +95,7 @@ module GirFFI
 
       def subtype_tag_or_class index = 0
         type = self.param_type index
-        tag = type.tag
-        base = if tag == :interface
-                 Builder.build_class type.interface
-               else
-                 tag
-               end
-        if type.pointer? && tag != :utf8 && tag != :filename
-          [:pointer, base]
-        else
-          base
-        end
+        type.tag_or_class
       end
 
       def tag_or_class
