@@ -123,59 +123,13 @@ describe GirFFI::InfoExt::ITypeInfo do
   end
 
   describe "#subtype_tag_or_class_name" do
-    describe "for a simple type" do
-      it "returns the string ':void'" do
-        mock(subtype = Object.new).tag { :void }
-        mock(subtype).pointer? { false }
+    describe "without a parameter" do
+      it "returns the result of calling #tag_or_class_name on the first param_type" do
+        mock(elmtype_info).tag_or_class_name { ":foo" }
 
-        mock(info = testclass.new).param_type(0) { subtype }
+        mock(type_info).param_type(0) { elmtype_info }
 
-        assert_equal ":void", info.subtype_tag_or_class_name
-      end
-    end
-
-    describe "for an array of simple type :foo" do
-      it "returns the string ':foo'" do
-        mock(subtype = Object.new).tag { :foo }
-        mock(subtype).pointer? { false }
-
-        mock(info = testclass.new).param_type(0) { subtype }
-
-        assert_equal ":foo", info.subtype_tag_or_class_name
-      end
-    end
-
-    describe "for an array of :utf8" do
-      it "returns the string ':utf8'" do
-        mock(subtype = Object.new).tag { :utf8 }
-        mock(subtype).pointer? { true }
-
-        mock(info = testclass.new).param_type(0) { subtype }
-
-        assert_equal ":utf8", info.subtype_tag_or_class_name
-      end
-    end
-
-    describe "for an array of an interface class" do
-      it "returns the interface's full class name" do
-        mock(subtype = Object.new).tag { :interface }
-        mock(subtype).interface_type_name { "-full-type-name-" }
-        mock(subtype).pointer? { false }
-
-        mock(info = testclass.new).param_type(0) { subtype }
-
-        assert_equal "-full-type-name-", info.subtype_tag_or_class_name
-      end
-    end
-
-    describe "for an array of pointer to simple type :foo" do
-      it "returns the string '[:pointer, :foo]'" do
-        mock(subtype = Object.new).tag { :foo }
-        mock(subtype).pointer? { true }
-
-        mock(info = testclass.new).param_type(0) { subtype }
-
-        assert_equal "[:pointer, :foo]", info.subtype_tag_or_class_name
+        type_info.subtype_tag_or_class_name.must_equal ":foo"
       end
     end
   end

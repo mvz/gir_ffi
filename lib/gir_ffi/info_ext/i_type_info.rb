@@ -75,27 +75,15 @@ module GirFFI
         end
       end
 
-      # TODO: Merge with subtype_tag_or_class
       def subtype_tag_or_class_name index = 0
-        type = self.param_type index
-        tag = type.tag
-        base = if tag == :interface
-                 type.interface_type_name
-               else
-                 tag.inspect
-               end
-        if type.pointer? && tag != :utf8 && tag != :filename
-          "[:pointer, #{base}]"
-        else
-          base
-        end
+        param_type(index).tag_or_class_name
       end
 
       def subtype_tag_or_class index = 0
-        type = self.param_type index
-        type.tag_or_class
+        param_type(index).tag_or_class
       end
 
+      # TODO: Merge with tag_or_class
       def tag_or_class_name
         type_tag = self.tag
         base = if type_tag == :interface
