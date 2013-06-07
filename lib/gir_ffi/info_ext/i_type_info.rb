@@ -53,13 +53,14 @@ module GirFFI
       end
 
       def flattened_tag
-        case tag
+        type_tag = self.tag
+        case type_tag
         when :interface
           interface_type
         when :array
           flattened_array_type
         else
-          tag
+          type_tag
         end
       end
 
@@ -123,6 +124,23 @@ module GirFFI
         end
       end
 
+      def to_callback_ffitype
+        type_tag = tag
+
+        return :string if type_tag == :utf8
+        return :pointer if pointer?
+
+        if type_tag == :interface
+          case interface.info_type
+          when :enum, :flags
+            :int32
+          else
+            :pointer
+          end
+        else
+          return TypeMap.map_basic_type type_tag
+        end
+      end
       private
 
       def zero_terminated_array_type

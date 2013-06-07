@@ -246,4 +246,27 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
   end
+
+  describe "#to_callback_ffitype" do
+    let(:iface) { Object.new }
+    describe "for an :interface argument" do
+      before do
+        stub(type_info).interface { iface }
+        stub(type_info).tag { :interface }
+        stub(type_info).pointer? { false }
+      end
+
+      it "correctly maps a :union argument to :pointer" do
+        stub(iface).info_type { :union }
+
+        type_info.to_callback_ffitype.must_equal :pointer
+      end
+
+      it "correctly maps a :flags argument to :int32" do
+        stub(iface).info_type { :flags }
+
+        type_info.to_callback_ffitype.must_equal :int32
+      end
+    end
+  end
 end

@@ -61,28 +61,9 @@ module GirFFI
       # types as well?
       def ffi_callback_argument_types
         types = args.map do |arg|
-          itypeinfo_to_callback_ffitype arg.argument_type
+          arg.argument_type.to_callback_ffitype
         end
         types.unshift(:pointer).push(:pointer)
-      end
-
-      # TODO: Move to ITypeInfo
-      def itypeinfo_to_callback_ffitype info
-        tag = info.tag
-
-        return :string if tag == :utf8
-        return :pointer if info.pointer?
-
-        if tag == :interface
-          case info.interface.info_type
-          when :enum, :flags
-            :int32
-          else
-            :pointer
-          end
-        else
-          return TypeMap.map_basic_type tag
-        end
       end
     end
   end
