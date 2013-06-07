@@ -885,9 +885,9 @@ describe Regress do
 
     it "has a working method #set_testbool" do
       instance.set_testbool true
-      assert_equal 1, get_field_value(instance, :testbool)
+      assert_equal true, get_field_value(instance, :testbool)
       instance.set_testbool false
-      assert_equal 0, get_field_value(instance, :testbool)
+      assert_equal false, get_field_value(instance, :testbool)
     end
 
     describe "an instance" do

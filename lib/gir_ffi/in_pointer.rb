@@ -4,7 +4,7 @@ module GirFFI
   # arrays, strings, or interfaces.
   class InPointer < FFI::Pointer
     def self.from_array type, ary
-      return nil if ary.nil?
+      return if !ary
       case type
       when :utf8, :filename
         from_utf8_array ary
@@ -20,7 +20,7 @@ module GirFFI
     end
 
     def self.from type, val
-      return nil if val.nil?
+      return if !val
       case type
       when Array
         _, sub_t = *type
@@ -42,38 +42,39 @@ module GirFFI
       private
 
       def from_utf8_array ary
-        ptr_ary = ary.map {|str| self.from :utf8, str}
+        ptr_ary = ary.map {|str| from_utf8 str}
         ptr_ary << nil
-        self.from_array :pointer, ptr_ary
+        from_basic_type_array :pointer, ptr_ary
       end
 
       def from_interface_pointer_array ary
         ptr_ary = ary.map {|ifc| ifc.to_ptr}
         ptr_ary << nil
-        self.from_array :pointer, ptr_ary
+        from_basic_type_array :pointer, ptr_ary
       end
 
       def from_enum_array type, ary
-        self.from_array :int32, ary.map {|sym| type.to_native sym, nil }
+        from_basic_type_array :int32, ary.map {|sym| type.to_native sym, nil }
       end
 
       def from_utf8 str
         len = str.bytesize
         ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-        self.new ptr
+        new ptr
       end
 
       def from_basic_type_array type, ary
         ffi_type = TypeMap.map_basic_type type
-        block = ArgHelper.allocate_array_of_type ffi_type, ary.length + 1
+        length = ary.length
+
+        block = ArgHelper.allocate_array_of_type ffi_type, length + 1
         block.send "put_array_of_#{ffi_type}", 0, ary
         block.send("put_#{ffi_type}",
-                   ary.length * FFI.type_size(ffi_type),
+                   length * FFI.type_size(ffi_type),
                    (ffi_type == :pointer ? nil : 0))
 
-        self.new block
+        new block
       end
-
     end
   end
 end

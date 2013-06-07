@@ -25,8 +25,6 @@ module GirFFI
         case ffitype
         when Class
           ffitype.const_get :Struct
-        when :bool
-          :int
         when :array
           subtype = param_type(0).layout_specification_type
           # XXX Don't use pointer directly to appease JRuby.
@@ -115,10 +113,11 @@ module GirFFI
       def to_ffitype
         return :pointer if pointer?
 
-        if tag == :interface
-          return Builder.build_class interface
+        type_tag = tag
+        if type_tag == :interface
+          Builder.build_class interface
         else
-          return TypeMap.map_basic_type tag
+          TypeMap.map_basic_type type_tag
         end
       end
 
