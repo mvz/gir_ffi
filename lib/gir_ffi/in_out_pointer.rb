@@ -2,12 +2,11 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.
   class InOutPointer < FFI::Pointer
-    attr_reader :value_type, :sub_type
+    attr_reader :value_type
 
-    def initialize value, type, sub_type=nil
+    def initialize value, type
       @ffi_type = TypeMap.map_basic_type_or_string type
       @value_type = type
-      @sub_type = sub_type
 
       value = adjust_value_in value
 
@@ -24,15 +23,15 @@ module GirFFI
       adjust_value_out value
     end
 
-    def self.for type, sub_type=nil
+    def self.for type
       if Array === type
         return self.new nil, *type
       end
-      self.new nil, type, sub_type
+      self.new nil, type
     end
 
-    def self.from type, value, sub_type=nil
-      self.new value, type, sub_type
+    def self.from type, value
+      self.new value, type
     end
 
     private

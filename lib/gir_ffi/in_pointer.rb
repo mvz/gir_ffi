@@ -12,8 +12,6 @@ module GirFFI
         from_basic_type_array type, ary
       when FFI::Enum
         from_enum_array type, ary
-      when Array
-        from_interface_pointer_array ary
       else
         raise NotImplementedError, type
       end
@@ -22,10 +20,6 @@ module GirFFI
     def self.from type, val
       return if !val
       case type
-      when Array
-        _, sub_t = *type
-        # TODO: Take array type into account (zero-terminated or not)
-        self.from_array sub_t, val
       when :utf8, :filename
         from_utf8 val
       when :gint32, :gint8
