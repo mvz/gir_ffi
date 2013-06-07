@@ -192,6 +192,45 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
+  describe "#tag_or_class_name" do
+    describe "for the simple type :foo" do
+      it "returns the string ':foo'" do
+        mock(type_info).tag { :foo }
+        mock(type_info).pointer? { false }
+
+        assert_equal ":foo", type_info.tag_or_class_name
+      end
+    end
+
+    describe "for :utf8" do
+      it "returns the string ':utf8'" do
+        mock(type_info).tag { :utf8 }
+        mock(type_info).pointer? { true }
+
+        assert_equal ":utf8", type_info.tag_or_class_name
+      end
+    end
+
+    describe "for an interface class" do
+      it "returns the interface's full class name" do
+        mock(type_info).tag { :interface }
+        mock(type_info).interface_type_name { "-full-type-name-" }
+        mock(type_info).pointer? { false }
+
+        assert_equal "-full-type-name-", type_info.tag_or_class_name
+      end
+    end
+
+    describe "for a pointer to simple type :foo" do
+      it "returns the string '[:pointer, :foo]'" do
+        mock(type_info).tag { :foo }
+        mock(type_info).pointer? { true }
+
+        assert_equal "[:pointer, :foo]", type_info.tag_or_class_name
+      end
+    end
+  end
+
   describe "#tag_or_class" do
     describe "for a simple type" do
       it "returns the type's tag" do

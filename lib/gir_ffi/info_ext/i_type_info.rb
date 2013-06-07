@@ -96,8 +96,22 @@ module GirFFI
         type.tag_or_class
       end
 
+      def tag_or_class_name
+        type_tag = self.tag
+        base = if type_tag == :interface
+                 interface_type_name
+               else
+                 type_tag.inspect
+               end
+        if pointer? && type_tag != :utf8 && type_tag != :filename
+          "[:pointer, #{base}]"
+        else
+          base
+        end
+      end
+
       def tag_or_class
-        type_tag = tag
+        type_tag = self.tag
         base = if type_tag == :interface
                  Builder.build_class interface
                else
