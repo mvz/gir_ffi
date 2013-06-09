@@ -51,6 +51,27 @@ describe GirFFI::ArgHelper do
       end
     end
 
+    describe "for pointers to arrays of enums" do
+      let(:enum) { FFI::Enum.new([:foo, 1, :bar, 2]) }
+      it "returns an empty array when passed a null pointer" do
+        result = GirFFI::ArgHelper.ptr_to_typed_array enum, FFI::Pointer.new(0), 0
+        result.must_equal []
+      end
+
+      it "returns an empty array when passed nil" do
+        result = GirFFI::ArgHelper.ptr_to_typed_array enum, nil, 0
+        result.must_equal []
+      end
+
+      it "returns an array of symbols when passed a pointer to ints" do
+        block = FFI::MemoryPointer.new(:int32, 2)
+        block.write_array_of_int32 [1, 2]
+        result = GirFFI::ArgHelper.ptr_to_typed_array enum, block, 2
+        result.must_equal [:foo, :bar]
+      end
+
+    end
+
     describe "for pointers to arrays of base types" do
       it "returns an empty array when passed a null pointer" do
         result = GirFFI::ArgHelper.ptr_to_typed_array :gint32, FFI::Pointer.new(0), 0

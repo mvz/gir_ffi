@@ -26,11 +26,14 @@ module GirFFI
     end
 
     def self.ptr_to_typed_array type, ptr, size
-      if type.is_a? Class
+      case type
+      when Class
         ptr_to_interface_array type, ptr, size
-      elsif type.is_a? Array
+      when Array
         ptr_to_interface_pointer_array type[1], ptr, size
-      elsif type == :utf8
+      when FFI::Enum
+        ptr_to_enum_array type, ptr, size
+      when :utf8
         ptr_to_utf8_array ptr, size
       else
         self.send "ptr_to_#{type}_array", ptr, size
@@ -71,6 +74,10 @@ module GirFFI
       ptrs.map do |optr|
         klass.wrap(optr)
       end
+    end
+
+    def self.ptr_to_enum_array enum, ptr, size
+      ptr_to_gint32_array(ptr, size).map {|val| enum[val] }
     end
 
     if RUBY_VERSION < "1.9"
