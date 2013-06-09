@@ -7,13 +7,12 @@ if RUBY_VERSION >= "1.9"
   SimpleCov.start
 end
 
-require 'minitest/spec'
 require 'minitest/autorun'
 require 'rr'
 
 Thread.abort_on_exception = true
 
-class MiniTest::Unit::TestCase
+class Minitest::Test
   include RR::Adapters::TestUnit
 
   def assert_nothing_raised
@@ -64,7 +63,7 @@ class MiniTest::Unit::TestCase
   end
 end
 
-class MiniTest::Spec
+class Minitest::Spec
   class << self
     alias :setup :before
     alias :teardown :after

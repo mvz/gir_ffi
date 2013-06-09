@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('ffi', ["~> 1.8"])
   s.add_runtime_dependency('indentation', ["~> 0.0.6"])
 
-  s.add_development_dependency('minitest', ["~> 4.3"])
+  s.add_development_dependency('minitest', ["~> 5.0"])
   s.add_development_dependency('rr', ["~> 1.0.4"])
   s.add_development_dependency('rake', ["~> 10.0.3"])
 

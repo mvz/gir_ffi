@@ -33,7 +33,7 @@ class Sequence
   end
 end
 
-class MiniTest::Unit::TestCase
+class Minitest::Test
   def cws code
     code.gsub(/(^\s*|\s*$)/, "")
   end
