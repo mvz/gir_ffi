@@ -21,7 +21,8 @@ module GirFFI
     end
 
     def parent
-      @gir.find_by_gtype @gobject.type_parent(@g_type)
+      parent_gtype = @gobject.type_parent(@g_type)
+      @gir.find_by_gtype(parent_gtype) || self.class.new(parent_gtype, @gir, @gobject)
     end
 
     def namespace

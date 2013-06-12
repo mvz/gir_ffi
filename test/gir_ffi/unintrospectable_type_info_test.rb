@@ -10,16 +10,32 @@ describe GirFFI::UnintrospectableTypeInfo do
   end
 
   describe "#parent" do
-    it "finds the parent's info by gtype" do
-      gobject = Object.new
-      gir = Object.new
+    context "when the GIR knows about the parent gtype" do
+      it "finds the parent's info by gtype" do
+        gobject = Object.new
+        gir = Object.new
 
-      mock(gobject).type_parent(:some_type) { :foo }
-      mock(gir).find_by_gtype(:foo) { :foo_info }
+        mock(gobject).type_parent(:some_type) { :foo }
+        mock(gir).find_by_gtype(:foo) { :foo_info }
 
-      info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
+        info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-      info.parent.must_equal :foo_info
+        info.parent.must_equal :foo_info
+      end
+    end
+
+    context "when the GIR does not know about the parent gtype" do
+      it "creates a new UnintrospectableTypeInfo from the parent gtype" do
+        gobject = Object.new
+        gir = Object.new
+
+        mock(gobject).type_parent(:some_type) { :foo }
+        mock(gir).find_by_gtype(:foo) { nil }
+
+        info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
+
+        info.parent.g_type.must_equal :foo
+      end
     end
   end
 
