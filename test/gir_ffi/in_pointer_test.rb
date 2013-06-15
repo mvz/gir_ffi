@@ -95,6 +95,12 @@ describe GirFFI::InPointer do
       result = GirFFI::InPointer.from :gint8, 23
       assert_equal 23, result.address
     end
+
+    it "handles enum types" do
+      e = FFI::Enum.new [:foo, :bar, :baz]
+      ptr = GirFFI::InPointer.from e, :bar
+      ptr.address.must_equal 1
+    end
   end
 end
 

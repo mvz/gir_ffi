@@ -24,6 +24,8 @@ module GirFFI
         from_utf8 val
       when :gint32, :gint8
         self.new val
+      when FFI::Enum
+        self.new type[val]
       when :void
         ArgHelper.object_to_inptr val
       else
