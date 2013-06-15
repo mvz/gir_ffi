@@ -1,3 +1,8 @@
+== 0.6.3 / 2013-06-15
+
+* Make use of enums as element type for GHashTable and other containers
+  work
+
 == 0.6.2 / 2013-06-14
 
 * Handle introspectable types with introspectable parent types
