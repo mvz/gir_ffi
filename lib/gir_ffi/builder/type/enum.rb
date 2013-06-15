@@ -25,7 +25,18 @@ module GirFFI
           @klass = optionally_define_constant namespace_module, @classname do
             lib.enum(enum_sym, value_spec)
           end
-          setup_gtype_getter unless already_set_up
+          unless already_set_up
+            setup_gtype_getter
+            setup_inspect
+          end
+        end
+
+        def setup_inspect
+          @klass.instance_eval <<-EOS
+            def self.inspect
+              "#{@namespace}::#{@classname}"
+            end
+          EOS
         end
 
         def already_set_up
