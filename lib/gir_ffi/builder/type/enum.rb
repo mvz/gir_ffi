@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/type/registered_type'
+require 'gir_ffi/enum_base'
 
 module GirFFI
   module Builder
@@ -22,7 +23,8 @@ module GirFFI
         end
 
         def instantiate_class
-          @klass = optionally_define_constant namespace_module, @classname do
+          @klass = get_or_define_class namespace_module, @classname, superclass
+          @enum = optionally_define_constant @klass, :Enum do
             lib.enum(enum_sym, value_spec)
           end
           unless already_set_up
@@ -41,6 +43,10 @@ module GirFFI
 
         def already_set_up
           @klass.respond_to? :get_gtype
+        end
+
+        def superclass
+          @superclass ||= EnumBase
         end
       end
     end

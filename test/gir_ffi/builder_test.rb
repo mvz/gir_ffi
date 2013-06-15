@@ -77,7 +77,7 @@ describe GirFFI::Builder do
     end
 
     should "set up struct members with the correct types" do
-      tags = [:int, :int8, :double, Regress::TestEnum]
+      tags = [:int, :int8, :double, Regress::TestEnum::Enum]
       assert_equal tags.map {|t| FFI.find_type t},
         Regress::TestStructA::Struct.layout.fields.map {|f| f.type}
     end

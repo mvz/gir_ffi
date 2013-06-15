@@ -12,6 +12,12 @@ module GirFFI
         from_basic_type_array type, ary
       when FFI::Enum
         from_enum_array type, ary
+      when Class
+        if type < EnumBase
+          from_enum_array type::Enum, ary
+        else
+          raise NotImplementedError, type
+        end
       else
         raise NotImplementedError, type
       end
@@ -26,10 +32,16 @@ module GirFFI
         self.new val
       when FFI::Enum
         self.new type[val]
+      when Class
+        if type < EnumBase
+          self.new type[val]
+        else
+          raise NotImplementedError, type
+        end
       when :void
         ArgHelper.object_to_inptr val
       else
-        raise NotImplementedError
+        raise NotImplementedError, type
       end
     end
 
