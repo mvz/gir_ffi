@@ -6,6 +6,10 @@ module GirFFI
       def full_type_name
         "::#{safe_namespace}::#{name}"
       end
+
+      def to_ffitype
+        Builder.build_class self
+      end
     end
   end
 end

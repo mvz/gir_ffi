@@ -118,7 +118,7 @@ module GirFFI
 
         type_tag = tag
         if type_tag == :interface
-          Builder.build_class interface
+          interface.to_ffitype
         else
           TypeMap.map_basic_type type_tag
         end
