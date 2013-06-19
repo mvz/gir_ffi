@@ -23,8 +23,6 @@ module GirFFI
       def layout_specification_type
         ffitype = self.to_ffitype
         case ffitype
-        when Class
-          ffitype.const_get :Struct
         when :array
           subtype = param_type(0).layout_specification_type
           # XXX Don't use pointer directly to appease JRuby.

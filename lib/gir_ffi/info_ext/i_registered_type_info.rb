@@ -8,6 +8,10 @@ module GirFFI
       end
 
       def to_ffitype
+        to_type
+      end
+
+      def to_type
         Builder.build_class self
       end
     end
