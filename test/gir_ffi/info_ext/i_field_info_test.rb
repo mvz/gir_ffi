@@ -7,7 +7,7 @@ describe GirFFI::InfoExt::IFieldInfo do
         include GirFFI::InfoExt::IFieldInfo
       end
 
-      mock(type = Object.new).layout_specification_type { :bar }
+      mock(type = Object.new).to_ffitype { :bar }
 
       field = testclass.new
       mock(field).name { "foo" }
@@ -24,7 +24,7 @@ describe GirFFI::InfoExt::IFieldInfo do
         include GirFFI::InfoExt::IFieldInfo
       end
 
-      mock(type = Object.new).layout_specification_type { [:bar, 2] }
+      mock(type = Object.new).to_ffitype { [:bar, 2] }
 
       field = testclass.new
       mock(field).name { "foo" }

@@ -20,21 +20,6 @@ module GirFFI
         GObject::Value.for_g_type g_type
       end
 
-      def layout_specification_type
-        ffitype = self.to_ffitype
-        case ffitype
-        when :array
-          subtype = param_type(0).layout_specification_type
-          # XXX Don't use pointer directly to appease JRuby.
-          if subtype == :pointer
-            subtype = :"uint#{FFI.type_size(:pointer)*8}"
-          end
-          [subtype, array_fixed_size]
-        else
-          ffitype
-        end
-      end
-
       def element_type
         case tag
         when :glist, :gslist, :array
@@ -115,8 +100,16 @@ module GirFFI
         return :pointer if pointer?
 
         type_tag = tag
-        if type_tag == :interface
+        case type_tag
+        when :interface
           interface.to_ffitype
+        when :array
+          subtype = param_type(0).to_ffitype
+          # NOTE: Don't use pointer directly to appease JRuby.
+          if subtype == :pointer
+            subtype = :"uint#{FFI.type_size(:pointer)*8}"
+          end
+          [subtype, array_fixed_size]
         else
           TypeMap.map_basic_type type_tag
         end

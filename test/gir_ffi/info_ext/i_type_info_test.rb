@@ -9,16 +9,16 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:keytype_info) { testclass.new }
   let(:valtype_info) { testclass.new }
 
-  describe "#layout_specification_type" do
+  describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
       mock(type_info).pointer? { false }
       stub(type_info).tag { :array }
       mock(type_info).array_fixed_size { 2 }
 
-      mock(elmtype_info).layout_specification_type { :foo }
+      mock(elmtype_info).to_ffitype { :foo }
       mock(type_info).param_type(0) { elmtype_info }
 
-      result = type_info.layout_specification_type
+      result = type_info.to_ffitype
       assert_equal [:foo, 2], result
     end
   end

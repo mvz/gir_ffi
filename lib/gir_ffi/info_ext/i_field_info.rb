@@ -4,7 +4,7 @@ module GirFFI
     module IFieldInfo
       def layout_specification
         [ name.to_sym,
-          field_type.layout_specification_type,
+          field_type.to_ffitype,
           offset ]
       end
     end
