@@ -15,25 +15,29 @@ module GirFFI
 
     def generate
       vargen = GirFFI::VariableNameGenerator.new
-      @data = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
-      @rvdata = ReturnValueBuilder.new(vargen, @info.return_type,
-                                       @info.constructor?)
+      @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
+      @return_value_builder = ReturnValueBuilder.new(vargen, @info.return_type,
+                                                     @info.constructor?)
 
-      alldata = @data.dup << @rvdata
-
-      alldata.each {|data|
-        idx = data.type_info.array_length
-        if idx > -1
-          data.length_arg = @data[idx]
-          @data[idx].array_arg = data
-        end
-      }
-
+      link_array_length_arguments
       setup_error_argument vargen
       return filled_out_template
     end
 
     private
+
+    def link_array_length_arguments
+      alldata = @argument_builders.dup << @return_value_builder
+
+      alldata.each {|data|
+        idx = data.type_info.array_length
+        if idx > -1
+          other_data = @argument_builders[idx]
+          data.length_arg = other_data
+          other_data.array_arg = data
+        end
+      }
+    end
 
     def setup_error_argument vargen
       klass = @info.throws? ? ErrorArgumentBuilder : NullArgumentBuilder
@@ -41,55 +45,67 @@ module GirFFI
     end
 
     def filled_out_template
-      lines = pre
-      lines << "#{capture}#{@libmodule}.#{@info.symbol} #{callargs.join(', ')}"
-      lines << post
-
       meta = @info.method? ? '' : "self."
 
-      code = "def #{meta}#{@info.safe_name} #{inargs.join(', ')}\n"
-      code << lines.join("\n").indent
+      code = "def #{meta}#{@info.safe_name} #{method_arguments.join(', ')}\n"
+      code << method_body
       code << "\nend\n"
     end
 
-    def inargs
-      @data.map(&:inarg).compact
+    def method_body
+      lines = preparation << function_call << post_processing << cleanup
+      lines << "return #{return_values.join(', ')}" if has_return_values?
+      lines.flatten.join("\n").indent
     end
 
-    def callargs
-      ca = @data.map(&:callarg)
+    def function_call
+      "#{capture}#{@libmodule}.#{@info.symbol} #{function_call_arguments.join(', ')}"
+    end
+
+    def method_arguments
+      @argument_builders.map(&:inarg).compact
+    end
+
+    def function_call_arguments
+      ca = @argument_builders.map(&:callarg)
       ca << @errarg.callarg
       ca.unshift "self" if @info.method?
       ca.compact
     end
 
-    def pre
-      pr = @data.map(&:pre)
+    def preparation
+      pr = @argument_builders.map(&:pre)
       pr << @errarg.pre
       pr.flatten
     end
 
     def capture
-      if (cv = @rvdata.cvar)
+      if (cv = @return_value_builder.cvar)
         "#{cv} = "
       else
         ""
       end
     end
 
-    def post
-      args = @data.sort_by {|arg| arg.type_info.array_length}
+    def post_processing
+      args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
+      args << @return_value_builder
+      args.unshift @errarg
 
-      po = args.map {|arg|arg.post} +
-        @rvdata.post
-      po.unshift @errarg.post
+      args.map {|arg| arg.post}
+    end
 
-      po += @data.map {|item| item.cleanup}
+    def cleanup
+      @argument_builders.map {|item| item.cleanup}
+    end
 
-      retvals = ([@rvdata.retval] + @data.map(&:retval)).compact
-      po << "return #{retvals.join(', ')}" unless retvals.empty?
+    def return_values
+      @return_values ||= ([@return_value_builder.retval] +
+                          @argument_builders.map(&:retval)).compact
+    end
 
-      po.flatten
+    def has_return_values?
+      !return_values.empty?
     end
   end
 end

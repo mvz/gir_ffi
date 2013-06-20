@@ -83,7 +83,6 @@ describe GirFFI::FunctionBuilder do
       def self.gvalue_in value
         _v1 = ::GObject::Value.from(value)
         DummyLib.gi_marshalling_tests_gvalue_in _v1
-        
       end
     CODE
 
@@ -101,7 +100,6 @@ describe GirFFI::FunctionBuilder do
         len = arr.nil? ? 0 : arr.length
         _v2 = len
         DummyLib.regress_test_array_int_null_in _v1, _v2
-        
       end
     CODE
 
