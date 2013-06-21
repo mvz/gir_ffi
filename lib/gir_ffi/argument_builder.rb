@@ -53,8 +53,6 @@ module GirFFI
         else
           "#{argument_class_name}.wrap(#{output_conversion_arguments})"
         end
-      elsif is_fixed_length_array?
-        "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{callarg}.to_value)"
       else
         "#{callarg}.to_value"
       end
@@ -66,10 +64,6 @@ module GirFFI
 
     def needs_size_check?
       specialized_type_tag == :c && type_info.array_fixed_size > -1
-    end
-
-    def is_fixed_length_array?
-      specialized_type_tag == :c
     end
 
     def fixed_array_size_check
@@ -114,7 +108,7 @@ module GirFFI
 
     def needs_outgoing_parameter_conversion?
       [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
-        :strv, :utf8 ].include?(specialized_type_tag)
+        :c, :strv, :utf8 ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
@@ -143,7 +137,11 @@ module GirFFI
     end
 
     def output_conversion_arguments
-      conversion_arguments "#{callarg}.to_value"
+      if specialized_type_tag == :c
+        "#{subtype_tag_or_class_name}, #{array_size}, #{callarg}.to_value"
+      else
+        conversion_arguments "#{callarg}.to_value"
+      end
     end
 
     def parameter_conversion_arguments
