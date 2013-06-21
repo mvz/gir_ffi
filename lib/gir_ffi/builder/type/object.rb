@@ -51,7 +51,7 @@ module GirFFI
           setup_interfaces
         end
 
-        # FIXME: Private method only in subclass
+        # FIXME: Private method only used in subclass
         def layout_superclass
           FFI::Struct
         end
@@ -69,16 +69,14 @@ module GirFFI
         end
 
         def superclass
-          unless defined? @superclass
-            if parent
-              @superclass = Builder.build_class parent
-            else
-              @superclass = ObjectBase
-            end
-          end
-          @superclass
+          @superclass ||= if parent
+                            Builder.build_class parent
+                          else
+                            ObjectBase
+                          end
         end
 
+        # TODO: Unify with field accessor setup.
         def setup_property_accessors
           info.properties.each do |prop|
             setup_accessors_for_property_info prop
@@ -94,18 +92,22 @@ module GirFFI
         end
 
         # TODO: Guard agains accidental invocation of undefined vfuncs.
+        # TODO: Create object responsible for creating these invokers
         def setup_vfunc_invokers
           info.vfuncs.each do |vfinfo|
-            invoker = vfinfo.invoker
-            next if invoker.nil?
-            next if invoker.name == vfinfo.name
-
-            @klass.class_eval "
-              def #{vfinfo.name} *args, &block
-                #{invoker.name}(*args, &block)
-              end
-            "
+            if (invoker = vfinfo.invoker)
+              define_vfunc_invoker vfinfo.name, invoker.name
+            end
           end
+        end
+
+        def define_vfunc_invoker vfunc_name, invoker_name
+          return if vfunc_name == invoker_name
+          @klass.class_eval "
+            def #{vfunc_name} *args, &block
+              #{invoker_name}(*args, &block)
+            end
+          "
         end
 
         def setup_interfaces
