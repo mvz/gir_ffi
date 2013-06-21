@@ -22,8 +22,9 @@ describe GirFFI::InOutPointer do
       GirFFI::InOutPointer.from :gboolean, false
     end
 
-    it "handles :utf8" do
-      GirFFI::InOutPointer.from :utf8, "Hello"
+    it "handles :utf8 pointers" do
+      str_ptr = GirFFI::InPointer.from :utf8, "Hello"
+      GirFFI::InOutPointer.from :utf8, str_ptr
     end
   end
 
@@ -71,7 +72,8 @@ describe GirFFI::InOutPointer do
 
     describe "for :utf8 values" do
       it "returns a pointer to the held value" do
-        ptr = GirFFI::InOutPointer.from :utf8, "Some value"
+        str_ptr = GirFFI::InPointer.from :utf8, "Some value"
+        ptr = GirFFI::InOutPointer.from :utf8, str_ptr
         assert_equal "Some value", ptr.to_value.read_string
       end
     end

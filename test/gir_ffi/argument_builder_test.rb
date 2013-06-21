@@ -331,7 +331,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :pointer, GLib::Strv.from(foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :strv, GLib::Strv.from(foo)" ]
       end
 
       it "has the correct value for #post" do
@@ -345,7 +345,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :pointer, GirFFI::InPointer.from(:utf8, foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :utf8, GirFFI::InPointer.from(:utf8, foo)" ]
       end
 
       it "has the correct value for #post" do
@@ -367,7 +367,7 @@ describe GirFFI::ArgumentBuilder do
         it "has the correct value for #pre" do
           builder.pre.must_equal [
             "GirFFI::ArgHelper.check_fixed_array_size 3, foo, \"foo\"",
-            "_v1 = GirFFI::InOutPointer.from :pointer, GLib::SizedArray.from(:bar, 3, foo)"
+            "_v1 = GirFFI::InOutPointer.from :c, GLib::SizedArray.from(:bar, 3, foo)"
           ]
         end
 
@@ -387,7 +387,7 @@ describe GirFFI::ArgumentBuilder do
         it "has the correct value for #pre" do
           # TODO: Perhaps this should include a length check as well.
           builder.pre.must_equal [
-            "_v1 = GirFFI::InOutPointer.from :pointer, GLib::SizedArray.from(:bar, -1, foo)"
+            "_v1 = GirFFI::InOutPointer.from :c, GLib::SizedArray.from(:bar, -1, foo)"
           ]
         end
 

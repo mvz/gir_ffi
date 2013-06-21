@@ -13,6 +13,7 @@ module GirFFI
       :c => :pointer,
       :object => :pointer,
       :struct => :pointer,
+      :utf8 => :pointer,
       :GType => gtype_type,
       :gboolean => :bool,
       :gunichar => :uint32,

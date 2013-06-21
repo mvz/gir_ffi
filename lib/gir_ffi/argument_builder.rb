@@ -121,18 +121,17 @@ module GirFFI
       case specialized_type_tag
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
-        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       when :object, :struct, :void, :glist, :gslist, :ghash, :array,
         :zero_terminated, :strv, :callback, :utf8, :c
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
-        if has_output_value?
-          "GirFFI::InOutPointer.from :pointer, #{base}"
-        else
-          base
-        end
       else
         base = "#{parameter_conversion_arguments}"
+      end
+
+      if has_output_value?
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
+      else
+        base
       end
     end
 
