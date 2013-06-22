@@ -2,25 +2,6 @@ require 'introspection_test_helper'
 
 require 'gir_ffi'
 
-GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
-module GObjectIntrospection
-  class IRepository
-    def shared_library_with_regress namespace
-      case namespace
-      when "Regress"
-        return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
-      when "GIMarshallingTests"
-        return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
-      else
-        return shared_library_without_regress namespace
-      end
-    end
-
-    alias shared_library_without_regress shared_library
-    alias shared_library shared_library_with_regress
-  end
-end
-
 # Need a dummy module for some tests.
 module DummyLib
 end
