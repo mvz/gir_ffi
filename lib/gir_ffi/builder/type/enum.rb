@@ -1,4 +1,5 @@
 require 'gir_ffi/builder/type/registered_type'
+require 'gir_ffi/builder/type/with_methods'
 require 'gir_ffi/enum_base'
 
 module GirFFI
@@ -9,6 +10,8 @@ module GirFFI
       # attached to the appropriate namespace module, and will be defined
       # as an enum for FFI.
       class Enum < RegisteredType
+        include WithMethods
+
         private
 
         def enum_sym
@@ -29,7 +32,9 @@ module GirFFI
           end
           unless already_set_up
             @klass.extend superclass
+            setup_constants
             setup_gtype_getter
+            stub_methods
             setup_inspect
           end
         end
