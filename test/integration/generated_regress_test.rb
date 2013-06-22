@@ -232,7 +232,14 @@ describe Regress do
     end
 
     it "has a working function #param" do
-      skip
+      Regress::TestEnum.param(:value1).must_equal("value1")
+      Regress::TestEnum.param(:value2).must_equal("value2")
+      Regress::TestEnum.param(:value3).must_equal("value3")
+      Regress::TestEnum.param(:value4).must_equal("value4")
+      Regress::TestEnum.param(0).must_equal("value1")
+      Regress::TestEnum.param(1).must_equal("value2")
+      Regress::TestEnum.param(-1).must_equal("value3")
+      Regress::TestEnum.param(48).must_equal("value4")
     end
   end
 
@@ -279,7 +286,8 @@ describe Regress do
     end
 
     it "has a working function #quark" do
-      skip
+      quark = Regress::TestError.quark
+      GLib.quark_to_string(quark).must_equal "regress-test-error"
     end
   end
 
@@ -669,27 +677,40 @@ describe Regress do
   end
 
   describe "Regress::TestOtherError" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestOtherError'
+    end
+
     it "has the member :code1" do
-      skip
+      Regress::TestOtherError[:code1].must_equal 1
     end
+
     it "has the member :code2" do
-      skip
+      Regress::TestOtherError[:code2].must_equal 2
     end
+
     it "has the member :code3" do
-      skip
+      Regress::TestOtherError[:code3].must_equal 3
     end
+
     it "has a working function #quark" do
-      skip
+      quark = Regress::TestOtherError.quark
+      GLib.quark_to_string(quark).must_equal "regress-test-other-error"
     end
   end
+
   describe "Regress::TestPrivateEnum" do
     it "has the member :public_enum_before" do
-      skip
+      Regress::TestPrivateEnum[:public_enum_before].must_equal 1
+    end
+    it "does not have the member :private" do
+      Regress::TestPrivateEnum[:private].must_equal nil
     end
     it "has the member :public_enum_after" do
-      skip
+      Regress::TestPrivateEnum[:public_enum_after].must_equal 4
     end
   end
+
   describe "Regress::TestPrivateStruct" do
   end
   describe "Regress::TestSimpleBoxedA" do
