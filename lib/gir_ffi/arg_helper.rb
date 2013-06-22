@@ -28,11 +28,9 @@ module GirFFI
     def self.ptr_to_typed_array type, ptr, size
       case type
       when Class
-        if type < EnumBase
-          ptr_to_enum_array type, ptr, size
-        else
-          ptr_to_interface_array type, ptr, size
-        end
+        ptr_to_interface_array type, ptr, size
+      when Module
+        ptr_to_enum_array type, ptr, size
       when Array
         ptr_to_interface_pointer_array type[1], ptr, size
       when FFI::Enum

@@ -123,6 +123,5 @@ module GirFFI
     def get_or_define_module parent, name
       optionally_define_constant(parent, name) { Module.new }
     end
-
   end
 end

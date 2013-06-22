@@ -23,11 +23,12 @@ module GirFFI
         end
 
         def instantiate_class
-          @klass = get_or_define_class namespace_module, @classname, superclass
+          @klass = get_or_define_module namespace_module, @classname
           @enum = optionally_define_constant @klass, :Enum do
             lib.enum(enum_sym, value_spec)
           end
           unless already_set_up
+            @klass.extend superclass
             setup_gtype_getter
             setup_inspect
           end
@@ -47,6 +48,11 @@ module GirFFI
 
         def superclass
           @superclass ||= EnumBase
+        end
+
+        # FIXME: Remove duplication with Builder::Module
+        def get_or_define_module parent, name
+          optionally_define_constant(parent, name) { ::Module.new }
         end
       end
     end

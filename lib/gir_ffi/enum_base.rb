@@ -1,6 +1,6 @@
 module GirFFI
-  class EnumBase
-    def self.[](arg)
+  module EnumBase
+    def [](arg)
       self::Enum[arg]
     end
   end
