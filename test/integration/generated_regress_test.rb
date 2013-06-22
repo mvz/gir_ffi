@@ -712,6 +712,28 @@ describe Regress do
   end
 
   describe "Regress::TestPrivateStruct" do
+    let(:instance) { Regress::TestPrivateStruct.new }
+
+    it "has a writable field this_is_public_before" do
+      instance.this_is_public_before.must_equal 0
+      instance.this_is_public_before = 42
+      instance.this_is_public_before.must_equal 42
+    end
+
+    it "cannot read from field this_is_private" do
+      skip "GIR identifies this field as readable"
+      proc { instance.this_is_private }.must_raise NoMethodError
+    end
+
+    it "cannot write to field this_is_private" do
+      proc { instance.this_is_private = 42 }.must_raise NoMethodError
+    end
+
+    it "has a writable field this_is_public_after" do
+      instance.this_is_public_after.must_equal 0
+      instance.this_is_public_after = 42
+      instance.this_is_public_after.must_equal 42
+    end
   end
   describe "Regress::TestSimpleBoxedA" do
     it "creates an instance using #new" do
