@@ -330,13 +330,8 @@ describe Regress do
         GObject::Object
     end
 
-    # TODO: Test more, if possible (e.g., cannot be instantiated).
-
-    it "has a working method #ref" do
-      skip
-    end
-    it "has a working method #unref" do
-      skip
+    it "cannot be instanciated" do
+      proc { Regress::TestFundamentalObject.new }.must_raise NoMethodError
     end
   end
 
@@ -367,8 +362,20 @@ describe Regress do
       end
     end
 
+    # NOTE: The following tests test fields and methods on the abstract parent
+    # class.
     it "has a refcount of 1" do
       assert_equal 1, instance.refcount
+    end
+
+    it "has a working method #ref" do
+      instance.ref
+      instance.refcount.must_equal 2
+    end
+
+    it "has a working method #unref" do
+      instance.unref
+      instance.refcount.must_equal 0
     end
   end
 
