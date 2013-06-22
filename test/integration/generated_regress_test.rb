@@ -120,7 +120,8 @@ describe Regress do
     end
 
     it "has a working function #quark" do
-      skip
+      quark = Regress::TestABCError.quark
+      GLib.quark_to_string(quark).must_equal "regress-test-abc-error"
     end
   end
 
