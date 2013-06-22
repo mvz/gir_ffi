@@ -178,6 +178,8 @@ module GObjectIntrospection
     attach_function :g_enum_info_get_storage_type, [:pointer], :ITypeTag
     attach_function :g_enum_info_get_n_values, [:pointer], :int
     attach_function :g_enum_info_get_value, [:pointer, :int], :pointer
+    attach_function :g_enum_info_get_n_methods, [:pointer], :int
+    attach_function :g_enum_info_get_method, [:pointer, :int], :pointer
 
     # IObjectInfo
     attach_function :g_object_info_get_type_name, [:pointer], :string

@@ -11,6 +11,16 @@ module GObjectIntrospection
     ##
     build_array_method :values
 
+    def get_n_methods
+      Lib.g_enum_info_get_n_methods @gobj
+    end
+    def get_method(index)
+      IFunctionInfo.wrap(Lib.g_enum_info_get_method @gobj, index)
+    end
+
+    ##
+    build_array_method :get_methods
+
     def storage_type
       Lib.g_enum_info_get_storage_type @gobj
     end
