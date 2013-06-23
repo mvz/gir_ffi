@@ -1,10 +1,10 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IArgInfo do
-  let(:testclass) { Class.new do
+  let(:klass) { Class.new do
     include GirFFI::InfoExt::IArgInfo
   end }
-  let(:arg_info) { testclass.new }
+  let(:arg_info) { klass.new }
 
   describe "#cast_signal_argument" do
     describe "with info for an enum" do

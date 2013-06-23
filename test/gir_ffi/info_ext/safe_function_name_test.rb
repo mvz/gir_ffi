@@ -1,10 +1,10 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::SafeFunctionName do
-  let(:testclass) { Class.new do
+  let(:klass) { Class.new do
     include GirFFI::InfoExt::SafeFunctionName
   end }
-  let(:info) { testclass.new }
+  let(:info) { klass.new }
 
   describe "#safe_name" do
     it "keeps lower case names lower case" do

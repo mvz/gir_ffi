@@ -1,13 +1,13 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ITypeInfo do
-  let(:testclass) { Class.new do
+  let(:klass) { Class.new do
     include GirFFI::InfoExt::ITypeInfo
   end }
-  let(:type_info) { testclass.new }
-  let(:elmtype_info) { testclass.new }
-  let(:keytype_info) { testclass.new }
-  let(:valtype_info) { testclass.new }
+  let(:type_info) { klass.new }
+  let(:elmtype_info) { klass.new }
+  let(:keytype_info) { klass.new }
+  let(:valtype_info) { klass.new }
 
   describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
