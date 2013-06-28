@@ -125,19 +125,26 @@ describe GIMarshallingTests do
     end
 
     it "has a working function #in" do
-      skip "methods on enums are not supported yet"
+      GIMarshallingTests::Flags.in :value2
     end
+
     it "has a working function #in_zero" do
-      skip "methods on enums are not supported yet"
+      GIMarshallingTests::Flags.in_zero 0
     end
+
     it "has a working function #inout" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::Flags.inout :value2
+      result.must_equal :value1
     end
+
     it "has a working function #out" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::Flags.out
+      result.must_equal :value2
     end
+
     it "has a working function #returnv" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::Flags.returnv
+      result.must_equal :value2
     end
   end
 
@@ -145,23 +152,32 @@ describe GIMarshallingTests do
     it "has the member :value1" do
       assert_equal 0, GIMarshallingTests::GEnum[:value1]
     end
+
     it "has the member :value2" do
       assert_equal 1, GIMarshallingTests::GEnum[:value2]
     end
+
     it "has the member :value3" do
       assert_equal 42, GIMarshallingTests::GEnum[:value3]
     end
+
     it "has a working function #in" do
-      skip "methods on enums are not supported yet"
+      GIMarshallingTests::GEnum.in :value3
     end
+
     it "has a working function #inout" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::GEnum.inout :value3
+      result.must_equal :value1
     end
+
     it "has a working function #out" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::GEnum.out
+      result.must_equal :value3
     end
+
     it "has a working function #returnv" do
-      skip "methods on enums are not supported yet"
+      result = GIMarshallingTests::GEnum.returnv
+      result.must_equal :value3
     end
   end
 
