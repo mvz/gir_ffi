@@ -714,6 +714,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_in_nonzero_nonlen" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_nonzero_nonlen'
     GIMarshallingTests.array_in_nonzero_nonlen 1, 'abcd'.bytes.to_a
     pass
   end
