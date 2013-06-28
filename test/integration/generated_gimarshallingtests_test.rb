@@ -694,19 +694,28 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_in_guint64_len" do
-    skip
+    GIMarshallingTests.array_in_guint64_len [-1, 0, 1, 2]
+    pass
   end
+
   it "has a working function #array_in_guint8_len" do
-    skip
+    GIMarshallingTests.array_in_guint8_len [-1, 0, 1, 2]
+    pass
   end
+
   it "has a working function #array_in_len_before" do
-    skip
+    GIMarshallingTests.array_in_len_before [-1, 0, 1, 2]
+    pass
   end
+
   it "has a working function #array_in_len_zero_terminated" do
-    skip
+    GIMarshallingTests.array_in_len_zero_terminated [-1, 0, 1, 2]
+    pass
   end
+
   it "has a working function #array_in_nonzero_nonlen" do
-    skip
+    GIMarshallingTests.array_in_nonzero_nonlen 1, 'abcd'.bytes.to_a
+    pass
   end
 
   it "has a working function #array_inout" do
@@ -715,7 +724,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_inout_etc" do
-    skip
+    arr, sum = GIMarshallingTests.array_inout_etc 42, [-1, 0, 1, 2], 24
+    arr.to_a.must_equal [42, -1, 0, 1, 24]
+    sum.must_equal 42 + 24
   end
 
   it "has a working function #array_out" do
@@ -724,7 +735,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_out_etc" do
-    skip
+    arr, sum = GIMarshallingTests.array_out_etc 42, 24
+    arr.to_a.must_equal [42, 0, 1, 24]
+    sum.must_equal 42 + 24
   end
 
   it "has a working function #array_return" do
@@ -733,8 +746,11 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_return_etc" do
-    skip
+    arr, sum = GIMarshallingTests.array_return_etc 42, 24
+    arr.to_a.must_equal [42, 0, 1, 24]
+    sum.must_equal 42 + 24
   end
+
   it "has a working function #array_simple_struct_in" do
     skip
   end
