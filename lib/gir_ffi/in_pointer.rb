@@ -10,8 +10,6 @@ module GirFFI
         from_utf8_array ary
       when Symbol
         from_basic_type_array type, ary
-      when FFI::Enum
-        from_enum_array type, ary
       when Module
         from_enum_array type::Enum, ary
       when Array
@@ -28,8 +26,6 @@ module GirFFI
         from_utf8 val
       when :gint32, :gint8
         self.new val
-      when FFI::Enum
-        self.new type[val]
       when Module
         self.new type[val]
       when :void
