@@ -11,6 +11,7 @@ require 'ffi-glib/ptr_array'
 require 'ffi-glib/s_list'
 require 'ffi-glib/sized_array'
 require 'ffi-glib/strv'
+require 'ffi-glib/variant'
 
 module GLib
   load_class :HFunc
