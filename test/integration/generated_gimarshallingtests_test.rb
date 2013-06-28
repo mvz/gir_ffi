@@ -666,15 +666,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_gvariant_none_in" do
-    skip "Test was disabled the return value was never correct"
     v1 = GLib::Variant.new_int32(27)
     v2 = GLib::Variant.new_string("Hello")
-    GIMarshallingTests.array_gvariant_none_in [v1, v2]
-
-    pass
-    # TODO: Can we determine that result should be an array?
-    # assert_equal 27, res[0].get_int32
-    # assert_equal "Hello", res[1].get_string
+    result = GIMarshallingTests.array_gvariant_none_in [v1, v2]
+    arr = result.to_a
+    arr.size.must_equal 2
+    arr[0].get_int32.must_equal 27
+    arr[1].get_string.must_equal "Hello"
   end
 
   it "has a working function #array_in" do
