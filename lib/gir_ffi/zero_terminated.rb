@@ -7,6 +7,7 @@ module GirFFI
 
     def initialize elm_t, ptr
       @element_type = elm_t
+      @ffi_type = TypeMap.map_basic_type_or_string elm_t
       @ptr = ptr
     end
 
@@ -26,7 +27,7 @@ module GirFFI
       return if @ptr.null?
       offset = 0
       while val = read_value(offset)
-        offset += FFI.type_size(:int32)
+        offset += FFI.type_size(@ffi_type)
         yield val
       end
     end
@@ -34,8 +35,12 @@ module GirFFI
     private
 
     def read_value offset
-      val = @ptr.get_int32(offset)
+      val = @ptr.send("get_#{ffi_type}", offset)
       return val unless val == 0
+    end
+
+    def ffi_type
+      @ffi_type ||= TypeMap.map_basic_type_or_string element_type
     end
   end
 end

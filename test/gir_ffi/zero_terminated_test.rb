@@ -39,6 +39,16 @@ describe GirFFI::ZeroTerminated do
         flunk
       end
     end
+
+    it "works for :int8" do
+      zt = GirFFI::ZeroTerminated.from :int8, [1, 2, 3]
+      arr = []
+      zt.each do |int|
+        arr << int
+      end
+      arr.must_equal [1, 2, 3]
+    end
+
   end
 
   it "includes Enumerable" do
