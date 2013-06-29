@@ -1305,25 +1305,37 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gptrarray_utf8_full_inout" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_full_inout ["0", "1", "2"]
+    res.to_a.must_equal ["-2", "-1", "0", "1"]
   end
+
   it "has a working function #gptrarray_utf8_full_out" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_full_out
+    res.to_a.must_equal ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_full_return" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_full_return
+    res.to_a.must_equal ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_none_in" do
-    skip
+    GIMarshallingTests.gptrarray_utf8_none_in ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_none_inout" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_none_inout ["0", "1", "2"]
+    res.to_a.must_equal ["-2", "-1", "0", "1"]
   end
+
   it "has a working function #gptrarray_utf8_none_out" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_none_out
+    res.to_a.must_equal ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_none_return" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_none_return
+    res.to_a.must_equal ["0", "1", "2"]
   end
 
   it "has a working function #gslist_int_none_in" do
