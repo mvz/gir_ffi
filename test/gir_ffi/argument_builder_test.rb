@@ -86,32 +86,12 @@ describe GirFFI::ArgumentBuilder do
         stub(type_info).flattened_tag { :object }
       end
 
-      describe "when not allocated by the caller" do
-        before do
-          stub(argument_info).caller_allocates? { false }
-        end
-
-        it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :object" ]
-        end
-
-        it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
-        end
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :object" ]
       end
 
-      describe "when allocated by the caller" do
-        before do
-          stub(argument_info).caller_allocates? { true }
-        end
-
-        it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = Bar::Foo._allocate" ]
-        end
-
-        it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = _v1" ]
-        end
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1.to_value)" ]
       end
     end
 
