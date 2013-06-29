@@ -86,6 +86,20 @@ describe GirFFI::InPointer do
     end
   end
 
+  describe "an instance created with .from :guint32" do
+    before do
+      @result = GirFFI::InPointer.from :guint32, 12345
+    end
+
+    it "returns a pointer with an address equal to the given value" do
+      assert_equal 12345, @result.address
+    end
+
+    it "is an instance of GirFFI::InPointer" do
+      assert_instance_of GirFFI::InPointer, @result
+    end
+  end
+
   describe "an instance created with .from :filename" do
     before do
       @result = GirFFI::InPointer.from :filename, "foo"

@@ -24,7 +24,7 @@ module GirFFI
       case type
       when :utf8, :filename
         from_utf8 val
-      when :gint32, :gint8
+      when :gint32, :guint32, :gint8
         self.new val
       when Module
         self.new type[val]
