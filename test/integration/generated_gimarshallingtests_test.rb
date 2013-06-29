@@ -1110,14 +1110,16 @@ describe GIMarshallingTests do
   it "has a working function #gerror" do
     begin
       GIMarshallingTests.gerror
+      flunk "Error should have been raised"
     rescue RuntimeError => e
-      assert_equal "gi-marshalling-tests-gerror-message", e.message
+      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
     end
   end
 
   it "has a working function #gerror_array_in" do
     begin
       GIMarshallingTests.gerror_array_in [1, 2, 3]
+      flunk "Error should have been raised"
     rescue RuntimeError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
     end
@@ -1126,6 +1128,7 @@ describe GIMarshallingTests do
   it "has a working function #gerror_out" do
     begin
       GIMarshallingTests.gerror_out
+      flunk "Error should have been raised"
     rescue RuntimeError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
     end
