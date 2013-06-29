@@ -296,6 +296,24 @@ describe GIMarshallingTests do
       skip "This function is only found in the header"
     end
 
+    it "has a working method #get_ref_info_for_vfunc_in_object_transfer_full" do
+      skip
+    end
+    it "has a working method #get_ref_info_for_vfunc_in_object_transfer_none" do
+      skip
+    end
+    it "has a working method #get_ref_info_for_vfunc_out_object_transfer_full" do
+      skip
+    end
+    it "has a working method #get_ref_info_for_vfunc_out_object_transfer_none" do
+      skip
+    end
+    it "has a working method #get_ref_info_for_vfunc_return_object_transfer_full" do
+      skip
+    end
+    it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
+      skip
+    end
     it "has a working method #int8_in" do
       skip "Needs vfunc setup"
     end
@@ -329,6 +347,12 @@ describe GIMarshallingTests do
       res = instance.method_array_return
       assert_equal [-1, 0, 1, 2], res.to_a
     end
+    it "has a working method #method_int8_arg_and_out_callee" do
+      skip
+    end
+    it "has a working method #method_int8_arg_and_out_caller" do
+      skip
+    end
 
     it "has a working method #method_int8_in" do
       skip "Needs vfunc setup"
@@ -336,6 +360,10 @@ describe GIMarshallingTests do
 
     it "has a working method #method_int8_out" do
       skip "Needs vfunc setup"
+    end
+
+    it "has a working method #method_str_arg_out_ret" do
+      skip
     end
 
     it "has a working method #method_variant_array_in" do
@@ -358,6 +386,10 @@ describe GIMarshallingTests do
       pass
     end
 
+    it "has a working method #vfunc_array_out_parameter" do
+      skip
+    end
+
     it "has a working method #vfunc_caller_allocated_out_parameter" do
       skip "Needs vfunc setup"
     end
@@ -369,6 +401,12 @@ describe GIMarshallingTests do
     end
     it "has a working method #vfunc_one_out_parameter" do
       skip "Needs vfunc setup"
+    end
+    it "has a working method #vfunc_out_enum" do
+      skip
+    end
+    it "has a working method #vfunc_return_enum" do
+      skip
     end
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
       skip "Needs vfunc setup"
@@ -776,6 +814,10 @@ describe GIMarshallingTests do
     GIMarshallingTests.array_struct_take_in arr
   end
 
+  it "has a working function #array_struct_value_in" do
+    skip
+  end
+
   it "has a working function #array_uint8_in" do
     arr = "abcd".bytes.to_a
     GIMarshallingTests.array_uint8_in arr
@@ -1050,6 +1092,10 @@ describe GIMarshallingTests do
     assert_equal ["0", "1", "2"], res.to_a
   end
 
+  it "has a working function #garray_utf8_full_out_caller_allocated" do
+    skip
+  end
+
   it "has a working function #garray_utf8_full_return" do
     res = GIMarshallingTests.garray_utf8_full_return
     assert_equal ["0", "1", "2"], res.to_a
@@ -1075,6 +1121,13 @@ describe GIMarshallingTests do
   it "has a working function #garray_utf8_none_return" do
     res = GIMarshallingTests.garray_utf8_none_return
     assert_equal ["0", "1", "2"], res.to_a
+  end
+
+  it "has a working function #gbytes_full_return" do
+    skip
+  end
+  it "has a working function #gbytes_none_in" do
+    skip
   end
 
   it "has a working function #gclosure_in" do
@@ -1803,6 +1856,9 @@ describe GIMarshallingTests do
   it "has a working function #overrides_struct_returnv" do
     skip
   end
+  it "has a working function #param_spec_in_bool" do
+    skip
+  end
   it "has a working function #param_spec_out" do
     skip
   end
@@ -2111,6 +2167,10 @@ describe GIMarshallingTests do
   it "has a working function #ushort_return" do
     res = GIMarshallingTests.ushort_return
     assert_equal max_ushort, res
+  end
+
+  it "has a working function #utf8_as_uint8array_in" do
+    skip
   end
 
   it "has a working function #utf8_dangling_out" do
