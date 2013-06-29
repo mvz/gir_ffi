@@ -1126,12 +1126,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gerror_out" do
-    begin
-      GIMarshallingTests.gerror_out
-      flunk "Error should have been raised"
-    rescue RuntimeError => e
-      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
-    end
+    error, debug = GIMarshallingTests.gerror_out
+    debug.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
+    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it "has a working function #gerror_out_transfer_none" do
