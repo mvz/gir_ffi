@@ -178,6 +178,20 @@ describe GirFFI::ArgumentBuilder do
       end
     end
 
+    describe "for :error" do
+      before do
+        stub(type_info).flattened_tag { :error }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :error" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::Error.wrap(_v1.to_value)" ]
+      end
+    end
+
     describe "for :c" do
       before do
         stub(type_info).flattened_tag { :c }

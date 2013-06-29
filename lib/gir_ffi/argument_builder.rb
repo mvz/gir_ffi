@@ -107,8 +107,8 @@ module GirFFI
     end
 
     def needs_outgoing_parameter_conversion?
-      [ :array, :enum, :flags, :ghash, :glist, :gslist, :object, :struct,
-        :c, :strv, :utf8 ].include?(specialized_type_tag)
+      [ :array, :c, :enum, :error, :flags, :ghash, :glist, :gslist, :object,
+        :struct, :strv, :utf8 ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
