@@ -1536,7 +1536,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_in_with_type" do
-    skip
+    gv = GObject::Value.new
+    gv.init GIMarshallingTests::SubSubObject.get_gtype
+    GIMarshallingTests.gvalue_in_with_type gv, GIMarshallingTests::Object.get_gtype
   end
 
   it "has a working function #gvalue_inout" do
