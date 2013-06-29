@@ -45,40 +45,38 @@ describe GObject::Value do
   describe "#set_value" do
     it "handles :int64" do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.new
-      gv.init GObject::TYPE_INT64
+      gv = GObject::Value.for_g_type GObject::TYPE_INT64
       gv.set_value value
       gv.get_int64.must_equal value
     end
   end
 
-  describe "#ruby_value" do
+  describe "#get_value" do
     it "unwraps a boolean false" do
       gv = GObject::Value.wrap_ruby_value false
-      result = gv.ruby_value
+      result = gv.get_value
       assert_equal false, result
     end
 
     it "unwraps a boolean true" do
       gv = GObject::Value.wrap_ruby_value true
-      result = gv.ruby_value
+      result = gv.get_value
       assert_equal true, result
     end
 
     it "unwraps an int64" do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.new
-      gv.init GObject::TYPE_INT64
+      gv = GObject::Value.for_g_type GObject::TYPE_INT64
       gv.set_int64 value
-      gv.ruby_value.must_equal value
+      gv.get_value.must_equal value
     end
 
     it "works with a ByteArray" do
       ba = GLib::ByteArray.new.append("some bytes")
-      v = GObject::Value.new.init(GObject.type_from_name("GByteArray"))
+      v = GObject::Value.for_g_type GObject.type_from_name("GByteArray")
       v.set_boxed ba
 
-      result = v.ruby_value
+      result = v.get_value
 
       result.to_string.must_equal "some bytes"
       result.must_be_kind_of GLib::ByteArray
@@ -89,14 +87,14 @@ describe GObject::Value do
     it "creates a gint GValue from a Ruby Integer" do
       gv = GObject::Value.from 21
       gv.current_gtype_name.must_equal "gint"
-      gv.ruby_value.must_equal 21
+      gv.get_value.must_equal 21
     end
 
     it "returns its argument if given a GValue" do
       gv = GObject::Value.from 21
       gv2 = GObject::Value.from gv
       gv2.current_gtype_name.must_equal "gint"
-      gv2.ruby_value.must_equal 21
+      gv2.get_value.must_equal 21
     end
   end
 
@@ -115,7 +113,7 @@ describe GObject::Value do
       ba = GLib::ByteArray.new.append("some bytes")
       v = GObject::Value.new.init(GObject.type_from_name("GByteArray"))
       v.set_value ba
-      v.ruby_value.to_string.must_equal "some bytes"
+      v.get_value.to_string.must_equal "some bytes"
     end
   end
 end

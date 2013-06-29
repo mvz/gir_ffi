@@ -40,7 +40,7 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new { 2 }
       gv = GObject::Value.new
       GObject::RubyClosure.marshaller(c, gv, 0, nil, nil, nil)
-      assert_equal 2, gv.ruby_value
+      assert_equal 2, gv.get_value
     end
   end
 

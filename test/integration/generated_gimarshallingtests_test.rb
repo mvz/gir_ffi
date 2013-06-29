@@ -1142,7 +1142,7 @@ describe GIMarshallingTests do
     cl = GIMarshallingTests.gclosure_return
     gv = GObject::Value.wrap_ruby_value 0
     cl.invoke gv, nil, nil
-    assert_equal 42, gv.ruby_value
+    assert_equal 42, gv.get_value
   end
 
   it "has a working function #genum_in" do
@@ -1543,10 +1543,10 @@ describe GIMarshallingTests do
 
   it "has a working function #gvalue_inout" do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    assert_equal "42", res.ruby_value
+    assert_equal "42", res.get_value
 
     res = GIMarshallingTests.gvalue_inout 42
-    assert_equal "42", res.ruby_value
+    assert_equal "42", res.get_value
   end
 
   it "has a working function #gvalue_int64_in" do
@@ -1559,12 +1559,12 @@ describe GIMarshallingTests do
 
   it "has a working function #gvalue_int64_out" do
     gv = GIMarshallingTests.gvalue_int64_out
-    gv.ruby_value.must_equal 0x7fff_ffff_ffff_ffff
+    gv.get_value.must_equal 0x7fff_ffff_ffff_ffff
   end
 
   it "has a working function #gvalue_out" do
     res = GIMarshallingTests.gvalue_out
-    assert_equal 42, res.ruby_value
+    assert_equal 42, res.get_value
   end
 
   it "has a working function #gvalue_out_caller_allocates" do
@@ -1573,7 +1573,7 @@ describe GIMarshallingTests do
 
   it "has a working function #gvalue_return" do
     res = GIMarshallingTests.gvalue_return
-    assert_equal 42, res.ruby_value
+    assert_equal 42, res.get_value
   end
 
   it "has a working function #init_function" do

@@ -26,6 +26,10 @@ module GObject
       TYPE_ENUM => :set_enum
     }
 
+    def value= val
+      set_value val
+    end
+
     def set_value val
       send set_method, val
       self
@@ -72,9 +76,13 @@ module GObject
       TYPE_POINTER => :get_pointer
     }
 
-    # TODO: Rename to get_value
-    def ruby_value
+    def get_value
       send get_method
+    end
+
+    # @deprecated Compatibility function. Remove in 0.7.0.
+    def ruby_value
+      get_value
     end
 
     class << self
@@ -96,7 +104,7 @@ module GObject
 
       def for_g_type g_type
         return nil if g_type == TYPE_NONE
-        self.new.tap {|it| it.init g_type }
+        self.new.init g_type
       end
     end
 

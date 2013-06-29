@@ -43,7 +43,7 @@ module GObject
       rclosure = wrap(closure.to_ptr)
 
       args = n_param_values.times.map {|idx|
-        Value.wrap(param_values.to_ptr + idx * Value::Struct.size).ruby_value
+        Value.wrap(param_values.to_ptr + idx * Value::Struct.size).get_value
       }
 
       result = rclosure.invoke_block(*args)

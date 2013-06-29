@@ -18,7 +18,7 @@ module GObject
 
       get_property_without_override property_name, gvalue
 
-      adjust_value_to_type gvalue.ruby_value, type
+      adjust_value_to_type gvalue.get_value, type
     end
 
     def set_property_with_override property_name, value
