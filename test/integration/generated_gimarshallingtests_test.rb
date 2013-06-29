@@ -1119,13 +1119,18 @@ describe GIMarshallingTests do
     begin
       GIMarshallingTests.gerror_array_in [1, 2, 3]
     rescue RuntimeError => e
-      assert_equal "gi-marshalling-tests-gerror-message", e.message
+      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
     end
   end
 
   it "has a working function #gerror_out" do
-    skip
+    begin
+      GIMarshallingTests.gerror_out
+    rescue RuntimeError => e
+      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
+    end
   end
+
   it "has a working function #gerror_out_transfer_none" do
     skip
   end
