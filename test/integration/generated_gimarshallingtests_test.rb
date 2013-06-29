@@ -793,7 +793,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_simple_struct_in" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #array_string_in" do
@@ -817,7 +817,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_struct_value_in" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #array_uint8_in" do
@@ -1127,10 +1127,10 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gbytes_full_return" do
-    skip
+    skip "GBytes is not supported yet"
   end
   it "has a working function #gbytes_none_in" do
-    skip
+    skip "GBytes is not supported yet"
   end
 
   it "has a working function #gclosure_in" do
@@ -1514,11 +1514,11 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_flat_array" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #gvalue_flat_array_round_trip" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #gvalue_in" do
@@ -1568,7 +1568,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_out_caller_allocates" do
-    skip
+    res = GIMarshallingTests.gvalue_out_caller_allocates
+    res.get_value.must_equal 42
   end
 
   it "has a working function #gvalue_return" do
@@ -1577,7 +1578,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #init_function" do
-    skip
+    res, arr = GIMarshallingTests.init_function ["foo", "bar", "baz"]
+    res.must_equal true
+    arr.to_a.must_equal ["foo", "bar"]
   end
 
   it "has a working function #int16_in_max" do
@@ -1836,7 +1839,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #multi_array_key_value_in" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #no_type_flags_in" do
@@ -1865,16 +1868,26 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #overrides_struct_returnv" do
-    skip
+    res = GIMarshallingTests.overrides_struct_returnv
+    res.must_be_instance_of GIMarshallingTests::OverridesStruct
   end
+
   it "has a working function #param_spec_in_bool" do
-    skip
+    ps = GObject.param_spec_boolean "mybool", "nick", "blurb", true, :readable
+    skip "param_spec_in_bool tests the wrong type"
+    GIMarshallingTests.param_spec_in_bool ps
   end
+
   it "has a working function #param_spec_out" do
-    skip
+    res = GIMarshallingTests.param_spec_out
+    res.value_type.must_equal GObject::TYPE_STRING
+    res.get_name.must_equal "test-param"
   end
+
   it "has a working function #param_spec_return" do
-    skip
+    res = GIMarshallingTests.param_spec_return
+    res.value_type.must_equal GObject::TYPE_STRING
+    res.get_name.must_equal "test-param"
   end
 
   it "has a working function #pointer_in_return" do
@@ -1896,7 +1909,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #return_gvalue_flat_array" do
-    skip
+    skip "Non-pointer arrays of complex types are not supported yet"
   end
 
   it "has a working function #short_in_max" do
@@ -2006,7 +2019,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #test_interface_test_int8_in" do
-    skip
+    skip "Needs implementation of TestInterface"
   end
 
   it "has a working function #time_t_in" do
@@ -2181,7 +2194,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #utf8_as_uint8array_in" do
-    skip
+    GIMarshallingTests.utf8_as_uint8array_in GIMarshallingTests::CONSTANT_UTF8.bytes.to_a
+    pass
   end
 
   it "has a working function #utf8_dangling_out" do
