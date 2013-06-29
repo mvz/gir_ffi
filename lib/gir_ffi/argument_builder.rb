@@ -87,7 +87,11 @@ module GirFFI
     def set_function_call_argument
       value = if @direction == :out
                 if is_caller_allocated_object?
-                  "#{argument_class_name}._allocate"
+                  if specialized_type_tag == :array
+                    "#{argument_class_name}.new #{elm_t}"
+                  else
+                    "#{argument_class_name}._allocate"
+                  end
                 else
                   "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
                 end
@@ -102,7 +106,7 @@ module GirFFI
     end
 
     def is_caller_allocated_object?
-      [:object, :struct].include?(specialized_type_tag) &&
+      [ :object, :struct, :array ].include?(specialized_type_tag) &&
         @arginfo.caller_allocates?
     end
 

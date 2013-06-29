@@ -169,12 +169,30 @@ describe GirFFI::ArgumentBuilder do
         stub(type_info).element_type { :foo }
       end
 
-      it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :array" ]
+      context "when allocated by the callee" do
+        before do
+          stub(argument_info).caller_allocates? { false }
+        end
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :array" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = GLib::Array.wrap(:foo, _v1.to_value)" ]
+        end
       end
 
-      it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = GLib::Array.wrap(:foo, _v1.to_value)" ]
+      context "when allocated by the caller" do
+        before do
+          stub(argument_info).caller_allocates? { true }
+        end
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GLib::Array.new :foo" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ "_v2 = _v1" ]
+        end
       end
     end
 

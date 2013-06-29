@@ -1095,7 +1095,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_utf8_full_out_caller_allocated" do
-    skip
+    res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
+    assert_equal ["0", "1", "2"], res.to_a
   end
 
   it "has a working function #garray_utf8_full_return" do
