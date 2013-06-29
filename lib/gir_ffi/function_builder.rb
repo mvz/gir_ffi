@@ -88,6 +88,7 @@ module GirFFI
     end
 
     def post_processing
+      # FIXME: Sorting knows too much about internals of ArgumentBuilder.
       args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
       args << @return_value_builder
       args.unshift @errarg
