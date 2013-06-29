@@ -1231,10 +1231,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #glist_uint32_none_in" do
-    skip
+    GIMarshallingTests.glist_uint32_none_in [0, 0xffff_ffff]
+    pass
   end
+
   it "has a working function #glist_uint32_none_return" do
-    skip
+    res = GIMarshallingTests.glist_uint32_none_return
+    res.to_a.must_equal [0, 0xffff_ffff]
   end
 
   it "has a working function #glist_utf8_container_inout" do
