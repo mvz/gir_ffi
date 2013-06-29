@@ -42,6 +42,16 @@ describe GObject::Value do
     end
   end
 
+  describe "#set_value" do
+    it "handles :int64" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.new
+      gv.init GObject::TYPE_INT64
+      gv.set_value value
+      gv.get_int64.must_equal value
+    end
+  end
+
   describe "#ruby_value" do
     it "unwraps a boolean false" do
       gv = GObject::Value.wrap_ruby_value false
@@ -53,6 +63,14 @@ describe GObject::Value do
       gv = GObject::Value.wrap_ruby_value true
       result = gv.ruby_value
       assert_equal true, result
+    end
+
+    it "unwraps an int64" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.new
+      gv.init GObject::TYPE_INT64
+      gv.set_int64 value
+      gv.ruby_value.must_equal value
     end
 
     it "works with a ByteArray" do

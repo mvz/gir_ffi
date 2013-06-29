@@ -15,6 +15,7 @@ module GObject
     TYPE_TO_SET_METHOD_MAP = {
       TYPE_BOOLEAN => :set_boolean,
       TYPE_INT => :set_int,
+      TYPE_INT64 => :set_int64,
       TYPE_STRING => :set_string,
       TYPE_FLOAT => :set_float,
       TYPE_DOUBLE => :set_double,
@@ -62,6 +63,7 @@ module GObject
     TYPE_TO_GET_METHOD_MAP = {
       TYPE_BOOLEAN => :get_boolean,
       TYPE_INT => :get_int,
+      TYPE_INT64 => :get_int64,
       TYPE_STRING => :get_string,
       TYPE_FLOAT => :get_float,
       TYPE_DOUBLE => :get_double,

@@ -1550,10 +1550,16 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_int64_in" do
-    skip
+    gv = GObject::Value.new
+    gv.init GObject::TYPE_INT64
+    gv.set_value 0x7fff_ffff_ffff_ffff
+    GIMarshallingTests.gvalue_int64_in gv
+    pass
   end
+
   it "has a working function #gvalue_int64_out" do
-    skip
+    gv = GIMarshallingTests.gvalue_int64_out
+    gv.ruby_value.must_equal 0x7fff_ffff_ffff_ffff
   end
 
   it "has a working function #gvalue_out" do
