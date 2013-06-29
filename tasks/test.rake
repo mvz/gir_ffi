@@ -102,6 +102,7 @@ namespace :test do
                    :overrides,
                    :integration]
 
+  desc "Create stubs for Regress and GIMarshallingTests tests"
   task :stub => :lib do
     file = File.new 'test/lib/Regress-1.0.gir'
     listener = Listener.new
