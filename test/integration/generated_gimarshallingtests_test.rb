@@ -1013,11 +1013,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_uint64_none_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'garray_uint64_none_in'
     GIMarshallingTests.garray_uint64_none_in [0, 0xffff_ffff_ffff_ffff]
     pass
   end
 
   it "has a working function #garray_uint64_none_return" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'garray_uint64_none_return'
     res = GIMarshallingTests.garray_uint64_none_return
     res.to_a.must_equal [0, 0xffff_ffff_ffff_ffff]
   end
@@ -1231,11 +1233,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #glist_uint32_none_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'glist_uint32_none_in'
     GIMarshallingTests.glist_uint32_none_in [0, 0xffff_ffff]
     pass
   end
 
   it "has a working function #glist_uint32_none_return" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'glist_uint32_none_return'
     res = GIMarshallingTests.glist_uint32_none_return
     res.to_a.must_equal [0, 0xffff_ffff]
   end
