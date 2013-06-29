@@ -297,22 +297,22 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_full" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_none" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_full" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_none" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_full" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #int8_in" do
       skip "Needs vfunc setup"
@@ -347,11 +347,13 @@ describe GIMarshallingTests do
       res = instance.method_array_return
       assert_equal [-1, 0, 1, 2], res.to_a
     end
+
     it "has a working method #method_int8_arg_and_out_callee" do
-      skip
+      skip "Needs vfunc setup"
     end
+
     it "has a working method #method_int8_arg_and_out_caller" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     it "has a working method #method_int8_in" do
@@ -363,7 +365,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_str_arg_out_ret" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     it "has a working method #method_variant_array_in" do
@@ -387,7 +389,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_array_out_parameter" do
-      skip
+      skip "Needs vfunc setup"
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
@@ -403,10 +405,10 @@ describe GIMarshallingTests do
       skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_out_enum" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_return_enum" do
-      skip
+      skip "Needs vfunc setup"
     end
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
       skip "Needs vfunc setup"
