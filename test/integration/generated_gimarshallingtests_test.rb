@@ -1419,40 +1419,44 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gtype_in" do
-    skip
+    GIMarshallingTests.gtype_in GObject::TYPE_NONE
+    pass
   end
 
   it "has a working function #gtype_inout" do
-    none = GObject.type_from_name "void"
-    res = GIMarshallingTests.gtype_inout none
-    name = GObject.type_name res
-    assert_equal "gint", name
+    res = GIMarshallingTests.gtype_inout GObject::TYPE_NONE
+    res.must_equal GObject::TYPE_INT
   end
 
   it "has a working function #gtype_out" do
     res = GIMarshallingTests.gtype_out
-    name = GObject.type_name res
-    assert_equal "void", name
+    res.must_equal GObject::TYPE_NONE
   end
 
   it "has a working function #gtype_return" do
     res = GIMarshallingTests.gtype_return
-    name = GObject.type_name res
-    assert_equal "void", name
+    res.must_equal GObject::TYPE_NONE
   end
 
   it "has a working function #gtype_string_in" do
-    skip
+    GIMarshallingTests.gtype_string_in GObject::TYPE_STRING
+    pass
   end
+
   it "has a working function #gtype_string_out" do
-    skip
+    res = GIMarshallingTests.gtype_string_out
+    res.must_equal GObject::TYPE_STRING
   end
+
   it "has a working function #gtype_string_return" do
-    skip
+    res = GIMarshallingTests.gtype_string_return
+    res.must_equal GObject::TYPE_STRING
   end
+
   it "has a working function #gvalue_flat_array" do
     skip
   end
+
   it "has a working function #gvalue_flat_array_round_trip" do
     skip
   end
