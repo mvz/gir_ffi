@@ -108,21 +108,21 @@ module GirFFI
 
     def needs_outgoing_parameter_conversion?
       [ :array, :c, :enum, :error, :flags, :ghash, :glist, :gslist, :object,
-        :struct, :strv, :utf8 ].include?(specialized_type_tag)
+        :ptr_array, :struct, :strv, :utf8 ].include?(specialized_type_tag)
     end
 
     def needs_ingoing_parameter_conversion?
       @direction == :inout ||
-        [ :object, :struct, :callback, :utf8, :void, :glist, :gslist, :ghash,
-          :array, :c, :zero_terminated, :strv ].include?(specialized_type_tag)
+        [ :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
+          :struct, :strv, :utf8, :void, :zero_terminated ].include?(specialized_type_tag)
     end
 
     def ingoing_parameter_conversion
       case specialized_type_tag
       when :enum, :flags
         base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
-      when :object, :struct, :void, :glist, :gslist, :ghash, :array,
-        :zero_terminated, :strv, :callback, :utf8, :c
+      when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
+        :struct, :strv, :utf8, :void, :zero_terminated
         base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
       else
         base = "#{parameter_conversion_arguments}"

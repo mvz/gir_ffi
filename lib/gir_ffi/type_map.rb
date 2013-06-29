@@ -14,6 +14,7 @@ module GirFFI
       :object => :pointer,
       :struct => :pointer,
       :error => :pointer,
+      :ptr_array => :pointer,
       :utf8 => :pointer,
       :GType => gtype_type,
       :gboolean => :bool,

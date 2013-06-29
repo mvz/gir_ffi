@@ -178,6 +178,21 @@ describe GirFFI::ArgumentBuilder do
       end
     end
 
+    describe "for :ptr_array" do
+      before do
+        stub(type_info).flattened_tag { :ptr_array }
+        stub(type_info).element_type { :foo }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :ptr_array" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:foo, _v1.to_value)" ]
+      end
+    end
+
     describe "for :error" do
       before do
         stub(type_info).flattened_tag { :error }
@@ -350,6 +365,21 @@ describe GirFFI::ArgumentBuilder do
 
       it "has the correct value for #post" do
         builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1.to_value)" ]
+      end
+    end
+
+    describe "for :ptr_array" do
+      before do
+        stub(type_info).flattened_tag { :ptr_array }
+        stub(type_info).element_type { :foo }
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :ptr_array, GLib::PtrArray.from(:foo, foo)" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:foo, _v1.to_value)" ]
       end
     end
 

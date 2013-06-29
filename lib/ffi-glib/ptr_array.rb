@@ -15,8 +15,20 @@ module GLib
     end
 
     def self.new type
-      wrap(Lib.g_ptr_array_new).tap {|it|
+      wrap(type, Lib.g_ptr_array_new)
+    end
+
+    def self.wrap type, ptr
+      super(ptr).tap {|it|
         it.element_type = type}
+    end
+
+    def self.from type, it
+      case it
+      when self then it
+      when FFI::Pointer then wrap type, it
+      else self.new(type).tap {|arr| arr.add_array it}
+      end
     end
 
     def self.add array, data
@@ -26,6 +38,10 @@ module GLib
     def add data
       ptr = GirFFI::InPointer.from element_type, data
       Lib.g_ptr_array_add self, ptr
+    end
+
+    def add_array ary
+      ary.each {|item| add item}
     end
 
     # Re-implementation of the g_ptr_array_index macro

@@ -1290,14 +1290,20 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gptrarray_utf8_container_inout" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_container_inout ["0", "1", "2"]
+    res.to_a.must_equal ["-2", "-1", "0", "1"]
   end
+
   it "has a working function #gptrarray_utf8_container_out" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_container_out
+    res.to_a.must_equal ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_container_return" do
-    skip
+    res = GIMarshallingTests.gptrarray_utf8_container_return
+    res.to_a.must_equal ["0", "1", "2"]
   end
+
   it "has a working function #gptrarray_utf8_full_inout" do
     skip
   end

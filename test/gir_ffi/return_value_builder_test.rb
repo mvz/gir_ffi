@@ -179,11 +179,12 @@ describe GirFFI::ReturnValueBuilder do
   describe "for :ptr_array" do
     before do
       stub(type_info).flattened_tag { :ptr_array }
+      stub(type_info).element_type { :foo }
     end
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(_v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:foo, _v1)" ]
     end
 
     it "returns the wrapped result" do

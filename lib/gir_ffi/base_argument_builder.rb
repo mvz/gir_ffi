@@ -119,7 +119,7 @@ module GirFFI
         "#{specialized_type_tag.inspect}, #{name}"
       when :c
         "#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{name}"
-      when :glist, :gslist, :ghash, :array, :zero_terminated
+      when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
         "#{elm_t}, #{name}"
       when :callback
         iface = type_info.interface
