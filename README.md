@@ -20,12 +20,18 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
     require 'gir_ffi'
 
-    GirFFI.setup :TheNamespace
+    # Set up the namespace you wish to use
+    GirFFI.setup :Gio
 
-    TheNamespace.some_function
+    # Create an object
+    inet_address = Gio::InetAddress.new_from_string "127.0.0.1"
 
-    obj = TheNamespace::SomeClass.new
-    obj.some_method with, some, args
+    # Call some methods on the object
+    inet_address.is_loopback    # => true
+    inet_address.is_multicast   # => false
+
+    # Call a function in the namespace
+    Gio.dbus_is_name "foo"   # => false
 
 ## Install
 
@@ -33,8 +39,8 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 ## Requirements
 
-GirFFI should work on MRI 1.8 and 1.9, and JRuby in both 1.8 and 1.9
-modes. It does not work on Rubinius yet.
+GirFFI should work on MRI 1.8, 1.9 and 2.0, JRuby in both 1.8 and 1.9
+modes, and on Rubinius in both 1.8 and 1.9 modes.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -52,6 +58,18 @@ On Debian and Ubuntu, installing `libgirepository1.0-dev` and
 `gobject-introspection` should be enough to get `rake test` working.
 
 GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
+
+## Overrides
+
+Sometimes, the GIR data is incorrect, or not detailed enough, and a
+reasonable binding cannot be created automatically. For these cases,
+overrides can be defined. The following gems with overrides
+already exist:
+
+* `gir_ffi-gtk`: overrides for Gtk+ 2 and 3.
+* `gir_ffi-cairo`: overrides for Cairo
+* `gir_ffi-pango`: overrides for Pango
+* `gir_ffi-tracker`: overrides for Tracker
 
 ## Hacking and contributing
 
