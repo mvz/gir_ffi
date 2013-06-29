@@ -183,19 +183,19 @@ describe GIMarshallingTests do
 
   describe "GIMarshallingTests::Interface" do
     it "has a working method #test_int8_in" do
-      skip
+      skip "Interfaces cannot be tested directly"
     end
   end
 
   describe "GIMarshallingTests::Interface2" do
     it "must be tested" do
-      skip
+      skip "Interfaces cannot be tested directly"
     end
   end
 
   describe "GIMarshallingTests::Interface3" do
     it "has a working method #test_variant_array_in" do
-      skip
+      skip "Interfaces cannot be tested directly"
     end
   end
 
@@ -762,10 +762,18 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_struct_in" do
-    skip
+    arr = [1, 2, 3].map { |val|
+      GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
+    }
+    GIMarshallingTests.array_struct_in arr
   end
+
+  # NOTE: Should be run with valgrind. See gimarhallingtests.c.
   it "has a working function #array_struct_take_in" do
-    skip
+    arr = [1, 2, 3].map { |val|
+      GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
+    }
+    GIMarshallingTests.array_struct_take_in arr
   end
 
   it "has a working function #array_uint8_in" do
@@ -780,7 +788,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_zero_terminated_inout" do
-    skip
+    res = GIMarshallingTests.array_zero_terminated_inout ["0", "1", "2"]
+    res.to_a.must_equal ["-1", "0", "1", "2"]
   end
 
   it "has a working function #array_zero_terminated_out" do
@@ -794,10 +803,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_zero_terminated_return_null" do
-    skip
+    res = GIMarshallingTests.array_zero_terminated_return_null
+    res.to_a.must_equal []
   end
+
   it "has a working function #array_zero_terminated_return_struct" do
-    skip
+    res = GIMarshallingTests.array_zero_terminated_return_struct
+    res.to_a.map(&:long_).must_equal [42, 43, 44]
   end
 
   it "has a working function #boolean_in_false" do
@@ -875,19 +887,24 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_multiple_out_parameters" do
-    skip
+    skip "Out parameters for callbacks are not supported yet"
   end
+
   it "has a working function #callback_one_out_parameter" do
-    skip
+    skip "Out parameters for callbacks are not supported yet"
   end
+
   it "has a working function #callback_return_value_and_multiple_out_parameters" do
-    skip
+    skip "Out parameters for callbacks are not supported yet"
   end
+
   it "has a working function #callback_return_value_and_one_out_parameter" do
-    skip
+    skip "Out parameters for callbacks are not supported yet"
   end
+
   it "has a working function #callback_return_value_only" do
-    skip
+    result = GIMarshallingTests.callback_return_value_only lambda { 42 }
+    result.must_equal 42
   end
 
   it "has a working function #double_in" do
@@ -996,13 +1013,18 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_uint64_none_in" do
-    skip
+    GIMarshallingTests.garray_uint64_none_in [0, 0xffff_ffff_ffff_ffff]
+    pass
   end
+
   it "has a working function #garray_uint64_none_return" do
-    skip
+    res = GIMarshallingTests.garray_uint64_none_return
+    res.to_a.must_equal [0, 0xffff_ffff_ffff_ffff]
   end
+
   it "has a working function #garray_utf8_container_inout" do
-    skip
+    res = GIMarshallingTests.garray_utf8_container_inout ["0", "1", "2"]
+    res.to_a.must_equal ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_container_out" do
