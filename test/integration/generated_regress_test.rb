@@ -94,8 +94,23 @@ describe Regress do
     end
   end
 
+  it "has the constant MAXUINT64" do
+    skip unless get_introspection_data 'Regress', 'MAXUINT64'
+    Regress::MAXUINT64.must_equal 0xffff_ffff_ffff_ffff
+  end
+
+  it "has the constant MININT64" do
+    skip unless get_introspection_data 'Regress', 'MININT64'
+    Regress::MININT64.must_equal(-0x8000_0000_0000_0000)
+  end
+
   it "has the constant Mixed_Case_Constant" do
     assert_equal 4423, Regress::Mixed_Case_Constant
+  end
+
+  it "has the constant NEGATIVE_INT_CONSTANT" do
+    skip unless get_introspection_data 'Regress', 'NEGATIVE_INT_CONSTANT'
+    Regress::NEGATIVE_INT_CONSTANT.must_equal(-42)
   end
 
   it "has the constant STRING_CONSTANT" do
@@ -194,6 +209,24 @@ describe Regress do
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
       assert_instance_of Regress::TestBoxedC, tb
+    end
+  end
+
+  describe "Regress::TestBoxedD" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestBoxedD'
+    end
+    it "creates an instance using #new" do
+      skip
+    end
+    it "has a working method #copy" do
+      skip
+    end
+    it "has a working method #free" do
+      skip
+    end
+    it "has a working method #get_magic" do
+      skip
     end
   end
 
@@ -332,6 +365,14 @@ describe Regress do
 
     it "cannot be instanciated" do
       proc { Regress::TestFundamentalObject.new }.must_raise NoMethodError
+    end
+
+    it "has a working method #ref" do
+      skip "Can only be tested in the descendent class"
+    end
+
+    it "has a working method #unref" do
+      skip "Can only be tested in the descendent class"
     end
   end
 
@@ -742,6 +783,31 @@ describe Regress do
       instance.this_is_public_after.must_equal 42
     end
   end
+
+  describe "Regress::TestReferenceEnum" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestReferenceEnum'
+    end
+    it "has the member :0" do
+      Regress::TestReferenceEnum[:"0"].must_equal 4
+    end
+    it "has the member :1" do
+      Regress::TestReferenceEnum[:"1"].must_equal 2
+    end
+    it "has the member :2" do
+      Regress::TestReferenceEnum[:"2"].must_equal 54
+    end
+    it "has the member :3" do
+      Regress::TestReferenceEnum[:"3"].must_equal 4
+    end
+    it "has the member :4" do
+      Regress::TestReferenceEnum[:"4"].must_equal 216
+    end
+    it "has the member :5" do
+      Regress::TestReferenceEnum[:"5"].must_equal(-217)
+    end
+  end
+
   describe "Regress::TestSimpleBoxedA" do
     it "creates an instance using #new" do
       obj = Regress::TestSimpleBoxedA.new
