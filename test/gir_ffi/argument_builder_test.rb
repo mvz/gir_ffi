@@ -120,7 +120,7 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = Bar::Foo._allocate" ]
+          builder.pre.must_equal [ "_v1 = Bar::Foo.new" ]
         end
 
         it "has the correct value for #post" do

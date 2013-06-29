@@ -90,7 +90,7 @@ module GirFFI
                   if specialized_type_tag == :array
                     "#{argument_class_name}.new #{elm_t}"
                   else
-                    "#{argument_class_name}._allocate"
+                    "#{argument_class_name}.new"
                   end
                 else
                   "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
