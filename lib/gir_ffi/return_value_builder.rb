@@ -63,9 +63,10 @@ module GirFFI
       needs_wrapping? || [ :utf8, :c ].include?(specialized_type_tag)
     end
 
+    # TODO: Merge with ArgumentBuilder#needs_outgoing_parameter_conversion?
     def needs_wrapping?
-      [ :struct, :union, :interface, :object, :strv, :zero_terminated,
-        :byte_array, :ptr_array, :glist, :gslist, :ghash, :array
+      [ :array, :byte_array, :error, :ghash, :glist, :gslist, :interface,
+        :object, :ptr_array, :struct, :strv, :union, :zero_terminated
       ].include?(specialized_type_tag)
     end
 

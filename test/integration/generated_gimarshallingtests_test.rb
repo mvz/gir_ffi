@@ -1132,10 +1132,14 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gerror_out_transfer_none" do
-    skip
+    error, debug = GIMarshallingTests.gerror_out_transfer_none
+    debug.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
+    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
+
   it "has a working function #gerror_return" do
-    skip
+    error = GIMarshallingTests.gerror_return
+    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it "has a working function #ghashtable_int_none_in" do

@@ -260,6 +260,22 @@ describe GirFFI::ReturnValueBuilder do
     end
   end
 
+  describe "for :error" do
+    before do
+      stub(type_info).flattened_tag { :error }
+    end
+
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GLib::Error.wrap(_v1)" ]
+    end
+
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
   describe "for :c" do
     describe "with fixed size" do
       before do
