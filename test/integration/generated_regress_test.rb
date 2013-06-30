@@ -10,6 +10,13 @@ end
 
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
+  describe Regress::Lib do
+    it "extends GirFFI::Library" do
+      class << Regress::Lib
+        self.must_be :include?, GirFFI::Library
+      end
+    end
+  end
   describe "Regress::ATestError" do
     before do
       skip unless get_introspection_data 'Regress', 'ATestError'

@@ -1,5 +1,6 @@
 require 'ffi'
 
+require 'gir_ffi/ffi_ext'
 require 'gir_ffi/class_base'
 require 'gir_ffi/type_map'
 

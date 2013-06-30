@@ -1,5 +1,4 @@
 require 'forwardable'
-require 'gir_ffi/ffi_ext/pointer'
 
 module GirFFI
   # Base class for all generated classes. Contains code for dealing with
