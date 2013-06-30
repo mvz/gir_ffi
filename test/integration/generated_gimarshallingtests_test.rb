@@ -1095,6 +1095,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_utf8_full_out_caller_allocated" do
+    skip unless get_introspection_data 'GIMarshallingTests',
+      'garray_utf8_full_out_caller_allocated'
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
     assert_equal ["0", "1", "2"], res.to_a
   end
@@ -1550,6 +1552,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_int64_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_in'
     gv = GObject::Value.new
     gv.init GObject::TYPE_INT64
     gv.set_value 0x7fff_ffff_ffff_ffff
@@ -1558,6 +1561,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_int64_out" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_out'
     gv = GIMarshallingTests.gvalue_int64_out
     gv.get_value.must_equal 0x7fff_ffff_ffff_ffff
   end
@@ -1568,6 +1572,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_out_caller_allocates" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates'
     res = GIMarshallingTests.gvalue_out_caller_allocates
     res.get_value.must_equal 42
   end
@@ -1873,18 +1878,20 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #param_spec_in_bool" do
-    ps = GObject.param_spec_boolean "mybool", "nick", "blurb", true, :readable
     skip "param_spec_in_bool tests the wrong type"
+    ps = GObject.param_spec_boolean "mybool", "nick", "blurb", true, :readable
     GIMarshallingTests.param_spec_in_bool ps
   end
 
   it "has a working function #param_spec_out" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'param_spec_out'
     res = GIMarshallingTests.param_spec_out
     res.value_type.must_equal GObject::TYPE_STRING
     res.get_name.must_equal "test-param"
   end
 
   it "has a working function #param_spec_return" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'param_spec_return'
     res = GIMarshallingTests.param_spec_return
     res.value_type.must_equal GObject::TYPE_STRING
     res.get_name.must_equal "test-param"
@@ -2194,6 +2201,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #utf8_as_uint8array_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'utf8_as_uint8array_in'
     GIMarshallingTests.utf8_as_uint8array_in GIMarshallingTests::CONSTANT_UTF8.bytes.to_a
     pass
   end
