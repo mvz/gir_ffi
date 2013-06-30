@@ -1,3 +1,14 @@
+== 0.6.4 / 2013-06-30
+
+* Represent enum types by modules wrapping FFI::Enum
+* Support functions on enums
+* Handle zero-terminated arrays of types other than int32
+* Add override for GLib::Variant#get_string
+* Handle non-throwing arguments and return values of type GError
+* Handle arguments and return values of type GPtrArray
+* Handle caller-allocated arguments of type GArray
+* Deprecate GObject::Value#ruby_value, replacing it with #get_value
+
 == 0.6.3 / 2013-06-15
 
 * Make use of enums as element type for GHashTable and other containers
