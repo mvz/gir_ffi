@@ -935,10 +935,22 @@ describe Regress do
   end
 
   describe "Regress::TestStructC" do
-    it "must be tested" do
-      skip
+    let(:instance) { Regress::TestStructC.new }
+    it "has a writable field another_int" do
+      instance.another_int.must_equal 0
+      instance.another_int = 42
+      instance.another_int.must_equal 42
+    end
+
+    it "has a writable field obj" do
+      o = Regress::TestSubObj.new
+      instance.obj.must_equal nil
+      instance.obj = o
+      # TODO: Improve #== for ClassBase
+      instance.obj.to_ptr.must_equal o.to_ptr
     end
   end
+
   describe "Regress::TestStructD" do
     it "must be tested" do
       skip
