@@ -21,6 +21,21 @@ describe GirFFI::InfoExt::ITypeInfo do
       result = type_info.to_ffitype
       assert_equal [:foo, 2], result
     end
+
+    describe "for an :interface type" do
+      let(:iface) { Object.new }
+      before do
+        stub(type_info).interface { iface }
+        stub(type_info).tag { :interface }
+        stub(type_info).pointer? { false }
+      end
+
+      it "maps a the interface's ffitype" do
+        stub(iface).to_ffitype { :foo }
+
+        type_info.to_ffitype.must_equal :foo
+      end
+    end
   end
 
   describe "#element_type" do

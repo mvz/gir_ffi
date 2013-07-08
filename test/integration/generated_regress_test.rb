@@ -953,10 +953,26 @@ describe Regress do
   end
 
   describe "Regress::TestStructD" do
-    it "must be tested" do
-      skip
+    let(:instance) { Regress::TestStructD.new }
+    it "has a writable field array1" do
+      instance.array1.to_a.must_equal []
+      struct = Regress::TestStructA.new
+      instance.array1 = [struct]
+      # FIXME: Improve ZeroTerminated#== and TestStructA#==.
+      arr = instance.array1.to_a
+      arr.size.must_equal 1
+      arr.first.to_ptr.must_equal struct.to_ptr
+    end
+
+    it "has a writable field field" do
+      instance.field.must_equal nil
+      o = Regress::TestSubObj.new
+      instance.field = o
+      # TODO: Improve #== for ClassBase
+      instance.field.to_ptr.must_equal o.to_ptr
     end
   end
+
   describe "Regress::TestStructE" do
     it "must be tested" do
       skip
