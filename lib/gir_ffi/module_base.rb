@@ -10,6 +10,7 @@ module GirFFI
       load_class(classname) || super
     end
 
+    # TODO: Rename to setup_class to match setup and setup_method.
     def load_class classname
       gir_ffi_builder.build_namespaced_class classname.to_s
     end
