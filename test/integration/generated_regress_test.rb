@@ -667,6 +667,7 @@ describe Regress do
 
     it "has a working method #set_bare" do
       obj = Regress::TestObj.new_from_file("bar")
+      # XXX: Sometimes uses set_property, and it shouldn't?
       instance.set_bare obj
       # TODO: What is the correct value to retrieve from the fields?
       assert_equal obj.to_ptr, instance.bare.to_ptr
