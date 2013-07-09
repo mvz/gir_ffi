@@ -8,6 +8,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:elmtype_info) { klass.new }
   let(:keytype_info) { klass.new }
   let(:valtype_info) { klass.new }
+  let(:iface_info) { Object.new }
 
   describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
@@ -23,15 +24,14 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     describe "for an :interface type" do
-      let(:iface) { Object.new }
       before do
-        stub(type_info).interface { iface }
+        stub(type_info).interface { iface_info }
         stub(type_info).tag { :interface }
         stub(type_info).pointer? { false }
       end
 
       it "maps a the interface's ffitype" do
-        stub(iface).to_ffitype { :foo }
+        stub(iface_info).to_ffitype { :foo }
 
         type_info.to_ffitype.must_equal :foo
       end
@@ -40,7 +40,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe "#element_type" do
     it "returns the element type for lists" do
-      mock(elmtype_info).tag { :foo }
+      stub(elmtype_info).tag { :foo }
       mock(elmtype_info).pointer? { false }
 
       mock(type_info).tag {:glist}
@@ -51,9 +51,9 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     it "returns the key and value types for ghashes" do
-      mock(keytype_info).tag { :foo }
+      stub(keytype_info).tag { :foo }
       mock(keytype_info).pointer? { false }
-      mock(valtype_info).tag { :bar }
+      stub(valtype_info).tag { :bar }
       mock(valtype_info).pointer? { false }
 
       mock(type_info).tag {:ghash}
@@ -164,7 +164,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe "#tag_or_class_name" do
     describe "for the simple type :foo" do
       it "returns the string ':foo'" do
-        mock(type_info).tag { :foo }
+        stub(type_info).tag { :foo }
         mock(type_info).pointer? { false }
 
         assert_equal ":foo", type_info.tag_or_class_name
@@ -173,20 +173,35 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe "for :utf8" do
       it "returns the string ':utf8'" do
-        mock(type_info).tag { :utf8 }
+        stub(type_info).tag { :utf8 }
         mock(type_info).pointer? { true }
 
         assert_equal ":utf8", type_info.tag_or_class_name
       end
     end
 
-    describe "for an interface class" do
-      it "returns the interface's full class name" do
-        mock(type_info).tag { :interface }
-        mock(type_info).interface_type_name { "-full-type-name-" }
+    describe "for an interface named Foo::Bar" do
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).interface { iface_info }
         mock(type_info).pointer? { false }
+        mock(iface_info).full_type_name { "Foo::Bar" }
+      end
 
-        assert_equal "-full-type-name-", type_info.tag_or_class_name
+      context "when the interface type is :enum" do
+        it "returns the interface's full class name" do
+          stub(iface_info).info_type { :enum }
+
+          assert_equal "Foo::Bar", type_info.tag_or_class_name
+        end
+      end
+
+      context "when the interface type is :object" do
+        it "returns the string [:pointer, Foo::Bar]" do
+          stub(iface_info).info_type { :object }
+
+          assert_equal "[:pointer, Foo::Bar]", type_info.tag_or_class_name
+        end
       end
     end
 
@@ -203,7 +218,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe "#tag_or_class" do
     describe "for a simple type" do
       it "returns the type's tag" do
-        mock(type_info).tag { :foo }
+        stub(type_info).tag { :foo }
         mock(type_info).pointer? { false }
 
         type_info.tag_or_class.must_equal :foo
@@ -212,7 +227,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe "for utf8 strings" do
       it "returns the tag :utf8" do
-        mock(type_info).tag { :utf8 }
+        stub(type_info).tag { :utf8 }
         mock(type_info).pointer? { true }
 
         type_info.tag_or_class.must_equal :utf8
@@ -221,7 +236,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe "for filename strings" do
       it "returns the tag :filename" do
-        mock(type_info).tag { :filename }
+        stub(type_info).tag { :filename }
         mock(type_info).pointer? { true }
 
         type_info.tag_or_class.must_equal :filename
@@ -229,23 +244,36 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     describe "for an interface class" do
-      it "returns the class built from the interface" do
-        interface_info = Object.new
-        interface = Object.new
+      let(:interface) { Object.new }
 
-        mock(type_info).tag { :interface }
-        mock(type_info).interface { interface_info }
+      before do
+        stub(type_info).tag { :interface }
+        stub(type_info).interface { iface_info }
         mock(type_info).pointer? { false }
 
-        mock(GirFFI::Builder).build_class(interface_info) { interface }
+        mock(GirFFI::Builder).build_class(iface_info) { interface }
+      end
 
-        type_info.tag_or_class.must_equal interface
+      context "when the interface type is :enum" do
+        it "returns built interface module" do
+          stub(iface_info).info_type { :enum }
+
+          type_info.tag_or_class.must_equal interface
+        end
+      end
+
+      context "when the interface type is :object" do
+        it "returns an array with elements :pointer and built interface class" do
+          stub(iface_info).info_type { :object }
+
+          type_info.tag_or_class.must_equal [:pointer, interface]
+        end
       end
     end
 
     describe "for a pointer to simple type :foo" do
       it "returns [:pointer, :foo]" do
-        mock(type_info).tag { :foo }
+        stub(type_info).tag { :foo }
         mock(type_info).pointer? { true }
 
         type_info.tag_or_class.must_equal [:pointer, :foo]
@@ -263,22 +291,21 @@ describe GirFFI::InfoExt::ITypeInfo do
   end
 
   describe "#to_callback_ffitype" do
-    let(:iface) { Object.new }
     describe "for an :interface argument" do
       before do
-        stub(type_info).interface { iface }
+        stub(type_info).interface { iface_info }
         stub(type_info).tag { :interface }
         stub(type_info).pointer? { false }
       end
 
       it "correctly maps a :union argument to :pointer" do
-        stub(iface).info_type { :union }
+        stub(iface_info).info_type { :union }
 
         type_info.to_callback_ffitype.must_equal :pointer
       end
 
       it "correctly maps a :flags argument to :int32" do
-        stub(iface).info_type { :flags }
+        stub(iface_info).info_type { :flags }
 
         type_info.to_callback_ffitype.must_equal :int32
       end

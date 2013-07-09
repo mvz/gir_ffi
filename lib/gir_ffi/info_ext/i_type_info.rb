@@ -48,7 +48,7 @@ module GirFFI
       end
 
       def interface_type
-        interface.info_type
+        tag == :interface && interface.info_type
       end
 
       def flattened_array_type
@@ -75,7 +75,7 @@ module GirFFI
                else
                  type_tag.inspect
                end
-        if pointer? && type_tag != :utf8 && type_tag != :filename
+        if pointer? && type_tag != :utf8 && type_tag != :filename || interface_type == :object
           "[:pointer, #{base}]"
         else
           base
@@ -89,7 +89,7 @@ module GirFFI
                else
                  type_tag
                end
-        if pointer? && type_tag != :utf8 && type_tag != :filename
+        if pointer? && type_tag != :utf8 && type_tag != :filename || interface_type == :object
           [:pointer, base]
         else
           base

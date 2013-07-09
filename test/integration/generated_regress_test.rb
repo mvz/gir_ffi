@@ -964,6 +964,16 @@ describe Regress do
       arr.first.to_ptr.must_equal struct.to_ptr
     end
 
+    it "has a writable field array2" do
+      instance.array2.to_a.must_equal []
+      o = Regress::TestSubObj.new
+      instance.array2 = [o]
+      # FIXME: Improve ZeroTerminated#== and TestSubObj#==.
+      arr = instance.array2.to_a
+      arr.size.must_equal 1
+      arr.first.to_ptr.must_equal o.to_ptr
+    end
+
     it "has a writable field field" do
       instance.field.must_equal nil
       o = Regress::TestSubObj.new
