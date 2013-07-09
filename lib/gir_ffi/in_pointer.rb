@@ -10,8 +10,10 @@ module GirFFI
         from_utf8_array ary
       when Symbol
         from_basic_type_array type, ary
+      when Class
+        from_struct_array type, ary
       when Module
-        from_enum_array type::Enum, ary
+        from_enum_array type, ary
       when Array
         from_interface_pointer_array ary
       else
@@ -49,6 +51,22 @@ module GirFFI
         ptr_ary = ary.map {|ifc| ifc.to_ptr}
         ptr_ary << nil
         from_basic_type_array :pointer, ptr_ary
+      end
+
+      def from_struct_array type, ary
+        type_size = type::Struct.size
+        length = ary.length
+
+        # TODO: Find method to directly copy bytes, rather than reading and
+        # putting them.
+        ptr = AllocationHelper.safe_malloc length * type_size
+        ary.each_with_index { |item, idx|
+          ptr.put_bytes(idx * type_size,
+                        item.to_ptr.read_bytes(type_size),
+                        0,
+                        type_size)
+        }
+        new ptr
       end
 
       def from_enum_array type, ary

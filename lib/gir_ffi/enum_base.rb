@@ -4,6 +4,10 @@ module GirFFI
       self::Enum[arg]
     end
 
+    def to_native *args
+      self::Enum.to_native(*args)
+    end
+
     def setup_and_call method, *arguments, &block
       result = setup_method method.to_s
 

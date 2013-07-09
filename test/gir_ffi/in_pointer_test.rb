@@ -15,10 +15,27 @@ describe GirFFI::InPointer do
 
     it "handles enum types" do
       e = Module.new do
+        extend GirFFI::EnumBase
         self::Enum = FFI::Enum.new [:foo, :bar, :baz]
       end
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
       ptr.read_array_of_int32(3).must_equal [1, 0, 2]
+    end
+
+    it "handles struct types" do
+      e = Class.new do
+        self::Struct = Class.new(FFI::Struct) do
+          layout :foo, :int32, :bar, :int32
+        end
+      end
+      struct = e::Struct.allocate
+      struct[:foo] = 42
+      struct[:bar] = 24
+      ptr = GirFFI::InPointer.from_array e, [struct]
+      ptr.wont_equal struct.to_ptr
+      new_struct = e::Struct.new ptr
+      new_struct[:foo].must_equal 42
+      new_struct[:bar].must_equal 24
     end
 
     it "handles typed pointers" do

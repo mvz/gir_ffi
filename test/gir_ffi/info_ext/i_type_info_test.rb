@@ -259,7 +259,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       context "when the interface type is :enum" do
-        it "returns built interface module" do
+        it "returns the built interface module" do
           stub(iface_info).info_type { :enum }
 
           type_info.tag_or_class.must_equal interface
@@ -271,6 +271,14 @@ describe GirFFI::InfoExt::ITypeInfo do
           stub(iface_info).info_type { :object }
 
           type_info.tag_or_class.must_equal [:pointer, interface]
+        end
+      end
+
+      context "when the interface type is :struct" do
+        it "returns the built interface class" do
+          stub(iface_info).info_type { :struct }
+
+          type_info.tag_or_class.must_equal interface
         end
       end
     end

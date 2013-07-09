@@ -793,7 +793,10 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_simple_struct_in" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    arr = [1, 2, 3].map { |val|
+      GIMarshallingTests::SimpleStruct.new.tap { |struct| struct.long_ = val }
+    }
+    GIMarshallingTests.array_simple_struct_in arr
   end
 
   it "has a working function #array_string_in" do
