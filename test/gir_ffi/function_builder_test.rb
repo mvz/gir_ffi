@@ -11,7 +11,7 @@ describe GirFFI::FunctionBuilder do
       def self.test_array_fixed_out_objects 
         _v1 = GirFFI::InOutPointer.for :c
         DummyLib.regress_test_array_fixed_out_objects _v1
-        _v2 = GLib::SizedArray.wrap([:pointer, ::Regress::TestObj], 2, _v1.to_value)
+        _v2 = GLib::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.to_value)
         return _v2
       end
     CODE

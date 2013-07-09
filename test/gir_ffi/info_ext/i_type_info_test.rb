@@ -181,11 +181,15 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     describe "for an interface named Foo::Bar" do
+      let(:interface) { Object.new }
+
       before do
         stub(type_info).tag { :interface }
         stub(type_info).interface { iface_info }
         mock(type_info).pointer? { false }
-        mock(iface_info).full_type_name { "Foo::Bar" }
+        stub(interface).inspect { "Foo::Bar" }
+
+        mock(GirFFI::Builder).build_class(iface_info) { interface }
       end
 
       context "when the interface type is :enum" do
