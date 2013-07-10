@@ -26,6 +26,8 @@ module GirFFI
     end
 
     def self.ptr_to_typed_array type, ptr, size
+      return [] if ptr.nil? or ptr.null?
+
       case type
       when Class
         ptr_to_interface_array type, ptr, size
@@ -38,32 +40,17 @@ module GirFFI
       when :utf8
         ptr_to_utf8_array ptr, size
       else
-        self.send "ptr_to_#{type}_array", ptr, size
-      end
-    end
-
-    def self.setup_ptr_to_type_array_handler_for *types
-      types.flatten.each do |type|
         ffi_type = TypeMap.map_basic_type type
-        defn =
-          "def self.ptr_to_#{type}_array ptr, size
-            return [] if ptr.nil? or ptr.null?
-            ptr.get_array_of_#{ffi_type}(0, size)
-          end"
-        eval defn
+        ptr.send "get_array_of_#{ffi_type}", 0, size
       end
     end
-
-    setup_ptr_to_type_array_handler_for SIMPLE_G_TYPES
 
     def self.ptr_to_utf8_array ptr, size
-      return [] if ptr.nil? or ptr.null?
       ptrs = ptr.read_array_of_pointer(size)
       ptrs.map { |pt| ptr_to_utf8 pt }
     end
 
     def self.ptr_to_interface_array klass, ptr, size
-      return [] if ptr.nil? or ptr.null?
       struct_size = klass::Struct.size
       size.times.map do |idx|
         klass.wrap(ptr + struct_size * idx)
@@ -71,7 +58,6 @@ module GirFFI
     end
 
     def self.ptr_to_interface_pointer_array klass, ptr, size
-      return [] if ptr.nil? or ptr.null?
       ptrs = ptr.read_array_of_pointer(size)
       ptrs.map do |optr|
         klass.wrap(optr)
@@ -79,7 +65,7 @@ module GirFFI
     end
 
     def self.ptr_to_enum_array enum, ptr, size
-      ptr_to_gint32_array(ptr, size).map {|val| enum[val] }
+      ptr.get_array_of_int32(0, size).map {|val| enum[val] }
     end
 
     if RUBY_VERSION < "1.9"
@@ -94,13 +80,6 @@ module GirFFI
 
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
-    end
-
-    # Set up gtype handlers depending on type size.
-    class << self
-      sz = FFI.type_size(:size_t) * 8
-      type = "guint#{sz}"
-      alias_method :ptr_to_GType_array, "ptr_to_#{type}_array"
     end
 
     def self.check_error errpp
