@@ -14,11 +14,13 @@ module GirFFI
         ArgHelper.object_pointer_to_object self
       end
 
+      # XXX: int32 is size 4, bool is size 1. Why u no crash?
       def put_bool offset, value
         int = value ? 1 : 0
         put_int32 offset, int
       end
 
+      # XXX: int32 is size 4, bool is size 1. Why u no crash?
       def get_bool offset
         int = get_int32 offset
         return (int != 0)
