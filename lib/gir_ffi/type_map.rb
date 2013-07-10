@@ -34,7 +34,8 @@ module GirFFI
     }
 
     def self.map_basic_type type
-      TAG_TYPE_MAP[type] || type
+      sym = type.to_sym
+      TAG_TYPE_MAP[sym] || sym
     end
 
     # FIXME: Make name more descriptive.
