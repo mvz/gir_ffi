@@ -15,6 +15,7 @@ module GirFFI
       :struct => :pointer,
       :error => :pointer,
       :ptr_array => :pointer,
+      :array => :pointer,
       :utf8 => :pointer,
       :GType => gtype_type,
       :gboolean => :bool,
@@ -39,14 +40,7 @@ module GirFFI
     end
 
     def self.type_specification_to_ffitype type
-      case type
-      when :gboolean
-        :int32
-      when :utf8, :array
-        :pointer
-      else
-        map_basic_type(type)
-      end
+      map_basic_type(type)
     end
   end
 end

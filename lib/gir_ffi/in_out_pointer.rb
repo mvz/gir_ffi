@@ -19,8 +19,7 @@ module GirFFI
     private :initialize
 
     def to_value
-      value = self.send "get_#{@ffi_type}", 0
-      adjust_value_out value
+      self.send "get_#{@ffi_type}", 0
     end
 
     def self.for type
@@ -39,7 +38,7 @@ module GirFFI
     def adjust_value_in value
       case @value_type
       when :gboolean
-        (value ? 1 : 0)
+        value
       else
         value || nil_value
       end
@@ -47,15 +46,6 @@ module GirFFI
 
     def nil_value
       @ffi_type == :pointer ? nil : 0
-    end
-
-    def adjust_value_out value
-      case @value_type
-      when :gboolean
-        (value != 0)
-      else
-        value
-      end
     end
   end
 end
