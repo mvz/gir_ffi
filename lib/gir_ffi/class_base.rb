@@ -43,6 +43,10 @@ module GirFFI
         self.const_get :GIR_FFI_BUILDER
       end
 
+      def to_ffitype
+        self::Struct
+      end
+
       def setup_method name
         gir_ffi_builder.setup_method name
       end

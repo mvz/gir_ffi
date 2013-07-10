@@ -40,7 +40,11 @@ module GirFFI
     end
 
     def self.type_specification_to_ffitype type
-      map_basic_type(type)
+      if Module === type
+        type.to_ffitype
+      else
+        map_basic_type(type)
+      end
     end
   end
 end

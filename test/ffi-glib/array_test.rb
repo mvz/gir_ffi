@@ -49,6 +49,14 @@ describe GLib::Array do
         GLib::Array.wrap :gint8, arr.to_ptr
       end
     end
+
+    it "handles a struct as the element type" do
+      vals = [1, 2, 3].map {|i| GObject::EnumValue.new.tap {|ev| ev.value = i} }
+      arr = GLib::Array.new GObject::EnumValue
+      arr.append_vals vals
+      arr2 = GLib::Array.wrap GObject::EnumValue, arr.to_ptr
+      arr2.to_a.must_equal arr.to_a
+    end
   end
 
   it "includes Enumerable" do
