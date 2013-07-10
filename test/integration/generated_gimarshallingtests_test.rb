@@ -820,7 +820,10 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_struct_value_in" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    arr = [1, 2, 3].map { |val|
+      GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
+    }
+    GIMarshallingTests.array_struct_value_in arr
   end
 
   it "has a working function #array_uint8_in" do
@@ -1519,11 +1522,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_flat_array" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    # TODO: Convert array of Ruby values to GValues automatically?
+    arr = [42, "42", true].map { |val| GObject::Value.wrap_ruby_value val }
+    GIMarshallingTests.gvalue_flat_array arr
   end
 
   it "has a working function #gvalue_flat_array_round_trip" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    skip "Passing structs by-value is not supported yet"
   end
 
   it "has a working function #gvalue_in" do
@@ -1847,7 +1852,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #multi_array_key_value_in" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    keys = ["one", "two", "three"]
+    values = [1, 2, 3].map { |val| GObject::Value.wrap_ruby_value val }
+    GIMarshallingTests.multi_array_key_value_in keys, values
   end
 
   it "has a working function #no_type_flags_in" do
@@ -1919,7 +1926,11 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #return_gvalue_flat_array" do
-    skip "Non-pointer arrays of complex types are not supported yet"
+    result = GIMarshallingTests.return_gvalue_flat_array
+    arr = result.to_a
+    arr[0].get_value.must_equal 42
+    arr[1].get_value.must_equal "42"
+    arr[2].get_value.must_equal true
   end
 
   it "has a working function #short_in_max" do
