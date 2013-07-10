@@ -35,8 +35,6 @@ module GirFFI
         ptr_to_enum_array type, ptr, size
       when Array
         ptr_to_interface_pointer_array type[1], ptr, size
-      when FFI::Enum
-        ptr_to_enum_array type, ptr, size
       when :utf8
         ptr_to_utf8_array ptr, size
       else
