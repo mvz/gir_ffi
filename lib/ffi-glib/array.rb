@@ -60,7 +60,7 @@ module GLib
     private
 
     def self.calculated_element_size type
-      ffi_type = GirFFI::TypeMap.map_basic_type_or_string(type)
+      ffi_type = GirFFI::TypeMap.type_specification_to_ffitype(type)
       FFI.type_size(ffi_type)
     end
 

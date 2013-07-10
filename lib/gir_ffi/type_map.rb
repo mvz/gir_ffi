@@ -38,8 +38,7 @@ module GirFFI
       TAG_TYPE_MAP[sym] || sym
     end
 
-    # FIXME: Make name more descriptive.
-    def self.map_basic_type_or_string type
+    def self.type_specification_to_ffitype type
       case type
       when :gboolean
         :int32

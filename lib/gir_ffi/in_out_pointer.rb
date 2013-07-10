@@ -5,7 +5,7 @@ module GirFFI
     attr_reader :value_type
 
     def initialize value, type
-      @ffi_type = TypeMap.map_basic_type_or_string type
+      @ffi_type = TypeMap.type_specification_to_ffitype type
       @value_type = type
 
       value = adjust_value_in value

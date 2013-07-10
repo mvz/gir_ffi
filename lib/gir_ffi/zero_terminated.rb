@@ -42,7 +42,7 @@ module GirFFI
     end
 
     def ffi_type
-      @ffi_type ||= TypeMap.map_basic_type_or_string basic_element_type
+      @ffi_type ||= TypeMap.type_specification_to_ffitype basic_element_type
     end
 
     def complex_element_type?
