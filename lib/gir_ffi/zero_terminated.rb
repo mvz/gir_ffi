@@ -34,6 +34,10 @@ module GirFFI
       end
     end
 
+    def ==(other)
+      self.to_a == other.to_a
+    end
+
     private
 
     def read_value offset

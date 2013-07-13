@@ -51,6 +51,34 @@ describe GirFFI::ZeroTerminated do
 
   end
 
+  describe "#==" do
+    it "returns true when comparing to an array with the same elements" do
+      zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
+
+      (zero_terminated == [1, 2, 3]).must_equal true
+    end
+
+    it "returns false when comparing to an array with different elements" do
+      zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
+
+      (zero_terminated == [1, 2]).must_equal false
+    end
+
+    it "returns true when comparing to a zero-terminated array with the same elements" do
+      zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
+      other = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
+
+      (zero_terminated == other).must_equal true
+    end
+
+    it "returns false when comparing to a zero-terminated array with different elements" do
+      zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
+      other = GirFFI::ZeroTerminated.from :int32, [1, 2]
+
+      (zero_terminated == other).must_equal false
+    end
+  end
+
   it "includes Enumerable" do
     GirFFI::ZeroTerminated.must_include Enumerable
   end

@@ -21,6 +21,10 @@ module GirFFI
       self.send method, *arguments, &block
     end
 
+    def ==(other)
+      self.to_ptr == other.to_ptr
+    end
+
     def self.setup_and_call method, *arguments, &block
       result = self.ancestors.any? do |klass|
         klass.respond_to?(:setup_method) &&

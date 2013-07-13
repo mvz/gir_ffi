@@ -79,7 +79,7 @@ describe GLib::Array do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]
       arr2 = GLib::Array.from :foo, arr
-      assert_equal arr, arr2
+      assert arr2.equal? arr
     end
 
     it "wraps its argument if given a pointer" do
@@ -89,8 +89,8 @@ describe GLib::Array do
       assert_instance_of FFI::Pointer, pointer
       arr2 = GLib::Array.from :gint32, pointer
       assert_instance_of GLib::Array, arr2
-      refute_equal arr, arr2
-      assert_equal arr.to_a, arr2.to_a
+      refute arr2.equal? arr
+      arr2.to_a.must_equal arr.to_a
     end
   end
 end

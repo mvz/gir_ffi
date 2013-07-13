@@ -17,7 +17,7 @@ describe GLib::HashTable do
     it "return its argument if given a GHashTable" do
       hsh = GLib::HashTable.from [:utf8, :gint32], {"foo" => 23, "bar" => 32}
       hsh2 = GLib::HashTable.from [:utf8, :gint32], hsh
-      assert_equal hsh, hsh2
+      assert hsh2.equal? hsh
     end
 
     it "wraps its argument if given a pointer" do
@@ -26,8 +26,8 @@ describe GLib::HashTable do
       assert_instance_of FFI::Pointer, pointer
       hsh2 = GLib::HashTable.from [:utf8, :gint32], pointer
       assert_instance_of GLib::HashTable, hsh2
-      refute_equal hsh, hsh2
-      assert_equal hsh.to_hash, hsh2.to_hash
+      refute hsh2.equal? hsh
+      hsh2.to_hash.must_equal hsh.to_hash
     end
   end
 

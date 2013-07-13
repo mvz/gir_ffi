@@ -40,7 +40,7 @@ describe GLib::List do
     it "return its argument if given a GList" do
       lst = GLib::List.from :gint32, [3, 2, 1]
       lst2 = GLib::List.from :gint32, lst
-      assert_equal lst, lst2
+      assert lst2.equal? lst
     end
 
     it "wraps its argument if given a pointer" do
@@ -49,8 +49,8 @@ describe GLib::List do
       assert_instance_of FFI::Pointer, pointer
       lst2 = GLib::List.from :gint32, pointer
       assert_instance_of GLib::List, lst2
-      refute_equal lst, lst2
-      assert_equal lst.to_a, lst2.to_a
+      refute lst2.equal? lst
+      lst2.to_a.must_equal lst.to_a
     end
   end
 end
