@@ -820,6 +820,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_struct_value_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'array_struct_value_in'
     arr = [1, 2, 3].map { |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     }
