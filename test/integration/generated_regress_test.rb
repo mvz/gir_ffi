@@ -545,7 +545,7 @@ describe Regress do
         instance.set_property "list", lst
 
         lst2 = instance.get_property "list"
-        assert_equal ["foo", "bar"], lst2.to_a
+        lst2.must_be :==, ["foo", "bar"]
       end
 
       it "gets the 'string' property" do
@@ -951,14 +951,14 @@ describe Regress do
   describe "Regress::TestStructD" do
     let(:instance) { Regress::TestStructD.new }
     it "has a writable field array1" do
-      instance.array1.to_a.must_equal []
+      instance.array1.must_be :==, []
       struct = Regress::TestStructA.new
       instance.array1 = [struct]
       instance.array1.must_be :==, [struct]
     end
 
     it "has a writable field array2" do
-      instance.array2.to_a.must_equal []
+      instance.array2.must_be :==, []
       o = Regress::TestSubObj.new
       instance.array2 = [o]
       instance.array2.must_be :==, [o]
@@ -1105,16 +1105,13 @@ describe Regress do
   end
 
   it "has a working function #test_array_fixed_out_objects" do
-    result = Regress.test_array_fixed_out_objects.to_a
+    result = Regress.test_array_fixed_out_objects
+    gtype = Regress::TestObj.get_gtype
 
-    assert_equal 2, result.length
+    result.size.must_equal 2
 
     result.each {|o|
       assert_instance_of Regress::TestObj, o
-    }
-
-    gtype = Regress::TestObj.get_gtype
-    result.each {|o|
       assert_equal gtype, GObject.type_from_instance(o)
     }
   end
@@ -1132,11 +1129,11 @@ describe Regress do
   end
 
   it "has a working function #test_array_fixed_size_int_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_out.to_a
+    Regress.test_array_fixed_size_int_out.must_be :==, [0, 1, 2, 3, 4]
   end
 
   it "has a working function #test_array_fixed_size_int_return" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_fixed_size_int_return.to_a
+    Regress.test_array_fixed_size_int_return.must_be :==, [0, 1, 2, 3, 4]
   end
 
   it "has a working function #test_array_gint16_in" do
@@ -1162,7 +1159,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_full_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_full_out.to_a
+    Regress.test_array_int_full_out.must_be :==, [0, 1, 2, 3, 4]
   end
 
   it "has a working function #test_array_int_in" do
@@ -1170,11 +1167,11 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_inout" do
-    assert_equal [3, 4], Regress.test_array_int_inout([5, 2, 3]).to_a
+    Regress.test_array_int_inout([5, 2, 3]).must_be :==, [3, 4]
   end
 
   it "has a working function #test_array_int_none_out" do
-    assert_equal [1, 2, 3, 4, 5], Regress.test_array_int_none_out.to_a
+    Regress.test_array_int_none_out.must_be :==, [1, 2, 3, 4, 5]
   end
 
   it "has a working function #test_array_int_null_in" do
@@ -1186,7 +1183,7 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_out" do
-    assert_equal [0, 1, 2, 3, 4], Regress.test_array_int_out.to_a
+    Regress.test_array_int_out.must_be :==, [0, 1, 2, 3, 4]
   end
 
   it "has a working function #test_async_ready_callback" do
@@ -1351,7 +1348,7 @@ describe Regress do
   # TODO: Find a way to test encoding issues.
   it "has a working function #test_filename_return" do
     arr = Regress.test_filename_return
-    assert_equal ["åäö", "/etc/fstab"], arr.to_a
+    arr.must_be :==, ["åäö", "/etc/fstab"]
   end
 
   it "has a working function #test_float" do
@@ -1442,12 +1439,12 @@ describe Regress do
   it "has a working function #test_glist_container_return" do
     list = Regress.test_glist_container_return
     assert_instance_of GLib::List, list
-    assert_equal ["1", "2", "3"], list.to_a
+    list.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_glist_everything_return" do
     list = Regress.test_glist_everything_return
-    assert_equal ["1", "2", "3"], list.to_a
+    list.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_glist_nothing_in" do
@@ -1464,12 +1461,12 @@ describe Regress do
 
   it "has a working function #test_glist_nothing_return" do
     list = Regress.test_glist_nothing_return
-    assert_equal ["1", "2", "3"], list.to_a
+    list.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_glist_nothing_return2" do
     list = Regress.test_glist_nothing_return2
-    assert_equal ["1", "2", "3"], list.to_a
+    list.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_glist_null_in" do
@@ -1486,12 +1483,12 @@ describe Regress do
   it "has a working function #test_gslist_container_return" do
     slist = Regress.test_gslist_container_return
     assert_instance_of GLib::SList, slist
-    assert_equal ["1", "2", "3"], slist.to_a
+    slist.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_gslist_everything_return" do
     slist = Regress.test_gslist_everything_return
-    assert_equal ["1", "2", "3"], slist.to_a
+    slist.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_gslist_nothing_in" do
@@ -1508,12 +1505,12 @@ describe Regress do
 
   it "has a working function #test_gslist_nothing_return" do
     slist = Regress.test_gslist_nothing_return
-    assert_equal ["1", "2", "3"], slist.to_a
+    slist.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_gslist_nothing_return2" do
     slist = Regress.test_gslist_nothing_return2
-    assert_equal ["1", "2", "3"], slist.to_a
+    slist.must_be :==, ["1", "2", "3"]
   end
 
   it "has a working function #test_gslist_null_in" do
@@ -1658,27 +1655,27 @@ describe Regress do
 
   it "has a working function #test_strv_in_gvalue" do
     gv = Regress.test_strv_in_gvalue
-    assert_equal ['one', 'two', 'three'], gv.get_value.to_a
+    gv.get_value.must_be :==, ['one', 'two', 'three']
   end
 
   it "has a working function #test_strv_out" do
     arr = Regress.test_strv_out
-    assert_equal ["thanks", "for", "all", "the", "fish"], arr.to_a
+    arr.must_be :==, ["thanks", "for", "all", "the", "fish"]
   end
 
   it "has a working function #test_strv_out_c" do
     arr = Regress.test_strv_out_c
-    assert_equal ["thanks", "for", "all", "the", "fish"], arr.to_a
+    arr.must_be :==, ["thanks", "for", "all", "the", "fish"]
   end
 
   it "has a working function #test_strv_out_container" do
     arr = Regress.test_strv_out_container
-    assert_equal ['1', '2', '3'], arr.to_a
+    arr.must_be :==, ['1', '2', '3']
   end
 
   it "has a working function #test_strv_outarg" do
     arr = Regress.test_strv_outarg
-    assert_equal ['1', '2', '3'], arr.to_a
+    arr.must_be :==, ['1', '2', '3']
   end
 
   it "has a working function #test_timet" do

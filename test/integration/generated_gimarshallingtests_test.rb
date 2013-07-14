@@ -244,7 +244,7 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::Object.new 42
       res = GIMarshallingTests::Object.full_inout ob
       assert_instance_of GIMarshallingTests::Object, res
-      refute_equal res.to_ptr, ob.to_ptr
+      ob.wont_equal res
     end
 
     it "has a working function #full_out" do
@@ -265,7 +265,7 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::Object.new 42
       res = GIMarshallingTests::Object.none_inout ob
       assert_instance_of GIMarshallingTests::Object, res
-      refute_equal res.to_ptr, ob.to_ptr
+      ob.wont_equal res
     end
 
     it "has a working function #none_out" do
