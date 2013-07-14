@@ -595,7 +595,7 @@ describe Regress do
 
       it "sets the 'list' property" do
         instance.set_property "list", ["foo", "bar"]
-        instance.list.to_a.must_equal ["foo",  "bar"]
+        instance.list.must_be :==, ["foo",  "bar"]
       end
 
       it "sets the 'string' property" do

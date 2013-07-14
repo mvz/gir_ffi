@@ -17,7 +17,7 @@ describe Pango do
         scripts = GLib::SizedArray.new Pango::Script, size, ptr
       end
 
-      scripts.to_a.must_equal [:han, :katakana, :hiragana]
+      scripts.must_be :==, [:han, :katakana, :hiragana]
     end
   end
 end
