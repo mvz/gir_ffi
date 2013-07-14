@@ -66,4 +66,32 @@ describe GLib::PtrArray do
     arr.add "test1"
     assert_equal ["test1"], arr.to_a
   end
+
+  describe "#==" do
+    it "returns true when comparing to an array with the same elements" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+
+      arr.must_be :==, ["1", "2", "3"]
+    end
+
+    it "returns false when comparing to an array with different elements" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+
+      arr.wont_be :==, ["1", "2"]
+    end
+
+    it "returns true when comparing to a GPtrArray with the same elements" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+      other = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+
+      arr.must_be :==, other
+    end
+
+    it "returns false when comparing to a GPtrArray with different elements" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+      other = GLib::PtrArray.from :utf8, ["1", "2"]
+
+      arr.wont_be :==, other
+    end
+  end
 end

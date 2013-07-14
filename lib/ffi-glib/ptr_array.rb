@@ -56,5 +56,9 @@ module GLib
         yield index(idx)
       end
     end
+
+    def ==(other)
+      self.to_a == other.to_a
+    end
   end
 end
