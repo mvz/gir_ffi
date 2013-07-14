@@ -75,8 +75,36 @@ describe GLib::SizedArray do
       arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
       arr2 = GLib::SizedArray.from :gint32, 3, arr.to_ptr
       assert_instance_of GLib::SizedArray, arr2
-      refute_equal arr, arr2
-      assert_equal arr.to_a, arr2.to_a
+      refute arr2.equal? arr
+      arr2.to_ptr.must_equal arr.to_ptr
+    end
+  end
+
+  describe "#==" do
+    it "returns true when comparing to an array with the same elements" do
+      sized = GLib::SizedArray.from :int32, 3, [1, 2, 3]
+
+      sized.must_be :==, [1, 2, 3]
+    end
+
+    it "returns false when comparing to an array with different elements" do
+      sized = GLib::SizedArray.from :int32, 3, [1, 2, 3]
+
+      sized.wont_be :==, [1, 2]
+    end
+
+    it "returns true when comparing to a sized array with the same elements" do
+      sized = GLib::SizedArray.from :int32, 3, [1, 2, 3]
+      other = GLib::SizedArray.from :int32, 3, [1, 2, 3]
+
+      sized.must_be :==, other
+    end
+
+    it "returns false when comparing to a sized array with different elements" do
+      sized = GLib::SizedArray.from :int32, 3, [1, 2, 3]
+      other = GLib::SizedArray.from :int32, 2, [1, 2]
+
+      sized.wont_be :==, other
     end
   end
 
@@ -84,4 +112,3 @@ describe GLib::SizedArray do
     GLib::SizedArray.must_include Enumerable
   end
 end
-

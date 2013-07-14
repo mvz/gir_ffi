@@ -25,6 +25,10 @@ module GLib
       end
     end
 
+    def ==(other)
+      self.to_a == other.to_a
+    end
+
     def self.wrap element_type, size, pointer
       new element_type, size, pointer unless pointer.null?
     end
