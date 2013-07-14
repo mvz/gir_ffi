@@ -20,25 +20,26 @@ describe GirFFI::ClassBase do
       it "returns true when comparing to an object of the same class and pointer" do
         other = klass.wrap object.to_ptr
 
-        (object == other).must_equal true
+        object.must_be :==, other
       end
 
       it "returns false when comparing to an object of the same class and different pointer" do
         other = klass.wrap FFI::MemoryPointer.new(:int32)
 
-        (object == other).must_equal false
+        object.wont_be :==, other
       end
 
-      it "returns true when comparing to an object of a different class and same pointer" do
-        stub(other = Object.new).to_ptr { object.to_ptr }
+      it "returns false when comparing to an object of a different class" do
+        other = Object.new
 
-        (object == other).must_equal true
+        object.wont_be :==, other
       end
 
-      it "returns false when comparing to an object of a different class and different pointer" do
-        stub(other = Object.new).to_ptr { FFI::MemoryPointer.new(:int32) }
+      it "returns true when comparing to an object of a subclass and the same pointer" do
+        subclass = Class.new(klass)
+        other = subclass.wrap object.to_ptr
 
-        (object == other).must_equal false
+        object.must_be :==, other
       end
     end
 

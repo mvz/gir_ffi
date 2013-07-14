@@ -22,7 +22,7 @@ module GirFFI
     end
 
     def ==(other)
-      self.to_ptr == other.to_ptr
+      other.is_a?(self.class) && self.to_ptr == other.to_ptr
     end
 
     def self.setup_and_call method, *arguments, &block
