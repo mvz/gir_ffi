@@ -499,8 +499,8 @@ describe Regress do
 
         obj2 = instance.get_property("bare")
 
-        assert_equal obj.to_ptr, obj2.to_ptr
         assert_instance_of Regress::TestObj, obj2
+        obj2.must_equal obj
       end
 
       it "gets the 'boxed' property" do
@@ -558,7 +558,7 @@ describe Regress do
       it "sets the 'bare' property" do
         obj = Regress::TestObj.new_from_file("bar")
         instance.set_property "bare", obj
-        assert_equal obj.to_ptr, instance.bare.to_ptr
+        instance.bare.must_equal obj
       end
 
       it "sets the 'boxed' property" do
@@ -595,8 +595,7 @@ describe Regress do
 
       it "sets the 'list' property" do
         instance.set_property "list", ["foo", "bar"]
-        assert_equal ["foo", "bar"],
-          GLib::List.wrap(:utf8, instance.list.to_ptr).to_a
+        instance.list.to_a.must_equal ["foo",  "bar"]
       end
 
       it "sets the 'string' property" do
@@ -669,8 +668,7 @@ describe Regress do
       obj = Regress::TestObj.new_from_file("bar")
       # XXX: Sometimes uses set_property, and it shouldn't?
       instance.set_bare obj
-      # TODO: What is the correct value to retrieve from the fields?
-      assert_equal obj.to_ptr, instance.bare.to_ptr
+      instance.bare.must_equal obj
     end
 
     it "has a working method #skip_inout_param" do
@@ -724,8 +722,7 @@ describe Regress do
         o = Regress::TestSubObj.new
         GObject.signal_connect(o, "test", 2) { |i, d| a = d; b = i }
         GObject.signal_emit o, "test"
-        # TODO: store o's identity somewhere so we can make o == b.
-        assert_equal [2, o.to_ptr], [a, b.to_ptr]
+        assert_equal [2, o], [a, b]
       end
     end
 
@@ -947,8 +944,7 @@ describe Regress do
       o = Regress::TestSubObj.new
       instance.obj.must_equal nil
       instance.obj = o
-      # TODO: Improve #== for ClassBase
-      instance.obj.to_ptr.must_equal o.to_ptr
+      instance.obj.must_equal o
     end
   end
 
@@ -958,28 +954,21 @@ describe Regress do
       instance.array1.to_a.must_equal []
       struct = Regress::TestStructA.new
       instance.array1 = [struct]
-      # FIXME: Improve ZeroTerminated#== and TestStructA#==.
-      arr = instance.array1.to_a
-      arr.size.must_equal 1
-      arr.first.to_ptr.must_equal struct.to_ptr
+      instance.array1.must_be :==, [struct]
     end
 
     it "has a writable field array2" do
       instance.array2.to_a.must_equal []
       o = Regress::TestSubObj.new
       instance.array2 = [o]
-      # FIXME: Improve ZeroTerminated#== and TestSubObj#==.
-      arr = instance.array2.to_a
-      arr.size.must_equal 1
-      arr.first.to_ptr.must_equal o.to_ptr
+      instance.array2.must_be :==, [o]
     end
 
     it "has a writable field field" do
       instance.field.must_equal nil
       o = Regress::TestSubObj.new
       instance.field = o
-      # TODO: Improve #== for ClassBase
-      instance.field.to_ptr.must_equal o.to_ptr
+      instance.field.must_equal o
     end
   end
 
