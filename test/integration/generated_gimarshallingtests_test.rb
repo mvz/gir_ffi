@@ -34,9 +34,9 @@ describe GIMarshallingTests do
       end
 
       it "has a writable field g_strv" do
-        assert_equal [], @bx.g_strv.to_a
+        @bx.g_strv.must_be :==, []
         @bx.g_strv = ["foo", "bar"]
-        assert_equal ["foo", "bar"], @bx.g_strv.to_a
+        @bx.g_strv.must_be :==, ["foo", "bar"]
       end
     end
 
@@ -58,7 +58,7 @@ describe GIMarshallingTests do
     it "has a working function #returnv" do
       res = GIMarshallingTests::BoxedStruct.returnv
       assert_equal 42, res.long_
-      assert_equal ["0", "1", "2"], res.g_strv.to_a
+      res.g_strv.must_be :==, ["0", "1", "2"]
     end
   end
 
@@ -335,17 +335,17 @@ describe GIMarshallingTests do
 
     it "has a working method #method_array_inout" do
       res = instance.method_array_inout [-1, 0, 1, 2]
-      assert_equal [-2, -1, 0, 1, 2], res.to_a
+      res.must_be :==, [-2, -1, 0, 1, 2]
     end
 
     it "has a working method #method_array_out" do
       res = instance.method_array_out
-      assert_equal [-1, 0, 1, 2], res.to_a
+      res.must_be :==, [-1, 0, 1, 2]
     end
 
     it "has a working method #method_array_return" do
       res = instance.method_array_return
-      assert_equal [-1, 0, 1, 2], res.to_a
+      res.must_be :==, [-1, 0, 1, 2]
     end
 
     it "has a working method #method_int8_arg_and_out_callee" do
@@ -665,7 +665,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_inout" do
     res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
-    assert_equal [2, 1, 0, -1], res.to_a
+    res.must_be :==, [2, 1, 0, -1]
   end
 
   it "has a working function #array_fixed_int_in" do
@@ -675,12 +675,12 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_int_return" do
     res = GIMarshallingTests.array_fixed_int_return
-    assert_equal [-1, 0, 1, 2], res.to_a
+    res.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #array_fixed_out" do
     res = GIMarshallingTests.array_fixed_out
-    assert_equal [-1, 0, 1, 2], res.to_a
+    res.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #array_fixed_out_struct" do
@@ -695,7 +695,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_short_return" do
     res = GIMarshallingTests.array_fixed_short_return
-    assert_equal [-1, 0, 1, 2], res.to_a
+    res.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #array_gvariant_container_in" do
@@ -761,7 +761,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_inout" do
     res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
-    assert_equal [-2, -1, 0, 1, 2], res.to_a
+    res.must_be :==, [-2, -1, 0, 1, 2]
   end
 
   it "has a working function #array_inout_etc" do
@@ -845,12 +845,12 @@ describe GIMarshallingTests do
 
   it "has a working function #array_zero_terminated_out" do
     res = GIMarshallingTests.array_zero_terminated_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #array_zero_terminated_return" do
     res = GIMarshallingTests.array_zero_terminated_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #array_zero_terminated_return_null" do
@@ -918,7 +918,7 @@ describe GIMarshallingTests do
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
     assert_equal 42, res.long_
-    assert_equal ["0", "1", "2"], res.g_strv.to_a
+    res.g_strv.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #bytearray_full_return" do
@@ -1060,7 +1060,7 @@ describe GIMarshallingTests do
 
   it "has a working function #garray_int_none_return" do
     arr = GIMarshallingTests.garray_int_none_return
-    assert_equal [-1, 0, 1, 2], arr.to_a
+    arr.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #garray_uint64_none_in" do
@@ -1082,35 +1082,35 @@ describe GIMarshallingTests do
 
   it "has a working function #garray_utf8_container_out" do
     res = GIMarshallingTests.garray_utf8_container_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_container_return" do
     res = GIMarshallingTests.garray_utf8_container_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_full_inout" do
     arr = ["0", "1", "2"]
     res = GIMarshallingTests.garray_utf8_full_inout arr
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_full_out" do
     res = GIMarshallingTests.garray_utf8_full_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_full_out_caller_allocated" do
     skip unless get_introspection_data 'GIMarshallingTests',
       'garray_utf8_full_out_caller_allocated'
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_full_return" do
     res = GIMarshallingTests.garray_utf8_full_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_none_in" do
@@ -1122,17 +1122,17 @@ describe GIMarshallingTests do
   it "has a working function #garray_utf8_none_inout" do
     arr = ["0", "1", "2"]
     res = GIMarshallingTests.garray_utf8_none_inout arr
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_none_out" do
     res = GIMarshallingTests.garray_utf8_none_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #garray_utf8_none_return" do
     res = GIMarshallingTests.garray_utf8_none_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gbytes_full_return" do
@@ -1294,7 +1294,7 @@ describe GIMarshallingTests do
 
   it "has a working function #glist_int_none_return" do
     res = GIMarshallingTests.glist_int_none_return
-    assert_equal [-1, 0, 1, 2], res.to_a
+    res.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #glist_uint32_none_in" do
@@ -1311,32 +1311,32 @@ describe GIMarshallingTests do
 
   it "has a working function #glist_utf8_container_inout" do
     res = GIMarshallingTests.glist_utf8_container_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_container_out" do
     res = GIMarshallingTests.glist_utf8_container_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #glist_utf8_container_return" do
     res = GIMarshallingTests.glist_utf8_container_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #glist_utf8_full_inout" do
     res = GIMarshallingTests.glist_utf8_full_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_full_out" do
     res = GIMarshallingTests.glist_utf8_full_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #glist_utf8_full_return" do
     res = GIMarshallingTests.glist_utf8_full_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #glist_utf8_none_in" do
@@ -1345,17 +1345,17 @@ describe GIMarshallingTests do
 
   it "has a working function #glist_utf8_none_inout" do
     res = GIMarshallingTests.glist_utf8_none_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_none_out" do
     res = GIMarshallingTests.glist_utf8_none_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #glist_utf8_none_return" do
     res = GIMarshallingTests.glist_utf8_none_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gptrarray_utf8_container_inout" do
@@ -1414,37 +1414,37 @@ describe GIMarshallingTests do
 
   it "has a working function #gslist_int_none_return" do
     res = GIMarshallingTests.gslist_int_none_return
-    assert_equal [-1, 0, 1, 2], res.to_a
+    res.must_be :==, [-1, 0, 1, 2]
   end
 
   it "has a working function #gslist_utf8_container_inout" do
     res = GIMarshallingTests.gslist_utf8_container_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_container_out" do
     res = GIMarshallingTests.gslist_utf8_container_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gslist_utf8_container_return" do
     res = GIMarshallingTests.gslist_utf8_container_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gslist_utf8_full_inout" do
     res = GIMarshallingTests.gslist_utf8_full_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_full_out" do
     res = GIMarshallingTests.gslist_utf8_full_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gslist_utf8_full_return" do
     res = GIMarshallingTests.gslist_utf8_full_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gslist_utf8_none_in" do
@@ -1454,17 +1454,17 @@ describe GIMarshallingTests do
 
   it "has a working function #gslist_utf8_none_inout" do
     res = GIMarshallingTests.gslist_utf8_none_inout ["0", "1", "2"]
-    assert_equal ["-2", "-1", "0", "1"], res.to_a
+    res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_none_out" do
     res = GIMarshallingTests.gslist_utf8_none_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gslist_utf8_none_return" do
     res = GIMarshallingTests.gslist_utf8_none_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gstrv_in" do
@@ -1474,17 +1474,17 @@ describe GIMarshallingTests do
 
   it "has a working function #gstrv_inout" do
     res = GIMarshallingTests.gstrv_inout ["0", "1", "2"]
-    assert_equal ["-1", "0", "1", "2"], res.to_a
+    res.must_be :==, ["-1", "0", "1", "2"]
   end
 
   it "has a working function #gstrv_out" do
     res = GIMarshallingTests.gstrv_out
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gstrv_return" do
     res = GIMarshallingTests.gstrv_return
-    assert_equal ["0", "1", "2"], res.to_a
+    res.must_be :==, ["0", "1", "2"]
   end
 
   it "has a working function #gtype_in" do
