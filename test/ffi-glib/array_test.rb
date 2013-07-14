@@ -93,5 +93,33 @@ describe GLib::Array do
       arr2.to_a.must_equal arr.to_a
     end
   end
+
+  describe "#==" do
+    it "returns true when comparing to an array with the same elements" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+
+      arr.must_be :==, [1, 2, 3]
+    end
+
+    it "returns false when comparing to an array with different elements" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+
+      arr.wont_be :==, [1, 2]
+    end
+
+    it "returns true when comparing to a GArray with the same elements" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+      other = GLib::Array.from :gint32, [1, 2, 3]
+
+      arr.must_be :==, other
+    end
+
+    it "returns false when comparing to a GArray with different elements" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+      other = GLib::Array.from :gint32, [1, 2]
+
+      arr.wont_be :==, other
+    end
+  end
 end
 

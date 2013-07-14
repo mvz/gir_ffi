@@ -43,6 +43,10 @@ module GLib
       Lib.g_array_get_element_size self
     end
 
+    def ==(other)
+      self.to_a == other.to_a
+    end
+
     def self.wrap elmttype, ptr
       super(ptr).tap do |array|
         array.element_type = elmttype if array
