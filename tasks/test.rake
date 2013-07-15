@@ -84,6 +84,7 @@ namespace :test do
     sh %{cd test/lib && make}
   end
 
+  task :introspection => :lib
   task :main => :lib
   task :overrides => :lib
   task :integration => :lib
