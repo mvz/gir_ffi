@@ -42,12 +42,10 @@ describe GLib::Array do
       assert_equal arr.to_a, arr2.to_a
     end
 
-    it "raises an error if the element sizes don't match" do
+    it "warns the element sizes don't match" do
       arr = GLib::Array.new :gint32
       arr.append_vals [1, 2, 3]
-      assert_raises RuntimeError do
-        GLib::Array.wrap :gint8, arr.to_ptr
-      end
+      proc { GLib::Array.wrap :gint8, arr.to_ptr }.must_output nil, /sizes do not match/
     end
 
     it "handles a struct as the element type" do
