@@ -18,8 +18,14 @@ describe GirFFI::InOutPointer do
   end
 
   describe ".from" do
-    it "handles :gboolean" do
-      GirFFI::InOutPointer.from :gboolean, false
+    it "handles :gboolean false" do
+      ptr = GirFFI::InOutPointer.from :gboolean, false
+      ptr.read_int.must_equal 0
+    end
+
+    it "handles :gboolean true" do
+      ptr = GirFFI::InOutPointer.from :gboolean, true
+      ptr.read_int.must_equal(1)
     end
 
     it "handles :utf8 pointers" do
@@ -61,12 +67,12 @@ describe GirFFI::InOutPointer do
     describe "for :gboolean values" do
       it "works when the value is false" do
         ptr = GirFFI::InOutPointer.from :gboolean, false
-        assert_equal false, ptr.to_value
+        ptr.to_value.must_equal false
       end
 
       it "works when the value is true" do
         ptr = GirFFI::InOutPointer.from :gboolean, true
-        assert_equal true, ptr.to_value
+        ptr.to_value.must_equal true
       end
     end
 
@@ -76,6 +82,13 @@ describe GirFFI::InOutPointer do
         ptr = GirFFI::InOutPointer.from :utf8, str_ptr
         assert_equal "Some value", ptr.to_value.read_string
       end
+    end
+  end
+
+  describe "#value_ffi_type" do
+    it "returns :int for the :gboolean value type" do
+      ptr = GirFFI::InOutPointer.from :gboolean, true
+      ptr.value_ffi_type.must_equal :int
     end
   end
 end

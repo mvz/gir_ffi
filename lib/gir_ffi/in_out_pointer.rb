@@ -18,11 +18,16 @@ module GirFFI
     private :initialize
 
     def to_value
-      self.send "get_#{value_ffi_type}", 0
+      adjust_value_out self.send("get_#{value_ffi_type}", 0)
     end
 
     def value_ffi_type
-      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
+      @value_ffi_type ||= case value_type
+                          when :gboolean
+                            :int
+                          else
+                            TypeMap.type_specification_to_ffitype value_type
+                          end
     end
 
     def self.for type
@@ -41,9 +46,18 @@ module GirFFI
     def adjust_value_in value
       case @value_type
       when :gboolean
-        value
+        value ? 1 : 0
       else
         value || nil_value
+      end
+    end
+
+    def adjust_value_out value
+      case value_type
+      when :gboolean
+        value != 0
+      else
+        value
       end
     end
 
