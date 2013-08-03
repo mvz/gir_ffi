@@ -5,13 +5,12 @@ module GirFFI
     attr_reader :value_type
 
     def initialize value, type
-      @ffi_type = TypeMap.type_specification_to_ffitype type
       @value_type = type
 
       value = adjust_value_in value
 
-      ptr = AllocationHelper.safe_malloc(FFI.type_size @ffi_type)
-      ptr.send "put_#{@ffi_type}", 0, value
+      ptr = AllocationHelper.safe_malloc(FFI.type_size value_ffi_type)
+      ptr.send "put_#{value_ffi_type}", 0, value
 
       super ptr
     end
@@ -19,7 +18,11 @@ module GirFFI
     private :initialize
 
     def to_value
-      self.send "get_#{@ffi_type}", 0
+      self.send "get_#{value_ffi_type}", 0
+    end
+
+    def value_ffi_type
+      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
     end
 
     def self.for type
@@ -45,7 +48,7 @@ module GirFFI
     end
 
     def nil_value
-      @ffi_type == :pointer ? nil : 0
+      value_ffi_type == :pointer ? nil : 0
     end
   end
 end
