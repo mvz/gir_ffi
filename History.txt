@@ -1,3 +1,9 @@
+== 0.6.5 / 2013-08-03
+
+* Handle inline arrays of structs
+* Implement equality operator for container types
+* Fix element size calculation for GArray
+
 == 0.6.4 / 2013-06-30
 
 * Represent enum types by modules wrapping FFI::Enum
