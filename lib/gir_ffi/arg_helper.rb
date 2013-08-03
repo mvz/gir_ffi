@@ -113,6 +113,7 @@ module GirFFI
       when :gint32
         cast_pointer_to_int32 it
       else
+        # FIXME: Only handles symbolic types.
         it.address
       end
     end

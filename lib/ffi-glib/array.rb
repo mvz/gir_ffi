@@ -30,6 +30,7 @@ module GLib
     # Re-implementation of the g_array_index macro
     def index idx
       ptr = @struct[:data].get_pointer(idx * get_element_size)
+      # FIXME: Does not work for class-like values of element_type.
       GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
     end
 
