@@ -3,6 +3,15 @@ require 'gir_ffi_test_helper'
 require 'gir_ffi/in_out_pointer'
 
 describe GirFFI::InOutPointer do
+  describe ".new" do
+    it "wraps an existing pointer and a type" do
+      ptr = GirFFI::AllocationHelper.safe_malloc(FFI.type_size(:int32))
+      ptr.put_int32 0, 42
+      instance = GirFFI::InOutPointer.new :gint32, ptr
+      instance.to_value.must_equal 42
+    end
+  end
+
   describe "an instance created with .from" do
     before do
       @result = GirFFI::InOutPointer.from :gint32, 23
@@ -48,7 +57,7 @@ describe GirFFI::InOutPointer do
     end
   end
 
-  describe "::for" do
+  describe ".for" do
     it "handles :gboolean" do
       GirFFI::InOutPointer.for :gboolean
     end
