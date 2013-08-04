@@ -104,7 +104,7 @@ module GObject
 
       def for_g_type g_type
         return nil if g_type == TYPE_NONE
-        self.new.init g_type
+        self.new.tap {|it| it.init g_type }
       end
     end
 
