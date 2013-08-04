@@ -92,6 +92,16 @@ describe GirFFI::InOutPointer do
         assert_equal "Some value", ptr.to_value.read_string
       end
     end
+
+    describe "for struct values" do
+      it "returns a pointer to the held value" do
+        val = GObject::EnumValue.new
+        val.value = 3
+        ptr = GirFFI::InOutPointer.from GObject::EnumValue, val
+        result = ptr.to_value
+        GObject::EnumValue.wrap(result).value.must_equal 3
+      end
+    end
   end
 
   describe "#value_ffi_type" do

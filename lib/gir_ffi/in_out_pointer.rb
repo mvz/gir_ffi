@@ -9,7 +9,7 @@ module GirFFI
     def initialize type, ptr = nil
       @value_type = type
 
-      ptr ||= AllocationHelper.safe_malloc(FFI.type_size value_ffi_type)
+      ptr ||= AllocationHelper.safe_malloc(value_type_size)
       super ptr
     end
 
@@ -17,12 +17,26 @@ module GirFFI
 
     # TODO: Rename to get_value
     def to_value
-      adjust_value_out self.send("get_#{value_ffi_type}", 0)
+      case value_ffi_type
+      when Class
+        to_ptr
+      when Symbol
+        adjust_value_out self.send("get_#{value_ffi_type}", 0)
+      else
+        raise NotImplementedError
+      end
     end
 
     def set_value value
       value = adjust_value_in value
-      self.send "put_#{value_ffi_type}", 0, value
+      case value_ffi_type
+      when Class
+        self.put_bytes 0, value.to_ptr.read_bytes(value_type_size), 0, value_type_size
+      when Symbol
+        self.send "put_#{value_ffi_type}", 0, value
+      else
+        raise NotImplementedError
+      end
     end
 
     def value_ffi_type
@@ -32,6 +46,17 @@ module GirFFI
                           else
                             TypeMap.type_specification_to_ffitype value_type
                           end
+    end
+
+    def value_type_size
+      @value_type_size ||= case value_ffi_type
+                           when Class
+                             value_ffi_type.size
+                           when Symbol
+                             FFI.type_size value_ffi_type
+                           else
+                             raise NotImplementedError
+                           end
     end
 
     def self.for type
