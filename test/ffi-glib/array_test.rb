@@ -119,5 +119,16 @@ describe GLib::Array do
       arr.wont_be :==, other
     end
   end
-end
 
+  describe "#index" do
+    it "returns the proper element for an array of :gint32" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+      arr.index(2).must_equal 3
+    end
+
+    it "returns the proper element for an array of :utf8" do
+      arr = GLib::Array.from :utf8, ["a", "b", "c"]
+      arr.index(1).must_equal "b"
+    end
+  end
+end

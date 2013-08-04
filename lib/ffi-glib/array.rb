@@ -20,24 +20,37 @@ module GLib
       end
     end
 
-    def append_vals data
-      bytes = GirFFI::InPointer.from_array element_type, data
-      len = data.length
+    def append_vals ary
+      bytes = GirFFI::InPointer.from_array element_type, ary
+      len = ary.length
       Lib.g_array_append_vals(self, bytes, len)
       self
     end
 
     # Re-implementation of the g_array_index macro
     def index idx
-      ptr = @struct[:data].get_pointer(idx * get_element_size)
-      # FIXME: Does not work for class-like values of element_type.
-      GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
+      # TODO: Check idx < length
+      ptr = GirFFI::InOutPointer.new element_type, data + idx * get_element_size
+      case element_type
+      when :utf8
+        GirFFI::ArgHelper.ptr_to_utf8 ptr.to_value
+      else
+        ptr.to_value
+      end
     end
 
     def each
-      @struct[:len].times.each do |idx|
+      length.times.each do |idx|
         yield index(idx)
       end
+    end
+
+    def length
+      @struct[:len]
+    end
+
+    def data
+      @struct[:data]
     end
 
     def get_element_size
