@@ -135,5 +135,10 @@ describe GLib::Array do
       arr = GLib::Array.from :utf8, ["a", "b", "c"]
       arr.index(1).must_equal "b"
     end
+
+    it "returns the proper element for an array of :gboolean" do
+      arr = GLib::Array.from :gboolean, [true, false, true]
+      arr.index(1).must_equal false
+    end
   end
 end
