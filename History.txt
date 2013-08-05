@@ -1,3 +1,8 @@
+== 0.6.6 / 2013-08-05
+
+* Handle GArrays of booleans and structs
+* Improve handling of gbooleans
+
 == 0.6.5 / 2013-08-03
 
 * Handle inline arrays of structs
