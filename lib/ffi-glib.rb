@@ -4,7 +4,6 @@
 GirFFI.setup :GLib
 
 require 'ffi-glib/array'
-require 'ffi-glib/boolean'
 require 'ffi-glib/byte_array'
 require 'ffi-glib/hash_table'
 require 'ffi-glib/list'

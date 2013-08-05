@@ -1,3 +1,5 @@
+require 'ffi'
+
 module GLib
   # Implementation of gboolean
   class Boolean
