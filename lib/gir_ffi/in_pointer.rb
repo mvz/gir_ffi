@@ -8,6 +8,8 @@ module GirFFI
       case type
       when :utf8, :filename
         from_utf8_array ary
+      when :gboolean
+        from_boolean_array ary
       when Symbol
         from_basic_type_array type, ary
       when Class
@@ -45,6 +47,10 @@ module GirFFI
         ptr_ary = ary.map {|str| from_utf8 str}
         ptr_ary << nil
         from_basic_type_array :pointer, ptr_ary
+      end
+
+      def from_boolean_array ary
+        from_basic_type_array :int, ary.map {|val| val ? 1 : 0}
       end
 
       def from_interface_pointer_array ary

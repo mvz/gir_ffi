@@ -67,10 +67,15 @@ describe GLib::Array do
     assert_equal [1, 2, 3], arr.to_a
   end
 
-  describe "::from" do
-    it "creates a GArray from a Ruby array" do
+  describe ".from" do
+    it "creates a GArray from an array of :gint32" do
       arr = GLib::Array.from :gint32, [3, 2, 1]
-      assert_equal [3, 2, 1], arr.to_a
+      arr.data.read_array_of_int32(3).must_equal [3, 2, 1]
+    end
+
+    it "creates a GArray from an array of :gboolean" do
+      arr = GLib::Array.from :gboolean, [true, false, true]
+      arr.data.read_array_of_int(3).must_equal [1, 0, 1]
     end
 
     it "return its argument if given a GArray" do
