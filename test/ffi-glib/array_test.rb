@@ -140,5 +140,11 @@ describe GLib::Array do
       arr = GLib::Array.from :gboolean, [true, false, true]
       arr.index(1).must_equal false
     end
+
+    it "returns the proper element for an array of struct" do
+      vals = [1, 2, 3].map {|i| GObject::EnumValue.new.tap {|ev| ev.value = i} }
+      arr = GLib::Array.from GObject::EnumValue, vals
+      arr.index(1).value.must_equal 2
+    end
   end
 end

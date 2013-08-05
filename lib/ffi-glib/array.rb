@@ -34,8 +34,10 @@ module GLib
       case element_type
       when :utf8
         GirFFI::ArgHelper.ptr_to_utf8 ptr.to_value
-      else
+      when Symbol
         ptr.to_value
+      else
+        element_type.wrap ptr.to_value
       end
     end
 
