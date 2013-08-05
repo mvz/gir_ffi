@@ -34,10 +34,11 @@ hidden issues.
 (11:47:15 PM) ebassi: the rest is "nice to have"
 (11:47:37 PM) ebassi: oh, and probably GBinding - but that's just because I wrote it ;-)
 
-== Compatibility with all implementations.
+== Use FFI::DataConverter to automatically convert GObject types
 
-GirFFI is incompatible with Rubinius, but this is due to Rubinius' FFI
-implementation lagging behind the others.
+GirFFI now generates loads of Something.wrap(ptr) calls; Perhaps these can be
+replace by implementing to_native and from_native in ClassBase and including
+FFI::DataConverter.
 
 == See Also
 
