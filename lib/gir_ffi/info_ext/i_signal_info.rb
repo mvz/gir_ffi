@@ -65,6 +65,15 @@ module GirFFI
         end
         types.unshift(:pointer).push(:pointer)
       end
+
+      def return_ffi_type
+        result = super
+        if result == GLib::Boolean
+          :bool
+        else
+          result
+        end
+      end
     end
   end
 end

@@ -18,7 +18,7 @@ module GirFFI
       :array => :pointer,
       :utf8 => :pointer,
       :GType => gtype_type,
-      :gboolean => :bool,
+      :gboolean => GLib::Boolean,
       :gunichar => :uint32,
       :gint8 => :int8,
       :guint8 => :uint8,

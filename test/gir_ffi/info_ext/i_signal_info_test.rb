@@ -2,6 +2,7 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ISignalInfo do
   let(:klass) { Class.new do
+    include GirFFI::InfoExt::ICallableInfo
     include GirFFI::InfoExt::ISignalInfo
   end }
   let(:signal_info) { klass.new }
@@ -53,6 +54,17 @@ describe GirFFI::InfoExt::ISignalInfo do
       should "have a second value with GType for TestSimpleBoxedA" do
         assert_equal Regress::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1).current_gtype
       end
+    end
+  end
+
+  describe "#return_ffi_type" do
+    # FIXME: This is needed because callbacks are limited in the accepted
+    # types. This should be fixed in FFI.
+    it "returns :bool for the :gboolean type" do
+      stub(return_type_info = Object.new).to_ffitype { GLib::Boolean }
+      stub(signal_info).return_type { return_type_info }
+
+      signal_info.return_ffi_type.must_equal :bool
     end
   end
 end
