@@ -21,7 +21,7 @@ module GirFFI
       when Class
         value_ffi_type.get_value_from_pointer(self)
       when Symbol
-        adjust_value_out self.send("get_#{value_ffi_type}", 0)
+        self.send("get_#{value_ffi_type}", 0)
       else
         raise NotImplementedError
       end
@@ -63,15 +63,6 @@ module GirFFI
         value
       else
         value || nil_value
-      end
-    end
-
-    def adjust_value_out value
-      case value_type
-      when :gboolean
-        value != 0
-      else
-        value
       end
     end
 
