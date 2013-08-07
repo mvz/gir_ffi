@@ -28,7 +28,6 @@ module GirFFI
     end
 
     def set_value value
-      value = adjust_value_in value
       case value_ffi_type
       when Class
         value_ffi_type.copy_value_to_pointer(value, self)
@@ -37,6 +36,10 @@ module GirFFI
       else
         raise NotImplementedError
       end
+    end
+
+    def clear
+      set_value nil_value
     end
 
     def value_ffi_type
@@ -48,7 +51,7 @@ module GirFFI
     end
 
     def self.for type
-      self.new(type).tap {|ptr| ptr.set_value nil}
+      self.new(type).tap {|ptr| ptr.clear}
     end
 
     def self.from type, value
@@ -56,15 +59,6 @@ module GirFFI
     end
 
     private
-
-    def adjust_value_in value
-      case value_type
-      when :gboolean
-        value
-      else
-        value || nil_value
-      end
-    end
 
     def nil_value
       value_ffi_type == :pointer ? nil : 0
