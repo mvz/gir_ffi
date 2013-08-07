@@ -42,14 +42,6 @@ module GirFFI
       set_value nil_value
     end
 
-    def value_ffi_type
-      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
-    end
-
-    def value_type_size
-      @value_type_size ||= FFI.type_size value_ffi_type
-    end
-
     def self.for type
       self.new(type).tap {|ptr| ptr.clear}
     end
@@ -59,6 +51,14 @@ module GirFFI
     end
 
     private
+
+    def value_ffi_type
+      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
+    end
+
+    def value_type_size
+      @value_type_size ||= FFI.type_size value_ffi_type
+    end
 
     def nil_value
       value_ffi_type == :pointer ? nil : 0

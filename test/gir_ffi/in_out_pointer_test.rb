@@ -103,11 +103,4 @@ describe GirFFI::InOutPointer do
       end
     end
   end
-
-  describe "#value_ffi_type" do
-    it "returns GLib::Boolean for the :gboolean value type" do
-      ptr = GirFFI::InOutPointer.from :gboolean, true
-      ptr.value_ffi_type.must_equal GLib::Boolean
-    end
-  end
 end
