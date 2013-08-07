@@ -4,3 +4,4 @@
 require 'gir_ffi-base/glib/boolean'
 require 'gir_ffi-base/glib/strv'
 require 'gir_ffi-base/gobject/lib'
+require 'gir_ffi-base/gir_ffi/struct'

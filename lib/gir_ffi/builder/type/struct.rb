@@ -24,7 +24,7 @@ module GirFFI
 
         # FIXME: Private method only in subclass
         def layout_superclass
-          FFI::Struct
+          GirFFI::Struct
         end
       end
     end

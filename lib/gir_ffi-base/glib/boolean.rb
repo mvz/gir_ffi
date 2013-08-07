@@ -4,7 +4,7 @@ module GLib
   # Implementation of gboolean
   class Boolean
     extend FFI::DataConverter
-    native_type :int #FFI::Type::INT
+    native_type FFI::Type::INT
 
     def self.from_native value, context
       value != 0 ? true : false
@@ -15,7 +15,7 @@ module GLib
     end
 
     def self.size
-      FFI.type_size self
+      FFI.type_size FFI::Type::INT
     end
 
     def self.copy_value_to_pointer value, pointer
