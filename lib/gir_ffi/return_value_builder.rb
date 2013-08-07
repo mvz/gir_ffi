@@ -38,19 +38,17 @@ module GirFFI
     private
 
     def post_conversion
-      raw = cvar
-
       if needs_constructor_wrap?
-        "self.constructor_wrap(#{raw})"
-      elsif needs_wrapping?
-        "#{argument_class_name}.wrap(#{conversion_arguments raw})"
+        "self.constructor_wrap(#{cvar})"
       else
         case specialized_type_tag
         when :utf8
           # TODO: Re-use methods in InOutPointer for this conversion
-          "GirFFI::ArgHelper.ptr_to_utf8(#{raw})"
+          "GirFFI::ArgHelper.ptr_to_utf8(#{cvar})"
         when :c
-          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{raw})"
+          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{cvar})"
+        else
+          "#{argument_class_name}.wrap(#{conversion_arguments cvar})"
         end
       end
     end
