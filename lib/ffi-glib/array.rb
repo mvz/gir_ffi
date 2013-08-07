@@ -31,13 +31,14 @@ module GLib
     def index idx
       # TODO: Check idx < length
       ptr = GirFFI::InOutPointer.new element_type, data + idx * get_element_size
+      bare_value = ptr.to_value
       case element_type
       when :utf8
-        GirFFI::ArgHelper.ptr_to_utf8 ptr.to_value
+        GirFFI::ArgHelper.ptr_to_utf8 bare_value
       when Symbol
-        ptr.to_value
+        bare_value
       else
-        element_type.wrap ptr.to_value
+        element_type.wrap bare_value
       end
     end
 
