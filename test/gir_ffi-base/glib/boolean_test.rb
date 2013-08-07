@@ -24,4 +24,10 @@ describe GLib::Boolean do
       GLib::Boolean.to_native(true, "whatever").must_equal 1
     end
   end
+
+  describe ".size" do
+    it "returns the correct type size" do
+      GLib::Boolean.size.must_equal FFI.type_size :int
+    end
+  end
 end

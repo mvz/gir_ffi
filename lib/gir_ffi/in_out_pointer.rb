@@ -19,7 +19,11 @@ module GirFFI
     def to_value
       case value_ffi_type
       when Class
-        to_ptr
+        if value_ffi_type < FFI::Struct
+          to_ptr
+        else
+          value_ffi_type.get_value_from_pointer(self)
+        end
       when Symbol
         adjust_value_out self.send("get_#{value_ffi_type}", 0)
       else
@@ -31,7 +35,12 @@ module GirFFI
       value = adjust_value_in value
       case value_ffi_type
       when Class
-        self.put_bytes 0, value.to_ptr.read_bytes(value_type_size), 0, value_type_size
+        # For struct types.
+        if value_ffi_type < FFI::Struct
+          self.put_bytes 0, value.to_ptr.read_bytes(value_type_size), 0, value_type_size
+        else
+          value_ffi_type.copy_value_to_pointer(value, self)
+        end
       when Symbol
         self.send "put_#{value_ffi_type}", 0, value
       else
@@ -40,12 +49,7 @@ module GirFFI
     end
 
     def value_ffi_type
-      @value_ffi_type ||= case value_type
-                          when :gboolean
-                            :int
-                          else
-                            TypeMap.type_specification_to_ffitype value_type
-                          end
+      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
     end
 
     def value_type_size
@@ -70,9 +74,9 @@ module GirFFI
     private
 
     def adjust_value_in value
-      case @value_type
+      case value_type
       when :gboolean
-        value ? 1 : 0
+        value
       else
         value || nil_value
       end
