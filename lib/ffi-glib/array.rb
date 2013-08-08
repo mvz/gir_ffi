@@ -82,8 +82,7 @@ module GLib
 
     def self.calculated_element_size type
       ffi_type = GirFFI::TypeMap.type_specification_to_ffitype(type)
-      # FIXME: Smell. Make struct ffi_types into DataConvertor?
-      FFI.type_size(ffi_type) rescue ffi_type.size
+      FFI.type_size(ffi_type)
     end
 
     def calculated_element_size
