@@ -149,5 +149,29 @@ describe GirFFI::InPointer do
       ptr.address.must_equal 1
     end
   end
-end
 
+  describe ".from_object" do
+    describe "when called with an object implementing to_ptr" do
+      it "returns the result of to_ptr" do
+        obj = Object.new
+        def obj.to_ptr; :test_value; end
+        GirFFI::InPointer.from_object(obj).must_equal :test_value
+      end
+    end
+
+    describe "when called with nil" do
+      it "returns nil" do
+        GirFFI::InPointer.from_object(nil).must_equal nil
+      end
+    end
+
+    describe "when called with a string" do
+      it "stores the string in GirFFI::ArgHelper::OBJECT_STORE" do
+        str = "Foo"
+        ptr = GirFFI::InPointer.from_object(str)
+        result = GirFFI::ArgHelper::OBJECT_STORE[ptr.address]
+        result.must_equal str
+      end
+    end
+  end
+end

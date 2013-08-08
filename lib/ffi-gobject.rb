@@ -78,7 +78,7 @@ module GObject
     callback = sig_info.signal_callback(&block)
     GirFFI::CallbackHelper.store_callback callback
 
-    data_ptr = GirFFI::ArgHelper.object_to_inptr data
+    data_ptr = GirFFI::InPointer.from_object data
 
     Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end

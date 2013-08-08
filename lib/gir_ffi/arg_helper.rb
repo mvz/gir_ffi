@@ -14,17 +14,6 @@ module GirFFI
       :gfloat, :gdouble
     ]
 
-    # FIXME: Hideous
-    # TODO: Move this implementation to InPointer
-    def self.object_to_inptr obj
-      return nil if obj.nil?
-      return obj.to_ptr if obj.respond_to? :to_ptr
-      return obj if obj.is_a? FFI::Pointer
-
-      FFI::Pointer.new(obj.object_id).tap {|ptr|
-        OBJECT_STORE[ptr.address] = obj }
-    end
-
     def self.ptr_to_typed_array type, ptr, size
       return [] if ptr.nil? or ptr.null?
 

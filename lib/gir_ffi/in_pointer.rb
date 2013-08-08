@@ -33,13 +33,21 @@ module GirFFI
       when Module
         self.new type[val]
       when :void
-        ArgHelper.object_to_inptr val
+        from_object val
       else
         raise NotImplementedError, type
       end
     end
 
     class << self
+      # FIXME: Hideous
+      def from_object obj
+        return nil if obj.nil?
+        return obj.to_ptr if obj.respond_to? :to_ptr
+
+        FFI::Pointer.new(obj.object_id).tap {|ptr|
+          ArgHelper::OBJECT_STORE[ptr.address] = obj }
+      end
 
       private
 
