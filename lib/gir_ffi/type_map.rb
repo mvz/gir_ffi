@@ -40,8 +40,11 @@ module GirFFI
     end
 
     def self.type_specification_to_ffitype type
-      if Module === type
+      case type
+      when Module
         type.to_ffitype
+      when Array
+        type[0]
       else
         map_basic_type(type)
       end

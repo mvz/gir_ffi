@@ -4,6 +4,10 @@ module GirFFI
       self::Enum[arg]
     end
 
+    def wrap arg
+      self[arg]
+    end
+
     def to_native *args
       self::Enum.to_native(*args)
     end

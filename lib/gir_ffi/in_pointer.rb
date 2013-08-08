@@ -52,9 +52,7 @@ module GirFFI
       private
 
       def from_utf8_array ary
-        ptr_ary = ary.map {|str| from_utf8 str}
-        ptr_ary << nil
-        from_basic_type_array :pointer, ptr_ary
+        from_basic_type_array :pointer, ary.map {|str| from_utf8 str}
       end
 
       def from_boolean_array ary
@@ -62,9 +60,7 @@ module GirFFI
       end
 
       def from_interface_pointer_array ary
-        ptr_ary = ary.map {|ifc| ifc.to_ptr}
-        ptr_ary << nil
-        from_basic_type_array :pointer, ptr_ary
+        from_basic_type_array :pointer, ary.map {|ifc| ifc.to_ptr}
       end
 
       def from_struct_array type, ary

@@ -14,19 +14,29 @@ module GLib
       @pointer
     end
 
+    def index idx
+      ptr = GirFFI::InOutPointer.new element_type, @pointer + idx * element_size
+      ptr.to_ruby_value
+    end
+
     def each &block
-      # TODO: Move implementation from GirFFI::ArgHelper to here.
-      # While doing so, the implentation could also become a real iterator
-      arr = GirFFI::ArgHelper.ptr_to_typed_array(@element_type, @pointer, @size)
-      if block_given?
-        arr.each(&block)
-      else
-        arr.each
+      size.times do |idx|
+        yield index(idx)
       end
     end
 
     def ==(other)
       self.to_a == other.to_a
+    end
+
+    private
+
+    def element_ffi_type
+      @element_ffi_type ||= GirFFI::TypeMap.type_specification_to_ffitype element_type
+    end
+
+    def element_size
+      @element_size ||= FFI.type_size element_ffi_type
     end
 
     def self.wrap element_type, size, pointer

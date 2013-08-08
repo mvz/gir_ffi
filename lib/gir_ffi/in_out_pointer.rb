@@ -22,6 +22,8 @@ module GirFFI
         value_ffi_type.get_value_from_pointer(self)
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
+      when FFI::Enum
+        self.get_int32 0
       else
         raise NotImplementedError
       end
@@ -35,6 +37,8 @@ module GirFFI
         GirFFI::ArgHelper.ptr_to_utf8 bare_value
       when Symbol
         bare_value
+      when Array
+        value_type[1].wrap bare_value
       else
         value_type.wrap bare_value
       end
