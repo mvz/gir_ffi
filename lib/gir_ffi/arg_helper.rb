@@ -80,10 +80,6 @@ module GirFFI
       end
     end
 
-    def self.allocate_array_of_type type, length
-      AllocationHelper.safe_malloc FFI.type_size(type) * length
-    end
-
     def self.object_pointer_to_object optr
       gtype = GObject.type_from_instance_pointer optr
       wrap_object_pointer_by_gtype optr, gtype
