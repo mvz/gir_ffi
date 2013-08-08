@@ -47,8 +47,8 @@ module GLib
     # Re-implementation of the g_ptr_array_index macro
     def index idx
       sz = FFI.type_size :pointer
-      ptr = @struct[:pdata].get_pointer(idx * sz)
-      GirFFI::ArgHelper.cast_from_pointer(element_type, ptr)
+      ptr = GirFFI::InOutPointer.new element_type, @struct[:pdata] + idx * sz
+      ptr.to_ruby_value
     end
 
     def each

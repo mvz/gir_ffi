@@ -27,6 +27,19 @@ module GirFFI
       end
     end
 
+    # Convert more fully to a ruby value than #to_value
+    def to_ruby_value
+      bare_value = to_value
+      case value_type
+      when :utf8
+        GirFFI::ArgHelper.ptr_to_utf8 bare_value
+      when Symbol
+        bare_value
+      else
+        value_type.wrap bare_value
+      end
+    end
+
     def set_value value
       case value_ffi_type
       when Class
