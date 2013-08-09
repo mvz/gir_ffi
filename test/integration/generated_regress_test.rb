@@ -1377,8 +1377,9 @@ describe Regress do
 
   it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
-    ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
+    ghash.to_hash.must_be :==, {"foo" => "bar",
+                                "baz" => "bat",
+                                "qux" => "quux"}
   end
 
   it "has a working function #test_ghash_gvalue_in" do
@@ -1395,25 +1396,29 @@ describe Regress do
   end
 
   it "has a working function #test_ghash_nothing_in" do
-    Regress.test_ghash_nothing_in({"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"})
+    Regress.test_ghash_nothing_in({"foo" => "bar",
+                                   "baz" => "bat",
+                                   "qux" => "quux"})
   end
 
   it "has a working function #test_ghash_nothing_in2" do
-    Regress.test_ghash_nothing_in2({"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"})
+    Regress.test_ghash_nothing_in2({"foo" => "bar",
+                                    "baz" => "bat",
+                                    "qux" => "quux"})
   end
 
   it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
-    ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
+    ghash.to_hash.must_be :==, {"foo" => "bar",
+                                "baz" => "bat",
+                                "qux" => "quux"}
   end
 
   it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
-    ghash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
+    ghash.to_hash.must_be :==, {"foo" => "bar",
+                                "baz" => "bat",
+                                "qux" => "quux"}
   end
 
   it "has a working function #test_ghash_null_in" do
