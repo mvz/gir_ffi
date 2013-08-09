@@ -54,8 +54,6 @@ module GObjectIntrospection
       :unresolved => IBaseInfo
     }
 
-    POINTER_SIZE = FFI.type_size(:pointer)
-
     def initialize
       @gobj = Lib::g_irepository_get_default
     end

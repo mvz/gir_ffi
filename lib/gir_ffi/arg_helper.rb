@@ -6,14 +6,6 @@ module GirFFI
   module ArgHelper
     OBJECT_STORE = {}
 
-    POINTER_SIZE = FFI.type_size(:pointer)
-
-    SIMPLE_G_TYPES = [
-      :gint8, :gint16, :gint, :gint32, :gint64,
-      :guint8, :guint16, :guint32, :guint64,
-      :gfloat, :gdouble
-    ]
-
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
     end
