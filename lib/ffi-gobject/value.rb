@@ -139,7 +139,7 @@ module GObject
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
-        GirFFI::ArgHelper.wrap_object_pointer_by_gtype boxed, gtype
+        boxed.wrap_by_gtype gtype
       end
     end
 

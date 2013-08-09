@@ -39,12 +39,6 @@ module GirFFI
       end
     end
 
-    def self.wrap_object_pointer_by_gtype optr, gtype
-      return nil if optr.null?
-      klass = Builder.build_by_gtype gtype
-      klass.direct_wrap optr
-    end
-
     def self.cast_from_pointer type, it
       case type
       when :utf8, :filename

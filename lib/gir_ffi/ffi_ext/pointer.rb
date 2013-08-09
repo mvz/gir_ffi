@@ -11,7 +11,13 @@ module GirFFI
 
       def to_object
         gtype = GObject.type_from_instance_pointer self
-        ArgHelper.wrap_object_pointer_by_gtype self, gtype
+        wrap_by_gtype gtype
+      end
+
+      def wrap_by_gtype gtype
+        return nil if self.null?
+        klass = Builder.build_by_gtype gtype
+        klass.direct_wrap self
       end
     end
   end
