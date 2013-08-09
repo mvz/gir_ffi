@@ -39,11 +39,6 @@ Thread.abort_on_exception = true
 class Minitest::Test
   include RR::Adapters::TestUnit
 
-  def assert_nothing_raised
-    yield
-    assert true
-  end
-
   def assert_not_nil it
     refute_nil it
   end

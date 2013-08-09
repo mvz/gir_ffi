@@ -104,11 +104,11 @@ describe GirFFI::Builder do
   end
 
   describe "building GObject::ValueArray" do
-    should "use provided constructor if present" do
+    # TODO: Odd test.
+    it "uses the provided constructor" do
       GirFFI::Builder.build_class get_introspection_data('GObject', 'ValueArray')
-      assert_nothing_raised {
-        GObject::ValueArray.new 2
-      }
+      GObject::ValueArray.new 2
+      pass
     end
   end
 
@@ -138,9 +138,9 @@ describe GirFFI::Builder do
       assert_defines_singleton_method Regress, :test_uint
     end
 
-    should "autocreate the TestObj class" do
+    it "autocreates the TestObj class on first access" do
       assert !Regress.const_defined?(:TestObj)
-      assert_nothing_raised {Regress::TestObj}
+      Regress::TestObj.must_be_instance_of Class
       assert Regress.const_defined? :TestObj
     end
 
@@ -157,16 +157,6 @@ describe GirFFI::Builder do
     before do
       save_module :Regress
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestObj')
-    end
-
-    should "make autocreated instance method available to all instances" do
-      o1 = Regress::TestObj.new_from_file("foo")
-      o2 = Regress::TestObj.new_from_file("foo")
-      o1.instance_method
-      Regress::TestObj.class_eval do
-        undef method_missing
-      end
-      assert_nothing_raised { o2.instance_method }
     end
 
     should "attach C functions to Regress::Lib" do
@@ -218,23 +208,20 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestSubObj')
     end
 
-    should "autocreate parent class' set_bare inside the parent class" do
+    # TODO: Odd test.
+    it "uses its superclass' set_bare method" do
       o1 = Regress::TestSubObj.new
       o2 = Regress::TestObj.new_from_file("foo")
 
-      assert_nothing_raised {o1.set_bare(nil)}
-
-      Regress::TestObj.class_eval do
-        undef method_missing
-      end
-
-      assert_nothing_raised {o2.set_bare(nil)}
+      o1.set_bare(nil)
+      o2.set_bare(nil)
+      pass
     end
 
-    should "use its own version of instance_method when parent's version has been created" do
+    it "overrides instance_method" do
       obj = Regress::TestObj.new_from_file("foo")
-      assert_equal(-1, obj.instance_method)
       subobj = Regress::TestSubObj.new
+      assert_equal(-1, obj.instance_method)
       assert_equal 0, subobj.instance_method
     end
 
@@ -255,7 +242,8 @@ describe GirFFI::Builder do
       end
 
       should "still use its own constructor" do
-        assert_nothing_raised { Gio::ThreadedSocketService.new 2 }
+        Gio::ThreadedSocketService.new 2
+        pass
       end
     end
 

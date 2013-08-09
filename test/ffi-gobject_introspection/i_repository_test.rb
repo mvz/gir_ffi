@@ -20,6 +20,7 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
+  # FIXME: Does not test #namespace
   describe "#namespace" do
     should "raise an error if the namespace doesn't exist" do
       assert_raises RuntimeError do
@@ -28,15 +29,13 @@ describe GObjectIntrospection::IRepository do
     end
 
     should "allow version to be nil" do
-      assert_nothing_raised do
-        GObjectIntrospection::IRepository.default.require 'GObject', nil
-      end
+      GObjectIntrospection::IRepository.default.require 'GObject', nil
+      pass
     end
 
     should "allow version to be left out" do
-      assert_nothing_raised do
-        GObjectIntrospection::IRepository.default.require 'GObject'
-      end
+      GObjectIntrospection::IRepository.default.require 'GObject'
+      pass
     end
   end
 

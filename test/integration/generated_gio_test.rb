@@ -7,12 +7,6 @@ describe "The generated Gio module" do
   end
 
   describe "#file_new_for_path, a method returning an interface," do
-    it "does not throw an error when generated" do
-      assert_nothing_raised {
-        Gio.file_new_for_path('/')
-      }
-    end
-
     it "returns an object of a more specific class" do
       file = Gio.file_new_for_path('/')
       refute_instance_of Gio::File, file

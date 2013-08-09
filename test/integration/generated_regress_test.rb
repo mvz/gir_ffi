@@ -391,11 +391,6 @@ describe Regress do
 
     let(:instance) { Regress::TestFundamentalSubObject.new "foo" }
 
-    it "can be instantiated" do
-      instance
-      pass
-    end
-
     it "is a subclass of TestFundamentalObject" do
       assert_kind_of Regress::TestFundamentalObject, instance
     end
@@ -405,9 +400,7 @@ describe Regress do
     end
 
     it "can access its parent class' fields directly" do
-      assert_nothing_raised do
-        instance.flags
-      end
+      instance.flags.must_equal 0
     end
 
     # NOTE: The following tests test fields and methods on the abstract parent
@@ -1175,7 +1168,8 @@ describe Regress do
   end
 
   it "has a working function #test_array_int_null_in" do
-    assert_nothing_raised { Regress.test_array_int_null_in nil }
+    Regress.test_array_int_null_in nil
+    pass
   end
 
   it "has a working function #test_array_int_null_out" do
@@ -1448,15 +1442,13 @@ describe Regress do
   end
 
   it "has a working function #test_glist_nothing_in" do
-    assert_nothing_raised {
-      Regress.test_glist_nothing_in ["1", "2", "3"]
-    }
+    Regress.test_glist_nothing_in ["1", "2", "3"]
+    pass
   end
 
   it "has a working function #test_glist_nothing_in2" do
-    assert_nothing_raised {
-      Regress.test_glist_nothing_in2 ["1", "2", "3"]
-    }
+    Regress.test_glist_nothing_in2 ["1", "2", "3"]
+    pass
   end
 
   it "has a working function #test_glist_nothing_return" do
@@ -1470,9 +1462,8 @@ describe Regress do
   end
 
   it "has a working function #test_glist_null_in" do
-    assert_nothing_raised {
-      Regress.test_glist_null_in nil
-    }
+    Regress.test_glist_null_in nil
+    pass
   end
 
   it "has a working function #test_glist_null_out" do
@@ -1492,15 +1483,13 @@ describe Regress do
   end
 
   it "has a working function #test_gslist_nothing_in" do
-    assert_nothing_raised {
-      Regress.test_gslist_nothing_in ["1", "2", "3"]
-    }
+    Regress.test_gslist_nothing_in ["1", "2", "3"]
+    pass
   end
 
   it "has a working function #test_gslist_nothing_in2" do
-    assert_nothing_raised {
-      Regress.test_gslist_nothing_in2 ["1", "2", "3"]
-    }
+    Regress.test_gslist_nothing_in2 ["1", "2", "3"]
+    pass
   end
 
   it "has a working function #test_gslist_nothing_return" do
@@ -1514,9 +1503,8 @@ describe Regress do
   end
 
   it "has a working function #test_gslist_null_in" do
-    assert_nothing_raised {
-      Regress.test_gslist_null_in nil
-    }
+    Regress.test_gslist_null_in nil
+    pass
   end
 
   it "has a working function #test_gslist_null_out" do
@@ -1753,9 +1741,8 @@ describe Regress do
   end
 
   it "has a working function #test_utf8_const_in" do
-    assert_nothing_raised do
-      Regress.test_utf8_const_in("const \xe2\x99\xa5 utf8")
-    end
+    Regress.test_utf8_const_in("const \xe2\x99\xa5 utf8")
+    pass
   end
 
   it "has a working function #test_utf8_const_return" do
@@ -1774,9 +1761,8 @@ describe Regress do
   end
 
   it "has a working function #test_utf8_null_in" do
-    assert_nothing_raised do
-      Regress.test_utf8_null_in nil
-    end
+    Regress.test_utf8_null_in nil
+    pass
   end
 
   it "has a working function #test_utf8_null_out" do
