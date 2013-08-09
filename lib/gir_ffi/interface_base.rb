@@ -9,7 +9,7 @@ module GirFFI
     end
 
     def wrap ptr
-      GirFFI::ArgHelper.object_pointer_to_object ptr
+      ptr.to_object
     end
   end
 end

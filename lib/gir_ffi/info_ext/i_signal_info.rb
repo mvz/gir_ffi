@@ -20,7 +20,7 @@ module GirFFI
 
       # TODO: Generate cast back methods using existing Argument builders.
       def cast_back_signal_arguments *arguments
-        instance = GirFFI::ArgHelper.object_pointer_to_object arguments.shift
+        instance = arguments.shift.to_object
         user_data = GirFFI::ArgHelper::OBJECT_STORE[arguments.pop.address]
 
         extra_arguments = self.args.zip(arguments).map do |info, arg|

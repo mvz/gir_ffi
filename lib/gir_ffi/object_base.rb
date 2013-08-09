@@ -20,7 +20,7 @@ module GirFFI
     # Wrap the passed pointer in an instance of its type's corresponding class,
     # generally assumed to be a descendant of the current type.
     def self.wrap ptr
-      GirFFI::ArgHelper.object_pointer_to_object ptr
+      ptr.to_object
     end
 
     #

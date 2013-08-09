@@ -39,11 +39,6 @@ module GirFFI
       end
     end
 
-    def self.object_pointer_to_object optr
-      gtype = GObject.type_from_instance_pointer optr
-      wrap_object_pointer_by_gtype optr, gtype
-    end
-
     def self.wrap_object_pointer_by_gtype optr, gtype
       return nil if optr.null?
       klass = Builder.build_by_gtype gtype
