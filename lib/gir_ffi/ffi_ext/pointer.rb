@@ -19,6 +19,16 @@ module GirFFI
         klass = Builder.build_by_gtype gtype
         klass.direct_wrap self
       end
+
+      if RUBY_VERSION < "1.9"
+        def to_utf8
+          null? ? nil : read_string
+        end
+      else
+        def to_utf8
+          null? ? nil : read_string.force_encoding("utf-8")
+        end
+      end
     end
   end
 end

@@ -391,7 +391,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = ArgHelper.ptr_to_utf8 _v1.to_value" ]
+        builder.post.must_equal [ "_v2 = _v1.to_value.to_utf8" ]
       end
     end
 

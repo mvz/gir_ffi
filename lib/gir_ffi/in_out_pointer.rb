@@ -34,7 +34,7 @@ module GirFFI
       bare_value = to_value
       case value_type
       when :utf8
-        GirFFI::ArgHelper.ptr_to_utf8 bare_value
+        bare_value.to_utf8
       when Symbol
         bare_value
       when Array

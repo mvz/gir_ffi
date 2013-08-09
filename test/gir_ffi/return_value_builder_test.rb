@@ -326,7 +326,7 @@ describe GirFFI::ReturnValueBuilder do
 
     it "converts the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GirFFI::ArgHelper.ptr_to_utf8(_v1)" ]
+      builder.post.must_equal [ "_v2 = _v1.to_utf8" ]
     end
 
     it "returns the converted result" do

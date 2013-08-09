@@ -32,7 +32,7 @@ module GirFFI
       when :interface
         map_interface_callback_arg arg, type
       when :utf8
-        ArgHelper.ptr_to_utf8 arg
+        arg.to_utf8
       when :void
         map_void_callback_arg arg
       when :array

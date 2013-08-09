@@ -14,16 +14,6 @@ module GirFFI
       :gfloat, :gdouble
     ]
 
-    if RUBY_VERSION < "1.9"
-      def self.ptr_to_utf8 ptr
-        ptr.null? ? nil : ptr.read_string
-      end
-    else
-      def self.ptr_to_utf8 ptr
-        ptr.null? ? nil : ptr.read_string.force_encoding("utf-8")
-      end
-    end
-
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
     end
@@ -42,7 +32,7 @@ module GirFFI
     def self.cast_from_pointer type, it
       case type
       when :utf8, :filename
-        ptr_to_utf8 it
+        it.to_utf8
       when :gint32
         cast_pointer_to_int32 it
       else

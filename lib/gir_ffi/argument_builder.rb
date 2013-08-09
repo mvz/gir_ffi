@@ -49,7 +49,7 @@ module GirFFI
         when :enum, :flags
           "#{argument_class_name}[#{output_conversion_arguments}]"
         when :utf8
-          "ArgHelper.ptr_to_utf8 #{callarg}.to_value"
+          "#{callarg}.to_value.to_utf8"
         else
           "#{argument_class_name}.wrap(#{output_conversion_arguments})"
         end
