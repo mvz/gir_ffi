@@ -128,7 +128,6 @@ module GirFFI
         when :utf8, :filename
           :strv
         else
-          # TODO: Check that array_type == :c
           :zero_terminated
         end
       end
