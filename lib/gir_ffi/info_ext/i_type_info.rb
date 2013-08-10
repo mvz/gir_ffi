@@ -51,14 +51,6 @@ module GirFFI
         tag == :interface && interface.info_type
       end
 
-      def flattened_array_type
-        if zero_terminated?
-          zero_terminated_array_type
-        else
-          array_type
-        end
-      end
-
       def subtype_tag_or_class_name index = 0
         param_type(index).tag_or_class_name
       end
@@ -121,7 +113,16 @@ module GirFFI
           return TypeMap.map_basic_type type_tag
         end
       end
+
       private
+
+      def flattened_array_type
+        if zero_terminated?
+          zero_terminated_array_type
+        else
+          array_type
+        end
+      end
 
       def zero_terminated_array_type
         case element_type
