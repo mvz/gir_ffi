@@ -149,7 +149,7 @@ describe GirFFI::ArgumentBuilder do
         stub(type_info).element_type { :foo }
       end
 
-      context "when allocated by the callee" do
+      describe "when allocated by the callee" do
         before do
           stub(argument_info).caller_allocates? { false }
         end
@@ -162,7 +162,7 @@ describe GirFFI::ArgumentBuilder do
         end
       end
 
-      context "when allocated by the caller" do
+      describe "when allocated by the caller" do
         before do
           stub(argument_info).caller_allocates? { true }
         end

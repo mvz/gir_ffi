@@ -36,7 +36,7 @@ describe GLib::SizedArray do
   end
 
   describe "::from" do
-    context "from a Ruby array" do
+    describe "from a Ruby array" do
       it "creates a GLib::SizedArray with the same elements" do
         arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
         arr.must_be_instance_of GLib::SizedArray
@@ -53,7 +53,7 @@ describe GLib::SizedArray do
       end
     end
 
-    context "from a GLib::SizedArray" do
+    describe "from a GLib::SizedArray" do
       it "return its argument" do
         arr = GLib::SizedArray.from :gint32, 3, [3, 2, 1]
         arr2 = GLib::SizedArray.from :gint32, 3, arr

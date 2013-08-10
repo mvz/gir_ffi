@@ -35,8 +35,8 @@ describe "The generated Gio module" do
     end
   end
 
-  context "the FileInfo class" do
-    context "an instance" do
+  describe "the FileInfo class" do
+    describe "an instance" do
       setup do
         file = Gio.file_new_for_path('/')
         @fileinfo = file.query_info "*", :none, nil

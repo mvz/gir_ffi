@@ -14,7 +14,7 @@ describe GObject do
     assert GObject.respond_to?('g_type_init') == false
   end
 
-  context "::type_init" do
+  describe ".type_init" do
     it "does not raise an error" do
       GObject.type_init
       pass

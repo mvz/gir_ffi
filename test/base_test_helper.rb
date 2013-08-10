@@ -81,8 +81,6 @@ end
 class Minitest::Spec
   class << self
     alias :setup :before
-    alias :teardown :after
     alias :should :it
-    alias :context :describe
   end
 end

@@ -90,14 +90,14 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
-    context "for a zero-terminated array" do
+    describe "for a zero-terminated array" do
       before do
         stub(type_info).tag { :array }
         stub(type_info).param_type(0) { elmtype_info }
         stub(type_info).zero_terminated? { true }
       end
 
-      context "of utf8" do
+      describe "of utf8" do
         it "returns :strv" do
           stub(elmtype_info).tag { :utf8 }
           stub(elmtype_info).pointer? { true }
@@ -106,7 +106,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
       end
 
-      context "of filename" do
+      describe "of filename" do
         it "returns :strv" do
           stub(elmtype_info).tag { :filename }
           stub(elmtype_info).pointer? { true }
@@ -115,7 +115,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
       end
 
-      context "of another type" do
+      describe "of another type" do
         it "returns :zero_terminated" do
           stub(elmtype_info).tag { :foo }
           stub(elmtype_info).pointer? { false }
@@ -192,7 +192,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         mock(GirFFI::Builder).build_class(iface_info) { interface }
       end
 
-      context "when the interface type is :enum" do
+      describe "when the interface type is :enum" do
         it "returns the interface's full class name" do
           stub(iface_info).info_type { :enum }
 
@@ -200,7 +200,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
       end
 
-      context "when the interface type is :object" do
+      describe "when the interface type is :object" do
         it "returns the string [:pointer, Foo::Bar]" do
           stub(iface_info).info_type { :object }
 
@@ -258,7 +258,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         mock(GirFFI::Builder).build_class(iface_info) { interface }
       end
 
-      context "when the interface type is :enum" do
+      describe "when the interface type is :enum" do
         it "returns the built interface module" do
           stub(iface_info).info_type { :enum }
 
@@ -266,7 +266,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
       end
 
-      context "when the interface type is :object" do
+      describe "when the interface type is :object" do
         it "returns an array with elements :pointer and built interface class" do
           stub(iface_info).info_type { :object }
 
@@ -274,7 +274,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
       end
 
-      context "when the interface type is :struct" do
+      describe "when the interface type is :struct" do
         it "returns the built interface class" do
           stub(iface_info).info_type { :struct }
 

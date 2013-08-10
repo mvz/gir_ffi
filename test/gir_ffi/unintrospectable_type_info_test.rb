@@ -10,7 +10,7 @@ describe GirFFI::UnintrospectableTypeInfo do
   end
 
   describe "#parent" do
-    context "when the GIR knows about the parent gtype" do
+    describe "when the GIR knows about the parent gtype" do
       it "finds the parent's info by gtype" do
         gobject = Object.new
         gir = Object.new
@@ -24,7 +24,7 @@ describe GirFFI::UnintrospectableTypeInfo do
       end
     end
 
-    context "when the GIR does not know about the parent gtype" do
+    describe "when the GIR does not know about the parent gtype" do
       it "creates a new UnintrospectableTypeInfo from the parent gtype" do
         gobject = Object.new
         gir = Object.new
