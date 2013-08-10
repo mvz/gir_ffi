@@ -11,12 +11,12 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
     end
 
-    should "create a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
+    it "creates a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
       expected = @gir.shared_library('GObject')
       assert_equal [expected], GObject::Lib.ffi_libraries.map(&:name)
     end
 
-    should "not replace existing classes" do
+    it "does not replace existing classes" do
       oldclass = GObject::Object
       GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
       assert_equal oldclass, GObject::Object
@@ -36,7 +36,7 @@ describe GirFFI::Builder do
       @go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
     end
 
-    should "define ffi callback types :Callback and :ClosureNotify" do
+    it "defines ffi callback types :Callback and :ClosureNotify" do
       Regress.setup_method 'test_callback_destroy_notify'
       tcud = Regress::Lib.find_type :TestCallbackUserData
       dn = GLib::Lib.find_type :DestroyNotify
@@ -65,18 +65,18 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestStructA')
     end
 
-    should "set up the correct struct members" do
+    it "sets up the correct struct members" do
       assert_equal [:some_int, :some_int8, :some_double, :some_enum],
         Regress::TestStructA::Struct.members
     end
 
-    should "set up struct members with the correct offset" do
+    it "sets up struct members with the correct offset" do
       info = @gir.find_by_name 'Regress', 'TestStructA'
       assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
         Regress::TestStructA::Struct.offsets
     end
 
-    should "set up struct members with the correct types" do
+    it "sets up struct members with the correct types" do
       tags = [:int, :int8, :double, Regress::TestEnum::Enum]
       assert_equal tags.map {|t| FFI.find_type t},
         Regress::TestStructA::Struct.layout.fields.map {|f| f.type}
@@ -88,17 +88,17 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('GObject', 'TypeCValue')
     end
 
-    should "set up the correct union members" do
+    it "sets up the correct union members" do
       assert_equal [:v_int, :v_long, :v_int64, :v_double, :v_pointer],
         GObject::TypeCValue::Struct.members
     end
 
-    should "set up union members with the correct offset" do
+    it "sets up union members with the correct offset" do
       assert_equal [0, 0, 0, 0, 0],
         GObject::TypeCValue::Struct.offsets.map {|o| o[1]}
     end
 
-    should "set up the inner class as derived from FFI::Union" do
+    it "sets up the inner class as derived from FFI::Union" do
       assert_equal FFI::Union, GObject::TypeCValue::Struct.superclass
     end
   end
@@ -117,11 +117,11 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestBoxed')
     end
 
-    should "set up #wrap" do
+    it "sets up #wrap" do
       assert Regress::TestBoxed.respond_to? "wrap"
     end
 
-    should "set up #allocate" do
+    it "sets up #allocate" do
       assert Regress::TestBoxed.respond_to? "allocate"
     end
   end
@@ -132,7 +132,7 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_module 'Regress'
     end
 
-    should "autocreate singleton methods" do
+    it "autocreates singleton methods" do
       refute_defines_singleton_method Regress, :test_uint
       Regress.test_uint 31
       assert_defines_singleton_method Regress, :test_uint
@@ -144,7 +144,7 @@ describe GirFFI::Builder do
       assert Regress.const_defined? :TestObj
     end
 
-    should "know its own module builder" do
+    it "knows its own module builder" do
       assert GirFFI::Builder::Module === Regress.gir_ffi_builder
     end
 
@@ -159,17 +159,17 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestObj')
     end
 
-    should "attach C functions to Regress::Lib" do
+    it "attaches C functions to Regress::Lib" do
       o = Regress::TestObj.new_from_file("foo")
       o.instance_method
       assert Regress::Lib.respond_to? :regress_test_obj_instance_method
     end
 
-    should "know its own GIR info" do
+    it "knows its own GIR info" do
       assert_equal 'TestObj', Regress::TestObj.gir_info.name
     end
 
-    should "know its own class builder" do
+    it "knows its own class builder" do
       assert GirFFI::Builder::Type::Base === Regress::TestObj.gir_ffi_builder
     end
 
@@ -241,7 +241,7 @@ describe GirFFI::Builder do
         Gio::SocketService.new
       end
 
-      should "still use its own constructor" do
+      it "still uses its own constructor" do
         Gio::ThreadedSocketService.new 2
         pass
       end

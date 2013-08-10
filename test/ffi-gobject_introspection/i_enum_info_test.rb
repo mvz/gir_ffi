@@ -8,7 +8,7 @@ describe GObjectIntrospection::IEnumInfo do
       @info = gir.find_by_name 'Regress', 'TestEnum'
     end
 
-    should "find a method by name" do
+    it "finds a method by name" do
       result = @info.find_method("param")
       result.name.must_equal "param"
     end

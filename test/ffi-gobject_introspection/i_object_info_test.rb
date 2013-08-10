@@ -8,7 +8,7 @@ describe GObjectIntrospection::IObjectInfo do
       @info = gir.find_by_name 'GObject', 'Object'
     end
 
-    should "find a vfunc by name" do
+    it "finds a vfunc by name" do
       @info.find_vfunc("finalize").wont_be_nil
     end
   end

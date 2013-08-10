@@ -42,7 +42,7 @@ describe "The generated Gio module" do
         @fileinfo = file.query_info "*", :none, nil
       end
 
-      should "hava a working #get_attribute_type method" do
+      it "has a working #get_attribute_type method" do
         type = @fileinfo.get_attribute_type "standard::display-name"
         assert_equal :string, type
       end

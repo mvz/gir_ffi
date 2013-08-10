@@ -6,7 +6,7 @@ describe GObject do
   end
 
   describe "::signal_emit" do
-    should "emit a signal" do
+    it "emits a signal" do
       a = 1
       o = Regress::TestSubObj.new
       callback = Proc.new { a = 2 }
@@ -15,7 +15,7 @@ describe GObject do
       assert_equal 2, a
     end
 
-    should "handle return values" do
+    it "handles return values" do
       s = Gio::SocketService.new
 
       argtypes = [:pointer, :pointer, :pointer, :pointer]
@@ -25,7 +25,7 @@ describe GObject do
       assert_equal true, rv.get_value
     end
 
-    should "pass in extra arguments" do
+    it "passes in extra arguments" do
       o = Regress::TestSubObj.new
       sb = Regress::TestSimpleBoxedA.new
       sb.some_int8 = 31
@@ -44,7 +44,7 @@ describe GObject do
       assert sb.equals(sb2)
     end
 
-    should "allow specifying signal detail" do
+    it "allows specifying signal detail" do
       a = 1
       o = Regress::TestSubObj.new
 
@@ -58,7 +58,7 @@ describe GObject do
   end
 
   describe "::signal_connect" do
-    should "install a signal handler" do
+    it "installs a signal handler" do
       a = 1
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "test") { a = 2 }
@@ -66,7 +66,7 @@ describe GObject do
       assert_equal 2, a
     end
 
-    should "pass user data to handler" do
+    it "passes user data to handler" do
       a = 1
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "test", 2) { |i, d| a = d }
@@ -74,7 +74,7 @@ describe GObject do
       assert_equal 2, a
     end
 
-    should "pass object to handler" do
+    it "passes object to handler" do
       o = Regress::TestSubObj.new
       o2 = nil
       GObject.signal_connect(o, "test") { |i, d| o2 = i }
@@ -83,28 +83,28 @@ describe GObject do
       assert_equal o.to_ptr, o2.to_ptr
     end
 
-    should "not allow connecting an invalid signal" do
+    it "does not allow connecting an invalid signal" do
       o = Regress::TestSubObj.new
       assert_raises RuntimeError do
         GObject.signal_connect(o, "not-really-a-signal") {}
       end
     end
 
-    should "handle return values" do
+    it "handles return values" do
       s = Gio::SocketService.new
       GObject.signal_connect(s, "incoming") { true }
       rv = GObject.signal_emit s, "incoming"
       assert_equal true, rv.get_value
     end
 
-    should "require a block" do
+    it "requires a block" do
       o = Regress::TestSubObj.new
       assert_raises ArgumentError do
         GObject.signal_connect o, "test"
       end
     end
 
-    should "allow specifying signal detail" do
+    it "allows specifying signal detail" do
       a = 1
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "notify::detail", 2) { |i, _, d| a = d }
@@ -128,11 +128,11 @@ describe GObject do
         GObject.signal_emit o, "test-with-static-scope-arg", sb
       end
 
-      should "move the user data argument" do
+      it "moves the user data argument" do
         assert_equal 2, @a
       end
 
-      should "pass on the extra arguments" do
+      it "passes on the extra arguments" do
         assert_instance_of Regress::TestSimpleBoxedA, @b
         assert_equal 23, @b.some_int
       end
