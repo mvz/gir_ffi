@@ -40,7 +40,7 @@ describe GObjectIntrospection::IRepository do
   end
 
   describe "enumerating the infos for GObject" do
-    setup do
+    before do
       @gir = GObjectIntrospection::IRepository.default
       @gir.require 'GObject', "2.0"
     end

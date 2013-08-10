@@ -113,7 +113,7 @@ describe GObject do
     end
 
     describe "connecting a signal with extra arguments" do
-      setup do
+      before do
         @a = nil
         @b = 2
 

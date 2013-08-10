@@ -2,7 +2,7 @@ require 'introspection_test_helper'
 
 describe GObjectIntrospection::IObjectInfo do
   describe "#find_vfunc" do
-    setup do
+    before do
       gir = GObjectIntrospection::IRepository.default
       gir.require 'GObject', nil
       @info = gir.find_by_name 'GObject', 'Object'

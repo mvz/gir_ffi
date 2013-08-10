@@ -1,7 +1,7 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder do
-  setup do
+  before do
     @gir = GObjectIntrospection::IRepository.default
   end
 
@@ -61,7 +61,7 @@ describe GirFFI::Builder do
   end
 
   describe "building Regress::TestStructA" do
-    setup do
+    before do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestStructA')
     end
 
@@ -84,7 +84,7 @@ describe GirFFI::Builder do
   end
 
   describe "building GObject::TypeCValue" do
-    setup do
+    before do
       GirFFI::Builder.build_class get_introspection_data('GObject', 'TypeCValue')
     end
 
@@ -113,7 +113,7 @@ describe GirFFI::Builder do
   end
 
   describe "building Regress::TestBoxed" do
-    setup do
+    before do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestBoxed')
     end
 
@@ -186,9 +186,6 @@ describe GirFFI::Builder do
     end
 
     describe "its #instance_method method" do
-      setup do
-      end
-
       it "is attached with the correct ffi types" do
         info = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
         mock(Regress::Lib).attach_function("regress_test_obj_instance_method",
@@ -237,7 +234,7 @@ describe GirFFI::Builder do
     end
 
     describe "when parent constructor has been called" do
-      setup do
+      before do
         Gio::SocketService.new
       end
 
@@ -319,7 +316,7 @@ describe GirFFI::Builder do
   end
 
   describe "looking at Regress.test_array_gint32_in" do
-    setup do
+    before do
       save_module :Regress
       GirFFI::Builder.build_module 'Regress'
       @go = get_introspection_data 'Regress', 'test_array_gint32_in'

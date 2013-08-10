@@ -31,7 +31,7 @@ describe GirFFI::InfoExt::ISignalInfo do
   describe "#signal_arguments_to_gvalue_array" do
     # TODO: Move to integration tests
     describe "the result of wrapping test-with-static-scope-arg" do
-      setup do
+      before do
         o = Regress::TestSubObj.new
         b = Regress::TestSimpleBoxedA.new
         sig = o.class.find_signal "test-with-static-scope-arg"

@@ -2,7 +2,7 @@ require 'gir_ffi_test_helper'
 
 # Tests generated methods and functions in the Gio namespace.
 describe "The generated Gio module" do
-  setup do
+  before do
     GirFFI.setup :Gio
   end
 
@@ -37,7 +37,7 @@ describe "The generated Gio module" do
 
   describe "the FileInfo class" do
     describe "an instance" do
-      setup do
+      before do
         file = Gio.file_new_for_path('/')
         @fileinfo = file.query_info "*", :none, nil
       end

@@ -350,7 +350,7 @@ describe Regress do
     end
 
     describe "an instance" do
-      setup do
+      before do
         @o = Regress::TestFloating.new
       end
 
@@ -823,7 +823,7 @@ describe Regress do
     end
 
     describe "an instance" do
-      setup do
+      before do
         @obj = Regress::TestSimpleBoxedA.new
         @obj.some_int = 4236
         @obj.some_int8 = 36
@@ -832,7 +832,7 @@ describe Regress do
       end
 
       describe "its equals method" do
-        setup do
+        before do
           @ob2 = Regress::TestSimpleBoxedA.new
           @ob2.some_int = 4236
           @ob2.some_int8 = 36
@@ -856,7 +856,7 @@ describe Regress do
       end
 
       describe "its copy method" do
-        setup do
+        before do
           @ob2 = @obj.copy
         end
 
@@ -1036,7 +1036,7 @@ describe Regress do
     end
 
     describe "an instance" do
-      setup do
+      before do
         @obj = instance
       end
 

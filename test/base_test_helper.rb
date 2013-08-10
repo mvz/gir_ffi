@@ -77,9 +77,3 @@ class Minitest::Test
     refute_includes methods, method, msg
   end
 end
-
-class Minitest::Spec
-  class << self
-    alias :setup :before
-  end
-end
