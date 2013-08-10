@@ -36,14 +36,13 @@ module GirFFI
       end
 
       def flattened_tag
-        type_tag = self.tag
-        case type_tag
+        case tag
         when :interface
           interface_type
         when :array
           flattened_array_type
         else
-          type_tag
+          tag
         end
       end
 

@@ -55,11 +55,11 @@ module GirFFI
 
     # TODO: Use class rather than class name
     def argument_class_name
-      case (tag = type_info.flattened_tag)
+      case specialized_type_tag
       when :struct, :union, :object, :interface, :enum, :flags
         type_info.interface_type_name
       else
-        TAG_TO_WRAPPER_CLASS_MAP[tag]
+        TAG_TO_WRAPPER_CLASS_MAP[specialized_type_tag]
       end
     end
 
