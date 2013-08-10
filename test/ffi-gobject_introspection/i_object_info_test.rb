@@ -9,7 +9,7 @@ describe GObjectIntrospection::IObjectInfo do
     end
 
     should "find a vfunc by name" do
-      assert_not_nil @info.find_vfunc("finalize")
+      @info.find_vfunc("finalize").wont_be_nil
     end
   end
 end
