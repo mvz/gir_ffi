@@ -1,5 +1,3 @@
-require 'gir_ffi-base/gir_ffi/library'
-
 module GObject
   module Lib
     extend GirFFI::Library

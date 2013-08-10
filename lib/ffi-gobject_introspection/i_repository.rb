@@ -23,7 +23,7 @@ require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 
 module GObjectIntrospection
-  GObject::Lib::g_type_init
+  GObject.type_init
 
   # The Gobject Introspection Repository. This class is the point of
   # access to the introspection typelibs.

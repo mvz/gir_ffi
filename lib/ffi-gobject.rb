@@ -13,10 +13,6 @@ require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/builder/type/user_defined'
 
 module GObject
-  def self.type_init
-    Lib::g_type_init
-  end
-
   def self.object_ref obj
     Lib::g_object_ref obj.to_ptr
   end
