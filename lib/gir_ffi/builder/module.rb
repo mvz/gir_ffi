@@ -26,10 +26,9 @@ module GirFFI
       return false if go.nil?
 
       modul = build_module
-      lib = modul.const_get(:Lib)
 
-      Builder.attach_ffi_function lib, go
-      definition = function_definition(go, lib)
+      Builder.attach_ffi_function libmodule, go
+      definition = function_definition go
       modul.class_eval definition
 
       true
@@ -92,7 +91,7 @@ module GirFFI
 
     def sub_builder info
       if info.info_type == :function
-        FunctionBuilder.new(info, libmodule)
+        FunctionBuilder.new info
       else
         Builder::Type.builder_for info
       end
@@ -108,8 +107,8 @@ module GirFFI
       info.info_type == :function ? info : nil
     end
 
-    def function_definition info, libmodule
-      FunctionBuilder.new(info, libmodule).generate
+    def function_definition info
+      FunctionBuilder.new(info).generate
     end
 
     def gir

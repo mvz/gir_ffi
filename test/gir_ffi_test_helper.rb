@@ -2,10 +2,6 @@ require 'introspection_test_helper'
 
 require 'gir_ffi'
 
-# Need a dummy module for some tests.
-module DummyLib
-end
-
 # Global sequence provider. Needed to make unique class names.
 class Sequence
   @@seq = 0

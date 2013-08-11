@@ -37,12 +37,8 @@ module GirFFI
           return data if data && data.method?
         end
 
-        def function_definition_builder go
-          FunctionBuilder.new(go, lib)
-        end
-
         def function_definition go
-          function_definition_builder(go).generate
+          FunctionBuilder.new(go).generate
         end
 
         def attach_and_define_method method, go, modul

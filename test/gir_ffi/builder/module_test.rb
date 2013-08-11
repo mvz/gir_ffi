@@ -6,9 +6,9 @@ describe GirFFI::Builder::Module do
       builder = GirFFI::Builder::Module.new "Foo"
 
       mock(fb = Object.new).generate { "function body" }
-      mock(GirFFI::FunctionBuilder).new("info", "lib") { fb }
+      mock(GirFFI::FunctionBuilder).new("info") { fb }
 
-      result = builder.send :function_definition, "info", "lib"
+      result = builder.send :function_definition, "info"
 
       assert_equal "function body", result
     end
@@ -18,7 +18,6 @@ describe GirFFI::Builder::Module do
     describe "for a :function argument" do
       it "creates a GirFFI::FunctionBuilder object" do
         builder = GirFFI::Builder::Module.new "Foo"
-        mock(builder).libmodule { DummyLib }
 
         stub(info = Object.new).info_type { :function }
 

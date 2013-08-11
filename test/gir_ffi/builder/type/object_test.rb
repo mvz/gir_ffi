@@ -53,7 +53,7 @@ describe GirFFI::Builder::Type::Object do
 
     it "delegates definition to FunctionBuilder" do
       code = @cbuilder.send :function_definition, @go
-      expected = GirFFI::FunctionBuilder.new(@go, Regress::Lib).generate
+      expected = GirFFI::FunctionBuilder.new(@go).generate
       assert_equal cws(expected), cws(code)
     end
 

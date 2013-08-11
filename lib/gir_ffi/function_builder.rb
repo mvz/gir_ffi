@@ -8,9 +8,8 @@ module GirFFI
   # Implements the creation of a Ruby function definition out of a GIR
   # IFunctionInfo.
   class FunctionBuilder
-    def initialize info, libmodule
+    def initialize info
       @info = info
-      @libmodule = libmodule
     end
 
     def generate
@@ -25,6 +24,10 @@ module GirFFI
     end
 
     private
+
+    def libmodule
+      Object.const_get(@info.safe_namespace)::Lib
+    end
 
     def link_array_length_arguments
       alldata = @argument_builders.dup << @return_value_builder
@@ -59,7 +62,7 @@ module GirFFI
     end
 
     def function_call
-      "#{capture}#{@libmodule}.#{@info.symbol} #{function_call_arguments.join(', ')}"
+      "#{capture}#{libmodule}.#{@info.symbol} #{function_call_arguments.join(', ')}"
     end
 
     def method_arguments
