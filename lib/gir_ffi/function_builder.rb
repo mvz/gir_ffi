@@ -80,8 +80,8 @@ module GirFFI
     end
 
     def capture
-      if (cv = @return_value_builder.cvar)
-        "#{cv} = "
+      if has_capture?
+        "#{@return_value_builder.callarg} = "
       else
         ""
       end
@@ -107,6 +107,10 @@ module GirFFI
 
     def has_return_values?
       !return_values.empty?
+    end
+
+    def has_capture?
+      @return_value_builder.is_relevant?
     end
   end
 end

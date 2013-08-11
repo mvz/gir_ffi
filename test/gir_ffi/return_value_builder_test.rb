@@ -361,8 +361,8 @@ describe GirFFI::ReturnValueBuilder do
       builder.post.must_equal []
     end
 
-    it "does not capture the result of the c function" do
-      builder.cvar.must_be_nil
+    it "marks itself as irrelevant" do
+      builder.is_relevant?.must_equal false
     end
 
     it "returns nothing" do

@@ -19,7 +19,7 @@ module GirFFI
         return <<-CODE
         def #{@info.name}
           struct = #{@struct_class}.new @struct.to_ptr
-          #{builder.cvar} = struct[#{field_symbol.inspect}]
+          #{builder.callarg} = struct[#{field_symbol.inspect}]
           #{builder.post.join("\n")}
           #{builder.retval}
         end

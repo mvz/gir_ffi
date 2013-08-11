@@ -20,11 +20,6 @@ module GirFFI
       nil
     end
 
-    # TODO: Rename
-    def cvar
-      callarg unless is_void_return_value?
-    end
-
     def retval
       if has_conversion?
         super
@@ -35,20 +30,24 @@ module GirFFI
       end
     end
 
+    def is_relevant?
+      !is_void_return_value?
+    end
+
     private
 
     def post_conversion
       if needs_constructor_wrap?
-        "self.constructor_wrap(#{cvar})"
+        "self.constructor_wrap(#{callarg})"
       else
         case specialized_type_tag
         when :utf8
-          "#{cvar}.to_utf8"
+          "#{callarg}.to_utf8"
         when :c
-          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{cvar})"
+          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{callarg})"
         else
           # TODO: Move conversion into InOutPointer
-          "#{argument_class_name}.wrap(#{conversion_arguments cvar})"
+          "#{argument_class_name}.wrap(#{conversion_arguments callarg})"
         end
       end
     end
