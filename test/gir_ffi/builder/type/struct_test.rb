@@ -4,11 +4,22 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builder::Type::Struct do
   describe "for a struct with a simple layout" do
     before do
+      module Foo
+        class Bar
+          class Struct
+
+          end
+        end
+        module Lib
+
+        end
+      end
       @field = Object.new
 
       @struct = Object.new
       stub(@struct).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
+      stub(@struct).safe_namespace { 'Foo' }
       stub(@struct).fields { [ @field ] }
 
       @builder = GirFFI::Builder::Type::Struct.new @struct
@@ -30,11 +41,11 @@ describe GirFFI::Builder::Type::Struct do
       stub(@field).field_type { type }
       stub(@field).name { "bar" }
       stub(@field).writable? { true }
+      stub(@field).container { @struct }
 
       stub(@struct).find_method { }
 
-      m = Module.new { module Lib; end }
-      stub(GirFFI::Builder).build_module('Foo') { m }
+      stub(GirFFI::Builder).build_module('Foo') { Foo }
 
       c = Class.new
       c::Struct = Class.new

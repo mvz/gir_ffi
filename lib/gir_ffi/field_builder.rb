@@ -6,10 +6,8 @@ require 'gir_ffi/setter_argument_info'
 module GirFFI
   # Creates field getter and setter code for a given IFieldInfo.
   class FieldBuilder
-    def initialize field_info, lib_module, struct_class
+    def initialize field_info
       @info = field_info
-      @libmodule = lib_module
-      @struct_class = struct_class
     end
 
     def getter_def
@@ -17,7 +15,7 @@ module GirFFI
 
       return <<-CODE
       def #{@info.name}
-        struct = #{@struct_class}.new @struct.to_ptr
+        struct = #{struct_class}.new @struct.to_ptr
         #{builder.callarg} = struct[#{field_symbol.inspect}]
         #{builder.post.join("\n")}
         #{builder.retval}
@@ -32,13 +30,31 @@ module GirFFI
       return <<-CODE
       def #{name}= #{builder.inarg}
         #{builder.pre.join("\n")}
-        struct = #{@struct_class}.new @struct.to_ptr
+        struct = #{struct_class}.new @struct.to_ptr
         struct[#{name.to_sym.inspect}] = #{builder.callarg}
       end
       CODE
     end
 
     private
+
+    attr_reader :info
+
+    def struct_class
+      container_class::Struct
+    end
+
+    def container_class
+      @container_class ||= container_module.const_get(container_info.safe_name)
+    end
+
+    def container_module
+      @container_module ||= Object.const_get(container_info.safe_namespace)
+    end
+
+    def container_info
+      @container_info ||= info.container
+    end
 
     def field_symbol
       @info.name.to_sym
