@@ -43,7 +43,7 @@ describe GirFFI::Builder::Type::Struct do
       stub(@field).writable? { true }
       stub(@field).container { @struct }
 
-      stub(@struct).find_method { }
+      stub(@struct).find_instance_method { }
 
       stub(GirFFI::Builder).build_module('Foo') { Foo }
 

@@ -85,7 +85,7 @@ module GirFFI
 
         def setup_accessors_for_property_info prop
           builder = Builder::Property.new prop
-          unless has_instance_method prop.getter_name
+          unless info.find_instance_method prop.getter_name
             @klass.class_eval builder.getter_def
           end
           @klass.class_eval builder.setter_def
