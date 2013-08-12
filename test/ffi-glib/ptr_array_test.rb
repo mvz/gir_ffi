@@ -94,4 +94,17 @@ describe GLib::PtrArray do
       arr.wont_be :==, other
     end
   end
+
+  describe "#index" do
+    it "returns the correct element" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+      arr.index(1).must_equal "2"
+    end
+
+    it "raises an error if the index is out of bounds" do
+      arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
+      lambda { arr.index(16) }.must_raise IndexError
+      lambda { arr.index(-1) }.must_raise IndexError
+    end
+  end
 end
