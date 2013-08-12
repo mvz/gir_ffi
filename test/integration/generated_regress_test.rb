@@ -565,8 +565,6 @@ describe Regress do
         instance.set_property("hash-table", {"foo" => 34, "bar" => 83})
 
         ht = instance.hash_table
-        ht.key_type = :utf8
-        ht.value_type = :gint32
 
         assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
       end

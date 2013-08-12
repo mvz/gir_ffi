@@ -8,9 +8,8 @@ module GLib
     include Enumerable
     extend ContainerClassMethods
 
-    # TODO: Restructure so these can become attr_readers.
-    attr_accessor :key_type
-    attr_accessor :value_type
+    attr_reader :key_type
+    attr_reader :value_type
 
     def each
       prc = Proc.new {|keyptr, valptr, userdata|
@@ -41,7 +40,7 @@ module GLib
     end
 
     def reset_typespec typespec
-      self.key_type, self.value_type = *typespec
+      @key_type, @value_type = *typespec
       self
     end
 
