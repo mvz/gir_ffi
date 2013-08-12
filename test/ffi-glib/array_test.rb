@@ -146,5 +146,11 @@ describe GLib::Array do
       arr = GLib::Array.from GObject::EnumValue, vals
       arr.index(1).value.must_equal 2
     end
+
+    it "raises an error if the index is out of bounds" do
+      arr = GLib::Array.from :gint32, [1, 2, 3]
+      lambda { arr.index(16) }.must_raise IndexError
+      lambda { arr.index(-1) }.must_raise IndexError
+    end
   end
 end

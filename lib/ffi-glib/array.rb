@@ -29,13 +29,15 @@ module GLib
 
     # Re-implementation of the g_array_index macro
     def index idx
-      # TODO: Check idx < length
+      if idx >= length or idx < 0
+        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
+      end
       ptr = GirFFI::InOutPointer.new element_type, data + idx * get_element_size
       ptr.to_ruby_value
     end
 
     def each
-      length.times.each do |idx|
+      length.times do |idx|
         yield index(idx)
       end
     end
