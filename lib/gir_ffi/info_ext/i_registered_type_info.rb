@@ -11,7 +11,7 @@ module GirFFI
       end
 
       def to_ffitype
-        to_type
+        to_type.to_ffitype
       end
 
       def to_type

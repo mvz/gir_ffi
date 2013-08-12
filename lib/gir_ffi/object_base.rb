@@ -44,5 +44,9 @@ module GirFFI
     def self.find_signal name
       gir_ffi_builder.find_signal name
     end
+
+    def self.to_ffitype
+      :pointer
+    end
   end
 end
