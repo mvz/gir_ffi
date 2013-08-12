@@ -60,6 +60,7 @@ module GObjectIntrospection
 
     def container
       ptr = Lib.g_base_info_get_container @gobj
+      Lib.g_base_info_ref ptr
       IRepository.wrap_ibaseinfo_pointer ptr
     end
 
