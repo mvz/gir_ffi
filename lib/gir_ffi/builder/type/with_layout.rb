@@ -1,4 +1,4 @@
-require 'gir_ffi/builder/field'
+require 'gir_ffi/field_builder'
 
 module GirFFI
   module Builder
@@ -38,7 +38,7 @@ module GirFFI
         end
 
         def setup_accessors_for_field_info finfo
-          builder = Builder::Field.new(finfo, lib, @structklass)
+          builder = FieldBuilder.new(finfo, lib, @structklass)
           unless has_instance_method finfo.name
             @klass.class_eval builder.getter_def
           end
