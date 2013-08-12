@@ -38,11 +38,7 @@ module GirFFI
         end
 
         def setup_accessors_for_field_info finfo
-          builder = FieldBuilder.new(finfo)
-          unless info.find_instance_method finfo.name
-            @klass.class_eval builder.getter_def
-          end
-          @klass.class_eval builder.setter_def if finfo.writable?
+          FieldBuilder.new(finfo).build
         end
 
         def setup_field_accessors

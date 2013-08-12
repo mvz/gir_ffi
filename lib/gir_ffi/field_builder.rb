@@ -10,6 +10,15 @@ module GirFFI
       @info = field_info
     end
 
+    def build
+      unless container_info.find_instance_method info.name
+        container_class.class_eval getter_def
+      end
+      container_class.class_eval setter_def if info.writable?
+    end
+
+    private
+
     def getter_def
       builder = return_value_builder
 
@@ -35,8 +44,6 @@ module GirFFI
       end
       CODE
     end
-
-    private
 
     attr_reader :info
 
