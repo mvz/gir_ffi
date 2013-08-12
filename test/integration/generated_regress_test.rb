@@ -223,17 +223,29 @@ describe Regress do
     before do
       skip unless get_introspection_data 'Regress', 'TestBoxedD'
     end
+
     it "creates an instance using #new" do
-      skip
+      instance = Regress::TestBoxedD.new "foo", 42
+      instance.must_be_instance_of Regress::TestBoxedD
     end
+
     it "has a working method #copy" do
-      skip
+      instance = Regress::TestBoxedD.new "foo", 42
+      copy = instance.copy
+      copy.must_be_instance_of Regress::TestBoxedD
+      instance.get_magic.must_equal copy.get_magic
+      instance.wont_equal copy
     end
+
     it "has a working method #free" do
-      skip
+      instance = Regress::TestBoxedD.new "foo", 42
+      instance.free
+      pass
     end
+
     it "has a working method #get_magic" do
-      skip
+      instance = Regress::TestBoxedD.new "foo", 42
+      instance.get_magic.must_equal "foo".length + 42
     end
   end
 
