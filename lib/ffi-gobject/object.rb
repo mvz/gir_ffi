@@ -1,14 +1,26 @@
-require 'ffi-gobject/ruby_style'
-
 module GObject
   load_class :Object
 
   # Overrides for GObject, GObject's generic base class.
   class Object
 
-    include RubyStyle
-
     setup_method "new"
+
+    # TODO: Generate accessor methods from GIR at class definition time
+    def method_missing(method, *args)
+      if respond_to?("get_#{method}")
+        return send("get_#{method}", *args)
+      end
+      if method.to_s =~ /(.*)=$/ && respond_to?("set_#{$1}")
+        return send("set_#{$1}", *args)
+      end
+      super
+    end
+
+    def signal_connect(event, &block)
+      GObject.signal_connect(self, event, &block)
+    end
+
     setup_instance_method "get_property"
     setup_instance_method "set_property"
 

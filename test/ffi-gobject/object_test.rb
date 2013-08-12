@@ -8,9 +8,40 @@ describe GObject::Object do
       assert_equal 1,
         GObject::Object.instance_method("get_property").arity
     end
+  end
 
-    it 'includes GObject::RubyStyle' do
-      assert GObject::Object.included_modules.include?(GObject::RubyStyle)
+  describe "automatic accessor methods" do
+    class AccessorTest < GObject::Object
+      def get_x
+        @x
+      end
+      def set_x(val)
+        @x = val
+      end
+    end
+
+    subject { AccessorTest.new GObject::TYPE_OBJECT, nil }
+
+    it 'reads x by calling get_x' do
+      subject.set_x(1)
+      assert_equal 1, subject.x
+    end
+
+    it 'writes x by calling set_x' do
+      subject.x = 2
+      assert_equal 2, subject.x
+    end
+  end
+
+  describe "#signal_connect" do
+    subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
+    it 'delegates to GObject' do
+      mock(GObject).signal_connect(subject, 'some-event')
+      subject.signal_connect('some-event') do
+        nothing
+      end
+
+      RR.verify
     end
   end
 end
