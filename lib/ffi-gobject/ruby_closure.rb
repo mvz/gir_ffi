@@ -37,7 +37,6 @@ module GObject
       return closure
     end
 
-    # TODO: Use invocation_hint and marshal_data
     def self.marshaller(closure, return_value, n_param_values,
                         param_values, _invocation_hint, _marshal_data)
       rclosure = wrap(closure.to_ptr)
