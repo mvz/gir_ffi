@@ -714,28 +714,13 @@ describe Regress do
     end
 
     it "has a working method #torture_signature_1" do
-      # TODO: Merge with below
-      skip
-    end
-
-    describe "its #torture_signature_1" do
-      it "works for m even" do
-        ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
-        assert_equal [true, -21, 2 * -21, "hello".length + 12],
-          [ret, y, z, q]
-      end
-
-      it "throws an exception for m odd" do
-        assert_raises RuntimeError do
-          instance.torture_signature_1(-21, "hello", 11)
-        end
+      ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
+      assert_equal [true, -21, 2 * -21, "hello".length + 12],
+        [ret, y, z, q]
+      assert_raises RuntimeError do
+        instance.torture_signature_1(-21, "hello", 11)
       end
     end
-
-    it "does not respond to #static_method" do
-      assert_raises(NoMethodError) { instance.static_method 1 }
-    end
-    # TODO: Test instance's fields and properies.
 
     describe "its 'test' signal" do
       it "properly passes its arguments" do
