@@ -9,15 +9,21 @@ class Listener
 
   def initialize
     @inside_class = false
+    @stack = []
+    @skip_state = []
   end
 
   attr_accessor :result
   attr_accessor :namespace
 
   def tag_start name, attrs
-    return if attrs['disguised'] == '1'
-    return if attrs['introspectable'] == '0'
-    return if attrs['glib:is-gtype-struct-for']
+    @stack.push [name, attrs]
+    if @skip_state.last || skippable?(attrs)
+      @skip_state.push true
+      return
+    else
+      @skip_state.push false
+    end
 
     obj_name = attrs['name']
     case name
@@ -25,25 +31,82 @@ class Listener
       result.puts "  it \"has the constant #{obj_name}\" do"
     when "record", "class", "enumeration", "bitfield", "interface", "union"
       result.puts "  describe \"#{namespace}::#{obj_name}\" do"
-      @inside_class = true
+      @inside_class = name
     when "constructor"
       result.puts "    it \"creates an instance using ##{obj_name}\" do"
+    when "field"
+      if @inside_class != 'class'
+        if attrs['writable'] == "1"
+          result.puts "    it \"has a writable field #{obj_name}\" do"
+        else
+          result.puts "    it \"has a read-only field #{obj_name}\" do"
+        end
+      end
     when "function", "method"
       spaces = @inside_class ? "  " : ""
       result.puts "  #{spaces}it \"has a working #{name} ##{obj_name}\" do"
     when "member"
       result.puts "    it \"has the member :#{obj_name}\" do"
-    when "type", "return-value", "parameters", "parameter", "doc", "array"
+    when "namespace"
+      result.puts "describe #{obj_name} do"
+    when "property"
+      result.puts "    describe \"its #{obj_name} property\" do"
+      result.puts "      it \"can be retrieved with #get_property\" do"
+      result.puts "      end"
+      result.puts "      it \"can be retrieved with ##{obj_name}\" do"
+      result.puts "      end"
+      if attrs['writable'] == '1'
+        result.puts "      it \"can be set with #set_property\" do"
+        result.puts "      end"
+        result.puts "      it \"can be set with ##{obj_name}=\" do"
+        result.puts "      end"
+      end
+    when "glib:signal"
+      result.puts "    it \"handles the '#{obj_name}' signal\" do"
+    when "type", "alias", "return-value", "parameters",
+      "instance-parameter", "parameter", "doc", "array",
+      "repository", "include", "package"
+      # Not printed"
     else
-      puts "Skipping #{name}"
+      puts "Skipping #{name}: #{attrs}"
     end
   end
 
   def tag_end name
+    org_name, _ = *@stack.pop
+    skipping = @skip_state.pop
+    raise "Expected #{org_name}, got #{name}" if org_name != name
+    return if skipping
+
     case name
-    when "record", "class", "enumeration", "bitfield", "interface", "union"
+    when "constant"
+      result.puts "  end"
+    when "record", "class", "enumeration", "bitfield",
+      "interface", "union"
+      result.puts "  end"
       @inside_class = false
+    when "function", "method"
+      if @inside_class
+        result.puts "    end"
+      else
+        result.puts "  end"
+      end
+    when "constructor", "member", "property", "glib:signal"
+      result.puts "    end"
+    when "field"
+      if @inside_class != 'class'
+        result.puts "    end"
+      end
+    when "namespace"
+      result.puts "end"
     end
+  end
+
+  def skippable? attrs
+    return true if attrs['disguised'] == '1'
+    return true if attrs['introspectable'] == '0'
+    return true if attrs['glib:is-gtype-struct-for']
+    false
   end
 end
 
