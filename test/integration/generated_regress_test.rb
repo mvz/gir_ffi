@@ -148,6 +148,15 @@ describe Regress do
   end
 
   describe "Regress::TestBoxed" do
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field nested_a" do
+      skip
+    end
+    it "has a writable field priv" do
+      skip
+    end
     it "creates an instance using #new" do
       tb = Regress::TestBoxed.new
       assert_instance_of Regress::TestBoxed, tb
@@ -192,6 +201,12 @@ describe Regress do
   end
 
   describe "Regress::TestBoxedB" do
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field some_long" do
+      skip
+    end
     it "creates an instance using #new" do
       tb = Regress::TestBoxedB.new 8, 42
       assert_instance_of Regress::TestBoxedB, tb
@@ -212,6 +227,12 @@ describe Regress do
   describe "Regress::TestBoxedC" do
     before do
       skip unless get_introspection_data 'Regress', 'TestBoxedC'
+    end
+    it "has a writable field refcount" do
+      skip
+    end
+    it "has a writable field another_thing" do
+      skip
     end
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
@@ -497,128 +518,6 @@ describe Regress do
       end
     end
 
-    describe "#get_property" do
-      it "gets the 'bare' property" do
-        obj = Regress::TestObj.new_from_file("bar")
-        instance.set_bare obj
-
-        obj2 = instance.get_property("bare")
-
-        assert_instance_of Regress::TestObj, obj2
-        obj2.must_equal obj
-      end
-
-      it "gets the 'boxed' property" do
-        tb = Regress::TestBoxed.new_alternative_constructor1 75
-        instance.set_property "boxed", tb
-
-        tb2 = instance.get_property("boxed")
-
-        assert_instance_of Regress::TestBoxed, tb2
-        assert_equal 75, tb2.some_int8
-      end
-
-      it "gets the 'hash-table' property" do
-        ht = GLib::HashTable.new :utf8, :gint8
-        ht.insert "foo", 34
-        ht.insert "bar", 83
-
-        instance.set_property "hash-table", ht
-
-        ht2 = instance.get_property "hash-table"
-        assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
-      end
-
-      it "gets the 'float' property" do
-        instance.set_property "float", 3.14
-        assert_in_epsilon 3.14, instance.get_property("float")
-      end
-
-      it "gets the 'double' property" do
-        instance.set_property "double", 3.14
-        assert_in_epsilon 3.14, instance.get_property("double")
-      end
-
-      it "gets the 'int' property" do
-        instance.set_property "int", 42
-        assert_equal 42, instance.get_property("int")
-      end
-
-      it "gets the 'list' property" do
-        lst = GLib::List.new(:utf8).append("foo").append("bar")
-
-        instance.set_property "list", lst
-
-        lst2 = instance.get_property "list"
-        lst2.must_be :==, ["foo", "bar"]
-      end
-
-      it "gets the 'string' property" do
-        instance.set_property "string", "foobar"
-        assert_equal "foobar", instance.get_property("string")
-      end
-    end
-
-    describe "#set_property" do
-      it "sets the 'bare' property" do
-        obj = Regress::TestObj.new_from_file("bar")
-        instance.set_property "bare", obj
-        instance.bare.must_equal obj
-      end
-
-      it "sets the 'boxed' property" do
-        tb = Regress::TestBoxed.new_alternative_constructor1 75
-        instance.set_property "boxed", tb
-        tb2 = instance.boxed
-        assert_equal 75, tb2.some_int8
-      end
-
-      it "sets the 'hash-table' property" do
-        instance.set_property("hash-table", {"foo" => 34, "bar" => 83})
-
-        ht = instance.hash_table
-
-        assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
-      end
-
-      it "sets the 'float' property" do
-        instance.set_property "float", 3.14
-        assert_in_epsilon 3.14, get_field_value(instance, :some_float)
-      end
-
-      it "sets the 'double' property" do
-        instance.set_property "double", 3.14
-        assert_in_epsilon 3.14, get_field_value(instance, :some_double)
-      end
-
-      it "sets the 'int' property" do
-        instance.set_property "int", 42
-        assert_equal 42, get_field_value(instance, :some_int8)
-      end
-
-      it "sets the 'list' property" do
-        instance.set_property "list", ["foo", "bar"]
-        instance.list.must_be :==, ["foo",  "bar"]
-      end
-
-      it "sets the 'string' property" do
-        instance.set_property "string", "foobar"
-        assert_equal "foobar", instance.string
-      end
-    end
-
-    describe "its 'int' property" do
-      it "is set with #int=" do
-        instance.int = 41
-        assert_equal 41, instance.get_property("int")
-      end
-
-      it "is retrieved with #int" do
-        instance.set_property "int", 43
-        assert_equal 43, instance.int
-      end
-    end
-
     it "has a reference count of 1" do
       assert_equal 1, ref_count(instance)
     end
@@ -722,17 +621,257 @@ describe Regress do
       end
     end
 
-    describe "its 'test' signal" do
-      it "properly passes its arguments" do
-        a = b = nil
-        o = Regress::TestSubObj.new
-        GObject.signal_connect(o, "test", 2) { |i, d| a = d; b = i }
-        GObject.signal_emit o, "test"
-        assert_equal [2, o], [a, b]
+    describe "its 'bare' property" do
+      it "can be retrieved with #get_property" do
+        obj = Regress::TestObj.new_from_file("bar")
+        instance.set_bare obj
+
+        obj2 = instance.get_property("bare")
+
+        assert_instance_of Regress::TestObj, obj2
+        obj2.must_equal obj
+      end
+      it "can be retrieved with #bare" do
+        skip
+      end
+      it "can be set with #set_property" do
+        obj = Regress::TestObj.new_from_file("bar")
+        instance.set_property "bare", obj
+        instance.bare.must_equal obj
+      end
+      it "can be set with #bare=" do
+        skip
       end
     end
 
-    # TODO: Test other signals.
+    describe "its 'boxed' property" do
+      it "can be retrieved with #get_property" do
+        tb = Regress::TestBoxed.new_alternative_constructor1 75
+        instance.set_property "boxed", tb
+
+        tb2 = instance.get_property("boxed")
+
+        assert_instance_of Regress::TestBoxed, tb2
+        assert_equal 75, tb2.some_int8
+      end
+      it "can be retrieved with #boxed" do
+        skip
+      end
+      it "can be set with #set_property" do
+        tb = Regress::TestBoxed.new_alternative_constructor1 75
+        instance.set_property "boxed", tb
+        tb2 = instance.boxed
+        assert_equal 75, tb2.some_int8
+      end
+      it "can be set with #boxed=" do
+        skip
+      end
+    end
+
+    describe "its 'double' property" do
+      it "can be retrieved with #get_property" do
+        instance.set_property "double", 3.14
+        assert_in_epsilon 3.14, instance.get_property("double")
+      end
+      it "can be retrieved with #double" do
+        skip
+      end
+      it "can be set with #set_property" do
+        instance.set_property "double", 3.14
+        assert_in_epsilon 3.14, get_field_value(instance, :some_double)
+      end
+      it "can be set with #double=" do
+        skip
+      end
+    end
+
+    describe "its 'float' property" do
+      it "can be retrieved with #get_property" do
+        instance.set_property "float", 3.14
+        assert_in_epsilon 3.14, instance.get_property("float")
+      end
+      it "can be retrieved with #float" do
+        skip
+      end
+      it "can be set with #set_property" do
+        instance.set_property "float", 3.14
+        assert_in_epsilon 3.14, get_field_value(instance, :some_float)
+      end
+      it "can be set with #float=" do
+        skip
+      end
+    end
+    describe "its 'gtype' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #gtype" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #gtype=" do
+        skip
+      end
+    end
+    describe "its 'hash-table' property" do
+      it "can be retrieved with #get_property" do
+        instance.set_property "hash-table", { "foo" => 34,
+                                              "bar" => 83 }
+
+        ht2 = instance.get_property "hash-table"
+        assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
+      end
+      it "can be retrieved with #hash-table" do
+        skip
+      end
+
+      it "can be set with #set_property" do
+        instance.set_property("hash-table", {"foo" => 34, "bar" => 83})
+
+        ht = instance.hash_table
+
+        assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
+      end
+      it "can be set with #hash-table=" do
+        skip
+      end
+    end
+    describe "its 'hash-table-old' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #hash-table-old" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #hash-table-old=" do
+        skip
+      end
+    end
+    describe "its 'int' property" do
+      it "can be retrieved with #get_property" do
+        instance.set_property "int", 42
+        assert_equal 42, instance.get_property("int")
+      end
+
+      it "can be retrieved with #int" do
+        instance.set_property "int", 43
+        assert_equal 43, instance.int
+      end
+
+      it "can be set with #set_property" do
+        instance.set_property "int", 42
+        assert_equal 42, get_field_value(instance, :some_int8)
+      end
+
+      it "can be set with #int=" do
+        instance.int = 41
+        assert_equal 41, instance.get_property("int")
+      end
+    end
+
+    describe "its 'list' property" do
+      it "can be retrieved with #get_property" do
+        lst = GLib::List.new(:utf8).append("foo").append("bar")
+
+        instance.set_property "list", lst
+
+        lst2 = instance.get_property "list"
+        lst2.must_be :==, ["foo", "bar"]
+      end
+      it "can be retrieved with #list" do
+        skip
+      end
+      it "can be set with #set_property" do
+        instance.set_property "list", ["foo", "bar"]
+        instance.list.must_be :==, ["foo",  "bar"]
+      end
+      it "can be set with #list=" do
+        skip
+      end
+    end
+    describe "its 'list-old' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #list-old" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #list-old=" do
+        skip
+      end
+    end
+
+    describe "its 'string' property" do
+      it "can be retrieved with #get_property" do
+        instance.set_property "string", "foobar"
+        assert_equal "foobar", instance.get_property("string")
+      end
+      it "can be retrieved with #string" do
+        skip
+      end
+      it "can be set with #set_property" do
+        instance.set_property "string", "foobar"
+        assert_equal "foobar", instance.string
+      end
+      it "can be set with #string=" do
+        skip
+      end
+    end
+    it "handles the 'all' signal" do
+      skip
+    end
+    it "handles the 'cleanup' signal" do
+      skip
+    end
+    it "handles the 'first' signal" do
+      skip
+    end
+    it "handles the 'sig-with-array-len-prop' signal" do
+      skip
+    end
+    it "handles the 'sig-with-array-prop' signal" do
+      skip
+    end
+    it "handles the 'sig-with-foreign-struct' signal" do
+      skip
+    end
+    it "handles the 'sig-with-hash-prop' signal" do
+      skip
+    end
+    it "handles the 'sig-with-int64-prop' signal" do
+      skip
+    end
+    it "handles the 'sig-with-intarray-ret' signal" do
+      skip
+    end
+    it "handles the 'sig-with-obj' signal" do
+      skip
+    end
+    it "handles the 'sig-with-strv' signal" do
+      skip
+    end
+    it "handles the 'sig-with-uint64-prop' signal" do
+      skip
+    end
+
+    it "handles the 'test' signal" do
+      a = b = nil
+      o = Regress::TestSubObj.new
+      GObject.signal_connect(o, "test", 2) { |i, d| a = d; b = i }
+      GObject.signal_emit o, "test"
+      assert_equal [2, o], [a, b]
+    end
+    it "handles the 'test-with-static-scope-arg' signal" do
+      skip
+    end
   end
 
   describe "Regress::TestOtherError" do
@@ -779,12 +918,9 @@ describe Regress do
       instance.this_is_public_before.must_equal 42
     end
 
-    it "cannot read from field this_is_private" do
+    it "has a private field this_is_private" do
       skip "GIR identifies this field as readable"
       proc { instance.this_is_private }.must_raise NoMethodError
-    end
-
-    it "cannot write to field this_is_private" do
       proc { instance.this_is_private = 42 }.must_raise NoMethodError
     end
 
@@ -893,12 +1029,30 @@ describe Regress do
   end
 
   describe "Regress::TestSimpleBoxedB" do
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field nested_a" do
+      skip
+    end
     it "has a working method #copy" do
       skip
     end
   end
 
   describe "Regress::TestStructA" do
+    it "has a writable field some_int" do
+      skip
+    end
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field some_double" do
+      skip
+    end
+    it "has a writable field some_enum" do
+      skip
+    end
     it "has a working method #clone" do
       a = Regress::TestStructA.new
       a.some_int = 2556
@@ -920,6 +1074,12 @@ describe Regress do
   end
 
   describe "Regress::TestStructB" do
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field nested_a" do
+      skip
+    end
     it "has a working method #clone" do
       a = Regress::TestStructB.new
       a.some_int8 = 42
@@ -984,16 +1144,64 @@ describe Regress do
     end
   end
   describe "Regress::TestStructE__some_union__union" do
-    it "must be tested" do
+    it "has a writable field v_int" do
+      skip
+    end
+    it "has a writable field v_uint" do
+      skip
+    end
+    it "has a writable field v_long" do
+      skip
+    end
+    it "has a writable field v_ulong" do
+      skip
+    end
+    it "has a writable field v_int64" do
+      skip
+    end
+    it "has a writable field v_uint64" do
+      skip
+    end
+    it "has a writable field v_float" do
+      skip
+    end
+    it "has a writable field v_double" do
+      skip
+    end
+    it "has a writable field v_pointer" do
       skip
     end
   end
   describe "Regress::TestStructF" do
-    it "must be tested" do
+    it "has a writable field ref_count" do
+      skip
+    end
+    it "has a writable field data1" do
+      skip
+    end
+    it "has a writable field data2" do
+      skip
+    end
+    it "has a writable field data3" do
+      skip
+    end
+    it "has a writable field data4" do
+      skip
+    end
+    it "has a writable field data5" do
+      skip
+    end
+    it "has a writable field data6" do
       skip
     end
   end
   describe "Regress::TestStructFixedArray" do
+    it "has a writable field just_int" do
+      skip
+    end
+    it "has a writable field array" do
+      skip
+    end
     it "has a working method #frob" do
       skip
     end
@@ -1048,25 +1256,29 @@ describe Regress do
       assert_equal false, get_field_value(instance, :testbool)
     end
 
-    describe "an instance" do
+    describe "its 'testbool' property" do
       before do
         @obj = instance
       end
 
-      it "gets its boolean field with #get_property" do
+      it "can be retrieved with #get_property" do
         @obj.set_testbool true
         val = @obj.get_property "testbool"
         assert_equal true, val
       end
 
-      it "gets its boolean field with #testbool" do
+      it "can be retrieved with #testbool" do
         @obj.set_testbool true
         assert_equal true, @obj.testbool
         @obj.set_testbool false
         assert_equal false, @obj.testbool
       end
 
-      it "sets its boolean field with #testbool=" do
+      it "can be set with #set_property" do
+        skip
+      end
+
+      it "can be set with #testbool=" do
         @obj.testbool = true
         assert_equal true, @obj.testbool
         @obj.testbool = false
