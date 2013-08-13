@@ -636,23 +636,41 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_foreign_struct" do
-      skip
+      has_fired = false
+      instance.signal_connect "sig-with-foreign-struct" do |obj, cr|
+        has_fired = true
+        cr.must_be_instance_of Cairo::Context
+      end
+      instance.emit_sig_with_foreign_struct
+      assert has_fired
     end
 
     it "has a working method #emit_sig_with_int64" do
       skip "This does not work yet"
-      instance.signal_connect "sig-with-int64-prop" do |obj, int, ud|
+      instance.signal_connect "sig-with-int64-prop" do |obj, i, ud|
         int
       end
       instance.emit_sig_with_int64
     end
 
     it "has a working method #emit_sig_with_obj" do
-      skip
+      has_fired = false
+      instance.signal_connect "sig-with-obj" do |it, obj|
+        has_fired = true
+        obj.int.must_equal 3
+      end
+      instance.emit_sig_with_obj
+      assert has_fired
     end
+
     it "has a working method #emit_sig_with_uint64" do
-      skip
+      skip "This does not work yet"
+      instance.signal_connect "sig-with-uint64-prop" do |obj, i, ud|
+        i
+      end
+      instance.emit_sig_with_uint64
     end
+
     it "has a working method #forced_method" do
       skip
     end
