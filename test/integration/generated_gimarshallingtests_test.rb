@@ -8,36 +8,32 @@ GirFFI.setup :GIMarshallingTests
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
   describe "GIMarshallingTests::BoxedStruct" do
+    let(:instance) { GIMarshallingTests::BoxedStruct.new }
+
+    it "has a writable field long_" do
+      instance.long_ =  42
+      assert_equal 42, instance.long_
+      instance.long_ = 43
+      assert_equal 43, instance.long_
+    end
+
+    it "has a writable field string_" do
+      skip
+    end
+    it "has a writable field g_strv" do
+      instance.g_strv.must_be :==, []
+      instance.g_strv = ["foo", "bar"]
+      instance.g_strv.must_be :==, ["foo", "bar"]
+    end
     it "creates an instance using #new" do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
     end
 
-    let(:instance) { GIMarshallingTests::BoxedStruct.new }
-
     it "has a working method #inv" do
       instance.long_ = 42
       instance.inv
       pass
-    end
-
-    describe "an instance" do
-      before do
-        @bx = instance
-        @bx.long_ = 42
-      end
-
-      it "has a writable field long_" do
-        assert_equal 42, @bx.long_
-        @bx.long_ = 43
-        assert_equal 43, @bx.long_
-      end
-
-      it "has a writable field g_strv" do
-        @bx.g_strv.must_be :==, []
-        @bx.g_strv = ["foo", "bar"]
-        @bx.g_strv.must_be :==, ["foo", "bar"]
-      end
     end
 
     it "has a working function #inout" do
@@ -200,10 +196,14 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::NestedStruct" do
-    it "contains a SimpleStruct" do
-      ns = GIMarshallingTests::NestedStruct.new
+    let(:instance) { GIMarshallingTests::NestedStruct.new }
+    it "has a writable field simple_struct" do
       assert_instance_of GIMarshallingTests::SimpleStruct,
-        ns.simple_struct
+        instance.simple_struct
+      skip
+      new_struct = GIMarshallingTests::SimpleStruct.new
+      instance.simple_struct = new_struct
+      instance.simple_struct.must_equal new_struct
     end
   end
 
@@ -214,7 +214,7 @@ describe GIMarshallingTests do
     it "has the member :value2" do
       assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
     end
-    it "has the member :value3" do
+    it "has the member :value" do
       assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
     end
     it "has the member :mask" do
@@ -226,7 +226,9 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::NotSimpleStruct" do
-    it "must be tested"
+    it "has a writable field pointer" do
+      skip
+    end
   end
 
   it "has the constant OVERRIDES_CONSTANT" do
@@ -423,16 +425,21 @@ describe GIMarshallingTests do
       skip "Needs vfunc setup"
     end
 
-    it "has a property 'int' containing the argument to #new" do
-      assert_equal 42, instance.get_property("int")
-      instance.set_property("int", 13)
-      assert_equal 13, instance.get_property("int")
-    end
-
-    it "has property accessors for the int property" do
-      assert_equal 42, instance.int
-      instance.int = 1
-      assert_equal 1, instance.int
+    describe "its 'int' property" do
+      it "can be retrieved with #get_property" do
+        assert_equal 42, instance.get_property("int")
+      end
+      it "can be retrieved with #int" do
+        assert_equal 42, instance.int
+      end
+      it "can be set with #set_property" do
+        instance.set_property("int", 13)
+        assert_equal 13, instance.get_property("int")
+      end
+      it "can be set with #int=" do
+        instance.int = 1
+        assert_equal 1, instance.int
+      end
     end
   end
 
@@ -465,6 +472,9 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::OverridesStruct" do
     let(:instance) { GIMarshallingTests::OverridesStruct.new }
 
+    it "has a writable field long_" do
+      skip
+    end
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesStruct.new
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
@@ -493,6 +503,10 @@ describe GIMarshallingTests do
 
     let(:instance) { GIMarshallingTests::PointerStruct.new }
 
+    it "has a writable field long_" do
+      skip
+    end
+
     it "has a working method #inv" do
       instance.long_ = 42
       instance.inv
@@ -516,20 +530,230 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::PropertiesObject.new
       assert_instance_of GIMarshallingTests::PropertiesObject, ob
     end
-
-    it "has the property 'some-boolean'"
-    it "has the property 'some-boxed-struct'"
-    it "has the property 'some-char'"
-    it "has the property 'some-double'"
-    it "has the property 'some-float'"
-    it "has the property 'some-int'"
-    it "has the property 'some-int64'"
-    it "has the property 'some-long'"
-    it "has the property 'some-strv'"
-    it "has the property 'some-uchar'"
-    it "has the property 'some-uint'"
-    it "has the property 'some-uint64'"
-    it "has the property 'some-ulong'"
+    describe "its 'some-boolean' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-boolean" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-boolean=" do
+        skip
+      end
+    end
+    describe "its 'some-boxed-glist' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-boxed-glist" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-boxed-glist=" do
+        skip
+      end
+    end
+    describe "its 'some-boxed-struct' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-boxed-struct" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-boxed-struct=" do
+        skip
+      end
+    end
+    describe "its 'some-char' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-char" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-char=" do
+        skip
+      end
+    end
+    describe "its 'some-double' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-double" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-double=" do
+        skip
+      end
+    end
+    describe "its 'some-float' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-float" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-float=" do
+        skip
+      end
+    end
+    describe "its 'some-int' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-int" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-int=" do
+        skip
+      end
+    end
+    describe "its 'some-int64' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-int64" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-int64=" do
+        skip
+      end
+    end
+    describe "its 'some-long' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-long" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-long=" do
+        skip
+      end
+    end
+    describe "its 'some-object' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-object" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-object=" do
+        skip
+      end
+    end
+    describe "its 'some-strv' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-strv" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-strv=" do
+        skip
+      end
+    end
+    describe "its 'some-uchar' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-uchar" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-uchar=" do
+        skip
+      end
+    end
+    describe "its 'some-uint' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-uint" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-uint=" do
+        skip
+      end
+    end
+    describe "its 'some-uint64' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-uint64" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-uint64=" do
+        skip
+      end
+    end
+    describe "its 'some-ulong' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-ulong" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-ulong=" do
+        skip
+      end
+    end
+    describe "its 'some-variant' property" do
+      it "can be retrieved with #get_property" do
+        skip
+      end
+      it "can be retrieved with #some-variant" do
+        skip
+      end
+      it "can be set with #set_property" do
+        skip
+      end
+      it "can be set with #some-variant=" do
+        skip
+      end
+    end
   end
 
   describe "GIMarshallingTests::SecondEnum" do
@@ -549,6 +773,12 @@ describe GIMarshallingTests do
 
     let(:instance) { GIMarshallingTests::SimpleStruct.new }
 
+    it "has a writable field long_" do
+      skip
+    end
+    it "has a writable field int8" do
+      skip
+    end
     it "has a working method #inv" do
       instance.long_ = 6
       instance.int8 = 7
