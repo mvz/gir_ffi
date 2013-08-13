@@ -52,7 +52,7 @@ class Listener
     when "namespace"
       result.puts "describe #{obj_name} do"
     when "property"
-      result.puts "    describe \"its #{obj_name} property\" do"
+      result.puts "    describe \"its '#{obj_name}' property\" do"
       result.puts "      it \"can be retrieved with #get_property\" do"
       result.puts "      end"
       result.puts "      it \"can be retrieved with ##{obj_name}\" do"
