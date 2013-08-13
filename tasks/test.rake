@@ -36,7 +36,9 @@ class Listener
       result.puts "    it \"creates an instance using ##{obj_name}\" do"
     when "field"
       if @inside_class != 'class'
-        if attrs['writable'] == "1"
+        if attrs['private'] == "1"
+          result.puts "    it \"has a private field #{obj_name}\" do"
+        elsif attrs['writable'] == "1"
           result.puts "    it \"has a writable field #{obj_name}\" do"
         else
           result.puts "    it \"has a read-only field #{obj_name}\" do"
