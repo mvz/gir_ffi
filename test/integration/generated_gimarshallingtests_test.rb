@@ -18,8 +18,10 @@ describe GIMarshallingTests do
     end
 
     it "has a writable field string_" do
-      skip
+      instance.string_ = "foobar"
+      instance.string_.must_equal "foobar"
     end
+
     it "has a writable field g_strv" do
       instance.g_strv.must_be :==, []
       instance.g_strv = ["foo", "bar"]
@@ -473,8 +475,10 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::OverridesStruct.new }
 
     it "has a writable field long_" do
-      skip
+      instance.long_ = 43
+      instance.long_.must_equal 43
     end
+
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesStruct.new
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
@@ -488,11 +492,6 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::OverridesStruct.returnv
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
     end
-
-    it "has a writable field long_" do
-      instance.long_ = 43
-      instance.long_.must_equal 43
-    end
   end
 
   describe "GIMarshallingTests::PointerStruct" do
@@ -504,19 +503,15 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::PointerStruct.new }
 
     it "has a writable field long_" do
-      skip
+      assert_equal 0, instance.long_
+      instance.long_ = 1056
+      assert_equal 1056, instance.long_
     end
 
     it "has a working method #inv" do
       instance.long_ = 42
       instance.inv
       pass
-    end
-
-    it "has a writable field long_" do
-      assert_equal 0, instance.long_
-      instance.long_ = 1056
-      assert_equal 1056, instance.long_
     end
 
     it "has a working function #returnv" do
@@ -530,20 +525,29 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::PropertiesObject.new
       assert_instance_of GIMarshallingTests::PropertiesObject, ob
     end
+
+    let(:instance) { GIMarshallingTests::PropertiesObject.new }
+
     describe "its 'some-boolean' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-boolean").must_equal false
       end
+
       it "can be retrieved with #some-boolean" do
-        skip
+        instance.some_boolean.must_equal false
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property("some-boolean", true)
+        instance.get_property("some-boolean").must_equal true
       end
+
       it "can be set with #some-boolean=" do
-        skip
+        instance.some_boolean = true
+        instance.get_property("some-boolean").must_equal true
       end
     end
+
     describe "its 'some-boxed-glist' property" do
       it "can be retrieved with #get_property" do
         skip
