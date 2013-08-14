@@ -52,15 +52,16 @@ class Listener
     when "namespace"
       result.puts "describe #{obj_name} do"
     when "property"
+      accessor_name = obj_name.gsub(/-/, '_')
       result.puts "    describe \"its '#{obj_name}' property\" do"
       result.puts "      it \"can be retrieved with #get_property\" do"
       result.puts "      end"
-      result.puts "      it \"can be retrieved with ##{obj_name}\" do"
+      result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
       result.puts "      end"
       if attrs['writable'] == '1'
         result.puts "      it \"can be set with #set_property\" do"
         result.puts "      end"
-        result.puts "      it \"can be set with ##{obj_name}=\" do"
+        result.puts "      it \"can be set with ##{accessor_name}=\" do"
         result.puts "      end"
       end
     when "glib:signal"
