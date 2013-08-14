@@ -535,6 +535,8 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_foreign_struct" do
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'emit_sig_with_foreign_struct')
       has_fired = false
       instance.signal_connect "sig-with-foreign-struct" do |obj, cr|
         has_fired = true
