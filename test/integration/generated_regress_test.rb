@@ -725,7 +725,7 @@ describe Regress do
         ht2 = instance.get_property "hash-table"
         assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
       end
-      it "can be retrieved with #hash-table" do
+      it "can be retrieved with #hash_table" do
         skip
       end
 
@@ -736,7 +736,7 @@ describe Regress do
 
         assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
       end
-      it "can be set with #hash-table=" do
+      it "can be set with #hash_table=" do
         skip
       end
     end
@@ -744,13 +744,13 @@ describe Regress do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #hash-table-old" do
+      it "can be retrieved with #hash_table_old" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #hash-table-old=" do
+      it "can be set with #hash_table_old=" do
         skip
       end
     end
@@ -800,13 +800,13 @@ describe Regress do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #list-old" do
+      it "can be retrieved with #list_old" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #list-old=" do
+      it "can be set with #list_old=" do
         skip
       end
     end

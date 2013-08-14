@@ -533,7 +533,7 @@ describe GIMarshallingTests do
         instance.get_property("some-boolean").must_equal false
       end
 
-      it "can be retrieved with #some-boolean" do
+      it "can be retrieved with #some_boolean" do
         instance.some_boolean.must_equal false
       end
 
@@ -542,7 +542,7 @@ describe GIMarshallingTests do
         instance.get_property("some-boolean").must_equal true
       end
 
-      it "can be set with #some-boolean=" do
+      it "can be set with #some_boolean=" do
         instance.some_boolean = true
         instance.get_property("some-boolean").must_equal true
       end
@@ -552,13 +552,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-boxed-glist" do
+      it "can be retrieved with #some_boxed_glist" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-boxed-glist=" do
+      it "can be set with #some_boxed_glist=" do
         skip
       end
     end
@@ -566,13 +566,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-boxed-struct" do
+      it "can be retrieved with #some_boxed_struct" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-boxed-struct=" do
+      it "can be set with #some_boxed_struct=" do
         skip
       end
     end
@@ -580,13 +580,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-char" do
+      it "can be retrieved with #some_char" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-char=" do
+      it "can be set with #some_char=" do
         skip
       end
     end
@@ -594,13 +594,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-double" do
+      it "can be retrieved with #some_double" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-double=" do
+      it "can be set with #some_double=" do
         skip
       end
     end
@@ -608,13 +608,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-float" do
+      it "can be retrieved with #some_float" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-float=" do
+      it "can be set with #some_float=" do
         skip
       end
     end
@@ -622,13 +622,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-int" do
+      it "can be retrieved with #some_int" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-int=" do
+      it "can be set with #some_int=" do
         skip
       end
     end
@@ -636,13 +636,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-int64" do
+      it "can be retrieved with #some_int64" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-int64=" do
+      it "can be set with #some_int64=" do
         skip
       end
     end
@@ -650,13 +650,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-long" do
+      it "can be retrieved with #some_long" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-long=" do
+      it "can be set with #some_long=" do
         skip
       end
     end
@@ -664,13 +664,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-object" do
+      it "can be retrieved with #some_object" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-object=" do
+      it "can be set with #some_object=" do
         skip
       end
     end
@@ -678,13 +678,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-strv" do
+      it "can be retrieved with #some_strv" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-strv=" do
+      it "can be set with #some_strv=" do
         skip
       end
     end
@@ -692,13 +692,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-uchar" do
+      it "can be retrieved with #some_uchar" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-uchar=" do
+      it "can be set with #some_uchar=" do
         skip
       end
     end
@@ -706,13 +706,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-uint" do
+      it "can be retrieved with #some_uint" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-uint=" do
+      it "can be set with #some_uint=" do
         skip
       end
     end
@@ -720,13 +720,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-uint64" do
+      it "can be retrieved with #some_uint64" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-uint64=" do
+      it "can be set with #some_uint64=" do
         skip
       end
     end
@@ -734,13 +734,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-ulong" do
+      it "can be retrieved with #some_ulong" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-ulong=" do
+      it "can be set with #some_ulong=" do
         skip
       end
     end
@@ -748,13 +748,13 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         skip
       end
-      it "can be retrieved with #some-variant" do
+      it "can be retrieved with #some_variant" do
         skip
       end
       it "can be set with #set_property" do
         skip
       end
-      it "can be set with #some-variant=" do
+      it "can be set with #some_variant=" do
         skip
       end
     end
