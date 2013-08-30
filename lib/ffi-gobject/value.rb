@@ -131,15 +131,14 @@ module GObject
 
     def get_boxed_enhanced
       boxed = get_boxed
-      gtype = current_gtype
 
-      case gtype
+      case current_gtype
       when TYPE_STRV
         GLib::Strv.wrap boxed
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
-        boxed.wrap_by_gtype gtype
+        boxed.wrap_by_gtype current_gtype
       end
     end
 
