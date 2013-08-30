@@ -558,7 +558,7 @@ describe GIMarshallingTests do
       end
 
       it "can be set with #set_property" do
-        skip
+        instance.set_property("some-boxed-glist", [1, 2, 3])
       end
 
       it "can be set with #some_boxed_glist=" do

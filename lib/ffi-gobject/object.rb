@@ -34,11 +34,11 @@ module GObject
     end
 
     def set_property_with_override property_name, value
-      type = get_property_type property_name
-      gvalue = type.make_g_value
+      type_info = get_property_type property_name
+      pspec = type_class.find_property property_name
 
-      gvalue.set_value adjust_value_to_type(value, type)
-
+      gvalue = GObject::Value.for_g_type pspec.value_type
+      gvalue.set_value adjust_value_to_type(value, type_info)
       set_property_without_override property_name, gvalue
     end
 
