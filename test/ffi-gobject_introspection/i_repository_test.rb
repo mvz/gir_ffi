@@ -20,36 +20,37 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
+  let(:gir) { GObjectIntrospection::IRepository.default }
+
   describe "#require" do
     it "raises an error if the namespace doesn't exist" do
       assert_raises RuntimeError do
-        GObjectIntrospection::IRepository.default.require 'VeryUnlikelyGObjectNamespaceName', nil
+        gir.require 'VeryUnlikelyGObjectNamespaceName', nil
       end
     end
 
     it "allows version to be nil" do
-      GObjectIntrospection::IRepository.default.require 'GObject', nil
+      gir.require 'GObject', nil
       pass
     end
 
     it "allows version to be left out" do
-      GObjectIntrospection::IRepository.default.require 'GObject'
+      gir.require 'GObject'
       pass
     end
   end
 
   describe "enumerating the infos for GObject" do
     before do
-      @gir = GObjectIntrospection::IRepository.default
-      @gir.require 'GObject', "2.0"
+      gir.require 'GObject', "2.0"
     end
 
     it "yields more than one object" do
-      assert_operator @gir.n_infos('GObject'), :>, 0
+      assert_operator gir.n_infos('GObject'), :>, 0
     end
 
     it "yields IBaseInfo objects" do
-      assert_kind_of GObjectIntrospection::IBaseInfo, @gir.info('GObject', 0)
+      assert_kind_of GObjectIntrospection::IBaseInfo, gir.info('GObject', 0)
     end
   end
 end
