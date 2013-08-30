@@ -40,6 +40,12 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
+  describe "#find_by_gtype" do
+    it "raises an error if 0 is passed as the gtype" do
+      lambda { gir.find_by_gtype 0 }.must_raise ArgumentError
+    end
+  end
+
   describe "enumerating the infos for GObject" do
     before do
       gir.require 'GObject', "2.0"
