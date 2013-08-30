@@ -20,8 +20,7 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
-  # FIXME: Does not test #namespace
-  describe "#namespace" do
+  describe "#require" do
     it "raises an error if the namespace doesn't exist" do
       assert_raises RuntimeError do
         GObjectIntrospection::IRepository.default.require 'VeryUnlikelyGObjectNamespaceName', nil
