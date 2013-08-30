@@ -25,12 +25,12 @@ module GObject
     setup_instance_method "set_property"
 
     def get_property_with_override property_name
-      type = get_property_type property_name
-      gvalue = type.make_g_value
+      type_info = get_property_type property_name
+      pspec = type_class.find_property property_name
 
+      gvalue = GObject::Value.for_g_type pspec.value_type
       get_property_without_override property_name, gvalue
-
-      adjust_value_to_type gvalue.get_value, type
+      adjust_value_to_type gvalue.get_value, type_info
     end
 
     def set_property_with_override property_name, value
@@ -40,6 +40,10 @@ module GObject
       gvalue.set_value adjust_value_to_type(value, type)
 
       set_property_without_override property_name, gvalue
+    end
+
+    def type_class
+      GObject::ObjectClass.wrap(self.to_ptr.get_pointer 0)
     end
 
     alias get_property_without_override get_property
@@ -55,12 +59,12 @@ module GObject
       prop.property_type
     end
 
-    def adjust_value_to_type val, type
-      case type.tag
+    def adjust_value_to_type val, type_info
+      case type_info.tag
       when :ghash
-        GLib::HashTable.from type.element_type, val
+        GLib::HashTable.from type_info.element_type, val
       when :glist
-        GLib::List.from type.element_type, val
+        GLib::List.from type_info.element_type, val
       else
         val
       end

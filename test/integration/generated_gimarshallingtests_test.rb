@@ -550,14 +550,17 @@ describe GIMarshallingTests do
 
     describe "its 'some-boxed-glist' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-boxed-glist").must_equal nil
       end
+
       it "can be retrieved with #some_boxed_glist" do
         skip
       end
+
       it "can be set with #set_property" do
         skip
       end
+
       it "can be set with #some_boxed_glist=" do
         skip
       end
