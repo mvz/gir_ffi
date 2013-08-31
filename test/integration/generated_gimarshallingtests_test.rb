@@ -559,6 +559,7 @@ describe GIMarshallingTests do
 
       it "can be set with #set_property" do
         instance.set_property("some-boxed-glist", [1, 2, 3])
+        instance.get_property("some-boxed-glist").to_a.must_equal [1, 2, 3]
       end
 
       it "can be set with #some_boxed_glist=" do

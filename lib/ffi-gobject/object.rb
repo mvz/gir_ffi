@@ -30,7 +30,13 @@ module GObject
 
       gvalue = GObject::Value.for_g_type pspec.value_type
       get_property_without_override property_name, gvalue
-      adjust_value_to_type gvalue.get_value, type_info
+
+      case type_info.tag
+      when :ghash, :glist
+        adjust_value_to_type gvalue.get_value_plain, type_info
+      else
+        gvalue.get_value
+      end
     end
 
     def set_property_with_override property_name, value

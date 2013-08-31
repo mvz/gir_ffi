@@ -72,11 +72,20 @@ module GObject
       TYPE_FLOAT => :get_float,
       TYPE_DOUBLE => :get_double,
       TYPE_OBJECT => :get_object,
-      TYPE_BOXED => :get_boxed_enhanced,
+      TYPE_BOXED => :get_boxed,
       TYPE_POINTER => :get_pointer
     }
 
     def get_value
+      value = get_value_plain
+      if current_fundamental_type == TYPE_BOXED
+        wrap_boxed value
+      else
+        value
+      end
+    end
+
+    def get_value_plain
       send get_method
     end
 
@@ -129,9 +138,7 @@ module GObject
       end
     end
 
-    def get_boxed_enhanced
-      boxed = get_boxed
-
+    def wrap_boxed boxed
       case current_gtype
       when TYPE_STRV
         GLib::Strv.wrap boxed
