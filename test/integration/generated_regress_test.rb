@@ -148,15 +148,30 @@ describe Regress do
   end
 
   describe "Regress::TestBoxed" do
+    let(:instance) { Regress::TestBoxed.new }
+
     it "has a writable field some_int8" do
-      skip
+      instance.some_int8.must_equal 123
+      instance.some_int8 = -43
+      instance.some_int8.must_equal(-43)
     end
+
     it "has a writable field nested_a" do
-      skip
+      instance.nested_a.some_int.must_equal 0
+      nested = Regress::TestSimpleBoxedA.new
+      nested.some_int = 12345
+      instance.nested_a = nested
+      instance.nested_a.some_int.must_equal 12345
     end
+
     it "has a writable field priv" do
-      skip
+      instance.priv.wont_be_nil
+      other = Regress::TestBoxed.new
+      instance.priv.wont_equal other.priv
+      instance.priv = other.priv
+      instance.priv.must_equal other.priv
     end
+
     it "creates an instance using #new" do
       tb = Regress::TestBoxed.new
       assert_instance_of Regress::TestBoxed, tb
