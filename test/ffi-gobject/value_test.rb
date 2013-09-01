@@ -43,18 +43,18 @@ describe GObject::Value do
   end
 
   describe "#set_value" do
-    it "handles int64 values" do
-      value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_INT64
-      gv.set_value value
-      gv.get_int64.must_equal value
-    end
-
     it "handles char values" do
       value = 83
       gv = GObject::Value.for_g_type GObject::TYPE_CHAR
       gv.set_value value
       gv.get_char.must_equal value
+    end
+
+    it "handles int64 values" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.for_g_type GObject::TYPE_INT64
+      gv.set_value value
+      gv.get_int64.must_equal value
     end
 
     it "handles long values" do
@@ -85,17 +85,17 @@ describe GObject::Value do
       assert_equal true, result
     end
 
-    it "unwraps an int64" do
-      value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_INT64
-      gv.set_int64 value
-      gv.get_value.must_equal value
-    end
-
     it "unwraps a char" do
       value = 3
       gv = GObject::Value.for_g_type GObject::TYPE_CHAR
       gv.set_char value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps an int64" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.for_g_type GObject::TYPE_INT64
+      gv.set_int64 value
       gv.get_value.must_equal value
     end
 
