@@ -549,6 +549,12 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-boxed-glist' property" do
+      before do
+        skip unless get_property_introspection_data('GIMarshallingTests',
+                                                    'PropertiesObject',
+                                                    'some-boxed-glist')
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("some-boxed-glist").must_equal nil
       end
@@ -566,6 +572,7 @@ describe GIMarshallingTests do
         skip
       end
     end
+
     describe "its 'some-boxed-struct' property" do
       it "can be retrieved with #get_property" do
         skip

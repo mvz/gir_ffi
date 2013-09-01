@@ -26,9 +26,8 @@ module GirFFI
         end
 
         def find_property property_name
-          info.properties.each do |prop|
-            return prop if prop.name == property_name
-          end
+          prop = info.find_property property_name
+          return prop if prop
           if parent
             return superclass.find_property property_name
           end

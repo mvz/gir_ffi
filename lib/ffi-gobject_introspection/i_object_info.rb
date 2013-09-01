@@ -49,6 +49,12 @@ module GObjectIntrospection
     ##
     build_array_method :properties, :property
 
+    def find_property(name)
+      properties.find do |prop|
+        prop.name == name
+      end
+    end
+
     def get_n_methods
       Lib.g_object_info_get_n_methods @gobj
     end
