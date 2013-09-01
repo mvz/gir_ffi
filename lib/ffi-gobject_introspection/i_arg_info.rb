@@ -23,6 +23,10 @@ module GObjectIntrospection
       Lib.g_arg_info_may_be_null @gobj
     end
 
+    def skip?
+      Lib.g_arg_info_is_skip @gobj
+    end
+
     def ownership_transfer
       Lib.g_arg_info_get_ownership_transfer @gobj
     end

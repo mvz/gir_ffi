@@ -292,6 +292,10 @@ describe GirFFI::ArgumentBuilder do
   describe "for an argument with direction :inout" do
     let(:direction) { :inout }
 
+    before do
+      stub(argument_info).skip? { false }
+    end
+
     describe "for :enum" do
       before do
         stub(type_info).flattened_tag { :enum }
@@ -323,6 +327,10 @@ describe GirFFI::ArgumentBuilder do
     describe "for :gint32" do
       before do
         stub(type_info).flattened_tag { :gint32 }
+      end
+
+      it "has the correct value for inarg" do
+        builder.inarg.must_equal "foo"
       end
 
       it "has the correct value for #pre" do
@@ -439,5 +447,30 @@ describe GirFFI::ArgumentBuilder do
       end
     end
   end
-end
 
+  describe "for a skipped argument with direction :inout" do
+    let(:direction) { :inout }
+
+    before do
+      stub(argument_info).skip? { true }
+    end
+
+    describe "for :gint32" do
+      before do
+        stub(type_info).flattened_tag { :gint32 }
+      end
+
+      it "has the correct value for inarg" do
+        builder.inarg.must_be_nil
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal []
+      end
+    end
+  end
+end

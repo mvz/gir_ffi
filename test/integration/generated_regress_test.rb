@@ -624,8 +624,16 @@ describe Regress do
     end
 
     it "has a working method #skip_inout_param" do
-      skip
+      a = 1
+      c = 2.0
+      num1 = 3
+      num2 = 4
+      result, b, sum = instance.skip_inout_param a, c, num1, num2
+      result.must_equal true
+      b.must_equal a + 1
+      sum.must_equal num1 + 10 * num2
     end
+
     it "has a working method #skip_out_param" do
       skip
     end

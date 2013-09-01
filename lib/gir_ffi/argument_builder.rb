@@ -72,11 +72,11 @@ module GirFFI
     end
 
     def has_output_value?
-      @direction == :inout || @direction == :out
+      (@direction == :inout && !@arginfo.skip?) || @direction == :out
     end
 
     def has_input_value?
-      @direction == :inout || @direction == :in
+      (@direction == :inout && !@arginfo.skip?) || @direction == :in
     end
 
     def array_length_assignment
@@ -85,7 +85,7 @@ module GirFFI
     end
 
     def set_function_call_argument
-      value = if @direction == :out
+      value = if !has_input_value?
                 if is_caller_allocated_object?
                   if specialized_type_tag == :array
                     "#{argument_class_name}.new #{elm_t}"
