@@ -65,12 +65,15 @@ module GObject
       prop.property_type
     end
 
+    # TODO: Move to ITypeInfo
     def adjust_value_to_type val, type_info
-      case type_info.tag
+      case type_info.flattened_tag
       when :ghash
         GLib::HashTable.from type_info.element_type, val
       when :glist
         GLib::List.from type_info.element_type, val
+      when :strv
+        GLib::Strv.from val
       else
         val
       end

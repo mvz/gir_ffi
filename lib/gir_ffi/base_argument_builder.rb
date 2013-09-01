@@ -37,6 +37,7 @@ module GirFFI
       type_info.flattened_tag
     end
 
+    # TODO: Move to ITypeInfo
     TAG_TO_WRAPPER_CLASS_MAP = {
       :array => 'GLib::Array',
       :byte_array => 'GLib::ByteArray',
@@ -113,6 +114,7 @@ module GirFFI
 
     private
 
+    # TODO: Move (partially) to ITypeInfo
     def conversion_arguments name
       case specialized_type_tag
       when :utf8, :void

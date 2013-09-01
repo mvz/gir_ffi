@@ -749,18 +749,24 @@ describe GIMarshallingTests do
 
     describe "its 'some-strv' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-strv").must_be :==, []
       end
+
       it "can be retrieved with #some_strv" do
-        skip
+        instance.some_strv.must_be :==, []
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property("some-strv", ["foo", "bar"])
+        instance.get_property("some-strv").must_be :==, ["foo", "bar"]
       end
+
       it "can be set with #some_strv=" do
-        skip
+        instance.some_strv = ["foo", "bar"]
+        instance.some_strv.must_be :==, ["foo", "bar"]
       end
     end
+
     describe "its 'some-uchar' property" do
       it "can be retrieved with #get_property" do
         skip
