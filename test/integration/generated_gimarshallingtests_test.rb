@@ -849,16 +849,23 @@ describe GIMarshallingTests do
 
     describe "its 'some-variant' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-variant").must_be_nil
       end
+
       it "can be retrieved with #some_variant" do
-        skip
+        instance.some_variant.must_be_nil
       end
+
       it "can be set with #set_property" do
-        skip
+        value = GLib::Variant.new_string("Foo")
+        instance.set_property "some-variant", value
+        instance.get_property("some-variant").must_equal value
       end
+
       it "can be set with #some_variant=" do
-        skip
+        value = GLib::Variant.new_string("Foo")
+        instance.some_variant = value
+        instance.some_variant.must_equal value
       end
     end
   end

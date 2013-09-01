@@ -30,6 +30,7 @@ module GObject
       TYPE_UINT => :set_uint,
       TYPE_UINT64 => :set_uint64,
       TYPE_ULONG => :set_ulong,
+      TYPE_VARIANT => :set_variant,
     }
 
     def value= val
@@ -86,6 +87,7 @@ module GObject
       TYPE_UINT => :get_uint,
       TYPE_UINT64 => :get_uint64,
       TYPE_ULONG => :get_ulong,
+      TYPE_VARIANT => :get_variant,
     }
 
     def get_value

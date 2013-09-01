@@ -91,6 +91,14 @@ describe GObject::Value do
       gv.set_value value
       gv.get_ulong.must_equal value
     end
+
+    it "handles variant values" do
+      value = GLib::Variant.new_string("Foo")
+      gv = GObject::Value.for_g_type GObject::TYPE_VARIANT
+      gv.set_value value
+      gv.get_variant.must_equal value
+    end
+
   end
 
   describe "#get_value" do
@@ -152,6 +160,13 @@ describe GObject::Value do
       value = 0x1234_5678_9012_3456
       gv = GObject::Value.for_g_type GObject::TYPE_ULONG
       gv.set_ulong value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps a variant" do
+      value = GLib::Variant.new_string("Foo")
+      gv = GObject::Value.for_g_type GObject::TYPE_VARIANT
+      gv.set_variant value
       gv.get_value.must_equal value
     end
 
