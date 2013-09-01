@@ -22,14 +22,8 @@ module GObjectIntrospection
 
     ##
     build_array_method :get_methods
-
-    def find_method(name)
-      method_map[name]
-    end
-
-    def method_map
-      @method_map ||= Hash[get_methods.map {|mthd| [mthd.name, mthd] }]
-    end
+    # There is a function g_object_info_find_method but it causes a core dump.
+    build_finder_method :find_method, :get_n_methods, :get_method
 
     def size
       Lib.g_struct_info_get_size @gobj

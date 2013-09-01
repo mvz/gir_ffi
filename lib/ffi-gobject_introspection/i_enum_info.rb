@@ -20,10 +20,7 @@ module GObjectIntrospection
 
     ##
     build_array_method :get_methods
-
-    def find_method name
-      get_methods.find {|m| m.name == name}
-    end
+    build_finder_method :find_method, :get_n_methods, :get_method
 
     def storage_type
       Lib.g_enum_info_get_storage_type @gobj

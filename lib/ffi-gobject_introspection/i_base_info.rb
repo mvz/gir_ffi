@@ -56,23 +56,24 @@ module GObjectIntrospection
     # create an additional method +find_foo+ returning the foo with the
     # matching name.
     #
-    # Provide the second parameter if the plural is not trivially
-    # constructed by adding +s+ to the singular.
+    # Optionally provide counter and fetcher methods if they cannot be
+    # trivially derived from the finder method.
     #
     # Examples:
     #
     #   build_finder_method :find_field
-    #   build_finder_mehtod :find_property, :properties
+    #   build_finder_method :find_property, :n_properties
+    #   build_finder_method :find_method, :get_n_methods, :get_method
     #
-    def self.build_finder_method method, plural = nil
+    def self.build_finder_method method, counter = nil, fetcher = nil
       method = method.to_s
       single = method.sub(/^find_/, "")
-      plural ||= "#{single}s"
-      count ||= "n_#{plural}"
+      counter ||= "n_#{single}s"
+      fetcher ||= "#{single}"
       self.class_eval <<-CODE
         def #{method}(name)
-          (0..(#{count} - 1)).each do |i|
-            it = #{single}(i)
+          (0..(#{counter} - 1)).each do |i|
+            it = #{fetcher}(i)
             return it if it.name == name
           end
           nil
