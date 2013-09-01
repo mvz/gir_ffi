@@ -77,6 +77,13 @@ describe GObject::Value do
       gv.set_value value
       gv.get_uint.must_equal value
     end
+
+    it "handles uint64 values" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.for_g_type GObject::TYPE_UINT64
+      gv.set_value value
+      gv.get_uint64.must_equal value
+    end
   end
 
   describe "#get_value" do
@@ -124,6 +131,13 @@ describe GObject::Value do
       value = 0x1234_5678
       gv = GObject::Value.for_g_type GObject::TYPE_UINT
       gv.set_uint value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps an uint64" do
+      value = 0x1234_5678_9012_3456
+      gv = GObject::Value.for_g_type GObject::TYPE_UINT64
+      gv.set_uint64 value
       gv.get_value.must_equal value
     end
 

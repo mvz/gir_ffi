@@ -28,6 +28,7 @@ module GObject
       TYPE_STRING => :set_string,
       TYPE_UCHAR => :set_uchar,
       TYPE_UINT => :set_uint,
+      TYPE_UINT64 => :set_uint64,
     }
 
     def value= val
@@ -82,6 +83,7 @@ module GObject
       TYPE_STRING => :get_string,
       TYPE_UCHAR => :get_uchar,
       TYPE_UINT => :get_uint,
+      TYPE_UINT64 => :get_uint64,
     }
 
     def get_value
