@@ -583,18 +583,28 @@ describe GIMarshallingTests do
 
     describe "its 'some-boxed-struct' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-boxed-struct").must_equal nil
       end
+
       it "can be retrieved with #some_boxed_struct" do
-        skip
+        instance.some_boxed_struct.must_equal nil
       end
+
       it "can be set with #set_property" do
-        skip
+        boxed = GIMarshallingTests::BoxedStruct.new
+        boxed.long_ = 42
+        instance.set_property("some-boxed-struct", boxed)
+        instance.get_property("some-boxed-struct").long_.must_equal 42
       end
+
       it "can be set with #some_boxed_struct=" do
-        skip
+        boxed = GIMarshallingTests::BoxedStruct.new
+        boxed.long_ = 43
+        instance.some_boxed_struct = boxed
+        instance.some_boxed_struct.long_.must_equal 43
       end
     end
+
     describe "its 'some-char' property" do
       it "can be retrieved with #get_property" do
         skip
