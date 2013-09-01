@@ -3,10 +3,12 @@ require 'gir_ffi_test_helper'
 describe GirFFI::ReturnValueBuilder do
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:for_constructor) { "irrelevant" }
+  let(:for_constructor) { false }
+  let(:skip) { false }
   let(:builder) { GirFFI::ReturnValueBuilder.new(var_gen,
                                                  type_info,
-                                                 for_constructor) }
+                                                 for_constructor,
+                                                 skip) }
 
   before do
     stub(type_info).interface_type_name { 'Bar::Foo' }
@@ -354,6 +356,27 @@ describe GirFFI::ReturnValueBuilder do
   describe "for :void" do
     before do
       stub(type_info).flattened_tag { :void }
+      stub(type_info).pointer? { false }
+    end
+
+    it "has no statements in #post" do
+      builder.post.must_equal []
+    end
+
+    it "marks itself as irrelevant" do
+      builder.is_relevant?.must_equal false
+    end
+
+    it "returns nothing" do
+      builder.retval.must_be_nil
+    end
+  end
+
+  describe "for a skipped return value" do
+    let(:skip) { true }
+
+    before do
+      stub(type_info).flattened_tag { :uint32 }
       stub(type_info).pointer? { false }
     end
 

@@ -657,9 +657,19 @@ describe Regress do
       out_d.must_equal d + 1
       sum.must_equal num1 + 10 * num2
     end
+
     it "has a working method #skip_return_val" do
-      skip
+      a = 1
+      c = 2.0
+      d = 3
+      num1 = 4
+      num2 = 5
+      out_b, out_d, out_sum = instance.skip_return_val a, c, d, num1, num2
+      out_b.must_equal a + 1
+      out_d.must_equal d + 1
+      out_sum.must_equal num1 + 10 * num2
     end
+
     it "has a working method #skip_return_val_no_out" do
       skip
     end

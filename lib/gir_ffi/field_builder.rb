@@ -69,7 +69,7 @@ module GirFFI
 
     def return_value_builder
       vargen = VariableNameGenerator.new
-      @rv_builder ||= ReturnValueBuilder.new vargen, @info.field_type, false
+      @rv_builder ||= ReturnValueBuilder.new vargen, @info.field_type
     end
 
     def setter_builder

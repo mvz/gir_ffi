@@ -75,6 +75,7 @@ module GObjectIntrospection
     attach_function :g_callable_info_may_return_null, [:pointer], :bool
     attach_function :g_callable_info_get_n_args, [:pointer], :int
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
+    attach_function :g_callable_info_skip_return, [:pointer], :bool
 
     # IArgInfo
     enum :IDirection, [

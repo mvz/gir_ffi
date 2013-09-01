@@ -3,9 +3,10 @@ require 'gir_ffi/base_argument_builder'
 module GirFFI
   # Implements building post-processing statements for return values.
   class ReturnValueBuilder < BaseArgumentBuilder
-    def initialize var_gen, type_info, is_constructor
+    def initialize var_gen, type_info, is_constructor = false, skip = false
       super var_gen, nil, type_info, :return
       @is_constructor = is_constructor
+      @skip = skip
     end
 
     def post
@@ -23,15 +24,15 @@ module GirFFI
     def retval
       if has_conversion?
         super
-      elsif is_void_return_value?
-        nil
-      else
+      elsif is_relevant?
         callarg
+      else
+        nil
       end
     end
 
     def is_relevant?
-      !is_void_return_value?
+      !is_void_return_value? && !@skip
     end
 
     private
