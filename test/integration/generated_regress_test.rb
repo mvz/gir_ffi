@@ -216,18 +216,24 @@ describe Regress do
   end
 
   describe "Regress::TestBoxedB" do
+    let(:instance) { Regress::TestBoxedB.new 8, 42 }
+
     it "has a writable field some_int8" do
-      skip
+      instance.some_int8.must_equal 8
+      instance.some_int8 = -43
+      instance.some_int8.must_equal(-43)
     end
+
     it "has a writable field some_long" do
-      skip
+      instance.some_long.must_equal 42
+      instance.some_long = -4342
+      instance.some_long.must_equal(-4342)
     end
+
     it "creates an instance using #new" do
       tb = Regress::TestBoxedB.new 8, 42
       assert_instance_of Regress::TestBoxedB, tb
     end
-
-    let(:instance) { Regress::TestBoxedB.new 8, 42 }
 
     it "has a working method #copy" do
       cp = instance.copy
