@@ -23,6 +23,10 @@ class Minitest::Test
     get_introspection_data(namespace, klass).find_property name
   end
 
+  def get_field_introspection_data namespace, klass, name
+    get_introspection_data(namespace, klass).find_field name
+  end
+
   SAVED_MODULES = {}
 
   def save_module name

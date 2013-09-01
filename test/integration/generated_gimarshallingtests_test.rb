@@ -11,13 +11,14 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::BoxedStruct.new }
 
     it "has a writable field long_" do
-      instance.long_ =  42
+      instance.long_ = 42
       assert_equal 42, instance.long_
       instance.long_ = 43
       assert_equal 43, instance.long_
     end
 
     it "has a writable field string_" do
+      skip unless get_field_introspection_data("GIMarshallingTests", "BoxedStruct", "string_")
       instance.string_ = "foobar"
       instance.string_.must_equal "foobar"
     end
@@ -27,6 +28,7 @@ describe GIMarshallingTests do
       instance.g_strv = ["foo", "bar"]
       instance.g_strv.must_be :==, ["foo", "bar"]
     end
+
     it "creates an instance using #new" do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
