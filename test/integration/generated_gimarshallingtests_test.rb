@@ -230,8 +230,13 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::NotSimpleStruct" do
+    let(:instance) { GIMarshallingTests::NotSimpleStruct.new }
+
     it "has a writable field pointer" do
-      skip
+      instance.pointer.must_be_nil
+      nested = GIMarshallingTests::NestedStruct.new
+      instance.pointer = nested
+      instance.pointer.must_equal nested
     end
   end
 
