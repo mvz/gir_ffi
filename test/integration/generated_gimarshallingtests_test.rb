@@ -611,7 +611,7 @@ describe GIMarshallingTests do
       end
 
       it "can be retrieved with #some_char" do
-        skip
+        instance.some_char.must_equal 0
       end
 
       it "can be set with #set_property" do
@@ -620,7 +620,8 @@ describe GIMarshallingTests do
       end
 
       it "can be set with #some_char=" do
-        skip
+        instance.some_char = 43
+        instance.some_char.must_equal 43
       end
     end
     describe "its 'some-double' property" do
