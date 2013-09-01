@@ -647,18 +647,24 @@ describe GIMarshallingTests do
 
     describe "its 'some-float' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-float").must_equal 0.0
       end
+
       it "can be retrieved with #some_float" do
-        skip
+        instance.some_float.must_equal 0.0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property("some-float", 3.14)
+        instance.get_property("some-float").must_be_close_to 3.14
       end
+
       it "can be set with #some_float=" do
-        skip
+        instance.some_float = 3.14
+        instance.some_float.must_be_close_to 3.14
       end
     end
+
     describe "its 'some-int' property" do
       it "can be retrieved with #get_property" do
         skip
