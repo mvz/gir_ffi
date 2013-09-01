@@ -148,7 +148,7 @@ describe Regress do
   end
 
   describe "Regress::TestBoxed" do
-    let(:instance) { Regress::TestBoxed.new }
+    let(:instance) { Regress::TestBoxed.new_alternative_constructor1 123 }
 
     it "has a writable field some_int8" do
       instance.some_int8.must_equal 123
@@ -198,8 +198,6 @@ describe Regress do
     it "has non-zero positive result for #get_gtype" do
       assert Regress::TestBoxed.get_gtype > 0
     end
-
-    let(:instance) { Regress::TestBoxed.new_alternative_constructor1 123 }
 
     it "has a working method #copy" do
       tb2 = instance.copy
