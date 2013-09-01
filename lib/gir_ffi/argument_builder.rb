@@ -71,12 +71,16 @@ module GirFFI
       "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
     end
 
+    def skipped?
+      @arginfo.skip?
+    end
+
     def has_output_value?
-      (@direction == :inout || @direction == :out) && !@arginfo.skip?
+      (@direction == :inout || @direction == :out) && !skipped?
     end
 
     def has_input_value?
-      (@direction == :inout && !@arginfo.skip?) || @direction == :in
+      (@direction == :inout || @direction == :in) && !skipped?
     end
 
     def array_length_assignment
@@ -85,7 +89,9 @@ module GirFFI
     end
 
     def set_function_call_argument
-      value = if !has_input_value?
+      value = if skipped?
+                @direction == :in ? "0" : "nil"
+              elsif !has_input_value?
                 if is_caller_allocated_object?
                   if specialized_type_tag == :array
                     "#{argument_class_name}.new #{elm_t}"

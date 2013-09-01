@@ -10,6 +10,7 @@ describe GirFFI::ArgumentBuilder do
     stub(argument_info).name { 'foo' }
     stub(argument_info).argument_type { type_info }
     stub(argument_info).direction { direction }
+    stub(argument_info).skip? { false }
     stub(type_info).interface_type_name { 'Bar::Foo' }
   end
 
@@ -52,10 +53,6 @@ describe GirFFI::ArgumentBuilder do
 
   describe "for an argument with direction :out" do
     let(:direction) { :out }
-
-    before do
-      stub(argument_info).skip? { false }
-    end
 
     describe "for :enum" do
       before do
@@ -296,10 +293,6 @@ describe GirFFI::ArgumentBuilder do
   describe "for an argument with direction :inout" do
     let(:direction) { :inout }
 
-    before do
-      stub(argument_info).skip? { false }
-    end
-
     describe "for :enum" do
       before do
         stub(type_info).flattened_tag { :enum }
@@ -452,6 +445,32 @@ describe GirFFI::ArgumentBuilder do
     end
   end
 
+  describe "for a skipped argument with direction :in" do
+    let(:direction) { :in }
+
+    before do
+      stub(argument_info).skip? { true }
+    end
+
+    describe "for :gint32" do
+      before do
+        stub(type_info).flattened_tag { :gint32 }
+      end
+
+      it "has the correct value for inarg" do
+        builder.inarg.must_be_nil
+      end
+
+      it "has the correct value for #pre" do
+        builder.pre.must_equal [ "_v1 = 0" ]
+      end
+
+      it "has the correct value for #post" do
+        builder.post.must_equal []
+      end
+    end
+  end
+
   describe "for a skipped argument with direction :inout" do
     let(:direction) { :inout }
 
@@ -469,7 +488,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32" ]
+        builder.pre.must_equal [ "_v1 = nil" ]
       end
 
       it "has the correct value for #post" do
@@ -478,7 +497,7 @@ describe GirFFI::ArgumentBuilder do
     end
   end
 
-  describe "for a skipped argument with direction :inout" do
+  describe "for a skipped argument with direction :out" do
     let(:direction) { :out }
 
     before do
@@ -495,7 +514,7 @@ describe GirFFI::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32" ]
+        builder.pre.must_equal [ "_v1 = nil" ]
       end
 
       it "has the correct value for #post" do

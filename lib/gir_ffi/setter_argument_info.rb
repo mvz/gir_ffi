@@ -12,5 +12,9 @@ module GirFFI
     def direction
       :in
     end
+
+    def skip?
+      false
+    end
   end
 end
