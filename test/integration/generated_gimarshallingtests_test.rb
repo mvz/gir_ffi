@@ -204,10 +204,10 @@ describe GIMarshallingTests do
     it "has a writable field simple_struct" do
       assert_instance_of GIMarshallingTests::SimpleStruct,
         instance.simple_struct
-      skip
       new_struct = GIMarshallingTests::SimpleStruct.new
+      new_struct.int8 = 42
       instance.simple_struct = new_struct
-      instance.simple_struct.must_equal new_struct
+      instance.simple_struct.int8.must_equal 42
     end
   end
 

@@ -54,7 +54,7 @@ module GirFFI
         end
 
         def superclass
-          @superclass ||= ClassBase
+          ClassBase
         end
       end
     end

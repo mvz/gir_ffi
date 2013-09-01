@@ -1,6 +1,7 @@
 require 'gir_ffi/builder/type/registered_type'
 require 'gir_ffi/builder/type/with_layout'
 require 'gir_ffi/builder/type/with_methods'
+require 'gir_ffi/struct_base'
 
 module GirFFI
   module Builder
@@ -25,6 +26,10 @@ module GirFFI
         # FIXME: Private method only in subclass
         def layout_superclass
           GirFFI::Struct
+        end
+
+        def superclass
+          StructBase
         end
       end
     end

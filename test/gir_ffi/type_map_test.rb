@@ -7,9 +7,9 @@ describe GirFFI::TypeMap do
         must_equal GLib::DateMonth::Enum
     end
 
-    it "returns the nested FFI::Struct for an Struct module" do
+    it "returns the class itself for a Struct class" do
       GirFFI::TypeMap.type_specification_to_ffitype(GObject::EnumValue).
-        must_equal GObject::EnumValue::Struct
+        must_equal GObject::EnumValue
     end
   end
 end
