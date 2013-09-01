@@ -888,11 +888,17 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::SimpleStruct.new }
 
     it "has a writable field long_" do
-      skip
+      instance.long_.must_equal 0
+      instance.long_ = 1056
+      instance.long_.must_equal 1056
     end
+
     it "has a writable field int8" do
-      skip
+      instance.int8.must_equal 0
+      instance.int8 = -43
+      instance.int8.must_equal(-43)
     end
+
     it "has a working method #inv" do
       instance.long_ = 6
       instance.int8 = 7
@@ -905,18 +911,6 @@ describe GIMarshallingTests do
       instance.int8 = 7
       instance.method
       pass
-    end
-
-    it "has a writable field long_" do
-      assert_equal 0, instance.long_
-      instance.long_ = 1056
-      assert_equal 1056, instance.long_
-    end
-
-    it "has a writable field int8" do
-      assert_equal 0, instance.int8
-      instance.int8 = -43
-      assert_equal(-43, instance.int8)
     end
 
     it "has a working function #returnv" do
