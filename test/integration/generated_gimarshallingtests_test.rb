@@ -707,18 +707,24 @@ describe GIMarshallingTests do
 
     describe "its 'some-long' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-long").must_equal 0
       end
+
       it "can be retrieved with #some_long" do
-        skip
+        instance.some_long.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-long", 4242
+        instance.get_property("some-long").must_equal 4242
       end
+
       it "can be set with #some_long=" do
-        skip
+        instance.some_long = 4243
+        instance.some_long.must_equal 4243
       end
     end
+
     describe "its 'some-object' property" do
       it "can be retrieved with #get_property" do
         skip
