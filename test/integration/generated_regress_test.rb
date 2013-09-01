@@ -603,8 +603,10 @@ describe Regress do
     end
 
     it "has a working method #forced_method" do
-      skip
+      instance.forced_method
+      pass
     end
+
     it "has a working method #instance_method" do
       rv = instance.instance_method
       assert_equal(-1, rv)
