@@ -609,12 +609,16 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         instance.get_property("some-char").must_equal 0
       end
+
       it "can be retrieved with #some_char" do
         skip
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-char", 42
+        instance.get_property("some-char").must_equal 42
       end
+
       it "can be set with #some_char=" do
         skip
       end

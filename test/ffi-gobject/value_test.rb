@@ -43,11 +43,18 @@ describe GObject::Value do
   end
 
   describe "#set_value" do
-    it "handles :int64" do
+    it "handles int64 values" do
       value = 0x1234_5678_9012_3456
       gv = GObject::Value.for_g_type GObject::TYPE_INT64
       gv.set_value value
       gv.get_int64.must_equal value
+    end
+
+    it "handles char values" do
+      value = 83
+      gv = GObject::Value.for_g_type GObject::TYPE_CHAR
+      gv.set_value value
+      gv.get_char.must_equal value
     end
   end
 

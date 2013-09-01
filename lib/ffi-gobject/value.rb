@@ -14,16 +14,17 @@ module GObject
 
     TYPE_TO_SET_METHOD_MAP = {
       TYPE_BOOLEAN => :set_boolean,
-      TYPE_INT => :set_int,
-      TYPE_INT64 => :set_int64,
-      TYPE_STRING => :set_string,
-      TYPE_FLOAT => :set_float,
-      TYPE_DOUBLE => :set_double,
-      TYPE_PARAM => :set_param,
-      TYPE_OBJECT => :set_instance_enhanced,
       TYPE_BOXED => :set_boxed,
+      TYPE_CHAR => :set_char,
+      TYPE_DOUBLE => :set_double,
+      TYPE_ENUM => :set_enum,
+      TYPE_FLOAT => :set_float,
+      TYPE_INT64 => :set_int64,
+      TYPE_INT => :set_int,
+      TYPE_OBJECT => :set_instance_enhanced,
+      TYPE_PARAM => :set_param,
       TYPE_POINTER => :set_pointer,
-      TYPE_ENUM => :set_enum
+      TYPE_STRING => :set_string,
     }
 
     def value= val
