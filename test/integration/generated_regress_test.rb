@@ -671,8 +671,12 @@ describe Regress do
     end
 
     it "has a working method #skip_return_val_no_out" do
-      skip
+      result = instance.skip_return_val_no_out 1
+      result.must_be_nil
+
+      lambda { instance.skip_return_val_no_out 0 }.must_raise RuntimeError
     end
+
     it "has a working method #torture_signature_0" do
       y, z, q = instance.torture_signature_0(-21, "hello", 13)
       assert_equal [-21, 2 * -21, "hello".length + 13],
