@@ -72,7 +72,7 @@ module GirFFI
     end
 
     def has_output_value?
-      (@direction == :inout && !@arginfo.skip?) || @direction == :out
+      (@direction == :inout || @direction == :out) && !@arginfo.skip?
     end
 
     def has_input_value?
