@@ -48,12 +48,7 @@ module GObjectIntrospection
     end
     ##
     build_array_method :properties, :property
-
-    def find_property(name)
-      properties.find do |prop|
-        prop.name == name
-      end
-    end
+    build_finder_method :find_property, :properties
 
     def get_n_methods
       Lib.g_object_info_get_n_methods @gobj
@@ -78,12 +73,7 @@ module GObjectIntrospection
     end
     ##
     build_array_method :signals
-
-    def find_signal(name)
-      signals.find do |sig|
-        sig.name == name
-      end
-    end
+    build_finder_method :find_signal
 
     def n_vfuncs
       Lib.g_object_info_get_n_vfuncs @gobj

@@ -11,12 +11,7 @@ module GObjectIntrospection
 
     ##
     build_array_method :fields
-
-    def find_field(name)
-      fields.find do |field|
-        field.name == name
-      end
-    end
+    build_finder_method :find_field
 
     def get_n_methods
       Lib.g_struct_info_get_n_methods @gobj
