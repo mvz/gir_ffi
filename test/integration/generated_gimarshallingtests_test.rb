@@ -624,20 +624,27 @@ describe GIMarshallingTests do
         instance.some_char.must_equal 43
       end
     end
+
     describe "its 'some-double' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-double").must_equal 0.0
       end
+
       it "can be retrieved with #some_double" do
-        skip
+        instance.some_double.must_equal 0.0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property("some-double", 3.14)
+        instance.get_property("some-double").must_equal 3.14
       end
+
       it "can be set with #some_double=" do
-        skip
+        instance.some_double = 3.14
+        instance.some_double.must_equal 3.14
       end
     end
+
     describe "its 'some-float' property" do
       it "can be retrieved with #get_property" do
         skip
