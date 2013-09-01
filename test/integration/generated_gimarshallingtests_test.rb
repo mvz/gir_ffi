@@ -727,18 +727,26 @@ describe GIMarshallingTests do
 
     describe "its 'some-object' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-object").must_be_nil
       end
+
       it "can be retrieved with #some_object" do
-        skip
+        instance.some_object.must_be_nil
       end
+
       it "can be set with #set_property" do
-        skip
+        ob = GIMarshallingTests::Object.new 42
+        instance.set_property "some-object", ob
+        instance.get_property("some-object").must_equal ob
       end
+
       it "can be set with #some_object=" do
-        skip
+        ob = GIMarshallingTests::Object.new 42
+        instance.some_object = ob
+        instance.some_object.must_equal ob
       end
     end
+
     describe "its 'some-strv' property" do
       it "can be retrieved with #get_property" do
         skip
