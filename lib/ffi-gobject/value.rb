@@ -29,6 +29,7 @@ module GObject
       TYPE_UCHAR => :set_uchar,
       TYPE_UINT => :set_uint,
       TYPE_UINT64 => :set_uint64,
+      TYPE_ULONG => :set_ulong,
     }
 
     def value= val
@@ -84,6 +85,7 @@ module GObject
       TYPE_UCHAR => :get_uchar,
       TYPE_UINT => :get_uint,
       TYPE_UINT64 => :get_uint64,
+      TYPE_ULONG => :get_ulong,
     }
 
     def get_value
