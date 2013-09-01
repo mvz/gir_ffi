@@ -667,32 +667,44 @@ describe GIMarshallingTests do
 
     describe "its 'some-int' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-int").must_equal 0
       end
+
       it "can be retrieved with #some_int" do
-        skip
+        instance.some_int.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-int", 4242
+        instance.get_property("some-int").must_equal 4242
       end
+
       it "can be set with #some_int=" do
-        skip
+        instance.some_int = 4243
+        instance.some_int.must_equal 4243
       end
     end
+
     describe "its 'some-int64' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-int64").must_equal 0
       end
+
       it "can be retrieved with #some_int64" do
-        skip
+        instance.some_int64.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-int64", 42_000_000_000_000
+        instance.get_property("some-int64").must_equal 42_000_000_000_000
       end
+
       it "can be set with #some_int64=" do
-        skip
+        instance.some_int64 = 43_000_000_000_000
+        instance.some_int64.must_equal 43_000_000_000_000
       end
     end
+
     describe "its 'some-long' property" do
       it "can be retrieved with #get_property" do
         skip
