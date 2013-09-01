@@ -70,6 +70,13 @@ describe GObject::Value do
       gv.set_value value
       gv.get_uchar.must_equal value
     end
+
+    it "handles uint values" do
+      value = 0x1234_5678
+      gv = GObject::Value.for_g_type GObject::TYPE_UINT
+      gv.set_value value
+      gv.get_uint.must_equal value
+    end
   end
 
   describe "#get_value" do
@@ -110,6 +117,13 @@ describe GObject::Value do
       value = 3
       gv = GObject::Value.for_g_type GObject::TYPE_UCHAR
       gv.set_uchar value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps an uint" do
+      value = 0x1234_5678
+      gv = GObject::Value.for_g_type GObject::TYPE_UINT
+      gv.set_uint value
       gv.get_value.must_equal value
     end
 

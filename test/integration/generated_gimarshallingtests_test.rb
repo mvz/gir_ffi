@@ -787,20 +787,26 @@ describe GIMarshallingTests do
       end
     end
 
-    describe "its 'some-uint' property" do
+    describe "its 'some-uuint' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-uint").must_equal 0
       end
+
       it "can be retrieved with #some_uint" do
-        skip
+        instance.some_uint.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-uint", 4242
+        instance.get_property("some-uint").must_equal 4242
       end
+
       it "can be set with #some_uint=" do
-        skip
+        instance.some_uint = 4243
+        instance.some_uint.must_equal 4243
       end
     end
+
     describe "its 'some-uint64' property" do
       it "can be retrieved with #get_property" do
         skip

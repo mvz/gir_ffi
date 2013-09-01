@@ -27,6 +27,7 @@ module GObject
       TYPE_POINTER => :set_pointer,
       TYPE_STRING => :set_string,
       TYPE_UCHAR => :set_uchar,
+      TYPE_UINT => :set_uint,
     }
 
     def value= val
@@ -80,6 +81,7 @@ module GObject
       TYPE_POINTER => :get_pointer,
       TYPE_STRING => :get_string,
       TYPE_UCHAR => :get_uchar,
+      TYPE_UINT => :get_uint,
     }
 
     def get_value
