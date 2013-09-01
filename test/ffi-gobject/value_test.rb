@@ -71,6 +71,13 @@ describe GObject::Value do
       gv.get_value.must_equal value
     end
 
+    it "unwraps a char" do
+      value = 3
+      gv = GObject::Value.for_g_type GObject::TYPE_CHAR
+      gv.set_char value
+      gv.get_value.must_equal value
+    end
+
     it "works with a ByteArray" do
       ba = GLib::ByteArray.new.append("some bytes")
       v = GObject::Value.for_g_type GObject.type_from_name("GByteArray")

@@ -607,7 +607,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-char' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-char").must_equal 0
       end
       it "can be retrieved with #some_char" do
         skip

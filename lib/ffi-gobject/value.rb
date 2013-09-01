@@ -66,14 +66,15 @@ module GObject
 
     TYPE_TO_GET_METHOD_MAP = {
       TYPE_BOOLEAN => :get_boolean,
-      TYPE_INT => :get_int,
-      TYPE_INT64 => :get_int64,
-      TYPE_STRING => :get_string,
-      TYPE_FLOAT => :get_float,
-      TYPE_DOUBLE => :get_double,
-      TYPE_OBJECT => :get_object,
       TYPE_BOXED => :get_boxed,
-      TYPE_POINTER => :get_pointer
+      TYPE_CHAR => :get_char,
+      TYPE_DOUBLE => :get_double,
+      TYPE_FLOAT => :get_float,
+      TYPE_INT64 => :get_int64,
+      TYPE_INT => :get_int,
+      TYPE_OBJECT => :get_object,
+      TYPE_POINTER => :get_pointer,
+      TYPE_STRING => :get_string,
     }
 
     def get_value
