@@ -249,12 +249,21 @@ describe Regress do
     before do
       skip unless get_introspection_data 'Regress', 'TestBoxedC'
     end
+
+    let(:instance) { Regress::TestBoxedC.new }
+
     it "has a writable field refcount" do
-      skip
+      instance.refcount.must_equal 1
+      instance.refcount = 2
+      instance.refcount.must_equal 2
     end
+
     it "has a writable field another_thing" do
-      skip
+      instance.another_thing.must_equal 42
+      instance.another_thing = 4342
+      instance.another_thing.must_equal 4342
     end
+
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
       assert_instance_of Regress::TestBoxedC, tb
