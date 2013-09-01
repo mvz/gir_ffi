@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'gir_ffi/null_builder'
 
 module GirFFI
   # Base class for all generated classes. Contains code for dealing with
@@ -7,6 +8,8 @@ module GirFFI
     # TODO: Make separate base for :struct, :union, :object.
     extend Forwardable
     def_delegators :@struct, :to_ptr
+
+    GIR_FFI_BUILDER = NullBuilder.new
 
     def setup_and_call method, *arguments, &block
       result = self.class.ancestors.any? do |klass|
@@ -44,7 +47,7 @@ module GirFFI
       end
 
       def gir_ffi_builder
-        self.const_get :GIR_FFI_BUILDER
+        self::GIR_FFI_BUILDER
       end
 
       def to_ffitype

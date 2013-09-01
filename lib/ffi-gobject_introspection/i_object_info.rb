@@ -79,6 +79,12 @@ module GObjectIntrospection
     ##
     build_array_method :signals
 
+    def find_signal(name)
+      signals.find do |sig|
+        sig.name == name
+      end
+    end
+
     def n_vfuncs
       Lib.g_object_info_get_n_vfuncs @gobj
     end

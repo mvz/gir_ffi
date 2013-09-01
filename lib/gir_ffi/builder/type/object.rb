@@ -15,23 +15,17 @@ module GirFFI
 
         def find_signal signal_name
           signal_definers.each do |inf|
-            inf.signals.each do |sig|
-              return sig if sig.name == signal_name
-            end
+            sig = inf.find_signal signal_name
+            return sig if sig
           end
-          if parent
-            return superclass.find_signal signal_name
-          end
-          raise "Signal #{signal_name} not found"
+          superclass.find_signal signal_name or
+            raise "Signal #{signal_name} not found"
         end
 
         def find_property property_name
-          prop = info.find_property property_name
-          return prop if prop
-          if parent
-            return superclass.find_property property_name
-          end
-          raise "Property #{property_name} not found"
+          info.find_property property_name or
+            superclass.find_property property_name or
+            raise "Property #{property_name} not found"
         end
 
         private
