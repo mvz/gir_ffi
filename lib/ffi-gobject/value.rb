@@ -26,6 +26,7 @@ module GObject
       TYPE_PARAM => :set_param,
       TYPE_POINTER => :set_pointer,
       TYPE_STRING => :set_string,
+      TYPE_UCHAR => :set_uchar,
     }
 
     def value= val
@@ -78,6 +79,7 @@ module GObject
       TYPE_OBJECT => :get_object,
       TYPE_POINTER => :get_pointer,
       TYPE_STRING => :get_string,
+      TYPE_UCHAR => :get_uchar,
     }
 
     def get_value

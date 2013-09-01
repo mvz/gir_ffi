@@ -63,6 +63,13 @@ describe GObject::Value do
       gv.set_value value
       gv.get_long.must_equal value
     end
+
+    it "handles uchar values" do
+      value = 83
+      gv = GObject::Value.for_g_type GObject::TYPE_UCHAR
+      gv.set_value value
+      gv.get_uchar.must_equal value
+    end
   end
 
   describe "#get_value" do
@@ -96,6 +103,13 @@ describe GObject::Value do
       value = 0x1234_5678_9012_3456
       gv = GObject::Value.for_g_type GObject::TYPE_LONG
       gv.set_long value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps an uchar" do
+      value = 3
+      gv = GObject::Value.for_g_type GObject::TYPE_UCHAR
+      gv.set_uchar value
       gv.get_value.must_equal value
     end
 

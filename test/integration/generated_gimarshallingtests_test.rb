@@ -769,18 +769,24 @@ describe GIMarshallingTests do
 
     describe "its 'some-uchar' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("some-uchar").must_equal 0
       end
+
       it "can be retrieved with #some_uchar" do
-        skip
+        instance.some_uchar.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "some-uchar", 42
+        instance.get_property("some-uchar").must_equal 42
       end
+
       it "can be set with #some_uchar=" do
-        skip
+        instance.some_uchar = 43
+        instance.some_uchar.must_equal 43
       end
     end
+
     describe "its 'some-uint' property" do
       it "can be retrieved with #get_property" do
         skip
