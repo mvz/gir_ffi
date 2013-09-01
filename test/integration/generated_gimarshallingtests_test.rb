@@ -567,7 +567,7 @@ describe GIMarshallingTests do
       end
 
       it "can be retrieved with #some_boxed_glist" do
-        skip
+        instance.some_boxed_glist.must_equal nil
       end
 
       it "can be set with #set_property" do
@@ -576,7 +576,8 @@ describe GIMarshallingTests do
       end
 
       it "can be set with #some_boxed_glist=" do
-        skip
+        instance.some_boxed_glist = [1, 2, 3]
+        instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
       end
     end
 
