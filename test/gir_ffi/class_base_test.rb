@@ -21,51 +21,51 @@ describe GirFFI::ClassBase do
         other = klass.wrap object.to_ptr
 
         object.must_be :==, other
+        other.must_be :==, object
       end
 
-      it "returns false when comparing to an object of the same class and different pointer" do
-        other = klass.wrap FFI::MemoryPointer.new(:int32)
+      it "returns true when comparing to an object of the same class and a pointer with the same address" do
+        ptr = FFI::Pointer.new object.to_ptr
+        other = klass.wrap ptr
 
-        object.wont_be :==, other
+        object.must_be :==, other
+        other.must_be :==, object
       end
 
-      it "returns false when comparing to an object of a different class" do
-        other = Object.new
-
-        object.wont_be :==, other
-      end
-
-      it "returns true when comparing to an object of a subclass and the same pointer" do
+      it "returns false when comparing to an object of a sub/superclass and the same pointer" do
         subclass = Class.new(klass)
         other = subclass.wrap object.to_ptr
 
-        object.must_be :==, other
-      end
-    end
-
-    describe "#eql?" do
-      it "returns true when comparing to an object of the same class and pointer" do
-        other = klass.wrap object.to_ptr
-
-        object.must_equal other
+        object.wont_be :==, other
+        other.wont_be :==, object
       end
 
       it "returns false when comparing to an object of the same class and different pointer" do
         other = klass.wrap FFI::MemoryPointer.new(:int32)
 
-        object.wont_equal other
+        object.wont_be :==, other
+        other.wont_be :==, object
       end
 
-      it "returns true when comparing to an object of a different class and same pointer" do
+      it "returns false when comparing to an object that doesn't respond to #to_ptr" do
+        other = Object.new
+
+        object.wont_be :==, other
+        other.wont_be :==, object
+      end
+
+      it "returns false when comparing to an object of a different class and same pointer" do
         stub(other = Object.new).to_ptr { object.to_ptr }
 
-        object.wont_equal other
+        object.wont_be :==, other
+        other.wont_be :==, object
       end
 
       it "returns false when comparing to an object of a different class and different pointer" do
         stub(other = Object.new).to_ptr { FFI::MemoryPointer.new(:int32) }
 
-        object.wont_equal other
+        object.wont_be :==, other
+        other.wont_be :==, object
       end
     end
   end

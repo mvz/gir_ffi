@@ -24,8 +24,16 @@ module GirFFI
       self.send method, *arguments, &block
     end
 
-    def ==(other)
-      other.is_a?(self.class) && self.to_ptr == other.to_ptr
+    if RUBY_PLATFORM == 'java'
+      # FIXME: JRuby should fix FFI::MemoryPointer#== to return true for
+      # equivalent FFI::Pointer.
+      def ==(other)
+        other.class == self.class && self.to_ptr.address == other.to_ptr.address
+      end
+    else
+      def ==(other)
+        other.class == self.class && self.to_ptr == other.to_ptr
+      end
     end
 
     def self.setup_and_call method, *arguments, &block
