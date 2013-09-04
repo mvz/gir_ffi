@@ -582,6 +582,12 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-boxed-struct' property" do
+      before do
+        skip unless get_property_introspection_data('GIMarshallingTests',
+                                                    'PropertiesObject',
+                                                    'some-boxed-struct')
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("some-boxed-struct").must_equal nil
       end
@@ -726,6 +732,12 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-object' property" do
+      before do
+        skip unless get_property_introspection_data('GIMarshallingTests',
+                                                    'PropertiesObject',
+                                                    'some-object')
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("some-object").must_be_nil
       end
@@ -748,6 +760,12 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-strv' property" do
+      before do
+        skip unless get_property_introspection_data('GIMarshallingTests',
+                                                    'PropertiesObject',
+                                                    'some-strv')
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("some-strv").must_be :==, []
       end
@@ -848,6 +866,12 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-variant' property" do
+      before do
+        skip unless get_property_introspection_data('GIMarshallingTests',
+                                                    'PropertiesObject',
+                                                    'some-variant')
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("some-variant").must_be_nil
       end
