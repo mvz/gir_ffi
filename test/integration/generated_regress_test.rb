@@ -694,84 +694,93 @@ describe Regress do
 
     describe "its 'bare' property" do
       it "can be retrieved with #get_property" do
-        obj = Regress::TestObj.new_from_file("bar")
-        instance.set_bare obj
-
-        obj2 = instance.get_property("bare")
-
-        assert_instance_of Regress::TestObj, obj2
-        obj2.must_equal obj
+        instance.get_property("bare").must_be_nil
       end
+
       it "can be retrieved with #bare" do
-        skip
+        instance.bare.must_be_nil
       end
+
       it "can be set with #set_property" do
         obj = Regress::TestObj.new_from_file("bar")
         instance.set_property "bare", obj
-        instance.bare.must_equal obj
+        instance.get_property("bare").must_equal obj
       end
+
       it "can be set with #bare=" do
-        skip
+        obj = Regress::TestObj.new_from_file("bar")
+        instance.bare = obj
+
+        instance.bare.must_equal obj
+        instance.get_property("bare").must_equal obj
       end
     end
 
     describe "its 'boxed' property" do
       it "can be retrieved with #get_property" do
-        tb = Regress::TestBoxed.new_alternative_constructor1 75
-        instance.set_property "boxed", tb
-
-        tb2 = instance.get_property("boxed")
-
-        assert_instance_of Regress::TestBoxed, tb2
-        assert_equal 75, tb2.some_int8
+        instance.get_property("boxed").must_be_nil
       end
+
       it "can be retrieved with #boxed" do
-        skip
+        instance.boxed.must_be_nil
       end
+
       it "can be set with #set_property" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
         instance.set_property "boxed", tb
-        tb2 = instance.boxed
-        assert_equal 75, tb2.some_int8
+        instance.get_property("boxed").some_int8.must_equal 75
       end
+
       it "can be set with #boxed=" do
-        skip
+        tb = Regress::TestBoxed.new_alternative_constructor1 75
+        instance.boxed = tb
+        instance.boxed.some_int8.must_equal tb.some_int8
+        instance.get_property("boxed").some_int8.must_equal tb.some_int8
       end
     end
 
     describe "its 'double' property" do
       it "can be retrieved with #get_property" do
-        instance.set_property "double", 3.14
-        assert_in_epsilon 3.14, instance.get_property("double")
+        instance.get_property("double").must_equal 0.0
       end
+
       it "can be retrieved with #double" do
-        skip
+        instance.double.must_equal 0.0
       end
+
       it "can be set with #set_property" do
         instance.set_property "double", 3.14
-        assert_in_epsilon 3.14, get_field_value(instance, :some_double)
+        instance.get_property("double").must_equal 3.14
       end
+
       it "can be set with #double=" do
-        skip
+        instance.double = 3.14
+        instance.double.must_equal 3.14
+        instance.get_property("double").must_equal 3.14
       end
     end
 
     describe "its 'float' property" do
       it "can be retrieved with #get_property" do
-        instance.set_property "float", 3.14
-        assert_in_epsilon 3.14, instance.get_property("float")
+        instance.get_property("float").must_equal 0.0
       end
+
       it "can be retrieved with #float" do
-        skip
+        instance.float.must_equal 0.0
       end
+
       it "can be set with #set_property" do
         instance.set_property "float", 3.14
-        assert_in_epsilon 3.14, get_field_value(instance, :some_float)
+        instance.get_property("float").must_be_close_to 3.14
       end
+
       it "can be set with #float=" do
-        skip
+        instance.float = 3.14
+        instance.float.must_be_close_to 3.14
+        instance.get_property("float").must_be_close_to 3.14
       end
     end
+
     describe "its 'gtype' property" do
       it "can be retrieved with #get_property" do
         skip
