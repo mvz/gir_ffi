@@ -804,114 +804,142 @@ describe Regress do
 
     describe "its 'hash-table' property" do
       it "can be retrieved with #get_property" do
-        instance.set_property "hash-table", { "foo" => 34,
-                                              "bar" => 83 }
-
-        ht2 = instance.get_property "hash-table"
-        assert_equal({"foo" => 34, "bar" => 83}, ht2.to_hash)
+        instance.get_property("hash-table").must_be_nil
       end
+
       it "can be retrieved with #hash_table" do
-        skip
+        instance.hash_table.must_be_nil
       end
 
       it "can be set with #set_property" do
-        instance.set_property("hash-table", {"foo" => 34, "bar" => 83})
+        instance.set_property "hash-table", {"foo" => 34,
+                                             "bar" => 83}
 
-        ht = instance.hash_table
-
-        assert_equal({"foo" => 34, "bar" => 83}, ht.to_hash)
+        instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
+                                                                "bar" => 83})
       end
+
       it "can be set with #hash_table=" do
-        skip
+        instance.set_property "hash-table", {"foo" => 34,
+                                             "bar" => 83}
+
+        instance.hash_table.to_hash.must_equal({"foo" => 34, "bar" => 83})
+        instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
+                                                                "bar" => 83})
       end
     end
+
     describe "its 'hash-table-old' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("hash-table-old").must_be_nil
       end
+
       it "can be retrieved with #hash_table_old" do
-        skip
+        instance.hash_table_old.must_be_nil
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "hash-table-old", {"foo" => 34,
+                                                 "bar" => 83}
+
+        instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
+                                                                    "bar" => 83})
       end
+
       it "can be set with #hash_table_old=" do
-        skip
+        instance.set_property "hash-table-old", {"foo" => 34,
+                                                 "bar" => 83}
+
+        instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => 83})
+        instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
+                                                                    "bar" => 83})
       end
     end
+
     describe "its 'int' property" do
       it "can be retrieved with #get_property" do
-        instance.set_property "int", 42
-        assert_equal 42, instance.get_property("int")
+        assert_equal 0, instance.get_property("int")
       end
 
       it "can be retrieved with #int" do
-        instance.set_property "int", 43
-        assert_equal 43, instance.int
+        assert_equal 0, instance.int
       end
 
       it "can be set with #set_property" do
         instance.set_property "int", 42
-        assert_equal 42, get_field_value(instance, :some_int8)
+        assert_equal 42, instance.get_property("int")
       end
 
       it "can be set with #int=" do
         instance.int = 41
         assert_equal 41, instance.get_property("int")
+        assert_equal 41, instance.int
       end
     end
 
     describe "its 'list' property" do
       it "can be retrieved with #get_property" do
-        lst = GLib::List.new(:utf8).append("foo").append("bar")
-
-        instance.set_property "list", lst
-
-        lst2 = instance.get_property "list"
-        lst2.must_be :==, ["foo", "bar"]
+        instance.get_property("list").must_be_nil
       end
+
       it "can be retrieved with #list" do
-        skip
+        instance.list.must_be_nil
       end
+
       it "can be set with #set_property" do
         instance.set_property "list", ["foo", "bar"]
-        instance.list.must_be :==, ["foo",  "bar"]
+        instance.get_property("list").must_be :==, ["foo", "bar"]
       end
+
       it "can be set with #list=" do
-        skip
+        instance.list = ["foo", "bar"]
+        instance.list.must_be :==, ["foo",  "bar"]
+        instance.get_property("list").must_be :==, ["foo", "bar"]
       end
     end
+
     describe "its 'list-old' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("list-old").must_be_nil
       end
+
       it "can be retrieved with #list_old" do
-        skip
+        instance.list_old.must_be_nil
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "list-old", ["foo", "bar"]
+        instance.get_property("list-old").must_be :==, ["foo", "bar"]
       end
+
       it "can be set with #list_old=" do
-        skip
+        instance.list_old = ["foo", "bar"]
+        instance.list_old.must_be :==, ["foo",  "bar"]
+        instance.get_property("list-old").must_be :==, ["foo", "bar"]
       end
     end
 
     describe "its 'string' property" do
       it "can be retrieved with #get_property" do
+        assert_nil instance.get_property("string")
+      end
+
+      it "can be retrieved with #string" do
+        assert_nil instance.string
+      end
+
+      it "can be set with #set_property" do
         instance.set_property "string", "foobar"
         assert_equal "foobar", instance.get_property("string")
       end
-      it "can be retrieved with #string" do
-        skip
-      end
-      it "can be set with #set_property" do
-        instance.set_property "string", "foobar"
-        assert_equal "foobar", instance.string
-      end
+
       it "can be set with #string=" do
-        skip
+        instance.string = "foobar"
+        assert_equal "foobar", instance.string
+        assert_equal "foobar", instance.get_property("string")
       end
     end
+
     it "handles the 'all' signal" do
       skip
     end
