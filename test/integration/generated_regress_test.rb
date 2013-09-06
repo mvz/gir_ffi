@@ -783,18 +783,25 @@ describe Regress do
 
     describe "its 'gtype' property" do
       it "can be retrieved with #get_property" do
-        skip
+        instance.get_property("gtype").must_equal 0
       end
+
       it "can be retrieved with #gtype" do
-        skip
+        instance.gtype.must_equal 0
       end
+
       it "can be set with #set_property" do
-        skip
+        instance.set_property "gtype", GObject::TYPE_INT64
+        instance.get_property("gtype").must_equal GObject::TYPE_INT64
       end
+
       it "can be set with #gtype=" do
-        skip
+        instance.gtype = GObject::TYPE_STRING
+        instance.gtype.must_equal GObject::TYPE_STRING
+        instance.get_property("gtype").must_equal GObject::TYPE_STRING
       end
     end
+
     describe "its 'hash-table' property" do
       it "can be retrieved with #get_property" do
         instance.set_property "hash-table", { "foo" => 34,

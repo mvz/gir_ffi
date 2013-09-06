@@ -19,6 +19,7 @@ module GObject
       TYPE_DOUBLE => :set_double,
       TYPE_ENUM => :set_enum,
       TYPE_FLOAT => :set_float,
+      TYPE_GTYPE => :set_gtype,
       TYPE_INT64 => :set_int64,
       TYPE_INT => :set_int,
       TYPE_LONG => :set_long,
@@ -77,6 +78,7 @@ module GObject
       TYPE_CHAR => :get_char,
       TYPE_DOUBLE => :get_double,
       TYPE_FLOAT => :get_float,
+      TYPE_GTYPE => :get_gtype,
       TYPE_INT64 => :get_int64,
       TYPE_INT => :get_int,
       TYPE_LONG => :get_long,
@@ -164,12 +166,14 @@ module GObject
     end
 
     def get_method
-      TYPE_TO_GET_METHOD_MAP[current_fundamental_type] or
+      TYPE_TO_GET_METHOD_MAP[current_gtype] or
+        TYPE_TO_GET_METHOD_MAP[current_fundamental_type] or
         raise "Can't find method to get #{current_gtype_name}"
     end
 
     def set_method
-      TYPE_TO_SET_METHOD_MAP[current_fundamental_type] or
+      TYPE_TO_SET_METHOD_MAP[current_gtype] or
+        TYPE_TO_SET_METHOD_MAP[current_fundamental_type] or
         raise "Can't find method to set #{current_gtype_name}"
     end
   end

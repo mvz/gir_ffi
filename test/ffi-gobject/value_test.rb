@@ -50,6 +50,13 @@ describe GObject::Value do
       gv.get_char.must_equal value
     end
 
+    it "handles GType values" do
+      value = GObject::TYPE_STRING
+      gv = GObject::Value.for_g_type GObject::TYPE_GTYPE
+      gv.set_value value
+      gv.get_gtype.must_equal value
+    end
+
     it "handles int64 values" do
       value = 0x1234_5678_9012_3456
       gv = GObject::Value.for_g_type GObject::TYPE_INT64
@@ -118,6 +125,13 @@ describe GObject::Value do
       value = 3
       gv = GObject::Value.for_g_type GObject::TYPE_CHAR
       gv.set_char value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps a GType" do
+      value = GObject::TYPE_STRING
+      gv = GObject::Value.for_g_type GObject::TYPE_GTYPE
+      gv.set_gtype value
       gv.get_value.must_equal value
     end
 
