@@ -1,5 +1,12 @@
 require 'gir_ffi_test_helper'
 
+# Dummy module
+module Bar
+  module Foo
+
+  end
+end
+
 describe GirFFI::ArgumentBuilder do
   let(:argument_info) { Object.new }
   let(:type_info) { Object.new }
@@ -302,10 +309,11 @@ describe GirFFI::ArgumentBuilder do
     describe "for :enum" do
       before do
         stub(type_info).flattened_tag { :enum }
+        stub(type_info).tag_or_class { Bar::Foo }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :enum, Bar::Foo[foo]" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from Bar::Foo, foo" ]
       end
 
       it "has the correct value for #post" do
@@ -316,10 +324,11 @@ describe GirFFI::ArgumentBuilder do
     describe "for :flags" do
       before do
         stub(type_info).flattened_tag { :flags }
+        stub(type_info).tag_or_class { Bar::Foo }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :flags, Bar::Foo[foo]" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from Bar::Foo, foo" ]
       end
 
       it "has the correct value for #post" do
@@ -330,6 +339,7 @@ describe GirFFI::ArgumentBuilder do
     describe "for :gint32" do
       before do
         stub(type_info).flattened_tag { :gint32 }
+        stub(type_info).tag_or_class { :gint32 }
       end
 
       it "has the correct value for inarg" do
@@ -349,6 +359,7 @@ describe GirFFI::ArgumentBuilder do
       let(:array_argument) { Object.new }
       before do
         stub(type_info).flattened_tag { :gint32 }
+        stub(type_info).tag_or_class { :gint32 }
         stub(array_argument).name { "foo_array" }
         builder.array_arg = array_argument
       end
@@ -366,10 +377,11 @@ describe GirFFI::ArgumentBuilder do
     describe "for :strv" do
       before do
         stub(type_info).flattened_tag { :strv }
+        stub(type_info).tag_or_class { [:pointer, :array] }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :strv, GLib::Strv.from(foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :array], GLib::Strv.from(foo)" ]
       end
 
       it "has the correct value for #post" do
@@ -382,10 +394,11 @@ describe GirFFI::ArgumentBuilder do
 
       before do
         stub(type_info).flattened_tag { :ptr_array }
+        stub(type_info).tag_or_class { [:pointer, :array] }
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :ptr_array, GLib::PtrArray.from(:foo, foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :array], GLib::PtrArray.from(:foo, foo)" ]
       end
 
       it "has the correct value for #post" do
@@ -398,6 +411,7 @@ describe GirFFI::ArgumentBuilder do
 
       before do
         stub(type_info).flattened_tag { :utf8 }
+        stub(type_info).tag_or_class { :utf8 }
       end
 
       it "has the correct value for #pre" do
@@ -412,6 +426,7 @@ describe GirFFI::ArgumentBuilder do
     describe "for :c" do
       before do
         stub(type_info).flattened_tag { :c }
+        stub(type_info).tag_or_class { [:pointer, :c] }
         stub(type_info).subtype_tag_or_class { :bar }
       end
 
@@ -425,7 +440,7 @@ describe GirFFI::ArgumentBuilder do
         it "has the correct value for #pre" do
           builder.pre.must_equal [
             "GirFFI::ArgHelper.check_fixed_array_size 3, foo, \"foo\"",
-            "_v1 = GirFFI::InOutPointer.from :c, GLib::SizedArray.from(:bar, 3, foo)"
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:bar, 3, foo)"
           ]
         end
 
@@ -446,7 +461,7 @@ describe GirFFI::ArgumentBuilder do
         it "has the correct value for #pre" do
           # TODO: Perhaps this should include a length check as well.
           builder.pre.must_equal [
-            "_v1 = GirFFI::InOutPointer.from :c, GLib::SizedArray.from(:bar, -1, foo)"
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:bar, -1, foo)"
           ]
         end
 

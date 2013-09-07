@@ -1,5 +1,6 @@
 module GirFFI
   module EnumBase
+    # TODO: Make this a DataConverter
     def [](arg)
       self::Enum[arg]
     end

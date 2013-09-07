@@ -98,11 +98,7 @@ module GirFFI
                   "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
                 end
               else
-                if needs_ingoing_parameter_conversion?
-                  ingoing_parameter_conversion
-                else
-                  @name
-                end
+                ingoing_parameter_conversion
               end
       "#{callarg} = #{value}"
     end
@@ -117,18 +113,10 @@ module GirFFI
         :ptr_array, :struct, :strv, :utf8 ].include?(specialized_type_tag)
     end
 
-    def needs_ingoing_parameter_conversion?
-      @direction == :inout ||
-        [ :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
-          :struct, :strv, :utf8, :void, :zero_terminated ].include?(specialized_type_tag)
-    end
-
     def ingoing_parameter_conversion
       args = conversion_arguments @name
 
       base = case specialized_type_tag
-             when :enum, :flags
-               "#{argument_class_name}[#{args}]"
              when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
                :struct, :strv, :utf8, :void, :zero_terminated
                "#{argument_class_name}.from(#{args})"
@@ -137,7 +125,7 @@ module GirFFI
              end
 
       if has_output_value?
-        "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
+        "GirFFI::InOutPointer.from #{tag_or_class_name}, #{base}"
       else
         base
       end
