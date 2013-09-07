@@ -113,6 +113,21 @@ module GirFFI
         end
       end
 
+      def extra_conversion_arguments
+        case flattened_tag
+        when :utf8, :void
+          [flattened_tag]
+        when :c
+          [subtype_tag_or_class, array_fixed_size]
+        when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
+          [element_type]
+        when :callback
+          [interface.namespace, interface.name]
+        else
+          []
+        end
+      end
+
       private
 
       def flattened_array_type

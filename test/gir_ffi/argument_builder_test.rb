@@ -5,6 +5,7 @@ describe GirFFI::ArgumentBuilder do
   let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:builder) { GirFFI::ArgumentBuilder.new(var_gen, argument_info) }
+  let(:conversion_arguments) { [] }
 
   before do
     stub(argument_info).name { 'foo' }
@@ -12,18 +13,16 @@ describe GirFFI::ArgumentBuilder do
     stub(argument_info).direction { direction }
     stub(argument_info).skip? { false }
     stub(type_info).interface_type_name { 'Bar::Foo' }
+    stub(type_info).extra_conversion_arguments { conversion_arguments }
   end
 
   describe "for an argument with direction :in" do
     let(:direction) { :in }
 
     describe "for :callback" do
+      let(:conversion_arguments) { ["Bar", "Foo"] }
       before do
-        stub(interface_type_info = Object.new).namespace { "Bar" }
-        stub(interface_type_info).name { "Foo" }
-
         stub(type_info).flattened_tag { :callback }
-        stub(type_info).interface { interface_type_info }
       end
 
       it "has the correct value for #pre" do
@@ -36,9 +35,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :zero_terminated" do
+      let(:conversion_arguments) { [:foo] }
+
       before do
         stub(type_info).flattened_tag { :zero_terminated }
-        stub(type_info).element_type { :foo }
       end
 
       it "has the correct value for #pre" do
@@ -151,6 +151,8 @@ describe GirFFI::ArgumentBuilder do
       end
 
       describe "when allocated by the callee" do
+        let(:conversion_arguments) { [:foo] }
+
         before do
           stub(argument_info).caller_allocates? { false }
         end
@@ -178,9 +180,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :ptr_array" do
+      let(:conversion_arguments) { [:foo] }
+
       before do
         stub(type_info).flattened_tag { :ptr_array }
-        stub(type_info).element_type { :foo }
       end
 
       it "has the correct value for #pre" do
@@ -245,9 +248,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :glist" do
+      let(:conversion_arguments) { [:foo] }
+
       before do
         stub(type_info).flattened_tag { :glist }
-        stub(type_info).element_type { :foo }
       end
 
       it "has the correct value for #pre" do
@@ -260,9 +264,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :gslist" do
+      let(:conversion_arguments) { [:foo] }
+
       before do
         stub(type_info).flattened_tag { :gslist }
-        stub(type_info).element_type { :foo }
       end
 
       it "has the correct value for #pre" do
@@ -275,9 +280,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :ghash" do
+      let(:conversion_arguments) { [[:foo, :bar]] }
+
       before do
         stub(type_info).flattened_tag { :ghash }
-        stub(type_info).element_type { [:foo, :bar] }
       end
 
       it "has the correct value for #pre" do
@@ -372,9 +378,10 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :ptr_array" do
+      let(:conversion_arguments) { [:foo] }
+
       before do
         stub(type_info).flattened_tag { :ptr_array }
-        stub(type_info).element_type { :foo }
       end
 
       it "has the correct value for #pre" do
@@ -387,6 +394,8 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :utf8" do
+      let(:conversion_arguments) { [:utf8] }
+
       before do
         stub(type_info).flattened_tag { :utf8 }
       end
@@ -407,6 +416,8 @@ describe GirFFI::ArgumentBuilder do
       end
 
       describe "with fixed size" do
+        let(:conversion_arguments) { [:bar, 3] }
+
         before do
           stub(type_info).array_fixed_size { 3 }
         end
@@ -425,6 +436,7 @@ describe GirFFI::ArgumentBuilder do
 
       describe "with separate size parameter" do
         let(:length_argument) { Object.new }
+        let(:conversion_arguments) { [:bar, -1] }
         before do
           stub(type_info).array_fixed_size { -1 }
           stub(length_argument).retname { "baz" }

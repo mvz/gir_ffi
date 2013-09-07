@@ -114,21 +114,8 @@ module GirFFI
 
     private
 
-    # TODO: Move (partially) to ITypeInfo
     def conversion_arguments name
-      case specialized_type_tag
-      when :utf8, :void
-        "#{specialized_type_tag.inspect}, #{name}"
-      when :c
-        "#{subtype_tag_or_class_name}, #{type_info.array_fixed_size}, #{name}"
-      when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
-        "#{elm_t}, #{name}"
-      when :callback
-        iface = type_info.interface
-        "\"#{iface.namespace}\", \"#{iface.name}\", #{name}"
-      else
-        "#{name}"
-      end
+      type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
     end
   end
 end

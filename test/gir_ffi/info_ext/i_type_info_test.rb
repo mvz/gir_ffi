@@ -135,6 +135,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for a GLib array" do
+      it "returns :c" do
+        mock(type_info).tag { :array }
+        mock(type_info).zero_terminated? { false }
+        mock(type_info).array_type { :array }
+
+        type_info.flattened_tag.must_equal :array
+      end
+    end
   end
 
   describe "#subtype_tag_or_class_name" do
@@ -320,6 +329,144 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(iface_info).info_type { :flags }
 
         type_info.to_callback_ffitype.must_equal :int32
+      end
+    end
+  end
+
+  describe "#extra_conversion_arguments" do
+    describe "for normal types" do
+      before do
+        stub(type_info).tag { :foo }
+      end
+
+      it "returns an empty array" do
+        type_info.extra_conversion_arguments.must_equal []
+      end
+    end
+
+    describe "for a string" do
+      before do
+        stub(type_info).tag { :utf8 }
+      end
+
+      it "returns an array containing :utf8" do
+        type_info.extra_conversion_arguments.must_equal [:utf8]
+      end
+    end
+
+    describe "for a fixed-size array" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).zero_terminated? { false }
+        stub(type_info).array_type { :c }
+        stub(type_info).array_fixed_size { 3 }
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo, 3]
+      end
+    end
+
+    describe "for a zero-terminated array" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).zero_terminated? { true }
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo]
+      end
+    end
+
+    describe "for a GArray" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).zero_terminated? { false }
+        stub(type_info).array_type { :array }
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo]
+      end
+    end
+
+    describe "for a GHashTable" do
+      before do
+        stub(type_info).tag {:ghash}
+        stub(type_info).param_type(0) { keytype_info }
+        stub(type_info).param_type(1) { valtype_info }
+
+        stub(keytype_info).tag_or_class { :foo }
+        stub(valtype_info).tag_or_class { :bar }
+      end
+
+      it "returns an array containing the element type pair" do
+        type_info.extra_conversion_arguments.must_equal [[:foo, :bar]]
+      end
+    end
+
+    describe "for a GList" do
+      before do
+        stub(type_info).tag { :glist }
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo]
+      end
+    end
+
+    describe "for a GSList" do
+      before do
+        stub(type_info).tag { :gslist }
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo]
+      end
+    end
+
+    describe "for a GPtrArray" do
+      before do
+        stub(type_info).tag { :array }
+        stub(type_info).zero_terminated? { false }
+        stub(type_info).array_type { :ptr_array }
+
+
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      it "returns an array containing the element type" do
+        type_info.extra_conversion_arguments.must_equal [:foo]
+      end
+    end
+
+    describe "for a :callback" do
+      before do
+        stub(interface_type_info = Object.new).namespace { "Bar" }
+        stub(interface_type_info).name { "Foo" }
+
+        stub(type_info).tag { :callback }
+        stub(type_info).interface { interface_type_info }
+      end
+
+      it "has the correct value for #pre" do
+        type_info.extra_conversion_arguments.must_equal ["Bar", "Foo"]
       end
     end
   end
