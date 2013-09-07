@@ -146,18 +146,6 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe "#subtype_tag_or_class_name" do
-    describe "without a parameter" do
-      it "returns the result of calling #tag_or_class_name on the first param_type" do
-        mock(elmtype_info).tag_or_class_name { ":foo" }
-
-        mock(type_info).param_type(0) { elmtype_info }
-
-        type_info.subtype_tag_or_class_name.must_equal ":foo"
-      end
-    end
-  end
-
   describe "#subtype_tag_or_class" do
     describe "without a parameter" do
       it "returns the result of calling #tag_or_class on the first param_type" do

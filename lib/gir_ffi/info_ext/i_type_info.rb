@@ -50,10 +50,6 @@ module GirFFI
         tag == :interface && interface.info_type
       end
 
-      def subtype_tag_or_class_name index = 0
-        param_type(index).tag_or_class_name
-      end
-
       def subtype_tag_or_class index = 0
         param_type(index).tag_or_class
       end
