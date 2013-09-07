@@ -64,18 +64,6 @@ module GirFFI
       end
     end
 
-    def subtype_tag_or_class_name
-      type_info.subtype_tag_or_class.inspect
-    end
-
-    def tag_or_class_name
-      type_info.tag_or_class.inspect
-    end
-
-    def elm_t
-      type_info.element_type.inspect
-    end
-
     def array_size
       if @length_arg
         @length_arg.retname
@@ -132,7 +120,7 @@ module GirFFI
 
     def output_conversion_arguments arg
       if specialized_type_tag == :c
-        "#{subtype_tag_or_class_name}, #{array_size}, #{arg}"
+        "#{type_info.subtype_tag_or_class.inspect}, #{array_size}, #{arg}"
       else
         conversion_arguments arg
       end

@@ -90,7 +90,7 @@ module GirFFI
               elsif !has_input_value?
                 if is_caller_allocated_object?
                   if specialized_type_tag == :array
-                    "#{argument_class_name}.new #{elm_t}"
+                    "#{argument_class_name}.new #{type_info.element_type.inspect}"
                   else
                     "#{argument_class_name}.new"
                   end
@@ -125,7 +125,7 @@ module GirFFI
              end
 
       if has_output_value?
-        "GirFFI::InOutPointer.from #{tag_or_class_name}, #{base}"
+        "GirFFI::InOutPointer.from #{type_info.tag_or_class.inspect}, #{base}"
       else
         base
       end
