@@ -54,10 +54,6 @@ module GirFFI
         param_type(index).tag_or_class
       end
 
-      def tag_or_class_name
-        tag_or_class.inspect
-      end
-
       def tag_or_class
         type_tag = self.tag
         base = if type_tag == :interface

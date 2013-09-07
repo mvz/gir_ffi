@@ -158,64 +158,6 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe "#tag_or_class_name" do
-    describe "for the simple type :foo" do
-      it "returns the string ':foo'" do
-        stub(type_info).tag { :foo }
-        mock(type_info).pointer? { false }
-
-        assert_equal ":foo", type_info.tag_or_class_name
-      end
-    end
-
-    describe "for :utf8" do
-      it "returns the string ':utf8'" do
-        stub(type_info).tag { :utf8 }
-        mock(type_info).pointer? { true }
-
-        assert_equal ":utf8", type_info.tag_or_class_name
-      end
-    end
-
-    describe "for an interface named Foo::Bar" do
-      let(:interface) { Object.new }
-
-      before do
-        stub(type_info).tag { :interface }
-        stub(type_info).interface { iface_info }
-        mock(type_info).pointer? { false }
-        stub(interface).inspect { "Foo::Bar" }
-
-        mock(GirFFI::Builder).build_class(iface_info) { interface }
-      end
-
-      describe "when the interface type is :enum" do
-        it "returns the interface's full class name" do
-          stub(iface_info).info_type { :enum }
-
-          assert_equal "Foo::Bar", type_info.tag_or_class_name
-        end
-      end
-
-      describe "when the interface type is :object" do
-        it "returns the string [:pointer, Foo::Bar]" do
-          stub(iface_info).info_type { :object }
-
-          assert_equal "[:pointer, Foo::Bar]", type_info.tag_or_class_name
-        end
-      end
-    end
-
-    describe "for a pointer to simple type :foo" do
-      it "returns the string '[:pointer, :foo]'" do
-        mock(type_info).tag { :foo }
-        mock(type_info).pointer? { true }
-
-        assert_equal "[:pointer, :foo]", type_info.tag_or_class_name
-      end
-    end
-  end
-
   describe "#tag_or_class" do
     describe "for a simple type" do
       it "returns the type's tag" do
