@@ -128,15 +128,17 @@ module GirFFI
     end
 
     def ingoing_parameter_conversion
-      case specialized_type_tag
-      when :enum, :flags
-        base = "#{argument_class_name}[#{parameter_conversion_arguments}]"
-      when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
-        :struct, :strv, :utf8, :void, :zero_terminated
-        base = "#{argument_class_name}.from(#{parameter_conversion_arguments})"
-      else
-        base = "#{parameter_conversion_arguments}"
-      end
+      args = conversion_arguments @name
+
+      base = case specialized_type_tag
+             when :enum, :flags
+               "#{argument_class_name}[#{args}]"
+             when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
+               :struct, :strv, :utf8, :void, :zero_terminated
+               "#{argument_class_name}.from(#{args})"
+             else
+               args
+             end
 
       if has_output_value?
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
@@ -151,10 +153,6 @@ module GirFFI
       else
         conversion_arguments "#{callarg}.to_value"
       end
-    end
-
-    def parameter_conversion_arguments
-      conversion_arguments @name
     end
   end
 end
