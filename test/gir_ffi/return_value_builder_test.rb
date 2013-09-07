@@ -10,9 +10,11 @@ describe GirFFI::ReturnValueBuilder do
                                                  for_constructor,
                                                  skip) }
   let(:conversion_arguments) { [] }
+  let(:argument_class_name) { flattened_tag }
+  let(:flattened_tag) { nil }
 
   before do
-    stub(type_info).interface_type_name { 'Bar::Foo' }
+    stub(type_info).argument_class_name { argument_class_name }
     stub(type_info).extra_conversion_arguments { conversion_arguments }
     stub(type_info).flattened_tag { flattened_tag }
   end
@@ -31,6 +33,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :struct" do
+    let(:argument_class_name) { 'Bar::Foo' }
     let(:flattened_tag) { :struct }
 
     it "wraps the result in #post" do
@@ -45,6 +48,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :union" do
+    let(:argument_class_name) { 'Bar::Foo' }
     let(:flattened_tag) { :union }
 
     it "wraps the result in #post" do
@@ -59,6 +63,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :interface" do
+    let(:argument_class_name) { 'Bar::Foo' }
     let(:flattened_tag) { :interface }
 
     describe "when the method is not a constructor" do
@@ -91,6 +96,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :object" do
+    let(:argument_class_name) { 'Bar::Foo' }
     let(:flattened_tag) { :object }
 
     describe "when the method is not a constructor" do
@@ -123,6 +129,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :strv" do
+    let(:argument_class_name) { 'GLib::Strv' }
     let(:flattened_tag) { :strv }
 
     it "wraps the result in #post" do
@@ -137,6 +144,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :zero_terminated" do
+    let(:argument_class_name) { 'GirFFI::ZeroTerminated' }
     let(:conversion_arguments) { [:foo] }
     let(:flattened_tag) { :zero_terminated }
 
@@ -152,6 +160,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :byte_array" do
+    let(:argument_class_name) { 'GLib::ByteArray' }
     let(:flattened_tag) { :byte_array }
 
     it "wraps the result in #post" do
@@ -166,6 +175,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :ptr_array" do
+    let(:argument_class_name) { 'GLib::PtrArray' }
     let(:conversion_arguments) { [:foo] }
     let(:flattened_tag) { :ptr_array }
 
@@ -181,6 +191,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :glist" do
+    let(:argument_class_name) { 'GLib::List' }
     let(:conversion_arguments) { [:foo] }
     let(:flattened_tag) { :glist }
 
@@ -196,6 +207,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :gslist" do
+    let(:argument_class_name) { 'GLib::SList' }
     let(:conversion_arguments) { [:foo] }
     let(:flattened_tag) { :gslist }
 
@@ -211,6 +223,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :ghash" do
+    let(:argument_class_name) { 'GLib::HashTable' }
     let(:conversion_arguments) { [[:foo, :bar]] }
     let(:flattened_tag) { :ghash }
 
@@ -226,6 +239,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :array" do
+    let(:argument_class_name) { 'GLib::Array' }
     let(:conversion_arguments) { [:foo] }
     let(:flattened_tag) { :array }
 
@@ -241,6 +255,7 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :error" do
+    let(:argument_class_name) { 'GLib::Error' }
     let(:flattened_tag) { :error }
 
     it "wraps the result in #post" do
@@ -255,6 +270,8 @@ describe GirFFI::ReturnValueBuilder do
   end
 
   describe "for :c" do
+    let(:argument_class_name) { 'GLib::SizedArray' }
+
     describe "with fixed size" do
       before do
         stub(type_info).flattened_tag { :c }
@@ -275,6 +292,7 @@ describe GirFFI::ReturnValueBuilder do
 
     describe "with separate size parameter" do
       let(:length_argument) { Object.new }
+
       before do
         stub(type_info).flattened_tag { :c }
         stub(type_info).subtype_tag_or_class { :foo }

@@ -31,10 +31,6 @@ module GirFFI
         end
       end
 
-      def interface_type_name
-        interface.full_type_name
-      end
-
       def flattened_tag
         case tag
         when :interface
@@ -65,6 +61,32 @@ module GirFFI
           [:pointer, base]
         else
           base
+        end
+      end
+
+      TAG_TO_WRAPPER_CLASS_MAP = {
+        :array => 'GLib::Array',
+        :byte_array => 'GLib::ByteArray',
+        :c => 'GLib::SizedArray',
+        :callback => 'GirFFI::Callback',
+        :error => 'GLib::Error',
+        :ghash => 'GLib::HashTable',
+        :glist => 'GLib::List',
+        :gslist => 'GLib::SList',
+        :ptr_array => 'GLib::PtrArray',
+        :strv => 'GLib::Strv',
+        :utf8 => 'GirFFI::InPointer',
+        :void => 'GirFFI::InPointer',
+        :zero_terminated => 'GirFFI::ZeroTerminated'
+      }
+
+      # TODO: Use class rather than class name
+      def argument_class_name
+        case flattened_tag
+        when :struct, :union, :object, :interface, :enum, :flags
+          interface.full_type_name
+        else
+          TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
         end
       end
 

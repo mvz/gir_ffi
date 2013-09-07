@@ -13,13 +13,14 @@ describe GirFFI::ArgumentBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:builder) { GirFFI::ArgumentBuilder.new(var_gen, argument_info) }
   let(:conversion_arguments) { [] }
+  let(:argument_class_name) { nil }
 
   before do
     stub(argument_info).name { 'foo' }
     stub(argument_info).argument_type { type_info }
     stub(argument_info).direction { direction }
     stub(argument_info).skip? { false }
-    stub(type_info).interface_type_name { 'Bar::Foo' }
+    stub(type_info).argument_class_name { argument_class_name }
     stub(type_info).extra_conversion_arguments { conversion_arguments }
   end
 
@@ -27,6 +28,7 @@ describe GirFFI::ArgumentBuilder do
     let(:direction) { :in }
 
     describe "for :callback" do
+      let(:argument_class_name) { 'GirFFI::Callback' }
       let(:conversion_arguments) { ["Bar", "Foo"] }
       before do
         stub(type_info).flattened_tag { :callback }
@@ -42,6 +44,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :zero_terminated" do
+      let(:argument_class_name) { 'GirFFI::ZeroTerminated' }
       let(:conversion_arguments) { [:foo] }
 
       before do
@@ -62,6 +65,7 @@ describe GirFFI::ArgumentBuilder do
     let(:direction) { :out }
 
     describe "for :enum" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :enum }
       end
@@ -76,6 +80,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :flags" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :flags }
       end
@@ -90,6 +95,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :object" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :object }
       end
@@ -104,6 +110,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :struct" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :struct }
       end
@@ -138,6 +145,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :strv" do
+      let(:argument_class_name) { 'GLib::Strv' }
       before do
         stub(type_info).flattened_tag { :strv }
       end
@@ -152,6 +160,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :array" do
+      let(:argument_class_name) { 'GLib::Array' }
       before do
         stub(type_info).flattened_tag { :array }
         stub(type_info).element_type { :foo }
@@ -187,6 +196,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :ptr_array" do
+      let(:argument_class_name) { 'GLib::PtrArray' }
       let(:conversion_arguments) { [:foo] }
 
       before do
@@ -203,6 +213,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :error" do
+      let(:argument_class_name) { 'GLib::Error' }
       before do
         stub(type_info).flattened_tag { :error }
       end
@@ -217,6 +228,8 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :c" do
+      let(:argument_class_name) { 'GLib::SizedArray' }
+
       before do
         stub(type_info).flattened_tag { :c }
         stub(type_info).subtype_tag_or_class { :foo }
@@ -255,6 +268,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :glist" do
+      let(:argument_class_name) { 'GLib::List' }
       let(:conversion_arguments) { [:foo] }
 
       before do
@@ -271,6 +285,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :gslist" do
+      let(:argument_class_name) { 'GLib::SList' }
       let(:conversion_arguments) { [:foo] }
 
       before do
@@ -287,6 +302,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :ghash" do
+      let(:argument_class_name) { 'GLib::HashTable' }
       let(:conversion_arguments) { [[:foo, :bar]] }
 
       before do
@@ -307,6 +323,7 @@ describe GirFFI::ArgumentBuilder do
     let(:direction) { :inout }
 
     describe "for :enum" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :enum }
         stub(type_info).tag_or_class { Bar::Foo }
@@ -322,6 +339,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :flags" do
+      let(:argument_class_name) { 'Bar::Foo' }
       before do
         stub(type_info).flattened_tag { :flags }
         stub(type_info).tag_or_class { Bar::Foo }
@@ -375,6 +393,7 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :strv" do
+      let(:argument_class_name) { 'GLib::Strv' }
       before do
         stub(type_info).flattened_tag { :strv }
         stub(type_info).tag_or_class { [:pointer, :array] }
@@ -391,6 +410,7 @@ describe GirFFI::ArgumentBuilder do
 
     describe "for :ptr_array" do
       let(:conversion_arguments) { [:foo] }
+      let(:argument_class_name) { 'GLib::PtrArray' }
 
       before do
         stub(type_info).flattened_tag { :ptr_array }
@@ -408,6 +428,7 @@ describe GirFFI::ArgumentBuilder do
 
     describe "for :utf8" do
       let(:conversion_arguments) { [:utf8] }
+      let(:argument_class_name) { 'GirFFI::InPointer' }
 
       before do
         stub(type_info).flattened_tag { :utf8 }
@@ -424,6 +445,8 @@ describe GirFFI::ArgumentBuilder do
     end
 
     describe "for :c" do
+      let(:argument_class_name) { 'GLib::SizedArray' }
+
       before do
         stub(type_info).flattened_tag { :c }
         stub(type_info).tag_or_class { [:pointer, :c] }

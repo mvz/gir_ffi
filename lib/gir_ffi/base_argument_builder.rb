@@ -37,31 +37,9 @@ module GirFFI
       type_info.flattened_tag
     end
 
-    # TODO: Move to ITypeInfo
-    TAG_TO_WRAPPER_CLASS_MAP = {
-      :array => 'GLib::Array',
-      :byte_array => 'GLib::ByteArray',
-      :c => 'GLib::SizedArray',
-      :callback => 'GirFFI::Callback',
-      :error => 'GLib::Error',
-      :ghash => 'GLib::HashTable',
-      :glist => 'GLib::List',
-      :gslist => 'GLib::SList',
-      :ptr_array => 'GLib::PtrArray',
-      :strv => 'GLib::Strv',
-      :utf8 => 'GirFFI::InPointer',
-      :void => 'GirFFI::InPointer',
-      :zero_terminated => 'GirFFI::ZeroTerminated'
-    }
-
     # TODO: Use class rather than class name
     def argument_class_name
-      case specialized_type_tag
-      when :struct, :union, :object, :interface, :enum, :flags
-        type_info.interface_type_name
-      else
-        TAG_TO_WRAPPER_CLASS_MAP[specialized_type_tag]
-      end
+      type_info.argument_class_name
     end
 
     def array_size

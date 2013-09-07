@@ -4,6 +4,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:klass) { Class.new do
     include GirFFI::InfoExt::ITypeInfo
   end }
+
   let(:type_info) { klass.new }
   let(:elmtype_info) { klass.new }
   let(:keytype_info) { klass.new }
@@ -397,6 +398,159 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       it "has the correct value for #pre" do
         type_info.extra_conversion_arguments.must_equal ["Bar", "Foo"]
+      end
+    end
+  end
+
+  describe "#argument_class_name" do
+    before do
+      stub(type_info).tag { tag }
+    end
+
+    describe "for :gint32" do
+      let(:tag) { :gint32 }
+
+      it "is nil" do
+        type_info.argument_class_name.must_be_nil
+      end
+    end
+
+    describe "for interfaces" do
+      let(:tag) { :interface }
+
+      before do
+        stub(type_info).interface { iface_info }
+        stub(iface_info).info_type { interface_type }
+        stub(iface_info).full_type_name { 'Bar::Foo' }
+      end
+
+      describe "for :struct" do
+        let(:interface_type) { :struct }
+        it "equals the struct class name" do
+          type_info.argument_class_name.must_equal 'Bar::Foo'
+        end
+      end
+
+      describe "for :union" do
+        let(:interface_type) { :union }
+        it "equals the union class name" do
+          type_info.argument_class_name.must_equal 'Bar::Foo'
+        end
+      end
+
+      describe "for :interface" do
+        let(:interface_type) { :interface }
+
+        it "equals the interface module name" do
+          type_info.argument_class_name.must_equal 'Bar::Foo'
+        end
+      end
+
+      describe "for :object" do
+        let(:interface_type) { :object }
+
+        it "equals the object class name" do
+          type_info.argument_class_name.must_equal 'Bar::Foo'
+        end
+      end
+
+      describe "for :callback" do
+        let(:interface_type) { :callback }
+
+        it "equals GirFFI::Callback" do
+          type_info.argument_class_name.must_equal 'GirFFI::Callback'
+        end
+      end
+    end
+
+    describe "for :strv" do
+      let(:tag) { :strv }
+
+      it "equals GLib::Strv" do
+        type_info.argument_class_name.must_equal 'GLib::Strv'
+      end
+    end
+
+    describe "for arrays" do
+      let(:tag) { :array }
+      before do
+        stub(type_info).param_type(0) { elmtype_info }
+        stub(elmtype_info).tag_or_class { :foo }
+      end
+
+      describe "for :zero_terminated" do
+        before do
+          stub(type_info).zero_terminated? { true }
+        end
+
+        it "equals GirFFI::ZeroTerminated" do
+          type_info.argument_class_name.must_equal "GirFFI::ZeroTerminated"
+        end
+      end
+
+      describe "for :byte_array" do
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :byte_array }
+        end
+
+        it "equals GLib::ByteArray" do
+          type_info.argument_class_name.must_equal 'GLib::ByteArray'
+        end
+      end
+
+      describe "for :ptr_array" do
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :ptr_array }
+        end
+
+        it "equals GLib::PtrArray" do
+          type_info.argument_class_name.must_equal 'GLib::PtrArray'
+        end
+      end
+
+      describe "for :array" do
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :array }
+        end
+
+        it "equals GLib::Array" do
+          type_info.argument_class_name.must_equal 'GLib::Array'
+        end
+      end
+    end
+
+    describe "for :glist" do
+      let(:tag) { :glist }
+
+      it "equals GLib::List" do
+        type_info.argument_class_name.must_equal 'GLib::List'
+      end
+    end
+
+    describe "for :gslist" do
+      let(:tag) { :gslist }
+
+      it "equals GLib::SList" do
+        type_info.argument_class_name.must_equal 'GLib::SList'
+      end
+    end
+
+    describe "for :ghash" do
+      let(:tag) { :ghash }
+
+      it "equals GLib::HashTable" do
+        type_info.argument_class_name.must_equal 'GLib::HashTable'
+      end
+    end
+
+    describe "for :error" do
+      let(:tag) { :error }
+
+      it "equals GLib::Error" do
+        type_info.argument_class_name.must_equal 'GLib::Error'
       end
     end
   end
