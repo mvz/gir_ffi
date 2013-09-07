@@ -44,17 +44,13 @@ module GirFFI
     def output_value
       if is_caller_allocated_object?
         callarg
-      elsif needs_outgoing_parameter_conversion?
-        case specialized_type_tag
-        when :enum, :flags
-          "#{argument_class_name}[#{output_conversion_arguments}]"
-        when :utf8
-          "#{callarg}.to_value.to_utf8"
-        else
-          "#{argument_class_name}.wrap(#{output_conversion_arguments})"
-        end
       else
-        "#{callarg}.to_value"
+        base = "#{callarg}.to_value"
+        if needs_outgoing_parameter_conversion?
+          outgoing_conversion base
+        else
+          base
+        end
       end
     end
 
@@ -144,14 +140,6 @@ module GirFFI
         "GirFFI::InOutPointer.from #{specialized_type_tag.inspect}, #{base}"
       else
         base
-      end
-    end
-
-    def output_conversion_arguments
-      if specialized_type_tag == :c
-        "#{subtype_tag_or_class_name}, #{array_size}, #{callarg}.to_value"
-      else
-        conversion_arguments "#{callarg}.to_value"
       end
     end
   end

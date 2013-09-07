@@ -114,6 +114,26 @@ module GirFFI
 
     private
 
+    def outgoing_conversion base
+      args = output_conversion_arguments base
+      case specialized_type_tag
+      when :enum, :flags
+        "#{argument_class_name}[#{args}]"
+      when :utf8
+        "#{base}.to_utf8"
+      else
+        "#{argument_class_name}.wrap(#{args})"
+      end
+    end
+
+    def output_conversion_arguments arg
+      if specialized_type_tag == :c
+        "#{subtype_tag_or_class_name}, #{array_size}, #{arg}"
+      else
+        conversion_arguments arg
+      end
+    end
+
     def conversion_arguments name
       type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
     end

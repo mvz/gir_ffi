@@ -41,15 +41,7 @@ module GirFFI
       if needs_constructor_wrap?
         "self.constructor_wrap(#{callarg})"
       else
-        case specialized_type_tag
-        when :utf8
-          "#{callarg}.to_utf8"
-        when :c
-          "GLib::SizedArray.wrap(#{subtype_tag_or_class_name}, #{array_size}, #{callarg})"
-        else
-          # TODO: Move conversion into InOutPointer
-          "#{argument_class_name}.wrap(#{conversion_arguments callarg})"
-        end
+        outgoing_conversion callarg
       end
     end
 
