@@ -941,17 +941,30 @@ describe Regress do
     end
 
     it "handles the 'all' signal" do
-      skip
+      a = nil
+      GObject.signal_connect(instance, "all") { a = 4 }
+      GObject.signal_emit instance, "all"
+      a.must_equal 4
     end
+
     it "handles the 'cleanup' signal" do
-      skip
+      a = nil
+      GObject.signal_connect(instance, "cleanup") { a = 4 }
+      GObject.signal_emit instance, "cleanup"
+      a.must_equal 4
     end
+
     it "handles the 'first' signal" do
-      skip
+      a = nil
+      GObject.signal_connect(instance, "first") { a = 4 }
+      GObject.signal_emit instance, "first"
+      a.must_equal 4
     end
+
     it "handles the 'sig-with-array-len-prop' signal" do
       skip
     end
+
     it "handles the 'sig-with-array-prop' signal" do
       skip
     end
