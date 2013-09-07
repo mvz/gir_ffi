@@ -258,7 +258,7 @@ describe GirFFI::ReturnValueBuilder do
     describe "with fixed size" do
       before do
         stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).subtype_tag_or_class { :foo }
         stub(type_info).array_fixed_size { 3 }
       end
 
@@ -277,7 +277,7 @@ describe GirFFI::ReturnValueBuilder do
       let(:length_argument) { Object.new }
       before do
         stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).subtype_tag_or_class { :foo }
         stub(type_info).array_fixed_size { -1 }
 
         stub(length_argument).retname { "bar" }

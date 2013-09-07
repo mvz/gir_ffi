@@ -65,7 +65,7 @@ module GirFFI
     end
 
     def subtype_tag_or_class_name
-      type_info.subtype_tag_or_class_name
+      type_info.subtype_tag_or_class.inspect
     end
 
     def elm_t

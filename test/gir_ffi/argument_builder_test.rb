@@ -212,7 +212,7 @@ describe GirFFI::ArgumentBuilder do
     describe "for :c" do
       before do
         stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class_name { ":foo" }
+        stub(type_info).subtype_tag_or_class { :foo }
       end
 
       describe "with fixed size" do
@@ -412,7 +412,7 @@ describe GirFFI::ArgumentBuilder do
     describe "for :c" do
       before do
         stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class_name { ":bar" }
+        stub(type_info).subtype_tag_or_class { :bar }
       end
 
       describe "with fixed size" do
