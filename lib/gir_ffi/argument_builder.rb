@@ -9,8 +9,8 @@ module GirFFI
     end
 
     def inarg
-      if has_input_value?
-        @array_arg.nil? ? @name : nil
+      if has_input_value? && !@array_arg
+        @name
       end
     end
 
