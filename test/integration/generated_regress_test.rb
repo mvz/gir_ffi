@@ -816,17 +816,13 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property "hash-table", {"foo" => 34,
-                                             "bar" => 83}
-
+        instance.set_property "hash-table", {"foo" => 34, "bar" => 83}
         instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
                                                                 "bar" => 83})
       end
 
       it "can be set with #hash_table=" do
-        instance.set_property "hash-table", {"foo" => 34,
-                                             "bar" => 83}
-
+        instance.set_property "hash-table", {"foo" => 34, "bar" => 83}
         instance.hash_table.to_hash.must_equal({"foo" => 34, "bar" => 83})
         instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
                                                                 "bar" => 83})
