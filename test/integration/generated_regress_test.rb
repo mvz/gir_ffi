@@ -782,6 +782,10 @@ describe Regress do
     end
 
     describe "its 'gtype' property" do
+      before do
+        skip unless get_property_introspection_data("Regress", "TestObj", "gtype")
+      end
+
       it "can be retrieved with #get_property" do
         instance.get_property("gtype").must_equal 0
       end
