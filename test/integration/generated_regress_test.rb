@@ -1216,12 +1216,23 @@ describe Regress do
   end
 
   describe "Regress::TestStructB" do
+    let(:instance) { Regress::TestStructB.new }
     it "has a writable field some_int8" do
-      skip
+      instance.some_int8.must_equal 0
+      instance.some_int8 = 42
+      instance.some_int8.must_equal 42
     end
+
     it "has a writable field nested_a" do
-      skip
+      instance.nested_a.some_int.must_equal 0
+
+      nested = Regress::TestStructA.new
+      nested.some_int = -4321
+
+      instance.nested_a = nested
+      instance.nested_a.some_int.must_equal(-4321)
     end
+
     it "has a working method #clone" do
       a = Regress::TestStructB.new
       a.some_int8 = 42
