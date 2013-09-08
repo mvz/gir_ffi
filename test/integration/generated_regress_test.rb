@@ -1210,7 +1210,8 @@ describe Regress do
     end
 
     it "has a working function #parse" do
-      skip
+      a = Regress::TestStructA.parse("this string is actually ignored")
+      a.some_int.must_equal 23
     end
   end
 
