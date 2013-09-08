@@ -1292,7 +1292,14 @@ describe Regress do
   end
 
   describe "Regress::TestStructE" do
-    it "must be tested" do
+    let(:instance) { Regress::TestStructE.new }
+    it "has a writable field some_type" do
+      instance.some_type.must_equal 0
+      instance.some_type = GObject::TYPE_STRING
+      instance.some_type.must_equal GObject::TYPE_STRING
+    end
+
+    it "has a writable field some_union" do
       skip
     end
   end
