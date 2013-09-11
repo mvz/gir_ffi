@@ -51,13 +51,13 @@ module GirFFI
       end
 
       def tag_or_class
-        type_tag = self.tag
-        base = if type_tag == :interface
+        base = case flattened_tag
+               when :struct, :union, :object, :interface, :enum, :flags
                  Builder.build_class interface
                else
-                 type_tag
+                 flattened_tag
                end
-        if pointer? && type_tag != :utf8 && type_tag != :filename || interface_type == :object
+        if pointer? && tag != :utf8 && tag != :filename || interface_type == :object
           [:pointer, base]
         else
           base

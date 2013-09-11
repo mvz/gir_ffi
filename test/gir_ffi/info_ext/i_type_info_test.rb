@@ -11,6 +11,9 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:valtype_info) { klass.new }
   let(:iface_info) { Object.new }
 
+  let(:callback_type_info) {
+    get_introspection_data('Regress', 'test_callback').args[0].argument_type }
+
   describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
       mock(type_info).pointer? { false }
@@ -220,6 +223,13 @@ describe GirFFI::InfoExt::ITypeInfo do
 
           type_info.tag_or_class.must_equal interface
         end
+      end
+
+    end
+
+    describe "for a callback" do
+      it "returns :callback" do
+        callback_type_info.tag_or_class.must_equal :callback
       end
     end
 
