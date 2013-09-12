@@ -1176,19 +1176,19 @@ describe Regress do
       instance.some_int.must_equal 2556
     end
 
-    it "has instance writable field some_int8" do
+    it "has a writable field some_int8" do
       instance.some_int8.must_equal 0
       instance.some_int8 = -10
       instance.some_int8.must_equal(-10)
     end
 
-    it "has instance writable field some_double" do
+    it "has a writable field some_double" do
       instance.some_double.must_equal 0.0
       instance.some_double = 1.03455e20
       instance.some_double.must_equal 1.03455e20
     end
 
-    it "has instance writable field some_enum" do
+    it "has a writable field some_enum" do
       instance.some_enum.must_equal :value1
       instance.some_enum = :value2
       instance.some_enum.must_equal :value2
