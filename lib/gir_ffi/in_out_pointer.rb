@@ -15,7 +15,7 @@ module GirFFI
 
     private :initialize
 
-    # TODO: Rename to get_value
+    # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
       when Class
@@ -23,7 +23,7 @@ module GirFFI
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
       when FFI::Enum
-        self.get_int32 0
+        value_ffi_type[self.get_int32(0)]
       else
         raise NotImplementedError
       end
@@ -35,12 +35,12 @@ module GirFFI
       case value_type
       when :utf8
         bare_value.to_utf8
-      when Symbol
-        bare_value
       when Array
         value_type[1].wrap bare_value
-      else
+      when Class
         value_type.wrap bare_value
+      else
+        bare_value
       end
     end
 

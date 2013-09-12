@@ -95,7 +95,7 @@ module GirFFI
                     "#{argument_class_name}.new"
                   end
                 else
-                  "GirFFI::InOutPointer.for #{specialized_type_tag.inspect}"
+                  "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
                 end
               else
                 ingoing_parameter_conversion
@@ -109,7 +109,7 @@ module GirFFI
     end
 
     def needs_outgoing_parameter_conversion?
-      [ :array, :c, :enum, :error, :flags, :ghash, :glist, :gslist, :object,
+      [ :array, :c, :error, :ghash, :glist, :gslist, :object,
         :ptr_array, :struct, :strv, :utf8 ].include?(specialized_type_tag)
     end
 
