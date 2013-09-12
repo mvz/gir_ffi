@@ -87,8 +87,6 @@ module GirFFI
     def outgoing_conversion base
       args = output_conversion_arguments base
       case specialized_type_tag
-      when :enum, :flags
-        "#{argument_class_name}[#{args}]"
       when :utf8
         "#{base}.to_utf8"
       else
