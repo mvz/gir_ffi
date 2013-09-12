@@ -17,15 +17,17 @@ module GirFFI
       container_class.class_eval setter_def if info.writable?
     end
 
-    private
-
     def getter_def
       builder = return_value_builder
 
-      return <<-CODE
-      def #{@info.name}
-        struct = #{struct_class}.new @struct.to_ptr
-        #{builder.callarg} = struct[#{field_symbol.inspect}]
+      field_ptr = builder.new_variable
+      typed_ptr = builder.new_variable
+
+      return <<-CODE.reset_indentation
+      def #{info.name}
+        #{field_ptr} = @struct.to_ptr + #{info.offset}
+        #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
+        #{builder.callarg} = #{typed_ptr}.to_value
         #{builder.post.join("\n")}
         #{builder.retval}
       end
@@ -45,10 +47,16 @@ module GirFFI
       CODE
     end
 
+    private
+
     attr_reader :info
 
     def struct_class
       container_class::Struct
+    end
+
+    def field_type_tag_or_class
+      @field_type_tag_or_class ||= info.field_type.tag_or_class
     end
 
     def container_class

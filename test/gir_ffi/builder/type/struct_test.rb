@@ -37,11 +37,13 @@ describe GirFFI::Builder::Type::Struct do
       stub(type = Object.new).pointer? { false }
       stub(type).tag { :gint32 }
       stub(type).flattened_tag { :gint32 }
+      stub(type).tag_or_class { :gint32 }
       stub(type).extra_conversion_arguments { [] }
 
       stub(@field).field_type { type }
       stub(@field).name { "bar" }
       stub(@field).writable? { true }
+      stub(@field).offset { 4 }
       stub(@field).container { @struct }
 
       stub(@struct).find_instance_method { }

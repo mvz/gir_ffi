@@ -82,6 +82,10 @@ module GirFFI
       []
     end
 
+    def new_variable
+      @var_gen.new_var
+    end
+
     private
 
     def outgoing_conversion base
