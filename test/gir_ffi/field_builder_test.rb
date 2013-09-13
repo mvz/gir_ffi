@@ -50,4 +50,20 @@ describe GirFFI::FieldBuilder do
       instance.getter_def.must_equal expected
     end
   end
+
+  describe "for an inline fixed-size array field" do
+    let(:field_info) { get_field_introspection_data "Regress", "TestStructE", "some_union" }
+    it "creates the right getter method" do
+      expected = <<-CODE.reset_indentation
+        def some_union
+          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v2 = GirFFI::InOutPointer.new(:c, _v1)
+          _v3 = _v2.to_value
+          _v4 = GLib::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v3)
+          _v4
+        end
+      CODE
+      instance.getter_def.must_equal expected
+    end
+  end
 end

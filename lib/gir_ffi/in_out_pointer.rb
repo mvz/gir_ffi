@@ -20,6 +20,9 @@ module GirFFI
       case value_ffi_type
       when Class
         value_ffi_type.get_value_from_pointer(self)
+      # FIXME: This is a hack, since :c is not really a FFI type.
+      when :c
+        self
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
       when FFI::Enum

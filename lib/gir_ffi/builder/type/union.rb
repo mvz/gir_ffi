@@ -1,6 +1,7 @@
 require 'gir_ffi/builder/type/registered_type'
 require 'gir_ffi/builder/type/with_layout'
 require 'gir_ffi/builder/type/with_methods'
+require 'gir_ffi/union_base'
 
 module GirFFI
   module Builder
@@ -25,6 +26,10 @@ module GirFFI
 
         def layout_superclass
           FFI::Union
+        end
+
+        def superclass
+          UnionBase
         end
       end
     end

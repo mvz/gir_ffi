@@ -10,7 +10,6 @@ module GirFFI
       :glist => :pointer,
       :gslist => :pointer,
       :strv => :pointer,
-      :c => :pointer,
       :object => :pointer,
       :struct => :pointer,
       :error => :pointer,

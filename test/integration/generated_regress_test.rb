@@ -1300,7 +1300,7 @@ describe Regress do
     end
 
     it "has a writable field some_union" do
-      skip
+      instance.some_union.map(&:v_int).must_equal [0, 0]
     end
   end
   describe "Regress::TestStructE__some_union__union" do
