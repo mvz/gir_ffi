@@ -1301,6 +1301,15 @@ describe Regress do
 
     it "has a writable field some_union" do
       instance.some_union.map(&:v_int).must_equal [0, 0]
+
+      union1 = Regress::TestStructE__some_union__union.new
+      union1.v_int = 42
+      union2 = Regress::TestStructE__some_union__union.new
+      union2.v_int = 84
+
+      instance.some_union = [union1, union2]
+
+      instance.some_union.map(&:v_int).must_equal [42, 84]
     end
   end
   describe "Regress::TestStructE__some_union__union" do

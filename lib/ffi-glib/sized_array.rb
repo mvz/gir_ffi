@@ -1,3 +1,4 @@
+# FIXME: SizedArray does not really belong in GLib, does it?
 module GLib
   # Class representing an array with a determined size
   class SizedArray
@@ -27,6 +28,15 @@ module GLib
 
     def ==(other)
       self.to_a == other.to_a
+    end
+
+    def size_in_bytes
+      size * element_size
+    end
+
+    def self.copy_value_to_pointer value, pointer
+      size = value.size_in_bytes
+      pointer.put_bytes(0, value.to_ptr.read_bytes(size), 0, size)
     end
 
     private
