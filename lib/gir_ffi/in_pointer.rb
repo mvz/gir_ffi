@@ -67,15 +67,10 @@ module GirFFI
         type_size = type::Struct.size
         length = ary.length
 
-        # TODO: Find method to directly copy bytes, rather than reading and
-        # putting them.
         ptr = AllocationHelper.safe_malloc length * type_size
-        ary.each_with_index { |item, idx|
-          ptr.put_bytes(idx * type_size,
-                        item.to_ptr.read_bytes(type_size),
-                        0,
-                        type_size)
-        }
+        ary.each_with_index do |item, idx|
+          type.copy_value_to_pointer item, ptr, idx * type_size
+        end
         new ptr
       end
 

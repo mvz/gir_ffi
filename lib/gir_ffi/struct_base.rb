@@ -13,8 +13,8 @@ module GirFFI
       self
     end
 
-    def self.copy_value_to_pointer value, pointer
-      self::Struct.copy_value_to_pointer value, pointer
+    def self.copy_value_to_pointer value, pointer, offset=0
+      self::Struct.copy_value_to_pointer value, pointer, offset
     end
 
     def self.get_value_from_pointer pointer
