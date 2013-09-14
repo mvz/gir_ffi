@@ -8,16 +8,32 @@ reference count of any objects it gets from GObject. This task therefore involve
 - Free non-GObject pointers as needed (at garbage-collection time)
 - Lower reference count of GObjects (at garbage-collection time)
 
+== Refactorings
+
+These in the order they occured to me, and may therefore be fixed in any order.
+
+- Create Type objects for all FFI types, including the ones currently
+  represented by a single symbol, so we can always do stuff like
+
+    GirFFI::Types::UInt8.get_value_from_pointer(ptr)
+
+  rather than having awkward dynamic method dispatch inside GirFFI::InOutPointer.
+
+- Move code in GirFFI::Struct to StructBase, then somehow unify UnionBase and
+  StructBase.
+
+- Move to a single Pointer class, rather than InPointer, InOutPointer and
+  Pointer monkeypatching.
+
+- Move special types like SizedArray to sane namespaces. Types (like
+  GLib::List) that have actual GLib implementations go to the GLib namespace.
+  Other types go to the GirFFI namespace.
+
 == Persistent Ruby GObject identity
 
 GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
 object already exists, the existing object is returned. This involves the use
 of WeakRef, no doubt.
-
-== Remove code for passing generic pointers
-
-Generic pointers have been declared 'not introspectable', so
-handling them can be removed.
 
 == Handle fundamental objects that are not GObject.
 
