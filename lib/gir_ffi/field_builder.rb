@@ -36,13 +36,16 @@ module GirFFI
 
     def setter_def
       builder = setter_builder
-      name = @info.name
 
-      return <<-CODE
-      def #{name}= #{builder.inarg}
-        #{builder.pre.join("\n")}
-        struct = #{struct_class}.new @struct.to_ptr
-        struct[#{name.to_sym.inspect}] = #{builder.callarg}
+      field_ptr = builder.new_variable
+      typed_ptr = builder.new_variable
+
+      return <<-CODE.reset_indentation
+      def #{info.name}= #{builder.inarg}
+        #{field_ptr} = @struct.to_ptr + #{info.offset}
+        #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
+        #{builder.pre.join("\n        ")}
+        #{typed_ptr}.set_value #{builder.callarg}
       end
       CODE
     end

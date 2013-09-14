@@ -17,6 +17,18 @@ describe GirFFI::FieldBuilder do
       CODE
       instance.getter_def.must_equal expected
     end
+
+    it "creates the right setter method" do
+      expected = <<-CODE.reset_indentation
+        def some_int8= value
+          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v2 = GirFFI::InOutPointer.new(:gint8, _v1)
+          _v3 = value
+          _v2.set_value _v3
+        end
+      CODE
+      instance.setter_def.must_equal expected
+    end
   end
 
   describe "for a field of type :struct" do
@@ -64,6 +76,19 @@ describe GirFFI::FieldBuilder do
         end
       CODE
       instance.getter_def.must_equal expected
+    end
+
+    it "creates the right setter method" do
+      expected = <<-CODE.reset_indentation
+        def some_union= value
+          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v2 = GirFFI::InOutPointer.new(:c, _v1)
+          GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
+          _v3 = GLib::SizedArray.from(Regress::TestStructE__some_union__union, 2, value)
+          _v2.set_value _v3
+        end
+      CODE
+      instance.setter_def.must_equal expected
     end
   end
 end
