@@ -102,6 +102,11 @@ describe GirFFI::ArgumentBuilder do
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "param_spec_out").args[0] }
 
+      before do
+        # FIXME: Find alternative info that doesn't need a guard.
+        skip unless arg_info
+      end
+
       it "has the correct value for #pre" do
         builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, GObject::ParamSpec]" ]
       end
