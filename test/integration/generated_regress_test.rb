@@ -618,7 +618,6 @@ describe Regress do
 
     it "has a working method #set_bare" do
       obj = Regress::TestObj.new_from_file("bar")
-      # XXX: Sometimes uses set_property, and it shouldn't?
       instance.set_bare obj
       instance.bare.must_equal obj
     end
@@ -1764,7 +1763,6 @@ describe Regress do
     skip
   end
 
-  # TODO: Find a way to test encoding issues.
   it "has a working function #test_filename_return" do
     arr = Regress.test_filename_return
     arr.must_be :==, ["åäö", "/etc/fstab"]
