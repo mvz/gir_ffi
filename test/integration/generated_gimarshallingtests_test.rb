@@ -1885,9 +1885,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_flat_array" do
-    # TODO: Convert array of Ruby values to GValues automatically?
-    arr = [42, "42", true].map { |val| GObject::Value.wrap_ruby_value val }
-    GIMarshallingTests.gvalue_flat_array arr
+    GIMarshallingTests.gvalue_flat_array [42, "42", true]
+    pass
   end
 
   it "has a working function #gvalue_flat_array_round_trip" do

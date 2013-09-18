@@ -13,7 +13,11 @@ module GirFFI
       when Symbol
         from_basic_type_array type, ary
       when Class
-        from_struct_array type, ary
+        if type == GObject::Value
+          from_gvalue_array type, ary
+        else
+          from_struct_array type, ary
+        end
       when Module
         from_enum_array type, ary
       when Array
@@ -61,6 +65,17 @@ module GirFFI
 
       def from_interface_pointer_array ary
         from_basic_type_array :pointer, ary.map {|ifc| ifc.to_ptr}
+      end
+
+      def from_gvalue_array type, ary
+        ary = ary.map do |it|
+          if it.is_a? GObject::Value
+            it
+          else
+            GObject::Value.wrap_ruby_value it
+          end
+        end
+        from_struct_array type, ary
       end
 
       def from_struct_array type, ary
