@@ -8,52 +8,47 @@ describe GirFFI::InfoExt::ISignalInfo do
   let(:signal_info) { klass.new }
 
   describe "#cast_back_signal_arguments" do
-    # TODO: Move to integration tests
-    it "correctly casts back pointers for the test-with-static-scope-arg signal" do
-      o = Regress::TestSubObj.new
-      b = Regress::TestSimpleBoxedA.new
-      ud = GirFFI::InPointer.from_object "Hello!"
+    let(:object) { Regress::TestSubObj.new }
+    let(:boxed) { Regress::TestSimpleBoxedA.const_return }
+    let(:user_data) { GirFFI::InPointer.from_object "Hello!" }
+    let(:signal_info) { Regress::TestSubObj.find_signal "test-with-static-scope-arg" }
+    let(:result) { signal_info.cast_back_signal_arguments(object.to_ptr,
+                                                          boxed.to_ptr,
+                                                          user_data) }
 
-      assert_equal "Hello!", GirFFI::ArgHelper::OBJECT_STORE[ud.address]
+    it "correctly casts back pointers to :object" do
+      result[0].must_equal object
+    end
 
-      sig = o.class.find_signal "test-with-static-scope-arg"
+    it "correctly casts back pointers to :struct" do
+      result[1].some_int8.must_equal boxed.some_int8
+      result[1].some_int.must_equal boxed.some_int
+    end
 
-      gva = sig.cast_back_signal_arguments(o.to_ptr, b.to_ptr, ud)
-
-      klasses = gva.map {|it| it.class}
-      klasses.must_equal [ Regress::TestSubObj,
-                           Regress::TestSimpleBoxedA,
-                           String ]
-      gva[2].must_equal "Hello!"
+    it "correctly casts back user data" do
+      result[2].must_equal "Hello!"
     end
   end
 
   describe "#signal_arguments_to_gvalue_array" do
-    # TODO: Move to integration tests
-    describe "the result of wrapping test-with-static-scope-arg" do
-      before do
-        o = Regress::TestSubObj.new
-        b = Regress::TestSimpleBoxedA.new
-        sig = o.class.find_signal "test-with-static-scope-arg"
+    let(:object) { Regress::TestSubObj.new }
+    let(:boxed) { Regress::TestSimpleBoxedA.const_return }
+    let(:signal_info) { Regress::TestSubObj.find_signal "test-with-static-scope-arg" }
+    let(:result) { signal_info.signal_arguments_to_gvalue_array(object, boxed) }
 
-        @gva = sig.signal_arguments_to_gvalue_array(o, b)
-      end
+    it "wraps its arguments in a GObject::ValueArray" do
+      result.must_be_instance_of GObject::ValueArray
+      result.n_values.must_equal 2
+    end
 
-      it "is a GObject::ValueArray" do
-        assert_instance_of GObject::ValueArray, @gva
-      end
+    it "correctly wraps :object" do
+      result.get_nth(0).get_value.must_equal object
+    end
 
-      it "contains two values" do
-        assert_equal 2, @gva.n_values
-      end
-
-      it "has a first value with GType for TestSubObj" do
-        assert_equal Regress::TestSubObj.get_gtype, (@gva.get_nth 0).current_gtype
-      end
-
-      it "has a second value with GType for TestSimpleBoxedA" do
-        assert_equal Regress::TestSimpleBoxedA.get_gtype, (@gva.get_nth 1).current_gtype
-      end
+    it "correctly wraps :struct" do
+      result_boxed = result.get_nth(1).get_value
+      result_boxed.some_int8.must_equal boxed.some_int8
+      result_boxed.some_int.must_equal boxed.some_int
     end
   end
 
