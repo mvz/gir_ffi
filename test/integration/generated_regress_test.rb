@@ -1089,82 +1089,60 @@ describe Regress do
       assert_instance_of Regress::TestSimpleBoxedA, obj
     end
 
+    let(:instance) { Regress::TestSimpleBoxedA.new }
+
     it "has a working method #copy" do
-      skip
+      instance.some_int = 4236
+
+      obj2 = instance.copy
+      obj2.must_be_instance_of Regress::TestSimpleBoxedA
+      obj2.some_int.must_equal instance.some_int
+
+      instance.some_int = 89
+      obj2.some_int.wont_equal instance.some_int
     end
+
     it "has a working method #equals" do
-      skip
+      instance.some_int = 4236
+
+      ob2 = Regress::TestSimpleBoxedA.new
+      ob2.some_int = 4236
+      ob2.equals(instance).must_equal true
+      ob2.some_enum = :value3
+      ob2.equals(instance).must_equal true
+      ob2.some_int = 42
+      ob2.equals(instance).wont_equal true
     end
+
     it "has a working function #const_return" do
-      skip
-    end
-
-    describe "an instance" do
-      before do
-        @obj = Regress::TestSimpleBoxedA.new
-        @obj.some_int = 4236
-        @obj.some_int8 = 36
-        @obj.some_double = 23.53
-        @obj.some_enum = :value2
-      end
-
-      describe "its equals method" do
-        before do
-          @ob2 = Regress::TestSimpleBoxedA.new
-          @ob2.some_int = 4236
-          @ob2.some_int8 = 36
-          @ob2.some_double = 23.53
-          @ob2.some_enum = :value2
-        end
-
-        it "returns true if values are the same" do
-          assert_equal true, @obj.equals(@ob2)
-        end
-
-        it "returns true if enum values differ" do
-          @ob2.some_enum = :value3
-          assert_equal true, @obj.equals(@ob2)
-        end
-
-        it "returns false if other values differ" do
-          @ob2.some_int = 1
-          assert_equal false, @obj.equals(@ob2)
-        end
-      end
-
-      describe "its copy method" do
-        before do
-          @ob2 = @obj.copy
-        end
-
-        it "returns an instance of TestSimpleBoxedA" do
-          assert_instance_of Regress::TestSimpleBoxedA, @ob2
-        end
-
-        it "copies fields" do
-          assert_equal 4236, @ob2.some_int
-          assert_equal 36, @ob2.some_int8
-          assert_equal 23.53, @ob2.some_double
-          assert_equal :value2, @ob2.some_enum
-        end
-
-        it "creates a true copy" do
-          @obj.some_int8 = 89
-          assert_equal 36, @ob2.some_int8
-        end
-      end
+      result = Regress::TestSimpleBoxedA.const_return
+      [result.some_int, result.some_int8, result.some_double].must_equal [5, 6, 7.0]
     end
   end
 
   describe "Regress::TestSimpleBoxedB" do
+    let(:instance) { Regress::TestSimpleBoxedB.new }
     it "has a writable field some_int8" do
-      skip
+      instance.some_int8.must_equal 0
+      instance.some_int8 = 42
+      instance.some_int8.must_equal 42
     end
+
     it "has a writable field nested_a" do
-      skip
+      instance.nested_a.some_int.must_equal 0
+      instance.nested_a = Regress::TestSimpleBoxedA.const_return
+      instance.nested_a.some_int.must_equal 5
     end
+
     it "has a working method #copy" do
-      skip
+      instance.some_int8 = -42
+      instance.nested_a.some_int = 4242
+
+      copy = instance.copy
+      [copy.some_int8, copy.nested_a.some_int].must_equal [-42, 4242]
+
+      instance.some_int8 = 103
+      copy.some_int8.must_equal(-42)
     end
   end
 
@@ -1314,66 +1292,112 @@ describe Regress do
     end
   end
   describe "Regress::TestStructE__some_union__union" do
+    let(:instance) { Regress::TestStructE__some_union__union.new }
     it "has a writable field v_int" do
-      skip
+      instance.v_int.must_equal 0
+      instance.v_int = -54321
+      instance.v_int.must_equal(-54321)
     end
+
     it "has a writable field v_uint" do
-      skip
+      instance.v_uint.must_equal 0
+      instance.v_uint = 54321
+      instance.v_uint.must_equal 54321
     end
+
     it "has a writable field v_long" do
-      skip
+      instance.v_long.must_equal 0
+      instance.v_long = -54321
+      instance.v_long.must_equal(-54321)
     end
+
     it "has a writable field v_ulong" do
-      skip
+      instance.v_long.must_equal 0
+      instance.v_long = 54321
+      instance.v_long.must_equal 54321
     end
+
     it "has a writable field v_int64" do
-      skip
+      instance.v_int64.must_equal 0
+      instance.v_int64 = -54_321_000_000_000
+      instance.v_int64.must_equal(-54_321_000_000_000)
     end
     it "has a writable field v_uint64" do
-      skip
+      instance.v_uint64.must_equal 0
+      instance.v_uint64 = 54_321_000_000_000
+      instance.v_uint64.must_equal 54_321_000_000_000
     end
     it "has a writable field v_float" do
-      skip
+      instance.v_float.must_equal 0
+      instance.v_float = 3.1415
+      instance.v_float.must_be_close_to 3.1415
     end
     it "has a writable field v_double" do
-      skip
+      instance.v_double.must_equal 0
+      instance.v_double = 3.1415
+      instance.v_double.must_equal 3.1415
     end
     it "has a writable field v_pointer" do
-      skip
+      instance.v_pointer.must_be :null?
+      instance.v_pointer = FFI::Pointer.new 54321
+      instance.v_pointer.address.must_equal 54321
     end
   end
   describe "Regress::TestStructF" do
+    let(:instance) { Regress::TestStructF.new }
+
     it "has a writable field ref_count" do
-      skip
+      instance.ref_count.must_equal 0
+      instance.ref_count = 1
+      instance.ref_count.must_equal 1
     end
+
     it "has a writable field data1" do
-      skip
+      instance.data1.must_be :null?
+      instance.data1 = GirFFI::InOutPointer.from(:gint32, 42)
+      instance.data1.read_int32.must_equal 42
     end
+
     it "has a writable field data2" do
-      skip
+      skip "Introspection data cannot deal with type of this field yet"
     end
+
     it "has a writable field data3" do
-      skip
+      skip "Introspection data cannot deal with type of this field yet"
     end
+
     it "has a writable field data4" do
-      skip
+      skip "Introspection data cannot deal with type of this field yet"
     end
+
     it "has a writable field data5" do
-      skip
+      skip "Introspection data cannot deal with type of this field yet"
     end
+
     it "has a writable field data6" do
-      skip
+      skip "Introspection data cannot deal with type of this field yet"
     end
   end
+
   describe "Regress::TestStructFixedArray" do
+    let(:instance) { Regress::TestStructFixedArray.new }
     it "has a writable field just_int" do
-      skip
+      instance.just_int.must_equal 0
+      instance.just_int = 42
+      instance.just_int.must_equal 42
     end
+
     it "has a writable field array" do
-      skip
+      instance.array.must_be :==, [0] * 10
+      instance.array = (1..10).to_a
+      instance.array.must_be :==, (1..10).to_a
     end
+
     it "has a working method #frob" do
-      skip
+      instance.array = (0..9).to_a
+      instance.frob
+      instance.array.must_be :==, (42..42+9).to_a
+      instance.just_int.must_equal 7
     end
   end
 
@@ -1413,46 +1437,45 @@ describe Regress do
     let(:instance) { Regress::TestWi8021x.new }
 
     it "has a working method #get_testbool" do
-      instance.set_testbool false
-      assert_equal false, instance.get_testbool
-      instance.set_testbool true
-      assert_equal true, instance.get_testbool
+      instance.get_testbool.must_equal true
     end
 
     it "has a working method #set_testbool" do
       instance.set_testbool true
-      assert_equal true, get_field_value(instance, :testbool)
+      instance.get_testbool.must_equal true
       instance.set_testbool false
-      assert_equal false, get_field_value(instance, :testbool)
+      instance.get_testbool.must_equal false
     end
 
     describe "its 'testbool' property" do
-      before do
-        @obj = instance
-      end
-
       it "can be retrieved with #get_property" do
-        @obj.set_testbool true
-        val = @obj.get_property "testbool"
-        assert_equal true, val
+        instance.get_property("testbool").must_equal true
       end
 
       it "can be retrieved with #testbool" do
-        @obj.set_testbool true
-        assert_equal true, @obj.testbool
-        @obj.set_testbool false
-        assert_equal false, @obj.testbool
+        instance.testbool.must_equal true
       end
 
       it "can be set with #set_property" do
-        skip
+        instance.set_property "testbool", true
+        instance.get_testbool.must_equal true
+        instance.get_property("testbool").must_equal true
+
+        instance.set_property "testbool", false
+        instance.get_testbool.must_equal false
+        instance.get_property("testbool").must_equal false
       end
 
       it "can be set with #testbool=" do
-        @obj.testbool = true
-        assert_equal true, @obj.testbool
-        @obj.testbool = false
-        assert_equal false, @obj.testbool
+        instance.testbool = true
+        instance.testbool.must_equal true
+        instance.get_testbool.must_equal true
+        instance.get_property("testbool").must_equal true
+
+        instance.testbool = false
+        instance.testbool.must_equal false
+        instance.get_testbool.must_equal false
+        instance.get_property("testbool").must_equal false
       end
     end
   end
@@ -1462,14 +1485,21 @@ describe Regress do
   end
 
   it "has a working function #aliased_caller_alloc" do
-    skip
+    result = Regress.aliased_caller_alloc
+    result.must_be_instance_of Regress::TestBoxed
   end
+
   it "has a working function #atest_error_quark" do
-    skip
+    result = Regress.atest_error_quark
+    GLib.quark_to_string(result).must_equal "regress-atest-error"
   end
+
   it "has a working function #func_obj_null_in" do
-    skip
+    Regress.func_obj_null_in nil
+    Regress.func_obj_null_in Regress::TestObj.constructor
+    pass
   end
+
   it "has a working function #global_get_flags_out" do
     skip
   end
