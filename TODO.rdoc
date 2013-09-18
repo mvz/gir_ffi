@@ -29,6 +29,8 @@ These in the order they occured to me, and may therefore be fixed in any order.
   GLib::List) that have actual GLib implementations go to the GLib namespace.
   Other types go to the GirFFI namespace.
 
+- Use argumentbuilders to build signal argument marshalling functions.
+
 == Persistent Ruby GObject identity
 
 GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
