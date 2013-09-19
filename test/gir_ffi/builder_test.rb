@@ -1,29 +1,52 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builder do
-  before do
-    @gir = GObjectIntrospection::IRepository.default
-  end
+  let(:gir) { GObjectIntrospection::IRepository.default }
 
-  describe "building GObject::Object" do
-    before do
-      save_module :GObject
-      GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
-    end
-
-    it "creates a Lib module in the parent namespace ready to attach functions from gobject-2.0" do
-      expected = @gir.shared_library('GObject')
-      assert_equal [expected], GObject::Lib.ffi_libraries.map(&:name)
-    end
-
+  describe '.build_class' do
     it "does not replace existing classes" do
       oldclass = GObject::Object
       GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
-      assert_equal oldclass, GObject::Object
+      GObject::Object.must_equal oldclass
+    end
+  end
+
+  describe '.attach_ffi_function' do
+    let(:lib) { Module.new }
+    it "calls attach_function with the correct types for Regress.test_callback_destroy_notify" do
+      function_info = get_introspection_data 'Regress', 'test_callback_destroy_notify'
+
+      mock(lib).
+        attach_function("regress_test_callback_destroy_notify",
+                        [ Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify ],
+                        :int32) { true }
+
+      GirFFI::Builder.attach_ffi_function(lib, function_info)
     end
 
-    after do
-      restore_module :GObject
+    it "calls attach_function with the correct types for Regress::TestObj#torture_signature_0" do
+      info = get_method_introspection_data 'Regress', 'TestObj', 'torture_signature_0'
+
+      mock(lib).
+        attach_function("regress_test_obj_torture_signature_0",
+                        [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
+                        :void) { true }
+
+      GirFFI::Builder.attach_ffi_function(lib, info)
+    end
+
+    it "calls attach_function with the correct types for Regress::TestObj#instance_method" do
+      info = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
+      mock(lib).attach_function("regress_test_obj_instance_method",
+                                [:pointer], :int32) { true }
+      GirFFI::Builder.attach_ffi_function(lib, info)
+    end
+
+    it "calls attach_function with the correct types for Regress.test_array_gint32_in" do
+      info = get_introspection_data 'Regress', 'test_array_gint32_in'
+      mock(lib).attach_function("regress_test_array_gint32_in",
+                                [:int32, :pointer], :int32) { true }
+      GirFFI::Builder.attach_ffi_function(lib, info)
     end
   end
 
@@ -47,59 +70,9 @@ describe GirFFI::Builder do
       assert_equal [FFI.find_type(:pointer)], dn.param_types
     end
 
-    it "calls attach_function with the correct types" do
-      argtypes = [ Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify ]
-      mock(Regress::Lib).attach_function("regress_test_callback_destroy_notify",
-                                         argtypes, :int32) { true }
-      GirFFI::Builder.attach_ffi_function(Regress::Lib, @go)
-    end
-
     after do
       restore_module :Regress
       restore_module :GObject
-    end
-  end
-
-  describe "building Regress::TestStructA" do
-    before do
-      GirFFI::Builder.build_class get_introspection_data('Regress', 'TestStructA')
-    end
-
-    it "sets up the correct struct members" do
-      assert_equal [:some_int, :some_int8, :some_double, :some_enum],
-        Regress::TestStructA::Struct.members
-    end
-
-    it "sets up struct members with the correct offset" do
-      info = @gir.find_by_name 'Regress', 'TestStructA'
-      assert_equal info.fields.map{|f| [f.name.to_sym, f.offset]},
-        Regress::TestStructA::Struct.offsets
-    end
-
-    it "sets up struct members with the correct types" do
-      tags = [:int, :int8, :double, Regress::TestEnum::Enum]
-      assert_equal tags.map {|t| FFI.find_type t},
-        Regress::TestStructA::Struct.layout.fields.map {|f| f.type}
-    end
-  end
-
-  describe "building GObject::TypeCValue" do
-    before do
-      GirFFI::Builder.build_class get_introspection_data('GObject', 'TypeCValue')
-    end
-
-    it "sets up the correct union members" do
-      assert_equal [:v_int, :v_long, :v_int64, :v_double, :v_pointer],
-        GObject::TypeCValue::Struct.members
-    end
-
-    it "sets up union members with the correct offset" do
-      assert_equal [0, 0, 0, 0, 0],
-        GObject::TypeCValue::Struct.offsets.map {|o| o[1]}
-    end
-
-    it "sets up the inner class as derived from FFI::Union" do
-      assert_equal FFI::Union, GObject::TypeCValue::Struct.superclass
     end
   end
 
@@ -153,112 +126,56 @@ describe GirFFI::Builder do
     end
   end
 
-  describe "built Regress::TestObj" do
+  describe "having built Regress::TestObj" do
     before do
-      save_module :Regress
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestObj')
     end
 
-    it "attaches C functions to Regress::Lib" do
+    it "C functions for called instance methods get attached to Regress::Lib" do
       o = Regress::TestObj.new_from_file("foo")
       o.instance_method
-      assert Regress::Lib.respond_to? :regress_test_obj_instance_method
+      Regress::Lib.must_respond_to :regress_test_obj_instance_method
     end
 
-    it "knows its own GIR info" do
-      assert_equal 'TestObj', Regress::TestObj.gir_info.name
+    it "the built class knows its own GIR info" do
+      Regress::TestObj.gir_info.name.must_equal 'TestObj'
     end
 
-    it "knows its own class builder" do
-      assert GirFFI::Builder::Type::Base === Regress::TestObj.gir_ffi_builder
-    end
-
-    describe "its #torture_signature_0 method" do
-      it "is attached with the correct ffi types" do
-        info = get_method_introspection_data 'Regress', 'TestObj',
-          'torture_signature_0'
-
-        argtypes = [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32]
-        mock(Regress::Lib).attach_function("regress_test_obj_torture_signature_0",
-                                           argtypes, :void) { true }
-        GirFFI::Builder.attach_ffi_function(Regress::Lib, info)
-      end
-    end
-
-    describe "its #instance_method method" do
-      it "is attached with the correct ffi types" do
-        info = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
-        mock(Regress::Lib).attach_function("regress_test_obj_instance_method",
-                                           [:pointer], :int32) { true }
-        GirFFI::Builder.attach_ffi_function(Regress::Lib, info)
-      end
-    end
-
-    after do
-      restore_module :Regress
+    it "the built class knows its own class builder" do
+      Regress::TestObj.gir_ffi_builder.must_be_instance_of GirFFI::Builder::Type::Object
     end
   end
 
   describe "built Regress::TestSubObj" do
-    before do
-      save_module :Regress
-      GirFFI::Builder.build_class get_introspection_data('Regress', 'TestSubObj')
-    end
-
-    # TODO: Odd test.
-    it "uses its superclass' set_bare method" do
+    it "inherits #set_bare from its superclass" do
       o1 = Regress::TestSubObj.new
-      o2 = Regress::TestObj.new_from_file("foo")
-
       o1.set_bare(nil)
-      o2.set_bare(nil)
       pass
     end
 
-    it "overrides instance_method" do
+    it "overrides #instance_method" do
       obj = Regress::TestObj.new_from_file("foo")
       subobj = Regress::TestSubObj.new
-      assert_equal(-1, obj.instance_method)
-      assert_equal 0, subobj.instance_method
-    end
 
-    after do
-      restore_module :Regress
-    end
-  end
-
-  describe "built Gio::ThreadedSocketService" do
-    before do
-      save_module :Gio
-      GirFFI::Builder.build_module 'Gio'
-    end
-
-    describe "when parent constructor has been called" do
-      before do
-        Gio::SocketService.new
-      end
-
-      it "still uses its own constructor" do
-        Gio::ThreadedSocketService.new 2
-        pass
-      end
-    end
-
-    after do
-      restore_module :Gio
+      obj.instance_method.must_equal(-1)
+      subobj.instance_method.must_equal 0
     end
   end
 
   describe "building Regress::TestSubObj" do
     before do
       save_module :Regress
-      save_module :GObject
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestSubObj')
     end
 
     it "builds Regress namespace" do
       assert Regress.const_defined? :Lib
       assert Regress.respond_to? :method_missing
+    end
+
+    it "creates the Regress::Lib module ready to attach functions from the shared library" do
+      expected = [gir.shared_library('Regress')]
+      assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
     end
 
     it "builds parent classes also" do
@@ -282,7 +199,6 @@ describe GirFFI::Builder do
 
     after do
       restore_module :Regress
-      restore_module :GObject
     end
   end
 
@@ -308,37 +224,6 @@ describe GirFFI::Builder do
       oldmodule = Regress::Lib
       GirFFI::Builder.build_module 'Regress'
       assert_equal oldmodule, Regress::Lib
-    end
-
-    after do
-      restore_module :Regress
-    end
-  end
-
-  describe "looking at Regress.test_array_gint32_in" do
-    before do
-      save_module :Regress
-      GirFFI::Builder.build_module 'Regress'
-      @go = get_introspection_data 'Regress', 'test_array_gint32_in'
-    end
-
-    it "has correct introspection data" do
-      gir = GObjectIntrospection::IRepository.default
-      gir.require "Regress", nil
-      go2 = gir.find_by_name "Regress", "test_array_gint32_in"
-      assert_equal go2, @go
-    end
-
-    it "attaches function to Regress::Lib" do
-      GirFFI::Builder.attach_ffi_function Regress::Lib, @go
-      assert_defines_singleton_method Regress::Lib, :regress_test_array_gint32_in
-    end
-
-    it "calls attach_function with the correct types" do
-      argtypes = [:int32, :pointer]
-      mock(Regress::Lib).attach_function("regress_test_array_gint32_in",
-                                         argtypes, :int32) { true }
-      GirFFI::Builder.attach_ffi_function(Regress::Lib, @go)
     end
 
     after do

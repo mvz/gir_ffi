@@ -9,6 +9,15 @@ module GirFFI
       # Note: This module depends on the additional inclusion of
       # WithMethods.
       module WithLayout
+        def layout_specification
+          spec = base_layout_specification
+          if spec.empty?
+            dummy_layout_specification
+          else
+            spec
+          end
+        end
+
         private
 
         def setup_layout
@@ -26,15 +35,6 @@ module GirFFI
 
         def base_layout_specification
           fields.map { |finfo| finfo.layout_specification }.flatten(1)
-        end
-
-        def layout_specification
-          spec = base_layout_specification
-          if spec.empty?
-            dummy_layout_specification
-          else
-            spec
-          end
         end
 
         def setup_accessors_for_field_info finfo

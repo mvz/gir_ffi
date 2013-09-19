@@ -13,6 +13,10 @@ module GirFFI
         include WithMethods
         include WithLayout
 
+        def layout_superclass
+          FFI::Union
+        end
+
         private
 
         def setup_class
@@ -22,10 +26,6 @@ module GirFFI
           setup_gtype_getter
           setup_field_accessors
           provide_constructor
-        end
-
-        def layout_superclass
-          FFI::Union
         end
 
         def superclass

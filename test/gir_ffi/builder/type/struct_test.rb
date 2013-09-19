@@ -1,7 +1,17 @@
 require 'gir_ffi_test_helper'
 
-# FIXME: Test WithLayout directly, rather than through Struct.
 describe GirFFI::Builder::Type::Struct do
+  describe "#layout_specification" do
+    it "returns the correct layout for Regress::TestStructA" do
+      info = get_introspection_data 'Regress', 'TestStructA'
+      builder = GirFFI::Builder::Type::Struct.new info
+      builder.layout_specification.must_equal [:some_int, :int32, 0,
+                                               :some_int8, :int8, 4,
+                                               :some_double, :double, 8,
+                                               :some_enum, Regress::TestEnum::Enum, 16]
+    end
+  end
+
   describe "for a struct with a simple layout" do
     before do
       module Foo
