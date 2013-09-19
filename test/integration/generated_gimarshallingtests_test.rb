@@ -333,7 +333,6 @@ describe GIMarshallingTests do
       skip "Needs vfunc setup"
     end
 
-    # TODO: Avoid using common method names?
     it "has a working method #method" do
       instance.method
       pass
