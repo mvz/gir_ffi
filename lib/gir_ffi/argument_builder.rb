@@ -108,11 +108,6 @@ module GirFFI
         @arginfo.caller_allocates?
     end
 
-    def needs_outgoing_parameter_conversion?
-      [ :array, :c, :error, :ghash, :glist, :gslist, :object,
-        :ptr_array, :struct, :strv, :utf8 ].include?(specialized_type_tag)
-    end
-
     def ingoing_parameter_conversion
       args = conversion_arguments @name
 

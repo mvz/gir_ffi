@@ -88,6 +88,11 @@ module GirFFI
 
     private
 
+    def needs_outgoing_parameter_conversion?
+      [ :array, :byte_array, :c, :error, :ghash, :glist, :gslist, :interface,
+        :object, :ptr_array, :struct, :strv, :union, :utf8, :zero_terminated ].include?(specialized_type_tag)
+    end
+
     def outgoing_conversion base
       args = output_conversion_arguments base
       case specialized_type_tag
