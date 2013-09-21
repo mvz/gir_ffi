@@ -10,7 +10,7 @@ module GirFFI
     end
 
     def post
-      if has_conversion?
+      if needs_outgoing_parameter_conversion?
         [ "#{retname} = #{post_conversion}" ]
       else
         []
@@ -22,7 +22,7 @@ module GirFFI
     end
 
     def retval
-      if has_conversion?
+      if needs_outgoing_parameter_conversion?
         super
       elsif is_relevant?
         callarg
@@ -47,10 +47,6 @@ module GirFFI
 
     def retname
       @retname ||= @var_gen.new_var
-    end
-
-    def has_conversion?
-      needs_outgoing_parameter_conversion?
     end
 
     def needs_constructor_wrap?
