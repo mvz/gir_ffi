@@ -5,15 +5,6 @@ require 'ffi-gobject'
 GirFFI.setup :GIMarshallingTests
 
 describe GObject do
-  # TODO: Odd tests.
-  it "has type_init as a public method" do
-    assert GObject.respond_to?('type_init')
-  end
-
-  it "does not have g_type_init as a public method" do
-    assert GObject.respond_to?('g_type_init') == false
-  end
-
   describe ".type_init" do
     it "does not raise an error" do
       GObject.type_init
