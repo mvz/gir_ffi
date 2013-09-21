@@ -76,15 +76,6 @@ describe GirFFI::Builder do
     end
   end
 
-  describe "building GObject::ValueArray" do
-    # TODO: Odd test.
-    it "uses the provided constructor" do
-      GirFFI::Builder.build_class get_introspection_data('GObject', 'ValueArray')
-      GObject::ValueArray.new 2
-      pass
-    end
-  end
-
   describe "building Regress::TestBoxed" do
     before do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestBoxed')

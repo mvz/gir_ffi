@@ -27,4 +27,12 @@ describe "The generated GObject module" do
       assert_includes klass.ancestors, GObject::TypePlugin
     end
   end
+
+  describe "the ValueArray struct class" do
+    it "uses the constructor provided by GObject" do
+      instance = GObject::ValueArray.new 16
+      instance.n_prealloced.must_equal 16
+      instance.n_values.must_equal 0
+    end
+  end
 end
