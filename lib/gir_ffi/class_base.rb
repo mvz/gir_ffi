@@ -1,10 +1,13 @@
 require 'forwardable'
 require 'gir_ffi/null_builder'
+require 'gir_ffi/type_base'
 
 module GirFFI
   # Base class for all generated classes. Contains code for dealing with
   # the generated Struct classes.
   class ClassBase
+    extend TypeBase
+
     # TODO: Make separate base for :struct, :union, :object.
     extend Forwardable
     def_delegators :@struct, :to_ptr
@@ -52,10 +55,6 @@ module GirFFI
     class << self
       def gir_info
         self.const_get :GIR_INFO
-      end
-
-      def gir_ffi_builder
-        self::GIR_FFI_BUILDER
       end
 
       def to_ffitype

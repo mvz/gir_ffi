@@ -1,5 +1,8 @@
+require 'gir_ffi/type_base'
+
 module GirFFI
   module EnumBase
+    include TypeBase
     # TODO: Make this a DataConverter
     def [](arg)
       self::Enum[arg]
@@ -21,10 +24,6 @@ module GirFFI
       end
 
       self.send method, *arguments, &block
-    end
-
-    def gir_ffi_builder
-      self.const_get :GIR_FFI_BUILDER
     end
 
     def to_ffitype
