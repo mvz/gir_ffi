@@ -2062,7 +2062,10 @@ describe Regress do
   end
 
   it "has a working function #test_struct_a_parse" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_struct_a_parse'
+    a = Regress.test_struct_a_parse("this string is actually ignored")
+    a.must_be_instance_of Regress::TestStructA
+    a.some_int.must_equal 23
   end
 
   it "has a working function #test_strv_in" do
