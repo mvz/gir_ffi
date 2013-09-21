@@ -10,8 +10,12 @@ module GirFFI
       load_class(classname) || super
     end
 
-    # TODO: Rename to setup_class to match setup and setup_method.
+    # @deprecated Compatibility function. Remove in 0.7.0.
     def load_class classname
+      setup_class classname
+    end
+
+    def setup_class classname
       gir_ffi_builder.build_namespaced_class classname.to_s
     end
 
