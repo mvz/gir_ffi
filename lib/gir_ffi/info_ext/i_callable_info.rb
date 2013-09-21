@@ -10,8 +10,9 @@ module GirFFI
         return_type.to_ffitype
       end
 
+      # TODO: Move to extension just for ICallbackInfo
       def to_ffitype
-        Builder.build_class self
+        Builder.build_class(self)::Callback
       end
     end
   end

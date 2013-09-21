@@ -24,8 +24,8 @@ module GLib
 
     attach_function :g_list_append, [:pointer, :pointer], :pointer
 
-    attach_function :g_hash_table_foreach, [:pointer, HFunc, :pointer], :void
-    attach_function :g_hash_table_new, [HashFunc, EqualFunc], :pointer
+    attach_function :g_hash_table_foreach, [:pointer, HFunc::Callback, :pointer], :void
+    attach_function :g_hash_table_new, [HashFunc::Callback, EqualFunc::Callback], :pointer
     attach_function :g_hash_table_insert, [:pointer, :pointer, :pointer], :void
 
     attach_function :g_byte_array_new, [], :pointer
@@ -37,6 +37,6 @@ module GLib
 
     attach_function :g_ptr_array_new, [], :pointer
     attach_function :g_ptr_array_add, [:pointer, :pointer], :void
-    attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer], :pointer
+    attach_function :g_ptr_array_foreach, [:pointer, Func::Callback, :pointer], :pointer
   end
 end

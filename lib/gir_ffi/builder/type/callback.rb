@@ -1,4 +1,6 @@
 require 'gir_ffi/builder/type/base'
+require 'gir_ffi/callback_base'
+
 module GirFFI
   module Builder
     module Type
@@ -8,9 +10,11 @@ module GirFFI
       # as a callback for FFI.
       class Callback < Base
         def instantiate_class
-          @klass = optionally_define_constant namespace_module, @classname do
+          @klass ||= get_or_define_class namespace_module, @classname, CallbackBase
+          @callback ||= optionally_define_constant @klass, :Callback do
             lib.callback callback_sym, argument_types, return_type
           end
+          @klass
         end
 
         def callback_sym
