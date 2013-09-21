@@ -53,10 +53,6 @@ module GirFFI
     end
 
     class << self
-      def gir_info
-        self.const_get :GIR_INFO
-      end
-
       def to_ffitype
         self::Struct
       end
