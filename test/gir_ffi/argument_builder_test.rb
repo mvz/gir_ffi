@@ -470,7 +470,6 @@ describe GirFFI::ArgumentBuilder do
         end
 
         it "has the correct value for #pre" do
-          # TODO: Perhaps this should include a length check as well.
           builder.pre.must_equal [
             "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:bar, -1, foo)"
           ]
