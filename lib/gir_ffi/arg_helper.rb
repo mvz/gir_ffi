@@ -1,5 +1,4 @@
 require 'gir_ffi/allocation_helper'
-require 'gir_ffi/callback_helper'
 require 'gir_ffi/builder'
 
 module GirFFI

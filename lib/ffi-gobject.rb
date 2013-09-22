@@ -72,7 +72,7 @@ module GObject
     signal, _ = detailed_signal.split('::')
     sig_info = object.class.find_signal signal
     callback = sig_info.signal_callback(&block)
-    GirFFI::CallbackHelper.store_callback callback
+    GirFFI::CallbackBase.store_callback callback
 
     data_ptr = GirFFI::InPointer.from_object data
 

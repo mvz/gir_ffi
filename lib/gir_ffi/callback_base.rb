@@ -4,11 +4,17 @@ module GirFFI
   class CallbackBase < Proc
     extend TypeBase
 
+    CALLBACKS = []
+
+    def self.store_callback prc
+      CALLBACKS << prc
+    end
+
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
     def self.from prc
       wrap_in_callback_args_mapper(prc).tap do |cb|
-        CallbackHelper.store_callback cb
+        store_callback cb
       end
     end
 
