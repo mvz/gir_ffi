@@ -14,6 +14,7 @@ module GirFFI
           @callback ||= optionally_define_constant @klass, :Callback do
             lib.callback callback_sym, argument_types, return_type
           end
+          setup_constants unless already_set_up
           @klass
         end
 

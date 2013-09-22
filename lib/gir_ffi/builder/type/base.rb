@@ -33,6 +33,15 @@ module GirFFI
           @lib ||= namespace_module.const_get :Lib
         end
 
+        def setup_constants
+          @klass.const_set :GIR_INFO, info
+          @klass.const_set :GIR_FFI_BUILDER, self
+        end
+
+        def already_set_up
+          const_defined_for @klass, :GIR_FFI_BUILDER
+        end
+
         def get_or_define_class namespace, name, parent
           optionally_define_constant(namespace, name) {
             Class.new parent

@@ -11,15 +11,6 @@ module GirFFI
       class RegisteredType < Base
         private
 
-        def setup_constants
-          @klass.const_set :GIR_INFO, info
-          @klass.const_set :GIR_FFI_BUILDER, self
-        end
-
-        def already_set_up
-          const_defined_for @klass, :GIR_FFI_BUILDER
-        end
-
         def target_gtype
           info.g_type
         end
