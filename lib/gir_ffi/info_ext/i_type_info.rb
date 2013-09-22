@@ -83,7 +83,7 @@ module GirFFI
       # TODO: Use class rather than class name
       def argument_class_name
         case flattened_tag
-        when :struct, :union, :object, :interface, :enum, :flags
+        when :struct, :union, :object, :interface, :enum, :flags, :callback
           interface.full_type_name
         else
           TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
@@ -135,8 +135,6 @@ module GirFFI
           [subtype_tag_or_class, array_fixed_size]
         when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
           [element_type]
-        when :callback
-          [interface.namespace, interface.name]
         else
           []
         end

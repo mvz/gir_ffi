@@ -407,7 +407,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it "has the correct value for #pre" do
-        type_info.extra_conversion_arguments.must_equal ["Bar", "Foo"]
+        type_info.extra_conversion_arguments.must_equal []
       end
     end
   end
@@ -467,8 +467,8 @@ describe GirFFI::InfoExt::ITypeInfo do
       describe "for :callback" do
         let(:interface_type) { :callback }
 
-        it "equals GirFFI::Callback" do
-          type_info.argument_class_name.must_equal 'GirFFI::Callback'
+        it "equals the callback type name" do
+          type_info.argument_class_name.must_equal 'Bar::Foo'
         end
       end
     end

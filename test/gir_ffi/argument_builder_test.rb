@@ -34,14 +34,12 @@ describe GirFFI::ArgumentBuilder do
     let(:direction) { :in }
 
     describe "for :callback" do
-      let(:argument_class_name) { 'GirFFI::Callback' }
-      let(:conversion_arguments) { ["Bar", "Foo"] }
-      before do
-        stub(type_info).flattened_tag { :callback }
-      end
+      let(:builder) { GirFFI::ArgumentBuilder.new(var_gen, arg_info) }
+      let(:arg_info) {
+        get_introspection_data('Regress', 'test_callback_destroy_notify').args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::Callback.from(\"Bar\", \"Foo\", foo)" ]
+        builder.pre.must_equal [ "_v1 = ::Regress::TestCallbackUserData.from(callback)" ]
       end
 
       it "has the correct value for #post" do
