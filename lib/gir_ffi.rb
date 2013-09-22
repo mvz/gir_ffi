@@ -22,7 +22,7 @@ module GirFFI
 
   def self.define_type klass, &block
     info = UserDefinedTypeInfo.new(klass, &block)
-    Builder::Type::UserDefined.new(info).build_class
+    Builders::UserDefinedBuilder.new(info).build_class
 
     klass.get_gtype
   end

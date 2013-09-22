@@ -1,5 +1,5 @@
 require 'forwardable'
-require 'gir_ffi/null_builder'
+require 'gir_ffi/builders/null_builder'
 require 'gir_ffi/type_base'
 
 module GirFFI

@@ -1,5 +1,5 @@
-require 'gir_ffi/builder/type'
-require 'gir_ffi/builder/module'
+require 'gir_ffi/builders/type_builder'
+require 'gir_ffi/builders/module_builder'
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/unintrospectable_type_info'
 
@@ -11,7 +11,7 @@ module GirFFI
     extend BuilderHelper
 
     def self.build_class info
-      Builder::Type.build(info)
+      Builders::TypeBuilder.build(info)
     end
 
     def self.build_by_gtype gtype
@@ -22,10 +22,10 @@ module GirFFI
     end
 
     def self.build_module namespace, version=nil
-      Builder::Module.new(namespace, version).generate
+      Builders::ModuleBuilder.new(namespace, version).generate
     end
 
-    # TODO: Move elsewhere, perhaps to Builder::Function.
+    # TODO: Move elsewhere, perhaps to FunctionBuilder.
     def self.attach_ffi_function lib, info
       sym = info.symbol
       return if lib.method_defined? sym

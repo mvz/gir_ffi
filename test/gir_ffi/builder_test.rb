@@ -109,7 +109,7 @@ describe GirFFI::Builder do
     end
 
     it "knows its own module builder" do
-      assert GirFFI::Builder::Module === Regress.gir_ffi_builder
+      assert GirFFI::Builders::ModuleBuilder === Regress.gir_ffi_builder
     end
 
     after do
@@ -133,7 +133,7 @@ describe GirFFI::Builder do
     end
 
     it "the built class knows its own class builder" do
-      Regress::TestObj.gir_ffi_builder.must_be_instance_of GirFFI::Builder::Type::Object
+      Regress::TestObj.gir_ffi_builder.must_be_instance_of GirFFI::Builders::ObjectBuilder
     end
   end
 
