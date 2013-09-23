@@ -11,6 +11,3 @@ rvm:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection
-matrix:
-  allow_failures:
-    - rvm: rbx-19mode
