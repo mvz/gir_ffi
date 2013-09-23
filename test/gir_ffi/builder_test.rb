@@ -1,5 +1,7 @@
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Regress
+
 describe GirFFI::Builder do
   let(:gir) { GObjectIntrospection::IRepository.default }
 
