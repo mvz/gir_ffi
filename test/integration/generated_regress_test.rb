@@ -1343,6 +1343,10 @@ describe Regress do
     end
   end
   describe "Regress::TestStructF" do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestStructF'
+    end
+
     let(:instance) { Regress::TestStructF.new }
 
     it "has a writable field ref_count" do
@@ -1489,6 +1493,7 @@ describe Regress do
   end
 
   it "has a working function #atest_error_quark" do
+    skip unless get_introspection_data 'Regress', 'atest_error_quark'
     result = Regress.atest_error_quark
     GLib.quark_to_string(result).must_equal "regress-atest-error"
   end
