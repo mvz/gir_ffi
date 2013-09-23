@@ -16,6 +16,30 @@ module GirFFI
         @klass
       end
 
+      def mapping_method_definition
+        vargen = GirFFI::VariableNameGenerator.new
+        argument_builders = @info.args.map {|arg|
+          # TODO: Make ReturnValueBuilder more generic
+          # TODO: Make ReturnValueBuilder accept argument name
+          ReturnValueBuilder.new vargen, arg.argument_type }
+
+        return_value_builder = ReturnValueBuilder.new(vargen,
+                                                      info.return_type)
+
+        method_arguments = argument_builders.map(&:callarg)
+        call_arguments = argument_builders.map(&:retval)
+        code = "def self.call_with_argument_mapping(_proc, #{method_arguments.join(', ')})"
+        argument_builders.map(&:post).flatten.each do |line|
+          code << "\n  #{line}"
+        end
+        code << "\n  #{return_value_builder.callarg} = _proc.call(#{call_arguments.join(', ')})"
+        return_value_builder.post.each do |line|
+          code << "\n  #{line}"
+        end
+        code << "\n  return #{return_value_builder.retval}"
+        code << "\nend\n"
+      end
+
       def callback_sym
         @classname.to_sym
       end

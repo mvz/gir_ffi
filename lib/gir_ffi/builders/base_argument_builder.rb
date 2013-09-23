@@ -89,14 +89,15 @@ module GirFFI
     private
 
     def needs_outgoing_parameter_conversion?
-      [ :array, :byte_array, :c, :error, :ghash, :glist, :gslist, :interface,
-        :object, :ptr_array, :struct, :strv, :union, :utf8, :zero_terminated ].include?(specialized_type_tag)
+      [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
+        :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
+        :utf8, :zero_terminated ].include?(specialized_type_tag)
     end
 
     def outgoing_conversion base
       args = output_conversion_arguments base
       case specialized_type_tag
-      when :utf8
+      when :utf8, :filename
         "#{base}.to_utf8"
       else
         "#{argument_class_name}.wrap(#{args})"
