@@ -1955,7 +1955,10 @@ describe Regress do
   end
 
   it "has a working function #test_gvariant_asv" do
-    skip
+    result = Regress.test_gvariant_asv
+    result.n_children.must_equal 2
+    result.lookup_value("name", nil).get_string.must_equal "foo"
+    result.lookup_value("timeout", nil).get_int32.must_equal 10
   end
 
   it "has a working function #test_gvariant_i" do
