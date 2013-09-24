@@ -10,7 +10,7 @@ module GirFFI
       end
 
       def inarg
-        if has_input_value? && !@array_arg
+        if has_input_value? && !is_array_length_parameter?
           @name
         end
       end
@@ -69,7 +69,8 @@ module GirFFI
       end
 
       def skipped?
-        @arginfo.skip?
+        @arginfo.skip? ||
+          @array_arg && @array_arg.specialized_type_tag == :strv
       end
 
       def has_output_value?

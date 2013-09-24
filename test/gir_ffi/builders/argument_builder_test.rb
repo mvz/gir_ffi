@@ -360,17 +360,22 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for an array length" do
-      let(:array_argument) { Object.new }
+      let(:function_info) {
+        get_introspection_data('Regress', 'test_array_int_inout') }
+      let(:arg_info) { function_info.args[0] }
+      let(:array_arg_info) { function_info.args[1] }
+      let(:builder) {
+        GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
+      let(:array_arg_builder) {
+        GirFFI::Builders::ArgumentBuilder.new(var_gen, array_arg_info) }
+
       before do
-        stub(type_info).flattened_tag { :gint32 }
-        stub(type_info).tag_or_class { :gint32 }
-        stub(array_argument).name { "foo_array" }
-        builder.array_arg = array_argument
+        builder.array_arg = array_arg_builder
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "foo = foo_array.nil? ? 0 : foo_array.length",
-                                 "_v1 = GirFFI::InOutPointer.from :gint32, foo" ]
+        builder.pre.must_equal [ "n_ints = ints.nil? ? 0 : ints.length",
+                                 "_v1 = GirFFI::InOutPointer.from :gint32, n_ints" ]
       end
 
       it "has the correct value for #post" do

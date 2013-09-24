@@ -1951,8 +1951,9 @@ describe Regress do
   end
 
   it "has a working function #test_gvariant_as" do
-    skip
+    Regress.test_gvariant_as.get_strv.to_a.must_equal ["one", "two", "three"]
   end
+
   it "has a working function #test_gvariant_asv" do
     skip
   end

@@ -159,4 +159,23 @@ describe GirFFI::Builders::FunctionBuilder do
 
     assert_equal expected.reset_indentation, code
   end
+
+  describe "#generate" do
+    let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
+    let(:code) { builder.generate }
+
+    describe "for GLib::Variant.get_strv" do
+      let(:function_info) { get_method_introspection_data 'GLib', 'Variant', 'get_strv' }
+      it "builds a correct definition" do
+        code.must_equal <<-CODE.reset_indentation
+          def get_strv 
+            _v1 = nil
+            _v2 = GLib::Lib.g_variant_get_strv self, _v1
+            _v3 = GLib::Strv.wrap(_v2)
+            return _v3
+          end
+        CODE
+      end
+    end
+  end
 end
