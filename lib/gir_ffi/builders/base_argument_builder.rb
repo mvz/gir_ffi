@@ -15,6 +15,8 @@ module GirFFI
 
     attr_accessor :length_arg, :array_arg
 
+    attr_accessor :is_closure
+
     def initialize var_gen, name, typeinfo, direction
       @var_gen = var_gen
 
@@ -27,6 +29,8 @@ module GirFFI
 
       @length_arg = nil
       @array_arg = nil
+
+      @is_closure = false
     end
 
     def type_info

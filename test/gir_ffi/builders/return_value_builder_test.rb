@@ -365,6 +365,26 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
   end
 
+  describe "for a closure argument" do
+    let(:tp_info) {
+      get_introspection_data("Regress", "TestCallbackUserData").args[0].argument_type }
+    let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen, tp_info) }
+
+    before do
+      builder.is_closure = true
+    end
+
+    it "fetches the stored object in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = GirFFI::ArgHelper::OBJECT_STORE[_v1.address]" ]
+    end
+
+    it "returns the stored object" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
+    end
+  end
+
   describe "for a skipped return value" do
     let(:skip) { true }
 

@@ -26,6 +26,12 @@ module GirFFI
         return_value_builder = ReturnValueBuilder.new(vargen,
                                                       info.return_type)
 
+        @info.args.each do |arg|
+          if (idx = arg.closure) >= 0
+            argument_builders[idx].is_closure = true
+          end
+        end
+
         method_arguments = argument_builders.map(&:callarg).unshift('_proc')
         call_arguments = argument_builders.map(&:retval)
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"

@@ -11,7 +11,7 @@ module GirFFI
       end
 
       def post
-        if needs_outgoing_parameter_conversion?
+        if has_conversion?
           [ "#{retname} = #{post_conversion}" ]
         else
           []
@@ -23,7 +23,7 @@ module GirFFI
       end
 
       def retval
-        if needs_outgoing_parameter_conversion?
+        if has_conversion?
           super
         elsif is_relevant?
           callarg
@@ -38,8 +38,14 @@ module GirFFI
 
       private
 
+      def has_conversion?
+        is_closure || needs_outgoing_parameter_conversion? || needs_constructor_wrap?
+      end
+
       def post_conversion
-        if needs_constructor_wrap?
+        if is_closure
+          "GirFFI::ArgHelper::OBJECT_STORE[#{callarg}.address]"
+        elsif needs_constructor_wrap?
           "self.constructor_wrap(#{callarg})"
         else
           outgoing_conversion callarg
