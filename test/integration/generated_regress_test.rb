@@ -1956,17 +1956,23 @@ describe Regress do
   it "has a working function #test_gvariant_asv" do
     skip
   end
+
   it "has a working function #test_gvariant_i" do
-    skip
+    Regress.test_gvariant_i.get_int32.must_equal 1
   end
+
   it "has a working function #test_gvariant_s" do
-    skip
+    Regress.test_gvariant_s.get_string.must_equal "one"
   end
+
   it "has a working function #test_gvariant_v" do
-    skip
+    Regress.test_gvariant_v.get_variant.get_string.must_equal "contents"
   end
+
   it "has a working function #test_hash_table_callback" do
-    skip
+    value = nil
+    Regress.test_hash_table_callback({"foo" => 42}, Proc.new {|hash| value = hash})
+    value.to_hash.must_equal({"foo" => 42})
   end
 
   it "has a working function #test_int" do
@@ -2030,10 +2036,11 @@ describe Regress do
   end
 
   it "has a working function #test_multiline_doc_comments" do
-    skip
+    Regress.test_multiline_doc_comments.must_be_nil
   end
+
   it "has a working function #test_nested_parameter" do
-    skip
+    Regress.test_nested_parameter(3).must_be_nil
   end
 
   it "has a working function #test_null_gerror_callback" do
