@@ -12,7 +12,10 @@ module GirFFI
         @callback ||= optionally_define_constant @klass, :Callback do
           lib.callback callback_sym, argument_types, return_type
         end
-        setup_constants unless already_set_up
+        unless already_set_up
+          setup_constants
+          @klass.class_eval mapping_method_definition
+        end
         @klass
       end
 
