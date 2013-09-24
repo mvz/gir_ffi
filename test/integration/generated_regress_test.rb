@@ -2035,11 +2035,17 @@ describe Regress do
   it "has a working function #test_nested_parameter" do
     skip
   end
+
   it "has a working function #test_null_gerror_callback" do
-    skip
+    value = nil
+    Regress.test_owned_gerror_callback Proc.new {|err| value = err }
+    value.message.must_equal "regression test owned error"
   end
+
   it "has a working function #test_owned_gerror_callback" do
-    skip
+    value = nil
+    Regress.test_owned_gerror_callback Proc.new {|err| value = err }
+    value.message.must_equal "regression test owned error"
   end
 
   it "has a working function #test_short" do
