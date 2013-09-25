@@ -1517,6 +1517,7 @@ describe Regress do
   it "has a working function #set_abort_on_error" do
     Regress.set_abort_on_error false
     Regress.set_abort_on_error true
+    pass
   end
 
   it "has a working function #test_abc_error_quark" do
