@@ -15,6 +15,10 @@ class Minitest::Test
     code.gsub(/(^\s*|\s*$)/, "")
   end
 
+  def get_field_introspection_data namespace, klass, name
+    get_introspection_data(namespace, klass).find_field name
+  end
+
   def get_method_introspection_data namespace, klass, name
     get_introspection_data(namespace, klass).find_method name
   end
@@ -23,8 +27,8 @@ class Minitest::Test
     get_introspection_data(namespace, klass).find_property name
   end
 
-  def get_field_introspection_data namespace, klass, name
-    get_introspection_data(namespace, klass).find_field name
+  def get_signal_introspection_data namespace, klass, name
+    get_introspection_data(namespace, klass).find_signal name
   end
 
   SAVED_MODULES = {}
