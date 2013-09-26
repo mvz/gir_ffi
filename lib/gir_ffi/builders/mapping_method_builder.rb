@@ -12,17 +12,16 @@ module GirFFI
 
       def method_definition
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
-        argument_builders.map(&:post).flatten.each do |line|
-          code << "\n  #{line}"
-        end
-        code << "\n  #{capture}_proc.call(#{call_arguments.join(', ')})"
-        return_value_builder.post.each do |line|
-          code << "\n  #{line}"
-        end
-        if return_value_builder.is_relevant?
-          code << "\n  return #{return_value_builder.retval}"
-        end
+        method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
+      end
+
+      def method_lines
+        lines = argument_builders.map(&:post).flatten +
+          ["#{capture}_proc.call(#{call_arguments.join(', ')})"] +
+          return_value_builder.post
+        lines << "return #{return_value_builder.retval}" if return_value_builder.is_relevant?
+        lines
       end
 
       def capture
@@ -40,8 +39,7 @@ module GirFFI
       end
 
       def return_value_builder
-        @return_value_builder ||= ReturnValueBuilder.new(vargen,
-                                                         info.return_type)
+        @return_value_builder ||= ReturnValueBuilder.new(vargen, info.return_type)
       end
 
       def argument_builders
