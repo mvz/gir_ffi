@@ -14,8 +14,11 @@ module GirFFI
         rettype = self.return_ffi_type
         argtypes = self.ffi_callback_argument_types
 
-        # TODO: Create signal handler type?
-        FFI::Function.new rettype, argtypes, &signal_callback_args(&block)
+        raise ArgumentError, "Block needed" unless block
+
+        bldr = Builders::SignalBuilder.new(self)
+        wrapped = bldr.build_class.from(block)
+        FFI::Function.new rettype, argtypes, &wrapped
       end
 
       # TODO: Generate cast back methods using existing Argument builders.

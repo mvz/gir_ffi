@@ -112,7 +112,6 @@ module GirFFI
       def to_callback_ffitype
         type_tag = tag
 
-        return :string if type_tag == :utf8
         return :pointer if pointer?
 
         if type_tag == :interface
