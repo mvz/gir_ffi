@@ -3,7 +3,7 @@ module GirFFI
     # Extension module provinding a #safe_name method suitable for types.
     module SafeConstantName
       def safe_name
-        name.gsub(/^./) do |char|
+        name.tr('-', '_').gsub(/^./) do |char|
           case char
           when "_"
             "Private___"
@@ -24,3 +24,4 @@ end
 GObjectIntrospection::ICallbackInfo.send :include, GirFFI::InfoExt::SafeConstantName
 GObjectIntrospection::IConstantInfo.send :include, GirFFI::InfoExt::SafeConstantName
 GObjectIntrospection::IRegisteredTypeInfo.send :include, GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::ISignalInfo.send :include, GirFFI::InfoExt::SafeConstantName

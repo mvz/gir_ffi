@@ -12,5 +12,11 @@ describe GirFFI::InfoExt::SafeConstantName do
 
       assert_equal "Private___foo", info.safe_name
     end
+
+    it "makes names with dashes safe" do
+      mock(info).name { "this-could-be-a-signal-name" }
+
+      info.safe_name.must_equal "This_could_be_a_signal_name"
+    end
   end
 end
