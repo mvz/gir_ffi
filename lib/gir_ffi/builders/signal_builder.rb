@@ -56,6 +56,16 @@ module GirFFI
         end
       end
 
+      def instantiate_class
+        @klass ||= get_or_define_module container_class, @classname
+        unless already_set_up
+          @klass.extend SignalBase
+          setup_constants
+          @klass.class_eval mapping_method_definition
+        end
+        @klass
+      end
+
       def mapping_method_definition
         arg_infos = info.args
 
@@ -67,6 +77,14 @@ module GirFFI
         arg_infos.push user_data_argument_info
 
         MappingMethodBuilder.new(arg_infos, info.return_type).method_definition
+      end
+
+      def container_class
+        @container_class ||= Builder.build_class(container_info)
+      end
+
+      def container_info
+        @container_info ||= info.container
       end
     end
   end
