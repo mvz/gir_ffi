@@ -8,10 +8,12 @@ describe GirFFI::Builders::SignalBuilder do
       let(:signal_info) {
         get_signal_introspection_data "Regress", "TestObj", "test" }
 
-      it "returns a valid mapping method" do
+      it "returns a valid mapping method including receiver and user data" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc)
-          _proc.call()
+        def self.call_with_argument_mapping(_proc, _v1, _v2)
+          _v3 = ::Regress::TestObj.wrap(_v1)
+          _v4 = GirFFI::ArgHelper::OBJECT_STORE[_v2.address]
+          _proc.call(_v3, _v4)
         end
         CODE
 
@@ -25,9 +27,11 @@ describe GirFFI::Builders::SignalBuilder do
 
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1)
-          _v2 = _proc.call(_v1)
-          return _v2
+        def self.call_with_argument_mapping(_proc, _v1, _v2, _v3)
+          _v4 = ::Regress::TestObj.wrap(_v1)
+          _v5 = GirFFI::ArgHelper::OBJECT_STORE[_v3.address]
+          _v6 = _proc.call(_v4, _v2, _v5)
+          return _v6
         end
         CODE
 
