@@ -4,11 +4,13 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MappingMethodBuilder
-      def initialize info
-        @info = info
+      def initialize argument_infos, return_type_info
+        @argument_infos = argument_infos
+        @return_type_info = return_type_info
       end
 
-      attr_reader :info
+      attr_reader :argument_infos
+      attr_reader :return_type_info
 
       def method_definition
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
@@ -39,7 +41,7 @@ module GirFFI
       end
 
       def return_value_builder
-        @return_value_builder ||= ReturnValueBuilder.new(vargen, info.return_type)
+        @return_value_builder ||= ReturnValueBuilder.new(vargen, return_type_info)
       end
 
       def argument_builders
@@ -55,10 +57,6 @@ module GirFFI
           end
         end
         @argument_builders
-      end
-
-      def argument_infos
-        @argument_infos ||= info.args
       end
 
       def vargen

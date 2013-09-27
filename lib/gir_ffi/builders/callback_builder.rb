@@ -21,7 +21,7 @@ module GirFFI
       end
 
       def mapping_method_definition
-        MappingMethodBuilder.new(info).method_definition
+        MappingMethodBuilder.new(info.args, info.return_type).method_definition
       end
 
       def callback_sym
