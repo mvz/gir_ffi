@@ -38,5 +38,23 @@ describe GirFFI::Builders::SignalBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a signal with an enum argument" do
+      let(:signal_info) {
+        get_signal_introspection_data "Gio", "MountOperation", "reply" }
+
+      it "returns a valid mapping method" do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _v1, _v2, _v3)
+          _v4 = ::Gio::MountOperation.wrap(_v1)
+          _v5 = ::Gio::MountOperationResult[_v2]
+          _v6 = GirFFI::ArgHelper::OBJECT_STORE[_v3.address]
+          _proc.call(_v4, _v5, _v6)
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
