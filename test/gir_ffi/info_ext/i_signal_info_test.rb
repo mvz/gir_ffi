@@ -7,29 +7,6 @@ describe GirFFI::InfoExt::ISignalInfo do
   end }
   let(:signal_info) { klass.new }
 
-  describe "#cast_back_signal_arguments" do
-    let(:object) { Regress::TestSubObj.new }
-    let(:boxed) { Regress::TestSimpleBoxedA.const_return }
-    let(:user_data) { GirFFI::InPointer.from_object "Hello!" }
-    let(:signal_info) { Regress::TestSubObj.find_signal "test-with-static-scope-arg" }
-    let(:result) { signal_info.cast_back_signal_arguments(object.to_ptr,
-                                                          boxed.to_ptr,
-                                                          user_data) }
-
-    it "correctly casts back pointers to :object" do
-      result[0].must_equal object
-    end
-
-    it "correctly casts back pointers to :struct" do
-      result[1].some_int8.must_equal boxed.some_int8
-      result[1].some_int.must_equal boxed.some_int
-    end
-
-    it "correctly casts back user data" do
-      result[2].must_equal "Hello!"
-    end
-  end
-
   describe "#signal_arguments_to_gvalue_array" do
     let(:object) { Regress::TestSubObj.new }
     let(:boxed) { Regress::TestSimpleBoxedA.const_return }

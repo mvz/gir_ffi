@@ -16,29 +16,11 @@ module GirFFI
 
         raise ArgumentError, "Block needed" unless block
 
+        # TODO: Find the signal module directly, then retrieve the info
+        # from that, instead of vice versa.
         bldr = Builders::SignalBuilder.new(self)
         wrapped = bldr.build_class.from(block)
         FFI::Function.new rettype, argtypes, &wrapped
-      end
-
-      # TODO: Generate cast back methods using existing Argument builders.
-      def cast_back_signal_arguments *arguments
-        instance = arguments.shift.to_object
-        user_data = GirFFI::ArgHelper::OBJECT_STORE[arguments.pop.address]
-
-        extra_arguments = self.args.zip(arguments).map do |info, arg|
-          info.cast_signal_argument(arg)
-        end
-
-        return [instance, *extra_arguments].push user_data
-      end
-
-      def signal_callback_args &block
-        raise ArgumentError, "Block needed" unless block
-        return Proc.new do |*args|
-          mapped = cast_back_signal_arguments(*args)
-          block.call(*mapped)
-        end
       end
 
       def signal_arguments_to_gvalue_array instance, *rest
