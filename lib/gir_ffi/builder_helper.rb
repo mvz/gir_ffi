@@ -16,5 +16,12 @@ module GirFFI
       end
     end
 
+    def get_or_define_class namespace, name, parent
+      optionally_define_constant(namespace, name) { Class.new parent }
+    end
+
+    def get_or_define_module parent, name
+      optionally_define_constant(parent, name) { Module.new }
+    end
   end
 end

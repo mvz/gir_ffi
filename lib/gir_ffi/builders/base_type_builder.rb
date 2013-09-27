@@ -40,12 +40,6 @@ module GirFFI
       const_defined_for @klass, :GIR_FFI_BUILDER
     end
 
-    def get_or_define_class namespace, name, parent
-      optionally_define_constant(namespace, name) {
-        Class.new parent
-      }
-    end
-
     def gir
       @gir ||= GObjectIntrospection::IRepository.default
     end
