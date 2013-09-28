@@ -965,8 +965,14 @@ describe Regress do
     end
 
     it "handles the 'sig-with-array-prop' signal" do
-      skip
+      a = nil
+      GObject.signal_connect(instance, "sig-with-array-prop") {|_, arr, _| a = arr }
+      # TODO: Automatically convert arguments to signal_emit.
+      GObject.signal_emit instance, "sig-with-array-prop",
+        GLib::Array.from(:uint, [1, 2, 3])
+      a.to_a.must_equal [1, 2, 3]
     end
+
     it "handles the 'sig-with-foreign-struct' signal" do
       skip
     end
