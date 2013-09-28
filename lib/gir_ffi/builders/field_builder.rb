@@ -7,6 +7,8 @@ module GirFFI
   module Builders
     # Creates field getter and setter code for a given IFieldInfo.
     class FieldBuilder
+      attr_reader :info
+
       def initialize field_info
         @info = field_info
       end
@@ -52,8 +54,6 @@ module GirFFI
       end
 
       private
-
-      attr_reader :info
 
       def struct_class
         container_class::Struct
