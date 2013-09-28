@@ -11,7 +11,9 @@ module GirFFI
       def instantiate_class
         @klass ||= get_or_define_class namespace_module, @classname, CallbackBase
         @callback ||= optionally_define_constant @klass, :Callback do
-          lib.callback callback_sym, argument_types, return_type
+          cb = lib.callback callback_sym, argument_types, return_type
+          cb.instance_eval mapping_method_definition
+          cb
         end
         unless already_set_up
           setup_constants

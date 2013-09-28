@@ -22,7 +22,7 @@ module GirFFI
       return prc if FFI::Function === prc
       return nil if prc.nil?
       return self.new do |*args|
-        call_with_argument_mapping(prc, *args)
+        self::Callback.call_with_argument_mapping(prc, *args)
       end
     end
   end
