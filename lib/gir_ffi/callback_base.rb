@@ -1,10 +1,12 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
-  class CallbackBase < Proc
-    extend TypeBase
-
+  module CallbackBase
     CALLBACKS = []
+
+    def store_callback prc
+      CALLBACKS << prc
+    end
 
     def self.store_callback prc
       CALLBACKS << prc
@@ -12,18 +14,26 @@ module GirFFI
 
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
-    def self.from prc
+    def from prc
       wrap_in_callback_args_mapper(prc).tap do |cb|
         store_callback cb
       end
     end
 
-    def self.wrap_in_callback_args_mapper prc
+    def wrap_in_callback_args_mapper prc
       return prc if FFI::Function === prc
       return nil if prc.nil?
-      return self.new do |*args|
-        self::Callback.call_with_argument_mapping(prc, *args)
+      return Proc.new do |*args|
+        call_with_argument_mapping(prc, *args)
       end
+    end
+  end
+
+  class OldCallbackBase
+    # Create Callback from a Proc. Makes sure arguments are properly wrapped,
+    # and the callback is stored to prevent garbage collection.
+    def self.from prc
+      self::Callback.from(prc)
     end
   end
 end
