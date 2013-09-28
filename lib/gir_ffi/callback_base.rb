@@ -28,12 +28,4 @@ module GirFFI
       end
     end
   end
-
-  class OldCallbackBase
-    # Create Callback from a Proc. Makes sure arguments are properly wrapped,
-    # and the callback is stored to prevent garbage collection.
-    def self.from prc
-      self::Callback.from(prc)
-    end
-  end
 end

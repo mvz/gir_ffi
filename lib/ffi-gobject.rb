@@ -106,10 +106,10 @@ module GObject
     attach_function :g_strv_get_type, [], :size_t
 
     attach_function :g_signal_connect_data,
-      [:pointer, :string, Callback::Callback, :pointer, ClosureNotify::Callback, ConnectFlags],
+      [:pointer, :string, Callback, :pointer, ClosureNotify, ConnectFlags],
       :ulong
     attach_function :g_closure_set_marshal,
-      [:pointer, ClosureMarshal::Callback], :void
+      [:pointer, ClosureMarshal], :void
 
     attach_function :g_param_spec_int,
       [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
