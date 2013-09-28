@@ -22,8 +22,7 @@ module GLib
 
     def append_vals ary
       bytes = GirFFI::InPointer.from_array element_type, ary
-      len = ary.length
-      Lib.g_array_append_vals(self, bytes, len)
+      Lib.g_array_append_vals(self, bytes, ary.length)
       self
     end
 
