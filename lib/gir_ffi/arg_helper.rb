@@ -5,6 +5,11 @@ module GirFFI
   module ArgHelper
     OBJECT_STORE = {}
 
+    # @deprecated Compatibility function. Remove in 0.7.0.
+    def self.ptr_to_utf8 ptr
+      ptr.to_utf8
+    end
+
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
     end
