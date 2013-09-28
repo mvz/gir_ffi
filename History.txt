@@ -1,3 +1,17 @@
+== 0.6.7 / 2013-09-28
+
+* Uniform handling of callback, signal and method arguments
+* Automatically convert array elements to GValue
+* Support inline array fields
+* Support struct fields
+* Improved field setters and getters
+* Support many more types of properties
+* Support skipped arguments and return values
+* Fix refcount for the result of IBaseInfo#container
+* Check bounds in GLib::PtrArray#index and GLib::Array#index
+* Deprecate several methods
+* Lots of refactoring
+
 == 0.6.6 / 2013-08-05
 
 * Handle GArrays of booleans and structs
