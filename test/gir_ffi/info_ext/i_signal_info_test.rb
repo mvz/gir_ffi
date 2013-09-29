@@ -30,8 +30,8 @@ describe GirFFI::InfoExt::ISignalInfo do
   end
 
   describe "#return_ffi_type" do
-    # FIXME: This is needed because callbacks are limited in the accepted
-    # types. This should be fixed in FFI.
+    # NOTE: This is needed because FFI callbacks are limited in the
+    # accepted types.
     it "returns :bool for the :gboolean type" do
       stub(return_type_info = Object.new).to_ffitype { GLib::Boolean }
       stub(signal_info).return_type { return_type_info }
