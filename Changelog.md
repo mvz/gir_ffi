@@ -1,4 +1,6 @@
-== 0.6.7 / 2013-09-28
+# Changelog
+
+## 0.6.7 / 2013-09-28
 
 * Uniform handling of callback, signal and method arguments
 * Automatically convert array elements to GValue
@@ -12,18 +14,18 @@
 * Deprecate several methods
 * Lots of refactoring
 
-== 0.6.6 / 2013-08-05
+## 0.6.6 / 2013-08-05
 
 * Handle GArrays of booleans and structs
 * Improve handling of gbooleans
 
-== 0.6.5 / 2013-08-03
+## 0.6.5 / 2013-08-03
 
 * Handle inline arrays of structs
 * Implement equality operator for container types
 * Fix element size calculation for GArray
 
-== 0.6.4 / 2013-06-30
+## 0.6.4 / 2013-06-30
 
 * Represent enum types by modules wrapping FFI::Enum
 * Support functions on enums
@@ -34,25 +36,25 @@
 * Handle caller-allocated arguments of type GArray
 * Deprecate GObject::Value#ruby_value, replacing it with #get_value
 
-== 0.6.3 / 2013-06-15
+## 0.6.3 / 2013-06-15
 
 * Make use of enums as element type for GHashTable and other containers
   work
 
-== 0.6.2 / 2013-06-14
+## 0.6.2 / 2013-06-14
 
 * Handle introspectable types with introspectable parent types
 
-== 0.6.1 / 2013-06-09
+## 0.6.1 / 2013-06-09
 
 * Handle SizedArray containing enums
 
-== 0.6.0 / 2013-06-07
+## 0.6.0 / 2013-06-07
 
 * Support Rubinius
 * Lots of refactoring
 
-== 0.5.2 / 2013-04-23
+## 0.5.2 / 2013-04-23
 
 * Handle signal details in GObject.signal_connect and .signal_emit
 * Make GValue#set_value check object GType compatibility
@@ -60,12 +62,12 @@
 * Handle more argument types
 * Support Ruby 2.0.0
 
-== 0.5.1 / 2013-02-01
+## 0.5.1 / 2013-02-01
 
 * Properly handle zero-terminated arrays of :filename
 * Loosen dependencies on ffi and minitest
 
-== 0.5.0 / 2013-01-19
+## 0.5.0 / 2013-01-19
 
 * Update ffi dependency
 * Add finalizer to release memory for IBaseInfo and descendents
@@ -73,38 +75,38 @@
 * Remove pretty-printing functionality
 * Refactor argument handling
 
-== 0.4.3 / 2012-11-02
+## 0.4.3 / 2012-11-02
 
 * Remove gobject-introspection version check
 * Make tests pass with gobject-introspection 1.34
 * Ongoing refactoring
 
-== 0.4.2 / 2012-09-22
+## 0.4.2 / 2012-09-22
 
 * Make objects and interfaces wrap poiners in the class that matches
   their GType.
 
-== 0.4.1 / 2012-09-18
+## 0.4.1 / 2012-09-18
 
 * Remove workarounds for older versions of gobject-introspection
 * Mark certain methods as deprecated. These will be removed in 0.5.0
 * Handle :filename type arguments in InPointer
 * Refactoring
 
-== 0.4.0 / 2012-08-24
+## 0.4.0 / 2012-08-24
 
 * Move Gtk+ bindings to their own gem (gir_ffi-gtk).
 
-== 0.3.2 / 2012-08-24
+## 0.3.2 / 2012-08-24
 
 * Correctly set FFI return type when callbacks that return GObjects have
   incomplete type specification.
 
-== 0.3.1 / 2012-05-13
+## 0.3.1 / 2012-05-13
 
 * Correctly map Interface types in callbacks.
 
-== 0.3.0 / 2012-04-09
+## 0.3.0 / 2012-04-09
 
 * Improve process of defining initializers in derived classes.
 * Make interfaces know their GType.
@@ -118,25 +120,25 @@
 * Start implementing #define_type, for creating descendent types that
   the GObject system knows about.
 
-== 0.2.3 / 2011-12-31
+## 0.2.3 / 2011-12-31
 
 * Fix issue #7: methods that take GValues will autoconvert other values.
 * Fix method lookup when include'ing a module that is an Interface.
 * Various refactorings.
 
-== 0.2.2 / 2011-12-07
+## 0.2.2 / 2011-12-07
 
 * Fix issue #19: Check if a GLib::PtrArray.add method was generated
   before attempting to remove it.
 * Fix two issues with pretty printing that made output for GLib have syntax
   errors.
 
-== 0.2.1 / 2011-11-20
+## 0.2.1 / 2011-11-20
 
 * Fix handling of output parameters that are arrays of pointers to
   structures (i.e., of type Foo***).
 
-== 0.2.0 / 2011-11-19
+## 0.2.0 / 2011-11-19
 
 * Add support for properties, with #get_property and #set_property.
 * Add support for fields.
@@ -150,13 +152,13 @@
 * Start implementing pretty printing.
 * Various refactorings.
 
-== 0.1.0 / 2011-10-28
+## 0.1.0 / 2011-10-28
 
 * Put bindings for GObjectIntrospection in their own namespace.
 * GirFFI.setup no longer loads overrides.
 * Add ffi-gtk2 and ffi-gtk3 files for loading Gtk+ overrides.
 
-== 0.0.14 / 2011-10-28
+## 0.0.14 / 2011-10-28
 
 * Support GObject Introspection version 1.30:
   - Add support for layouts with fixed-length arrays.
@@ -164,17 +166,17 @@
   - Call g_signal_emitv directly to avoid conflict in introspection info
     with earlier versions of GObject Introspection.
 
-== 0.0.13 / 2011-09-09
+## 0.0.13 / 2011-09-09
 
 * Remove IErrorDomain related code. This functinality was removed from
   GObject Introspection in version 1.29.17
 
-== 0.0.12 / 2011-09-04
+## 0.0.12 / 2011-09-04
 
-* No longer use _id2ref to locate objects past as user data pointers.
+* No longer use `_id2ref` to locate objects past as user data pointers.
 * Fix failing tests on JRuby.
 
-== 0.0.11 / 2011-08-22
+## 0.0.11 / 2011-08-22
 
 * Change interface to the underlying builder in generated modules and
   classes.
@@ -185,13 +187,13 @@
 * Fix method setup in non-introspectable types.
 * Refactoring.
 
-== 0.0.10 / 2011-05-18
+## 0.0.10 / 2011-05-18
 
 * Handle GObject interfaces properly.
 * Create types only defined by the GType system.
 * Support GType array return values.
 
-== 0.0.9 / 2011-05-02
+## 0.0.9 / 2011-05-02
 
 * More complete support for the basic types.
 * Improved support for GList, GSList, GStrv, and GValue.
@@ -202,7 +204,7 @@
 * Use minitest/spec for testing.
 * Various bug fixes and internal improvements.
 
-== 0.0.8 / 2011-04-08
+## 0.0.8 / 2011-04-08
 
 * Generate modules with names starting with a lowercase letter (like
   cairo).
@@ -211,7 +213,7 @@
   clashing with standard Ruby methods.
 * Refactoring.
 
-== 0.0.7 / 2011-04-01
+## 0.0.7 / 2011-04-01
 
 * Support gobject-introspection 0.10, drop support for earlier versions.
   - Use Regress, not Everything, for testing.
@@ -223,7 +225,7 @@
 * Handle callback types defined in-place (like Closure's marshal).
 * Refactoring.
 
-== 0.0.6 / 2011-03-01
+## 0.0.6 / 2011-03-01
 
 * Cast returned GObjects to their actual type.
 * Properly cast callback arguments.
@@ -231,7 +233,7 @@
 * Make sure Gtk::Window has the correct number of references after creation.
 * Refactoring and some small fixes.
 
-== 0.0.5 / 2010-12-30
+## 0.0.5 / 2010-12-30
 
 * Don't create instance methods out of functions and vice versa.
 * Find signals on interfaces, too.
@@ -240,7 +242,7 @@
 * Handle most other argument types.
 * Various internal changes and other fixes.
 
-== 0.0.4 / 2010-12-14
+## 0.0.4 / 2010-12-14
 
 * Lots of changes to the internals.
 * Handle out-only arguments.
@@ -251,16 +253,16 @@
 * Implement Union type.
 * Many small bug fixes.
 
-== 0.0.3 / 2010-11-19
+## 0.0.3 / 2010-11-19
 
 * Update to restore Ruby 1.9 support.
 * Handle functions with the 'throws' property set.
 * Handle classes without specified fields.
 
-== 0.0.2 / 2010-11-14
+## 0.0.2 / 2010-11-14
 
 * Several fixes to method creation.
 
-== 0.0.1 / 2010-10-25
+## 0.0.1 / 2010-10-25
 
 * Initial release.
