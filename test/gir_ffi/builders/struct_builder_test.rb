@@ -14,22 +14,11 @@ describe GirFFI::Builders::StructBuilder do
 
   describe "for a struct with a simple layout" do
     before do
-      module Foo
-        class Bar
-          class Struct
-
-          end
-        end
-        module Lib
-
-        end
-      end
       @field = Object.new
 
       @struct = Object.new
-      stub(@struct).safe_name { 'Bar' }
       stub(@struct).namespace { 'Foo' }
-      stub(@struct).safe_namespace { 'Foo' }
+      stub(@struct).safe_name { 'Bar' }
       stub(@struct).fields { [ @field ] }
 
       @builder = GirFFI::Builders::StructBuilder.new @struct
@@ -39,34 +28,6 @@ describe GirFFI::Builders::StructBuilder do
       mock(@field).layout_specification { [:bar, :int32, 0] }
       spec = @builder.send :layout_specification
       assert_equal [:bar, :int32, 0], spec
-    end
-
-    it "creates getter and setter methods" do
-      # FIXME: Loads of stubs.
-
-      stub(type = Object.new).pointer? { false }
-      stub(type).tag { :gint32 }
-      stub(type).flattened_tag { :gint32 }
-      stub(type).tag_or_class { :gint32 }
-      stub(type).extra_conversion_arguments { [] }
-
-      stub(@field).field_type { type }
-      stub(@field).name { "bar" }
-      stub(@field).writable? { true }
-      stub(@field).offset { 4 }
-      stub(@field).container { @struct }
-
-      stub(@struct).find_instance_method { }
-
-      stub(GirFFI::Builder).build_module('Foo') { Foo }
-
-      refute Foo::Bar.method_defined?(:bar)
-      refute Foo::Bar.method_defined?(:bar=)
-
-      @builder.send :setup_field_accessors
-
-      assert Foo::Bar.method_defined?(:bar)
-      assert Foo::Bar.method_defined?(:bar=)
     end
   end
 
