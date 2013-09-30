@@ -90,19 +90,23 @@ module GirFFI
         value = if skipped?
                   @direction == :in ? "0" : "nil"
                 elsif !has_input_value?
-                  if is_caller_allocated_object?
-                    if specialized_type_tag == :array
-                      "#{argument_class_name}.new #{type_info.element_type.inspect}"
-                    else
-                      "#{argument_class_name}.new"
-                    end
-                  else
-                    "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
-                  end
+                  out_parameter_preparation
                 else
                   ingoing_parameter_conversion
                 end
         "#{callarg} = #{value}"
+      end
+
+      def out_parameter_preparation
+        if is_caller_allocated_object?
+          if specialized_type_tag == :array
+            "#{argument_class_name}.new #{type_info.element_type.inspect}"
+          else
+            "#{argument_class_name}.new"
+          end
+        else
+          "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
+        end
       end
 
       def is_caller_allocated_object?
