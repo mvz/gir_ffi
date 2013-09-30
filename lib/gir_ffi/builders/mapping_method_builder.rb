@@ -41,11 +41,27 @@ module GirFFI
       end
 
       def method_lines
-        lines = argument_builders.map(&:post).flatten +
-          ["#{capture}_proc.call(#{call_arguments.join(', ')})"] +
-          return_value_builder.post
-        lines << "return #{return_value_builder.retval}" if return_value_builder.is_relevant?
-        lines
+        parameter_preparation + call_to_proc + return_value_conversion + return_value 
+      end
+
+      def return_value
+        if return_value_builder.is_relevant?
+          ["return #{return_value_builder.retval}"]
+        else
+          []
+        end
+      end
+
+      def return_value_conversion
+        return_value_builder.post
+      end
+
+      def call_to_proc
+        ["#{capture}_proc.call(#{call_arguments.join(', ')})"]
+      end
+
+      def parameter_preparation
+        argument_builders.map(&:post).flatten
       end
 
       def capture
@@ -70,13 +86,17 @@ module GirFFI
         unless defined?(@argument_builders)
           @argument_builders = argument_infos.map {|arg|
             CallbackArgumentBuilder.new vargen, arg.argument_type }
-          argument_infos.each do |arg|
-            if (idx = arg.closure) >= 0
-              @argument_builders[idx].is_closure = true
-            end
-          end
+          set_up_argument_relations(@argument_builders)
         end
         @argument_builders
+      end
+
+      def set_up_argument_relations(builders)
+        argument_infos.each do |arg|
+          if (idx = arg.closure) >= 0
+            builders[idx].is_closure = true
+          end
+        end
       end
 
       def vargen
