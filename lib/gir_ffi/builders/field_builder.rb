@@ -14,10 +14,24 @@ module GirFFI
       end
 
       def build
-        unless container_info.find_instance_method info.name
-          container_class.class_eval getter_def
-        end
-        container_class.class_eval setter_def if info.writable?
+        setup_getter
+        setup_setter
+      end
+
+      def setup_getter
+        container_class.class_eval getter_def unless container_defines_getter_method? 
+      end
+
+      def container_defines_getter_method?(info, container_info)
+        container_info.find_instance_method info.name
+      end
+
+      def setup_setter
+        container_class.class_eval setter_def if is_writable_field? 
+      end
+
+      def is_writable_field?
+        info.writable?
       end
 
       def getter_def
