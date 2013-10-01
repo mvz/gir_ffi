@@ -101,15 +101,10 @@ module GirFFI
 
       def from_basic_type_array type, ary
         ffi_type = TypeMap.map_basic_type type
-        length = ary.length
-        size = FFI.type_size ffi_type
-
-        block = AllocationHelper.safe_malloc size * (length + 1)
+        ary = ary.dup << (ffi_type == :pointer ? nil : 0)
+        type_size = FFI.type_size(ffi_type)
+        block = AllocationHelper.safe_malloc type_size * ary.length
         block.send "put_array_of_#{ffi_type}", 0, ary
-        block.send("put_#{ffi_type}",
-                   length * size,
-                   (ffi_type == :pointer ? nil : 0))
-
         new block
       end
     end
