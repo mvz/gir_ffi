@@ -22,7 +22,7 @@ module GirFFI
         container_class.class_eval getter_def unless container_defines_getter_method? 
       end
 
-      def container_defines_getter_method?(info, container_info)
+      def container_defines_getter_method?
         container_info.find_instance_method info.name
       end
 
