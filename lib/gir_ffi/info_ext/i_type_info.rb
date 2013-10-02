@@ -68,7 +68,6 @@ module GirFFI
         :array => 'GLib::Array',
         :byte_array => 'GLib::ByteArray',
         :c => 'GLib::SizedArray',
-        :callback => 'GirFFI::Callback',
         :error => 'GLib::Error',
         :ghash => 'GLib::HashTable',
         :glist => 'GLib::List',
