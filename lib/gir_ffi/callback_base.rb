@@ -1,12 +1,22 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
-  module CallbackBase
-    CALLBACKS = []
+  # TODO: Make this a module
+  class CallbackBase < Proc
+    extend TypeBase
+    extend FFI::DataConverter
 
-    def store_callback prc
-      CALLBACKS << prc
+    def self.native_type
+      FFI::Type::POINTER
     end
+
+    def self.to_native(value, context)
+      return nil unless value
+      return value if FFI::Function === value
+      FFI::Function.new gir_ffi_builder.return_type, gir_ffi_builder.argument_types, value
+    end
+
+    CALLBACKS = []
 
     def self.store_callback prc
       CALLBACKS << prc
@@ -14,16 +24,16 @@ module GirFFI
 
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
-    def from prc
+    def self.from prc
       wrap_in_callback_args_mapper(prc).tap do |cb|
         store_callback cb
       end
     end
 
-    def wrap_in_callback_args_mapper prc
+    def self.wrap_in_callback_args_mapper prc
       return prc if FFI::Function === prc
       return nil if prc.nil?
-      return Proc.new do |*args|
+      return self.new do |*args|
         call_with_argument_mapping(prc, *args)
       end
     end
