@@ -9,25 +9,11 @@ module GirFFI
       end
 
       def instantiate_class
-        @klass = @info.described_class
-
-        parent_type = @klass.get_gtype
-        @parent = gir.find_by_gtype(parent_type)
-
-        query_result = GObject.type_query parent_type
-        type_info = GObject::TypeInfo.new
-        type_info.class_size = query_result.class_size
-        type_info.instance_size = query_result.instance_size
-        properties.each do
-          type_info.instance_size += FFI.type_size(:int32)
-        end
-
-        @gtype = GObject.type_register_static(parent_type, @klass.name,
+        @gtype = GObject.type_register_static(parent_gtype, klass.name,
                                               type_info, 0)
-
-        @structklass = get_or_define_class @klass, :Struct, layout_superclass
+        @structklass = get_or_define_class klass, :Struct, layout_superclass
         setup_class unless already_set_up
-        TypeBuilder::CACHE[@gtype] = @klass
+        TypeBuilder::CACHE[@gtype] = klass
       end
 
       def setup_class
@@ -48,7 +34,26 @@ module GirFFI
       end
 
       def parent
-        @parent
+        @parent ||= gir.find_by_gtype(parent_gtype)
+      end
+
+      def parent_gtype
+        @parent_gtype ||= klass.get_gtype
+      end
+
+      def klass
+        @klass ||= @info.described_class
+      end
+
+      def type_info
+        query_result = GObject.type_query parent_gtype
+        type_info = GObject::TypeInfo.new
+        type_info.class_size = query_result.class_size
+        type_info.instance_size = query_result.instance_size
+        properties.each do
+          type_info.instance_size += FFI.type_size(:int32)
+        end
+        return type_info
       end
 
       def properties
