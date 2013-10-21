@@ -1,8 +1,8 @@
+require 'gir_ffi/type_base'
+
 module GirFFI
   module InterfaceBase
-    def gir_ffi_builder
-      self.const_get :GIR_FFI_BUILDER
-    end
+    include TypeBase
 
     def setup_instance_method name
       gir_ffi_builder.setup_instance_method name
