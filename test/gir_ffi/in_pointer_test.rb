@@ -24,7 +24,7 @@ describe GirFFI::InPointer do
 
     it "handles struct types" do
       e = Class.new(GirFFI::StructBase) do
-        self::Struct = Class.new(GirFFI::Struct) do
+        self::Struct = Class.new(FFI::Struct) do
           layout :foo, :int32, :bar, :int32
         end
       end
