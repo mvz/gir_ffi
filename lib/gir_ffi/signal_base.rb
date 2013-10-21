@@ -11,8 +11,8 @@ module GirFFI
     end
 
     def wrap_in_callback_args_mapper prc
+      return if !prc
       return prc if FFI::Function === prc
-      return nil if prc.nil?
       return Proc.new do |*args|
         call_with_argument_mapping(prc, *args)
       end
