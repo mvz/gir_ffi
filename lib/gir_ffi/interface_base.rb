@@ -1,6 +1,7 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
+  # Base module for modules representing GLib interfaces.
   module InterfaceBase
     include TypeBase
 

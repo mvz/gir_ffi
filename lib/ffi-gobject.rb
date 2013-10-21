@@ -12,6 +12,7 @@ require 'ffi-gobject/object'
 require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/builders/user_defined_builder'
 
+# Module representing GLib's GObject namespace.
 module GObject
   def self.object_ref obj
     Lib::g_object_ref obj.to_ptr

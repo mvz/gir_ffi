@@ -1,6 +1,7 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
+  # Base module for callbacks.
   module CallbackBase
     CALLBACKS = []
 

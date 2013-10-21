@@ -1,6 +1,7 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
+  # Base module for enums.
   module EnumBase
     include TypeBase
     # TODO: Make this a DataConverter

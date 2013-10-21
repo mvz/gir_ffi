@@ -1,6 +1,7 @@
 require 'ffi-glib/container_class_methods'
 
 module GLib
+  # Common methods for List and SList.
   module ListMethods
     include Enumerable
     attr_accessor :element_type
