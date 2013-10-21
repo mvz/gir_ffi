@@ -80,8 +80,8 @@ module GirFFI
       def setup_lib_for_ffi
         @lib = get_or_define_module @module, :Lib
 
-        unless (class << @lib; self.include? GirFFI::Library; end)
-          @lib.extend GirFFI::Library
+        unless (class << @lib; self.include? FFI::Library; end)
+          @lib.extend FFI::Library
           @lib.ffi_lib_flags :global, :lazy
           libspec = gir.shared_library(@namespace)
           unless libspec.nil?

@@ -11,9 +11,9 @@ end
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
   describe Regress::Lib do
-    it "extends GirFFI::Library" do
+    it "extends FFI::Library" do
       class << Regress::Lib
-        self.must_be :include?, GirFFI::Library
+        self.must_be :include?, FFI::Library
       end
     end
   end
