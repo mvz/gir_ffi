@@ -19,7 +19,7 @@ module GirFFI
       end
 
       def setup_getter
-        container_class.class_eval getter_def unless container_defines_getter_method? 
+        container_class.class_eval getter_def unless container_defines_getter_method?
       end
 
       def container_defines_getter_method?
@@ -27,7 +27,7 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def if is_writable_field? 
+        container_class.class_eval setter_def if is_writable_field?
       end
 
       def is_writable_field?

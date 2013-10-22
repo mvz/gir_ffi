@@ -41,7 +41,7 @@ module GirFFI
       end
 
       def method_lines
-        parameter_preparation + call_to_proc + return_value_conversion + return_value 
+        parameter_preparation + call_to_proc + return_value_conversion + return_value
       end
 
       def return_value
