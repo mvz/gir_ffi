@@ -11,7 +11,6 @@ module GirFFI
       def instantiate_class
         @gtype = GObject.type_register_static(parent_gtype, klass.name,
                                               type_info, 0)
-        @structklass = get_or_define_class klass, :Struct, layout_superclass
         setup_class unless already_set_up
         TypeBuilder::CACHE[@gtype] = klass
       end

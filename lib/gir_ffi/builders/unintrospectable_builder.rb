@@ -10,7 +10,6 @@ module GirFFI
         gtype = target_gtype
         TypeBuilder::CACHE[gtype] ||= Class.new(superclass)
         @klass = TypeBuilder::CACHE[gtype]
-        @structklass = get_or_define_class @klass, :Struct, layout_superclass
         setup_class unless already_set_up
       end
 
