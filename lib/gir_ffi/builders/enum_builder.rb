@@ -55,11 +55,6 @@ module GirFFI
       def superclass
         @superclass ||= EnumBase
       end
-
-      # FIXME: Remove duplication with ModuleBuilder
-      def get_or_define_module parent, name
-        optionally_define_constant(parent, name) { ::Module.new }
-      end
     end
   end
 end

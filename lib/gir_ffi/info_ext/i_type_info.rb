@@ -2,10 +2,8 @@ require 'gir_ffi/builder_helper'
 
 module GirFFI
   module InfoExt
-    # Extensions for GObjectIntrospection::IArgInfo needed by GirFFI
+    # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
-      include BuilderHelper
-
       def g_type
         tag = self.tag
         case tag

@@ -17,9 +17,7 @@ module GirFFI
       end
 
       def klass
-        @klass ||= optionally_define_constant(namespace_module, @classname) do
-          ::Module.new
-        end
+        @klass ||= get_or_define_module namespace_module, @classname
       end
 
       def setup_module
