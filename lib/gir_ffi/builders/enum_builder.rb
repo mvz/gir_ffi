@@ -24,12 +24,11 @@ module GirFFI
       end
 
       def instantiate_class
-        @klass = get_or_define_module namespace_module, @classname
-        @enum = optionally_define_constant @klass, :Enum do
+        @enum = optionally_define_constant klass, :Enum do
           lib.enum(enum_sym, value_spec)
         end
         unless already_set_up
-          @klass.extend superclass
+          klass.extend superclass
           setup_constants
           setup_gtype_getter
           stub_methods
@@ -37,8 +36,12 @@ module GirFFI
         end
       end
 
+      def klass
+        @klass ||= get_or_define_module namespace_module, @classname
+      end
+
       def setup_inspect
-        @klass.instance_eval <<-EOS
+        klass.instance_eval <<-EOS
           def self.inspect
             "#{@namespace}::#{@classname}"
           end
@@ -46,7 +49,7 @@ module GirFFI
       end
 
       def already_set_up
-        @klass.respond_to? :get_gtype
+        klass.respond_to? :get_gtype
       end
 
       def superclass

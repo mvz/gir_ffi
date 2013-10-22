@@ -36,7 +36,7 @@ module GirFFI
 
       def stub_methods
         info.get_methods.each do |minfo|
-          @klass.class_eval MethodStubber.new(minfo).method_stub
+          klass.class_eval MethodStubber.new(minfo).method_stub
         end
       end
     end

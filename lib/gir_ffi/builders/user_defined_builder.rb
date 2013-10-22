@@ -86,7 +86,7 @@ module GirFFI
         end
         CODE
 
-        @klass.class_eval code
+        klass.class_eval code
       end
 
       def method_introspection_data method
@@ -100,7 +100,7 @@ module GirFFI
           self.wrap(gptr)
         end
         CODE
-        @klass.class_eval code
+        klass.class_eval code
       end
     end
   end

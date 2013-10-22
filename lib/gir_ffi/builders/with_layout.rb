@@ -46,12 +46,15 @@ module GirFFI
       end
 
       def instantiate_class
-        @klass = get_or_define_class namespace_module, @classname, superclass
         setup_class unless already_set_up
       end
 
+      def klass
+        @klass ||= get_or_define_class namespace_module, @classname, superclass
+      end
+
       def struct_class
-        @structklass ||= get_or_define_class @klass, :Struct, layout_superclass
+        @structklass ||= get_or_define_class klass, :Struct, layout_superclass
       end
     end
   end

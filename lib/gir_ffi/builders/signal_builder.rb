@@ -57,13 +57,16 @@ module GirFFI
       end
 
       def instantiate_class
-        @klass ||= get_or_define_module container_class, @classname
         unless already_set_up
-          @klass.extend SignalBase
+          klass.extend SignalBase
           setup_constants
-          @klass.class_eval mapping_method_definition
+          klass.class_eval mapping_method_definition
         end
-        @klass
+        klass
+      end
+
+      def klass
+        @klass ||= get_or_define_module container_class, @classname
       end
 
       def mapping_method_definition
