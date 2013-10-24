@@ -81,7 +81,7 @@ describe GLib::Array do
     it "return its argument if given a GArray" do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]
-      arr2 = GLib::Array.from :foo, arr
+      arr2 = GLib::Array.from :gint32, arr
       assert arr2.equal? arr
     end
 

@@ -1,3 +1,4 @@
+require 'ffi-glib/container_class_methods'
 require 'ffi-glib/array_methods'
 
 module GLib
@@ -8,12 +9,9 @@ module GLib
   class Array
     include Enumerable
     include ArrayMethods
+    extend ContainerClassMethods
 
     attr_reader :element_type
-    def element_type= val
-      @element_type = val
-      check_element_size_match
-    end
 
     class << self
       undef :new
@@ -59,18 +57,14 @@ module GLib
       self.to_a == other.to_a
     end
 
-    def self.wrap elmttype, ptr
-      super(ptr).tap do |array|
-        array.element_type = elmttype if array
-      end
+    def reset_typespec typespec
+      @element_type = typespec
+      check_element_size_match
+      self
     end
 
-    def self.from elmtype, it
-      case it
-      when self then it
-      when FFI::Pointer then wrap elmtype, it
-      else self.new(elmtype).tap {|arr| arr.append_vals it }
-      end
+    def self.from_enumerable elmtype, it
+      self.new(elmtype).tap {|arr| arr.append_vals it }
     end
 
     private
