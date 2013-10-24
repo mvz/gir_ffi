@@ -79,10 +79,9 @@ module GirFFI
       end
 
       def from_struct_array type, ary
-        type_size = type::Struct.size
-        length = ary.length
-
-        ptr = AllocationHelper.safe_malloc length * type_size
+        ffi_type = TypeMap.type_specification_to_ffitype type
+        type_size = FFI.type_size(ffi_type)
+        ptr = AllocationHelper.safe_malloc ary.length * type_size
         ary.each_with_index do |item, idx|
           type.copy_value_to_pointer item, ptr, idx * type_size
         end
@@ -100,12 +99,16 @@ module GirFFI
       end
 
       def from_basic_type_array type, ary
-        ffi_type = TypeMap.map_basic_type type
-        ary = ary.dup << (ffi_type == :pointer ? nil : 0)
+        ffi_type = TypeMap.type_specification_to_ffitype type
+        ary = ary.dup << null_value(ffi_type)
         type_size = FFI.type_size(ffi_type)
         block = AllocationHelper.safe_malloc type_size * ary.length
         block.send "put_array_of_#{ffi_type}", 0, ary
         new block
+      end
+
+      def null_value ffi_type
+        ffi_type == :pointer ? nil : 0
       end
     end
   end
