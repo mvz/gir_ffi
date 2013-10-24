@@ -1,3 +1,6 @@
+require 'ffi-glib/container_class_methods'
+require 'ffi-glib/array_methods'
+
 module GLib
   load_class :PtrArray
 
@@ -6,8 +9,9 @@ module GLib
   class PtrArray
     include Enumerable
     include ArrayMethods
+    extend ContainerClassMethods
 
-    attr_accessor :element_type
+    attr_reader :element_type
 
     POINTER_SIZE = FFI.type_size(:pointer)
 
@@ -21,21 +25,17 @@ module GLib
       wrap(type, Lib.g_ptr_array_new)
     end
 
-    def self.wrap type, ptr
-      super(ptr).tap {|it|
-        it.element_type = type}
-    end
-
-    def self.from type, it
-      case it
-      when self then it
-      when FFI::Pointer then wrap type, it
-      else self.new(type).tap {|arr| arr.add_array it}
-      end
+    def self.from_enumerable(type, it)
+      self.new(type).tap {|arr| arr.add_array it}
     end
 
     def self.add array, data
       array.add data
+    end
+
+    def reset_typespec typespec
+      @element_type = typespec
+      self
     end
 
     def add data

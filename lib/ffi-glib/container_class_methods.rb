@@ -1,5 +1,6 @@
 module GLib
-  # Common methods for container classes: List, SList and HashTable.
+  # Common methods for container classes: Array, PtrArray, List, SList and
+  # HashTable.
   module ContainerClassMethods
     def wrap typespec, ptr
       super(ptr).tap do |container|
