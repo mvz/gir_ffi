@@ -11,7 +11,7 @@ module GLib
       replace_method base, :next, :tail
       replace_method base, :data, :head
 
-      base.singleton_class.send :remove_method, :new
+      class << base; self end.send :remove_method, :new
       base.extend ListClassMethods
 
       base.extend ContainerClassMethods
