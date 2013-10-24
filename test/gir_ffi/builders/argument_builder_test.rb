@@ -39,7 +39,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data('Regress', 'test_callback_destroy_notify').args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = ::Regress::TestCallbackUserData.from(callback)" ]
+        builder.pre.must_equal [ "_v1 = Regress::TestCallbackUserData.from(callback)" ]
       end
 
       it "has the correct value for #post" do
@@ -105,7 +105,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = ::Regress::TestObj.wrap(_v1.to_value)" ]
+        builder.post.must_equal [ "_v2 = Regress::TestObj.wrap(_v1.to_value)" ]
       end
     end
 
@@ -125,7 +125,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = ::GIMarshallingTests::BoxedStruct.wrap(_v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.to_value)" ]
         end
       end
 

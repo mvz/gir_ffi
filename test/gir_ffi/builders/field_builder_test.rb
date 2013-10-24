@@ -39,7 +39,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(Regress::TestSimpleBoxedA, _v1)
           _v3 = _v2.to_value
-          _v4 = ::Regress::TestSimpleBoxedA.wrap(_v3)
+          _v4 = Regress::TestSimpleBoxedA.wrap(_v3)
           _v4
         end
       CODE
