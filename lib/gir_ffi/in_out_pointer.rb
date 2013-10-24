@@ -18,12 +18,10 @@ module GirFFI
     # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
-      when Class
+      when Module
         value_ffi_type.get_value_from_pointer(self)
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
-      when EnumBase
-        value_ffi_type[self.get_int32(0)]
       else
         raise NotImplementedError
       end
@@ -46,12 +44,10 @@ module GirFFI
 
     def set_value value
       case value_ffi_type
-      when Class
+      when Module
         value_ffi_type.copy_value_to_pointer(value, self)
       when Symbol
         self.send "put_#{value_ffi_type}", 0, value
-      when EnumBase
-        self.send "put_int32", 0, value_ffi_type.to_native(value, nil)
       else
         raise NotImplementedError, value_ffi_type
       end

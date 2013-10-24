@@ -26,6 +26,14 @@ module GirFFI
       self[arg]
     end
 
+    def copy_value_to_pointer value, pointer
+      pointer.put_int32 0, to_native(value, nil)
+    end
+
+    def get_value_from_pointer pointer
+      from_native pointer.get_int32(0), nil
+    end
+
     def setup_and_call method, *arguments, &block
       result = setup_method method.to_s
 
