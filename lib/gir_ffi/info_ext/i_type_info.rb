@@ -65,7 +65,7 @@ module GirFFI
       TAG_TO_WRAPPER_CLASS_MAP = {
         :array => 'GLib::Array',
         :byte_array => 'GLib::ByteArray',
-        :c => 'GLib::SizedArray',
+        :c => 'GirFFI::SizedArray',
         :callback => 'GirFFI::Callback',
         :error => 'GLib::Error',
         :ghash => 'GLib::HashTable',

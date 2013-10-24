@@ -71,7 +71,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:c, _v1)
           _v3 = _v2.to_value
-          _v4 = GLib::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v3)
+          _v4 = GirFFI::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v3)
           _v4
         end
       CODE
@@ -84,7 +84,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:c, _v1)
           GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
-          _v3 = GLib::SizedArray.from(Regress::TestStructE__some_union__union, 2, value)
+          _v3 = GirFFI::SizedArray.from(Regress::TestStructE__some_union__union, 2, value)
           _v2.set_value _v3
         end
       CODE

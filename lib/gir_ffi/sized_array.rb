@@ -1,5 +1,4 @@
-# FIXME: SizedArray does not really belong in GLib, does it?
-module GLib
+module GirFFI
   # Class representing an array with a determined size
   class SizedArray
     include Enumerable

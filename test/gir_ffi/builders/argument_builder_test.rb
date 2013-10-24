@@ -238,7 +238,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:gint32, 4, _v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)" ]
         end
       end
 
@@ -257,7 +257,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:gint32, bar, _v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1.to_value)" ]
         end
       end
     end
@@ -436,7 +436,7 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :c" do
-      let(:argument_class_name) { 'GLib::SizedArray' }
+      let(:argument_class_name) { 'GirFFI::SizedArray' }
 
       before do
         stub(type_info).flattened_tag { :c }
@@ -454,12 +454,12 @@ describe GirFFI::Builders::ArgumentBuilder do
         it "has the correct value for #pre" do
           builder.pre.must_equal [
             "GirFFI::ArgHelper.check_fixed_array_size 3, foo, \"foo\"",
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:bar, 3, foo)"
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:bar, 3, foo)"
           ]
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:bar, 3, _v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:bar, 3, _v1.to_value)" ]
         end
       end
 
@@ -474,12 +474,12 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it "has the correct value for #pre" do
           builder.pre.must_equal [
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:bar, -1, foo)"
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:bar, -1, foo)"
           ]
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:bar, baz, _v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:bar, baz, _v1.to_value)" ]
         end
       end
     end

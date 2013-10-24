@@ -54,7 +54,7 @@ module GirFFI
         value_ffi_type.copy_value_to_pointer(value, self)
       # FIXME: Make SizedArray an FFI DataConverter so it conflates with the code above.
       when :c
-        GLib::SizedArray.copy_value_to_pointer(value, self)
+        GirFFI::SizedArray.copy_value_to_pointer(value, self)
       when Symbol
         self.send "put_#{value_ffi_type}", 0, value
       when FFI::Enum
