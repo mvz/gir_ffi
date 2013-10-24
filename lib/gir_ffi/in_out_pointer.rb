@@ -22,7 +22,7 @@ module GirFFI
         value_ffi_type.get_value_from_pointer(self)
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
-      when FFI::Enum
+      when EnumBase
         value_ffi_type[self.get_int32(0)]
       else
         raise NotImplementedError
@@ -50,7 +50,7 @@ module GirFFI
         value_ffi_type.copy_value_to_pointer(value, self)
       when Symbol
         self.send "put_#{value_ffi_type}", 0, value
-      when FFI::Enum
+      when EnumBase
         self.send "put_int32", 0, value_ffi_type.to_native(value, nil)
       else
         raise NotImplementedError, value_ffi_type

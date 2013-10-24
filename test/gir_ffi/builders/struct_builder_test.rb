@@ -8,7 +8,7 @@ describe GirFFI::Builders::StructBuilder do
       builder.layout_specification.must_equal [:some_int, :int32, 0,
                                                :some_int8, :int8, 4,
                                                :some_double, :double, 8,
-                                               :some_enum, Regress::TestEnum::Enum, 16]
+                                               :some_enum, Regress::TestEnum, 16]
     end
   end
 

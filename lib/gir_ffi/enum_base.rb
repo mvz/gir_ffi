@@ -14,6 +14,10 @@ module GirFFI
       self::Enum.to_native(*args)
     end
 
+    def from_native *args
+      self::Enum.from_native(*args)
+    end
+
     def [](arg)
       self::Enum[arg]
     end
@@ -33,7 +37,7 @@ module GirFFI
     end
 
     def to_ffitype
-      self::Enum
+      self
     end
 
     def setup_method name
