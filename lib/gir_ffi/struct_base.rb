@@ -1,3 +1,5 @@
+require 'gir_ffi/class_base'
+
 module GirFFI
   # Base class for generated classes representing GLib structs.
   class StructBase < ClassBase
