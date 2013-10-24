@@ -7,10 +7,14 @@ module GLib
     attr_accessor :element_type
 
     def self.included base
-      base.extend ContainerClassMethods
       # Override default field accessors.
       replace_method base, :next, :tail
       replace_method base, :data, :head
+
+      base.singleton_class.send :remove_method, :new
+      base.extend ListClassMethods
+
+      base.extend ContainerClassMethods
     end
 
     def self.replace_method base, old, new
@@ -55,6 +59,16 @@ module GLib
       element = @current.head
       @current = @current.tail
       element
+    end
+
+    module ListClassMethods
+      def new type
+        _real_new.tap do |it|
+          struct = self::Struct.new(FFI::Pointer.new(0))
+          it.instance_variable_set :@struct, struct
+          it.element_type = type
+        end
+      end
     end
   end
 end
