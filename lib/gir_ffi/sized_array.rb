@@ -33,6 +33,10 @@ module GirFFI
       size * element_size
     end
 
+    def self.get_value_from_pointer pointer
+      pointer
+    end
+
     def self.copy_value_to_pointer value, pointer
       size = value.size_in_bytes
       pointer.put_bytes(0, value.to_ptr.read_bytes(size), 0, size)
