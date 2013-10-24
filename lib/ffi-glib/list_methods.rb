@@ -4,7 +4,7 @@ module GLib
   # Common methods for List and SList.
   module ListMethods
     include Enumerable
-    attr_accessor :element_type
+    attr_reader :element_type
 
     def self.included base
       # Override default field accessors.
@@ -40,7 +40,7 @@ module GLib
     end
 
     def reset_typespec typespec
-      self.element_type = typespec
+      @element_type = typespec
       self
     end
 
@@ -66,7 +66,7 @@ module GLib
         _real_new.tap do |it|
           struct = self::Struct.new(FFI::Pointer.new(0))
           it.instance_variable_set :@struct, struct
-          it.element_type = type
+          it.instance_variable_set :@element_type, type
         end
       end
     end
