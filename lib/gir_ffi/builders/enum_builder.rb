@@ -27,13 +27,15 @@ module GirFFI
         @enum = optionally_define_constant klass, :Enum do
           lib.enum(enum_sym, value_spec)
         end
-        unless already_set_up
-          klass.extend superclass
-          setup_constants
-          setup_gtype_getter
-          stub_methods
-          setup_inspect
-        end
+        setup_class unless already_set_up
+      end
+
+      def setup_class
+        klass.extend superclass
+        setup_constants
+        setup_gtype_getter
+        stub_methods
+        setup_inspect
       end
 
       def klass
