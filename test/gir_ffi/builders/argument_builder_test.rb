@@ -98,19 +98,14 @@ describe GirFFI::Builders::ArgumentBuilder do
     describe "for :object" do
       let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
-        get_introspection_data("GIMarshallingTests", "param_spec_out").args[0] }
-
-      before do
-        # FIXME: Find alternative info that doesn't need a guard.
-        skip unless get_introspection_data("GIMarshallingTests", "param_spec_out")
-      end
+        get_method_introspection_data("Regress", "TestObj", "null_out").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, GObject::ParamSpec]" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, Regress::TestObj]" ]
       end
 
       it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = ::GObject::ParamSpec.wrap(_v1.to_value)" ]
+        builder.post.must_equal [ "_v2 = ::Regress::TestObj.wrap(_v1.to_value)" ]
       end
     end
 
