@@ -5,6 +5,7 @@ module GLib
   # pointers.
   class PtrArray
     include Enumerable
+    include ArrayMethods
 
     attr_accessor :element_type
 
@@ -46,13 +47,12 @@ module GLib
       ary.each {|item| add item}
     end
 
-    # Re-implementation of the g_ptr_array_index macro
-    def index idx
-      if idx >= length or idx < 0
-        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
-      end
-      ptr = GirFFI::InOutPointer.new element_type, @struct[:pdata] + idx * POINTER_SIZE
-      ptr.to_ruby_value
+    def data_ptr
+      @struct[:pdata]
+    end
+
+    def element_size
+      POINTER_SIZE
     end
 
     def each

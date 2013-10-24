@@ -1,3 +1,5 @@
+require 'ffi-glib/array_methods'
+
 module GLib
   load_class :Array
 
@@ -5,6 +7,7 @@ module GLib
   # be necessary to create objects of this class from Ruby directly.
   class Array
     include Enumerable
+    include ArrayMethods
 
     attr_reader :element_type
     def element_type= val
@@ -24,15 +27,6 @@ module GLib
       bytes = GirFFI::InPointer.from_array element_type, ary
       Lib.g_array_append_vals(self, bytes, ary.length)
       self
-    end
-
-    # Re-implementation of the g_array_index macro
-    def index idx
-      if idx >= length or idx < 0
-        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
-      end
-      ptr = GirFFI::InOutPointer.new element_type, data_ptr + idx * get_element_size
-      ptr.to_ruby_value
     end
 
     def each
@@ -58,6 +52,8 @@ module GLib
     def get_element_size
       Lib.g_array_get_element_size self
     end
+
+    alias element_size get_element_size
 
     def ==(other)
       self.to_a == other.to_a
