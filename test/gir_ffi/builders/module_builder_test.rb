@@ -14,32 +14,6 @@ describe GirFFI::Builders::ModuleBuilder do
     end
   end
 
-  describe "#sub_builder" do
-    describe "for a :function argument" do
-      it "creates a GirFFI::Builders::FunctionBuilder object" do
-        builder = GirFFI::Builders::ModuleBuilder.new "Foo"
-
-        stub(info = Object.new).info_type { :function }
-
-        result = builder.send :sub_builder, info
-        assert_instance_of GirFFI::Builders::FunctionBuilder, result
-      end
-    end
-
-    describe "for an :object argument" do
-      it "creates a GirFFI::Builders::ObjectBuilder object" do
-        builder = GirFFI::Builders::ModuleBuilder.new "Foo"
-
-        stub(info = Object.new).info_type { :object }
-        stub(info).namespace { "Foo" }
-        stub(info).safe_name { "FooClass" }
-
-        result = builder.send :sub_builder, info
-        assert_instance_of GirFFI::Builders::ObjectBuilder, result
-      end
-    end
-  end
-
   describe "#build_namespaced_class" do
     it "raises a clear error if the named class does not exist" do
       gir = GObjectIntrospection::IRepository.default

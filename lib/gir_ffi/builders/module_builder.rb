@@ -97,14 +97,6 @@ module GirFFI
         @lib ||= get_or_define_module @module, :Lib
       end
 
-      def sub_builder info
-        if info.info_type == :function
-          FunctionBuilder.new info
-        else
-          TypeBuilder.builder_for info
-        end
-      end
-
       def libmodule
         @module.const_get(:Lib)
       end
