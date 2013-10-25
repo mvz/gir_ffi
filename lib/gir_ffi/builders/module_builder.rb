@@ -18,33 +18,31 @@ module GirFFI
       end
 
       def generate
-        build_module
+        modul
       end
 
       def setup_method method
         go = function_introspection_data method.to_s
+        return false unless go
 
-        return false if go.nil?
-
-        modul = build_module
-
-        Builder.attach_ffi_function libmodule, go
-        definition = function_definition go
-        modul.class_eval definition
+        Builder.attach_ffi_function lib, go
+        modul.class_eval FunctionBuilder.new(go).generate
 
         true
       end
 
       def build_namespaced_class classname
         info = gir.find_by_name @namespace, classname.to_s
-        if info.nil?
+        unless info
           raise NameError.new(
             "Class #{classname} not found in namespace #{@namespace}")
         end
         Builder.build_class info
       end
 
-      def build_module
+      private
+
+      def modul
         unless defined? @module
           build_dependencies
           instantiate_module
@@ -53,8 +51,6 @@ module GirFFI
         end
         @module
       end
-
-      private
 
       def build_dependencies
         deps = gir.dependencies @namespace
@@ -94,21 +90,13 @@ module GirFFI
       end
 
       def lib
-        @lib ||= get_or_define_module @module, :Lib
-      end
-
-      def libmodule
-        @module.const_get(:Lib)
+        @lib ||= get_or_define_module modul, :Lib
       end
 
       def function_introspection_data function
         info = gir.find_by_name @namespace, function.to_s
-        return nil if info.nil?
+        return unless info
         info.info_type == :function ? info : nil
-      end
-
-      def function_definition info
-        FunctionBuilder.new(info).generate
       end
 
       def gir
