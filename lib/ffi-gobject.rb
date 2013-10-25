@@ -75,7 +75,7 @@ module GObject
     callback = sig_info.create_callback(&block)
     GirFFI::CallbackBase.store_callback callback
 
-    data_ptr = GirFFI::InPointer.from_object data
+    data_ptr = GirFFI::InPointer.from_closure_data data
 
     Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end

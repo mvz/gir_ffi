@@ -164,11 +164,19 @@ describe GirFFI::InPointer do
         GirFFI::InPointer.from_object(nil).must_equal nil
       end
     end
+  end
+
+  describe ".from_closure_data" do
+    describe "when called with nil" do
+      it "returns a pointer pointing to nil.object_id" do
+        GirFFI::InPointer.from_closure_data(nil).address.must_equal nil.object_id
+      end
+    end
 
     describe "when called with a string" do
       it "stores the string in GirFFI::ArgHelper::OBJECT_STORE" do
         str = "Foo"
-        ptr = GirFFI::InPointer.from_object(str)
+        ptr = GirFFI::InPointer.from_closure_data(str)
         result = GirFFI::ArgHelper::OBJECT_STORE[ptr.address]
         result.must_equal str
       end

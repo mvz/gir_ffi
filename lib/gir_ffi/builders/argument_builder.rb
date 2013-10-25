@@ -4,6 +4,8 @@ module GirFFI
   module Builders
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
+      attr_reader :arginfo
+
       def initialize var_gen, arginfo
         super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
         @arginfo = arginfo
@@ -91,6 +93,8 @@ module GirFFI
                   @direction == :in ? "0" : "nil"
                 elsif !has_input_value?
                   out_parameter_preparation
+                elsif is_closure
+                  "#{argument_class_name}.from_closure_data(#{@name})"
                 else
                   ingoing_parameter_conversion
                 end

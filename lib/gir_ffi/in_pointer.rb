@@ -44,11 +44,11 @@ module GirFFI
     end
 
     class << self
-      # FIXME: Hideous
       def from_object obj
-        return nil if obj.nil?
-        return obj.to_ptr if obj.respond_to? :to_ptr
+        obj.to_ptr if obj
+      end
 
+      def from_closure_data obj
         FFI::Pointer.new(obj.object_id).tap {|ptr|
           ArgHelper::OBJECT_STORE[ptr.address] = obj }
       end

@@ -21,7 +21,7 @@ module GirFFI
                                                        @info.constructor?,
                                                        @info.skip_return?)
 
-        link_array_length_arguments
+        set_up_argument_relations
         setup_error_argument vargen
         return filled_out_template
       end
@@ -32,17 +32,22 @@ module GirFFI
         Object.const_get(@info.safe_namespace)::Lib
       end
 
-      def link_array_length_arguments
+      def set_up_argument_relations
         alldata = @argument_builders.dup << @return_value_builder
 
-        alldata.each {|data|
-          idx = data.type_info.array_length
-          if idx > -1
+        alldata.each do |data|
+          if (idx = data.array_length_idx) >= 0
             other_data = @argument_builders[idx]
             data.length_arg = other_data
             other_data.array_arg = data
           end
-        }
+        end
+
+        @argument_builders.each do |data|
+          if (idx = data.arginfo.closure) >= 0
+            @argument_builders[idx].is_closure = true
+          end
+        end
       end
 
       def setup_error_argument vargen

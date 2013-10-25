@@ -63,6 +63,39 @@ describe GirFFI::Builders::ArgumentBuilder do
         builder.post.must_equal [ ]
       end
     end
+
+    describe "for :void" do
+      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
+      let(:arg_info) { get_introspection_data("Regress", "test_callback_user_data").args[1] }
+
+      describe "when it is a regular argument" do
+        before do
+          builder.is_closure = false
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InPointer.from(:void, user_data)" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ ]
+        end
+      end
+
+      describe "when it is a closure" do
+        before do
+          builder.is_closure = true
+        end
+
+        it "has the correct value for #pre" do
+          builder.pre.must_equal [ "_v1 = GirFFI::InPointer.from_closure_data(user_data)" ]
+        end
+
+        it "has the correct value for #post" do
+          builder.post.must_equal [ ]
+        end
+      end
+    end
   end
 
   describe "for an argument with direction :out" do

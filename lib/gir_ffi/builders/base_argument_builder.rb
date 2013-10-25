@@ -46,6 +46,10 @@ module GirFFI
       type_info.argument_class_name
     end
 
+    def array_length_idx
+      type_info.array_length
+    end
+
     def array_size
       if @length_arg
         @length_arg.retname

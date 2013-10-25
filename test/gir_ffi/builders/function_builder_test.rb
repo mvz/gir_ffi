@@ -45,7 +45,7 @@ describe GirFFI::Builders::FunctionBuilder do
     expected = <<-CODE
       def self.test_callback_destroy_notify callback, user_data, notify
         _v1 = Regress::TestCallbackUserData.from(callback)
-        _v2 = GirFFI::InPointer.from(:void, user_data)
+        _v2 = GirFFI::InPointer.from_closure_data(user_data)
         _v3 = GLib::DestroyNotify.from(notify)
         _v4 = Regress::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
         return _v4
