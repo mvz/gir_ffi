@@ -61,6 +61,10 @@ module GLib
       element
     end
 
+    def element_ptr_for data
+      GirFFI::InPointer.from(element_type, data)
+    end
+
     module ListClassMethods
       def new type
         _real_new.tap do |it|
