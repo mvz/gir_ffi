@@ -44,16 +44,16 @@ module GirFFI
     end
 
     class << self
-      def from_object obj
-        obj.to_ptr if obj
-      end
-
       def from_closure_data obj
         FFI::Pointer.new(obj.object_id).tap {|ptr|
           ArgHelper::OBJECT_STORE[ptr.address] = obj }
       end
 
       private
+
+      def from_object obj
+        obj.to_ptr
+      end
 
       def from_utf8_array ary
         from_basic_type_array :pointer, ary.map {|str| from_utf8 str}

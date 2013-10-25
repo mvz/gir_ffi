@@ -148,20 +148,16 @@ describe GirFFI::InPointer do
       ptr = GirFFI::InPointer.from e, :bar
       ptr.address.must_equal 1
     end
-  end
 
-  describe ".from_object" do
-    describe "when called with an object implementing to_ptr" do
+    describe "for type :void" do
       it "returns the result of to_ptr" do
         obj = Object.new
         def obj.to_ptr; :test_value; end
-        GirFFI::InPointer.from_object(obj).must_equal :test_value
+        GirFFI::InPointer.from(:void, obj).must_equal :test_value
       end
-    end
 
-    describe "when called with nil" do
-      it "returns nil" do
-        GirFFI::InPointer.from_object(nil).must_equal nil
+      it "returns nil when passed nil" do
+        GirFFI::InPointer.from(:void, nil).must_equal nil
       end
     end
   end
