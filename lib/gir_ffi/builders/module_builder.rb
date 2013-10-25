@@ -48,7 +48,7 @@ module GirFFI
         unless defined? @module
           build_dependencies
           instantiate_module
-          setup_lib_for_ffi
+          setup_lib_for_ffi unless lib_already_set_up
           setup_module unless already_set_up
         end
         @module
@@ -78,16 +78,23 @@ module GirFFI
       end
 
       def setup_lib_for_ffi
-        @lib = get_or_define_module @module, :Lib
-
-        unless (class << @lib; self.include? FFI::Library; end)
-          @lib.extend FFI::Library
-          @lib.ffi_lib_flags :global, :lazy
-          libspec = gir.shared_library(@namespace)
-          unless libspec.nil?
-            @lib.ffi_lib(*libspec.split(/,/))
-          end
+        lib.extend FFI::Library
+        lib.ffi_lib_flags :global, :lazy
+        if shared_library_specification
+          lib.ffi_lib(*shared_library_specification.split(/,/))
         end
+      end
+
+      def shared_library_specification
+        @shared_library_specification ||= gir.shared_library(@namespace)
+      end
+
+      def lib_already_set_up
+        (class << lib; self; end).include? FFI::Library
+      end
+
+      def lib
+        @lib ||= get_or_define_module @module, :Lib
       end
 
       def sub_builder info
