@@ -9,23 +9,6 @@ module GirFFI
       # TODO: Make CallbackArgumentBuilder accept argument name
       # TODO: Fix name of #post method
       class CallbackArgumentBuilder < ReturnValueBuilder
-        # FIXME: Can post and retval be cleaned up?
-        def post
-          if specialized_type_tag == :enum
-            ["#{retname} = #{argument_class_name}[#{callarg}]"]
-          else
-            super
-          end
-        end
-
-        def retval
-          if specialized_type_tag == :enum
-            retname
-          else
-            super
-          end
-        end
-
         def needs_outgoing_parameter_conversion?
           specialized_type_tag == :enum || super
         end
