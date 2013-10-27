@@ -1,7 +1,7 @@
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/setter_argument_info'
+require 'gir_ffi/field_argument_info'
 
 module GirFFI
   module Builders
@@ -98,7 +98,7 @@ module GirFFI
       end
 
       def field_argument_info
-        @field_argument_info ||= SetterArgumentInfo.new "value", field_type
+        @field_argument_info ||= FieldArgumentInfo.new "value", field_type
       end
 
       def return_value_builder
