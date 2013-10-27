@@ -74,7 +74,7 @@ module GirFFI
         user_data_argument_info = UserDataArgumentInfo.new(user_data_type_info, arg_infos.length)
         arg_infos.push user_data_argument_info
 
-        MappingMethodBuilder.new(arg_infos, info.return_type).method_definition
+        MappingMethodBuilder.for_signal(arg_infos, info.return_type).method_definition
       end
 
       def container_class

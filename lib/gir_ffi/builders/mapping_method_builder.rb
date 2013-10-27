@@ -26,6 +26,14 @@ module GirFFI
         end
       end
 
+      def self.for_callback argument_infos, return_type_info
+        new argument_infos, return_type_info
+      end
+
+      def self.for_signal argument_infos, return_type_info
+        new argument_infos, return_type_info
+      end
+
       def initialize argument_infos, return_type_info
         @argument_infos = argument_infos
         @return_type_info = return_type_info
