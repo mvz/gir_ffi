@@ -4,9 +4,10 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      def initialize var_gen, type_info, is_constructor = false, skip = false
-        super var_gen, nil, type_info, :return
+      def initialize var_gen, return_value_info, is_constructor = false, skip = false
+        super var_gen, nil, return_value_info.argument_type, :return
         @is_constructor = is_constructor
+        # TODO: Pull into return_value_info
         @skip = skip
       end
 

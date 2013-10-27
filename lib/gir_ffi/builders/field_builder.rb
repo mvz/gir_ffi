@@ -93,15 +93,22 @@ module GirFFI
         @info.name.to_sym
       end
 
+      def field_type
+        @field_type ||= @info.field_type
+      end
+
+      def field_argument_info
+        @field_argument_info ||= SetterArgumentInfo.new "value", field_type
+      end
+
       def return_value_builder
-        vargen = VariableNameGenerator.new
-        @rv_builder ||= ReturnValueBuilder.new vargen, @info.field_type
+        @rv_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
+                                               field_argument_info)
       end
 
       def setter_builder
-        vargen = VariableNameGenerator.new
-        argument_info = SetterArgumentInfo.new "value", @info.field_type
-        ArgumentBuilder.new vargen, argument_info
+        @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
+                                                field_argument_info)
       end
     end
   end

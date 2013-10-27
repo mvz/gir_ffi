@@ -2,13 +2,14 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:type_info) { Object.new }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info) }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:for_constructor) { false }
   let(:skip) { false }
   let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen,
-                                                 type_info,
-                                                 for_constructor,
-                                                 skip) }
+                                                           return_type_info,
+                                                           for_constructor,
+                                                           skip) }
   let(:conversion_arguments) { [] }
   let(:argument_class_name) { flattened_tag }
   let(:flattened_tag) { nil }
@@ -368,7 +369,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe "for a closure argument" do
     let(:tp_info) {
       get_introspection_data("Regress", "TestCallbackUserData").args[0].argument_type }
-    let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen, tp_info) }
+    let(:return_type_info) { GirFFI::ReturnValueInfo.new(tp_info) }
+    let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen,
+                                                             return_type_info) }
 
     before do
       builder.is_closure = true

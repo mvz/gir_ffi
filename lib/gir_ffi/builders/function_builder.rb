@@ -1,4 +1,5 @@
 require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/return_value_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/null_argument_builder'
@@ -17,7 +18,7 @@ module GirFFI
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
         @return_value_builder = ReturnValueBuilder.new(vargen,
-                                                       @info.return_type,
+                                                       ReturnValueInfo.new(@info.return_type),
                                                        @info.constructor?,
                                                        @info.skip_return?)
 

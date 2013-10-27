@@ -9,6 +9,10 @@ module GirFFI
       # TODO: Make CallbackArgumentBuilder accept argument name
       # TODO: Fix name of #post method
       class CallbackArgumentBuilder < ReturnValueBuilder
+        def initialize var_gen, return_value_info, is_constructor = false, skip = false
+          super var_gen, return_value_info
+        end
+
         def post
           if specialized_type_tag == :enum
             ["#{retname} = #{argument_class_name}[#{callarg}]"]
@@ -78,23 +82,27 @@ module GirFFI
         @method_arguments ||= argument_builders.map(&:callarg).unshift('_proc')
       end
 
+      def return_value_info
+        @return_value_info ||= ReturnValueInfo.new(return_type_info)
+      end
+
       def return_value_builder
-        @return_value_builder ||= ReturnValueBuilder.new(vargen, return_type_info)
+        @return_value_builder ||= ReturnValueBuilder.new(vargen, return_value_info)
       end
 
       def argument_builders
         unless defined?(@argument_builders)
           @argument_builders = argument_infos.map {|arg|
-            CallbackArgumentBuilder.new vargen, arg.argument_type }
-          set_up_argument_relations(@argument_builders)
+            CallbackArgumentBuilder.new vargen, arg }
+          set_up_argument_relations
         end
         @argument_builders
       end
 
-      def set_up_argument_relations(builders)
+      def set_up_argument_relations
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
-            builders[idx].is_closure = true
+            argument_builders[idx].is_closure = true
           end
         end
       end
