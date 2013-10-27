@@ -30,17 +30,23 @@ module GirFFI
         vargen = VariableNameGenerator.new
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
-        new(argument_infos, return_type_info, vargen, argument_builders).tap do |builder|
-          builder.set_up_argument_relations
-        end
+        set_up_argument_relations argument_infos, argument_builders
+        new argument_infos, return_type_info, vargen, argument_builders
       end
 
       def self.for_signal argument_infos, return_type_info
         vargen = VariableNameGenerator.new
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
-        new(argument_infos, return_type_info, vargen, argument_builders).tap do |builder|
-          builder.set_up_argument_relations
+        set_up_argument_relations argument_infos, argument_builders
+        new argument_infos, return_type_info, vargen, argument_builders
+      end
+
+      def self.set_up_argument_relations argument_infos, argument_builders
+        argument_infos.each do |arg|
+          if (idx = arg.closure) >= 0
+            argument_builders[idx].is_closure = true
+          end
         end
       end
 
@@ -107,14 +113,6 @@ module GirFFI
 
       def return_value_builder
         @return_value_builder ||= ReturnValueBuilder.new(vargen, return_value_info)
-      end
-
-      def set_up_argument_relations
-        argument_infos.each do |arg|
-          if (idx = arg.closure) >= 0
-            argument_builders[idx].is_closure = true
-          end
-        end
       end
     end
   end
