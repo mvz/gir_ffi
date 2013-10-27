@@ -16,11 +16,10 @@ Gem::Specification.new do |s|
   s.files = Dir[ '{lib,test,tasks,examples}/**/*',
                  "*.md",
                  "*.rdoc",
-                 "History.txt",
                  "Rakefile",
                  "COPYING.LIB" ] & `git ls-files -z`.split("\0")
 
-  s.extra_rdoc_files = ["DESIGN.rdoc", "History.txt", "README.md", "TODO.rdoc"]
+  s.extra_rdoc_files = ["DESIGN.rdoc", "Changelog.md", "README.md", "TODO.rdoc"]
   s.test_files = `git ls-files -z -- test`.split("\0")
 
   s.add_runtime_dependency('ffi', ["~> 1.8"])
