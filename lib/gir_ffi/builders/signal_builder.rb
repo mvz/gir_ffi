@@ -24,12 +24,6 @@ module GirFFI
         end
       end
 
-      class SignalReceiverArgumentInfo < ReturnValueInfo
-        def closure
-          -1
-        end
-      end
-
       class UserDataTypeInfo
         include InfoExt::ITypeInfo
 
@@ -39,15 +33,6 @@ module GirFFI
 
         def pointer?
           true
-        end
-      end
-
-      class UserDataArgumentInfo < ReturnValueInfo
-        attr_reader :closure
-
-        def initialize type, position
-          super type
-          @closure = position
         end
       end
 
@@ -68,11 +53,10 @@ module GirFFI
         arg_infos = info.args
 
         container_type_info = SignalReceiverTypeInfo.new(container_info)
-        receiver_info = SignalReceiverArgumentInfo.new(container_type_info)
+        receiver_info = ReturnValueInfo.new(container_type_info)
 
         user_data_type_info = UserDataTypeInfo.new
-        user_data_argument_info = UserDataArgumentInfo.new(user_data_type_info,
-                                                           arg_infos.length + 1)
+        user_data_argument_info = ReturnValueInfo.new(user_data_type_info)
 
         MappingMethodBuilder.for_signal(receiver_info,
                                         arg_infos,
