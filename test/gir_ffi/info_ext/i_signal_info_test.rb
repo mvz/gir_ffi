@@ -7,23 +7,18 @@ describe GirFFI::InfoExt::ISignalInfo do
   end }
   let(:signal_info) { klass.new }
 
-  describe "#arguments_to_gvalue_array" do
+  describe "#arguments_to_gvalues" do
     let(:object) { Regress::TestSubObj.new }
     let(:boxed) { Regress::TestSimpleBoxedA.const_return }
     let(:signal_info) { Regress::TestSubObj.find_signal "test-with-static-scope-arg" }
-    let(:result) { signal_info.arguments_to_gvalue_array(object, boxed) }
-
-    it "wraps its arguments in a GObject::ValueArray" do
-      result.must_be_instance_of GObject::ValueArray
-      result.n_values.must_equal 2
-    end
+    let(:result) { signal_info.arguments_to_gvalues(object, [boxed]) }
 
     it "correctly wraps :object" do
-      result.get_nth(0).get_value.must_equal object
+      result[0].get_value.must_equal object
     end
 
     it "correctly wraps :struct" do
-      result_boxed = result.get_nth(1).get_value
+      result_boxed = result[1].get_value
       result_boxed.some_int8.must_equal boxed.some_int8
       result_boxed.some_int.must_equal boxed.some_int
     end

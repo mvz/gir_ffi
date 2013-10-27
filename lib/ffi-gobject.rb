@@ -61,10 +61,12 @@ module GObject
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
     sig_info = object.class.find_signal signal
-    arr = sig_info.arguments_to_gvalue_array object, *args
+
+    arr_ptr = sig_info.arguments_to_gvalue_array_pointer object, args
+
     rval = sig_info.gvalue_for_return_value
 
-    Lib.g_signal_emitv arr.values, signal_id, detail_quark, rval
+    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, rval
 
     return rval
   end
