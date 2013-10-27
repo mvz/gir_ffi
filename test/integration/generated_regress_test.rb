@@ -1364,7 +1364,7 @@ describe Regress do
     it "has a writable field data1" do
       instance.data1.must_be :null?
       instance.data1 = GirFFI::InOutPointer.from(:gint32, 42)
-      instance.data1.read_int32.must_equal 42
+      instance.data1.read_int.must_equal 42
     end
 
     it "has a writable field data2" do
