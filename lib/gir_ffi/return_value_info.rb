@@ -15,5 +15,9 @@ module GirFFI
     def direction
       :return
     end
+
+    def name
+      nil
+    end
   end
 end

@@ -1,3 +1,4 @@
+require 'gir_ffi/return_value_info'
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/mapping_method_builder'
 require 'gir_ffi/signal_base'
@@ -23,20 +24,9 @@ module GirFFI
         end
       end
 
-      # TODO: Merge with ReturnValueInfo
-      class SignalReceiverArgumentInfo
-        attr_reader :argument_type
-
-        def initialize type
-          @argument_type = type
-        end
-
+      class SignalReceiverArgumentInfo < ReturnValueInfo
         def closure
           -1
-        end
-
-        def direction
-          :return
         end
       end
 
@@ -52,17 +42,12 @@ module GirFFI
         end
       end
 
-      class UserDataArgumentInfo
-        attr_reader :argument_type
+      class UserDataArgumentInfo < ReturnValueInfo
         attr_reader :closure
 
         def initialize type, position
-          @argument_type = type
+          super type
           @closure = position
-        end
-
-        def direction
-          :return
         end
       end
 

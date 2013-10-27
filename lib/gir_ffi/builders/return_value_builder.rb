@@ -7,7 +7,7 @@ module GirFFI
       attr_reader :arginfo
 
       def initialize var_gen, arginfo, is_constructor = false
-        super var_gen, nil, arginfo.argument_type, arginfo.direction
+        super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
         @arginfo = arginfo
         @is_constructor = is_constructor
       end
