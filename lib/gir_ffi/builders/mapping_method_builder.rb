@@ -31,7 +31,7 @@ module GirFFI
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
         set_up_argument_relations argument_infos, argument_builders
-        new argument_infos, return_type_info, vargen, argument_builders
+        new return_type_info, vargen, argument_builders
       end
 
       def self.for_signal argument_infos, return_type_info
@@ -39,7 +39,7 @@ module GirFFI
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
         set_up_argument_relations argument_infos, argument_builders
-        new argument_infos, return_type_info, vargen, argument_builders
+        new return_type_info, vargen, argument_builders
       end
 
       def self.set_up_argument_relations argument_infos, argument_builders
@@ -50,15 +50,13 @@ module GirFFI
         end
       end
 
-      def initialize argument_infos, return_type_info, vargen, argument_builders
+      def initialize return_type_info, vargen, argument_builders
         @vargen = vargen
         @argument_builders = argument_builders
 
-        @argument_infos = argument_infos
         @return_type_info = return_type_info
       end
 
-      attr_reader :argument_infos
       attr_reader :return_type_info
       attr_reader :vargen
       attr_reader :argument_builders
