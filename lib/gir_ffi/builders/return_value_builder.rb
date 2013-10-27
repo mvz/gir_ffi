@@ -4,11 +4,8 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      attr_reader :arginfo
-
       def initialize var_gen, arginfo, is_constructor = false
         super var_gen, arginfo
-        @arginfo = arginfo
         @is_constructor = is_constructor
       end
 

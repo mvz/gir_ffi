@@ -11,6 +11,7 @@ module GirFFI
       "until", "when", "while", "yield"
     ]
 
+    attr_reader :arginfo
     attr_reader :name, :retname
 
     attr_accessor :length_arg, :array_arg
@@ -20,6 +21,7 @@ module GirFFI
     def initialize var_gen, arginfo
       @var_gen = var_gen
 
+      @arginfo = arginfo
       @name = safe(arginfo.name)
       @typeinfo = arginfo.argument_type
       @direction = arginfo.direction

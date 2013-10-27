@@ -4,13 +4,6 @@ module GirFFI
   module Builders
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
-      attr_reader :arginfo
-
-      def initialize var_gen, arginfo
-        super var_gen, arginfo
-        @arginfo = arginfo
-      end
-
       def inarg
         if has_input_value? && !is_array_length_parameter?
           @name
