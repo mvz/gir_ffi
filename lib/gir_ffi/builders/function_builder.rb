@@ -1,5 +1,6 @@
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/return_value_info'
+require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/null_argument_builder'
@@ -51,8 +52,11 @@ module GirFFI
       end
 
       def setup_error_argument vargen
-        klass = @info.throws? ? ErrorArgumentBuilder : NullArgumentBuilder
-        @errarg = klass.new vargen, nil, nil, :error
+        @errarg = if @info.throws?
+                    ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+                  else
+                    NullArgumentBuilder.new
+                  end
       end
 
       def filled_out_template

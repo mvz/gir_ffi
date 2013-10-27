@@ -17,12 +17,12 @@ module GirFFI
 
     attr_accessor :is_closure
 
-    def initialize var_gen, name, typeinfo, direction
+    def initialize var_gen, arginfo
       @var_gen = var_gen
 
-      @typeinfo = typeinfo
-      @direction = direction
-      @name = safe(name)
+      @name = safe(arginfo.name)
+      @typeinfo = arginfo.argument_type
+      @direction = arginfo.direction
 
       @inarg = nil
       @retname = nil
