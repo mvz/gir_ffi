@@ -27,20 +27,35 @@ module GirFFI
       end
 
       def self.for_callback argument_infos, return_type_info
-        new argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+        new(argument_infos, return_type_info, vargen, argument_builders).tap do |builder|
+          builder.set_up_argument_relations
+        end
       end
 
       def self.for_signal argument_infos, return_type_info
-        new argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+        new(argument_infos, return_type_info, vargen, argument_builders).tap do |builder|
+          builder.set_up_argument_relations
+        end
       end
 
-      def initialize argument_infos, return_type_info
+      def initialize argument_infos, return_type_info, vargen, argument_builders
+        @vargen = vargen
+        @argument_builders = argument_builders
+
         @argument_infos = argument_infos
         @return_type_info = return_type_info
       end
 
       attr_reader :argument_infos
       attr_reader :return_type_info
+      attr_reader :vargen
+      attr_reader :argument_builders
 
       def method_definition
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
@@ -94,25 +109,12 @@ module GirFFI
         @return_value_builder ||= ReturnValueBuilder.new(vargen, return_value_info)
       end
 
-      def argument_builders
-        unless defined?(@argument_builders)
-          @argument_builders = argument_infos.map {|arg|
-            CallbackArgumentBuilder.new vargen, arg }
-          set_up_argument_relations
-        end
-        @argument_builders
-      end
-
       def set_up_argument_relations
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
             argument_builders[idx].is_closure = true
           end
         end
-      end
-
-      def vargen
-        @vargen ||= GirFFI::VariableNameGenerator.new
       end
     end
   end
