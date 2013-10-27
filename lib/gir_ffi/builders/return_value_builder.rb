@@ -25,7 +25,8 @@ module GirFFI
         if has_conversion?
           super
         elsif is_relevant?
-          callarg
+          # FIXME: retval, retname, callarg, oh my.
+          @array_arg.nil? ? callarg : nil
         else
           nil
         end
@@ -33,6 +34,14 @@ module GirFFI
 
       def is_relevant?
         !is_void_return_value? && !arginfo.skip?
+      end
+
+      def retname
+        @retname ||= if has_conversion?
+                       @var_gen.new_var
+                     else
+                       callarg
+                     end
       end
 
       private
@@ -49,10 +58,6 @@ module GirFFI
         else
           outgoing_conversion callarg
         end
-      end
-
-      def retname
-        @retname ||= @var_gen.new_var
       end
 
       def needs_constructor_wrap?

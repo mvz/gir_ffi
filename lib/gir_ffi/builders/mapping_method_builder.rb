@@ -9,6 +9,7 @@ module GirFFI
       # TODO: Make CallbackArgumentBuilder accept argument name
       # TODO: Fix name of #post method
       class CallbackArgumentBuilder < ReturnValueBuilder
+        # FIXME: Can post and retval be cleaned up?
         def post
           if specialized_type_tag == :enum
             ["#{retname} = #{argument_class_name}[#{callarg}]"]
@@ -23,6 +24,10 @@ module GirFFI
           else
             super
           end
+        end
+
+        def needs_outgoing_parameter_conversion?
+          specialized_type_tag == :enum || super
         end
       end
 
@@ -55,6 +60,14 @@ module GirFFI
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
             argument_builders[idx].is_closure = true
+          end
+        end
+        argument_builders.each do |bldr|
+          if (idx = bldr.array_length_idx) >= 0
+            other = argument_builders[idx]
+
+            bldr.length_arg = other
+            other.array_arg = bldr
           end
         end
       end
@@ -107,7 +120,7 @@ module GirFFI
       end
 
       def call_arguments
-        @call_arguments ||= argument_builders.map(&:retval)
+        @call_arguments ||= argument_builders.map(&:retval).compact
       end
 
       def method_arguments
