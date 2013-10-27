@@ -22,14 +22,7 @@ module GirFFI
       end
 
       def retval
-        if has_conversion?
-          super
-        elsif is_relevant?
-          # FIXME: retval, retname, callarg, oh my.
-          @array_arg.nil? ? callarg : nil
-        else
-          nil
-        end
+        super if is_relevant?
       end
 
       def is_relevant?
