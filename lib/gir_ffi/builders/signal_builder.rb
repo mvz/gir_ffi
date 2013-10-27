@@ -68,13 +68,16 @@ module GirFFI
         arg_infos = info.args
 
         container_type_info = SignalReceiverTypeInfo.new(container_info)
-        arg_infos.unshift SignalReceiverArgumentInfo.new(container_type_info)
+        receiver_info = SignalReceiverArgumentInfo.new(container_type_info)
 
         user_data_type_info = UserDataTypeInfo.new
-        user_data_argument_info = UserDataArgumentInfo.new(user_data_type_info, arg_infos.length)
-        arg_infos.push user_data_argument_info
+        user_data_argument_info = UserDataArgumentInfo.new(user_data_type_info,
+                                                           arg_infos.length + 1)
 
-        MappingMethodBuilder.for_signal(arg_infos, info.return_type).method_definition
+        MappingMethodBuilder.for_signal(receiver_info,
+                                        arg_infos,
+                                        user_data_argument_info,
+                                        info.return_type).method_definition
       end
 
       def container_class

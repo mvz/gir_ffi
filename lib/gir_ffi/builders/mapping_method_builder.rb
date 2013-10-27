@@ -34,7 +34,10 @@ module GirFFI
         new return_type_info, vargen, argument_builders
       end
 
-      def self.for_signal argument_infos, return_type_info
+      def self.for_signal receiver_info, argument_infos, user_data_info, return_type_info
+        argument_infos.unshift receiver_info
+        argument_infos.push user_data_info
+
         vargen = VariableNameGenerator.new
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
