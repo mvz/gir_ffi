@@ -18,9 +18,8 @@ module GirFFI
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
         @return_value_builder = ReturnValueBuilder.new(vargen,
-                                                       ReturnValueInfo.new(@info.return_type),
-                                                       @info.constructor?,
-                                                       @info.skip_return?)
+                                                       ReturnValueInfo.new(@info.return_type, @info.skip_return?),
+                                                       @info.constructor?)
 
         set_up_argument_relations
         setup_error_argument vargen

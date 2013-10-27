@@ -2,14 +2,13 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:type_info) { Object.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info) }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, skip) }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:for_constructor) { false }
   let(:skip) { false }
   let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen,
                                                            return_type_info,
-                                                           for_constructor,
-                                                           skip) }
+                                                           for_constructor) }
   let(:conversion_arguments) { [] }
   let(:argument_class_name) { flattened_tag }
   let(:flattened_tag) { nil }

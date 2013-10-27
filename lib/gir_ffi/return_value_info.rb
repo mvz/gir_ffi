@@ -3,8 +3,13 @@ module GirFFI
   class ReturnValueInfo
     attr_reader :argument_type
 
-    def initialize type
+    def initialize type, skip = false
       @argument_type = type
+      @skip = skip
+    end
+
+    def skip?
+      @skip
     end
   end
 end
