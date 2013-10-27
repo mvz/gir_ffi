@@ -6,9 +6,9 @@ module GirFFI
     class ReturnValueBuilder < BaseArgumentBuilder
       attr_reader :arginfo
 
-      def initialize var_gen, return_value_info, is_constructor = false
-        super var_gen, nil, return_value_info.argument_type, :return
-        @arginfo = return_value_info
+      def initialize var_gen, arginfo, is_constructor = false
+        super var_gen, nil, arginfo.argument_type, arginfo.direction
+        @arginfo = arginfo
         @is_constructor = is_constructor
       end
 

@@ -11,5 +11,9 @@ module GirFFI
     def skip?
       @skip
     end
+
+    def direction
+      :return
+    end
   end
 end

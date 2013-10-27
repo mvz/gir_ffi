@@ -23,6 +23,7 @@ module GirFFI
         end
       end
 
+      # TODO: Merge with ReturnValueInfo
       class SignalReceiverArgumentInfo
         attr_reader :argument_type
 
@@ -32,6 +33,10 @@ module GirFFI
 
         def closure
           -1
+        end
+
+        def direction
+          :return
         end
       end
 
@@ -50,9 +55,14 @@ module GirFFI
       class UserDataArgumentInfo
         attr_reader :argument_type
         attr_reader :closure
+
         def initialize type, position
           @argument_type = type
           @closure = position
+        end
+
+        def direction
+          :return
         end
       end
 
