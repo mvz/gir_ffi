@@ -9,10 +9,6 @@ module GirFFI
       # TODO: Make CallbackArgumentBuilder accept argument name
       # TODO: Fix name of #post method
       class CallbackArgumentBuilder < ReturnValueBuilder
-        def initialize var_gen, return_value_info, is_constructor = false, skip = false
-          super var_gen, return_value_info
-        end
-
         def post
           if specialized_type_tag == :enum
             ["#{retname} = #{argument_class_name}[#{callarg}]"]
