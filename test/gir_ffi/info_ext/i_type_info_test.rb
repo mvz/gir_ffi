@@ -564,4 +564,52 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
   end
+
+  describe "#g_type" do
+    before do
+      stub(type_info).tag { tag }
+      stub(type_info).pointer? { pointer? }
+    end
+
+    describe "for :void" do
+      let(:tag) { :void }
+      let(:pointer?) { false }
+
+      it "equals the none type" do
+        GObject.type_name(type_info.g_type).must_equal "void"
+      end
+    end
+
+    describe "for :gboolean" do
+      let(:tag) { :gboolean }
+      let(:pointer?) { false }
+
+      it "equals the gboolean type" do
+        GObject.type_name(type_info.g_type).must_equal "gboolean"
+      end
+    end
+
+    describe "for pointer to :utf8" do
+      let(:tag) { :utf8 }
+      let(:pointer?) { true }
+
+      it "equals the gchararray type" do
+        GObject.type_name(type_info.g_type).must_equal "gchararray"
+      end
+    end
+
+    describe "for pointer to GArray" do
+      let(:tag) { :array }
+      let(:pointer?) { true }
+
+      before do
+        stub(type_info).zero_terminated? { false }
+        stub(type_info).array_type { :array }
+      end
+
+      it "equals the GArray type" do
+        GObject.type_name(type_info.g_type).must_equal "GArray"
+      end
+    end
+  end
 end

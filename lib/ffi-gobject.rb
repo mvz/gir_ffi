@@ -122,16 +122,4 @@ module GObject
   TYPE_ARRAY = Lib.g_array_get_type
   TYPE_HASH_TABLE = Lib.g_hash_table_get_type
   TYPE_STRV = Lib.g_strv_get_type
-
-  TYPE_TAG_TO_GTYPE = {
-    :array => TYPE_ARRAY,
-    :gboolean => TYPE_BOOLEAN,
-    :gdouble => TYPE_DOUBLE,
-    :gfloat => TYPE_FLOAT,
-    :ghash => TYPE_HASH_TABLE,
-    :gint32 => TYPE_INT,
-    :glist => TYPE_POINTER,
-    :utf8 => TYPE_STRING,
-    :void => TYPE_NONE
-  }
 end

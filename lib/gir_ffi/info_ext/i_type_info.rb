@@ -4,13 +4,21 @@ module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
+
+      def self.flattened_tag_to_gtype_map
+        @flattened_tag_to_gtype_map ||= {
+          :array => GObject::TYPE_ARRAY,
+          :gboolean => GObject::TYPE_BOOLEAN,
+          :utf8 => GObject::TYPE_STRING,
+          :void => GObject::TYPE_NONE
+        }
+      end
+
       def g_type
-        tag = self.tag
-        case tag
-        when :interface
+        if tag == :interface
           interface.g_type
         else
-          GObject::TYPE_TAG_TO_GTYPE[tag]
+          ITypeInfo.flattened_tag_to_gtype_map[flattened_tag] or raise flattened_tag.to_s
         end
       end
 
