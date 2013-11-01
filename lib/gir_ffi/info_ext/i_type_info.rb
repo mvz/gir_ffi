@@ -20,7 +20,8 @@ module GirFFI
         if tag == :interface
           interface.g_type
         else
-          ITypeInfo.flattened_tag_to_gtype_map[flattened_tag] or raise flattened_tag.to_s
+          ITypeInfo.flattened_tag_to_gtype_map[flattened_tag] or
+            raise "Can't find type for #{flattened_tag} pointer? = #{pointer?}"
         end
       end
 
