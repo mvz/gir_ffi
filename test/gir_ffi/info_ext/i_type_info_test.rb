@@ -589,6 +589,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for :gint32" do
+      let(:tag) { :gint32 }
+      let(:pointer?) { false }
+
+      it "equals the gint type" do
+        GObject.type_name(type_info.g_type).must_equal "gint"
+      end
+    end
+
     describe "for pointer to :utf8" do
       let(:tag) { :utf8 }
       let(:pointer?) { true }
@@ -598,17 +607,32 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
-    describe "for pointer to GArray" do
+    describe "for arrays" do
       let(:tag) { :array }
-      let(:pointer?) { true }
+      describe "for pointer to GArray" do
+        let(:pointer?) { true }
 
-      before do
-        stub(type_info).zero_terminated? { false }
-        stub(type_info).array_type { :array }
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :array }
+        end
+
+        it "equals the GArray type" do
+          GObject.type_name(type_info.g_type).must_equal "GArray"
+        end
       end
 
-      it "equals the GArray type" do
-        GObject.type_name(type_info.g_type).must_equal "GArray"
+      describe "for a C array" do
+        let(:pointer?) { true }
+
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :c }
+        end
+
+        it "equals the gpointer type" do
+          GObject.type_name(type_info.g_type).must_equal "gpointer"
+        end
       end
     end
   end
