@@ -984,8 +984,19 @@ describe Regress do
     end
 
     it "handles the 'sig-with-foreign-struct' signal" do
-      skip
+      a = nil
+      instance.signal_connect "sig-with-foreign-struct" do |obj, ct|
+        a = ct
+      end
+
+      cairo_context = Regress.test_cairo_context_full_return
+
+      GObject.signal_emit instance, "sig-with-foreign-struct", cairo_context
+
+      a.must_be_instance_of Cairo::Context
+      a.must_equal cairo_context
     end
+
     it "handles the 'sig-with-hash-prop' signal" do
       skip
     end
