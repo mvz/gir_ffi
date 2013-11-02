@@ -31,6 +31,8 @@ module GirFFI
         it.to_utf8
       when :gint32
         cast_pointer_to_int32 it
+      when Class
+        type.wrap it
       else
         # FIXME: Only handles symbolic types.
         it.address
