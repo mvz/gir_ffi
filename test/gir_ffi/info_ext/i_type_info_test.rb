@@ -607,6 +607,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for :guint64" do
+      let(:tag) { :guint64 }
+      let(:pointer?) { false }
+
+      it "equals the guint64 type" do
+        GObject.type_name(type_info.g_type).must_equal "guint64"
+      end
+    end
+
     describe "for pointer to :utf8" do
       let(:tag) { :utf8 }
       let(:pointer?) { true }

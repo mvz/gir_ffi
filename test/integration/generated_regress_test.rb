@@ -1075,7 +1075,15 @@ describe Regress do
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-uint64-prop") do |_, uint64, _|
+        a = uint64
+      end
+
+      GObject.signal_emit instance, "sig-with-uint64-prop", 0xffffffffffffffff
+
+      a.must_equal 0xffffffffffffffff
     end
 
     it "handles the 'test' signal" do
