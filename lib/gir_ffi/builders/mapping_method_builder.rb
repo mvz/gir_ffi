@@ -14,6 +14,13 @@ module GirFFI
         end
       end
 
+      class CallbackReturnValueBuilder < ReturnValueBuilder
+        def post_conversion
+          args = conversion_arguments callarg
+          "#{argument_class_name}.from(#{args})"
+        end
+      end
+
       def self.for_callback argument_infos, return_type_info
         vargen = VariableNameGenerator.new
         argument_builders = argument_infos.map {|arg|
@@ -115,7 +122,7 @@ module GirFFI
       end
 
       def return_value_builder
-        @return_value_builder ||= ReturnValueBuilder.new(vargen, return_value_info)
+        @return_value_builder ||= CallbackReturnValueBuilder.new(vargen, return_value_info)
       end
     end
   end

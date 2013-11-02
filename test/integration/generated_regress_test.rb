@@ -1033,8 +1033,22 @@ describe Regress do
     end
 
     it "handles the 'sig-with-intarray-ret' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-intarray-ret") do |_, i, _|
+        a = i
+        [3, 2, 1]
+      end
+
+      result = GObject.signal_emit instance, "sig-with-intarray-ret", 3
+
+      a.must_equal 3
+
+      # We would expect result to contain the int array, but regress.c uses the
+      # wrong marshalling function
+      result.get_value.must_be_nil
     end
+
     it "handles the 'sig-with-obj' signal" do
       skip
     end
