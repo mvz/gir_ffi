@@ -1050,8 +1050,18 @@ describe Regress do
     end
 
     it "handles the 'sig-with-obj' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-obj") do |_, obj, _|
+        a = obj
+      end
+
+      object = Regress::TestObj.constructor
+      GObject.signal_emit instance, "sig-with-obj", object
+
+      a.must_equal object
     end
+
     it "handles the 'sig-with-strv' signal" do
       skip
     end
