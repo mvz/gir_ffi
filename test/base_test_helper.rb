@@ -37,8 +37,6 @@ end
 Thread.abort_on_exception = true
 
 class Minitest::Test
-  include RR::Adapters::TestUnit
-
   def assert_defines_singleton_method klass, method, msg = nil
     method = method.to_sym
     methods = klass.singleton_methods(false).map { |name| name.to_sym }
