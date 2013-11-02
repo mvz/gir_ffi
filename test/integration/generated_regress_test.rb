@@ -961,6 +961,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-array-len-prop' signal" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-array-len-prop"
+
       a = nil
 
       GObject.signal_connect(instance, "sig-with-array-len-prop") do |obj, arr, user_data|
@@ -984,6 +986,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-foreign-struct' signal" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-foreign-struct"
+
       a = nil
       instance.signal_connect "sig-with-foreign-struct" do |obj, ct|
         a = ct
@@ -1015,6 +1019,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-int64-prop' signal" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-int64-prop"
+
       a = nil
 
       GObject.signal_connect(instance, "sig-with-int64-prop") do |obj, int64, user_data|
