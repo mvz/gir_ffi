@@ -19,17 +19,12 @@ These in the order they occured to me, and may therefore be fixed in any order.
 
   rather than having awkward dynamic method dispatch inside GirFFI::InOutPointer.
 
-- Move code in GirFFI::Struct to StructBase, then somehow unify UnionBase and
-  StructBase.
-
 - Move to a single Pointer class, rather than InPointer, InOutPointer and
   Pointer monkeypatching.
 
 - Move special types like SizedArray to sane namespaces. Types (like
   GLib::List) that have actual GLib implementations go to the GLib namespace.
   Other types go to the GirFFI namespace.
-
-- Use argumentbuilders to build signal argument marshalling functions.
 
 == Persistent Ruby GObject identity
 
@@ -57,6 +52,14 @@ hidden issues.
 GirFFI now generates loads of Something.wrap(ptr) calls; Perhaps these can be
 replace by implementing to_native and from_native in ClassBase and including
 FFI::DataConverter.
+
+== Handle Variants more nicely
+
+Currently, GirFFI requires the user to create GVariant objects by hand, and
+retrieve values from them by hand as well. Ideally, we would have .from_ruby and
+#to_ruby methods or somesuch that do this for us. Some classes, like GAction,
+require a specifice VariantType to be used consistently. Special logic will have
+to be put in place for that.
 
 == See Also
 
