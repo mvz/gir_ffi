@@ -1063,8 +1063,17 @@ describe Regress do
     end
 
     it "handles the 'sig-with-strv' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-strv") do |_, strs, _|
+        a = strs
+      end
+
+      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(["foo", "bar"])
+
+      a.to_a.must_equal ["foo", "bar"]
     end
+
     it "handles the 'sig-with-uint64-prop' signal" do
       skip
     end

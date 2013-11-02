@@ -627,9 +627,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe "for arrays" do
       let(:tag) { :array }
-      describe "for pointer to GArray" do
-        let(:pointer?) { true }
+      let(:pointer?) { true }
 
+      describe "for pointer to GArray" do
         before do
           stub(type_info).zero_terminated? { false }
           stub(type_info).array_type { :array }
@@ -641,8 +641,6 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       describe "for a C array" do
-        let(:pointer?) { true }
-
         before do
           stub(type_info).zero_terminated? { false }
           stub(type_info).array_type { :c }
@@ -650,6 +648,31 @@ describe GirFFI::InfoExt::ITypeInfo do
 
         it "equals the gpointer type" do
           GObject.type_name(type_info.g_type).must_equal "gpointer"
+        end
+      end
+
+      describe "for a zero-terminated array" do
+        before do
+          stub(type_info).param_type(0) { elmtype_info }
+          stub(type_info).zero_terminated? { true }
+        end
+
+        describe "of utf8" do
+          it "equals the GStrv type" do
+            stub(elmtype_info).tag { :utf8 }
+            stub(elmtype_info).pointer? { true }
+
+            GObject.type_name(type_info.g_type).must_equal "GStrv"
+          end
+        end
+
+        describe "of filename" do
+          it "equals the GStrv type" do
+            stub(elmtype_info).tag { :filename }
+            stub(elmtype_info).pointer? { true }
+
+            GObject.type_name(type_info.g_type).must_equal "GStrv"
+          end
         end
       end
     end

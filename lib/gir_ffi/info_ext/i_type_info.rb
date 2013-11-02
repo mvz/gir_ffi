@@ -13,6 +13,7 @@ module GirFFI
           :ghash => GObject::TYPE_HASH_TABLE,
           :gint32 => GObject::TYPE_INT,
           :gint64 => GObject::TYPE_INT64,
+          :strv => GObject::TYPE_STRV,
           :utf8 => GObject::TYPE_STRING,
           :void => GObject::TYPE_NONE
         }
