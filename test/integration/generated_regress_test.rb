@@ -1015,8 +1015,17 @@ describe Regress do
     end
 
     it "handles the 'sig-with-int64-prop' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-int64-prop") do |obj, int64, user_data|
+        a = int64
+      end
+
+      GObject.signal_emit instance, "sig-with-int64-prop", 0x7fffffffffffffff
+
+      a.must_equal 0x7fffffffffffffff
     end
+
     it "handles the 'sig-with-intarray-ret' signal" do
       skip
     end
