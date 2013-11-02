@@ -998,8 +998,22 @@ describe Regress do
     end
 
     it "handles the 'sig-with-hash-prop' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-hash-prop") do |_, ghash, _|
+        a = ghash.to_hash
+      end
+
+      # TODO: Automatically convert arguments to signal_emit.
+      g_hash_table = GLib::HashTable.from([:utf8, GObject::Value],
+                                          {"foo" => GObject::Value.from("bar")})
+
+      GObject.signal_emit instance, "sig-with-hash-prop", g_hash_table
+
+      a["foo"].must_be_instance_of GObject::Value
+      a["foo"].get_value.must_equal "bar"
     end
+
     it "handles the 'sig-with-int64-prop' signal" do
       skip
     end
