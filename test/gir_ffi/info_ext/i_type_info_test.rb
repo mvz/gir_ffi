@@ -607,6 +607,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for pointer to :ghash" do
+      let(:tag) { :ghash }
+      let(:pointer?) { true }
+
+      it "equals the GHashTable type" do
+        GObject.type_name(type_info.g_type).must_equal "GHashTable"
+      end
+    end
+
     describe "for arrays" do
       let(:tag) { :array }
       describe "for pointer to GArray" do

@@ -10,6 +10,7 @@ module GirFFI
           :array => GObject::TYPE_ARRAY,
           :c => GObject::TYPE_POINTER,
           :gboolean => GObject::TYPE_BOOLEAN,
+          :ghash => GObject::TYPE_HASH_TABLE,
           :gint32 => GObject::TYPE_INT,
           :utf8 => GObject::TYPE_STRING,
           :void => GObject::TYPE_NONE
