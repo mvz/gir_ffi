@@ -160,6 +160,15 @@ describe GirFFI::InPointer do
         GirFFI::InPointer.from(:void, nil).must_equal nil
       end
     end
+
+    describe "for types that are classes" do
+      it "returns the result of to_ptr" do
+        klass = Class.new
+        obj = klass.new
+        def obj.to_ptr; :test_value; end
+        GirFFI::InPointer.from(klass, obj).must_equal :test_value
+      end
+    end
   end
 
   describe ".from_closure_data" do

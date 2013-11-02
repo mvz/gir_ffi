@@ -34,10 +34,10 @@ module GirFFI
         from_utf8 val
       when :gint32, :guint32, :gint8
         self.new val
+      when Class, :void
+        val.to_ptr
       when Module
         self.new type[val]
-      when :void
-        from_object val
       else
         raise NotImplementedError, type
       end
@@ -50,10 +50,6 @@ module GirFFI
       end
 
       private
-
-      def from_object obj
-        obj.to_ptr
-      end
 
       def from_utf8_array ary
         from_basic_type_array :pointer, ary.map {|str| from_utf8 str}
