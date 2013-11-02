@@ -29,13 +29,14 @@ module GirFFI
       case type
       when :utf8, :filename
         it.to_utf8
-      when :gint32
+      when :gint32, :gint8
         cast_pointer_to_int32 it
       when Class
         type.wrap it
-      else
-        # FIXME: Only handles symbolic types.
+      when :guint32
         it.address
+      else
+        raise "Don't know how to cast #{type}"
       end
     end
 
