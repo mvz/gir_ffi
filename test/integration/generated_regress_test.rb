@@ -1093,8 +1093,19 @@ describe Regress do
       GObject.signal_emit o, "test"
       assert_equal [2, o], [a, b]
     end
+
     it "handles the 'test-with-static-scope-arg' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "test-with-static-scope-arg") do |_, obj, _|
+        a = obj
+      end
+
+      arg = Regress::TestSimpleBoxedA.new
+      arg.some_int = 12345
+      GObject.signal_emit instance, "test-with-static-scope-arg", arg
+
+      a.some_int.must_equal 12345
     end
   end
 
