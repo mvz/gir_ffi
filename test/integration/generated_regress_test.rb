@@ -1613,8 +1613,10 @@ describe Regress do
   end
 
   it "has a working function #global_get_flags_out" do
-    skip
+    result = Regress.global_get_flags_out
+    result.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
   end
+
   it "has a working function #has_parameter_named_attrs" do
     skip
   end
