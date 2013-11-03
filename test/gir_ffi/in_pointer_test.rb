@@ -42,9 +42,15 @@ describe GirFFI::InPointer do
       p1 = GirFFI::InPointer.from :gint32, 42
       p2 = GirFFI::InPointer.from :gint32, 24
 
-      ptr = GirFFI::InPointer.from_array [:pointer, :uint32], [p1, p2]
+      ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [p1, p2]
 
       ptr.read_array_of_pointer(2).must_equal [p1, p2]
+    end
+
+    it "handles pointer casting" do
+      ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [42, 24]
+
+      ptr.read_array_of_pointer(2).map(&:address).must_equal [42, 24]
     end
   end
 

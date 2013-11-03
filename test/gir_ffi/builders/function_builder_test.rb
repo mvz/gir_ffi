@@ -177,5 +177,20 @@ describe GirFFI::Builders::FunctionBuilder do
         CODE
       end
     end
+
+    describe "for Regress.has_parameter_named_attrs" do
+      let(:function_info) {get_introspection_data 'Regress', 'has_parameter_named_attrs' }
+
+      it "builds a correct definition" do
+        code.must_equal <<-CODE.reset_indentation
+          def self.has_parameter_named_attrs foo, attributes
+            _v1 = foo
+            GirFFI::ArgHelper.check_fixed_array_size 32, attributes, \"attributes\"
+            _v2 = GirFFI::SizedArray.from([:pointer, :guint32], 32, attributes)
+            Regress::Lib.regress_has_parameter_named_attrs _v1, _v2
+          end
+        CODE
+      end
+    end
   end
 end

@@ -1618,8 +1618,10 @@ describe Regress do
   end
 
   it "has a working function #has_parameter_named_attrs" do
-    skip
+    Regress.has_parameter_named_attrs 42, [23] * 32
+    pass
   end
+
   it "has a working function #introspectable_via_alias" do
     skip
   end

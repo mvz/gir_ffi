@@ -21,7 +21,9 @@ module GirFFI
       when Module
         from_enum_array type, ary
       when Array
-        from_interface_pointer_array ary
+        main_type, sub_type = *type
+        raise "Unexpected main type #{main_type}" if main_type != :pointer
+        from_pointer_array sub_type, ary
       else
         raise NotImplementedError, type
       end
@@ -59,8 +61,8 @@ module GirFFI
         from_basic_type_array :int, ary.map {|val| val ? 1 : 0}
       end
 
-      def from_interface_pointer_array ary
-        from_basic_type_array :pointer, ary.map {|ifc| ifc.to_ptr}
+      def from_pointer_array type, ary
+        from_basic_type_array :pointer, ary.map {|elem| from type, elem }
       end
 
       def from_gvalue_array type, ary
