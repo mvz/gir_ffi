@@ -1975,7 +1975,9 @@ describe Regress do
   end
 
   it "has a working function #test_gerror_callback" do
-    skip
+    result = nil
+    Regress.test_gerror_callback Proc.new {|err| result = err.message }
+    result.must_equal "regression test error"
   end
 
   it "has a working function #test_ghash_container_return" do
