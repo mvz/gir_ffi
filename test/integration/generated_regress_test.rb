@@ -1825,13 +1825,50 @@ describe Regress do
   end
 
   it "has a working function #test_callback_destroy_notify_no_user_data" do
-    skip
+    callback_times_called = 0
+    notify_times_called = 0
+    b = :not_nil
+
+    callback = Proc.new {|user_data|
+      callback_times_called += 1
+      b = user_data
+      callback_times_called * 5
+    }
+
+    notify = Proc.new { notify_times_called += 1 }
+
+    result = Regress.test_callback_destroy_notify_no_user_data callback, notify
+
+    callback_times_called.must_equal 1
+    notify_times_called.must_equal 0
+    result.must_equal 5
+    b.must_be_nil
+
+    result = Regress.test_callback_thaw_notifications
+
+    callback_times_called.must_equal 2
+    notify_times_called.must_equal 1
+    result.must_equal 10
+    b.must_be_nil
   end
+
   it "has a working function #test_callback_thaw_async" do
-    skip
+    invoked = []
+    Regress.test_callback_async Proc.new { invoked << 1; 1 }, nil
+    Regress.test_callback_async Proc.new { invoked << 2; 2 }, nil
+    Regress.test_callback_async Proc.new { invoked << 3; 3 }, nil
+    result = Regress.test_callback_thaw_async
+    invoked.must_equal [3, 2, 1]
+    result.must_equal 1
   end
+
   it "has a working function #test_callback_thaw_notifications" do
-    skip
+    invoked = false
+    Regress.test_callback_destroy_notify Proc.new { 42 }, nil, nil
+    Regress.test_callback_destroy_notify Proc.new { 24 }, nil, Proc.new { invoked = true }
+    result = Regress.test_callback_thaw_notifications
+    result.must_equal 66
+    invoked.must_equal true
   end
 
   it "has a working function #test_callback_user_data" do
