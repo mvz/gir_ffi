@@ -1638,7 +1638,21 @@ describe Regress do
   end
 
   it "has a working function #test_array_callback" do
-    skip
+    a = nil
+    b = nil
+    c = 95
+
+    callback = lambda do |one, two|
+      a = one
+      b = two
+      c
+    end
+
+    result = Regress.test_array_callback callback
+
+    result.must_equal 2 * c
+    a.to_a.must_equal [-1, 0, 1, 2]
+    b.to_a.must_equal ["one", "two", "three"]
   end
 
   it "has a working function #test_array_fixed_out_objects" do
