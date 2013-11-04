@@ -1930,7 +1930,8 @@ describe Regress do
   end
 
   it "has a working function #test_def_error_quark" do
-    skip
+    quark = Regress.test_def_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-def-error"
   end
 
   it "has a working function #test_double" do
@@ -1944,7 +1945,8 @@ describe Regress do
   end
 
   it "has a working function #test_error_quark" do
-    skip
+    quark = Regress.test_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-error"
   end
 
   it "has a working function #test_filename_return" do
