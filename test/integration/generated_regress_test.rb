@@ -1905,7 +1905,20 @@ describe Regress do
   end
 
   it "has a working function #test_closure_variant" do
-    skip
+    arg = GLib::Variant.new_string "foo"
+    closure = GObject::RubyClosure.new do |variant|
+      str = variant.get_string
+      rv = if str == "foo"
+             GLib::Variant.new_int32 40
+           else
+             GLib::Variant.new_string "bar"
+           end
+    end
+
+    # TODO: Convert proc to RubyClosure automatically
+    result = Regress.test_closure_variant closure, arg
+
+    result.get_int32.must_equal 40
   end
 
   it "has a working function #test_date_in_gvalue" do
