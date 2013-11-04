@@ -1633,8 +1633,10 @@ describe Regress do
   end
 
   it "has a working function #test_abc_error_quark" do
-    skip
+    quark = Regress.test_abc_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-abc-error"
   end
+
   it "has a working function #test_array_callback" do
     skip
   end
