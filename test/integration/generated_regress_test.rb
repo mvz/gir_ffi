@@ -1970,8 +1970,10 @@ describe Regress do
   end
 
   it "has a working function #test_garray_full_return" do
-    skip
+    result = Regress.test_garray_full_return
+    result.to_a.must_equal ["regress"]
   end
+
   it "has a working function #test_gerror_callback" do
     skip
   end
