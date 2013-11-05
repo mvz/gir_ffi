@@ -1998,9 +1998,19 @@ describe Regress do
   it "has a working function #test_ghash_gvalue_in" do
     skip
   end
+
   it "has a working function #test_ghash_gvalue_return" do
-    skip
+    result = Regress.test_ghash_gvalue_return
+    hash = result.to_hash
+    hash["integer"].get_value.must_equal 12
+    hash["boolean"].get_value.must_equal true
+    hash["string"].get_value.must_equal "some text"
+    hash["strings"].get_value.to_a.must_equal ["first", "second", "third"]
+    hash["flags"].get_value.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+    hash["enum"].get_value.must_equal :value2
+    hash.keys.sort.must_equal ["boolean", "enum", "flags", "integer", "string", "strings"]
   end
+
   it "has a working function #test_ghash_nested_everything_return" do
     skip
   end
