@@ -1908,11 +1908,11 @@ describe Regress do
     arg = GLib::Variant.new_string "foo"
     closure = GObject::RubyClosure.new do |variant|
       str = variant.get_string
-      rv = if str == "foo"
-             GLib::Variant.new_int32 40
-           else
-             GLib::Variant.new_string "bar"
-           end
+      if str == "foo"
+        GLib::Variant.new_int32 40
+      else
+        GLib::Variant.new_string "bar"
+      end
     end
 
     # TODO: Convert proc to RubyClosure automatically
