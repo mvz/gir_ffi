@@ -1996,7 +1996,8 @@ describe Regress do
   end
 
   it "has a working function #test_ghash_gvalue_in" do
-    skip
+    hash_table = Regress.test_ghash_gvalue_return
+    Regress.test_ghash_gvalue_in hash_table
   end
 
   it "has a working function #test_ghash_gvalue_return" do
