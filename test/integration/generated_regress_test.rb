@@ -1905,6 +1905,7 @@ describe Regress do
   end
 
   it "has a working function #test_closure_variant" do
+    skip "This causes a core dump on some systems"
     arg = GLib::Variant.new_string "foo"
     closure = GObject::RubyClosure.new do |variant|
       str = variant.get_string
