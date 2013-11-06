@@ -84,6 +84,8 @@ describe GirFFI::Builders::SignalBuilder do
         get_signal_introspection_data "Regress", "TestObj", "sig-with-intarray-ret" }
 
       it "returns a valid mapping method" do
+        skip unless signal_info
+
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _v1, _v2, _v3)
           _v4 = Regress::TestObj.wrap(_v1)

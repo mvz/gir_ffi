@@ -1033,6 +1033,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-intarray-ret' signal" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-intarray-ret"
+
       a = nil
 
       GObject.signal_connect(instance, "sig-with-intarray-ret") do |_, i, _|
@@ -1075,6 +1077,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-uint64-prop"
+
       a = nil
 
       GObject.signal_connect(instance, "sig-with-uint64-prop") do |_, uint64, _|
@@ -1618,6 +1622,7 @@ describe Regress do
   end
 
   it "has a working function #has_parameter_named_attrs" do
+    skip unless get_introspection_data 'Regress', 'has_parameter_named_attrs'
     Regress.has_parameter_named_attrs 42, [23] * 32
     pass
   end
@@ -1633,6 +1638,8 @@ describe Regress do
   end
 
   it "has a working function #test_abc_error_quark" do
+    skip unless get_introspection_data 'Regress', 'test_abc_error_quark'
+
     quark = Regress.test_abc_error_quark
     GLib.quark_to_string(quark).must_equal "regress-test-abc-error"
   end
@@ -1825,6 +1832,8 @@ describe Regress do
   end
 
   it "has a working function #test_callback_destroy_notify_no_user_data" do
+    skip unless get_introspection_data 'Regress', 'test_callback_destroy_notify_no_user_data'
+
     callback_times_called = 0
     notify_times_called = 0
     b = :not_nil
@@ -1931,6 +1940,7 @@ describe Regress do
   end
 
   it "has a working function #test_def_error_quark" do
+    skip unless get_introspection_data 'Regress', 'test_def_error_quark'
     quark = Regress.test_def_error_quark
     GLib.quark_to_string(quark).must_equal "regress-test-def-error"
   end
@@ -1946,6 +1956,7 @@ describe Regress do
   end
 
   it "has a working function #test_error_quark" do
+    skip unless get_introspection_data 'Regress', 'test_error_quark'
     quark = Regress.test_error_quark
     GLib.quark_to_string(quark).must_equal "regress-test-error"
   end
@@ -1997,11 +2008,14 @@ describe Regress do
   end
 
   it "has a working function #test_ghash_gvalue_in" do
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_in'
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
     hash_table = Regress.test_ghash_gvalue_return
     Regress.test_ghash_gvalue_in hash_table
   end
 
   it "has a working function #test_ghash_gvalue_return" do
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
     result = Regress.test_ghash_gvalue_return
     hash = result.to_hash
     hash["integer"].get_value.must_equal 12

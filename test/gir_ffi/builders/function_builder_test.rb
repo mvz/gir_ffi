@@ -182,6 +182,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) {get_introspection_data 'Regress', 'has_parameter_named_attrs' }
 
       it "builds a correct definition" do
+        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.has_parameter_named_attrs foo, attributes
             _v1 = foo
