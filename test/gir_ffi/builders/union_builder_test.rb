@@ -12,8 +12,9 @@ describe GirFFI::Builders::UnionBuilder do
 
   describe "#layout_specification" do
     it "returns the correct layout for GObject::TypeCValue" do
+      long_type = FFI.type_size(:long) == 8 ? :int64 : :int32
       builder.layout_specification.must_equal [:v_int, :int32, 0,
-                                               :v_long, :int64, 0,
+                                               :v_long, long_type, 0,
                                                :v_int64, :int64, 0,
                                                :v_double, :double, 0,
                                                :v_pointer, :pointer, 0]
