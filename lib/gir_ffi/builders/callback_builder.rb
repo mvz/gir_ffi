@@ -9,14 +9,19 @@ module GirFFI
     # as a callback for FFI.
     class CallbackBuilder < BaseTypeBuilder
       def instantiate_class
-        @callback ||= optionally_define_constant klass, :Callback do
+        setup_class unless already_set_up
+      end
+
+      def setup_class
+        setup_callback
+        setup_constants
+        klass.class_eval mapping_method_definition
+      end
+
+      def setup_callback
+        optionally_define_constant klass, :Callback do
           lib.callback callback_sym, argument_types, return_type
         end
-        unless already_set_up
-          setup_constants
-          klass.class_eval mapping_method_definition
-        end
-        klass
       end
 
       def klass
