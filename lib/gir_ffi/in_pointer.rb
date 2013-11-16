@@ -21,7 +21,9 @@ module GirFFI
       when Module
         from_enum_array type, ary
       when Array
-        from_interface_pointer_array ary
+        main_type, sub_type = *type
+        raise "Unexpected main type #{main_type}" if main_type != :pointer
+        from_pointer_array sub_type, ary
       else
         raise NotImplementedError, type
       end
@@ -34,21 +36,17 @@ module GirFFI
         from_utf8 val
       when :gint32, :guint32, :gint8
         self.new val
+      when Class, :void
+        val.to_ptr
       when Module
         self.new type[val]
-      when :void
-        from_object val
       else
         raise NotImplementedError, type
       end
     end
 
     class << self
-      # FIXME: Hideous
-      def from_object obj
-        return nil if obj.nil?
-        return obj.to_ptr if obj.respond_to? :to_ptr
-
+      def from_closure_data obj
         FFI::Pointer.new(obj.object_id).tap {|ptr|
           ArgHelper::OBJECT_STORE[ptr.address] = obj }
       end
@@ -63,8 +61,8 @@ module GirFFI
         from_basic_type_array :int, ary.map {|val| val ? 1 : 0}
       end
 
-      def from_interface_pointer_array ary
-        from_basic_type_array :pointer, ary.map {|ifc| ifc.to_ptr}
+      def from_pointer_array type, ary
+        from_basic_type_array :pointer, ary.map {|elem| from type, elem }
       end
 
       def from_gvalue_array type, ary
@@ -79,10 +77,9 @@ module GirFFI
       end
 
       def from_struct_array type, ary
-        type_size = type::Struct.size
-        length = ary.length
-
-        ptr = AllocationHelper.safe_malloc length * type_size
+        ffi_type = TypeMap.type_specification_to_ffitype type
+        type_size = FFI.type_size(ffi_type)
+        ptr = AllocationHelper.safe_malloc ary.length * type_size
         ary.each_with_index do |item, idx|
           type.copy_value_to_pointer item, ptr, idx * type_size
         end
@@ -100,12 +97,16 @@ module GirFFI
       end
 
       def from_basic_type_array type, ary
-        ffi_type = TypeMap.map_basic_type type
-        ary = ary.dup << (ffi_type == :pointer ? nil : 0)
+        ffi_type = TypeMap.type_specification_to_ffitype type
+        ary = ary.dup << null_value(ffi_type)
         type_size = FFI.type_size(ffi_type)
         block = AllocationHelper.safe_malloc type_size * ary.length
         block.send "put_array_of_#{ffi_type}", 0, ary
         new block
+      end
+
+      def null_value ffi_type
+        ffi_type == :pointer ? nil : 0
       end
     end
   end

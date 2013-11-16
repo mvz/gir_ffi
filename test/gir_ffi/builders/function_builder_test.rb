@@ -11,7 +11,7 @@ describe GirFFI::Builders::FunctionBuilder do
       def self.test_array_fixed_out_objects 
         _v1 = GirFFI::InOutPointer.for [:pointer, :c]
         Regress::Lib.regress_test_array_fixed_out_objects _v1
-        _v2 = GLib::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.to_value)
+        _v2 = GirFFI::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.to_value)
         return _v2
       end
     CODE
@@ -28,7 +28,7 @@ describe GirFFI::Builders::FunctionBuilder do
       def self.test_array_gint16_in ints
         n_ints = ints.nil? ? 0 : ints.length
         _v1 = n_ints
-        _v2 = GLib::SizedArray.from(:gint16, -1, ints)
+        _v2 = GirFFI::SizedArray.from(:gint16, -1, ints)
         _v3 = Regress::Lib.regress_test_array_gint16_in _v1, _v2
         return _v3
       end
@@ -44,9 +44,9 @@ describe GirFFI::Builders::FunctionBuilder do
 
     expected = <<-CODE
       def self.test_callback_destroy_notify callback, user_data, notify
-        _v1 = ::Regress::TestCallbackUserData.from(callback)
-        _v2 = GirFFI::InPointer.from(:void, user_data)
-        _v3 = ::GLib::DestroyNotify.from(notify)
+        _v1 = Regress::TestCallbackUserData.from(callback)
+        _v2 = GirFFI::InPointer.from_closure_data(user_data)
+        _v3 = GLib::DestroyNotify.from(notify)
         _v4 = Regress::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
         return _v4
       end
@@ -81,7 +81,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     expected = <<-CODE
       def self.gvalue_in value
-        _v1 = ::GObject::Value.from(value)
+        _v1 = GObject::Value.from(value)
         GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_in _v1
       end
     CODE
@@ -96,7 +96,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     expected = <<-CODE
       def self.test_array_int_null_in arr
-        _v1 = GLib::SizedArray.from(:gint32, -1, arr)
+        _v1 = GirFFI::SizedArray.from(:gint32, -1, arr)
         len = arr.nil? ? 0 : arr.length
         _v2 = len
         Regress::Lib.regress_test_array_int_null_in _v1, _v2
@@ -117,7 +117,7 @@ describe GirFFI::Builders::FunctionBuilder do
         _v2 = GirFFI::InOutPointer.for :gint32
         Regress::Lib.regress_test_array_int_null_out _v1, _v2
         _v3 = _v2.to_value
-        _v4 = GLib::SizedArray.wrap(:gint32, _v3, _v1.to_value)
+        _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.to_value)
         return _v4
       end
     CODE
@@ -132,12 +132,12 @@ describe GirFFI::Builders::FunctionBuilder do
 
     expected = <<-CODE
       def method_array_inout ints
-        _v1 = GirFFI::InOutPointer.from [:pointer, :c], GLib::SizedArray.from(:gint32, -1, ints)
+        _v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, -1, ints)
         length = ints.nil? ? 0 : ints.length
         _v2 = GirFFI::InOutPointer.from :gint32, length
         GIMarshallingTests::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
         _v3 = _v2.to_value
-        _v4 = GLib::SizedArray.wrap(:gint32, _v3, _v1.to_value)
+        _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.to_value)
         return _v4
       end
     CODE
@@ -173,6 +173,22 @@ describe GirFFI::Builders::FunctionBuilder do
             _v2 = GLib::Lib.g_variant_get_strv self, _v1
             _v3 = GLib::Strv.wrap(_v2)
             return _v3
+          end
+        CODE
+      end
+    end
+
+    describe "for Regress.has_parameter_named_attrs" do
+      let(:function_info) {get_introspection_data 'Regress', 'has_parameter_named_attrs' }
+
+      it "builds a correct definition" do
+        skip unless function_info
+        code.must_equal <<-CODE.reset_indentation
+          def self.has_parameter_named_attrs foo, attributes
+            _v1 = foo
+            GirFFI::ArgHelper.check_fixed_array_size 32, attributes, \"attributes\"
+            _v2 = GirFFI::SizedArray.from([:pointer, :guint32], 32, attributes)
+            Regress::Lib.regress_has_parameter_named_attrs _v1, _v2
           end
         CODE
       end

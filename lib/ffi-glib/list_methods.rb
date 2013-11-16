@@ -1,15 +1,20 @@
 require 'ffi-glib/container_class_methods'
 
 module GLib
+  # Common methods for List and SList.
   module ListMethods
     include Enumerable
-    attr_accessor :element_type
+    attr_reader :element_type
 
     def self.included base
-      base.extend ContainerClassMethods
       # Override default field accessors.
       replace_method base, :next, :tail
       replace_method base, :data, :head
+
+      class << base; self end.send :remove_method, :new
+      base.extend ListClassMethods
+
+      base.extend ContainerClassMethods
     end
 
     def self.replace_method base, old, new
@@ -35,7 +40,7 @@ module GLib
     end
 
     def reset_typespec typespec
-      self.element_type = typespec
+      @element_type = typespec
       self
     end
 
@@ -54,6 +59,20 @@ module GLib
       element = @current.head
       @current = @current.tail
       element
+    end
+
+    def element_ptr_for data
+      GirFFI::InPointer.from(element_type, data)
+    end
+
+    module ListClassMethods
+      def new type
+        _real_new.tap do |it|
+          struct = self::Struct.new(FFI::Pointer.new(0))
+          it.instance_variable_set :@struct, struct
+          it.instance_variable_set :@element_type, type
+        end
+      end
     end
   end
 end

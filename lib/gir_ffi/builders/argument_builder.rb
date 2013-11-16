@@ -4,14 +4,9 @@ module GirFFI
   module Builders
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
-      def initialize var_gen, arginfo
-        super var_gen, arginfo.name, arginfo.argument_type, arginfo.direction
-        @arginfo = arginfo
-      end
-
       def inarg
         if has_input_value? && !is_array_length_parameter?
-          @name
+          name
         end
       end
 
@@ -65,7 +60,7 @@ module GirFFI
 
       def fixed_array_size_check
         size = type_info.array_fixed_size
-        "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{@name}, \"#{@name}\""
+        "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{name}, \"#{name}\""
       end
 
       def skipped?
@@ -74,23 +69,25 @@ module GirFFI
       end
 
       def has_output_value?
-        (@direction == :inout || @direction == :out) && !skipped?
+        (direction == :inout || direction == :out) && !skipped?
       end
 
       def has_input_value?
-        (@direction == :inout || @direction == :in) && !skipped?
+        (direction == :inout || direction == :in) && !skipped?
       end
 
       def array_length_assignment
         arrname = @array_arg.name
-        "#{@name} = #{arrname}.nil? ? 0 : #{arrname}.length"
+        "#{name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
 
       def set_function_call_argument
         value = if skipped?
-                  @direction == :in ? "0" : "nil"
+                  direction == :in ? "0" : "nil"
                 elsif !has_input_value?
                   out_parameter_preparation
+                elsif is_closure
+                  "#{argument_class_name}.from_closure_data(#{name})"
                 else
                   ingoing_parameter_conversion
                 end
@@ -115,7 +112,7 @@ module GirFFI
       end
 
       def ingoing_parameter_conversion
-        args = conversion_arguments @name
+        args = conversion_arguments name
 
         base = case specialized_type_tag
                when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,

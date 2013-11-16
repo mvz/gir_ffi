@@ -11,18 +11,17 @@ module GirFFI
       "until", "when", "while", "yield"
     ]
 
-    attr_reader :name, :retname
+    attr_reader :arginfo
+    attr_reader :retname
 
     attr_accessor :length_arg, :array_arg
 
     attr_accessor :is_closure
 
-    def initialize var_gen, name, typeinfo, direction
+    def initialize var_gen, arginfo
       @var_gen = var_gen
 
-      @typeinfo = typeinfo
-      @direction = direction
-      @name = safe(name)
+      @arginfo = arginfo
 
       @inarg = nil
       @retname = nil
@@ -33,8 +32,16 @@ module GirFFI
       @is_closure = false
     end
 
+    def name
+      @name ||= safe(arginfo.name)
+    end
+
+    def direction
+      @direction ||= arginfo.direction
+    end
+
     def type_info
-      @typeinfo
+      @type_info ||= arginfo.argument_type
     end
 
     def specialized_type_tag
@@ -44,6 +51,10 @@ module GirFFI
     # TODO: Use class rather than class name
     def argument_class_name
       type_info.argument_class_name
+    end
+
+    def array_length_idx
+      type_info.array_length
     end
 
     def array_size

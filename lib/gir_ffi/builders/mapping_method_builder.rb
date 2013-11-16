@@ -9,30 +9,69 @@ module GirFFI
       # TODO: Make CallbackArgumentBuilder accept argument name
       # TODO: Fix name of #post method
       class CallbackArgumentBuilder < ReturnValueBuilder
-        def post
-          if specialized_type_tag == :enum
-            ["#{retname} = #{argument_class_name}[#{callarg}]"]
-          else
-            super
+        def needs_outgoing_parameter_conversion?
+          specialized_type_tag == :enum || super
+        end
+      end
+
+      class CallbackReturnValueBuilder < ReturnValueBuilder
+        def post_conversion
+          args = conversion_arguments callarg
+          "#{argument_class_name}.from(#{args})"
+        end
+      end
+
+      def self.for_callback argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+        set_up_argument_relations argument_infos, argument_builders
+        new return_type_info, vargen, argument_builders
+      end
+
+      def self.for_signal receiver_info, argument_infos, user_data_info, return_type_info
+        vargen = VariableNameGenerator.new
+
+        receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+        user_data_builder = CallbackArgumentBuilder.new vargen, user_data_info
+
+        set_up_argument_relations argument_infos, argument_builders
+        user_data_builder.is_closure = true
+
+        argument_builders.unshift receiver_builder
+        argument_builders.push user_data_builder
+
+        new return_type_info, vargen, argument_builders
+      end
+
+      def self.set_up_argument_relations argument_infos, argument_builders
+        argument_infos.each do |arg|
+          if (idx = arg.closure) >= 0
+            argument_builders[idx].is_closure = true
           end
         end
+        argument_builders.each do |bldr|
+          if (idx = bldr.array_length_idx) >= 0
+            other = argument_builders[idx]
 
-        def retval
-          if specialized_type_tag == :enum
-            retname
-          else
-            super
+            bldr.length_arg = other
+            other.array_arg = bldr
           end
         end
       end
 
-      def initialize argument_infos, return_type_info
-        @argument_infos = argument_infos
+      def initialize return_type_info, vargen, argument_builders
+        @vargen = vargen
+        @argument_builders = argument_builders
+
         @return_type_info = return_type_info
       end
 
-      attr_reader :argument_infos
       attr_reader :return_type_info
+      attr_reader :vargen
+      attr_reader :argument_builders
 
       def method_definition
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
@@ -41,7 +80,7 @@ module GirFFI
       end
 
       def method_lines
-        parameter_preparation + call_to_proc + return_value_conversion + return_value 
+        parameter_preparation + call_to_proc + return_value_conversion + return_value
       end
 
       def return_value
@@ -71,36 +110,19 @@ module GirFFI
       end
 
       def call_arguments
-        @call_arguments ||= argument_builders.map(&:retval)
+        @call_arguments ||= argument_builders.map(&:retval).compact
       end
 
       def method_arguments
         @method_arguments ||= argument_builders.map(&:callarg).unshift('_proc')
       end
 
+      def return_value_info
+        @return_value_info ||= ReturnValueInfo.new(return_type_info)
+      end
+
       def return_value_builder
-        @return_value_builder ||= ReturnValueBuilder.new(vargen, return_type_info)
-      end
-
-      def argument_builders
-        unless defined?(@argument_builders)
-          @argument_builders = argument_infos.map {|arg|
-            CallbackArgumentBuilder.new vargen, arg.argument_type }
-          set_up_argument_relations(@argument_builders)
-        end
-        @argument_builders
-      end
-
-      def set_up_argument_relations(builders)
-        argument_infos.each do |arg|
-          if (idx = arg.closure) >= 0
-            builders[idx].is_closure = true
-          end
-        end
-      end
-
-      def vargen
-        @vargen ||= GirFFI::VariableNameGenerator.new
+        @return_value_builder ||= CallbackReturnValueBuilder.new(vargen, return_value_info)
       end
     end
   end

@@ -2,17 +2,30 @@ require 'gir_ffi/builder_helper'
 
 module GirFFI
   module InfoExt
-    # Extensions for GObjectIntrospection::IArgInfo needed by GirFFI
+    # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
-      include BuilderHelper
+
+      def self.flattened_tag_to_gtype_map
+        @flattened_tag_to_gtype_map ||= {
+          :array => GObject::TYPE_ARRAY,
+          :c => GObject::TYPE_POINTER,
+          :gboolean => GObject::TYPE_BOOLEAN,
+          :ghash => GObject::TYPE_HASH_TABLE,
+          :gint32 => GObject::TYPE_INT,
+          :gint64 => GObject::TYPE_INT64,
+          :guint64 => GObject::TYPE_UINT64,
+          :strv => GObject::TYPE_STRV,
+          :utf8 => GObject::TYPE_STRING,
+          :void => GObject::TYPE_NONE
+        }
+      end
 
       def g_type
-        tag = self.tag
-        case tag
-        when :interface
+        if tag == :interface
           interface.g_type
         else
-          GObject::TYPE_TAG_TO_GTYPE[tag]
+          ITypeInfo.flattened_tag_to_gtype_map[flattened_tag] or
+            raise "Can't find type for #{flattened_tag} pointer? = #{pointer?}"
         end
       end
 
@@ -67,7 +80,7 @@ module GirFFI
       TAG_TO_WRAPPER_CLASS_MAP = {
         :array => 'GLib::Array',
         :byte_array => 'GLib::ByteArray',
-        :c => 'GLib::SizedArray',
+        :c => 'GirFFI::SizedArray',
         :error => 'GLib::Error',
         :ghash => 'GLib::HashTable',
         :glist => 'GLib::List',

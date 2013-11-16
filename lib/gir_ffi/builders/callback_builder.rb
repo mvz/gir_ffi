@@ -9,19 +9,22 @@ module GirFFI
     # as a callback for FFI.
     class CallbackBuilder < BaseTypeBuilder
       def instantiate_class
-        @klass ||= get_or_define_class namespace_module, @classname, CallbackBase
-        @callback ||= optionally_define_constant @klass, :Callback do
+        @callback ||= optionally_define_constant klass, :Callback do
           lib.callback callback_sym, argument_types, return_type
         end
         unless already_set_up
           setup_constants
-          @klass.class_eval mapping_method_definition
+          klass.class_eval mapping_method_definition
         end
-        @klass
+        klass
+      end
+
+      def klass
+        @klass ||= get_or_define_class namespace_module, @classname, CallbackBase
       end
 
       def mapping_method_definition
-        MappingMethodBuilder.new(info.args, info.return_type).method_definition
+        MappingMethodBuilder.for_callback(info.args, info.return_type).method_definition
       end
 
       def callback_sym

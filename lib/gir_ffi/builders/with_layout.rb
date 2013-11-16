@@ -20,7 +20,7 @@ module GirFFI
 
       def setup_layout
         spec = layout_specification
-        @structklass.class_eval { layout(*spec) }
+        struct_class.class_eval { layout(*spec) }
       end
 
       def dummy_layout_specification
@@ -46,9 +46,15 @@ module GirFFI
       end
 
       def instantiate_class
-        @klass = get_or_define_class namespace_module, @classname, superclass
-        @structklass = get_or_define_class @klass, :Struct, layout_superclass
         setup_class unless already_set_up
+      end
+
+      def klass
+        @klass ||= get_or_define_class namespace_module, @classname, superclass
+      end
+
+      def struct_class
+        @structklass ||= get_or_define_class klass, :Struct, layout_superclass
       end
     end
   end

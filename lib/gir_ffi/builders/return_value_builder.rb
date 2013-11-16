@@ -4,10 +4,9 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      def initialize var_gen, type_info, is_constructor = false, skip = false
-        super var_gen, nil, type_info, :return
+      def initialize var_gen, arginfo, is_constructor = false
+        super var_gen, arginfo
         @is_constructor = is_constructor
-        @skip = skip
       end
 
       def post
@@ -23,17 +22,19 @@ module GirFFI
       end
 
       def retval
-        if has_conversion?
-          super
-        elsif is_relevant?
-          callarg
-        else
-          nil
-        end
+        super if is_relevant?
       end
 
       def is_relevant?
-        !is_void_return_value? && !@skip
+        !is_void_return_value? && !arginfo.skip?
+      end
+
+      def retname
+        @retname ||= if has_conversion?
+                       @var_gen.new_var
+                     else
+                       callarg
+                     end
       end
 
       private
@@ -50,10 +51,6 @@ module GirFFI
         else
           outgoing_conversion callarg
         end
-      end
-
-      def retname
-        @retname ||= @var_gen.new_var
       end
 
       def needs_constructor_wrap?

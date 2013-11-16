@@ -1,7 +1,7 @@
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/setter_argument_info'
+require 'gir_ffi/field_argument_info'
 
 module GirFFI
   module Builders
@@ -19,7 +19,7 @@ module GirFFI
       end
 
       def setup_getter
-        container_class.class_eval getter_def unless container_defines_getter_method? 
+        container_class.class_eval getter_def unless container_defines_getter_method?
       end
 
       def container_defines_getter_method?
@@ -27,7 +27,7 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def if is_writable_field? 
+        container_class.class_eval setter_def if is_writable_field?
       end
 
       def is_writable_field?
@@ -93,15 +93,22 @@ module GirFFI
         @info.name.to_sym
       end
 
+      def field_type
+        @field_type ||= @info.field_type
+      end
+
+      def field_argument_info
+        @field_argument_info ||= FieldArgumentInfo.new "value", field_type
+      end
+
       def return_value_builder
-        vargen = VariableNameGenerator.new
-        @rv_builder ||= ReturnValueBuilder.new vargen, @info.field_type
+        @rv_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
+                                               field_argument_info)
       end
 
       def setter_builder
-        vargen = VariableNameGenerator.new
-        argument_info = SetterArgumentInfo.new "value", @info.field_type
-        ArgumentBuilder.new vargen, argument_info
+        @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
+                                                field_argument_info)
       end
     end
   end

@@ -12,6 +12,7 @@ require 'ffi-gobject/object'
 require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/builders/user_defined_builder'
 
+# Module representing GLib's GObject namespace.
 module GObject
   def self.object_ref obj
     Lib::g_object_ref obj.to_ptr
@@ -32,6 +33,7 @@ module GObject
   def self.type_from_instance_pointer inst_ptr
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
+    # TODO: Cache the message name somewhere.
     klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:GType]}", 0
   end
 
@@ -60,10 +62,12 @@ module GObject
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
     sig_info = object.class.find_signal signal
-    arr = sig_info.arguments_to_gvalue_array object, *args
+
+    arr_ptr = sig_info.arguments_to_gvalue_array_pointer object, args
+
     rval = sig_info.gvalue_for_return_value
 
-    Lib.g_signal_emitv arr.values, signal_id, detail_quark, rval
+    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, rval
 
     return rval
   end
@@ -74,7 +78,7 @@ module GObject
     callback = sig_info.create_callback(&block)
     GirFFI::CallbackBase.store_callback callback
 
-    data_ptr = GirFFI::InPointer.from_object data
+    data_ptr = GirFFI::InPointer.from_closure_data data
 
     Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
   end
@@ -119,16 +123,4 @@ module GObject
   TYPE_ARRAY = Lib.g_array_get_type
   TYPE_HASH_TABLE = Lib.g_hash_table_get_type
   TYPE_STRV = Lib.g_strv_get_type
-
-  TYPE_TAG_TO_GTYPE = {
-    :array => TYPE_ARRAY,
-    :gboolean => TYPE_BOOLEAN,
-    :gdouble => TYPE_DOUBLE,
-    :gfloat => TYPE_FLOAT,
-    :ghash => TYPE_HASH_TABLE,
-    :gint32 => TYPE_INT,
-    :glist => TYPE_POINTER,
-    :utf8 => TYPE_STRING,
-    :void => TYPE_NONE
-  }
 end

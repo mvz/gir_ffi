@@ -12,14 +12,16 @@ module GirFFI
 
       # FIXME: The word 'class' is not really correct.
       def instantiate_class
-        @klass = optionally_define_constant(namespace_module, @classname) do
-          ::Module.new
-        end
+        klass
         setup_module unless already_set_up
       end
 
+      def klass
+        @klass ||= get_or_define_module namespace_module, @classname
+      end
+
       def setup_module
-        @klass.extend InterfaceBase
+        klass.extend InterfaceBase
         setup_constants
         stub_methods
         setup_gtype_getter

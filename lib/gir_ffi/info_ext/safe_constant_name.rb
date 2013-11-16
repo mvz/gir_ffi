@@ -13,9 +13,8 @@ module GirFFI
         end
       end
 
-      # FIXME: Remove leading colons.
       def full_type_name
-        "::#{safe_namespace}::#{safe_name}"
+        "#{safe_namespace}::#{safe_name}"
       end
     end
   end

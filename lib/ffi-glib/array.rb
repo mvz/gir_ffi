@@ -1,3 +1,6 @@
+require 'ffi-glib/container_class_methods'
+require 'ffi-glib/array_methods'
+
 module GLib
   load_class :Array
 
@@ -5,12 +8,10 @@ module GLib
   # be necessary to create objects of this class from Ruby directly.
   class Array
     include Enumerable
+    include ArrayMethods
+    extend ContainerClassMethods
 
     attr_reader :element_type
-    def element_type= val
-      @element_type = val
-      check_element_size_match
-    end
 
     class << self
       undef :new
@@ -24,15 +25,6 @@ module GLib
       bytes = GirFFI::InPointer.from_array element_type, ary
       Lib.g_array_append_vals(self, bytes, ary.length)
       self
-    end
-
-    # Re-implementation of the g_array_index macro
-    def index idx
-      if idx >= length or idx < 0
-        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
-      end
-      ptr = GirFFI::InOutPointer.new element_type, data_ptr + idx * get_element_size
-      ptr.to_ruby_value
     end
 
     def each
@@ -59,22 +51,20 @@ module GLib
       Lib.g_array_get_element_size self
     end
 
+    alias element_size get_element_size
+
     def ==(other)
       self.to_a == other.to_a
     end
 
-    def self.wrap elmttype, ptr
-      super(ptr).tap do |array|
-        array.element_type = elmttype if array
-      end
+    def reset_typespec typespec
+      @element_type = typespec
+      check_element_size_match
+      self
     end
 
-    def self.from elmtype, it
-      case it
-      when self then it
-      when FFI::Pointer then wrap elmtype, it
-      else self.new(elmtype).tap {|arr| arr.append_vals it }
-      end
+    def self.from_enumerable elmtype, it
+      self.new(elmtype).tap {|arr| arr.append_vals it }
     end
 
     private

@@ -2,6 +2,7 @@ require 'gir_ffi/builder_helper'
 
 module GirFFI
   module InfoExt
+    # Extensions for GObjectIntrospection::IRegisteredTypeInfo needed by GirFFI
     module IRegisteredTypeInfo
       def to_ffitype
         to_type.to_ffitype

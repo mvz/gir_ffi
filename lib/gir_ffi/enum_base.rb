@@ -1,9 +1,23 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
+  # Base module for enums.
   module EnumBase
+    include FFI::DataConverter
     include TypeBase
-    # TODO: Make this a DataConverter
+
+    def native_type
+      self::Enum.native_type
+    end
+
+    def to_native *args
+      self::Enum.to_native(*args)
+    end
+
+    def from_native *args
+      self::Enum.from_native(*args)
+    end
+
     def [](arg)
       self::Enum[arg]
     end
@@ -12,8 +26,12 @@ module GirFFI
       self[arg]
     end
 
-    def to_native *args
-      self::Enum.to_native(*args)
+    def copy_value_to_pointer value, pointer
+      pointer.put_int32 0, to_native(value, nil)
+    end
+
+    def get_value_from_pointer pointer
+      from_native pointer.get_int32(0), nil
     end
 
     def setup_and_call method, *arguments, &block
@@ -27,7 +45,7 @@ module GirFFI
     end
 
     def to_ffitype
-      self::Enum
+      self
     end
 
     def setup_method name

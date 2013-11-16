@@ -10,32 +10,30 @@ module GirFFI
       # @return [FFI::Function] The signal handler, ready to be passed as a
       #   callback to C.
       def create_callback &block
-        rettype = self.return_ffi_type
-        argtypes = self.ffi_callback_argument_types
-
         raise ArgumentError, "Block needed" unless block
 
         # TODO: Find the signal module directly, then retrieve the info
         # from that, instead of vice versa.
         bldr = Builders::SignalBuilder.new(self)
         wrapped = bldr.build_class.from(block)
-        FFI::Function.new rettype, argtypes, &wrapped
+        FFI::Function.new return_ffi_type, ffi_callback_argument_types, &wrapped
       end
 
-      def arguments_to_gvalue_array instance, *rest
-        arr = ::GObject::ValueArray.new self.n_args + 1
+      def arguments_to_gvalue_array_pointer object, args
+        arr = arguments_to_gvalues object, args
+        GirFFI::InPointer.from_array GObject::Value, arr
+      end
 
-        arr.append GObject::Value.wrap_instance(instance)
-
-        self.args.zip(rest).each do |info, arg|
-          arr.append info.argument_type.make_g_value.set_value(arg)
+      def arguments_to_gvalues instance, arguments
+        arg_values = self.args.zip(arguments).map do |info, arg|
+          info.argument_type.make_g_value.set_value(arg)
         end
 
-        arr
+        arg_values.unshift GObject::Value.wrap_instance(instance)
       end
 
       def gvalue_for_return_value
-        GObject::Value.for_g_type return_type.g_type
+        return_type.make_g_value
       end
 
       # TODO: Rename and clarify relation to argument_ffi_types:

@@ -1,3 +1,5 @@
+require 'gir_ffi/sized_array'
+
 module GirFFI
   module TypeMap
     sz = FFI.type_size(:size_t) * 8
@@ -15,6 +17,7 @@ module GirFFI
       :error => :pointer,
       :ptr_array => :pointer,
       :array => :pointer,
+      :c => GirFFI::SizedArray,
       :utf8 => :pointer,
       :GType => gtype_type,
       :gboolean => GLib::Boolean,

@@ -24,7 +24,7 @@ describe GObject::RubyClosure do
     it "invokes its closure argument's block" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
-      GObject::RubyClosure.marshaller(c, nil, 0, nil, nil, nil)
+      GObject::RubyClosure.marshaller(c, nil, nil, nil, nil)
       assert_equal 2, a
     end
 
@@ -32,14 +32,14 @@ describe GObject::RubyClosure do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::Closure.wrap(c.to_ptr)
-      GObject::RubyClosure.marshaller(c2, nil, 0, nil, nil, nil)
+      GObject::RubyClosure.marshaller(c2, nil, nil, nil, nil)
       assert_equal 2, a
     end
 
     it "stores the closure's return value in the proper gvalue" do
       c = GObject::RubyClosure.new { 2 }
       gv = GObject::Value.new
-      GObject::RubyClosure.marshaller(c, gv, 0, nil, nil, nil)
+      GObject::RubyClosure.marshaller(c, gv, nil, nil, nil)
       assert_equal 2, gv.get_value
     end
   end

@@ -37,13 +37,12 @@ module GObject
       return closure
     end
 
-    def self.marshaller(closure, return_value, n_param_values,
-                        param_values, _invocation_hint, _marshal_data)
+    def self.marshaller(closure, return_value, param_values,
+                        _invocation_hint, _marshal_data)
       rclosure = wrap(closure.to_ptr)
+      param_values ||= []
 
-      args = n_param_values.times.map {|idx|
-        Value.wrap(param_values.to_ptr + idx * Value::Struct.size).get_value
-      }
+      args = param_values.map {|value| value.get_value }
 
       result = rclosure.invoke_block(*args)
 

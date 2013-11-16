@@ -564,4 +564,126 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
   end
+
+  describe "#g_type" do
+    before do
+      stub(type_info).tag { tag }
+      stub(type_info).pointer? { pointer? }
+    end
+
+    describe "for :void" do
+      let(:tag) { :void }
+      let(:pointer?) { false }
+
+      it "equals the none type" do
+        GObject.type_name(type_info.g_type).must_equal "void"
+      end
+    end
+
+    describe "for :gboolean" do
+      let(:tag) { :gboolean }
+      let(:pointer?) { false }
+
+      it "equals the gboolean type" do
+        GObject.type_name(type_info.g_type).must_equal "gboolean"
+      end
+    end
+
+    describe "for :gint32" do
+      let(:tag) { :gint32 }
+      let(:pointer?) { false }
+
+      it "equals the gint type" do
+        GObject.type_name(type_info.g_type).must_equal "gint"
+      end
+    end
+
+    describe "for :gint64" do
+      let(:tag) { :gint64 }
+      let(:pointer?) { false }
+
+      it "equals the gint64 type" do
+        GObject.type_name(type_info.g_type).must_equal "gint64"
+      end
+    end
+
+    describe "for :guint64" do
+      let(:tag) { :guint64 }
+      let(:pointer?) { false }
+
+      it "equals the guint64 type" do
+        GObject.type_name(type_info.g_type).must_equal "guint64"
+      end
+    end
+
+    describe "for pointer to :utf8" do
+      let(:tag) { :utf8 }
+      let(:pointer?) { true }
+
+      it "equals the gchararray type" do
+        GObject.type_name(type_info.g_type).must_equal "gchararray"
+      end
+    end
+
+    describe "for pointer to :ghash" do
+      let(:tag) { :ghash }
+      let(:pointer?) { true }
+
+      it "equals the GHashTable type" do
+        GObject.type_name(type_info.g_type).must_equal "GHashTable"
+      end
+    end
+
+    describe "for arrays" do
+      let(:tag) { :array }
+      let(:pointer?) { true }
+
+      describe "for pointer to GArray" do
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :array }
+        end
+
+        it "equals the GArray type" do
+          GObject.type_name(type_info.g_type).must_equal "GArray"
+        end
+      end
+
+      describe "for a C array" do
+        before do
+          stub(type_info).zero_terminated? { false }
+          stub(type_info).array_type { :c }
+        end
+
+        it "equals the gpointer type" do
+          GObject.type_name(type_info.g_type).must_equal "gpointer"
+        end
+      end
+
+      describe "for a zero-terminated array" do
+        before do
+          stub(type_info).param_type(0) { elmtype_info }
+          stub(type_info).zero_terminated? { true }
+        end
+
+        describe "of utf8" do
+          it "equals the GStrv type" do
+            stub(elmtype_info).tag { :utf8 }
+            stub(elmtype_info).pointer? { true }
+
+            GObject.type_name(type_info.g_type).must_equal "GStrv"
+          end
+        end
+
+        describe "of filename" do
+          it "equals the GStrv type" do
+            stub(elmtype_info).tag { :filename }
+            stub(elmtype_info).pointer? { true }
+
+            GObject.type_name(type_info.g_type).must_equal "GStrv"
+          end
+        end
+      end
+    end
+  end
 end

@@ -24,7 +24,7 @@ describe GirFFI::InPointer do
 
     it "handles struct types" do
       e = Class.new(GirFFI::StructBase) do
-        self::Struct = Class.new(GirFFI::Struct) do
+        self::Struct = Class.new(FFI::Struct) do
           layout :foo, :int32, :bar, :int32
         end
       end
@@ -42,9 +42,15 @@ describe GirFFI::InPointer do
       p1 = GirFFI::InPointer.from :gint32, 42
       p2 = GirFFI::InPointer.from :gint32, 24
 
-      ptr = GirFFI::InPointer.from_array [:pointer, :uint32], [p1, p2]
+      ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [p1, p2]
 
       ptr.read_array_of_pointer(2).must_equal [p1, p2]
+    end
+
+    it "handles pointer casting" do
+      ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [42, 24]
+
+      ptr.read_array_of_pointer(2).map(&:address).must_equal [42, 24]
     end
   end
 
@@ -148,27 +154,40 @@ describe GirFFI::InPointer do
       ptr = GirFFI::InPointer.from e, :bar
       ptr.address.must_equal 1
     end
-  end
 
-  describe ".from_object" do
-    describe "when called with an object implementing to_ptr" do
+    describe "for type :void" do
       it "returns the result of to_ptr" do
         obj = Object.new
         def obj.to_ptr; :test_value; end
-        GirFFI::InPointer.from_object(obj).must_equal :test_value
+        GirFFI::InPointer.from(:void, obj).must_equal :test_value
+      end
+
+      it "returns nil when passed nil" do
+        GirFFI::InPointer.from(:void, nil).must_equal nil
       end
     end
 
+    describe "for types that are classes" do
+      it "returns the result of to_ptr" do
+        klass = Class.new
+        obj = klass.new
+        def obj.to_ptr; :test_value; end
+        GirFFI::InPointer.from(klass, obj).must_equal :test_value
+      end
+    end
+  end
+
+  describe ".from_closure_data" do
     describe "when called with nil" do
-      it "returns nil" do
-        GirFFI::InPointer.from_object(nil).must_equal nil
+      it "returns a pointer pointing to nil.object_id" do
+        GirFFI::InPointer.from_closure_data(nil).address.must_equal nil.object_id
       end
     end
 
     describe "when called with a string" do
       it "stores the string in GirFFI::ArgHelper::OBJECT_STORE" do
         str = "Foo"
-        ptr = GirFFI::InPointer.from_object(str)
+        ptr = GirFFI::InPointer.from_closure_data(str)
         result = GirFFI::ArgHelper::OBJECT_STORE[ptr.address]
         result.must_equal str
       end

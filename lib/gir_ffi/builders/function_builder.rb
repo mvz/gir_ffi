@@ -1,4 +1,6 @@
 require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/return_value_info'
+require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/null_argument_builder'
@@ -17,11 +19,10 @@ module GirFFI
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
         @return_value_builder = ReturnValueBuilder.new(vargen,
-                                                       @info.return_type,
-                                                       @info.constructor?,
-                                                       @info.skip_return?)
+                                                       ReturnValueInfo.new(@info.return_type, @info.skip_return?),
+                                                       @info.constructor?)
 
-        link_array_length_arguments
+        set_up_argument_relations
         setup_error_argument vargen
         return filled_out_template
       end
@@ -32,22 +33,30 @@ module GirFFI
         Object.const_get(@info.safe_namespace)::Lib
       end
 
-      def link_array_length_arguments
+      def set_up_argument_relations
         alldata = @argument_builders.dup << @return_value_builder
 
-        alldata.each {|data|
-          idx = data.type_info.array_length
-          if idx > -1
+        alldata.each do |data|
+          if (idx = data.array_length_idx) >= 0
             other_data = @argument_builders[idx]
             data.length_arg = other_data
             other_data.array_arg = data
           end
-        }
+        end
+
+        @argument_builders.each do |data|
+          if (idx = data.arginfo.closure) >= 0
+            @argument_builders[idx].is_closure = true
+          end
+        end
       end
 
       def setup_error_argument vargen
-        klass = @info.throws? ? ErrorArgumentBuilder : NullArgumentBuilder
-        @errarg = klass.new vargen, nil, nil, :error
+        @errarg = if @info.throws?
+                    ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+                  else
+                    NullArgumentBuilder.new
+                  end
       end
 
       def filled_out_template

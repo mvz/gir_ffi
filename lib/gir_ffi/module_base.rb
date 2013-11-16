@@ -1,4 +1,5 @@
 module GirFFI
+  # Base module for modules representing GLib namespaces.
   module ModuleBase
     def method_missing method, *arguments, &block
       result = setup_method method.to_s

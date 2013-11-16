@@ -18,7 +18,7 @@ module GirFFI
       def setup_gtype_getter
         gtype = target_gtype
         return if gtype.nil?
-        @klass.instance_eval "
+        klass.instance_eval "
           def self.get_gtype
             #{gtype}
           end
@@ -29,7 +29,7 @@ module GirFFI
       def provide_constructor
         return if info.find_method 'new'
 
-        (class << @klass; self; end).class_eval {
+        (class << klass; self; end).class_eval {
           alias_method :new, :_allocate
         }
       end

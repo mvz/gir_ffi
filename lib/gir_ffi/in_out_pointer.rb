@@ -2,7 +2,7 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.
   #
-  # TODO: This has now become a more general extende pointer class and should be renamed.
+  # TODO: This has now become a more general extended pointer class and should be renamed.
   class InOutPointer < FFI::Pointer
     attr_reader :value_type
 
@@ -18,16 +18,10 @@ module GirFFI
     # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
-      when Class
+      when Module
         value_ffi_type.get_value_from_pointer(self)
-      # FIXME: This is a hack, since :c is not really a FFI type. Make
-      # SizedArray a type FFI understands instead.
-      when :c
-        self
       when Symbol
         self.send("get_#{value_ffi_type}", 0)
-      when FFI::Enum
-        value_ffi_type[self.get_int32(0)]
       else
         raise NotImplementedError
       end
@@ -50,15 +44,10 @@ module GirFFI
 
     def set_value value
       case value_ffi_type
-      when Class
+      when Module
         value_ffi_type.copy_value_to_pointer(value, self)
-      # FIXME: Make SizedArray an FFI DataConverter so it conflates with the code above.
-      when :c
-        GLib::SizedArray.copy_value_to_pointer(value, self)
       when Symbol
         self.send "put_#{value_ffi_type}", 0, value
-      when FFI::Enum
-        self.send "put_int32", 0, value_ffi_type.to_native(value, nil)
       else
         raise NotImplementedError, value_ffi_type
       end

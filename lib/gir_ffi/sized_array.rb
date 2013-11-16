@@ -1,5 +1,4 @@
-# FIXME: SizedArray does not really belong in GLib, does it?
-module GLib
+module GirFFI
   # Class representing an array with a determined size
   class SizedArray
     include Enumerable
@@ -32,6 +31,10 @@ module GLib
 
     def size_in_bytes
       size * element_size
+    end
+
+    def self.get_value_from_pointer pointer
+      pointer
     end
 
     def self.copy_value_to_pointer value, pointer

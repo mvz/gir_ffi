@@ -1,6 +1,6 @@
 require 'gir_ffi_test_helper'
 
-require 'ffi-gobject'
+GirFFI.setup :Regress
 
 describe GObject::Value do
   describe "::Struct" do
@@ -125,6 +125,20 @@ describe GObject::Value do
       value = 3
       gv = GObject::Value.for_g_type GObject::TYPE_CHAR
       gv.set_char value
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps an enum value" do
+      value = :value2
+      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv.set_enum Regress::TestEnum[value]
+      gv.get_value.must_equal value
+    end
+
+    it "unwraps a flags value" do
+      value = Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+      gv = GObject::Value.for_g_type Regress::TestFlags.get_gtype
+      gv.set_flags value
       gv.get_value.must_equal value
     end
 

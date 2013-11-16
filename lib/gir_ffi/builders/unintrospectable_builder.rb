@@ -7,11 +7,11 @@ module GirFFI
     # cast objects returned by a function that returns an interface.
     class UnintrospectableBuilder < ObjectBuilder
       def instantiate_class
-        gtype = target_gtype
-        TypeBuilder::CACHE[gtype] ||= Class.new(superclass)
-        @klass = TypeBuilder::CACHE[gtype]
-        @structklass = get_or_define_class @klass, :Struct, layout_superclass
         setup_class unless already_set_up
+      end
+
+      def klass
+        @klass ||= TypeBuilder::CACHE[target_gtype] ||= Class.new(superclass)
       end
 
       def setup_class

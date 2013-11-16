@@ -18,43 +18,39 @@ module GirFFI
       end
 
       def generate
-        build_module
+        modul
       end
 
       def setup_method method
         go = function_introspection_data method.to_s
+        return false unless go
 
-        return false if go.nil?
-
-        modul = build_module
-
-        Builder.attach_ffi_function libmodule, go
-        definition = function_definition go
-        modul.class_eval definition
+        Builder.attach_ffi_function lib, go
+        modul.class_eval FunctionBuilder.new(go).generate
 
         true
       end
 
       def build_namespaced_class classname
         info = gir.find_by_name @namespace, classname.to_s
-        if info.nil?
+        unless info
           raise NameError.new(
             "Class #{classname} not found in namespace #{@namespace}")
         end
         Builder.build_class info
       end
 
-      def build_module
+      private
+
+      def modul
         unless defined? @module
           build_dependencies
           instantiate_module
-          setup_lib_for_ffi
+          setup_lib_for_ffi unless lib_already_set_up
           setup_module unless already_set_up
         end
         @module
       end
-
-      private
 
       def build_dependencies
         deps = gir.dependencies @namespace
@@ -78,38 +74,29 @@ module GirFFI
       end
 
       def setup_lib_for_ffi
-        @lib = get_or_define_module @module, :Lib
-
-        unless (class << @lib; self.include? GirFFI::Library; end)
-          @lib.extend GirFFI::Library
-          @lib.ffi_lib_flags :global, :lazy
-          libspec = gir.shared_library(@namespace)
-          unless libspec.nil?
-            @lib.ffi_lib(*libspec.split(/,/))
-          end
+        lib.extend FFI::Library
+        lib.ffi_lib_flags :global, :lazy
+        if shared_library_specification
+          lib.ffi_lib(*shared_library_specification.split(/,/))
         end
       end
 
-      def sub_builder info
-        if info.info_type == :function
-          FunctionBuilder.new info
-        else
-          TypeBuilder.builder_for info
-        end
+      def shared_library_specification
+        @shared_library_specification ||= gir.shared_library(@namespace)
       end
 
-      def libmodule
-        @module.const_get(:Lib)
+      def lib_already_set_up
+        (class << lib; self; end).include? FFI::Library
+      end
+
+      def lib
+        @lib ||= get_or_define_module modul, :Lib
       end
 
       def function_introspection_data function
         info = gir.find_by_name @namespace, function.to_s
-        return nil if info.nil?
+        return unless info
         info.info_type == :function ? info : nil
-      end
-
-      def function_definition info
-        FunctionBuilder.new(info).generate
       end
 
       def gir

@@ -10,11 +10,11 @@ describe Pango do
       lang = Pango::Language.from_string 'ja'
       result = lang.get_scripts
 
-      if GLib::SizedArray === result
+      if GirFFI::SizedArray === result
         scripts = result
       else
         ptr, size = *result
-        scripts = GLib::SizedArray.new Pango::Script, size, ptr
+        scripts = GirFFI::SizedArray.new Pango::Script, size, ptr
       end
 
       scripts.must_be :==, [:han, :katakana, :hiragana]

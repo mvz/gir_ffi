@@ -23,8 +23,7 @@ module GirFFI
 
       # FIXME: Private method only in subclass
       def layout_superclass
-        # FIXME: Is this needed now that StructBase is a DataConverter?
-        GirFFI::Struct
+        FFI::Struct
       end
 
       def superclass

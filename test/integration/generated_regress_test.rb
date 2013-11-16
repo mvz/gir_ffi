@@ -11,9 +11,9 @@ end
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
   describe Regress::Lib do
-    it "extends GirFFI::Library" do
+    it "extends FFI::Library" do
       class << Regress::Lib
-        self.must_be :include?, GirFFI::Library
+        self.must_be :include?, FFI::Library
       end
     end
   end
@@ -815,15 +815,15 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property "hash-table", {"foo" => 34, "bar" => 83}
-        instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
+        instance.set_property "hash-table", {"foo" => -4, "bar" => 83}
+        instance.get_property("hash-table").to_hash.must_equal({"foo" => -4,
                                                                 "bar" => 83})
       end
 
       it "can be set with #hash_table=" do
-        instance.set_property "hash-table", {"foo" => 34, "bar" => 83}
-        instance.hash_table.to_hash.must_equal({"foo" => 34, "bar" => 83})
-        instance.get_property("hash-table").to_hash.must_equal({"foo" => 34,
+        instance.set_property "hash-table", {"foo" => -4, "bar" => 83}
+        instance.hash_table.to_hash.must_equal({"foo" => -4, "bar" => 83})
+        instance.get_property("hash-table").to_hash.must_equal({"foo" => -4,
                                                                 "bar" => 83})
       end
     end
@@ -839,19 +839,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "hash-table-old", {"foo" => 34,
-                                                 "bar" => 83}
+                                                 "bar" => -3}
 
         instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
-                                                                    "bar" => 83})
+                                                                    "bar" => -3})
       end
 
       it "can be set with #hash_table_old=" do
         instance.set_property "hash-table-old", {"foo" => 34,
-                                                 "bar" => 83}
+                                                 "bar" => -3}
 
-        instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => 83})
+        instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => -3})
         instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
-                                                                    "bar" => 83})
+                                                                    "bar" => -3})
       end
     end
 
@@ -961,7 +961,19 @@ describe Regress do
     end
 
     it "handles the 'sig-with-array-len-prop' signal" do
-      skip
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-array-len-prop"
+
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-array-len-prop") do |obj, arr, user_data|
+        a = arr
+      end
+
+      arr = GirFFI::InPointer.from_array(:uint, [1, 2, 3])
+      # TODO: Automatically convert arguments to signal_emit.
+      GObject.signal_emit instance, "sig-with-array-len-prop", arr, 3
+
+      a.to_a.must_equal [1, 2, 3]
     end
 
     it "handles the 'sig-with-array-prop' signal" do
@@ -974,25 +986,108 @@ describe Regress do
     end
 
     it "handles the 'sig-with-foreign-struct' signal" do
-      skip
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-foreign-struct"
+
+      a = nil
+      instance.signal_connect "sig-with-foreign-struct" do |obj, ct|
+        a = ct
+      end
+
+      cairo_context = Regress.test_cairo_context_full_return
+
+      GObject.signal_emit instance, "sig-with-foreign-struct", cairo_context
+
+      a.must_be_instance_of Cairo::Context
+      a.must_equal cairo_context
     end
+
     it "handles the 'sig-with-hash-prop' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-hash-prop") do |_, ghash, _|
+        a = ghash.to_hash
+      end
+
+      # TODO: Automatically convert arguments to signal_emit.
+      g_hash_table = GLib::HashTable.from([:utf8, GObject::Value],
+                                          {"foo" => GObject::Value.from("bar")})
+
+      GObject.signal_emit instance, "sig-with-hash-prop", g_hash_table
+
+      a["foo"].must_be_instance_of GObject::Value
+      a["foo"].get_value.must_equal "bar"
     end
+
     it "handles the 'sig-with-int64-prop' signal" do
-      skip
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-int64-prop"
+
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-int64-prop") do |obj, int64, user_data|
+        a = int64
+      end
+
+      GObject.signal_emit instance, "sig-with-int64-prop", 0x7fffffffffffffff
+
+      a.must_equal 0x7fffffffffffffff
     end
+
     it "handles the 'sig-with-intarray-ret' signal" do
-      skip
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-intarray-ret"
+
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-intarray-ret") do |_, i, _|
+        a = i
+        [3, 2, 1]
+      end
+
+      result = GObject.signal_emit instance, "sig-with-intarray-ret", 3
+
+      a.must_equal 3
+
+      # We would expect result to contain the int array, but regress.c uses the
+      # wrong marshalling function
+      result.get_value.must_be_nil
     end
+
     it "handles the 'sig-with-obj' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-obj") do |_, obj, _|
+        a = obj
+      end
+
+      object = Regress::TestObj.constructor
+      GObject.signal_emit instance, "sig-with-obj", object
+
+      a.must_equal object
     end
+
     it "handles the 'sig-with-strv' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-strv") do |_, strs, _|
+        a = strs
+      end
+
+      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(["foo", "bar"])
+
+      a.to_a.must_equal ["foo", "bar"]
     end
+
     it "handles the 'sig-with-uint64-prop' signal" do
-      skip
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-uint64-prop"
+
+      a = nil
+
+      GObject.signal_connect(instance, "sig-with-uint64-prop") do |_, uint64, _|
+        a = uint64
+      end
+
+      GObject.signal_emit instance, "sig-with-uint64-prop", 0xffffffffffffffff
+
+      a.must_equal 0xffffffffffffffff
     end
 
     it "handles the 'test' signal" do
@@ -1002,8 +1097,19 @@ describe Regress do
       GObject.signal_emit o, "test"
       assert_equal [2, o], [a, b]
     end
+
     it "handles the 'test-with-static-scope-arg' signal" do
-      skip
+      a = nil
+
+      GObject.signal_connect(instance, "test-with-static-scope-arg") do |_, obj, _|
+        a = obj
+      end
+
+      arg = Regress::TestSimpleBoxedA.new
+      arg.some_int = 12345
+      GObject.signal_emit instance, "test-with-static-scope-arg", arg
+
+      a.some_int.must_equal 12345
     end
   end
 
@@ -1364,7 +1470,7 @@ describe Regress do
     it "has a writable field data1" do
       instance.data1.must_be :null?
       instance.data1 = GirFFI::InOutPointer.from(:gint32, 42)
-      instance.data1.read_int32.must_equal 42
+      instance.data1.read_int.must_equal 42
     end
 
     it "has a writable field data2" do
@@ -1511,11 +1617,16 @@ describe Regress do
   end
 
   it "has a working function #global_get_flags_out" do
-    skip
+    result = Regress.global_get_flags_out
+    result.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
   end
+
   it "has a working function #has_parameter_named_attrs" do
-    skip
+    skip unless get_introspection_data 'Regress', 'has_parameter_named_attrs'
+    Regress.has_parameter_named_attrs 42, [23] * 32
+    pass
   end
+
   it "has a working function #introspectable_via_alias" do
     skip
   end
@@ -1527,10 +1638,28 @@ describe Regress do
   end
 
   it "has a working function #test_abc_error_quark" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_abc_error_quark'
+
+    quark = Regress.test_abc_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-abc-error"
   end
+
   it "has a working function #test_array_callback" do
-    skip
+    a = nil
+    b = nil
+    c = 95
+
+    callback = lambda do |one, two|
+      a = one
+      b = two
+      c
+    end
+
+    result = Regress.test_array_callback callback
+
+    result.must_equal 2 * c
+    a.to_a.must_equal [-1, 0, 1, 2]
+    b.to_a.must_equal ["one", "two", "three"]
   end
 
   it "has a working function #test_array_fixed_out_objects" do
@@ -1703,13 +1832,52 @@ describe Regress do
   end
 
   it "has a working function #test_callback_destroy_notify_no_user_data" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_callback_destroy_notify_no_user_data'
+
+    callback_times_called = 0
+    notify_times_called = 0
+    b = :not_nil
+
+    callback = Proc.new {|user_data|
+      callback_times_called += 1
+      b = user_data
+      callback_times_called * 5
+    }
+
+    notify = Proc.new { notify_times_called += 1 }
+
+    result = Regress.test_callback_destroy_notify_no_user_data callback, notify
+
+    callback_times_called.must_equal 1
+    notify_times_called.must_equal 0
+    result.must_equal 5
+    b.must_be_nil
+
+    result = Regress.test_callback_thaw_notifications
+
+    callback_times_called.must_equal 2
+    notify_times_called.must_equal 1
+    result.must_equal 10
+    b.must_be_nil
   end
+
   it "has a working function #test_callback_thaw_async" do
-    skip
+    invoked = []
+    Regress.test_callback_async Proc.new { invoked << 1; 1 }, nil
+    Regress.test_callback_async Proc.new { invoked << 2; 2 }, nil
+    Regress.test_callback_async Proc.new { invoked << 3; 3 }, nil
+    result = Regress.test_callback_thaw_async
+    invoked.must_equal [3, 2, 1]
+    result.must_equal 1
   end
+
   it "has a working function #test_callback_thaw_notifications" do
-    skip
+    invoked = false
+    Regress.test_callback_destroy_notify Proc.new { 42 }, nil, nil
+    Regress.test_callback_destroy_notify Proc.new { 24 }, nil, Proc.new { invoked = true }
+    result = Regress.test_callback_thaw_notifications
+    result.must_equal 66
+    invoked.must_equal true
   end
 
   it "has a working function #test_callback_user_data" do
@@ -1746,7 +1914,21 @@ describe Regress do
   end
 
   it "has a working function #test_closure_variant" do
-    skip
+    skip "This causes a core dump on some systems"
+    arg = GLib::Variant.new_string "foo"
+    closure = GObject::RubyClosure.new do |variant|
+      str = variant.get_string
+      if str == "foo"
+        GLib::Variant.new_int32 40
+      else
+        GLib::Variant.new_string "bar"
+      end
+    end
+
+    # TODO: Convert proc to RubyClosure automatically
+    result = Regress.test_closure_variant closure, arg
+
+    result.get_int32.must_equal 40
   end
 
   it "has a working function #test_date_in_gvalue" do
@@ -1758,7 +1940,9 @@ describe Regress do
   end
 
   it "has a working function #test_def_error_quark" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_def_error_quark'
+    quark = Regress.test_def_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-def-error"
   end
 
   it "has a working function #test_double" do
@@ -1772,7 +1956,9 @@ describe Regress do
   end
 
   it "has a working function #test_error_quark" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_error_quark'
+    quark = Regress.test_error_quark
+    GLib.quark_to_string(quark).must_equal "regress-test-error"
   end
 
   it "has a working function #test_filename_return" do
@@ -1796,10 +1982,14 @@ describe Regress do
   end
 
   it "has a working function #test_garray_full_return" do
-    skip
+    result = Regress.test_garray_full_return
+    result.to_a.must_equal ["regress"]
   end
+
   it "has a working function #test_gerror_callback" do
-    skip
+    result = nil
+    Regress.test_gerror_callback Proc.new {|err| result = err.message }
+    result.must_equal "regression test error"
   end
 
   it "has a working function #test_ghash_container_return" do
@@ -1818,11 +2008,25 @@ describe Regress do
   end
 
   it "has a working function #test_ghash_gvalue_in" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_in'
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
+    hash_table = Regress.test_ghash_gvalue_return
+    Regress.test_ghash_gvalue_in hash_table
   end
+
   it "has a working function #test_ghash_gvalue_return" do
-    skip
+    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
+    result = Regress.test_ghash_gvalue_return
+    hash = result.to_hash
+    hash["integer"].get_value.must_equal 12
+    hash["boolean"].get_value.must_equal true
+    hash["string"].get_value.must_equal "some text"
+    hash["strings"].get_value.to_a.must_equal ["first", "second", "third"]
+    hash["flags"].get_value.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+    hash["enum"].get_value.must_equal :value2
+    hash.keys.sort.must_equal ["boolean", "enum", "flags", "integer", "string", "strings"]
   end
+
   it "has a working function #test_ghash_nested_everything_return" do
     skip
   end

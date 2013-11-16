@@ -77,6 +77,8 @@ module GObject
       TYPE_BOXED => :get_boxed,
       TYPE_CHAR => :get_char,
       TYPE_DOUBLE => :get_double,
+      TYPE_ENUM => :get_enum_enhanced,
+      TYPE_FLAGS => :get_flags,
       TYPE_FLOAT => :get_float,
       TYPE_GTYPE => :get_gtype,
       TYPE_INT64 => :get_int64,
@@ -146,6 +148,11 @@ module GObject
     def set_instance_enhanced val
       check_type_compatibility val if val
       set_instance val
+    end
+
+    def get_enum_enhanced
+      value = get_enum
+      GirFFI::Builder.build_by_gtype(current_gtype).wrap(value)
     end
 
     def check_type_compatibility val

@@ -41,7 +41,10 @@ if autoconf --version < /dev/null > /dev/null 2>&1 ; then : ; else
     DIE=1
 fi
 
-if automake-1.13 --version < /dev/null > /dev/null 2>&1 ; then
+if automake-1.14 --version < /dev/null > /dev/null 2>&1 ; then
+    AUTOMAKE=automake-1.14
+    ACLOCAL=aclocal-1.14
+else if automake-1.13 --version < /dev/null > /dev/null 2>&1 ; then
     AUTOMAKE=automake-1.13
     ACLOCAL=aclocal-1.13
 else if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
@@ -56,6 +59,7 @@ else
     echo "Install the appropriate package for your distribution,"
     echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
     DIE=1
+fi
 fi
 fi
 fi

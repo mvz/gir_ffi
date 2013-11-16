@@ -9,7 +9,6 @@ require 'ffi-glib/hash_table'
 require 'ffi-glib/list'
 require 'ffi-glib/ptr_array'
 require 'ffi-glib/s_list'
-require 'ffi-glib/sized_array'
 require 'ffi-glib/strv'
 require 'ffi-glib/variant'
 

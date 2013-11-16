@@ -1,7 +1,7 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
-  # TODO: Make this a module
+  # Base module for callbacks.
   class CallbackBase < Proc
     extend TypeBase
     extend FFI::DataConverter
