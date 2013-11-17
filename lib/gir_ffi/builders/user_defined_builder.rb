@@ -37,7 +37,7 @@ module GirFFI
       end
 
       def parent_gtype
-        @parent_gtype ||= klass.get_gtype
+        @parent_gtype ||= klass.superclass.get_gtype
       end
 
       def klass
