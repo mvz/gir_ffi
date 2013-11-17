@@ -35,4 +35,26 @@ describe GirFFI::Builders::UserDefinedBuilder do
       obj.foo.must_equal 13
     end
   end
+
+  describe "with type info containing an overridden g_name" do
+    before do
+      @klass = Class.new GIMarshallingTests::OverridesObject
+      Object.const_set "DerivedD#{Sequence.next}", @klass
+
+      @info = GirFFI::UserDefinedTypeInfo.new @klass do
+        # TODO: Pass info or proxy object as an argument to the block in order
+        # to avoid need to remember self.
+        self.g_name = "OtherName#{Sequence.next}"
+      end
+
+      @builder = GirFFI::Builders::UserDefinedBuilder.new @info
+      @builder.build_class
+    end
+
+    it "registers a type under the overridden name" do
+      registered_name = GObject.type_name(@klass.get_gtype)
+      registered_name.must_equal @info.g_name
+      registered_name.wont_equal @klass.name
+    end
+  end
 end

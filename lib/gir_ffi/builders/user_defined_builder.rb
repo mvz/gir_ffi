@@ -9,7 +9,7 @@ module GirFFI
       end
 
       def instantiate_class
-        @gtype = GObject.type_register_static(parent_gtype, klass.name,
+        @gtype = GObject.type_register_static(parent_gtype, info.g_name,
                                               type_info, 0)
         setup_class unless already_set_up
         TypeBuilder::CACHE[@gtype] = klass
