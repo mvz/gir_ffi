@@ -64,8 +64,7 @@ module GirFFI
       end
 
       def tag_or_class
-        base = case flattened_tag
-               when :struct, :union, :object, :interface, :enum, :flags, :callback
+        base = if tag == :interface
                  Builder.build_class interface
                else
                  flattened_tag
@@ -94,8 +93,7 @@ module GirFFI
 
       # TODO: Use class rather than class name
       def argument_class_name
-        case flattened_tag
-        when :struct, :union, :object, :interface, :enum, :flags, :callback
+        if tag == :interface
           interface.full_type_name
         else
           TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
