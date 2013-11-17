@@ -1,7 +1,7 @@
 module GirFFI
-  module Builder
+  module Builders
     # Creates property getter and setter code for a given IPropertyInfo.
-    class Property
+    class PropertyBuilder
       def initialize property_info
         @info = property_info
       end
