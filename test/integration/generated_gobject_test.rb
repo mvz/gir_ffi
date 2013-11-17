@@ -9,6 +9,23 @@ describe GObject do
     end
   end
 
+  describe GObject::TypeInfo do
+    let(:instance) { GObject::TypeInfo.new }
+    it "has a working field setter for class_init" do
+      instance.class_init = proc do |object_class, data|
+      end
+    end
+
+    it "has a working field getter for class_init" do
+      instance.class_init.must_be_nil
+      instance.class_init = proc do |object_class, data|
+      end
+      result = instance.class_init
+      result.wont_be_nil
+      result.must_be_instance_of FFI::Function
+    end
+  end
+
   describe GObject::TypePlugin do
     it "is implemented as a module" do
       mod = GObject::TypePlugin

@@ -10,6 +10,11 @@ module GirFFI
       FFI::Type::POINTER
     end
 
+    def self.from_native(value, context)
+      return nil if !value || value.null?
+      FFI::Function.new gir_ffi_builder.return_type, gir_ffi_builder.argument_types, value
+    end
+
     def self.to_native(value, context)
       return nil unless value
       return value if FFI::Function === value
@@ -36,6 +41,18 @@ module GirFFI
       return self.new do |*args|
         call_with_argument_mapping(prc, *args)
       end
+    end
+
+    def self.to_ffitype
+      self
+    end
+
+    def self.copy_value_to_pointer value, pointer
+      pointer.put_pointer 0, to_native(value, nil)
+    end
+
+    def self.get_value_from_pointer pointer
+      from_native pointer.get_pointer(0), nil
     end
   end
 end
