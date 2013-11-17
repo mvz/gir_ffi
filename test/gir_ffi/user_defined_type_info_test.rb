@@ -31,4 +31,19 @@ describe GirFFI::UserDefinedTypeInfo do
       info.properties.map(&:name).must_equal [:foo, :bar]
     end
   end
+
+  describe "#g_name" do
+    it "returns the described class' name by default" do
+      mock(klass = Object.new).name { "foo" }
+      info = GirFFI::UserDefinedTypeInfo.new klass
+      info.g_name.must_equal "foo"
+    end
+
+    it "returns the the name set by #g_name= if present" do
+      stub(klass = Object.new).name { "foo" }
+      info = GirFFI::UserDefinedTypeInfo.new klass
+      info.g_name = "bar"
+      info.g_name.must_equal "bar"
+    end
+  end
 end

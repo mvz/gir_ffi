@@ -21,5 +21,11 @@ module GirFFI
     def properties
       @properties
     end
+
+    attr_writer :g_name
+
+    def g_name
+      @g_name ||= @klass.name
+    end
   end
 end
