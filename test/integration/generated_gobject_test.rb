@@ -1,10 +1,6 @@
 require 'gir_ffi_test_helper'
 
-describe "The generated GObject module" do
-  before do
-    GirFFI.setup :GObject
-  end
-
+describe GObject do
   describe "#type_interfaces" do
     it "works, showing that returning an array of GType works" do
       klass = GObject::TypeModule
@@ -13,7 +9,7 @@ describe "The generated GObject module" do
     end
   end
 
-  describe "the TypePlugin interface" do
+  describe GObject::TypePlugin do
     it "is implemented as a module" do
       mod = GObject::TypePlugin
       assert_instance_of Module, mod
@@ -21,14 +17,14 @@ describe "The generated GObject module" do
     end
   end
 
-  describe "the TypeModule class" do
+  describe GObject::TypeModule do
     it "has the GObject::TypePlugin module as an ancestor" do
       klass = GObject::TypeModule
       assert_includes klass.ancestors, GObject::TypePlugin
     end
   end
 
-  describe "the ValueArray struct class" do
+  describe GObject::ValueArray do
     it "uses the constructor provided by GObject" do
       instance = GObject::ValueArray.new 16
       instance.n_prealloced.must_equal 16
