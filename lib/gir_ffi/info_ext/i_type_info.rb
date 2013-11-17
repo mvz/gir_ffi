@@ -65,7 +65,7 @@ module GirFFI
 
       def tag_or_class
         base = case flattened_tag
-               when :struct, :union, :object, :interface, :enum, :flags
+               when :struct, :union, :object, :interface, :enum, :flags, :callback
                  Builder.build_class interface
                else
                  flattened_tag

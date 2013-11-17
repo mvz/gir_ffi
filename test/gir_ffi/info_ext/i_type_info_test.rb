@@ -228,8 +228,8 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     describe "for a callback" do
-      it "returns :callback" do
-        callback_type_info.tag_or_class.must_equal :callback
+      it "returns the callback's wrapper class" do
+        callback_type_info.tag_or_class.must_equal Regress::TestCallback
       end
     end
 
