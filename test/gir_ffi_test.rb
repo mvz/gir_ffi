@@ -67,11 +67,11 @@ describe GirFFI do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
         Object.const_set "DerivedB#{Sequence.next}", @klass
-        @gtype = GirFFI.define_type @klass do
-          install_property GObject.param_spec_int("foo", "foo bar",
-                                                  "The Foo Bar Property",
-                                                  10, 20, 15,
-                                                  3)
+        @gtype = GirFFI.define_type @klass do |info|
+          info.install_property GObject.param_spec_int("foo", "foo bar",
+                                                       "The Foo Bar Property",
+                                                       10, 20, 15,
+                                                       3)
         end
       end
 

@@ -20,13 +20,13 @@ describe GirFFI::UserDefinedTypeInfo do
   end
 
   describe "#initialize" do
-    it "takes a block that is evaluated in the context of the instance" do
+    it "yields the new object to the block passed" do
       mock(foo_spec = Object.new).get_name { :foo }
       mock(bar_spec = Object.new).get_name { :bar }
 
-      info = GirFFI::UserDefinedTypeInfo.new :some_class do
-        install_property foo_spec
-        install_property bar_spec
+      info = GirFFI::UserDefinedTypeInfo.new :some_class do |inf|
+        inf.install_property foo_spec
+        inf.install_property bar_spec
       end
       info.properties.map(&:name).must_equal [:foo, :bar]
     end

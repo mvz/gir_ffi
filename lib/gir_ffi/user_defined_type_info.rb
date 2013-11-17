@@ -4,10 +4,10 @@ module GirFFI
   # Represents a user defined type, conforming, as needed, to the interface of
   # GObjectIntrospection::IObjectInfo.
   class UserDefinedTypeInfo
-    def initialize klass, &block
+    def initialize klass
       @klass = klass
       @properties = []
-      self.instance_eval(&block) if block
+      yield self if block_given?
     end
 
     def described_class

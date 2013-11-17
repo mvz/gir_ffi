@@ -8,11 +8,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
       @klass = Class.new GIMarshallingTests::OverridesObject
       Object.const_set "DerivedC#{Sequence.next}", @klass
 
-      @info = GirFFI::UserDefinedTypeInfo.new @klass do
-        install_property GObject.param_spec_int("foo", "foo bar",
-                                                "The Foo Bar Property",
-                                                10, 20, 15,
-                                                3)
+      @info = GirFFI::UserDefinedTypeInfo.new @klass do |info|
+        info.install_property GObject.param_spec_int("foo", "foo bar",
+                                                     "The Foo Bar Property",
+                                                     10, 20, 15,
+                                                     3)
       end
 
       @builder = GirFFI::Builders::UserDefinedBuilder.new @info
@@ -41,10 +41,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
       @klass = Class.new GIMarshallingTests::OverridesObject
       Object.const_set "DerivedD#{Sequence.next}", @klass
 
-      @info = GirFFI::UserDefinedTypeInfo.new @klass do
-        # TODO: Pass info or proxy object as an argument to the block in order
-        # to avoid need to remember self.
-        self.g_name = "OtherName#{Sequence.next}"
+      @info = GirFFI::UserDefinedTypeInfo.new @klass do |info|
+        info.g_name = "OtherName#{Sequence.next}"
       end
 
       @builder = GirFFI::Builders::UserDefinedBuilder.new @info
