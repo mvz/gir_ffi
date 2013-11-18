@@ -22,7 +22,7 @@ module GirFFI
         else
           return <<-CODE.reset_indentation
           def #{@info.getter_name}
-            get_property("#{@info.name}")
+            get_property_basic("#{@info.name}").get_value
           end
           CODE
         end

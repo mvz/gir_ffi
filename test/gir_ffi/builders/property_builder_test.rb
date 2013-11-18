@@ -32,4 +32,17 @@ describe GirFFI::Builders::PropertyBuilder do
       builder.getter_def.must_equal expected
     end
   end
+
+  describe "for a property of type :utf8" do
+    let(:property_info) { get_property_introspection_data("Regress", "TestObj", "string") }
+    it "generates the correct getter definition" do
+      expected = <<-CODE.reset_indentation
+      def string
+        get_property_basic("string").get_value
+      end
+      CODE
+
+      builder.getter_def.must_equal expected
+    end
+  end
 end
