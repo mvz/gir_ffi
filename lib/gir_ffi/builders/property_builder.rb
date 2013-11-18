@@ -8,7 +8,7 @@ module GirFFI
 
       def getter_def
         case type_info.tag
-        when :glist
+        when :glist, :ghash
           argument_info = FieldArgumentInfo.new(@info.getter_name, type_info)
           builder = ReturnValueBuilder.new(VariableNameGenerator.new, argument_info)
 
