@@ -1,6 +1,7 @@
 module GirFFI
   # Class to represent argument info for the argument of a setter method.
   # Implements the necessary parts of IArgumentInfo's interface.
+  # TODO: Rename and add direction argument or subclass
   class FieldArgumentInfo
     attr_reader :name, :argument_type
 

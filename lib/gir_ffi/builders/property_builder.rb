@@ -7,11 +7,25 @@ module GirFFI
       end
 
       def getter_def
-        return <<-CODE
-        def #{@info.getter_name}
-          get_property "#{@info.name}"
+        case type_info.tag
+        when :glist
+          argument_info = FieldArgumentInfo.new(@info.getter_name, type_info)
+          builder = ReturnValueBuilder.new(VariableNameGenerator.new, argument_info)
+
+          return <<-CODE.reset_indentation
+          def #{@info.getter_name}
+            #{builder.callarg} = get_property_basic("#{@info.name}").get_value_plain
+            #{builder.post.join("\n")}
+            #{builder.retval}
+          end
+          CODE
+        else
+          return <<-CODE.reset_indentation
+          def #{@info.getter_name}
+            get_property("#{@info.name}")
+          end
+          CODE
         end
-        CODE
       end
 
       def setter_def
@@ -21,6 +35,13 @@ module GirFFI
         end
         CODE
       end
+
+      private
+
+      def type_info
+        @type_info ||= @info.property_type
+      end
+
     end
   end
 end
