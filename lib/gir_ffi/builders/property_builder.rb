@@ -14,7 +14,7 @@ module GirFFI
 
           return <<-CODE.reset_indentation
           def #{@info.getter_name}
-            #{builder.callarg} = get_property_basic("#{@info.name}").get_value_plain
+            #{builder.callarg} = get_property("#{@info.name}").get_value_plain
             #{builder.post.join("\n")}
             #{builder.retval}
           end
@@ -22,7 +22,7 @@ module GirFFI
         else
           return <<-CODE.reset_indentation
           def #{@info.getter_name}
-            get_property_basic("#{@info.name}").get_value
+            get_property("#{@info.name}").get_value
           end
           CODE
         end

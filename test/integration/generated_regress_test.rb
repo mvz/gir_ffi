@@ -692,8 +692,8 @@ describe Regress do
     end
 
     describe "its 'bare' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("bare").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("bare").must_be_nil
       end
 
       it "can be retrieved with #bare" do
@@ -703,7 +703,7 @@ describe Regress do
       it "can be set with #set_property" do
         obj = Regress::TestObj.new_from_file("bar")
         instance.set_property "bare", obj
-        instance.get_property("bare").must_equal obj
+        instance.get_property_extended("bare").must_equal obj
       end
 
       it "can be set with #bare=" do
@@ -711,13 +711,13 @@ describe Regress do
         instance.bare = obj
 
         instance.bare.must_equal obj
-        instance.get_property("bare").must_equal obj
+        instance.get_property_extended("bare").must_equal obj
       end
     end
 
     describe "its 'boxed' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("boxed").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("boxed").must_be_nil
       end
 
       it "can be retrieved with #boxed" do
@@ -727,20 +727,20 @@ describe Regress do
       it "can be set with #set_property" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
         instance.set_property "boxed", tb
-        instance.get_property("boxed").some_int8.must_equal 75
+        instance.get_property_extended("boxed").some_int8.must_equal 75
       end
 
       it "can be set with #boxed=" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
         instance.boxed = tb
         instance.boxed.some_int8.must_equal tb.some_int8
-        instance.get_property("boxed").some_int8.must_equal tb.some_int8
+        instance.get_property_extended("boxed").some_int8.must_equal tb.some_int8
       end
     end
 
     describe "its 'double' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("double").must_equal 0.0
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("double").must_equal 0.0
       end
 
       it "can be retrieved with #double" do
@@ -749,19 +749,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "double", 3.14
-        instance.get_property("double").must_equal 3.14
+        instance.get_property_extended("double").must_equal 3.14
       end
 
       it "can be set with #double=" do
         instance.double = 3.14
         instance.double.must_equal 3.14
-        instance.get_property("double").must_equal 3.14
+        instance.get_property_extended("double").must_equal 3.14
       end
     end
 
     describe "its 'float' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("float").must_equal 0.0
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("float").must_equal 0.0
       end
 
       it "can be retrieved with #float" do
@@ -770,13 +770,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "float", 3.14
-        instance.get_property("float").must_be_close_to 3.14
+        instance.get_property_extended("float").must_be_close_to 3.14
       end
 
       it "can be set with #float=" do
         instance.float = 3.14
         instance.float.must_be_close_to 3.14
-        instance.get_property("float").must_be_close_to 3.14
+        instance.get_property_extended("float").must_be_close_to 3.14
       end
     end
 
@@ -785,8 +785,8 @@ describe Regress do
         skip unless get_property_introspection_data("Regress", "TestObj", "gtype")
       end
 
-      it "can be retrieved with #get_property" do
-        instance.get_property("gtype").must_equal 0
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("gtype").must_equal 0
       end
 
       it "can be retrieved with #gtype" do
@@ -795,19 +795,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "gtype", GObject::TYPE_INT64
-        instance.get_property("gtype").must_equal GObject::TYPE_INT64
+        instance.get_property_extended("gtype").must_equal GObject::TYPE_INT64
       end
 
       it "can be set with #gtype=" do
         instance.gtype = GObject::TYPE_STRING
         instance.gtype.must_equal GObject::TYPE_STRING
-        instance.get_property("gtype").must_equal GObject::TYPE_STRING
+        instance.get_property_extended("gtype").must_equal GObject::TYPE_STRING
       end
     end
 
     describe "its 'hash-table' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("hash-table").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("hash-table").must_be_nil
       end
 
       it "can be retrieved with #hash_table" do
@@ -816,21 +816,21 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "hash-table", {"foo" => -4, "bar" => 83}
-        instance.get_property("hash-table").to_hash.must_equal({"foo" => -4,
+        instance.get_property_extended("hash-table").to_hash.must_equal({"foo" => -4,
                                                                 "bar" => 83})
       end
 
       it "can be set with #hash_table=" do
         instance.set_property "hash-table", {"foo" => -4, "bar" => 83}
         instance.hash_table.to_hash.must_equal({"foo" => -4, "bar" => 83})
-        instance.get_property("hash-table").to_hash.must_equal({"foo" => -4,
+        instance.get_property_extended("hash-table").to_hash.must_equal({"foo" => -4,
                                                                 "bar" => 83})
       end
     end
 
     describe "its 'hash-table-old' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("hash-table-old").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("hash-table-old").must_be_nil
       end
 
       it "can be retrieved with #hash_table_old" do
@@ -841,7 +841,7 @@ describe Regress do
         instance.set_property "hash-table-old", {"foo" => 34,
                                                  "bar" => -3}
 
-        instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
+        instance.get_property_extended("hash-table-old").to_hash.must_equal({"foo" => 34,
                                                                     "bar" => -3})
       end
 
@@ -850,14 +850,14 @@ describe Regress do
                                                  "bar" => -3}
 
         instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => -3})
-        instance.get_property("hash-table-old").to_hash.must_equal({"foo" => 34,
+        instance.get_property_extended("hash-table-old").to_hash.must_equal({"foo" => 34,
                                                                     "bar" => -3})
       end
     end
 
     describe "its 'int' property" do
-      it "can be retrieved with #get_property" do
-        assert_equal 0, instance.get_property("int")
+      it "can be retrieved with #get_property_extended" do
+        assert_equal 0, instance.get_property_extended("int")
       end
 
       it "can be retrieved with #int" do
@@ -866,19 +866,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "int", 42
-        assert_equal 42, instance.get_property("int")
+        assert_equal 42, instance.get_property_extended("int")
       end
 
       it "can be set with #int=" do
         instance.int = 41
-        assert_equal 41, instance.get_property("int")
+        assert_equal 41, instance.get_property_extended("int")
         assert_equal 41, instance.int
       end
     end
 
     describe "its 'list' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("list").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("list").must_be_nil
       end
 
       it "can be retrieved with #list" do
@@ -887,19 +887,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "list", ["foo", "bar"]
-        instance.get_property("list").must_be :==, ["foo", "bar"]
+        instance.get_property_extended("list").must_be :==, ["foo", "bar"]
       end
 
       it "can be set with #list=" do
         instance.list = ["foo", "bar"]
         instance.list.must_be :==, ["foo",  "bar"]
-        instance.get_property("list").must_be :==, ["foo", "bar"]
+        instance.get_property_extended("list").must_be :==, ["foo", "bar"]
       end
     end
 
     describe "its 'list-old' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("list-old").must_be_nil
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("list-old").must_be_nil
       end
 
       it "can be retrieved with #list_old" do
@@ -908,19 +908,19 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "list-old", ["foo", "bar"]
-        instance.get_property("list-old").must_be :==, ["foo", "bar"]
+        instance.get_property_extended("list-old").must_be :==, ["foo", "bar"]
       end
 
       it "can be set with #list_old=" do
         instance.list_old = ["foo", "bar"]
         instance.list_old.must_be :==, ["foo",  "bar"]
-        instance.get_property("list-old").must_be :==, ["foo", "bar"]
+        instance.get_property_extended("list-old").must_be :==, ["foo", "bar"]
       end
     end
 
     describe "its 'string' property" do
-      it "can be retrieved with #get_property" do
-        assert_nil instance.get_property("string")
+      it "can be retrieved with #get_property_extended" do
+        assert_nil instance.get_property_extended("string")
       end
 
       it "can be retrieved with #string" do
@@ -929,13 +929,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "string", "foobar"
-        assert_equal "foobar", instance.get_property("string")
+        assert_equal "foobar", instance.get_property_extended("string")
       end
 
       it "can be set with #string=" do
         instance.string = "foobar"
         assert_equal "foobar", instance.string
-        assert_equal "foobar", instance.get_property("string")
+        assert_equal "foobar", instance.get_property_extended("string")
       end
     end
 
@@ -1563,8 +1563,8 @@ describe Regress do
     end
 
     describe "its 'testbool' property" do
-      it "can be retrieved with #get_property" do
-        instance.get_property("testbool").must_equal true
+      it "can be retrieved with #get_property_extended" do
+        instance.get_property_extended("testbool").must_equal true
       end
 
       it "can be retrieved with #testbool" do
@@ -1574,23 +1574,23 @@ describe Regress do
       it "can be set with #set_property" do
         instance.set_property "testbool", true
         instance.get_testbool.must_equal true
-        instance.get_property("testbool").must_equal true
+        instance.get_property_extended("testbool").must_equal true
 
         instance.set_property "testbool", false
         instance.get_testbool.must_equal false
-        instance.get_property("testbool").must_equal false
+        instance.get_property_extended("testbool").must_equal false
       end
 
       it "can be set with #testbool=" do
         instance.testbool = true
         instance.testbool.must_equal true
         instance.get_testbool.must_equal true
-        instance.get_property("testbool").must_equal true
+        instance.get_property_extended("testbool").must_equal true
 
         instance.testbool = false
         instance.testbool.must_equal false
         instance.get_testbool.must_equal false
-        instance.get_property("testbool").must_equal false
+        instance.get_property_extended("testbool").must_equal false
       end
     end
   end

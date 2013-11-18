@@ -8,7 +8,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it "generates the correct getter definition" do
       expected = <<-CODE.reset_indentation
       def list
-        _v1 = get_property_basic("list").get_value_plain
+        _v1 = get_property("list").get_value_plain
         _v2 = GLib::List.wrap(:utf8, _v1)
         _v2
       end
@@ -23,7 +23,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it "generates the correct getter definition" do
       expected = <<-CODE.reset_indentation
       def hash_table
-        _v1 = get_property_basic("hash-table").get_value_plain
+        _v1 = get_property("hash-table").get_value_plain
         _v2 = GLib::HashTable.wrap([:utf8, :gint8], _v1)
         _v2
       end
@@ -38,7 +38,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it "generates the correct getter definition" do
       expected = <<-CODE.reset_indentation
       def string
-        get_property_basic("string").get_value
+        get_property("string").get_value
       end
       CODE
 
