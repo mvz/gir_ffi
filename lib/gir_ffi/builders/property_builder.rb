@@ -37,13 +37,13 @@ module GirFFI
           return <<-CODE.reset_indentation
           def #{@info.getter_name}= value
             #{builder.pre.join("\n")}
-            set_property_basic("#{@info.name}", #{builder.callarg})
+            set_property("#{@info.name}", #{builder.callarg})
           end
           CODE
         else
           return <<-CODE.reset_indentation
           def #{@info.getter_name}= value
-            set_property_basic("#{@info.name}", value)
+            set_property("#{@info.name}", value)
           end
           CODE
         end

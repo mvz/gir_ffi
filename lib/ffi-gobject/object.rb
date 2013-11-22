@@ -44,14 +44,14 @@ module GObject
       gvalue
     end
 
-    def set_property_with_override property_name, value
+    def set_property_extended property_name, value
       type_info = get_property_type property_name
       adjusted_value = adjust_value_to_type(value, type_info)
 
-      set_property_basic property_name, adjusted_value
+      set_property property_name, adjusted_value
     end
 
-    def set_property_basic property_name, value
+    def set_property_with_override property_name, value
       pspec = type_class.find_property property_name
       gvalue = GObject::Value.for_g_type pspec.value_type
       gvalue.set_value value

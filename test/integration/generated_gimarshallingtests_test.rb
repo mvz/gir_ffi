@@ -393,7 +393,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #overridden_method" do
-      instance.set_property("int", 0)
+      instance.set_property_extended("int", 0)
       instance.overridden_method
       pass
     end
@@ -440,8 +440,8 @@ describe GIMarshallingTests do
       it "can be retrieved with #int" do
         assert_equal 42, instance.int
       end
-      it "can be set with #set_property" do
-        instance.set_property("int", 13)
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("int", 13)
         assert_equal 13, instance.get_property("int").get_value
       end
       it "can be set with #int=" do
@@ -543,8 +543,8 @@ describe GIMarshallingTests do
         instance.some_boolean.must_equal false
       end
 
-      it "can be set with #set_property" do
-        instance.set_property("some-boolean", true)
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("some-boolean", true)
         instance.get_property("some-boolean").get_value.must_equal true
       end
 
@@ -569,8 +569,8 @@ describe GIMarshallingTests do
         instance.some_boxed_glist.must_equal nil
       end
 
-      it "can be set with #set_property" do
-        instance.set_property("some-boxed-glist", [1, 2, 3])
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("some-boxed-glist", [1, 2, 3])
         instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
       end
 
@@ -596,10 +596,10 @@ describe GIMarshallingTests do
         instance.some_boxed_struct.must_equal nil
       end
 
-      it "can be set with #set_property" do
+      it "can be set with #set_property_extended" do
         boxed = GIMarshallingTests::BoxedStruct.new
         boxed.long_ = 42
-        instance.set_property("some-boxed-struct", boxed)
+        instance.set_property_extended("some-boxed-struct", boxed)
         instance.get_property("some-boxed-struct").get_value.long_.must_equal 42
       end
 
@@ -620,8 +620,8 @@ describe GIMarshallingTests do
         instance.some_char.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-char", 42
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-char", 42
         instance.get_property("some-char").get_value.must_equal 42
       end
 
@@ -640,8 +640,8 @@ describe GIMarshallingTests do
         instance.some_double.must_equal 0.0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property("some-double", 3.14)
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("some-double", 3.14)
         instance.get_property("some-double").get_value.must_equal 3.14
       end
 
@@ -660,8 +660,8 @@ describe GIMarshallingTests do
         instance.some_float.must_equal 0.0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property("some-float", 3.14)
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("some-float", 3.14)
         instance.get_property("some-float").get_value.must_be_close_to 3.14
       end
 
@@ -680,8 +680,8 @@ describe GIMarshallingTests do
         instance.some_int.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-int", 4242
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-int", 4242
         instance.get_property("some-int").get_value.must_equal 4242
       end
 
@@ -700,8 +700,8 @@ describe GIMarshallingTests do
         instance.some_int64.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-int64", 42_000_000_000_000
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-int64", 42_000_000_000_000
         instance.get_property("some-int64").get_value.must_equal 42_000_000_000_000
       end
 
@@ -720,8 +720,8 @@ describe GIMarshallingTests do
         instance.some_long.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-long", 4242
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-long", 4242
         instance.get_property("some-long").get_value.must_equal 4242
       end
 
@@ -746,9 +746,9 @@ describe GIMarshallingTests do
         instance.some_object.must_be_nil
       end
 
-      it "can be set with #set_property" do
+      it "can be set with #set_property_extended" do
         ob = GIMarshallingTests::Object.new 42
-        instance.set_property "some-object", ob
+        instance.set_property_extended "some-object", ob
         instance.get_property("some-object").get_value.must_equal ob
       end
 
@@ -774,8 +774,8 @@ describe GIMarshallingTests do
         instance.some_strv.must_be :==, []
       end
 
-      it "can be set with #set_property" do
-        instance.set_property("some-strv", ["foo", "bar"])
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended("some-strv", ["foo", "bar"])
         instance.get_property("some-strv").get_value.must_be :==, ["foo", "bar"]
       end
 
@@ -794,8 +794,8 @@ describe GIMarshallingTests do
         instance.some_uchar.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-uchar", 42
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-uchar", 42
         instance.get_property("some-uchar").get_value.must_equal 42
       end
 
@@ -814,8 +814,8 @@ describe GIMarshallingTests do
         instance.some_uint.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-uint", 4242
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-uint", 4242
         instance.get_property("some-uint").get_value.must_equal 4242
       end
 
@@ -834,8 +834,8 @@ describe GIMarshallingTests do
         instance.some_uint64.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-uint64", 42_000_000_000_000
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-uint64", 42_000_000_000_000
         instance.get_property("some-uint64").get_value.must_equal 42_000_000_000_000
       end
 
@@ -854,8 +854,8 @@ describe GIMarshallingTests do
         instance.some_ulong.must_equal 0
       end
 
-      it "can be set with #set_property" do
-        instance.set_property "some-ulong", 4242
+      it "can be set with #set_property_extended" do
+        instance.set_property_extended "some-ulong", 4242
         instance.get_property("some-ulong").get_value.must_equal 4242
       end
 
@@ -880,9 +880,9 @@ describe GIMarshallingTests do
         instance.some_variant.must_be_nil
       end
 
-      it "can be set with #set_property" do
+      it "can be set with #set_property_extended" do
         value = GLib::Variant.new_string("Foo")
-        instance.set_property "some-variant", value
+        instance.set_property_extended "some-variant", value
         instance.get_property("some-variant").get_value.must_equal value
       end
 

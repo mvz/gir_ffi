@@ -21,7 +21,7 @@ describe GirFFI::Builders::PropertyBuilder do
       expected = <<-CODE.reset_indentation
       def list= value
         _v1 = GLib::List.from(:utf8, value)
-        set_property_basic("list", _v1)
+        set_property("list", _v1)
       end
       CODE
 
@@ -47,7 +47,7 @@ describe GirFFI::Builders::PropertyBuilder do
       expected = <<-CODE.reset_indentation
       def hash_table= value
         _v1 = GLib::HashTable.from([:utf8, :gint8], value)
-        set_property_basic("hash-table", _v1)
+        set_property("hash-table", _v1)
       end
       CODE
 
@@ -73,7 +73,7 @@ describe GirFFI::Builders::PropertyBuilder do
       expected = <<-CODE.reset_indentation
       def some_strv= value
         _v1 = GLib::Strv.from(value)
-        set_property_basic("some-strv", _v1)
+        set_property("some-strv", _v1)
       end
       CODE
 
@@ -96,7 +96,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it "generates the correct setter definition" do
       expected = <<-CODE.reset_indentation
       def string= value
-        set_property_basic("string", value)
+        set_property("string", value)
       end
       CODE
 
