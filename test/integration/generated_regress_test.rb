@@ -700,9 +700,9 @@ describe Regress do
         instance.bare.must_be_nil
       end
 
-      it "can be set with #set_property_extended" do
+      it "can be set with #set_property" do
         obj = Regress::TestObj.new_from_file("bar")
-        instance.set_property_extended "bare", obj
+        instance.set_property "bare", obj
         instance.get_property("bare").get_value.must_equal obj
       end
 
@@ -724,9 +724,9 @@ describe Regress do
         instance.boxed.must_be_nil
       end
 
-      it "can be set with #set_property_extended" do
+      it "can be set with #set_property" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
-        instance.set_property_extended "boxed", tb
+        instance.set_property "boxed", tb
         instance.get_property("boxed").get_value.some_int8.must_equal 75
       end
 
@@ -747,8 +747,8 @@ describe Regress do
         instance.double.must_equal 0.0
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "double", 3.14
+      it "can be set with #set_property" do
+        instance.set_property "double", 3.14
         instance.get_property("double").get_value.must_equal 3.14
       end
 
@@ -768,8 +768,8 @@ describe Regress do
         instance.float.must_equal 0.0
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "float", 3.14
+      it "can be set with #set_property" do
+        instance.set_property "float", 3.14
         instance.get_property("float").get_value.must_be_close_to 3.14
       end
 
@@ -793,8 +793,8 @@ describe Regress do
         instance.gtype.must_equal 0
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "gtype", GObject::TYPE_INT64
+      it "can be set with #set_property" do
+        instance.set_property "gtype", GObject::TYPE_INT64
         instance.get_property("gtype").get_value.must_equal GObject::TYPE_INT64
       end
 
@@ -858,8 +858,8 @@ describe Regress do
         assert_equal 0, instance.int
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "int", 42
+      it "can be set with #set_property" do
+        instance.set_property "int", 42
         assert_equal 42, instance.get_property("int").get_value
       end
 
@@ -921,8 +921,8 @@ describe Regress do
         assert_nil instance.string
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "string", "foobar"
+      it "can be set with #set_property" do
+        instance.set_property "string", "foobar"
         assert_equal "foobar", instance.get_property("string").get_value
       end
 
@@ -1565,12 +1565,12 @@ describe Regress do
         instance.testbool.must_equal true
       end
 
-      it "can be set with #set_property_extended" do
-        instance.set_property_extended "testbool", true
+      it "can be set with #set_property" do
+        instance.set_property "testbool", true
         instance.get_testbool.must_equal true
         instance.get_property("testbool").get_value.must_equal true
 
-        instance.set_property_extended "testbool", false
+        instance.set_property "testbool", false
         instance.get_testbool.must_equal false
         instance.get_property("testbool").get_value.must_equal false
       end
