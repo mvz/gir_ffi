@@ -16,6 +16,17 @@ describe GirFFI::Builders::PropertyBuilder do
 
       builder.getter_def.must_equal expected
     end
+
+    it "generates the correct setter definition" do
+      expected = <<-CODE.reset_indentation
+      def list= value
+        _v1 = GLib::List.from(:utf8, value)
+        set_property_basic("list", _v1)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
+    end
   end
 
   describe "for a property of type :ghash" do
@@ -31,6 +42,17 @@ describe GirFFI::Builders::PropertyBuilder do
 
       builder.getter_def.must_equal expected
     end
+
+    it "generates the correct setter definition" do
+      expected = <<-CODE.reset_indentation
+      def hash_table= value
+        _v1 = GLib::HashTable.from([:utf8, :gint8], value)
+        set_property_basic("hash-table", _v1)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
+    end
   end
 
   describe "for a property of type :utf8" do
@@ -43,6 +65,16 @@ describe GirFFI::Builders::PropertyBuilder do
       CODE
 
       builder.getter_def.must_equal expected
+    end
+
+    it "generates the correct setter definition" do
+      expected = <<-CODE.reset_indentation
+      def string= value
+        set_property("string", value)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
     end
   end
 end

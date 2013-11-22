@@ -29,11 +29,24 @@ module GirFFI
       end
 
       def setter_def
-        return <<-CODE
-        def #{@info.getter_name}= value
-          set_property "#{@info.name}", value
+        case type_info.tag
+        when :glist, :ghash
+          argument_info = FieldArgumentInfo.new("value", type_info)
+          builder = ArgumentBuilder.new(VariableNameGenerator.new, argument_info)
+
+          return <<-CODE.reset_indentation
+          def #{@info.getter_name}= value
+            #{builder.pre.join("\n")}
+            set_property_basic("#{@info.name}", #{builder.callarg})
+          end
+          CODE
+        else
+          return <<-CODE.reset_indentation
+          def #{@info.getter_name}= value
+            set_property("#{@info.name}", value)
+          end
+          CODE
         end
-        CODE
       end
 
       private
