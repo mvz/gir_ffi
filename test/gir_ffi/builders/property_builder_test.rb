@@ -55,6 +55,32 @@ describe GirFFI::Builders::PropertyBuilder do
     end
   end
 
+  describe "for a property of type :strv" do
+    let(:property_info) { get_property_introspection_data("GIMarshallingTests",
+                                                          "PropertiesObject",
+                                                          "some-strv") }
+    it "generates the correct getter definition" do
+      expected = <<-CODE.reset_indentation
+      def some_strv
+        get_property("some-strv").get_value
+      end
+      CODE
+
+      builder.getter_def.must_equal expected
+    end
+
+    it "generates the correct setter definition" do
+      expected = <<-CODE.reset_indentation
+      def some_strv= value
+        _v1 = GLib::Strv.from(value)
+        set_property_basic("some-strv", _v1)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
+    end
+  end
+
   describe "for a property of type :utf8" do
     let(:property_info) { get_property_introspection_data("Regress", "TestObj", "string") }
     it "generates the correct getter definition" do

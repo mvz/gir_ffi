@@ -29,8 +29,8 @@ module GirFFI
       end
 
       def setter_def
-        case type_info.tag
-        when :glist, :ghash
+        case type_info.flattened_tag
+        when :glist, :ghash, :strv
           argument_info = FieldArgumentInfo.new("value", type_info)
           builder = ArgumentBuilder.new(VariableNameGenerator.new, argument_info)
 
