@@ -9,6 +9,7 @@ require 'ffi-gobject/value'
 require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'
 require 'ffi-gobject/object'
+require 'ffi-gobject/object_class'
 require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/builders/user_defined_builder'
 
