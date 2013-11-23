@@ -91,4 +91,19 @@ describe GirFFI::Builders::FieldBuilder do
       instance.setter_def.must_equal expected
     end
   end
+
+  describe "for a field of type :callback" do
+    let(:field_info) { get_field_introspection_data "GObject", "TypeInfo", "class_init" }
+    it "creates the right setter method" do
+      expected = <<-CODE.reset_indentation
+        def class_init= value
+          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v2 = GirFFI::InOutPointer.new(GObject::ClassInitFunc, _v1)
+          _v3 = GObject::ClassInitFunc.from(value)
+          _v2.set_value _v3
+        end
+      CODE
+      instance.setter_def.must_equal expected
+    end
+  end
 end

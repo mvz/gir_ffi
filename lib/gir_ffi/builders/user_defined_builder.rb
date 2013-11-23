@@ -52,7 +52,7 @@ module GirFFI
         properties.each do
           type_info.instance_size += FFI.type_size(:int32)
         end
-        init_proc = proc do |object_class_ptr, data|
+        type_info.class_init = proc do |object_class_ptr, data|
           object_class = GObject::ObjectClass.wrap(object_class_ptr.to_ptr)
 
           object_class.set_property = proc do |object, property_id, value, pspec|
@@ -67,9 +67,6 @@ module GirFFI
             object_class.install_property index + 1, property.param_spec
           end
         end
-        init_func = GObject::ClassInitFunc.from init_proc
-        init_ffi_func = GObject::ClassInitFunc.to_native init_func, nil
-        type_info.class_init = init_ffi_func
         return type_info
       end
 
