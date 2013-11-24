@@ -3,61 +3,53 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::ObjectBuilder do
   let(:obj_builder) { GirFFI::Builders::ObjectBuilder.new(
     get_introspection_data('Regress', 'TestObj')) }
+  let(:sub_obj_builder) { GirFFI::Builders::ObjectBuilder.new(
+    get_introspection_data('Regress', 'TestSubObj')) }
 
   describe '#find_signal' do
     it 'finds the signal "test" for TestObj' do
-      builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Regress', 'TestObj')
-      sig = builder.find_signal 'test'
-      assert_equal 'test', sig.name
+      sig = obj_builder.find_signal 'test'
+      sig.name.must_equal 'test'
     end
 
     it 'finds the signal "test" for TestSubObj' do
-      builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Regress', 'TestSubObj')
-      sig = builder.find_signal 'test'
-      assert_equal 'test', sig.name
+      sig = sub_obj_builder.find_signal 'test'
+      sig.name.must_equal 'test'
     end
 
     it 'finds the signal "changed" for Gtk::Entry' do
       builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Gtk', 'Entry')
       sig = builder.find_signal 'changed'
-      assert_equal 'changed', sig.name
+      sig.name.must_equal 'changed'
     end
   end
 
   describe "#find_property" do
     it "finds a property specified on the class itself" do
-      builder = GirFFI::Builders::ObjectBuilder.new(
-        get_introspection_data('Regress', 'TestObj'))
-      prop = builder.find_property("int")
-      assert_equal "int", prop.name
+      prop = obj_builder.find_property("int")
+      prop.name.must_equal "int"
     end
 
     it "finds a property specified on the parent class" do
-      builder = GirFFI::Builders::ObjectBuilder.new(
-        get_introspection_data('Regress', 'TestSubObj'))
-      prop = builder.find_property("int")
-      assert_equal "int", prop.name
+      prop = sub_obj_builder.find_property("int")
+      prop.name.must_equal "int"
     end
 
     it "raises an error if the property is not found" do
-      builder = GirFFI::Builders::ObjectBuilder.new(
-        get_introspection_data('Regress', 'TestSubObj'))
-      assert_raises RuntimeError do
-        builder.find_property("this-property-does-not-exist")
-      end
+      proc {
+        sub_obj_builder.find_property("this-property-does-not-exist")
+      }.must_raise RuntimeError 
     end
   end
 
   describe "#function_definition" do
-    before do
-      @cbuilder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Regress', 'TestObj')
-      @go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
-    end
+    let(:method_info) {
+      get_method_introspection_data 'Regress', 'TestObj', 'instance_method' }
 
     it "delegates definition to FunctionBuilder" do
-      code = @cbuilder.send :function_definition, @go
-      expected = GirFFI::Builders::FunctionBuilder.new(@go).generate
-      assert_equal cws(expected), cws(code)
+      code = obj_builder.send :function_definition, method_info
+      expected = GirFFI::Builders::FunctionBuilder.new(method_info).generate
+      code.must_equal expected
     end
   end
 
