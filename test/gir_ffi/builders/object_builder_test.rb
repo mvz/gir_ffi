@@ -1,6 +1,9 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ObjectBuilder do
+  let(:obj_builder) { GirFFI::Builders::ObjectBuilder.new(
+    get_introspection_data('Regress', 'TestObj')) }
+
   describe '#find_signal' do
     it 'finds the signal "test" for TestObj' do
       builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Regress', 'TestObj')
@@ -56,6 +59,11 @@ describe GirFFI::Builders::ObjectBuilder do
       expected = GirFFI::Builders::FunctionBuilder.new(@go).generate
       assert_equal cws(expected), cws(code)
     end
+  end
 
+  describe "#object_class" do
+    it "returns an object of the class struct type" do
+      obj_builder.object_class.must_be_instance_of Regress::TestObjClass
+    end
   end
 end

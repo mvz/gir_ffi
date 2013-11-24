@@ -48,5 +48,9 @@ module GirFFI
     def self.to_ffitype
       :pointer
     end
+
+    def self.object_class
+      gir_ffi_builder.object_class
+    end
   end
 end
