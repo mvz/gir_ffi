@@ -45,29 +45,50 @@ module GirFFI
       end
 
       def type_info
-        query_result = GObject.type_query parent_gtype
         type_info = GObject::TypeInfo.new
-        type_info.class_size = query_result.class_size
-        type_info.instance_size = query_result.instance_size
-        properties.each do
-          type_info.instance_size += FFI.type_size(:int32)
-        end
+        type_info.class_size = parent_class_size 
+        type_info.instance_size = instance_size
+
         type_info.class_init = proc do |object_class_ptr, data|
           object_class = GObject::ObjectClass.wrap(object_class_ptr.to_ptr)
 
-          object_class.set_property = proc do |object, property_id, value, pspec|
-            object.send("#{pspec.get_name}=", value.get_value)
-          end
-
-          object_class.get_property = proc do |object, property_id, value, pspec|
-            value.set_value object.send(pspec.get_name)
-          end
-
-          properties.each_with_index do |property, index|
-            object_class.install_property index + 1, property.param_spec
-          end
+          setup_properties(object_class)
         end
         return type_info
+      end
+
+      def instance_size
+        size = parent_instance_size 
+        properties.each do
+          size += FFI.type_size(:int32)
+        end
+        return size
+      end
+
+      def parent_instance_size
+        parent_query.instance_size
+      end
+
+      def parent_class_size
+        parent_query.class_size
+      end
+
+      def parent_query
+        @parent_query ||= GObject.type_query parent_gtype
+      end
+
+      def setup_properties(object_class)
+        object_class.set_property = proc do |object, property_id, value, pspec|
+          object.send("#{pspec.get_name}=", value.get_value)
+        end
+
+        object_class.get_property = proc do |object, property_id, value, pspec|
+          value.set_value object.send(pspec.get_name)
+        end
+
+        properties.each_with_index do |property, index|
+          object_class.install_property index + 1, property.param_spec
+        end
       end
 
       def properties
