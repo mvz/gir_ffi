@@ -30,6 +30,10 @@ module GirFFI
         object_class_struct.wrap GObject.type_class_ref(target_gtype).to_ptr
       end
 
+      def object_class_struct
+        @object_class_struct ||= Builder.build_class object_class_struct_info
+      end
+
       private
 
       def setup_class
@@ -125,10 +129,6 @@ module GirFFI
 
       def object_class_struct_info
         @object_class_struct_info ||= info.class_struct
-      end
-
-      def object_class_struct
-        @object_class_struct ||= Builder.build_class object_class_struct_info
       end
     end
   end

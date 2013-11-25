@@ -67,4 +67,26 @@ describe GirFFI::Builders::UserDefinedBuilder do
       registered_name.wont_equal @klass.name
     end
   end
+
+  describe "with type info containing a vfunc" do
+    before do
+      @klass = Class.new GIMarshallingTests::Object
+      Object.const_set "Derived#{Sequence.next}", @klass
+
+      @info = GirFFI::UserDefinedTypeInfo.new @klass do |info|
+        info.install_vfunc_implementation :method_int8_in, proc {|ptr, in_|
+          instance = @klass.wrap(ptr)
+          instance.int = in_ }
+      end
+
+      @builder = GirFFI::Builders::UserDefinedBuilder.new @info
+      @builder.build_class
+    end
+
+    it "allows the vfunc to be called through its invoker" do
+      obj = @klass.new
+      obj.method_int8_in 12
+      obj.int.must_equal 12
+    end
+  end
 end

@@ -53,6 +53,14 @@ module GirFFI
           object_class = GObject::ObjectClass.wrap(object_class_ptr.to_ptr)
 
           setup_properties(object_class)
+
+          if info.vfunc_implementations.any?
+            super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
+
+            info.vfunc_implementations.each do |impl|
+              super_class_struct[impl.name] = impl.implementation
+            end
+          end
         end
         return type_info
       end

@@ -19,6 +19,23 @@ describe GirFFI::UserDefinedTypeInfo do
     end
   end
 
+  describe "#install_vfunc_implementation" do
+    let(:info) { GirFFI::UserDefinedTypeInfo.new :some_class }
+    let(:implementation) { Object.new }
+
+    it "adds to the list of vfunc implementations" do
+      info.vfunc_implementations.must_equal []
+      info.install_vfunc_implementation :foo, implementation
+      info.vfunc_implementations.map(&:name).must_equal [:foo]
+    end
+
+    it "stores the passed-in implementation in the implementation object" do
+      info.install_vfunc_implementation :foo, implementation
+      impl =  info.vfunc_implementations.first
+      impl.implementation.must_equal implementation
+    end
+  end
+
   describe "#initialize" do
     it "yields the new object to the block passed" do
       mock(foo_spec = Object.new).get_name { :foo }
