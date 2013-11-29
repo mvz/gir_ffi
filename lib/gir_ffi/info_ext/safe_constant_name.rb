@@ -24,3 +24,4 @@ GObjectIntrospection::ICallbackInfo.send :include, GirFFI::InfoExt::SafeConstant
 GObjectIntrospection::IConstantInfo.send :include, GirFFI::InfoExt::SafeConstantName
 GObjectIntrospection::IRegisteredTypeInfo.send :include, GirFFI::InfoExt::SafeConstantName
 GObjectIntrospection::ISignalInfo.send :include, GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::IVFuncInfo.send :include, GirFFI::InfoExt::SafeConstantName

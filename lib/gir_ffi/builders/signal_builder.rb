@@ -1,6 +1,7 @@
 require 'gir_ffi/return_value_info'
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/mapping_method_builder'
+require 'gir_ffi/receiver_type_info'
 require 'gir_ffi/signal_base'
 
 module GirFFI
@@ -8,22 +9,6 @@ module GirFFI
     # Implements the creation of a signal module for handling a particular
     # signal. The type will be attached to the appropriate class.
     class SignalBuilder < BaseTypeBuilder
-      class SignalReceiverTypeInfo
-        include InfoExt::ITypeInfo
-
-        def initialize interface_info
-          @interface_info = interface_info
-        end
-
-        def interface
-          @interface_info
-        end
-
-        def tag
-          :interface
-        end
-      end
-
       class UserDataTypeInfo
         include InfoExt::ITypeInfo
 
@@ -52,7 +37,7 @@ module GirFFI
       def mapping_method_definition
         arg_infos = info.args
 
-        container_type_info = SignalReceiverTypeInfo.new(container_info)
+        container_type_info = ReceiverTypeInfo.new(container_info)
         receiver_info = ReturnValueInfo.new(container_type_info)
 
         user_data_type_info = UserDataTypeInfo.new

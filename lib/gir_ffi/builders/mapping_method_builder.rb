@@ -46,6 +46,20 @@ module GirFFI
         new return_type_info, vargen, argument_builders
       end
 
+      def self.for_vfunc receiver_info, argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+
+        receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+
+        set_up_argument_relations argument_infos, argument_builders
+
+        argument_builders.unshift receiver_builder
+
+        new return_type_info, vargen, argument_builders
+      end
+
       def self.set_up_argument_relations argument_infos, argument_builders
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0

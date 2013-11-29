@@ -7,6 +7,7 @@ require 'gir_ffi/builders/struct_builder'
 require 'gir_ffi/builders/signal_builder'
 require 'gir_ffi/builders/unintrospectable_builder'
 require 'gir_ffi/builders/union_builder'
+require 'gir_ffi/builders/vfunc_builder'
 
 module GirFFI
   module Builders
