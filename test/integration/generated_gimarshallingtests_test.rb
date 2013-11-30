@@ -328,12 +328,14 @@ describe GIMarshallingTests do
 
     let(:derived_klass) { Object.const_set("DerivedClass#{Sequence.next}",
                                            Class.new(GIMarshallingTests::Object)) }
-
-    it "has a working method #int8_in" do
+    let(:derived_instance) do
       GirFFI.define_type derived_klass do |info|
         info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
       end
-      derived_instance = derived_klass.new
+      derived_klass.new
+    end
+
+    it "has a working method #int8_in" do
       derived_instance.int8_in 23
       derived_instance.int.must_equal 23
     end
@@ -376,7 +378,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_in" do
-      skip "Needs vfunc setup"
+      derived_instance.method_int8_in 108
+      derived_instance.int.must_equal 108
     end
 
     it "has a working method #method_int8_out" do
