@@ -1,4 +1,4 @@
-require 'base_test_helper'
+require 'gir_ffi_test_helper'
 
 describe GirFFI::SizedArray do
   describe "::wrap" do
