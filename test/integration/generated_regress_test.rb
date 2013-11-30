@@ -431,7 +431,7 @@ describe Regress do
         GObject::Object
     end
 
-    it "cannot be instanciated" do
+    it "cannot be instantiated" do
       proc { Regress::TestFundamentalObject.new }.must_raise NoMethodError
     end
 
