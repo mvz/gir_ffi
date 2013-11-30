@@ -62,8 +62,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
   describe "with type info containing a vfunc" do
     let(:info) { GirFFI::UserDefinedTypeInfo.new klass do |info|
-      info.install_vfunc_implementation :method_int8_in, proc {|ptr, in_|
-        instance = klass.wrap(ptr)
+      info.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
         instance.int = in_ }
     end }
 
@@ -71,6 +70,16 @@ describe GirFFI::Builders::UserDefinedBuilder do
       obj = klass.new
       obj.method_int8_in 12
       obj.int.must_equal 12
+    end
+  end
+
+  describe "#find_vfunc" do
+    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+
+    it "finds vfuncs in the superclass" do
+      result = builder.find_vfunc :method_int8_in
+      result.name.must_equal "method_int8_in"
+      result.must_be_instance_of GObjectIntrospection::IVFuncInfo
     end
   end
 end

@@ -2,10 +2,23 @@ require 'gir_ffi/return_value_info'
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/mapping_method_builder'
 require 'gir_ffi/receiver_type_info'
+require 'gir_ffi/vfunc_base'
 
 module GirFFI
   module Builders
     class VFuncBuilder < BaseTypeBuilder
+      def instantiate_class
+        unless already_set_up
+          setup_constants
+          klass.class_eval mapping_method_definition
+        end
+        klass
+      end
+
+      def klass
+        @klass ||= get_or_define_class container_class, @classname, CallbackBase
+      end
+
       def mapping_method_definition
         arg_infos = info.args
 
@@ -15,6 +28,10 @@ module GirFFI
         MappingMethodBuilder.for_vfunc(receiver_info,
                                        arg_infos,
                                        info.return_type).method_definition
+      end
+
+      def container_class
+        @container_class ||= Builder.build_class(container_info)
       end
 
       def container_info

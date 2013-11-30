@@ -26,6 +26,10 @@ module GirFFI
         setup_constructor
       end
 
+      def find_vfunc vfunc_name
+        parent.find_vfunc vfunc_name.to_s
+      end
+
       private
 
       def target_gtype
@@ -58,7 +62,9 @@ module GirFFI
             super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
 
             info.vfunc_implementations.each do |impl|
-              super_class_struct[impl.name] = impl.implementation
+              vfunc_info = find_vfunc impl.name
+              vfunc = VFuncBuilder.new(vfunc_info).build_class
+              super_class_struct[impl.name] = vfunc.from impl.implementation
             end
           end
         end
