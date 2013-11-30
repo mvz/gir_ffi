@@ -59,6 +59,10 @@ describe GirFFI::Builders::PropertyBuilder do
     let(:property_info) { get_property_introspection_data("GIMarshallingTests",
                                                           "PropertiesObject",
                                                           "some-strv") }
+    before do
+      skip unless property_info
+    end
+
     it "generates the correct getter definition" do
       expected = <<-CODE.reset_indentation
       def some_strv
