@@ -331,6 +331,7 @@ describe GIMarshallingTests do
     let(:derived_instance) do
       GirFFI.define_type derived_klass do |info|
         info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
+        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0xdeadbeef }
       end
       derived_klass.new
     end
@@ -438,9 +439,12 @@ describe GIMarshallingTests do
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
       skip "Needs vfunc setup"
     end
+
     it "has a working method #vfunc_return_value_only" do
-      skip "Needs vfunc setup"
+      result = derived_instance.vfunc_return_value_only
+      result.must_equal 0xdeadbeef
     end
+
     it "has a working method #vfunc_with_callback" do
       skip "Needs vfunc setup"
     end
