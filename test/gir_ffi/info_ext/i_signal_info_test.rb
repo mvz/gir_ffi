@@ -1,5 +1,7 @@
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Regress
+
 describe GirFFI::InfoExt::ISignalInfo do
   let(:klass) { Class.new do
     include GirFFI::InfoExt::ICallableInfo
