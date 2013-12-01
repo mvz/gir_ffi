@@ -90,8 +90,7 @@ describe Regress do
     end
 
     it "has a writable field attributes" do
-      skip "This does not work yet"
-      instance.attributes
+      skip "Introspection data cannot deal with type of this field yet"
     end
 
     it "has a writable field dummy2" do
