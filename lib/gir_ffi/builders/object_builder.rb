@@ -75,19 +75,10 @@ module GirFFI
                         end
       end
 
-      # TODO: Unify with field accessor setup.
       def setup_property_accessors
         info.properties.each do |prop|
-          setup_accessors_for_property_info prop
+          PropertyBuilder.new(prop).build
         end
-      end
-
-      def setup_accessors_for_property_info prop
-        builder = PropertyBuilder.new prop
-        unless info.find_instance_method prop.getter_name
-          klass.class_eval builder.getter_def
-        end
-        klass.class_eval builder.setter_def
       end
 
       # TODO: Guard agains accidental invocation of undefined vfuncs.
@@ -111,9 +102,7 @@ module GirFFI
 
       def setup_interfaces
         interfaces.each do |iface|
-          klass.class_eval do
-            include iface
-          end
+          klass.send :include, iface
         end
       end
 

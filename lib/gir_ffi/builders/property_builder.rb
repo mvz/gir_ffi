@@ -6,6 +6,23 @@ module GirFFI
         @info = property_info
       end
 
+      def build
+        setup_getter
+        setup_setter
+      end
+
+      def setup_getter
+        container_class.class_eval getter_def unless container_defines_getter_method?
+      end
+
+      def container_defines_getter_method?
+        container_info.find_instance_method @info.name
+      end
+
+      def setup_setter
+        container_class.class_eval setter_def
+      end
+
       def getter_def
         case type_info.tag
         when :glist, :ghash
@@ -89,6 +106,18 @@ module GirFFI
 
       def argument_info
         @argument_info ||= FieldArgumentInfo.new("value", type_info)
+      end
+
+      def container_class
+        @container_class ||= container_module.const_get(container_info.safe_name)
+      end
+
+      def container_module
+        @container_module ||= Object.const_get(container_info.safe_namespace)
+      end
+
+      def container_info
+        @container_info ||= @info.container
       end
     end
   end
