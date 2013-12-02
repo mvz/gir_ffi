@@ -19,6 +19,24 @@ describe GirFFI::Builders::VFuncBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a vfunc returning an enum" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_enum" }
+
+      it "returns a valid mapping method including receiver" do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _v1)
+          _v2 = GIMarshallingTests::Object.wrap(_v1)
+          _v3 = _proc.call(_v2)
+          _v4 = GIMarshallingTests::Enum.from(_v3)
+          return _v4
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
 

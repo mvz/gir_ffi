@@ -431,9 +431,11 @@ describe GIMarshallingTests do
     it "has a working method #vfunc_out_enum" do
       skip "Needs vfunc setup"
     end
+
     it "has a working method #vfunc_return_enum" do
-      skip "Needs vfunc setup"
+      derived_instance.vfunc_return_enum.must_equal :value2
     end
+
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
       skip "Needs vfunc setup"
     end
