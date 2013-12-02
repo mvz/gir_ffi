@@ -83,16 +83,23 @@ module GirFFI
       end
 
       def setup_properties object_class
-        object_class.set_property = proc do |object, property_id, value, pspec|
-          object.send("#{pspec.get_name}=", value.get_value)
-        end
-
-        object_class.get_property = proc do |object, property_id, value, pspec|
-          value.set_value object.send(pspec.get_name)
-        end
+        object_class.get_property = property_getter
+        object_class.set_property = property_setter
 
         properties.each_with_index do |property, index|
           object_class.install_property index + 1, property.param_spec
+        end
+      end
+
+      def property_getter
+        proc do |object, property_id, value, pspec|
+          value.set_value object.send(pspec.get_name)
+        end
+      end
+
+      def property_setter
+        proc do |object, property_id, value, pspec|
+          object.send("#{pspec.get_name}=", value.get_value)
         end
       end
 
