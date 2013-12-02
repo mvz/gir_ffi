@@ -9,52 +9,87 @@ module GirFFI
       def getter_def
         case type_info.tag
         when :glist, :ghash
-          argument_info = FieldArgumentInfo.new(@info.getter_name, type_info)
-          builder = ReturnValueBuilder.new(VariableNameGenerator.new, argument_info)
-
-          return <<-CODE.reset_indentation
-          def #{@info.getter_name}
-            #{builder.callarg} = get_property("#{@info.name}").get_value_plain
-            #{builder.post.join("\n")}
-            #{builder.retval}
-          end
-          CODE
+          converting_getter_def
         else
-          return <<-CODE.reset_indentation
-          def #{@info.getter_name}
-            get_property("#{@info.name}").get_value
-          end
-          CODE
+          simple_getter_def
         end
       end
 
       def setter_def
         case type_info.flattened_tag
         when :glist, :ghash, :strv
-          argument_info = FieldArgumentInfo.new("value", type_info)
-          builder = ArgumentBuilder.new(VariableNameGenerator.new, argument_info)
-
-          return <<-CODE.reset_indentation
-          def #{@info.getter_name}= value
-            #{builder.pre.join("\n")}
-            set_property("#{@info.name}", #{builder.callarg})
-          end
-          CODE
+          converting_setter_def
         else
-          return <<-CODE.reset_indentation
-          def #{@info.getter_name}= value
-            set_property("#{@info.name}", value)
-          end
-          CODE
+          simple_setter_def
         end
       end
 
       private
 
+      def converting_getter_def
+        return <<-CODE.reset_indentation
+        def #{getter_name}
+          #{getter_builder.callarg} = get_property("#{property_name}").get_value_plain
+          #{getter_builder.post.join("\n")}
+          #{getter_builder.retval}
+        end
+        CODE
+      end
+
+      def simple_getter_def
+        return <<-CODE.reset_indentation
+        def #{getter_name}
+          get_property("#{property_name}").get_value
+        end
+        CODE
+      end
+
+      def getter_builder
+        @getter_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
+                                                   argument_info)
+      end
+
+      def converting_setter_def
+        return <<-CODE.reset_indentation
+        def #{setter_name} value
+          #{setter_builder.pre.join("\n")}
+          set_property("#{property_name}", #{setter_builder.callarg})
+        end
+        CODE
+      end
+
+      def simple_setter_def
+        return <<-CODE.reset_indentation
+        def #{setter_name} value
+          set_property("#{property_name}", value)
+        end
+        CODE
+      end
+
+      def setter_builder
+        @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
+                                                argument_info)
+      end
+
+      def property_name
+        @info.name
+      end
+
+      def getter_name
+        @info.getter_name
+      end
+
+      def setter_name
+        @info.setter_name
+      end
+
       def type_info
         @type_info ||= @info.property_type
       end
 
+      def argument_info
+        @argument_info ||= FieldArgumentInfo.new("value", type_info)
+      end
     end
   end
 end

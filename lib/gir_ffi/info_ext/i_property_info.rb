@@ -5,6 +5,10 @@ module GirFFI
       def getter_name
         name.gsub(/-/, '_')
       end
+
+      def setter_name
+        "#{getter_name}="
+      end
     end
   end
 end
