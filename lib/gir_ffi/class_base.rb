@@ -7,9 +7,8 @@ module GirFFI
   # the generated Struct classes.
   class ClassBase
     extend TypeBase
-
-    # TODO: Make separate base for :struct, :union, :object.
     extend Forwardable
+
     def_delegators :@struct, :to_ptr
 
     GIR_FFI_BUILDER = NullBuilder.new

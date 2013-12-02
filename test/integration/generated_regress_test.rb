@@ -963,7 +963,6 @@ describe Regress do
       end
 
       arr = GirFFI::InPointer.from_array(:uint, [1, 2, 3])
-      # TODO: Automatically convert arguments to signal_emit.
       GObject.signal_emit instance, "sig-with-array-len-prop", arr, 3
 
       a.to_a.must_equal [1, 2, 3]
@@ -972,7 +971,6 @@ describe Regress do
     it "handles the 'sig-with-array-prop' signal" do
       a = nil
       GObject.signal_connect(instance, "sig-with-array-prop") {|_, arr, _| a = arr }
-      # TODO: Automatically convert arguments to signal_emit.
       GObject.signal_emit instance, "sig-with-array-prop",
         GLib::Array.from(:uint, [1, 2, 3])
       a.to_a.must_equal [1, 2, 3]
@@ -1001,7 +999,6 @@ describe Regress do
         a = ghash.to_hash
       end
 
-      # TODO: Automatically convert arguments to signal_emit.
       g_hash_table = GLib::HashTable.from([:utf8, GObject::Value],
                                           {"foo" => GObject::Value.from("bar")})
 
