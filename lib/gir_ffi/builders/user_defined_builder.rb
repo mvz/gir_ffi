@@ -50,33 +50,20 @@ module GirFFI
 
       def type_info
         type_info = GObject::TypeInfo.new
-        type_info.class_size = parent_class_size 
+        type_info.class_size = parent_class_size
         type_info.instance_size = instance_size
 
         type_info.class_init = proc do |object_class_ptr, data|
-          object_class = GObject::ObjectClass.wrap(object_class_ptr.to_ptr)
-
-          setup_properties(object_class)
-
-          if info.vfunc_implementations.any?
-            super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
-
-            info.vfunc_implementations.each do |impl|
-              vfunc_info = find_vfunc impl.name
-              vfunc = VFuncBuilder.new(vfunc_info).build_class
-              # FIXME: This assigns a VFuncBase to a CallbackBase.
-              # This suggests that the two should be combined, but it seems
-              # CallbackBase will not cast the first argument correctly if used
-              # to map the implementation proc arguments.
-              super_class_struct[impl.name] = vfunc.from impl.implementation
-            end
-          end
+          object_class = GObject::ObjectClass.wrap object_class_ptr.to_ptr
+          setup_properties object_class
+          setup_vfuncs object_class
         end
+
         return type_info
       end
 
       def instance_size
-        size = parent_instance_size 
+        size = parent_instance_size
         properties.each do
           size += FFI.type_size(:int32)
         end
@@ -95,7 +82,7 @@ module GirFFI
         @parent_query ||= GObject.type_query parent_gtype
       end
 
-      def setup_properties(object_class)
+      def setup_properties object_class
         object_class.set_property = proc do |object, property_id, value, pspec|
           object.send("#{pspec.get_name}=", value.get_value)
         end
@@ -106,6 +93,20 @@ module GirFFI
 
         properties.each_with_index do |property, index|
           object_class.install_property index + 1, property.param_spec
+        end
+      end
+
+      def setup_vfuncs object_class
+        super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class.to_ptr)
+
+        info.vfunc_implementations.each do |impl|
+          vfunc_info = find_vfunc impl.name
+          vfunc = VFuncBuilder.new(vfunc_info).build_class
+          # FIXME: This assigns a VFuncBase to a CallbackBase.
+          # This suggests that the two should be combined, but it seems
+          # CallbackBase will not cast the first argument correctly if used
+          # to map the implementation proc arguments.
+          super_class_struct[impl.name] = vfunc.from impl.implementation
         end
       end
 
