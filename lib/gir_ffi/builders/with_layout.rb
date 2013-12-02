@@ -35,13 +35,9 @@ module GirFFI
         fields.map { |finfo| finfo.layout_specification }.flatten(1)
       end
 
-      def setup_accessors_for_field_info finfo
-        FieldBuilder.new(finfo).build
-      end
-
       def setup_field_accessors
         fields.each do |finfo|
-          setup_accessors_for_field_info finfo
+          FieldBuilder.new(finfo).build
         end
       end
 
