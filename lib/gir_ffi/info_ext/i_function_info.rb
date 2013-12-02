@@ -8,6 +8,10 @@ module GirFFI
           types << :pointer if throws?
         end
       end
+
+      def return_ffi_type
+        return_type.to_ffitype
+      end
     end
   end
 end

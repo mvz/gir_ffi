@@ -1,5 +1,6 @@
 require 'gir_ffi/info_ext/i_arg_info'
 require 'gir_ffi/info_ext/i_callable_info'
+require 'gir_ffi/info_ext/i_callback_info'
 require 'gir_ffi/info_ext/i_field_info'
 require 'gir_ffi/info_ext/i_function_info'
 require 'gir_ffi/info_ext/i_property_info'

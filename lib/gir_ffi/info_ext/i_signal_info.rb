@@ -49,7 +49,7 @@ module GirFFI
       end
 
       def return_ffi_type
-        result = super
+        result = return_type.to_ffitype
         if result == GLib::Boolean
           :bool
         else

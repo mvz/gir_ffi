@@ -58,4 +58,13 @@ describe GirFFI::InfoExt::IFunctionInfo do
       end
     end
   end
+
+  describe "#return_ffi_type" do
+    it "returns the ffi type of the return type" do
+      stub(return_type_info = Object.new).to_ffitype { :some_type }
+      stub(function_info).return_type { return_type_info }
+
+      function_info.return_ffi_type.must_equal :some_type
+    end
+  end
 end
