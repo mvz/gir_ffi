@@ -29,8 +29,8 @@ module GirFFI
 
       private
 
-      def libmodule
-        Object.const_get(@info.safe_namespace)::Lib
+      def lib_module_name
+        "#{@info.safe_namespace}::Lib"
       end
 
       def set_up_argument_relations
@@ -74,7 +74,7 @@ module GirFFI
       end
 
       def function_call
-        "#{capture}#{libmodule}.#{@info.symbol} #{function_call_arguments.join(', ')}"
+        "#{capture}#{lib_module_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
       end
 
       def method_arguments
