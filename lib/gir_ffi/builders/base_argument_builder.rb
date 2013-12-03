@@ -85,18 +85,6 @@ module GirFFI
       @callarg ||= @var_gen.new_var
     end
 
-    def pre
-      []
-    end
-
-    def post
-      []
-    end
-
-    def cleanup
-      []
-    end
-
     def new_variable
       @var_gen.new_var
     end

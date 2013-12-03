@@ -68,7 +68,7 @@ module GirFFI
       end
 
       def method_body
-        lines = preparation << function_call << post_processing << cleanup
+        lines = preparation << function_call << post_processing
         lines << "return #{return_values.join(', ')}" if has_return_values?
         lines.flatten.join("\n").indent
       end
@@ -109,10 +109,6 @@ module GirFFI
         args.unshift @errarg
 
         args.map {|arg| arg.post}
-      end
-
-      def cleanup
-        @argument_builders.map {|item| item.cleanup}
       end
 
       def return_values
