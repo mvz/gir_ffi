@@ -4,23 +4,30 @@ module GirFFI
   module Builders
     class CallbackReturnValueBuilder < BaseArgumentBuilder
       class Convertor
-        def initialize type_info, builder
+        def initialize type_info, argument_name
           @type_info = type_info
-          @builder = builder
+          @argument_name = argument_name
         end
 
         def conversion
-          args = conversion_arguments @builder.callarg
-          "#{@type_info.argument_class_name}.from(#{args})"
+          if conversion_needed?
+            args = conversion_arguments @argument_name
+            "#{@type_info.argument_class_name}.from(#{args})"
+          else
+            @argument_name
+          end
         end
 
         def conversion_arguments name
           @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
         end
-      end
 
-      def needs_outgoing_parameter_conversion?
-        specialized_type_tag == :enum || super
+        def conversion_needed?
+          @type_info.flattened_tag == :enum ||
+            [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
+              :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
+              :utf8, :zero_terminated ].include?(@type_info.flattened_tag)
+        end
       end
 
       def post
@@ -54,11 +61,15 @@ module GirFFI
       private
 
       def has_conversion?
-        is_closure || needs_outgoing_parameter_conversion?
+        post_convertor.conversion_needed?
+      end
+
+      def post_convertor
+        @post_convertor ||= Convertor.new(type_info, callarg)
       end
 
       def post_conversion
-        Convertor.new(type_info, self).conversion
+        post_convertor.conversion
       end
 
       def is_void_return_value?
