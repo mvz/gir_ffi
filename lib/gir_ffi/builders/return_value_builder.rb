@@ -4,6 +4,51 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
+      class Convertor
+        def initialize type_info, argument_name, length_arg
+          @type_info = type_info
+          @argument_name = argument_name
+          @length_arg = length_arg
+        end
+
+        def conversion
+          if conversion_needed?
+            case @type_info.flattened_tag
+            when :utf8, :filename
+              "#{@argument_name}.to_utf8"
+            else
+              "#{@type_info.argument_class_name}.wrap(#{conversion_arguments})"
+            end
+          else
+            @argument_name
+          end
+        end
+
+        def conversion_needed?
+          [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
+            :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
+            :utf8, :zero_terminated ].include?(@type_info.flattened_tag)
+        end
+
+        private
+
+        def conversion_arguments
+          if @type_info.flattened_tag == :c
+            "#{@type_info.subtype_tag_or_class.inspect}, #{array_size}, #{@argument_name}"
+          else
+            @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name).join(", ")
+          end
+        end
+
+        def array_size
+          if @length_arg
+            @length_arg.retname
+          else
+            @type_info.array_fixed_size
+          end
+        end
+      end
+
       def initialize var_gen, arginfo, is_constructor = false
         super var_gen, arginfo
         @is_constructor = is_constructor
@@ -40,7 +85,11 @@ module GirFFI
       private
 
       def has_conversion?
-        is_closure || needs_outgoing_parameter_conversion? || needs_constructor_wrap?
+        is_closure || post_convertor.conversion_needed? || needs_constructor_wrap?
+      end
+
+      def post_convertor
+        @post_convertor ||= Convertor.new(type_info, callarg, length_arg)
       end
 
       def post_conversion
@@ -49,7 +98,7 @@ module GirFFI
         elsif needs_constructor_wrap?
           "self.constructor_wrap(#{callarg})"
         else
-          outgoing_conversion callarg
+          post_convertor.conversion
         end
       end
 
