@@ -3,6 +3,22 @@ require 'gir_ffi/builders/return_value_builder'
 module GirFFI
   module Builders
     class CallbackReturnValueBuilder < BaseArgumentBuilder
+      class Convertor
+        def initialize type_info, builder
+          @type_info = type_info
+          @builder = builder
+        end
+
+        def conversion
+          args = conversion_arguments @builder.callarg
+          "#{@type_info.argument_class_name}.from(#{args})"
+        end
+
+        def conversion_arguments name
+          @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
+        end
+      end
+
       def needs_outgoing_parameter_conversion?
         specialized_type_tag == :enum || super
       end
@@ -42,8 +58,7 @@ module GirFFI
       end
 
       def post_conversion
-        args = conversion_arguments callarg
-        "#{argument_class_name}.from(#{args})"
+        Convertor.new(type_info, self).conversion
       end
 
       def is_void_return_value?

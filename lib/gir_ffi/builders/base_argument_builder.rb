@@ -89,8 +89,6 @@ module GirFFI
       @var_gen.new_var
     end
 
-    private
-
     def needs_outgoing_parameter_conversion?
       [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
         :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
