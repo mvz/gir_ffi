@@ -1,4 +1,5 @@
-require 'gir_ffi/builders/return_value_builder'
+require 'gir_ffi/builders/callback_argument_builder'
+require 'gir_ffi/builders/callback_return_value_builder'
 
 module GirFFI
   module Builders
@@ -6,25 +7,6 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MappingMethodBuilder
-      # TODO: Make CallbackArgumentBuilder accept argument name
-      # TODO: Fix name of #post method
-      class CallbackArgumentBuilder < ReturnValueBuilder
-        def needs_outgoing_parameter_conversion?
-          specialized_type_tag == :enum || super
-        end
-      end
-
-      class CallbackReturnValueBuilder < ReturnValueBuilder
-        def needs_outgoing_parameter_conversion?
-          specialized_type_tag == :enum || super
-        end
-
-        def post_conversion
-          args = conversion_arguments callarg
-          "#{argument_class_name}.from(#{args})"
-        end
-      end
-
       def self.for_callback argument_infos, return_type_info
         vargen = VariableNameGenerator.new
         argument_builders = argument_infos.map {|arg|
