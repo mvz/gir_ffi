@@ -14,27 +14,11 @@ end
 # being converted to a situation where they test behavior agains real instances
 # of IArgInfo.
 describe GirFFI::Builders::ArgumentBuilder do
-  let(:argument_info) { Object.new }
-  let(:type_info) { Object.new }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, argument_info) }
-  let(:conversion_arguments) { [] }
-  let(:argument_class_name) { nil }
-
-  before do
-    stub(argument_info).name { 'foo' }
-    stub(argument_info).argument_type { type_info }
-    stub(argument_info).direction { direction }
-    stub(argument_info).skip? { false }
-    stub(type_info).argument_class_name { argument_class_name }
-    stub(type_info).extra_conversion_arguments { conversion_arguments }
-  end
+  let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
 
   describe "for an argument with direction :in" do
-    let(:direction) { :in }
-
     describe "for :callback" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data('Regress', 'test_callback_destroy_notify').args[0] }
 
@@ -48,15 +32,11 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :zero_terminated" do
-      let(:argument_class_name) { 'GirFFI::ZeroTerminated' }
-      let(:conversion_arguments) { [:foo] }
-
-      before do
-        stub(type_info).flattened_tag { :zero_terminated }
-      end
+      let(:arg_info) { get_introspection_data("GIMarshallingTests",
+                                              "array_in_len_zero_terminated").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::ZeroTerminated.from(:foo, foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::ZeroTerminated.from(:gint32, ints)" ]
       end
 
       it "has the correct value for #post" do
@@ -65,7 +45,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :void" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) { get_introspection_data("Regress", "test_callback_user_data").args[1] }
 
       describe "when it is a regular argument" do
@@ -99,10 +78,7 @@ describe GirFFI::Builders::ArgumentBuilder do
   end
 
   describe "for an argument with direction :out" do
-    let(:direction) { :out }
-
     describe "for :enum" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) { get_introspection_data("GIMarshallingTests", "genum_out").args[0] }
 
       it "has the correct value for #pre" do
@@ -115,7 +91,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :flags" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "flags_out").args[0] }
 
@@ -129,7 +104,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :object" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_method_introspection_data("Regress", "TestObj", "null_out").args[0] }
 
@@ -143,13 +117,8 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :struct" do
-      let(:argument_class_name) { 'Bar::Foo' }
-      before do
-        stub(type_info).flattened_tag { :struct }
-      end
 
       describe "when not allocated by the caller" do
-        let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
         let(:arg_info) {
           get_introspection_data("GIMarshallingTests", "boxed_struct_out").args[0] }
 
@@ -163,12 +132,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       describe "when allocated by the caller" do
-        before do
-          stub(argument_info).caller_allocates? { true }
-        end
+        let(:arg_info) {
+          get_method_introspection_data("Regress", "TestStructA", "clone").args[0] }
 
         it "has the correct value for #pre" do
-          builder.pre.must_equal [ "_v1 = Bar::Foo.new" ]
+          builder.pre.must_equal [ "_v1 = Regress::TestStructA.new" ]
         end
 
         it "has the correct value for #post" do
@@ -178,7 +146,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :strv" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "gstrv_out").args[0] }
 
@@ -192,7 +159,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :array" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
 
       describe "when allocated by the callee" do
         let(:arg_info) {
@@ -226,7 +192,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :ptr_array" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "gptrarray_utf8_none_out").args[0] }
 
@@ -240,7 +205,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :error" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "gerror_out").args[0] }
 
@@ -254,7 +218,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :c" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
 
       describe "with fixed size" do
         let(:arg_info) {
@@ -290,7 +253,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :glist" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "glist_utf8_none_out").args[0] }
 
@@ -304,7 +266,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :gslist" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "gslist_utf8_none_out").args[0] }
 
@@ -318,7 +279,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :ghash" do
-      let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:arg_info) {
         get_introspection_data("GIMarshallingTests", "ghashtable_utf8_none_out").args[0] }
 
@@ -333,17 +293,12 @@ describe GirFFI::Builders::ArgumentBuilder do
   end
 
   describe "for an argument with direction :inout" do
-    let(:direction) { :inout }
-
     describe "for :enum" do
-      let(:argument_class_name) { 'Bar::Foo' }
-      before do
-        stub(type_info).flattened_tag { :enum }
-        stub(type_info).tag_or_class { Bar::Foo }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "enum_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from Bar::Foo, foo" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from GIMarshallingTests::Enum, v" ]
       end
 
       it "has the correct value for #post" do
@@ -352,14 +307,11 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :flags" do
-      let(:argument_class_name) { 'Bar::Foo' }
-      before do
-        stub(type_info).flattened_tag { :flags }
-        stub(type_info).tag_or_class { Bar::Foo }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "no_type_flags_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from Bar::Foo, foo" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from GIMarshallingTests::NoTypeFlags, v" ]
       end
 
       it "has the correct value for #post" do
@@ -368,17 +320,15 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :gint32" do
-      before do
-        stub(type_info).flattened_tag { :gint32 }
-        stub(type_info).tag_or_class { :gint32 }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "int32_inout_min_max").args[0] }
 
       it "has the correct value for inarg" do
-        builder.inarg.must_equal "foo"
+        builder.inarg.must_equal "v"
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :gint32, foo" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :gint32, v" ]
       end
 
       it "has the correct value for #post" do
@@ -391,8 +341,6 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data('Regress', 'test_array_int_inout') }
       let(:arg_info) { function_info.args[0] }
       let(:array_arg_info) { function_info.args[1] }
-      let(:builder) {
-        GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
       let(:array_arg_builder) {
         GirFFI::Builders::ArgumentBuilder.new(var_gen, array_arg_info) }
 
@@ -411,14 +359,11 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :strv" do
-      let(:argument_class_name) { 'GLib::Strv' }
-      before do
-        stub(type_info).flattened_tag { :strv }
-        stub(type_info).tag_or_class { [:pointer, :array] }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "gstrv_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :array], GLib::Strv.from(foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :strv], GLib::Strv.from(g_strv)" ]
       end
 
       it "has the correct value for #post" do
@@ -427,34 +372,24 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :ptr_array" do
-      let(:conversion_arguments) { [:foo] }
-      let(:argument_class_name) { 'GLib::PtrArray' }
-
-      before do
-        stub(type_info).flattened_tag { :ptr_array }
-        stub(type_info).tag_or_class { [:pointer, :array] }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "gptrarray_utf8_none_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :array], GLib::PtrArray.from(:foo, foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :ptr_array], GLib::PtrArray.from(:utf8, parray_)" ]
       end
 
       it "has the correct value for #post" do
-        builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:foo, _v1.to_value)" ]
+        builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:utf8, _v1.to_value)" ]
       end
     end
 
     describe "for :utf8" do
-      let(:conversion_arguments) { [:utf8] }
-      let(:argument_class_name) { 'GirFFI::InPointer' }
-
-      before do
-        stub(type_info).flattened_tag { :utf8 }
-        stub(type_info).tag_or_class { :utf8 }
-      end
+      let(:arg_info) {
+        get_introspection_data("GIMarshallingTests", "utf8_none_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :utf8, GirFFI::InPointer.from(:utf8, foo)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :utf8, GirFFI::InPointer.from(:utf8, utf8)" ]
       end
 
       it "has the correct value for #post" do
@@ -463,130 +398,95 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe "for :c" do
-      let(:argument_class_name) { 'GirFFI::SizedArray' }
-
-      before do
-        stub(type_info).flattened_tag { :c }
-        stub(type_info).tag_or_class { [:pointer, :c] }
-        stub(type_info).subtype_tag_or_class { :bar }
-      end
-
       describe "with fixed size" do
-        let(:conversion_arguments) { [:bar, 3] }
-
-        before do
-          stub(type_info).array_fixed_size { 3 }
-        end
+        let(:arg_info) {
+          get_introspection_data("GIMarshallingTests", "array_fixed_inout").args[0] }
 
         it "has the correct value for #pre" do
           builder.pre.must_equal [
-            "GirFFI::ArgHelper.check_fixed_array_size 3, foo, \"foo\"",
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:bar, 3, foo)"
+            "GirFFI::ArgHelper.check_fixed_array_size 4, ints, \"ints\"",
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, 4, ints)"
           ]
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:bar, 3, _v1.to_value)" ]
+          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)" ]
         end
       end
 
       describe "with separate size parameter" do
-        let(:length_argument) { Object.new }
-        let(:conversion_arguments) { [:bar, -1] }
+        let(:function_info) {
+          get_introspection_data('Regress', 'test_array_int_inout') }
+        let(:length_arg_info) { function_info.args[0] }
+        let(:arg_info) { function_info.args[1] }
+        let(:length_arg_builder) {
+          GirFFI::Builders::ArgumentBuilder.new(var_gen, length_arg_info) }
+
         before do
-          stub(type_info).array_fixed_size { -1 }
-          stub(length_argument).retname { "baz" }
-          builder.length_arg = length_argument
+          builder.length_arg = length_arg_builder
         end
 
         it "has the correct value for #pre" do
           builder.pre.must_equal [
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:bar, -1, foo)"
+            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, -1, ints)"
           ]
         end
 
         it "has the correct value for #post" do
-          builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:bar, baz, _v1.to_value)" ]
+          builder.post.must_equal [ "_v3 = GirFFI::SizedArray.wrap(:gint32, _v2, _v1.to_value)" ]
         end
       end
     end
   end
 
   describe "for a skipped argument with direction :in" do
-    let(:direction) { :in }
+    let(:arg_info) {
+      get_method_introspection_data("Regress", "TestObj", "skip_param").args[2] }
 
-    before do
-      stub(argument_info).skip? { true }
+    it "has the correct value for inarg" do
+      builder.inarg.must_be_nil
     end
 
-    describe "for :gint32" do
-      before do
-        stub(type_info).flattened_tag { :gint32 }
-      end
+    it "has the correct value for #pre" do
+      builder.pre.must_equal [ "_v1 = 0" ]
+    end
 
-      it "has the correct value for inarg" do
-        builder.inarg.must_be_nil
-      end
-
-      it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = 0" ]
-      end
-
-      it "has the correct value for #post" do
-        builder.post.must_equal []
-      end
+    it "has the correct value for #post" do
+      builder.post.must_equal []
     end
   end
 
   describe "for a skipped argument with direction :inout" do
-    let(:direction) { :inout }
+    let(:arg_info) {
+      get_method_introspection_data("Regress", "TestObj", "skip_inout_param").args[3] }
 
-    before do
-      stub(argument_info).skip? { true }
+    it "has the correct value for inarg" do
+      builder.inarg.must_be_nil
     end
 
-    describe "for :gint32" do
-      before do
-        stub(type_info).flattened_tag { :gint32 }
-      end
+    it "has the correct value for #pre" do
+      builder.pre.must_equal [ "_v1 = nil" ]
+    end
 
-      it "has the correct value for inarg" do
-        builder.inarg.must_be_nil
-      end
-
-      it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = nil" ]
-      end
-
-      it "has the correct value for #post" do
-        builder.post.must_equal []
-      end
+    it "has the correct value for #post" do
+      builder.post.must_equal []
     end
   end
 
   describe "for a skipped argument with direction :out" do
-    let(:direction) { :out }
+    let(:arg_info) {
+      get_method_introspection_data("Regress", "TestObj", "skip_out_param").args[1] }
 
-    before do
-      stub(argument_info).skip? { true }
+    it "has the correct value for inarg" do
+      builder.inarg.must_be_nil
     end
 
-    describe "for :gint32" do
-      before do
-        stub(type_info).flattened_tag { :gint32 }
-      end
+    it "has the correct value for #pre" do
+      builder.pre.must_equal [ "_v1 = nil" ]
+    end
 
-      it "has the correct value for inarg" do
-        builder.inarg.must_be_nil
-      end
-
-      it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = nil" ]
-      end
-
-      it "has the correct value for #post" do
-        builder.post.must_equal []
-      end
+    it "has the correct value for #post" do
+      builder.post.must_equal []
     end
   end
 end
