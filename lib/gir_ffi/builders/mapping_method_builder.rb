@@ -114,7 +114,7 @@ module GirFFI
       end
 
       def method_arguments
-        @method_arguments ||= argument_builders.map(&:callarg).unshift('_proc')
+        @method_arguments ||= argument_builders.map(&:method_argument_name).unshift('_proc')
       end
 
       def return_value_info

@@ -2,7 +2,6 @@ require 'gir_ffi/builders/return_value_builder'
 
 module GirFFI
   module Builders
-    # TODO: Make CallbackArgumentBuilder accept argument name
     # TODO: Fix name of #post method
     class CallbackArgumentBuilder < BaseArgumentBuilder
       class Convertor
@@ -73,10 +72,14 @@ module GirFFI
 
       def retname
         @retname ||= if has_conversion?
-                       @var_gen.new_var
+                       new_variable
                      else
-                       callarg
+                       method_argument_name
                      end
+      end
+
+      def method_argument_name
+        @method_argument_name ||= name || new_variable
       end
 
       private
@@ -86,12 +89,12 @@ module GirFFI
       end
 
       def post_convertor
-        @post_convertor ||= Convertor.new(type_info, callarg, length_arg)
+        @post_convertor ||= Convertor.new(type_info, method_argument_name, length_arg)
       end
 
       def post_conversion
         if is_closure
-          "GirFFI::ArgHelper::OBJECT_STORE[#{callarg}.address]"
+          "GirFFI::ArgHelper::OBJECT_STORE[#{method_argument_name}.address]"
         else
           post_convertor.conversion
         end

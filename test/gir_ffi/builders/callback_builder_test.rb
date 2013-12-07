@@ -8,10 +8,10 @@ describe GirFFI::Builders::CallbackBuilder do
       let(:callback_info) { get_introspection_data "Regress", "TestCallbackFull" }
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1, _v2, _v3)
-          _v4 = _v3.to_utf8
-          _v5 = _proc.call(_v1, _v2, _v4)
-          return _v5
+        def self.call_with_argument_mapping(_proc, foo, bar, path)
+          _v1 = path.to_utf8
+          _v2 = _proc.call(foo, bar, _v1)
+          return _v2
         end
         CODE
 
@@ -36,10 +36,10 @@ describe GirFFI::Builders::CallbackBuilder do
       let(:callback_info) { get_introspection_data "Regress", "TestCallbackUserData" }
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1)
-          _v2 = GirFFI::ArgHelper::OBJECT_STORE[_v1.address]
-          _v3 = _proc.call(_v2)
-          return _v3
+        def self.call_with_argument_mapping(_proc, user_data)
+          _v1 = GirFFI::ArgHelper::OBJECT_STORE[user_data.address]
+          _v2 = _proc.call(_v1)
+          return _v2
         end
         CODE
 
