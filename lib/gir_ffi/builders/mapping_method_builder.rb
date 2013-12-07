@@ -110,7 +110,7 @@ module GirFFI
       end
 
       def call_arguments
-        @call_arguments ||= argument_builders.map(&:retval).compact
+        @call_arguments ||= argument_builders.map(&:call_argument_name).compact
       end
 
       def method_arguments

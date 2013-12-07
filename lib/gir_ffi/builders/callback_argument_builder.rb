@@ -2,7 +2,6 @@ require 'gir_ffi/builders/return_value_builder'
 
 module GirFFI
   module Builders
-    # TODO: Fix name of #post method
     class CallbackArgumentBuilder < BaseArgumentBuilder
       class Convertor
         def initialize type_info, argument_name, length_arg
@@ -43,7 +42,7 @@ module GirFFI
 
         def array_size
           if @length_arg
-            @length_arg.retname
+            @length_arg.pre_converted_name
           else
             @type_info.array_fixed_size
           end
@@ -52,30 +51,22 @@ module GirFFI
 
       def pre_conversion
         if has_pre_conversion?
-          [ "#{retname} = #{pre_conversion_implementation}" ]
+          [ "#{pre_converted_name} = #{pre_conversion_implementation}" ]
         else
           []
         end
       end
 
-      def inarg
-        nil
+      def call_argument_name
+        pre_converted_name unless array_arg
       end
 
-      def retval
-        super if is_relevant?
-      end
-
-      def is_relevant?
-        !is_void_return_value? && !arginfo.skip?
-      end
-
-      def retname
-        @retname ||= if has_pre_conversion?
-                       new_variable
-                     else
-                       method_argument_name
-                     end
+      def pre_converted_name
+        @pre_converted_name ||= if has_pre_conversion?
+                                  new_variable
+                                else
+                                  method_argument_name
+                                end
       end
 
       def method_argument_name
