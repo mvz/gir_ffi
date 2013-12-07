@@ -92,7 +92,7 @@ module GirFFI
       end
 
       def return_value_conversion
-        return_value_builder.post
+        return_value_builder.post_conversion
       end
 
       def call_to_proc
@@ -100,7 +100,7 @@ module GirFFI
       end
 
       def parameter_preparation
-        argument_builders.map(&:post).flatten
+        argument_builders.map(&:pre_conversion).flatten
       end
 
       def capture

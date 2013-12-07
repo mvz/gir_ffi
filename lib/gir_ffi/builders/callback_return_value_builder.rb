@@ -30,9 +30,9 @@ module GirFFI
         end
       end
 
-      def post
-        if has_conversion?
-          [ "#{retname} = #{post_conversion}" ]
+      def post_conversion
+        if has_post_conversion?
+          [ "#{retname} = #{post_convertor.conversion}" ]
         else
           []
         end
@@ -51,7 +51,7 @@ module GirFFI
       end
 
       def retname
-        @retname ||= if has_conversion?
+        @retname ||= if has_post_conversion?
                        @var_gen.new_var
                      else
                        callarg
@@ -60,16 +60,12 @@ module GirFFI
 
       private
 
-      def has_conversion?
+      def has_post_conversion?
         post_convertor.conversion_needed?
       end
 
       def post_convertor
         @post_convertor ||= Convertor.new(type_info, callarg)
-      end
-
-      def post_conversion
-        post_convertor.conversion
       end
 
       def is_void_return_value?

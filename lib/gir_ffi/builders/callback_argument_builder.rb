@@ -50,9 +50,9 @@ module GirFFI
         end
       end
 
-      def post
-        if has_conversion?
-          [ "#{retname} = #{post_conversion}" ]
+      def pre_conversion
+        if has_pre_conversion?
+          [ "#{retname} = #{pre_conversion_implementation}" ]
         else
           []
         end
@@ -71,7 +71,7 @@ module GirFFI
       end
 
       def retname
-        @retname ||= if has_conversion?
+        @retname ||= if has_pre_conversion?
                        new_variable
                      else
                        method_argument_name
@@ -84,19 +84,19 @@ module GirFFI
 
       private
 
-      def has_conversion?
-        is_closure || post_convertor.conversion_needed?
+      def has_pre_conversion?
+        is_closure || pre_convertor.conversion_needed?
       end
 
-      def post_convertor
-        @post_convertor ||= Convertor.new(type_info, method_argument_name, length_arg)
+      def pre_convertor
+        @pre_convertor ||= Convertor.new(type_info, method_argument_name, length_arg)
       end
 
-      def post_conversion
+      def pre_conversion_implementation
         if is_closure
           "GirFFI::ArgHelper::OBJECT_STORE[#{method_argument_name}.address]"
         else
-          post_convertor.conversion
+          pre_convertor.conversion
         end
       end
 
