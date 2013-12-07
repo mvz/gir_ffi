@@ -1,18 +1,5 @@
 require 'gir_ffi_test_helper'
 
-# Dummy module
-module Bar
-  module Foo
-
-  end
-end
-
-# NOTE: All cooperating classes were originally stubbed, but this became
-# unweildy as functionality was moved between classes. Also, IArgInfo and
-# related classes are not really classes controlled by GirFFI, as part of their
-# interface is dictated by GIR's implementation. Therefore, these tests are
-# being converted to a situation where they test behavior agains real instances
-# of IArgInfo.
 describe GirFFI::Builders::ArgumentBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
