@@ -18,7 +18,7 @@ module GirFFI
     def self.to_native(value, context)
       return nil unless value
       return value if FFI::Function === value
-      FFI::Function.new gir_ffi_builder.return_type, gir_ffi_builder.argument_types, value
+      value.to_native
     end
 
     CALLBACKS = []
@@ -45,6 +45,13 @@ module GirFFI
 
     def self.to_ffitype
       self
+    end
+
+    def to_native
+      @to_native ||= begin
+                       builder = self.class.gir_ffi_builder
+                       FFI::Function.new builder.return_type, builder.argument_types, self
+                     end
     end
 
     def self.copy_value_to_pointer value, pointer

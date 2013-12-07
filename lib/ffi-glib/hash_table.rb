@@ -12,12 +12,13 @@ module GLib
     attr_reader :value_type
 
     def each
-      prc = Proc.new {|keyptr, valptr, userdata|
+      prc = proc {|keyptr, valptr, userdata|
         key = GirFFI::ArgHelper.cast_from_pointer key_type, keyptr
         val = GirFFI::ArgHelper.cast_from_pointer value_type, valptr
         yield key, val
       }
-      ::GLib::Lib.g_hash_table_foreach self.to_ptr, prc, nil
+      callback = GLib::HFunc.from prc
+      ::GLib::Lib.g_hash_table_foreach self.to_ptr, callback, nil
     end
 
     def to_hash

@@ -109,7 +109,7 @@ module GirFFI
         info.vfunc_implementations.each do |impl|
           vfunc_info = find_vfunc impl.name
           vfunc = VFuncBuilder.new(vfunc_info).build_class
-          # FIXME: This assigns a VFuncBase to a CallbackBase.
+          # NOTE: This assigns a VFuncBase to a CallbackBase.
           # This suggests that the two should be combined, but it seems
           # CallbackBase will not cast the first argument correctly if used
           # to map the implementation proc arguments.

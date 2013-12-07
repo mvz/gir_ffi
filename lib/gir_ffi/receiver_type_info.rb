@@ -13,5 +13,9 @@ module GirFFI
     def tag
       :interface
     end
+
+    def pointer?
+      false
+    end
   end
 end

@@ -22,12 +22,15 @@ module GirFFI
       def mapping_method_definition
         arg_infos = info.args
 
-        container_type_info = ReceiverTypeInfo.new(container_info)
-        receiver_info = ReturnValueInfo.new(container_type_info)
+        receiver_info = ReturnValueInfo.new(receiver_type_info)
 
         MappingMethodBuilder.for_vfunc(receiver_info,
                                        arg_infos,
                                        info.return_type).method_definition
+      end
+
+      def receiver_type_info
+        ReceiverTypeInfo.new(container_info)
       end
 
       def container_class
@@ -36,6 +39,14 @@ module GirFFI
 
       def container_info
         @container_info ||= info.container
+      end
+
+      def argument_types
+        @argument_types ||= info.argument_ffi_types.unshift(receiver_type_info.to_ffitype)
+      end
+
+      def return_type
+        @return_type ||= info.return_ffi_type
       end
     end
   end
