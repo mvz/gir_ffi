@@ -23,10 +23,7 @@ module GirFFI
         end
 
         def conversion_needed?
-          @type_info.flattened_tag == :enum ||
-            [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
-              :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
-              :utf8, :zero_terminated ].include?(@type_info.flattened_tag)
+          @type_info.needs_conversion_for_callbacks?
         end
       end
 

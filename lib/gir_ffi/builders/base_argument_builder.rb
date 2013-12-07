@@ -91,9 +91,7 @@ module GirFFI
       end
 
       def needs_outgoing_parameter_conversion?
-        [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
-          :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
-          :utf8, :zero_terminated ].include?(specialized_type_tag)
+        @type_info.needs_conversion_for_functions?
       end
 
       def outgoing_conversion base

@@ -136,6 +136,16 @@ module GirFFI
         end
       end
 
+      def needs_conversion_for_functions?
+        [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
+          :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
+          :utf8, :zero_terminated ].include?(flattened_tag)
+      end
+
+      def needs_conversion_for_callbacks?
+        flattened_tag == :enum || needs_conversion_for_functions?
+      end
+
       def extra_conversion_arguments
         case flattened_tag
         when :utf8, :void
