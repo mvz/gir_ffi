@@ -54,9 +54,8 @@ module GirFFI
         type_info.instance_size = instance_size
 
         type_info.class_init = proc do |object_class_ptr, data|
-          object_class = GObject::ObjectClass.wrap object_class_ptr.to_ptr
-          setup_properties object_class
-          setup_vfuncs object_class
+          setup_properties object_class_ptr
+          setup_vfuncs object_class_ptr
         end
 
         return type_info
@@ -82,7 +81,9 @@ module GirFFI
         @parent_query ||= GObject.type_query parent_gtype
       end
 
-      def setup_properties object_class
+      def setup_properties object_class_ptr
+        object_class = GObject::ObjectClass.wrap object_class_ptr
+
         object_class.get_property = property_getter
         object_class.set_property = property_setter
 
@@ -103,8 +104,8 @@ module GirFFI
         end
       end
 
-      def setup_vfuncs object_class
-        super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class.to_ptr)
+      def setup_vfuncs object_class_ptr
+        super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
 
         info.vfunc_implementations.each do |impl|
           vfunc_info = find_vfunc impl.name
