@@ -94,8 +94,7 @@ module GirFFI
       end
 
       def needs_constructor_wrap?
-        # FIXME: @is_constructor should be enough
-        @is_constructor && [ :interface, :object ].include?(specialized_type_tag)
+        @is_constructor && specialized_type_tag == :object
       end
 
       def is_void_return_value?
