@@ -2,8 +2,6 @@
 
 by Matijs van Zuijlen
 
-[![Build Status](https://secure.travis-ci.org/mvz/ruby-gir-ffi.png)](http://travis-ci.org/mvz/ruby-gir-ffi)
-
 ## Description
 
 Ruby bindings for GNOME using the GObject Introspection Repository.
