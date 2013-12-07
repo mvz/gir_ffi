@@ -10,20 +10,12 @@ module GirFFI
         end
 
         def conversion
-          if conversion_needed?
-            args = conversion_arguments @argument_name
-            "#{@type_info.argument_class_name}.from(#{args})"
-          else
-            @argument_name
-          end
+          args = conversion_arguments @argument_name
+          "#{@type_info.argument_class_name}.from(#{args})"
         end
 
         def conversion_arguments name
           @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
-        end
-
-        def conversion_needed?
-          @type_info.needs_conversion_for_callbacks?
         end
       end
 
@@ -64,7 +56,7 @@ module GirFFI
       private
 
       def has_post_conversion?
-        post_convertor.conversion_needed?
+        type_info.needs_conversion_for_callbacks?
       end
 
       def post_convertor

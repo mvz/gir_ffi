@@ -11,20 +11,12 @@ module GirFFI
         end
 
         def conversion
-          if conversion_needed?
-            case @type_info.flattened_tag
-            when :utf8, :filename
-              "#{@argument_name}.to_utf8"
-            else
-              "#{@type_info.argument_class_name}.wrap(#{conversion_arguments})"
-            end
+          case @type_info.flattened_tag
+          when :utf8, :filename
+            "#{@argument_name}.to_utf8"
           else
-            @argument_name
+            "#{@type_info.argument_class_name}.wrap(#{conversion_arguments})"
           end
-        end
-
-        def conversion_needed?
-          @type_info.needs_conversion_for_callbacks?
         end
 
         private
@@ -73,7 +65,7 @@ module GirFFI
       private
 
       def has_pre_conversion?
-        is_closure || pre_convertor.conversion_needed?
+        is_closure || type_info.needs_conversion_for_callbacks?
       end
 
       def pre_convertor
