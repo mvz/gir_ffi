@@ -1,26 +1,16 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
-  let(:type_info) { Object.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, skip) }
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info) }
   let(:for_constructor) { false }
-  let(:skip) { false }
   let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen,
                                                            return_type_info,
                                                            for_constructor) }
-  let(:conversion_arguments) { [] }
-  let(:argument_class_name) { flattened_tag }
-  let(:flattened_tag) { nil }
-
-  before do
-    stub(type_info).argument_class_name { argument_class_name }
-    stub(type_info).extra_conversion_arguments { conversion_arguments }
-    stub(type_info).flattened_tag { flattened_tag }
-  end
 
   describe "for :gint32" do
-    let(:flattened_tag) { :gint32 }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "int_return_min").return_type }
 
     it "has no statements in #post" do
       builder.post.must_equal []
@@ -33,12 +23,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :struct" do
-    let(:argument_class_name) { 'Bar::Foo' }
-    let(:flattened_tag) { :struct }
+    let(:type_info) { get_method_introspection_data("GIMarshallingTests",
+                                                  "BoxedStruct",
+                                                  "returnv").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+      builder.post.must_equal [ "_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -48,12 +39,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :union" do
-    let(:argument_class_name) { 'Bar::Foo' }
-    let(:flattened_tag) { :union }
+    let(:type_info) { get_method_introspection_data("GIMarshallingTests",
+                                                  "Union",
+                                                  "returnv").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+      builder.post.must_equal [ "_v2 = GIMarshallingTests::Union.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -63,48 +55,31 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :interface" do
-    let(:argument_class_name) { 'Bar::Foo' }
-    let(:flattened_tag) { :interface }
+    let(:type_info) { get_method_introspection_data("Gio",
+                                                  "File",
+                                                  "new_for_commandline_arg").return_type }
 
-    describe "when the method is not a constructor" do
-      let(:for_constructor) { false }
-
-      it "wraps the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
-      end
-
-      it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
-      end
+    it "wraps the result in #post" do
+      builder.callarg.must_equal "_v1"
+      builder.post.must_equal [ "_v2 = Gio::File.wrap(_v1)" ]
     end
 
-    describe "when the method is a constructor" do
-      let(:for_constructor) { true }
-
-      it "wraps the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = self.constructor_wrap(_v1)" ]
-      end
-
-      it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
-      end
+    it "returns the wrapped result" do
+      builder.callarg.must_equal "_v1"
+      builder.retval.must_equal "_v2"
     end
   end
 
   describe "for :object" do
-    let(:argument_class_name) { 'Bar::Foo' }
-    let(:flattened_tag) { :object }
-
     describe "when the method is not a constructor" do
+      let(:type_info) { get_method_introspection_data("GIMarshallingTests",
+                                                    "Object",
+                                                    "full_return").return_type }
       let(:for_constructor) { false }
 
       it "wraps the result in #post" do
         builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = Bar::Foo.wrap(_v1)" ]
+        builder.post.must_equal [ "_v2 = GIMarshallingTests::Object.wrap(_v1)" ]
       end
 
       it "returns the wrapped result" do
@@ -114,6 +89,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     describe "when the method is a constructor" do
+      let(:type_info) { get_method_introspection_data("GIMarshallingTests",
+                                                    "Object",
+                                                    "new").return_type }
       let(:for_constructor) { true }
 
       it "wraps the result in #post" do
@@ -129,8 +107,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :strv" do
-    let(:argument_class_name) { 'GLib::Strv' }
-    let(:flattened_tag) { :strv }
+    let(:type_info) { get_method_introspection_data("GLib",
+                                                  "KeyFile",
+                                                  "get_locale_string_list").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
@@ -144,13 +123,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :zero_terminated" do
-    let(:argument_class_name) { 'GirFFI::ZeroTerminated' }
-    let(:conversion_arguments) { [:foo] }
-    let(:flattened_tag) { :zero_terminated }
+    let(:type_info) { get_method_introspection_data("GLib",
+                                                  "Variant",
+                                                  "dup_bytestring").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GirFFI::ZeroTerminated.wrap(:foo, _v1)" ]
+      builder.post.must_equal [ "_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -160,8 +139,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :byte_array" do
-    let(:argument_class_name) { 'GLib::ByteArray' }
-    let(:flattened_tag) { :byte_array }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "bytearray_full_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
@@ -175,13 +154,12 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :ptr_array" do
-    let(:argument_class_name) { 'GLib::PtrArray' }
-    let(:conversion_arguments) { [:foo] }
-    let(:flattened_tag) { :ptr_array }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "gptrarray_utf8_none_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:foo, _v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:utf8, _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -191,13 +169,12 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :glist" do
-    let(:argument_class_name) { 'GLib::List' }
-    let(:conversion_arguments) { [:foo] }
-    let(:flattened_tag) { :glist }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "glist_int_none_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::List.wrap(:foo, _v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::List.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -207,13 +184,12 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :gslist" do
-    let(:argument_class_name) { 'GLib::SList' }
-    let(:conversion_arguments) { [:foo] }
-    let(:flattened_tag) { :gslist }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "gslist_int_none_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::SList.wrap(:foo, _v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::SList.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -223,13 +199,12 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :ghash" do
-    let(:argument_class_name) { 'GLib::HashTable' }
-    let(:conversion_arguments) { [[:foo, :bar]] }
-    let(:flattened_tag) { :ghash }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "ghashtable_int_none_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::HashTable.wrap([:foo, :bar], _v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -239,13 +214,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :array" do
-    let(:argument_class_name) { 'GLib::Array' }
-    let(:conversion_arguments) { [:foo] }
-    let(:flattened_tag) { :array }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "garray_int_none_return").return_type }
+
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::Array.wrap(:foo, _v1)" ]
+      builder.post.must_equal [ "_v2 = GLib::Array.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
@@ -255,8 +230,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :error" do
-    let(:argument_class_name) { 'GLib::Error' }
-    let(:flattened_tag) { :error }
+    let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                           "gerror_return").return_type }
 
     it "wraps the result in #post" do
       builder.callarg.must_equal "_v1"
@@ -270,18 +245,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :c" do
-    let(:argument_class_name) { 'GLib::SizedArray' }
-
     describe "with fixed size" do
-      before do
-        stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class { :foo }
-        stub(type_info).array_fixed_size { 3 }
-      end
+      let(:type_info) { get_introspection_data("GIMarshallingTests",
+                                             "array_fixed_int_return").return_type }
 
       it "converts the result in #post" do
         builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, 3, _v1)" ]
+        builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)" ]
       end
 
       it "returns the wrapped result" do
@@ -292,19 +262,18 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     describe "with separate size parameter" do
       let(:length_argument) { Object.new }
+      let(:type_info) { get_method_introspection_data("GIMarshallingTests",
+                                                    "Object",
+                                                    "method_array_return").return_type }
 
       before do
-        stub(type_info).flattened_tag { :c }
-        stub(type_info).subtype_tag_or_class { :foo }
-        stub(type_info).array_fixed_size { -1 }
-
         stub(length_argument).retname { "bar" }
         builder.length_arg = length_argument
       end
 
       it "converts the result in #post" do
         builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GLib::SizedArray.wrap(:foo, bar, _v1)" ]
+        builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)" ]
       end
 
       it "returns the wrapped result" do
@@ -315,9 +284,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :utf8" do
-    before do
-      stub(type_info).flattened_tag { :utf8 }
-    end
+    let(:type_info) {
+      get_introspection_data("GIMarshallingTests", "utf8_full_return").return_type }
 
     it "converts the result in #post" do
       builder.callarg.must_equal "_v1"
@@ -331,10 +299,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :void pointer" do
-    before do
-      stub(type_info).flattened_tag { :void }
-      stub(type_info).pointer? { true }
-    end
+    let(:type_info) {
+      get_introspection_data("GIMarshallingTests", "CallbackIntInt").args[1].argument_type }
 
     it "has no statements in #post" do
       builder.post.must_equal []
@@ -347,10 +313,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :void" do
-    before do
-      stub(type_info).flattened_tag { :void }
-      stub(type_info).pointer? { false }
-    end
+    let(:type_info) {
+      get_method_introspection_data("Regress", "TestObj", "null_out").return_type }
 
     it "has no statements in #post" do
       builder.post.must_equal []
@@ -366,11 +330,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for a closure argument" do
-    let(:tp_info) {
+    let(:type_info) {
       get_introspection_data("Regress", "TestCallbackUserData").args[0].argument_type }
-    let(:return_type_info) { GirFFI::ReturnValueInfo.new(tp_info) }
-    let(:builder) { GirFFI::Builders::ReturnValueBuilder.new(var_gen,
-                                                             return_type_info) }
 
     before do
       builder.is_closure = true
@@ -388,12 +349,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for a skipped return value" do
-    let(:skip) { true }
-
-    before do
-      stub(type_info).flattened_tag { :uint32 }
-      stub(type_info).pointer? { false }
-    end
+    let(:type_info) {
+      get_method_introspection_data("Regress", "TestObj", "skip_return_val").return_type }
+    let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, true) }
 
     it "has no statements in #post" do
       builder.post.must_equal []
