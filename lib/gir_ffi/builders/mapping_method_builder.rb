@@ -85,7 +85,7 @@ module GirFFI
 
       def return_value
         if return_value_builder.is_relevant?
-          ["return #{return_value_builder.retval}"]
+          ["return #{return_value_builder.return_value_name}"]
         else
           []
         end
@@ -105,7 +105,7 @@ module GirFFI
 
       def capture
         @capture ||= return_value_builder.is_relevant? ?
-          "#{return_value_builder.callarg} = " :
+          "#{return_value_builder.capture_variable_name} = " :
           ""
       end
 

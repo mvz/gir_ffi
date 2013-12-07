@@ -32,7 +32,7 @@ module GirFFI
 
       def post_conversion
         if has_post_conversion?
-          [ "#{retname} = #{post_convertor.conversion}" ]
+          [ "#{post_converted_name} = #{post_convertor.conversion}" ]
         else
           []
         end
@@ -42,20 +42,26 @@ module GirFFI
         nil
       end
 
-      def retval
-        super if is_relevant?
+      def return_value_name
+        if is_relevant?
+          post_converted_name unless array_arg
+        end
       end
 
       def is_relevant?
         !is_void_return_value? && !arginfo.skip?
       end
 
-      def retname
-        @retname ||= if has_post_conversion?
-                       @var_gen.new_var
-                     else
-                       callarg
-                     end
+      def post_converted_name
+        @post_converted_name ||= if has_post_conversion?
+                                   new_variable
+                                 else
+                                   capture_variable_name
+                                 end
+      end
+
+      def capture_variable_name
+        @capture_variable_name ||= new_variable
       end
 
       private
@@ -65,7 +71,7 @@ module GirFFI
       end
 
       def post_convertor
-        @post_convertor ||= Convertor.new(type_info, callarg)
+        @post_convertor ||= Convertor.new(type_info, capture_variable_name)
       end
 
       def is_void_return_value?
