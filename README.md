@@ -11,7 +11,7 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 * Create bindings to any GObject-based library.
 * Bindings generated at runtime.
 * Provides overridden bindings for selected methods.
-* Install 'gir_ffi-gtk' and require 'gir_ffi-gtk2' or 'gir_ffi-gtk3' to
+* Install `gir_ffi-gtk` and require `gir_ffi-gtk2` or `gir_ffi-gtk3` to
   load overrides for Gtk2 or Gtk3.
 
 ## Usage
