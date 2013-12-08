@@ -6,8 +6,7 @@ rvm:
   - jruby-18mode
   - jruby-19mode
   - 2.0.0
-  - rbx-18mode
-  - rbx-19mode
+  - rbx
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection
