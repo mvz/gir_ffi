@@ -1,43 +1,9 @@
 require 'gir_ffi/builders/return_value_builder'
+require 'gir_ffi/builders/c_to_ruby_convertor'
 
 module GirFFI
   module Builders
     class CallbackArgumentBuilder < BaseArgumentBuilder
-      class Convertor
-        def initialize type_info, argument_name, length_arg
-          @type_info = type_info
-          @argument_name = argument_name
-          @length_arg = length_arg
-        end
-
-        def conversion
-          case @type_info.flattened_tag
-          when :utf8, :filename
-            "#{@argument_name}.to_utf8"
-          else
-            "#{@type_info.argument_class_name}.wrap(#{conversion_arguments})"
-          end
-        end
-
-        private
-
-        def conversion_arguments
-          if @type_info.flattened_tag == :c
-            "#{@type_info.subtype_tag_or_class.inspect}, #{array_size}, #{@argument_name}"
-          else
-            @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name).join(", ")
-          end
-        end
-
-        def array_size
-          if @length_arg
-            @length_arg
-          else
-            @type_info.array_fixed_size
-          end
-        end
-      end
-
       def pre_conversion
         if has_pre_conversion?
           [ "#{pre_converted_name} = #{pre_conversion_implementation}" ]
@@ -69,7 +35,9 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= Convertor.new(type_info, method_argument_name, length_argument_name)
+        @pre_convertor ||= CToRubyConvertor.new(type_info,
+                                                method_argument_name,
+                                                length_argument_name)
       end
 
       def length_argument_name
