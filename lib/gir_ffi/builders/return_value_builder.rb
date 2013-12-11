@@ -52,9 +52,13 @@ module GirFFI
       end
 
       def post_convertor
-        @post_convertor ||= CToRubyConvertor.new(type_info,
-                                                 capture_variable_name,
-                                                 length_argument_name)
+        @post_convertor ||= if is_closure
+                              ClosureConvertor.new(capture_variable_name)
+                            else
+                              CToRubyConvertor.new(type_info,
+                                                   capture_variable_name,
+                                                   length_argument_name)
+                            end
       end
 
       def length_argument_name
@@ -62,9 +66,7 @@ module GirFFI
       end
 
       def post_conversion_implementation
-        if is_closure
-          "GirFFI::ArgHelper::OBJECT_STORE[#{capture_variable_name}.address]"
-        elsif needs_constructor_wrap?
+        if needs_constructor_wrap?
           "self.constructor_wrap(#{capture_variable_name})"
         else
           post_convertor.conversion

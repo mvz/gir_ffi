@@ -1,12 +1,13 @@
-require 'gir_ffi/builders/return_value_builder'
+require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/closure_convertor'
 
 module GirFFI
   module Builders
     class CallbackArgumentBuilder < BaseArgumentBuilder
       def pre_conversion
         if has_pre_conversion?
-          [ "#{pre_converted_name} = #{pre_conversion_implementation}" ]
+          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
         else
           []
         end
@@ -35,21 +36,17 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= CToRubyConvertor.new(type_info,
-                                                method_argument_name,
-                                                length_argument_name)
+        @pre_convertor ||= if is_closure
+                             ClosureConvertor.new(method_argument_name)
+                           else
+                             CToRubyConvertor.new(type_info,
+                                                  method_argument_name,
+                                                  length_argument_name)
+                           end
       end
 
       def length_argument_name
         length_arg && length_arg.pre_converted_name
-      end
-
-      def pre_conversion_implementation
-        if is_closure
-          "GirFFI::ArgHelper::OBJECT_STORE[#{method_argument_name}.address]"
-        else
-          pre_convertor.conversion
-        end
       end
 
       def is_void_return_value?
