@@ -44,9 +44,9 @@ module GirFFI
         def #{info.name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
           #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
-          #{builder.callarg} = #{typed_ptr}.to_value
-          #{builder.post.join("\n")}
-          #{builder.retval}
+          #{builder.capture_variable_name} = #{typed_ptr}.to_value
+          #{builder.post_conversion.join("\n")}
+          #{builder.return_value_name}
         end
         CODE
       end

@@ -12,13 +12,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "int_return_min").return_type }
 
-    it "has no statements in #post" do
-      builder.post.must_equal []
+    it "has no statements in #post_conversion" do
+      builder.post_conversion.must_equal []
     end
 
     it "returns the result of the c function directly" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v1"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v1"
     end
   end
 
@@ -27,14 +27,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                   "BoxedStruct",
                                                   "returnv").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -43,14 +43,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                   "Union",
                                                   "returnv").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GIMarshallingTests::Union.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GIMarshallingTests::Union.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -59,14 +59,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                   "File",
                                                   "new_for_commandline_arg").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = Gio::File.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = Gio::File.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -77,14 +77,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                     "full_return").return_type }
       let(:for_constructor) { false }
 
-      it "wraps the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GIMarshallingTests::Object.wrap(_v1)" ]
+      it "wraps the result in #post_conversion" do
+        builder.capture_variable_name.must_equal "_v1"
+        builder.post_conversion.must_equal [ "_v2 = GIMarshallingTests::Object.wrap(_v1)" ]
       end
 
       it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
+        builder.capture_variable_name.must_equal "_v1"
+        builder.return_value_name.must_equal "_v2"
       end
     end
 
@@ -94,14 +94,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                     "new").return_type }
       let(:for_constructor) { true }
 
-      it "wraps the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = self.constructor_wrap(_v1)" ]
+      it "wraps the result in #post_conversion" do
+        builder.capture_variable_name.must_equal "_v1"
+        builder.post_conversion.must_equal [ "_v2 = self.constructor_wrap(_v1)" ]
       end
 
       it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
+        builder.capture_variable_name.must_equal "_v1"
+        builder.return_value_name.must_equal "_v2"
       end
     end
   end
@@ -111,14 +111,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                   "KeyFile",
                                                   "get_locale_string_list").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::Strv.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::Strv.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -127,14 +127,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                   "Variant",
                                                   "dup_bytestring").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -142,14 +142,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "bytearray_full_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::ByteArray.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::ByteArray.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -157,14 +157,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "gptrarray_utf8_none_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::PtrArray.wrap(:utf8, _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::PtrArray.wrap(:utf8, _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -172,14 +172,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "glist_int_none_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::List.wrap(:gint32, _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::List.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -187,14 +187,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "gslist_int_none_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::SList.wrap(:gint32, _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::SList.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -202,14 +202,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "ghashtable_int_none_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -218,14 +218,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                            "garray_int_none_return").return_type }
 
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::Array.wrap(:gint32, _v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::Array.wrap(:gint32, _v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -233,14 +233,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_introspection_data("GIMarshallingTests",
                                            "gerror_return").return_type }
 
-    it "wraps the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GLib::Error.wrap(_v1)" ]
+    it "wraps the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GLib::Error.wrap(_v1)" ]
     end
 
     it "returns the wrapped result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -249,14 +249,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
       let(:type_info) { get_introspection_data("GIMarshallingTests",
                                              "array_fixed_int_return").return_type }
 
-      it "converts the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)" ]
+      it "converts the result in #post_conversion" do
+        builder.capture_variable_name.must_equal "_v1"
+        builder.post_conversion.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)" ]
       end
 
       it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
+        builder.capture_variable_name.must_equal "_v1"
+        builder.return_value_name.must_equal "_v2"
       end
     end
 
@@ -271,14 +271,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
         builder.length_arg = length_argument
       end
 
-      it "converts the result in #post" do
-        builder.callarg.must_equal "_v1"
-        builder.post.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)" ]
+      it "converts the result in #post_conversion" do
+        builder.capture_variable_name.must_equal "_v1"
+        builder.post_conversion.must_equal [ "_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)" ]
       end
 
       it "returns the wrapped result" do
-        builder.callarg.must_equal "_v1"
-        builder.retval.must_equal "_v2"
+        builder.capture_variable_name.must_equal "_v1"
+        builder.return_value_name.must_equal "_v2"
       end
     end
   end
@@ -287,14 +287,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) {
       get_introspection_data("GIMarshallingTests", "utf8_full_return").return_type }
 
-    it "converts the result in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = _v1.to_utf8" ]
+    it "converts the result in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = _v1.to_utf8" ]
     end
 
     it "returns the converted result" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -302,13 +302,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) {
       get_introspection_data("GIMarshallingTests", "CallbackIntInt").args[1].argument_type }
 
-    it "has no statements in #post" do
-      builder.post.must_equal []
+    it "has no statements in #post_conversion" do
+      builder.post_conversion.must_equal []
     end
 
     it "returns the result of the c function directly" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v1"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v1"
     end
   end
 
@@ -316,8 +316,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) {
       get_method_introspection_data("Regress", "TestObj", "null_out").return_type }
 
-    it "has no statements in #post" do
-      builder.post.must_equal []
+    it "has no statements in #post_conversion" do
+      builder.post_conversion.must_equal []
     end
 
     it "marks itself as irrelevant" do
@@ -325,7 +325,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "returns nothing" do
-      builder.retval.must_be_nil
+      builder.return_value_name.must_be_nil
     end
   end
 
@@ -337,14 +337,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
       builder.is_closure = true
     end
 
-    it "fetches the stored object in #post" do
-      builder.callarg.must_equal "_v1"
-      builder.post.must_equal [ "_v2 = GirFFI::ArgHelper::OBJECT_STORE[_v1.address]" ]
+    it "fetches the stored object in #post_conversion" do
+      builder.capture_variable_name.must_equal "_v1"
+      builder.post_conversion.must_equal [ "_v2 = GirFFI::ArgHelper::OBJECT_STORE[_v1.address]" ]
     end
 
     it "returns the stored object" do
-      builder.callarg.must_equal "_v1"
-      builder.retval.must_equal "_v2"
+      builder.capture_variable_name.must_equal "_v1"
+      builder.return_value_name.must_equal "_v2"
     end
   end
 
@@ -353,8 +353,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
       get_method_introspection_data("Regress", "TestObj", "skip_return_val").return_type }
     let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, true) }
 
-    it "has no statements in #post" do
-      builder.post.must_equal []
+    it "has no statements in #post_conversion" do
+      builder.post_conversion.must_equal []
     end
 
     it "marks itself as irrelevant" do
@@ -362,7 +362,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "returns nothing" do
-      builder.retval.must_be_nil
+      builder.return_value_name.must_be_nil
     end
   end
 end

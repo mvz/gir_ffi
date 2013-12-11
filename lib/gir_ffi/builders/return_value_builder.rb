@@ -44,9 +44,9 @@ module GirFFI
         @is_constructor = is_constructor
       end
 
-      def post
-        if has_conversion?
-          [ "#{retname} = #{post_conversion}" ]
+      def post_conversion
+        if has_post_conversion?
+          [ "#{post_converted_name} = #{post_conversion_implementation}" ]
         else
           []
         end
@@ -56,38 +56,44 @@ module GirFFI
         nil
       end
 
-      def retval
-        super if is_relevant?
+      def return_value_name
+        if is_relevant?
+          post_converted_name unless array_arg
+        end
       end
 
       def is_relevant?
         !is_void_return_value? && !arginfo.skip?
       end
 
-      def retname
-        @retname ||= if has_conversion?
+      def post_converted_name
+        @post_converted_name ||= if has_post_conversion?
                        @var_gen.new_var
                      else
-                       callarg
+                       capture_variable_name
                      end
+      end
+
+      def capture_variable_name
+        @capture_variable_name ||= new_variable
       end
 
       private
 
-      def has_conversion?
+      def has_post_conversion?
         is_closure || needs_constructor_wrap? ||
           type_info.needs_conversion_for_functions?
       end
 
       def post_convertor
-        @post_convertor ||= Convertor.new(type_info, callarg, length_arg)
+        @post_convertor ||= Convertor.new(type_info, capture_variable_name, length_arg)
       end
 
-      def post_conversion
+      def post_conversion_implementation
         if is_closure
-          "GirFFI::ArgHelper::OBJECT_STORE[#{callarg}.address]"
+          "GirFFI::ArgHelper::OBJECT_STORE[#{capture_variable_name}.address]"
         elsif needs_constructor_wrap?
-          "self.constructor_wrap(#{callarg})"
+          "self.constructor_wrap(#{capture_variable_name})"
         else
           post_convertor.conversion
         end

@@ -96,7 +96,7 @@ module GirFFI
 
       def capture
         if has_capture?
-          "#{@return_value_builder.callarg} = "
+          "#{@return_value_builder.capture_variable_name} = "
         else
           ""
         end
@@ -105,14 +105,13 @@ module GirFFI
       def post_processing
         # FIXME: Sorting knows too much about internals of ArgumentBuilder.
         args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
-        args << @return_value_builder
         args.unshift @errarg
 
-        args.map {|arg| arg.post}
+        args.map {|arg| arg.post} << @return_value_builder.post_conversion
       end
 
       def return_values
-        @return_values ||= ([@return_value_builder.retval] +
+        @return_values ||= ([@return_value_builder.return_value_name] +
                             @argument_builders.map(&:retval)).compact
       end
 

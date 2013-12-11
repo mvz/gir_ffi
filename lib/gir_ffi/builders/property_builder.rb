@@ -46,9 +46,9 @@ module GirFFI
       def converting_getter_def
         return <<-CODE.reset_indentation
         def #{getter_name}
-          #{getter_builder.callarg} = get_property("#{property_name}").get_value_plain
-          #{getter_builder.post.join("\n")}
-          #{getter_builder.retval}
+          #{getter_builder.capture_variable_name} = get_property("#{property_name}").get_value_plain
+          #{getter_builder.post_conversion.join("\n")}
+          #{getter_builder.return_value_name}
         end
         CODE
       end
