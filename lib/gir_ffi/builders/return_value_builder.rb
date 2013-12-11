@@ -1,5 +1,7 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/closure_convertor'
+require 'gir_ffi/builders/constructor_result_convertor'
 
 module GirFFI
   module Builders
@@ -12,7 +14,7 @@ module GirFFI
 
       def post_conversion
         if has_post_conversion?
-          [ "#{post_converted_name} = #{post_conversion_implementation}" ]
+          [ "#{post_converted_name} = #{post_convertor.conversion}" ]
         else
           []
         end
@@ -34,10 +36,10 @@ module GirFFI
 
       def post_converted_name
         @post_converted_name ||= if has_post_conversion?
-                       @var_gen.new_var
-                     else
-                       capture_variable_name
-                     end
+                                   @var_gen.new_var
+                                 else
+                                   capture_variable_name
+                                 end
       end
 
       def capture_variable_name
@@ -54,6 +56,8 @@ module GirFFI
       def post_convertor
         @post_convertor ||= if is_closure
                               ClosureConvertor.new(capture_variable_name)
+                            elsif needs_constructor_wrap?
+                              ConstructorResultConvertor.new(capture_variable_name)
                             else
                               CToRubyConvertor.new(type_info,
                                                    capture_variable_name,
@@ -63,14 +67,6 @@ module GirFFI
 
       def length_argument_name
         length_arg && length_arg.retname
-      end
-
-      def post_conversion_implementation
-        if needs_constructor_wrap?
-          "self.constructor_wrap(#{capture_variable_name})"
-        else
-          post_convertor.conversion
-        end
       end
 
       def needs_constructor_wrap?
