@@ -32,7 +32,7 @@ module GirFFI
 
         def array_size
           if @length_arg
-            @length_arg.retname
+            @length_arg
           else
             @type_info.array_fixed_size
           end
@@ -86,7 +86,11 @@ module GirFFI
       end
 
       def post_convertor
-        @post_convertor ||= Convertor.new(type_info, capture_variable_name, length_arg)
+        @post_convertor ||= Convertor.new(type_info, capture_variable_name, length_argument_name)
+      end
+
+      def length_argument_name
+        length_arg && length_arg.retname
       end
 
       def post_conversion_implementation

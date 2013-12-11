@@ -31,7 +31,7 @@ module GirFFI
 
         def array_size
           if @length_arg
-            @length_arg.pre_converted_name
+            @length_arg
           else
             @type_info.array_fixed_size
           end
@@ -69,7 +69,11 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= Convertor.new(type_info, method_argument_name, length_arg)
+        @pre_convertor ||= Convertor.new(type_info, method_argument_name, length_argument_name)
+      end
+
+      def length_argument_name
+        length_arg && length_arg.pre_converted_name
       end
 
       def pre_conversion_implementation
