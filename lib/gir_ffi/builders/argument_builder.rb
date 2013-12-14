@@ -1,4 +1,5 @@
 require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/closure_to_pointer_convertor'
 
 module GirFFI
   module Builders
@@ -87,7 +88,7 @@ module GirFFI
                 elsif !has_input_value?
                   out_parameter_preparation
                 elsif is_closure
-                  "#{argument_class_name}.from_closure_data(#{name})"
+                  ClosureToPointerConvertor.new(name).conversion
                 else
                   ingoing_parameter_conversion
                 end
