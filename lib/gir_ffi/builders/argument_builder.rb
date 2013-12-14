@@ -23,7 +23,7 @@ module GirFFI
           pr << fixed_array_size_check if needs_size_check?
           pr << array_length_assignment if is_array_length_parameter?
         end
-        pr << set_function_call_argument
+        pr += set_function_call_argument
         pr
       end
 
@@ -83,16 +83,18 @@ module GirFFI
       end
 
       def set_function_call_argument
-        value = if skipped?
-                  direction == :in ? "0" : "nil"
-                elsif !has_input_value?
-                  out_parameter_preparation
-                elsif is_closure
-                  ClosureToPointerConvertor.new(name).conversion
-                else
-                  ingoing_parameter_conversion
-                end
-        "#{callarg} = #{value}"
+        if skipped?
+          value = direction == :in ? "0" : "nil"
+          [ "#{callarg} = #{value}" ]
+        elsif !has_input_value?
+          value = out_parameter_preparation
+          [ "#{callarg} = #{value}" ]
+        elsif is_closure
+          value = ClosureToPointerConvertor.new(name).conversion
+          [ "#{callarg} = #{value}" ]
+        else
+          ingoing_parameter_conversion
+        end
       end
 
       def out_parameter_preparation
@@ -124,9 +126,12 @@ module GirFFI
                end
 
         if has_output_value?
-          "GirFFI::InOutPointer.from #{type_info.tag_or_class.inspect}, #{base}"
+          value = "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
+          [ "#{callarg} = #{value}",
+            "#{callarg}.set_value #{base}" ]
         else
-          base
+          value = base
+          [ "#{callarg} = #{value}" ]
         end
       end
     end

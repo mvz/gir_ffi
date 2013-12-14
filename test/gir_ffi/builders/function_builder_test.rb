@@ -132,9 +132,11 @@ describe GirFFI::Builders::FunctionBuilder do
 
     expected = <<-CODE
       def method_array_inout ints
-        _v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, -1, ints)
+        _v1 = GirFFI::InOutPointer.for [:pointer, :c]
+        _v1.set_value GirFFI::SizedArray.from(:gint32, -1, ints)
         length = ints.nil? ? 0 : ints.length
-        _v2 = GirFFI::InOutPointer.from :gint32, length
+        _v2 = GirFFI::InOutPointer.for :gint32
+        _v2.set_value length
         GIMarshallingTests::Lib.gi_marshalling_tests_object_method_array_inout self, _v1, _v2
         _v3 = _v2.to_value
         _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.to_value)

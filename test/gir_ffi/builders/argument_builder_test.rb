@@ -285,7 +285,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "enum_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from GIMarshallingTests::Enum, v" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for GIMarshallingTests::Enum",
+                                 "_v1.set_value v" ]
       end
 
       it "has the correct value for #post" do
@@ -298,7 +299,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "no_type_flags_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from GIMarshallingTests::NoTypeFlags, v" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for GIMarshallingTests::NoTypeFlags",
+                                 "_v1.set_value v" ]
       end
 
       it "has the correct value for #post" do
@@ -315,7 +317,8 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :gint32, v" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32",
+                                 "_v1.set_value v" ]
       end
 
       it "has the correct value for #post" do
@@ -337,7 +340,8 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it "has the correct value for #pre" do
         builder.pre.must_equal [ "n_ints = ints.nil? ? 0 : ints.length",
-                                 "_v1 = GirFFI::InOutPointer.from :gint32, n_ints" ]
+                                 "_v1 = GirFFI::InOutPointer.for :gint32",
+                                 "_v1.set_value n_ints" ]
       end
 
       it "has the correct value for #post" do
@@ -350,7 +354,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "gstrv_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :strv], GLib::Strv.from(g_strv)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, :strv]",
+                                 "_v1.set_value GLib::Strv.from(g_strv)" ]
       end
 
       it "has the correct value for #post" do
@@ -363,7 +368,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "gptrarray_utf8_none_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from [:pointer, :ptr_array], GLib::PtrArray.from(:utf8, parray_)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, :ptr_array]",
+                                 "_v1.set_value GLib::PtrArray.from(:utf8, parray_)" ]
       end
 
       it "has the correct value for #post" do
@@ -376,7 +382,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "utf8_none_inout").args[0] }
 
       it "has the correct value for #pre" do
-        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.from :utf8, GirFFI::InPointer.from(:utf8, utf8)" ]
+        builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :utf8",
+                                 "_v1.set_value GirFFI::InPointer.from(:utf8, utf8)" ]
       end
 
       it "has the correct value for #post" do
@@ -392,7 +399,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         it "has the correct value for #pre" do
           builder.pre.must_equal [
             "GirFFI::ArgHelper.check_fixed_array_size 4, ints, \"ints\"",
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, 4, ints)"
+            "_v1 = GirFFI::InOutPointer.for [:pointer, :c]",
+            "_v1.set_value GirFFI::SizedArray.from(:gint32, 4, ints)"
           ]
         end
 
@@ -415,7 +423,8 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it "has the correct value for #pre" do
           builder.pre.must_equal [
-            "_v1 = GirFFI::InOutPointer.from [:pointer, :c], GirFFI::SizedArray.from(:gint32, -1, ints)"
+            "_v1 = GirFFI::InOutPointer.for [:pointer, :c]",
+            "_v1.set_value GirFFI::SizedArray.from(:gint32, -1, ints)"
           ]
         end
 
