@@ -87,8 +87,7 @@ module GirFFI
           value = direction == :in ? "0" : "nil"
           [ "#{callarg} = #{value}" ]
         elsif !has_input_value?
-          value = out_parameter_preparation
-          [ "#{callarg} = #{value}" ]
+          out_parameter_preparation
         elsif is_closure
           value = ClosureToPointerConvertor.new(name).conversion
           [ "#{callarg} = #{value}" ]
@@ -98,15 +97,16 @@ module GirFFI
       end
 
       def out_parameter_preparation
-        if is_caller_allocated_object?
-          if specialized_type_tag == :array
-            "#{argument_class_name}.new #{type_info.element_type.inspect}"
-          else
-            "#{argument_class_name}.new"
-          end
-        else
-          "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
-        end
+        value = if is_caller_allocated_object?
+                  if specialized_type_tag == :array
+                    "#{argument_class_name}.new #{type_info.element_type.inspect}"
+                  else
+                    "#{argument_class_name}.new"
+                  end
+                else
+                  "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
+                end
+        [ "#{callarg} = #{value}" ]
       end
 
       def is_caller_allocated_object?
@@ -115,20 +115,17 @@ module GirFFI
       end
 
       def ingoing_parameter_conversion
-        args = conversion_arguments name
-
         base = case specialized_type_tag
                when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
                  :struct, :strv, :utf8, :void, :zero_terminated
-                 "#{argument_class_name}.from(#{args})"
+                 "#{argument_class_name}.from(#{conversion_arguments name})"
                else
-                 args
+                 name
                end
 
         if has_output_value?
-          value = "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
-          [ "#{callarg} = #{value}",
-            "#{callarg}.set_value #{base}" ]
+          out_parameter_preparation +
+            [ "#{callarg}.set_value #{base}" ]
         else
           value = base
           [ "#{callarg} = #{value}" ]
