@@ -83,17 +83,18 @@ module GirFFI
       end
 
       def set_function_call_argument
+        result = []
         if skipped?
           value = direction == :in ? "0" : "nil"
-          [ "#{callarg} = #{value}" ]
-        elsif !has_input_value?
-          out_parameter_preparation
-        elsif is_closure
-          value = ClosureToPointerConvertor.new(name).conversion
-          [ "#{callarg} = #{value}" ]
-        else
-          ingoing_parameter_conversion
+          result << "#{callarg} = #{value}"
         end
+        if has_output_value?
+          result << out_parameter_preparation
+        end
+        if has_input_value?
+          result << ingoing_parameter_conversion
+        end
+        result
       end
 
       def out_parameter_preparation
@@ -106,7 +107,7 @@ module GirFFI
                 else
                   "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
                 end
-        [ "#{callarg} = #{value}" ]
+        "#{callarg} = #{value}"
       end
 
       def is_caller_allocated_object?
@@ -115,17 +116,18 @@ module GirFFI
       end
 
       def ingoing_parameter_conversion
-        base = if @type_info.needs_ruby_to_c_conversion_for_functions?
+        base = if is_closure
+                 ClosureToPointerConvertor.new(name).conversion
+               elsif @type_info.needs_ruby_to_c_conversion_for_functions?
                  RubyToCConvertor.new(@type_info, name).conversion
                else
                  name
                end
 
         if has_output_value?
-          out_parameter_preparation +
-            [ "#{callarg}.set_value #{base}" ]
+          "#{callarg}.set_value #{base}"
         else
-          [ "#{callarg} = #{base}" ]
+          "#{callarg} = #{base}"
         end
       end
     end
