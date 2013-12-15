@@ -43,12 +43,16 @@ module GirFFI
           callarg
         else
           base = "#{callarg}.to_value"
-          if needs_outgoing_parameter_conversion?
-            outgoing_conversion base
+          if @type_info.needs_conversion_for_functions?
+            CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
           else
             base
           end
         end
+      end
+
+      def length_argument_name
+        length_arg && length_arg.retname
       end
 
       def is_array_length_parameter?

@@ -90,10 +90,6 @@ module GirFFI
         @var_gen.new_var
       end
 
-      def needs_outgoing_parameter_conversion?
-        @type_info.needs_conversion_for_functions?
-      end
-
       def outgoing_conversion base
         args = output_conversion_arguments base
         case specialized_type_tag
