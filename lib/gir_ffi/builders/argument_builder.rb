@@ -115,10 +115,8 @@ module GirFFI
       end
 
       def ingoing_parameter_conversion
-        base = case specialized_type_tag
-               when :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
-                 :struct, :strv, :utf8, :void, :zero_terminated
-                 "#{argument_class_name}.from(#{conversion_arguments name})"
+        base = if @type_info.needs_ruby_to_c_conversion_for_functions?
+                 RubyToCConvertor.new(@type_info, name).conversion
                else
                  name
                end
@@ -127,8 +125,7 @@ module GirFFI
           out_parameter_preparation +
             [ "#{callarg}.set_value #{base}" ]
         else
-          value = base
-          [ "#{callarg} = #{value}" ]
+          [ "#{callarg} = #{base}" ]
         end
       end
     end
