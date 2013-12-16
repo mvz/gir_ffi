@@ -89,28 +89,6 @@ module GirFFI
       def new_variable
         @var_gen.new_var
       end
-
-      def outgoing_conversion base
-        args = output_conversion_arguments base
-        case specialized_type_tag
-        when :utf8, :filename
-          "#{base}.to_utf8"
-        else
-          "#{argument_class_name}.wrap(#{args})"
-        end
-      end
-
-      def output_conversion_arguments arg
-        if specialized_type_tag == :c
-          "#{type_info.subtype_tag_or_class.inspect}, #{array_size}, #{arg}"
-        else
-          conversion_arguments arg
-        end
-      end
-
-      def conversion_arguments name
-        type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
-      end
     end
   end
 end
