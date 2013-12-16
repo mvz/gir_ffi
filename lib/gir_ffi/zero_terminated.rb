@@ -38,8 +38,12 @@ module GirFFI
     private
 
     def read_value offset
-      val = @ptr.send("get_#{ffi_type}", offset)
-      return val unless is_null_value(val)
+      val = @ptr.send(getter_method, offset)
+      return val unless is_null_value?(val)
+    end
+
+    def getter_method
+      @getter_method ||= "get_#{ffi_type}"
     end
 
     def wrap_value(val)
@@ -62,7 +66,7 @@ module GirFFI
       @element_class ||= element_type.last
     end
 
-    def is_null_value value
+    def is_null_value? value
       if ffi_type == :pointer
         value.null?
       else
