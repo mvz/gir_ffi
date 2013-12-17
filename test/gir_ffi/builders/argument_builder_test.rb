@@ -286,7 +286,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it "has the correct value for #pre" do
         builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for GIMarshallingTests::Enum",
-                                 "_v1.set_value v" ]
+                                 "_v1.set_value #{arg_info.name}" ]
       end
 
       it "has the correct value for #post" do
@@ -300,7 +300,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it "has the correct value for #pre" do
         builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for GIMarshallingTests::NoTypeFlags",
-                                 "_v1.set_value v" ]
+                                 "_v1.set_value #{arg_info.name}" ]
       end
 
       it "has the correct value for #post" do
@@ -313,12 +313,12 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "int32_inout_min_max").args[0] }
 
       it "has the correct value for inarg" do
-        builder.inarg.must_equal "v"
+        builder.inarg.must_equal "#{arg_info.name}"
       end
 
       it "has the correct value for #pre" do
         builder.pre.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32",
-                                 "_v1.set_value v" ]
+                                 "_v1.set_value #{arg_info.name}" ]
       end
 
       it "has the correct value for #post" do
