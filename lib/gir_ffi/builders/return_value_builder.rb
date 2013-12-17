@@ -36,7 +36,7 @@ module GirFFI
 
       def post_converted_name
         @post_converted_name ||= if has_post_conversion?
-                                   @var_gen.new_var
+                                   new_variable
                                  else
                                    capture_variable_name
                                  end

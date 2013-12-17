@@ -75,7 +75,7 @@ module GirFFI
       end
 
       def callarg
-        @callarg ||= @var_gen.new_var
+        @callarg ||= new_variable
       end
 
       def new_variable

@@ -13,7 +13,7 @@ module GirFFI
 
       def retname
         if has_output_value?
-          @retname ||= @var_gen.new_var
+          @retname ||= new_variable
         end
       end
 
