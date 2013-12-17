@@ -49,16 +49,18 @@ module GirFFI
       end
 
       def type_info
-        type_info = GObject::TypeInfo.new
-        type_info.class_size = parent_class_size
-        type_info.instance_size = instance_size
+        GObject::TypeInfo.new.tap do |type_info|
+          type_info.class_size = parent_class_size
+          type_info.instance_size = instance_size
+          type_info.class_init = class_init_proc
+        end
+      end
 
-        type_info.class_init = proc do |object_class_ptr, data|
+      def class_init_proc
+        proc do |object_class_ptr, data|
           setup_properties object_class_ptr
           setup_vfuncs object_class_ptr
         end
-
-        return type_info
       end
 
       def instance_size
@@ -108,14 +110,19 @@ module GirFFI
         super_class_struct = superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
 
         info.vfunc_implementations.each do |impl|
-          vfunc_info = find_vfunc impl.name
-          vfunc = VFuncBuilder.new(vfunc_info).build_class
-          # NOTE: This assigns a VFuncBase to a CallbackBase.
-          # This suggests that the two should be combined, but it seems
-          # CallbackBase will not cast the first argument correctly if used
-          # to map the implementation proc arguments.
-          super_class_struct[impl.name] = vfunc.from impl.implementation
+          setup_vfunc super_class_struct, impl
         end
+      end
+
+      def setup_vfunc super_class_struct, impl
+        vfunc_name = impl.name
+        vfunc_info = find_vfunc vfunc_name
+        vfunc = VFuncBuilder.new(vfunc_info).build_class
+        # NOTE: This assigns a VFuncBase to a CallbackBase.
+        # This suggests that the two should be combined, but it seems
+        # CallbackBase will not cast the first argument correctly if used
+        # to map the implementation proc arguments.
+        super_class_struct[vfunc_name] = vfunc.from impl.implementation
       end
 
       def properties
@@ -140,19 +147,20 @@ module GirFFI
       end
 
       def setup_accessors_for_param_info pinfo
+        field_name = pinfo.name
         code = <<-CODE
-        def #{pinfo.name}
-          @struct[:#{pinfo.name}]
+        def #{field_name}
+          @struct[:#{field_name}]
         end
-        def #{pinfo.name}= val
-          @struct[:#{pinfo.name}] = val
+        def #{field_name}= val
+          @struct[:#{field_name}] = val
         end
         CODE
 
         klass.class_eval code
       end
 
-      def method_introspection_data method
+      def method_introspection_data _method
         nil
       end
 

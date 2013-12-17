@@ -1,4 +1,5 @@
 module GirFFI
+  # Simple wrapper class to represent the implementation of a VFunc.
   class VFuncImplementation
     attr_reader :name, :implementation
 

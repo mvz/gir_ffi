@@ -18,7 +18,7 @@ class GirFFI::Builders::CToRubyConvertor
 
   def conversion_arguments
     if @type_info.flattened_tag == :c
-      "#{@type_info.subtype_tag_or_class.inspect}, #{array_size}, #{@argument_name}"
+      "#{@type_info.element_type.inspect}, #{array_size}, #{@argument_name}"
     else
       @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name).join(", ")
     end

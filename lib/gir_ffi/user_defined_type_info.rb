@@ -26,7 +26,7 @@ module GirFFI
       @vfunc_implementations << VFuncImplementation.new(name, implementation)
     end
 
-    def find_instance_method method
+    def find_instance_method _method
       nil
     end
 

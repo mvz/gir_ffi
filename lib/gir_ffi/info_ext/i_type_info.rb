@@ -35,10 +35,10 @@ module GirFFI
 
       def element_type
         case tag
-        when :glist, :gslist, :array
-          subtype_tag_or_class 0
+        when :glist, :gslist, :array, :c
+          enumerable_element_type 
         when :ghash
-          [subtype_tag_or_class(0), subtype_tag_or_class(1)]
+          dictionary_element_type
         else
           nil
         end
@@ -57,10 +57,6 @@ module GirFFI
 
       def interface_type
         tag == :interface && interface.info_type
-      end
-
-      def subtype_tag_or_class index = 0
-        param_type(index).tag_or_class
       end
 
       def tag_or_class
@@ -103,28 +99,20 @@ module GirFFI
       def to_ffitype
         return :pointer if pointer?
 
-        type_tag = tag
-        case type_tag
+        case tag
         when :interface
           interface.to_ffitype
         when :array
-          subtype = param_type(0).to_ffitype
-          # NOTE: Don't use pointer directly to appease JRuby.
-          if subtype == :pointer
-            subtype = :"uint#{FFI.type_size(:pointer)*8}"
-          end
-          [subtype, array_fixed_size]
+          [subtype_ffitype(0), array_fixed_size]
         else
-          TypeMap.map_basic_type type_tag
+          TypeMap.map_basic_type tag
         end
       end
 
       def to_callback_ffitype
-        type_tag = tag
-
         return :pointer if pointer?
 
-        if type_tag == :interface
+        if tag == :interface
           case interface.info_type
           when :enum, :flags
             :int32
@@ -132,7 +120,7 @@ module GirFFI
             :pointer
           end
         else
-          return TypeMap.map_basic_type type_tag
+          TypeMap.map_basic_type tag
         end
       end
 
@@ -156,7 +144,7 @@ module GirFFI
         when :utf8, :void
           [flattened_tag]
         when :c
-          [subtype_tag_or_class, array_fixed_size]
+          [element_type, array_fixed_size]
         when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
           [element_type]
         else
@@ -165,6 +153,28 @@ module GirFFI
       end
 
       private
+
+      def subtype_tag_or_class index
+        param_type(index).tag_or_class
+      end
+
+      def dictionary_element_type
+        [subtype_tag_or_class(0), subtype_tag_or_class(1)]
+      end
+
+      def enumerable_element_type
+        subtype_tag_or_class 0
+      end
+
+      def subtype_ffitype(index)
+        subtype = param_type(index).to_ffitype
+        if subtype == :pointer
+          # NOTE: Don't use pointer directly to appease JRuby.
+          :"uint#{FFI.type_size(:pointer)*8}"
+        else
+          subtype
+        end
+      end
 
       def flattened_array_type
         if zero_terminated?

@@ -10,12 +10,12 @@ module GirFFI
       FFI::Type::POINTER
     end
 
-    def self.from_native(value, context)
+    def self.from_native(value, _context)
       return nil if !value || value.null?
       FFI::Function.new gir_ffi_builder.return_type, gir_ffi_builder.argument_types, value
     end
 
-    def self.to_native(value, context)
+    def self.to_native(value, _context)
       return nil unless value
       return value if FFI::Function === value
       value.to_native
@@ -36,8 +36,8 @@ module GirFFI
     end
 
     def self.wrap_in_callback_args_mapper prc
+      return nil unless prc
       return prc if FFI::Function === prc
-      return nil if prc.nil?
       return self.new do |*args|
         call_with_argument_mapping(prc, *args)
       end

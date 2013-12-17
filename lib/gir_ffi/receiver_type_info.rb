@@ -1,4 +1,6 @@
 module GirFFI
+  # Represents the type of the receiver of a signal or vfunc, conforming, as
+  # needed, to the interface of GObjectIntrospection::ITypeInfo
   class ReceiverTypeInfo
     include InfoExt::ITypeInfo
 

@@ -6,6 +6,9 @@ require 'gir_ffi/vfunc_base'
 
 module GirFFI
   module Builders
+    # Implements the creation of a class representing the implementation of a
+    # vfunc. This class will be able to turn a proc into an FFI::Function that
+    # can serve as such an implementation in C.
     class VFuncBuilder < BaseTypeBuilder
       def instantiate_class
         unless already_set_up

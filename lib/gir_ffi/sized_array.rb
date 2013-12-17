@@ -73,14 +73,15 @@ module GirFFI
       private
 
       def from_sized_array size, sized_array
-        check_size(size, sized_array.size)
+        check_size size, sized_array.size
         sized_array
       end
 
-      def from_enumerable element_type, size, arr
-        check_size(size, arr.size)
+      def from_enumerable element_type, expected_size, arr
+        size = arr.size
+        check_size expected_size, size
         ptr = GirFFI::InPointer.from_array element_type, arr
-        self.wrap element_type, arr.size, ptr
+        self.wrap element_type, size, ptr
       end
 
       def check_size(expected_size, size)
