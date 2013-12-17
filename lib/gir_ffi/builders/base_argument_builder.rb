@@ -58,14 +58,6 @@ module GirFFI
         type_info.array_length
       end
 
-      def array_size
-        if @length_arg
-          @length_arg.retname
-        else
-          type_info.array_fixed_size
-        end
-      end
-
       def safe name
         if KEYWORDS.include? name
           "#{name}_"
@@ -74,12 +66,12 @@ module GirFFI
         end
       end
 
-      def inarg
-        @array_arg.nil? ? @inarg : nil
-      end
-
       def retval
-        @array_arg.nil? ? retname : nil
+        if @array_arg.nil?
+          retname
+        else
+          nil
+        end
       end
 
       def callarg
