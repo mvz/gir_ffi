@@ -25,6 +25,7 @@ describe GirFFI::Builders::VFuncBuilder do
         get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_enum" }
 
       it "returns a valid mapping method including receiver" do
+        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _v1)
           _v2 = GIMarshallingTests::Object.wrap(_v1)

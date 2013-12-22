@@ -299,8 +299,13 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe "for :void pointer" do
-    let(:type_info) {
-      get_introspection_data("GIMarshallingTests", "CallbackIntInt").args[1].argument_type }
+    let(:callback_info) {
+      get_introspection_data("GIMarshallingTests", "CallbackIntInt") }
+    let(:type_info) { callback_info.args[1].argument_type }
+
+    before do
+      skip unless callback_info
+    end
 
     it "has no statements in #post_conversion" do
       builder.post_conversion.must_equal []
