@@ -328,16 +328,18 @@ describe GIMarshallingTests do
 
     let(:derived_klass) { Object.const_set("DerivedClass#{Sequence.next}",
                                            Class.new(GIMarshallingTests::Object)) }
-    let(:derived_instance) do
+
+    def make_derived_instance
       GirFFI.define_type derived_klass do |info|
-        info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
-        info.install_vfunc_implementation :vfunc_return_enum, proc {|obj| :value2 }
-        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0xdeadbeef }
+        yield info
       end
       derived_klass.new
     end
 
     it "has a working method #int8_in" do
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
+      end
       derived_instance.int8_in 23
       derived_instance.int.must_equal 23
     end
@@ -380,6 +382,9 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_in" do
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
+      end
       derived_instance.method_int8_in 108
       derived_instance.int.must_equal 108
     end
@@ -433,6 +438,9 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_enum" do
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_return_enum, proc {|obj| :value2 }
+      end
       derived_instance.vfunc_return_enum.must_equal :value2
     end
 
@@ -444,6 +452,9 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_value_only" do
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0xdeadbeef }
+      end
       result = derived_instance.vfunc_return_value_only
       result.must_equal 0xdeadbeef
     end
