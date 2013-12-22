@@ -126,6 +126,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { get_method_introspection_data("GLib",
                                                   "Variant",
                                                   "dup_bytestring").return_type }
+    before do
+      skip unless type_info.zero_terminated?
+    end
 
     it "wraps the result in #post_conversion" do
       builder.capture_variable_name.must_equal "_v1"
