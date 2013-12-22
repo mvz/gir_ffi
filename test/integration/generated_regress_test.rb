@@ -3,11 +3,6 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
 
-def get_field_value obj, field
-  struct = obj.instance_variable_get :@struct
-  struct[field]
-end
-
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
   describe Regress::Lib do
