@@ -438,6 +438,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_enum" do
+      skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                               "vfunc_return_enum")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_enum, proc {|obj| :value2 }
       end
