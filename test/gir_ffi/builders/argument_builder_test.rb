@@ -161,12 +161,14 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       describe "when allocated by the caller" do
-        let(:arg_info) {
-          get_introspection_data("GIMarshallingTests", "garray_utf8_full_out_caller_allocated").args[0] }
+        let(:function_info) {
+          get_introspection_data("GIMarshallingTests", "garray_utf8_full_out_caller_allocated") }
 
-          before do
-            skip unless get_introspection_data("GIMarshallingTests", "garray_utf8_full_out_caller_allocated")
-          end
+        let(:arg_info) { function_info.args[0] }
+
+        before do
+          skip unless function_info
+        end
 
         it "has the correct value for #pre" do
           builder.pre.must_equal [ "_v1 = GLib::Array.new :utf8" ]
