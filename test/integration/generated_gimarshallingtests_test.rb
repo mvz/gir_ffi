@@ -1336,7 +1336,8 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_one_out_parameter" do
-    skip "Out parameters for callbacks are not supported yet"
+    result = GIMarshallingTests.callback_one_out_parameter proc { 42.0 }
+    result.must_equal 42.0
   end
 
   it "has a working function #callback_return_value_and_multiple_out_parameters" do

@@ -46,5 +46,21 @@ describe GirFFI::Builders::CallbackBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a callback with one out argument" do
+      let(:callback_info) { get_introspection_data("GIMarshallingTests",
+                                                   "CallbackOneOutParameter") }
+      it "returns a valid mapping method" do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _v1)
+          _v2 = GirFFI::InOutPointer.new(:float, _v1)
+          _v3 = _proc.call()
+          _v2.set_value _v3
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
