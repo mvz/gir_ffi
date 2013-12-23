@@ -12,17 +12,13 @@ module GirFFI
       end
 
       def return_value_name
-        if @array_arg.nil?
-          post_converted_name
-        else
-          nil
+        if has_output_value?
+          post_converted_name unless is_array_length_parameter?
         end
       end
 
       def post_converted_name
-        if has_output_value?
-          @retname ||= new_variable
-        end
+        @post_converted_name ||= new_variable
       end
 
       def pre_conversion

@@ -13,22 +13,14 @@ module GirFFI
       ]
 
       attr_reader :arginfo
-      attr_reader :retname
-
       attr_accessor :length_arg, :array_arg
-
       attr_accessor :is_closure
 
       def initialize var_gen, arginfo
         @var_gen = var_gen
-
         @arginfo = arginfo
-
-        @retname = nil
-
         @length_arg = nil
         @array_arg = nil
-
         @is_closure = false
       end
 
