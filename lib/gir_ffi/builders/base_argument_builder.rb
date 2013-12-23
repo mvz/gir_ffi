@@ -24,7 +24,6 @@ module GirFFI
 
         @arginfo = arginfo
 
-        @inarg = nil
         @retname = nil
 
         @length_arg = nil

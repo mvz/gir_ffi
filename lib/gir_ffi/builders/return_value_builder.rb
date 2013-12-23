@@ -20,10 +20,6 @@ module GirFFI
         end
       end
 
-      def inarg
-        nil
-      end
-
       def return_value_name
         if is_relevant?
           post_converted_name unless array_arg
