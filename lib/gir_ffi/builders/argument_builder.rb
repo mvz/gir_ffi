@@ -11,6 +11,14 @@ module GirFFI
         end
       end
 
+      def return_value_name
+        if @array_arg.nil?
+          post_converted_name
+        else
+          nil
+        end
+      end
+
       def post_converted_name
         if has_output_value?
           @retname ||= new_variable

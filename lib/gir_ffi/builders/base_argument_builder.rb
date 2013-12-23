@@ -65,14 +65,6 @@ module GirFFI
         end
       end
 
-      def retval
-        if @array_arg.nil?
-          post_converted_name
-        else
-          nil
-        end
-      end
-
       def callarg
         @callarg ||= new_variable
       end

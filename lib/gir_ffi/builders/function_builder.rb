@@ -113,7 +113,7 @@ module GirFFI
 
       def return_values
         @return_values ||= ([@return_value_builder.return_value_name] +
-                            @argument_builders.map(&:retval)).compact
+                            @argument_builders.map(&:return_value_name)).compact
       end
 
       def has_return_values?
