@@ -68,7 +68,7 @@ module GirFFI
 
       def retval
         if @array_arg.nil?
-          retname
+          post_converted_name
         else
           nil
         end

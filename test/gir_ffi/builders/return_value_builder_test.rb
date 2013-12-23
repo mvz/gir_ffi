@@ -270,7 +270,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                                     "method_array_return").return_type }
 
       before do
-        stub(length_argument).retname { "bar" }
+        stub(length_argument).post_converted_name { "bar" }
         builder.length_arg = length_argument
       end
 

@@ -5,19 +5,19 @@ module GirFFI
   module Builders
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
-      def inarg
+      def method_argument_name
         if has_input_value? && !is_array_length_parameter?
           name
         end
       end
 
-      def retname
+      def post_converted_name
         if has_output_value?
           @retname ||= new_variable
         end
       end
 
-      def pre
+      def pre_conversion
         pr = []
         if has_input_value?
           pr << fixed_array_size_check if needs_size_check?
@@ -27,10 +27,10 @@ module GirFFI
         pr
       end
 
-      def post
+      def post_conversion
         if has_output_value?
           value = output_value
-          ["#{retname} = #{value}"]
+          ["#{post_converted_name} = #{value}"]
         else
           []
         end
@@ -52,7 +52,7 @@ module GirFFI
       end
 
       def length_argument_name
-        length_arg && length_arg.retname
+        length_arg && length_arg.post_converted_name
       end
 
       def is_array_length_parameter?

@@ -66,7 +66,7 @@ module GirFFI
       end
 
       def length_argument_name
-        length_arg && length_arg.retname
+        length_arg && length_arg.post_converted_name
       end
 
       def needs_constructor_wrap?
