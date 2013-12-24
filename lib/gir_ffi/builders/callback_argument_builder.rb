@@ -5,16 +5,8 @@ require 'gir_ffi/builders/closure_convertor'
 module GirFFI
   module Builders
     class CallbackArgumentBuilder < BaseArgumentBuilder
-      def pre_conversion
-        if has_pre_conversion?
-          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
-        else
-          []
-        end
-      end
-
-      def call_argument_name
-        pre_converted_name unless array_arg
+      def method_argument_name
+        @method_argument_name ||= name || new_variable
       end
 
       def pre_converted_name
@@ -25,8 +17,16 @@ module GirFFI
                                 end
       end
 
-      def method_argument_name
-        @method_argument_name ||= name || new_variable
+      def call_argument_name
+        pre_converted_name unless array_arg
+      end
+
+      def pre_conversion
+        if has_pre_conversion?
+          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
+        else
+          []
+        end
       end
 
       private

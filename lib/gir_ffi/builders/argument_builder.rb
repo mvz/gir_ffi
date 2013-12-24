@@ -11,14 +11,14 @@ module GirFFI
         end
       end
 
+      def post_converted_name
+        @post_converted_name ||= new_variable
+      end
+
       def return_value_name
         if has_output_value?
           post_converted_name unless is_array_length_parameter?
         end
-      end
-
-      def post_converted_name
-        @post_converted_name ||= new_variable
       end
 
       def pre_conversion
