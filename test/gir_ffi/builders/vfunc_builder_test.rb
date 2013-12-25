@@ -10,9 +10,9 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1, in_)
-          _v2 = GIMarshallingTests::Object.wrap(_v1)
-          _proc.call(_v2, in_)
+        def self.call_with_argument_mapping(_proc, _instance, in_)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _proc.call(_v1, in_)
         end
         CODE
 
@@ -27,11 +27,11 @@ describe GirFFI::Builders::VFuncBuilder do
       it "returns a valid mapping method including receiver" do
         skip unless vfunc_info
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1)
-          _v2 = GIMarshallingTests::Object.wrap(_v1)
-          _v3 = _proc.call(_v2)
-          _v4 = GIMarshallingTests::Enum.from(_v3)
-          return _v4
+        def self.call_with_argument_mapping(_proc, _instance)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = _proc.call(_v1)
+          _v3 = GIMarshallingTests::Enum.from(_v2)
+          return _v3
         end
         CODE
 

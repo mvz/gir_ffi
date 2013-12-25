@@ -2,6 +2,7 @@ require 'gir_ffi/return_value_info'
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/mapping_method_builder'
 require 'gir_ffi/receiver_type_info'
+require 'gir_ffi/receiver_argument_info'
 require 'gir_ffi/vfunc_base'
 
 module GirFFI
@@ -25,7 +26,7 @@ module GirFFI
       def mapping_method_definition
         arg_infos = info.args
 
-        receiver_info = ReturnValueInfo.new(receiver_type_info)
+        receiver_info = ReceiverArgumentInfo.new(receiver_type_info)
 
         MappingMethodBuilder.for_vfunc(receiver_info,
                                        arg_infos,
