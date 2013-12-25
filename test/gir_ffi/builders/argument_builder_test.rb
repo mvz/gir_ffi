@@ -126,8 +126,8 @@ describe GirFFI::Builders::ArgumentBuilder do
           builder.pre_conversion.must_equal [ "_v1 = Regress::TestStructA.new" ]
         end
 
-        it "has the correct value for #post_conversion" do
-          builder.post_conversion.must_equal [ "_v2 = _v1" ]
+        it "has empty #post_conversion" do
+          builder.post_conversion.must_equal []
         end
       end
     end
@@ -174,8 +174,8 @@ describe GirFFI::Builders::ArgumentBuilder do
           builder.pre_conversion.must_equal [ "_v1 = GLib::Array.new :utf8" ]
         end
 
-        it "has the correct value for #post_conversion" do
-          builder.post_conversion.must_equal [ "_v2 = _v1" ]
+        it "has empty #post_conversion" do
+          builder.post_conversion.must_equal []
         end
       end
     end

@@ -15,7 +15,11 @@ module GirFFI
       end
 
       def post_converted_name
-        @post_converted_name ||= new_variable
+        @post_converted_name ||= if has_post_conversion?
+                                   new_variable
+                                 else
+                                   callarg
+                                 end
       end
 
       def return_value_name
@@ -48,7 +52,7 @@ module GirFFI
       end
 
       def post_conversion
-        if has_output_value?
+        if has_post_conversion?
           value = output_value
           ["#{post_converted_name} = #{value}"]
         else
@@ -58,16 +62,16 @@ module GirFFI
 
       private
 
+      def has_post_conversion?
+        has_output_value? && !is_caller_allocated_object?
+      end
+
       def output_value
-        if is_caller_allocated_object?
-          callarg
+        base = "#{callarg}.to_value"
+        if @type_info.needs_conversion_for_functions?
+          CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         else
-          base = "#{callarg}.to_value"
-          if @type_info.needs_conversion_for_functions?
-            CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
-          else
-            base
-          end
+          base
         end
       end
 
