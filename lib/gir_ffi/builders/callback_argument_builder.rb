@@ -15,11 +15,32 @@ module GirFFI
       end
 
       def call_argument_name
-        pre_converted_name unless array_arg
+        if direction == :in
+          pre_converted_name unless array_arg
+        end
+      end
+
+      def capture_variable_name
+        if direction == :out
+          @capture_variable_name ||= new_variable
+        end
       end
 
       def pre_conversion
-        [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
+        case direction
+        when :in
+          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
+        when :out
+          [ "#{pre_converted_name} = #{out_parameter_preparation}" ]
+        end
+      end
+
+      def post_conversion
+        if direction == :out
+          [ "#{pre_converted_name}.set_value #{capture_variable_name}" ]
+        else
+          []
+        end
       end
 
       private
@@ -34,6 +55,10 @@ module GirFFI
                            else
                              NullConvertor.new(method_argument_name)
                            end
+      end
+
+      def out_parameter_preparation
+        "GirFFI::InOutPointer.new(#{type_info.tag_or_class.inspect}, #{method_argument_name})"
       end
 
       def length_argument_name

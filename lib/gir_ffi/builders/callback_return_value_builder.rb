@@ -9,7 +9,9 @@ module GirFFI
       end
 
       def capture_variable_name
-        @capture_variable_name ||= new_variable
+        if is_relevant?
+          @capture_variable_name ||= new_variable
+        end
       end
 
       def post_converted_name

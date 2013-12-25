@@ -55,7 +55,7 @@ describe GirFFI::Builders::CallbackBuilder do
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, a)
-          _v1 = GirFFI::InOutPointer.new(:float, a)
+          _v1 = GirFFI::InOutPointer.new(:gfloat, a)
           _v2 = _proc.call()
           _v1.set_value _v2
         end

@@ -92,7 +92,7 @@ module GirFFI
       end
 
       def return_value_conversion
-        return_value_builder.post_conversion
+        all_builders.flat_map(&:post_conversion)
       end
 
       def call_to_proc
@@ -105,9 +105,18 @@ module GirFFI
       end
 
       def capture
-        @capture ||= return_value_builder.is_relevant? ?
-          "#{return_value_builder.capture_variable_name} = " :
+        @capture ||= capture_variable_names.any? ?
+          "#{capture_variable_names.join(", ")} = " :
           ""
+      end
+
+      def capture_variable_names
+        @capture_variable_names ||=
+          all_builders.map(&:capture_variable_name).compact
+      end
+
+      def all_builders
+        @all_builders ||= [return_value_builder] + argument_builders
       end
 
       def call_arguments
