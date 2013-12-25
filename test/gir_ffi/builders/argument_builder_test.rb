@@ -463,7 +463,8 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     it "has the correct value for #pre_conversion" do
-      builder.pre_conversion.must_equal [ "_v1 = nil" ]
+      builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32",
+                                          "_v1.set_value 0" ]
     end
 
     it "has the correct value for #post_conversion" do
@@ -480,7 +481,7 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     it "has the correct value for #pre_conversion" do
-      builder.pre_conversion.must_equal [ "_v1 = nil" ]
+      builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.for :gint32" ]
     end
 
     it "has the correct value for #post_conversion" do

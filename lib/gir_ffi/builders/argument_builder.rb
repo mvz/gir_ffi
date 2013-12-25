@@ -30,23 +30,18 @@ module GirFFI
 
       def pre_conversion
         pr = []
-        if skipped?
-          value = direction == :in ? "0" : "nil"
-          pr << "#{callarg} = #{value}"
-        else
-          case direction
-          when :in
-            pr << fixed_array_size_check if needs_size_check?
-            pr << array_length_assignment if is_array_length_parameter?
-            pr << "#{callarg} = #{ingoing_convertor.conversion}"
-          when :inout
-            pr << fixed_array_size_check if needs_size_check?
-            pr << array_length_assignment if is_array_length_parameter?
-            pr << out_parameter_preparation
-            pr << "#{callarg}.set_value #{ingoing_convertor.conversion}"
-          when :out
-            pr << out_parameter_preparation
-          end
+        case direction
+        when :in
+          pr << fixed_array_size_check if needs_size_check?
+          pr << array_length_assignment if is_array_length_parameter?
+          pr << "#{callarg} = #{ingoing_convertor.conversion}"
+        when :inout
+          pr << fixed_array_size_check if needs_size_check?
+          pr << array_length_assignment if is_array_length_parameter?
+          pr << out_parameter_preparation
+          pr << "#{callarg}.set_value #{ingoing_convertor.conversion}"
+        when :out
+          pr << out_parameter_preparation
         end
         pr
       end
@@ -129,7 +124,9 @@ module GirFFI
       end
 
       def ingoing_convertor
-        if is_closure
+        if skipped?
+          NullConvertor.new("0")
+        elsif is_closure
           ClosureToPointerConvertor.new(name)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
           RubyToCConvertor.new(@type_info, name)

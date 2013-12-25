@@ -171,7 +171,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "builds a correct definition" do
         code.must_equal <<-CODE.reset_indentation
           def get_strv 
-            _v1 = nil
+            _v1 = GirFFI::InOutPointer.for :guint64
             _v2 = GLib::Lib.g_variant_get_strv self, _v1
             _v3 = GLib::Strv.wrap(_v2)
             return _v3
