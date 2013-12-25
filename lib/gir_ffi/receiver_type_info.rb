@@ -19,5 +19,9 @@ module GirFFI
     def pointer?
       false
     end
+
+    def array_length
+      -1
+    end
   end
 end

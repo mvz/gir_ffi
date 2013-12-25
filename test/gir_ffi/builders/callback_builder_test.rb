@@ -9,9 +9,11 @@ describe GirFFI::Builders::CallbackBuilder do
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, foo, bar, path)
-          _v1 = path.to_utf8
-          _v2 = _proc.call(foo, bar, _v1)
-          return _v2
+          _v1 = foo
+          _v2 = bar
+          _v3 = path.to_utf8
+          _v4 = _proc.call(_v1, _v2, _v3)
+          return _v4
         end
         CODE
 
@@ -52,10 +54,10 @@ describe GirFFI::Builders::CallbackBuilder do
                                                    "CallbackOneOutParameter") }
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
-        def self.call_with_argument_mapping(_proc, _v1)
-          _v2 = GirFFI::InOutPointer.new(:float, _v1)
-          _v3 = _proc.call()
-          _v2.set_value _v3
+        def self.call_with_argument_mapping(_proc, a)
+          _v1 = GirFFI::InOutPointer.new(:float, a)
+          _v2 = _proc.call()
+          _v1.set_value _v2
         end
         CODE
 

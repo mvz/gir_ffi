@@ -1,6 +1,7 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
+require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
   module Builders
@@ -10,11 +11,7 @@ module GirFFI
       end
 
       def pre_converted_name
-        @pre_converted_name ||= if has_pre_conversion?
-                                  new_variable
-                                else
-                                  method_argument_name
-                                end
+        @pre_converted_name ||= new_variable
       end
 
       def call_argument_name
@@ -22,26 +19,20 @@ module GirFFI
       end
 
       def pre_conversion
-        if has_pre_conversion?
-          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
-        else
-          []
-        end
+        [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
       end
 
       private
 
-      def has_pre_conversion?
-        is_closure || type_info.needs_conversion_for_callbacks?
-      end
-
       def pre_convertor
         @pre_convertor ||= if is_closure
                              ClosureConvertor.new(method_argument_name)
-                           else
+                           elsif type_info.needs_conversion_for_callbacks?
                              CToRubyConvertor.new(type_info,
                                                   method_argument_name,
                                                   length_argument_name)
+                           else
+                             NullConvertor.new(method_argument_name)
                            end
       end
 

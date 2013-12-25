@@ -100,7 +100,8 @@ module GirFFI
       end
 
       def parameter_preparation
-        argument_builders.map(&:pre_conversion).flatten
+        argument_builders.sort_by {|arg|
+          arg.type_info.array_length}.map(&:pre_conversion).flatten
       end
 
       def capture

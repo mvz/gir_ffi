@@ -10,4 +10,8 @@ class GirFFI::UserDataTypeInfo
   def pointer?
     true
   end
+
+  def array_length
+    -1
+  end
 end

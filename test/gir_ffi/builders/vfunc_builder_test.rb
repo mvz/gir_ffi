@@ -12,7 +12,8 @@ describe GirFFI::Builders::VFuncBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, in_)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _proc.call(_v1, in_)
+          _v2 = in_
+          _proc.call(_v1, _v2)
         end
         CODE
 
