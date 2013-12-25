@@ -1,5 +1,8 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/closure_to_pointer_convertor'
+require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/ruby_to_c_convertor'
+require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
   module Builders
@@ -23,11 +26,24 @@ module GirFFI
 
       def pre_conversion
         pr = []
-        if has_input_value?
-          pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if is_array_length_parameter?
+        if skipped?
+          value = direction == :in ? "0" : "nil"
+          pr << "#{callarg} = #{value}"
+        else
+          case direction
+          when :in
+            pr << fixed_array_size_check if needs_size_check?
+            pr << array_length_assignment if is_array_length_parameter?
+            pr << "#{callarg} = #{ingoing_convertor.conversion}"
+          when :inout
+            pr << fixed_array_size_check if needs_size_check?
+            pr << array_length_assignment if is_array_length_parameter?
+            pr << out_parameter_preparation
+            pr << "#{callarg}.set_value #{ingoing_convertor.conversion}"
+          when :out
+            pr << out_parameter_preparation
+          end
         end
-        pr += set_function_call_argument
         pr
       end
 
@@ -90,21 +106,6 @@ module GirFFI
         "#{name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
 
-      def set_function_call_argument
-        result = []
-        if skipped?
-          value = direction == :in ? "0" : "nil"
-          result << "#{callarg} = #{value}"
-        end
-        if has_output_value?
-          result << out_parameter_preparation
-        end
-        if has_input_value?
-          result << ingoing_parameter_conversion
-        end
-        result
-      end
-
       def out_parameter_preparation
         value = if is_caller_allocated_object?
                   if specialized_type_tag == :array
@@ -123,19 +124,13 @@ module GirFFI
           @arginfo.caller_allocates?
       end
 
-      def ingoing_parameter_conversion
-        base = if is_closure
-                 ClosureToPointerConvertor.new(name).conversion
-               elsif @type_info.needs_ruby_to_c_conversion_for_functions?
-                 RubyToCConvertor.new(@type_info, name).conversion
-               else
-                 name
-               end
-
-        if has_output_value?
-          "#{callarg}.set_value #{base}"
+      def ingoing_convertor
+        if is_closure
+          ClosureToPointerConvertor.new(name)
+        elsif @type_info.needs_ruby_to_c_conversion_for_functions?
+          RubyToCConvertor.new(@type_info, name)
         else
-          "#{callarg} = #{base}"
+          NullConvertor.new(name)
         end
       end
     end
