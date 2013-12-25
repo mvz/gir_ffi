@@ -92,7 +92,7 @@ module GirFFI
       end
 
       def return_value_conversion
-        all_builders.flat_map(&:post_conversion)
+        all_builders.map(&:post_conversion).flatten
       end
 
       def call_to_proc
