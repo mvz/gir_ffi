@@ -1950,7 +1950,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_in_with_modification" do
-    skip
+    gv = GObject::Value.wrap_ruby_value(42)
+    GIMarshallingTests.gvalue_in_with_modification gv
+    gv.get_value.must_equal 24
   end
 
   it "has a working function #gvalue_in_with_type" do
