@@ -96,12 +96,22 @@ describe Regress do
   end
 
   describe "Regress::LikeXklConfigItem" do
+    before do
+      skip unless get_introspection_data 'Regress', 'LikeXklConfigItem'
+    end
+
+    let(:instance) { Regress::LikeXklConfigItem.new }
+
     it "has a writable field name" do
-      skip
+      # TODO: Should an array of gint8 be more string-like?
+      instance.name.to_a.must_equal [0] * 32
+      instance.name = "foo".bytes + [0] * 29
+      instance.name.to_a.must_equal "foo".bytes + [0] * 29
     end
 
     it "has a working method #set_name" do
-      skip
+      instance.set_name "foo"
+      instance.name.to_a.must_equal "foo".bytes + [0] * 29
     end
   end
 
