@@ -1205,20 +1205,31 @@ describe Regress do
       assert_instance_of Regress::TestSimpleBoxedA, obj
     end
 
+    let(:instance) { Regress::TestSimpleBoxedA.new }
+
     it "has a writable field some_int" do
-      skip
-    end
-    it "has a writable field some_int8" do
-      skip
-    end
-    it "has a writable field some_double" do
-      skip
-    end
-    it "has a writable field some_enum" do
-      skip
+      instance.some_int.must_equal 0
+      instance.some_int = 42
+      instance.some_int.must_equal 42
     end
 
-    let(:instance) { Regress::TestSimpleBoxedA.new }
+    it "has a writable field some_int8" do
+      instance.some_int8.must_equal 0
+      instance.some_int8 = 42
+      instance.some_int8.must_equal 42
+    end
+
+    it "has a writable field some_double" do
+      instance.some_double.must_equal 0.0
+      instance.some_double = 42.0
+      instance.some_double.must_equal 42.0
+    end
+
+    it "has a writable field some_enum" do
+      instance.some_enum.must_equal :value1
+      instance.some_enum = :value4
+      instance.some_enum.must_equal :value4
+    end
 
     it "has a working method #copy" do
       instance.some_int = 4236
