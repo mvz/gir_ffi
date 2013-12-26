@@ -95,6 +95,16 @@ describe Regress do
     end
   end
 
+  describe "Regress::LikeXklConfigItem" do
+    it "has a writable field name" do
+      skip
+    end
+
+    it "has a working method #set_name" do
+      skip
+    end
+  end
+
   it "has the constant MAXUINT64" do
     skip unless get_introspection_data 'Regress', 'MAXUINT64'
     Regress::MAXUINT64.must_equal 0xffff_ffff_ffff_ffff
@@ -1185,6 +1195,19 @@ describe Regress do
       assert_instance_of Regress::TestSimpleBoxedA, obj
     end
 
+    it "has a writable field some_int" do
+      skip
+    end
+    it "has a writable field some_int8" do
+      skip
+    end
+    it "has a writable field some_double" do
+      skip
+    end
+    it "has a writable field some_enum" do
+      skip
+    end
+
     let(:instance) { Regress::TestSimpleBoxedA.new }
 
     it "has a working method #copy" do
@@ -1363,6 +1386,13 @@ describe Regress do
       o = Regress::TestSubObj.new
       instance.field = o
       instance.field.must_equal o
+    end
+
+    it "has a writable field list" do
+      skip
+    end
+    it "has a writable field garray" do
+      skip
     end
   end
 
