@@ -1332,7 +1332,10 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_multiple_out_parameters" do
-    skip "Out parameters for callbacks are not supported yet"
+    result = GIMarshallingTests.callback_multiple_out_parameters proc { |*args|
+      [12.0, 13.0]
+    }
+    result.must_equal [12.0, 13.0]
   end
 
   it "has a working function #callback_one_out_parameter" do
@@ -1341,11 +1344,17 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_return_value_and_multiple_out_parameters" do
-    skip "Out parameters for callbacks are not supported yet"
+    result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters proc { |*args|
+      [42, -142, 3]
+    }
+    result.must_equal [42, -142, 3]
   end
 
   it "has a working function #callback_return_value_and_one_out_parameter" do
-    skip "Out parameters for callbacks are not supported yet"
+    result = GIMarshallingTests.callback_return_value_and_one_out_parameter proc { |*args|
+      [42, -142]
+    }
+    result.must_equal [42, -142]
   end
 
   it "has a working function #callback_return_value_only" do
