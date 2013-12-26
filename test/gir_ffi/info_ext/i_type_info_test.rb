@@ -198,10 +198,10 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       describe "when the interface type is :object" do
-        it "returns an array with elements :pointer and built interface class" do
+        it "returns the built interface class" do
           stub(iface_info).info_type { :object }
 
-          type_info.tag_or_class.must_equal [:pointer, interface]
+          type_info.tag_or_class.must_equal interface
         end
       end
 

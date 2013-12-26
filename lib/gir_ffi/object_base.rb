@@ -49,6 +49,10 @@ module GirFFI
       :pointer
     end
 
+    def self.copy_value_to_pointer value, pointer, offset=0
+      pointer.put_pointer offset, value.to_ptr
+    end
+
     def self.object_class
       gir_ffi_builder.object_class
     end

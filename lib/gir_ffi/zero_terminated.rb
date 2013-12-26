@@ -47,8 +47,11 @@ module GirFFI
     end
 
     def wrap_value(val)
-      if complex_element_type?
-        element_class.wrap val
+      case element_type
+      when Array
+        element_type.last.wrap val
+      when Class
+        element_type.wrap val
       else
         val
       end
@@ -56,14 +59,6 @@ module GirFFI
 
     def ffi_type
       @ffi_type ||= TypeMap.type_specification_to_ffitype element_type
-    end
-
-    def complex_element_type?
-      Array === element_type
-    end
-
-    def element_class
-      @element_class ||= element_type.last
     end
 
     def is_null_value? value

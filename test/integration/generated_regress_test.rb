@@ -1410,10 +1410,17 @@ describe Regress do
     end
 
     it "has a writable field list" do
-      skip
+      instance.list.must_be_nil
+      o = Regress::TestSubObj.new
+      instance.list = [o]
+      instance.list.must_be :==, [o]
     end
+
     it "has a writable field garray" do
-      skip
+      instance.garray.must_be_nil
+      o = Regress::TestSubObj.new
+      instance.garray = [o]
+      instance.garray.must_be :==, [o]
     end
   end
 

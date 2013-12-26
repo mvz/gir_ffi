@@ -79,10 +79,12 @@ module GirFFI
       def from_struct_array type, ary
         ffi_type = TypeMap.type_specification_to_ffitype type
         type_size = FFI.type_size(ffi_type)
-        ptr = AllocationHelper.safe_malloc ary.length * type_size
+        length = ary.length
+        ptr = AllocationHelper.safe_malloc (length + 1) * type_size
         ary.each_with_index do |item, idx|
           type.copy_value_to_pointer item, ptr, idx * type_size
         end
+        ptr.put_bytes length * type_size, "\0" * type_size, 0, type_size
         new ptr
       end
 

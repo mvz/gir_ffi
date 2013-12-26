@@ -65,7 +65,7 @@ module GirFFI
                else
                  flattened_tag
                end
-        if pointer? && tag != :utf8 && tag != :filename || interface_type == :object
+        if pointer? && tag != :utf8 && tag != :filename
           [:pointer, base]
         else
           base
