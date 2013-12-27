@@ -8,7 +8,10 @@ module GLib
       end
     end
 
-    def from typespec, it
+    # FIXME: Drop Ruby 1.8.7 support and make first argument optional.
+    def from *args
+      it, typespec = *args.reverse
+      typespec ||= :void
       case it
       when nil
         nil

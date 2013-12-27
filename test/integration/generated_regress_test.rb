@@ -1672,7 +1672,8 @@ describe Regress do
   end
 
   it "has a working function #introspectable_via_alias" do
-    skip
+    Regress.introspectable_via_alias []
+    pass
   end
 
   it "has a working function #set_abort_on_error" do
