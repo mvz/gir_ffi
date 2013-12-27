@@ -80,7 +80,8 @@ module GirFFI
         ffi_type = TypeMap.type_specification_to_ffitype type
         type_size = FFI.type_size(ffi_type)
         length = ary.length
-        ptr = AllocationHelper.safe_malloc (length + 1) * type_size
+
+        ptr = AllocationHelper.safe_malloc type_size * (length + 1)
         ary.each_with_index do |item, idx|
           type.copy_value_to_pointer item, ptr, idx * type_size
         end

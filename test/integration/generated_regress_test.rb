@@ -101,17 +101,18 @@ describe Regress do
     end
 
     let(:instance) { Regress::LikeXklConfigItem.new }
+    let(:name_array) { "foo".bytes.to_a + [0] * 29 }
 
     it "has a writable field name" do
       # TODO: Should an array of gint8 be more string-like?
       instance.name.to_a.must_equal [0] * 32
-      instance.name = "foo".bytes + [0] * 29
-      instance.name.to_a.must_equal "foo".bytes + [0] * 29
+      instance.name = name_array
+      instance.name.to_a.must_equal name_array
     end
 
     it "has a working method #set_name" do
       instance.set_name "foo"
-      instance.name.to_a.must_equal "foo".bytes + [0] * 29
+      instance.name.to_a.must_equal name_array
     end
   end
 
