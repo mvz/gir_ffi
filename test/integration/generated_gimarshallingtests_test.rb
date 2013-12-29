@@ -1950,6 +1950,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_in_with_modification" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_in_with_modification'
     gv = GObject::Value.wrap_ruby_value(42)
     GIMarshallingTests.gvalue_in_with_modification gv
     gv.get_value.must_equal 24
