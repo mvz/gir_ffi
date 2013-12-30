@@ -13,6 +13,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   let(:callback_type_info) {
     get_introspection_data('Regress', 'test_callback').args[0].argument_type }
+  let(:ghash_type_info) {
+    get_introspection_data('Regress',
+                           'test_ghash_nested_everything_return').return_type }
 
   describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
@@ -236,6 +239,17 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(type_info).pointer? { true }
 
         type_info.tag_or_class.must_equal [:pointer, :void]
+      end
+    end
+
+    describe "for a complex nested hash type" do
+      it "returns a representeation of the nested structure" do
+        ghash_type_info.tag_or_class.must_equal(
+          [ :pointer,
+            [ :ghash,
+              :utf8,
+              [ :pointer,
+                [ :ghash, :utf8, :utf8 ] ] ] ])
       end
     end
   end

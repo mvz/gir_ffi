@@ -60,8 +60,11 @@ module GirFFI
       end
 
       def tag_or_class
-        base = if tag == :interface
+        base = case tag
+               when:interface
                  Builder.build_class interface
+               when :ghash
+                 [tag, *element_type]
                else
                  flattened_tag
                end

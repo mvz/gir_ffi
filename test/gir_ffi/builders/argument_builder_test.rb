@@ -272,7 +272,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         get_introspection_data("GIMarshallingTests", "ghashtable_utf8_none_out").args[0] }
 
       it "has the correct value for #pre_conversion" do
-        builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, :ghash]" ]
+        builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.for [:pointer, [:ghash, :utf8, :utf8]]" ]
       end
 
       it "has the correct value for #post_conversion" do
