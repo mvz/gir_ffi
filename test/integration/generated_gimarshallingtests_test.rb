@@ -390,15 +390,21 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_out" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_out, proc {|obj| 42 }
+      end
+      derived_instance.method_int8_out.must_equal 42
     end
 
     it "has a working method #method_str_arg_out_ret" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_str_arg_out_ret, proc {|obj, arg| [arg, 42] }
+      end
+      derived_instance.method_str_arg_out_ret("foo").must_equal ["foo", 42]
     end
 
     it "has a working method #method_variant_array_in" do
-      skip "Needs vfunc setup"
+      skip "This function is only found in the header"
     end
 
     it "has a working method #method_with_default_implementation" do
@@ -424,17 +430,37 @@ describe GIMarshallingTests do
     it "has a working method #vfunc_caller_allocated_out_parameter" do
       skip "Needs vfunc setup"
     end
+
     it "has a working method #vfunc_meth_with_error" do
       skip "Needs vfunc setup"
     end
+
     it "has a working method #vfunc_multiple_out_parameters" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation(
+          :vfunc_multiple_out_parameters,
+          proc {|*args| [42.1, -142.3] })
+      end
+      result = derived_instance.vfunc_multiple_out_parameters
+      result[0].must_be_close_to 42.1
+      result[1].must_be_close_to(-142.3)
     end
+
     it "has a working method #vfunc_one_out_parameter" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation(
+          :vfunc_one_out_parameter,
+          proc {|*args| 23.4 })
+      end
+      derived_instance.vfunc_one_out_parameter.
+        must_be_within_epsilon 23.4
     end
+
     it "has a working method #vfunc_out_enum" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_out_enum, proc {|obj| :value2 }
+      end
+      derived_instance.vfunc_out_enum.must_equal :value2
     end
 
     it "has a working method #vfunc_return_enum" do
@@ -447,10 +473,23 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation(
+          :vfunc_return_value_and_multiple_out_parameters,
+          proc {|*args| [42, -142, 3] })
+      end
+      derived_instance.vfunc_return_value_and_multiple_out_parameters.
+        must_equal [42, -142, 3]
     end
+
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation(
+          :vfunc_return_value_and_one_out_parameter,
+          proc {|*args| [42, -142] })
+      end
+      derived_instance.vfunc_return_value_and_one_out_parameter.
+        must_equal [42, -142]
     end
 
     it "has a working method #vfunc_return_value_only" do
