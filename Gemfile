@@ -13,6 +13,4 @@ unless ENV["CI"]
   end
 end
 
-if defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx' && RUBY_VERSION >= "2.0"
-  gem 'rubysl'
-end
+gem 'rubysl', :platform => :rbx
