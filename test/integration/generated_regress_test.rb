@@ -2073,8 +2073,14 @@ describe Regress do
   end
 
   it "has a working function #test_ghash_nested_everything_return" do
-    skip
+    result = Regress.test_ghash_nested_everything_return
+    hash = result.to_hash
+    hash.keys.must_equal ["wibble"]
+    hash["wibble"].to_hash.must_equal({"foo" => "bar",
+                                       "baz" => "bat",
+                                       "qux" => "quux"})
   end
+
   it "has a working function #test_ghash_nested_everything_return2" do
     skip
   end

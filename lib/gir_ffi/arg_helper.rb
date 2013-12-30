@@ -35,6 +35,18 @@ module GirFFI
         type.wrap it
       when :guint32
         it.address
+      when Array
+        main_type, subtype = *type
+        raise "Unexpected main type #{main_type}" if main_type != :pointer
+        case subtype
+        when Array
+          container_type, *element_type = *subtype
+          raise "Unexpected container type #{container_type}" if container_type != :ghash
+          GLib::HashTable.wrap(element_type, it)
+        else
+          raise "Unexpected subtype #{subtype}"
+        end
+
       else
         raise "Don't know how to cast #{type}"
       end
