@@ -397,6 +397,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_str_arg_out_ret" do
+      skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                               "method_str_arg_out_ret")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_str_arg_out_ret, proc {|obj, arg| [arg, 42] }
       end
@@ -457,6 +459,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_out_enum" do
+      skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                               "vfunc_out_enum")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_enum, proc {|obj| :value2 }
       end
