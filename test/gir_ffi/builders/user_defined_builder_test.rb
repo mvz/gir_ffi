@@ -73,6 +73,19 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.int.must_equal 12
       end
     end
+
+    describe "with a class with an included Interface" do
+      let(:info) do
+        klass.class_eval { include GIMarshallingTests::Interface }
+        GirFFI::UserDefinedTypeInfo.new klass do |info|
+        end
+      end
+
+      it "marks the type as conforming to the included Interface" do
+        iface_gtype = GIMarshallingTests::Interface.get_gtype
+        GObject.type_interfaces(klass.get_gtype).to_a.must_equal [iface_gtype]
+      end
+    end
   end
 
   describe "#find_vfunc" do

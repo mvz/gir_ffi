@@ -11,6 +11,10 @@ module GirFFI
       def instantiate_class
         @gtype = GObject.type_register_static(parent_gtype, info.g_name,
                                               type_info, 0)
+        interface_gtypes.each do |gt|
+          ifinfo = GObject::InterfaceInfo.new
+          GObject.type_add_interface_static @gtype, gt, ifinfo
+        end
         setup_class unless already_set_up
         TypeBuilder::CACHE[@gtype] = klass
       end
@@ -42,6 +46,14 @@ module GirFFI
 
       def parent_gtype
         @parent_gtype ||= klass.superclass.get_gtype
+      end
+
+      def interface_gtypes
+        included_interfaces.map(&:get_gtype)
+      end
+
+      def included_interfaces
+        klass.included_modules - Object.included_modules
       end
 
       def klass
