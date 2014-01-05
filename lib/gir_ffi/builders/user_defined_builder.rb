@@ -1,4 +1,5 @@
 require 'gir_ffi/builders/object_builder'
+require 'gir_ffi/g_type'
 
 module GirFFI
   module Builders
@@ -9,7 +10,8 @@ module GirFFI
       end
 
       def instantiate_class
-        @gtype = GObject.type_register_static(parent_gtype, info.g_name,
+        @gtype = GObject.type_register_static(parent_gtype.to_i,
+                                              info.g_name,
                                               type_info, 0)
         interface_gtypes.each do |gt|
           ifinfo = GObject::InterfaceInfo.new
@@ -41,11 +43,11 @@ module GirFFI
       end
 
       def parent
-        @parent ||= gir.find_by_gtype(parent_gtype)
+        @parent ||= gir.find_by_gtype(parent_gtype.to_i)
       end
 
       def parent_gtype
-        @parent_gtype ||= klass.superclass.get_gtype
+        @parent_gtype ||= GType.new(klass.superclass.get_gtype)
       end
 
       def interface_gtypes
@@ -62,7 +64,7 @@ module GirFFI
 
       def type_info
         GObject::TypeInfo.new.tap do |type_info|
-          type_info.class_size = parent_class_size
+          type_info.class_size = parent_gtype.class_size
           type_info.instance_size = instance_size
           type_info.class_init = class_init_proc
         end
@@ -76,23 +78,11 @@ module GirFFI
       end
 
       def instance_size
-        size = parent_instance_size
+        size = parent_gtype.instance_size
         properties.each do
           size += FFI.type_size(:int32)
         end
         return size
-      end
-
-      def parent_instance_size
-        parent_query.instance_size
-      end
-
-      def parent_class_size
-        parent_query.class_size
-      end
-
-      def parent_query
-        @parent_query ||= GObject.type_query parent_gtype
       end
 
       def setup_properties object_class_ptr
