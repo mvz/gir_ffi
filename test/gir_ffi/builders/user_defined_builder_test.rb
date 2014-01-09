@@ -6,6 +6,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
   let(:klass) { Object.const_set("DerivedClass#{Sequence.next}",
                                  Class.new(GIMarshallingTests::Object)) }
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
+  let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
 
   describe "#build_class" do
     before do
@@ -77,8 +78,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
     describe "with a class with an included Interface" do
       let(:info) do
         klass.class_eval { include GIMarshallingTests::Interface }
-        GirFFI::UserDefinedTypeInfo.new klass do |info|
-        end
+        GirFFI::UserDefinedTypeInfo.new klass
       end
 
       it "marks the type as conforming to the included Interface" do
@@ -86,11 +86,16 @@ describe GirFFI::Builders::UserDefinedBuilder do
         GObject.type_interfaces(klass.get_gtype).to_a.must_equal [iface_gtype]
       end
     end
+
+    it "does not attempt to register a registered class" do
+      gtype = klass.get_gtype
+      other_builder = GirFFI::Builders::UserDefinedBuilder.new info
+      other_builder.build_class
+      other_builder.gtype.must_equal gtype
+    end
   end
 
   describe "#find_vfunc" do
-    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
-
     it "finds vfuncs in the superclass" do
       result = builder.find_vfunc :method_int8_in
       result.name.must_equal "method_int8_in"

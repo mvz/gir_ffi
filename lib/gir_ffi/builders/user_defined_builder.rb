@@ -10,15 +10,19 @@ module GirFFI
       end
 
       def instantiate_class
-        @gtype = GObject.type_register_static(parent_gtype.to_i,
-                                              info.g_name,
-                                              type_info, 0)
-        interface_gtypes.each do |gt|
-          ifinfo = GObject::InterfaceInfo.new
-          GObject.type_add_interface_static @gtype, gt, ifinfo
+        if already_set_up
+          @gtype = klass.get_gtype
+        else
+          @gtype = GObject.type_register_static(parent_gtype.to_i,
+                                                info.g_name,
+                                                type_info, 0)
+          interface_gtypes.each do |gt|
+            ifinfo = GObject::InterfaceInfo.new
+            GObject.type_add_interface_static @gtype, gt, ifinfo
+          end
+          setup_class
+          TypeBuilder::CACHE[@gtype] = klass
         end
-        setup_class unless already_set_up
-        TypeBuilder::CACHE[@gtype] = klass
       end
 
       def setup_class
@@ -36,8 +40,13 @@ module GirFFI
         parent.find_vfunc vfunc_name.to_s
       end
 
+      def gtype
+        @gtype
+      end
+
       private
 
+      # FIXME: Is this really used?
       def target_gtype
         @gtype
       end
