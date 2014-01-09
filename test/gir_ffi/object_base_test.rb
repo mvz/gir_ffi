@@ -2,6 +2,7 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::ObjectBase do
   let(:derived_class) { Class.new GirFFI::ObjectBase }
+
   describe ".wrap" do
     it "delegates conversion to the wrapped pointer" do
       mock(ptr = Object.new).to_object { "good-result" }
@@ -15,5 +16,3 @@ describe GirFFI::ObjectBase do
     end
   end
 end
-
-
