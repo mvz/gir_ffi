@@ -52,4 +52,10 @@ describe GirFFI::Builders::ObjectBuilder do
       code.must_equal expected
     end
   end
+
+  describe "#object_class_struct" do
+    it "returns the class struct type" do
+      obj_builder.object_class_struct.must_equal Regress::TestObjClass
+    end
+  end
 end
