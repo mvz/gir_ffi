@@ -15,10 +15,10 @@ module GirFFI
         else
           @gtype = GObject.type_register_static(parent_gtype.to_i,
                                                 info.g_name,
-                                                type_info, 0)
-          interface_gtypes.each do |gt|
-            ifinfo = GObject::InterfaceInfo.new
-            GObject.type_add_interface_static @gtype, gt.to_i, ifinfo
+                                                gobject_type_info, 0)
+          included_interfaces.each do |interface|
+            ifinfo = gobject_interface_info interface
+            GObject.type_add_interface_static @gtype, interface.get_gtype, ifinfo
           end
           setup_class
           TypeBuilder::CACHE[@gtype] = klass
@@ -67,11 +67,17 @@ module GirFFI
         @klass ||= @info.described_class
       end
 
-      def type_info
+      def gobject_type_info
         GObject::TypeInfo.new.tap do |type_info|
-          type_info.class_size = parent_gtype.class_size
+          type_info.class_size = class_size
           type_info.instance_size = instance_size
           type_info.class_init = class_init_proc
+        end
+      end
+
+      def gobject_interface_info interface
+        GObject::InterfaceInfo.new.tap do |interface_info|
+          interface_info.interface_init = interface_init_proc(interface)
         end
       end
 
@@ -82,12 +88,22 @@ module GirFFI
         end
       end
 
+      def interface_init_proc interface
+        proc do |interface_ptr, data|
+          setup_interface_vfuncs interface, interface_ptr
+        end
+      end
+
       def instance_size
         size = parent_gtype.instance_size
         properties.each do
           size += FFI.type_size(:int32)
         end
         return size
+      end
+
+      def class_size
+        parent_gtype.class_size + interface_gtypes.map(&:class_size).inject(0, :+)
       end
 
       def setup_properties object_class_ptr
@@ -121,15 +137,42 @@ module GirFFI
         end
       end
 
+      def setup_interface_vfuncs interface, interface_ptr
+        interface_builder = interface.gir_ffi_builder
+
+        interface_struct = interface_builder.interface_struct::Struct.new(interface_ptr)
+        interface_info = interface_builder.info
+
+        info.vfunc_implementations.each do |impl|
+          setup_interface_vfunc interface_info, interface_struct, impl
+        end
+      end
+
       def setup_vfunc super_class_struct, impl
         vfunc_name = impl.name
-        vfunc_info = find_vfunc vfunc_name
+        vfunc_info = parent.find_vfunc vfunc_name.to_s
+
+        if vfunc_info
+          install_vfunc super_class_struct, vfunc_name, vfunc_info, impl.implementation
+        end
+      end
+
+      def setup_interface_vfunc interface_info, interface_struct, impl
+        vfunc_name = impl.name
+        vfunc_info = interface_info.find_vfunc vfunc_name.to_s
+
+        if vfunc_info
+          install_vfunc interface_struct, vfunc_name, vfunc_info, impl.implementation
+        end
+      end
+
+      def install_vfunc container_struct, vfunc_name, vfunc_info, implementation
         vfunc = VFuncBuilder.new(vfunc_info).build_class
         # NOTE: This assigns a VFuncBase to a CallbackBase.
         # This suggests that the two should be combined, but it seems
         # CallbackBase will not cast the first argument correctly if used
         # to map the implementation proc arguments.
-        super_class_struct[vfunc_name] = vfunc.from impl.implementation
+        container_struct[vfunc_name] = vfunc.from implementation
       end
 
       def properties

@@ -75,15 +75,24 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
-    describe "with a class with an included Interface" do
+    describe "with type info containing a vfunc from an included Interface" do
       let(:info) do
         klass.class_eval { include GIMarshallingTests::Interface }
-        GirFFI::UserDefinedTypeInfo.new klass
+        GirFFI::UserDefinedTypeInfo.new klass do |info|
+          info.install_vfunc_implementation :test_int8_in,
+            proc {|instance, in_| instance.int = in_ }
+        end
       end
 
       it "marks the type as conforming to the included Interface" do
         iface_gtype = GIMarshallingTests::Interface.get_gtype
         GObject.type_interfaces(klass.get_gtype).to_a.must_equal [iface_gtype]
+      end
+
+      it "allows the vfunc to be called through its invoker" do
+        obj = klass.new
+        obj.test_int8_in 12
+        obj.int.must_equal 12
       end
     end
 

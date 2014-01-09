@@ -7,6 +7,16 @@ GirFFI.setup :GIMarshallingTests
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
+  let(:derived_klass) { Object.const_set("DerivedClass#{Sequence.next}",
+                                         Class.new(GIMarshallingTests::Object)) }
+
+  def make_derived_instance
+    GirFFI.define_type derived_klass do |info|
+      yield info if block_given?
+    end
+    derived_klass.new
+  end
+
   describe "GIMarshallingTests::BoxedStruct" do
     let(:instance) { GIMarshallingTests::BoxedStruct.new }
 
@@ -183,7 +193,11 @@ describe GIMarshallingTests do
 
   describe "GIMarshallingTests::Interface" do
     it "has a working method #test_int8_in" do
-      skip "Interfaces cannot be tested directly"
+      derived_klass.class_eval { include GIMarshallingTests::Interface }
+      instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :test_int8_in, proc {|obj, in_| obj.int = in_ }
+      end
+      instance.test_int8_in 8
     end
   end
 
@@ -324,16 +338,6 @@ describe GIMarshallingTests do
     end
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
       skip "Needs vfunc setup"
-    end
-
-    let(:derived_klass) { Object.const_set("DerivedClass#{Sequence.next}",
-                                           Class.new(GIMarshallingTests::Object)) }
-
-    def make_derived_instance
-      GirFFI.define_type derived_klass do |info|
-        yield info
-      end
-      derived_klass.new
     end
 
     it "has a working method #int8_in" do
