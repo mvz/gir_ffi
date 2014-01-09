@@ -36,10 +36,6 @@ module GirFFI
         setup_constructor
       end
 
-      def find_vfunc vfunc_name
-        parent.find_vfunc vfunc_name.to_s
-      end
-
       def gtype
         @gtype
       end

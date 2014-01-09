@@ -94,12 +94,4 @@ describe GirFFI::Builders::UserDefinedBuilder do
       other_builder.gtype.must_equal gtype
     end
   end
-
-  describe "#find_vfunc" do
-    it "finds vfuncs in the superclass" do
-      result = builder.find_vfunc :method_int8_in
-      result.name.must_equal "method_int8_in"
-      result.must_be_instance_of GObjectIntrospection::IVFuncInfo
-    end
-  end
 end
