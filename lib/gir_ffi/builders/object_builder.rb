@@ -26,10 +26,6 @@ module GirFFI
           raise "Property #{property_name} not found"
       end
 
-      def object_class
-        object_class_struct.wrap GObject.type_class_ref(target_gtype).to_ptr
-      end
-
       def object_class_struct
         @object_class_struct ||= Builder.build_class object_class_struct_info
       end
