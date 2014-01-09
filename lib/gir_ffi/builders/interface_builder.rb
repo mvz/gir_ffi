@@ -8,6 +8,10 @@ module GirFFI
     class InterfaceBuilder < RegisteredTypeBuilder
       include WithMethods
 
+      def interface_struct
+        @interface_struct ||= Builder.build_class iface_struct_info
+      end
+
       private
 
       # FIXME: The word 'class' is not really correct.
@@ -25,6 +29,10 @@ module GirFFI
         setup_constants
         stub_methods
         setup_gtype_getter
+      end
+
+      def iface_struct_info
+        @iface_struct_info ||= info.iface_struct
       end
     end
   end
