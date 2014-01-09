@@ -18,7 +18,7 @@ module GirFFI
                                                 type_info, 0)
           interface_gtypes.each do |gt|
             ifinfo = GObject::InterfaceInfo.new
-            GObject.type_add_interface_static @gtype, gt, ifinfo
+            GObject.type_add_interface_static @gtype, gt.to_i, ifinfo
           end
           setup_class
           TypeBuilder::CACHE[@gtype] = klass
@@ -56,7 +56,7 @@ module GirFFI
       end
 
       def interface_gtypes
-        included_interfaces.map(&:get_gtype)
+        included_interfaces.map {|interface| GType.new(interface.get_gtype) }
       end
 
       def included_interfaces
