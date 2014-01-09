@@ -12,5 +12,9 @@ module GirFFI
     def wrap ptr
       ptr.to_object
     end
+
+    def to_ffitype
+      :pointer
+    end
   end
 end
