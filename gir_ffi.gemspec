@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -z -- test`.split("\0")
 
   s.add_runtime_dependency('ffi', ["~> 1.8"])
-  s.add_runtime_dependency('indentation', ["~> 0.0.6"])
+  s.add_runtime_dependency('indentation', ["~> 0.1.1"])
 
   s.add_development_dependency('minitest', ["~> 5.0"])
   s.add_development_dependency('rr', ["~> 1.1.2"])
