@@ -71,7 +71,7 @@ already exist:
 
 ## Hacking and contributing
 
-If you want to help out, have a look at TODO.rdoc, and check the notes
+If you want to help out, have a look at TODO.md, and check the notes
 in the code (e.g., using `dnote`). Feel free to file bugs or send pull
 requests.
 

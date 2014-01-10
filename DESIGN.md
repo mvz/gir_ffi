@@ -1,11 +1,11 @@
-= Design of Gir-FFI
+# Design of Gir-FFI
 
-== Basic Idea
+## Basic Idea
 
 Gir-FFI uses FFI to read information from the GObject Introspection
 Repository. Based on that it creates bindings for the information read.
 
-== Class and method creation
+## Class and method creation
 
 GirFFI::Builder creates classes and modules at runtime and adds appropriate
 method_missing methods to them to generate methods and perhaps other
@@ -22,7 +22,7 @@ The following options were discarded, at least for now.
   still in interesting idea, but off-line source code generation is not
   really the Ruby way.
 
-== Method Naming
+## Method Naming
 
 Probably, get_x/set_x pairs should become x and x= to be more Ruby-like.
 This should be done either by defining them as such directly, or by
@@ -35,7 +35,7 @@ Boolean-valued methods could get a ? at the end.
 This requires a lot more thought. For now, the full method names as
 defined in the GIR are used.
 
-== Ruby-GNOME Compatibility
+## Ruby-GNOME Compatibility
 
 Full Ruby-GNOME compatibility cannot be achieved automatically, since its
 object hierarchy differs from that of standard GObject: It puts Object in
@@ -45,7 +45,7 @@ GLib::Instantiable; In standard GObject they are functions.
 Possibly, compatibility enhancing code can be added for these specific
 exceptions.
 
-== Reference Counting
+## Reference Counting
 
 Because we can always make sure GObjects are unref'd when the Ruby object
 is GC'd, the mechanism of floating references actually gets in the way a
@@ -54,7 +54,7 @@ them. All GObjects can then safely be unref'd using a Ruby finalizer.
 GObjects obtained through other mechanisms than with a constructor will be
 ref'd once when wrapping them in a ruby object.
 
-== Bootstrapping Class Design
+## Bootstrapping Class Design
 
 The interface to the GObject Introspection Repository itself is also
 introspectable. The interface is specified in terms of structs and
