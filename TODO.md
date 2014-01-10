@@ -26,6 +26,30 @@ These in the order they occured to me, and may therefore be fixed in any order.
   GLib::List) that have actual GLib implementations go to the GLib namespace.
   Other types go to the GirFFI namespace.
 
+## Derived types
+
+Derived classes can now be registered with GObject, but the way to do this is
+not very nice:
+
+    class Derived < Base
+    end
+
+    GirFFI.define_type Derived do |info|
+      info.install_property GObject.param_spec_int("foo", "foo bar",
+                                                   "The Foo Bar Property",
+                                                   10, 20, 15, 3)
+      # assume Base defines a virtual function called 'some_vfunc'
+      info.install_vfunc_implementation :some_vfunc, proc {|obj|
+        #implementation goes here
+      }
+    end
+
+It would be good to replace this with something that's easier to use:
+* Perhaps auto-register types, like Gtk# does
+* Perhaps automagically find vfunc implementations, like PyGObject and
+  Ruby-GNOME do
+* What about properties?
+
 ## Persistent Ruby GObject identity
 
 GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
