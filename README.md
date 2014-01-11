@@ -37,8 +37,8 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 ## Requirements
 
-GirFFI should work on MRI 1.8, 1.9 and 2.0, JRuby in both 1.8 and 1.9
-modes, and on Rubinius in both 1.8 and 1.9 modes.
+GirFFI should work on MRI 1.8, 1.9, 2.0, and 2.1, JRuby in both 1.8 and 1.9
+modes, and on Rubinius.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -88,7 +88,7 @@ If you want to send pull requests or patches, please:
 
 ## License
 
-Copyright &copy; 2009&ndash;2013 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2014 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
