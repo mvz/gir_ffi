@@ -107,11 +107,6 @@ module GObject
       send get_method
     end
 
-    # @deprecated Compatibility function. Remove in 0.7.0.
-    def ruby_value
-      get_value
-    end
-
     class << self
       # TODO: Give more generic name
       def wrap_ruby_value val
