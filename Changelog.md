@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.7.0 / 2014-01-11
+
+* Type handling:
+  * Handle c arrays with separate length argument for signals
+  * Handle GHashTable values of type :gint8 and :guint32
+  * Handle signals with int64, Strv, uint64 arguments
+  * Handle arrays of integers cast as pointers
+  * Handle fields of callback type
+  * Handle nested GHashTable
+* Argument handling:
+  * Refactor argument builder system
+  * Improve handling of user data arguments
+  * Handle signal and callback arguments with direction :out
+  * Handle aliases of container types by making the element type optional
+  * Handle signal and callback return values that need conversion
+* User defined types:
+  * Pass explicit receiver to initialization block for UserDefinedTypeInfo
+  * Allow user defined types that are anonymous Ruby classes
+  * Register defined properties in a subclass
+  * Support setting virtual function implementations in a subclass
+  * Support adding an interface to a subclass
+  * Support implementing an interface's virtual functions in a subclass 
+* Use FFI's DataConvertor system to handle enums and callbacks
+* Stop using deprecated GValueArray to construct argument array for signal_emit
+* Make ITypeInfo#g_type return correct value for c arrays
+* Make get_property and set_property less smart, moving conversion into the
+  property accessor definitions
+* Make GObject::Value#get_value handle enums and flags
+* Clean up deprecated methods
+
 ## 0.6.7 / 2013-09-28
 
 * Uniform handling of callback, signal and method arguments
@@ -39,7 +69,7 @@
 ## 0.6.3 / 2013-06-15
 
 * Make use of enums as element type for GHashTable and other containers
-  work
+work
 
 ## 0.6.2 / 2013-06-14
 
@@ -84,7 +114,7 @@
 ## 0.4.2 / 2012-09-22
 
 * Make objects and interfaces wrap poiners in the class that matches
-  their GType.
+their GType.
 
 ## 0.4.1 / 2012-09-18
 
@@ -100,7 +130,7 @@
 ## 0.3.2 / 2012-08-24
 
 * Correctly set FFI return type when callbacks that return GObjects have
-  incomplete type specification.
+incomplete type specification.
 
 ## 0.3.1 / 2012-05-13
 
@@ -118,7 +148,7 @@
 * Improve unintrospectable type handling.
 * Bug fixes and refactorings.
 * Start implementing #define_type, for creating descendent types that
-  the GObject system knows about.
+the GObject system knows about.
 
 ## 0.2.3 / 2011-12-31
 
@@ -129,26 +159,26 @@
 ## 0.2.2 / 2011-12-07
 
 * Fix issue #19: Check if a GLib::PtrArray.add method was generated
-  before attempting to remove it.
+before attempting to remove it.
 * Fix two issues with pretty printing that made output for GLib have syntax
-  errors.
+errors.
 
 ## 0.2.1 / 2011-11-20
 
 * Fix handling of output parameters that are arrays of pointers to
-  structures (i.e., of type Foo***).
+structures (i.e., of type Foo***).
 
 ## 0.2.0 / 2011-11-19
 
 * Add support for properties, with #get_property and #set_property.
 * Add support for fields.
-  - Create field accessor methods.
-  - Get rid of #[] and #[]=.
+- Create field accessor methods.
+- Get rid of #[] and #[]=.
 * Explicitely load libgirepository with ABI version 1.
 * Improve implementation of GLib container classes (GList etc.):
-  - Real constructors.
-  - #append and friends are instance methods now.
-  - Conversion methods to cast Ruby containers to GLib containers.
+- Real constructors.
+- #append and friends are instance methods now.
+- Conversion methods to cast Ruby containers to GLib containers.
 * Start implementing pretty printing.
 * Various refactorings.
 
@@ -161,15 +191,15 @@
 ## 0.0.14 / 2011-10-28
 
 * Support GObject Introspection version 1.30:
-  - Add support for layouts with fixed-length arrays.
-  - Handle type names starting with underscores.
-  - Call g_signal_emitv directly to avoid conflict in introspection info
-    with earlier versions of GObject Introspection.
+- Add support for layouts with fixed-length arrays.
+- Handle type names starting with underscores.
+- Call g_signal_emitv directly to avoid conflict in introspection info
+  with earlier versions of GObject Introspection.
 
 ## 0.0.13 / 2011-09-09
 
 * Remove IErrorDomain related code. This functinality was removed from
-  GObject Introspection in version 1.29.17
+GObject Introspection in version 1.29.17
 
 ## 0.0.12 / 2011-09-04
 
@@ -179,7 +209,7 @@
 ## 0.0.11 / 2011-08-22
 
 * Change interface to the underlying builder in generated modules and
-  classes.
+classes.
 * Handle string, enum, union, flags signal arguments.
 * Handle string arguments in GObject.signal_emit.
 * Handle enum signal arguments.
@@ -207,19 +237,19 @@
 ## 0.0.8 / 2011-04-08
 
 * Generate modules with names starting with a lowercase letter (like
-  cairo).
+cairo).
 * Allow specifying the typelib version on setup.
 * Rename methods #methods and #type of the introspection classes to avoid
-  clashing with standard Ruby methods.
+clashing with standard Ruby methods.
 * Refactoring.
 
 ## 0.0.7 / 2011-04-01
 
 * Support gobject-introspection 0.10, drop support for earlier versions.
-  - Use Regress, not Everything, for testing.
-  - Deal with functions that are no longer introspectable.
+- Use Regress, not Everything, for testing.
+- Deal with functions that are no longer introspectable.
 * Correctly handle constructors that declare their return type different
-  from their class.
+from their class.
 * Implement RubyClosure, a GObject::Closure for handling ruby callbacks.
 * Handle GLib's singly and doubly linked lists.
 * Handle callback types defined in-place (like Closure's marshal).
