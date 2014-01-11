@@ -11,6 +11,15 @@ Gem::Specification.new do |s|
   s.email = ["matijs@matijs.net"]
   s.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
 
+  s.license = 'LGPL-2.1'
+
+  s.description = <<-DESC
+    GirFFI creates bindings for GObject-based libraries at runtime based on introspection
+    data provided by the GObject Introspection Repository (GIR) system. Bindings are created
+    at runtime and use FFI to interface with the C libraries. In cases where the GIR does not
+    provide enough or correct information to create sane bindings, overrides may be created.
+  DESC
+
   s.rdoc_options = ["--main", "README.md"]
 
   s.files = Dir[ '{lib,test,tasks,examples}/**/*',
