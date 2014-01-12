@@ -20,15 +20,15 @@ Gem::Specification.new do |s|
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
 
-  s.rdoc_options = ["--main", "README.md"]
-
   s.files = Dir[ '{lib,test,tasks,examples}/**/*',
                  "*.md",
                  "Rakefile",
                  "COPYING.LIB" ] & `git ls-files -z`.split("\0")
 
-  s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
   s.test_files = `git ls-files -z -- test`.split("\0")
+
+  s.rdoc_options = ["--main", "README.md"]
+  s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
   s.add_runtime_dependency('ffi', ["~> 1.8"])
   s.add_runtime_dependency('indentation', ["~> 0.1.1"])
