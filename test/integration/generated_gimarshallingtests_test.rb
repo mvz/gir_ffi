@@ -210,6 +210,7 @@ describe GIMarshallingTests do
 
   describe "GIMarshallingTests::Interface3" do
     it "has a working method #test_variant_array_in" do
+      skip unless get_introspection_data 'GIMarshallingTests', 'Interface3'
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
       instance = make_derived_instance do |info|
         info.install_vfunc_implementation :test_variant_array_in, proc {|obj, in_|
