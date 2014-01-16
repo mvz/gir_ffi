@@ -1,6 +1,6 @@
 module GObjectIntrospection
-  # Wraps a GIFunctioInfo struct.
-  # Represents a function.
+  # Wraps a GIFunctionInfo struct.
+  # Represents a function or method.
   class IFunctionInfo < ICallableInfo
     def symbol
       Lib.g_function_info_get_symbol @gobj

@@ -7,12 +7,11 @@ module GirFFI
     end
 
     def method_stub
-      symbol = @info.name
-      "
-        def #{@info.method? ? '' : 'self.'}#{symbol} *args, &block
-          setup_and_call :#{symbol}, *args, &block
+      <<-STUB.reset_indentation
+        def #{@info.method? ? '' : 'self.'}#{@info.safe_name} *args, &block
+          setup_and_call #{@info.name.to_sym.inspect}, *args, &block
         end
-      "
+      STUB
     end
   end
 end
