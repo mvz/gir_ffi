@@ -6,6 +6,7 @@ GirFFI.setup :GLib
 require 'ffi-glib/array'
 require 'ffi-glib/byte_array'
 require 'ffi-glib/hash_table'
+require 'ffi-glib/iconv'
 require 'ffi-glib/list'
 require 'ffi-glib/ptr_array'
 require 'ffi-glib/s_list'
@@ -37,5 +38,7 @@ module GLib
     attach_function :g_ptr_array_new, [], :pointer
     attach_function :g_ptr_array_add, [:pointer, :pointer], :void
     attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer], :pointer
+
+    attach_function :g_iconv_open, [:pointer, :pointer], :pointer
   end
 end
