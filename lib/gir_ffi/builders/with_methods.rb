@@ -27,11 +27,12 @@ module GirFFI
       end
 
       def attach_and_define_method method, go, modul
-        return false if go.nil?
+        return unless go
+        method = go.safe_name
         Builder.attach_ffi_function lib, go
-        modul.class_eval { remove_method method }
+        modul.class_eval { remove_method method if method_defined? method }
         build_class.class_eval function_definition(go)
-        true
+        return method
       end
 
       def stub_methods

@@ -70,13 +70,13 @@ describe GirFFI::ClassBase do
     end
   end
 
-  describe "a descendant with multiple builders" do
+  describe ".setup_and_call" do
     it "looks up class methods in all builders" do
-      mock(builder = Object.new).setup_method("foo") { true }
+      mock(builder = Object.new).setup_method("foo") { "foo" }
       klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      mock(sub_builder = Object.new).setup_method("foo") { false }
+      mock(sub_builder = Object.new).setup_method("foo") { nil }
       sub_klass = Class.new klass do
         def self.foo; end
       end
@@ -85,12 +85,28 @@ describe GirFFI::ClassBase do
       sub_klass.setup_and_call :foo
     end
 
-    it "looks up class methods in all builders" do
-      mock(builder = Object.new).setup_instance_method("foo") { true }
+    it "calls the method given by the result of .setup_method" do
+      mock(builder = Object.new).setup_method("foo") { "bar" }
+      klass = Class.new GirFFI::ClassBase do
+        def self.bar
+          "correct-result"
+        end
+        def self.new; self._real_new; end
+      end
+      klass.const_set :GIR_FFI_BUILDER, builder
+
+      result = klass.setup_and_call :foo
+      result.must_equal "correct-result"
+    end
+  end
+
+  describe "#setup_and_call" do
+    it "looks up instance methods in all builders" do
+      mock(builder = Object.new).setup_instance_method("foo") { "foo" }
       klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      mock(sub_builder = Object.new).setup_instance_method("foo") { false }
+      mock(sub_builder = Object.new).setup_instance_method("foo") { nil }
       sub_klass = Class.new klass do
         def foo; end
         def initialize; end
@@ -101,6 +117,22 @@ describe GirFFI::ClassBase do
       obj = sub_klass.new
 
       obj.setup_and_call :foo
+    end
+
+    it "calls the method given by the result of .setup_instance_method" do
+      mock(builder = Object.new).setup_instance_method("foo") { "bar" }
+      klass = Class.new GirFFI::ClassBase do
+        def bar
+          "correct-result"
+        end
+        def self.new; self._real_new; end
+      end
+      klass.const_set :GIR_FFI_BUILDER, builder
+
+      obj = klass.new
+
+      result = obj.setup_and_call :foo
+      result.must_equal "correct-result"
     end
   end
 end

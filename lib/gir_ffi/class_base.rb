@@ -14,16 +14,13 @@ module GirFFI
     GIR_FFI_BUILDER = NullBuilder.new
 
     def setup_and_call method, *arguments, &block
-      result = self.class.ancestors.any? do |klass|
-        klass.respond_to?(:setup_instance_method) &&
-          klass.setup_instance_method(method.to_s)
+      method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)
+
+      unless method_name
+        raise RuntimeError, "Unable to set up instance method '#{method}' in #{self}"
       end
 
-      unless result
-        raise RuntimeError, "Unable to set up instance method #{method} in #{self}"
-      end
-
-      self.send method, *arguments, &block
+      self.send method_name, *arguments, &block
     end
 
     if RUBY_PLATFORM == 'java'
@@ -39,16 +36,23 @@ module GirFFI
     end
 
     def self.setup_and_call method, *arguments, &block
-      result = self.ancestors.any? do |klass|
-        klass.respond_to?(:setup_method) &&
-          klass.setup_method(method.to_s)
+      method_name = self.try_in_ancestors(:setup_method, method.to_s)
+
+      unless method_name
+        raise RuntimeError, "Unable to set up method '#{method}' in #{self}"
       end
 
-      unless result
-        raise RuntimeError, "Unable to set up method #{method} in #{self}"
-      end
+      self.send method_name, *arguments, &block
+    end
 
-      self.send method, *arguments, &block
+    def self.try_in_ancestors(method, *arguments)
+      self.ancestors.each do |klass|
+        if klass.respond_to?(method)
+          result = klass.send(method, *arguments)
+          return result if result
+        end
+      end
+      return
     end
 
     class << self

@@ -5,8 +5,8 @@ describe GirFFI::Builders::UnionBuilder do
   let(:builder) { GirFFI::Builders::UnionBuilder.new union_info }
 
   describe "#setup_instance_method" do
-    it "returns false looking for a method that doesn't exist" do
-      builder.setup_instance_method('blub').must_equal false
+    it "returns nil looking for a method that doesn't exist" do
+      builder.setup_instance_method('blub').must_be_nil
     end
   end
 
