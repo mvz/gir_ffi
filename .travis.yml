@@ -1,15 +1,11 @@
 language: ruby
 rvm:
-  - 1.8.7
   - 1.9.2
   - 1.9.3
   - 2.0.0
   - 2.1.0
-  - jruby-18mode
   - jruby-19mode
   - rbx
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection
-  - gem update --system 2.1.11
-  - gem --version

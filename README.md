@@ -37,8 +37,8 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 ## Requirements
 
-GirFFI should work on MRI 1.8, 1.9, 2.0, and 2.1, JRuby in both 1.8 and 1.9
-modes, and on Rubinius.
+GirFFI should work on MRI 1.9, 2.0, and 2.1, JRuby in 1.9 mode, and on
+Rubinius.
 
 You will also need gobject-introspection installed with some
 introspection data.
