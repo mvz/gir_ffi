@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.2 / 2014-01-18
+
+* Officially drop Ruby 1.8 compatibility.
+* Store GType of generated types in a constant, removing the need to generate a
+  separate get_gtype method for each type.
+
 ## 0.7.1 / 2014-01-17
 
 * Handle method setup for methods with unsafe names (i.e., g_iconv())
