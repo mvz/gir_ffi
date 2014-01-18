@@ -14,15 +14,19 @@ module GirFFI
       end
 
       # TODO: Rename the created method, or use a constant.
-      # FIXME: Only used in some of the subclases. Make mixin?
       def setup_gtype_getter
         gtype = target_gtype
         return if gtype.nil?
         klass.instance_eval "
           def self.get_gtype
-            #{gtype}
+            self::G_TYPE
           end
         "
+      end
+
+      def setup_constants
+        klass.const_set :G_TYPE, target_gtype
+        super
       end
 
       # FIXME: Only used in some of the subclases. Make mixin?
