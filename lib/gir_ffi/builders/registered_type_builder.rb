@@ -13,17 +13,6 @@ module GirFFI
         info.g_type
       end
 
-      # TODO: Rename the created method, or use a constant.
-      def setup_gtype_getter
-        gtype = target_gtype
-        return if gtype.nil?
-        klass.instance_eval "
-          def self.get_gtype
-            self::G_TYPE
-          end
-        "
-      end
-
       def setup_constants
         klass.const_set :G_TYPE, target_gtype
         super

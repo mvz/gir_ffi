@@ -36,7 +36,6 @@ module GirFFI
         setup_layout
         setup_constants
         stub_methods
-        setup_gtype_getter
         if info.fundamental?
           setup_field_accessors
         else

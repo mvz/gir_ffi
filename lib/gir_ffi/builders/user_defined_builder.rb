@@ -29,7 +29,6 @@ module GirFFI
         setup_layout
         setup_constants
         #stub_methods
-        setup_gtype_getter
         setup_property_accessors
         #setup_vfunc_invokers
         #setup_interfaces

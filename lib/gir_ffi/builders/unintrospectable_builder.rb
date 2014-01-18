@@ -18,7 +18,6 @@ module GirFFI
         setup_constants
         setup_layout
         setup_interfaces
-        setup_gtype_getter
       end
 
       def setup_instance_method method

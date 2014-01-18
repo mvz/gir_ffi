@@ -33,7 +33,6 @@ module GirFFI
       def setup_class
         klass.extend superclass
         setup_constants
-        setup_gtype_getter
         stub_methods
         setup_inspect
       end
