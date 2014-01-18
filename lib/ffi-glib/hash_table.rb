@@ -31,9 +31,7 @@ module GLib
       ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
     end
 
-    class << self
-      remove_method :new
-    end
+    class << self; remove_method :new; end
 
     def self.new keytype, valtype
       wrap [keytype, valtype], Lib.g_hash_table_new(

@@ -13,12 +13,11 @@ module GLib
 
     attr_reader :element_type
 
-    class << self
-      undef :new
-      def new type
-        ptr = Lib.g_array_new(0, 0, calculated_element_size(type))
-        wrap type, ptr
-      end
+    class << self; undef :new; end
+
+    def self.new type
+      ptr = Lib.g_array_new(0, 0, calculated_element_size(type))
+      wrap type, ptr
     end
 
     def append_vals ary
