@@ -8,9 +8,5 @@ module GirFFI
     def gir_info
       self.const_get :GIR_INFO
     end
-
-    def get_gtype
-      self::G_TYPE
-    end
   end
 end

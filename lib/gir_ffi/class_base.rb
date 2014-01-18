@@ -1,12 +1,12 @@
 require 'forwardable'
 require 'gir_ffi/builders/null_builder'
-require 'gir_ffi/type_base'
+require 'gir_ffi/registered_type_base'
 
 module GirFFI
   # Base class for all generated classes. Contains code for dealing with
   # the generated Struct classes.
   class ClassBase
-    extend TypeBase
+    extend RegisteredTypeBase
     extend Forwardable
 
     def_delegators :@struct, :to_ptr

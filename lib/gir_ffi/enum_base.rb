@@ -1,10 +1,10 @@
-require 'gir_ffi/type_base'
+require 'gir_ffi/registered_type_base'
 
 module GirFFI
   # Base module for enums.
   module EnumBase
     include FFI::DataConverter
-    include TypeBase
+    include RegisteredTypeBase
 
     def native_type
       self::Enum.native_type

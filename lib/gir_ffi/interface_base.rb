@@ -1,9 +1,9 @@
-require 'gir_ffi/type_base'
+require 'gir_ffi/registered_type_base'
 
 module GirFFI
   # Base module for modules representing GLib interfaces.
   module InterfaceBase
-    include TypeBase
+    include RegisteredTypeBase
 
     def setup_instance_method name
       gir_ffi_builder.setup_instance_method name
