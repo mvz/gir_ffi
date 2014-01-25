@@ -10,6 +10,12 @@ begin
 rescue LoadError
 end
 
+begin
+  require 'coveralls'
+  Coveralls.wear!
+rescue LoadError
+end
+
 require 'minitest/autorun'
 require 'rr'
 
