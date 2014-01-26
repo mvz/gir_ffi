@@ -70,10 +70,10 @@ describe GirFFI::Builders::SignalBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, arr, len, _user_data)
           _v1 = Regress::TestObj.wrap(_instance)
-          _v2 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
-          _v3 = len
-          _v4 = GirFFI::SizedArray.wrap(:guint32, _v3, arr)
-          _proc.call(_v1, _v4, _v2)
+          _v2 = len
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v4 = GirFFI::SizedArray.wrap(:guint32, _v2, arr)
+          _proc.call(_v1, _v4, _v3)
         end
         CODE
 
