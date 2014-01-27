@@ -4,7 +4,9 @@ source "http://rubygems.org"
 gemspec
 
 if ENV["CI"]
-  gem 'coveralls', require: false
+  if RUBY_ENGINE == "ruby"
+    gem 'coveralls', require: false
+  end
 else
   gem 'pry'
   gem 'ZenTest'
