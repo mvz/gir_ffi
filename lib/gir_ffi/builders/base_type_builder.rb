@@ -37,7 +37,7 @@ module GirFFI
     end
 
     def already_set_up
-      const_defined_for klass, :GIR_FFI_BUILDER
+      klass.const_defined? :GIR_FFI_BUILDER, false
     end
 
     def gir

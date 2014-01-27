@@ -8,8 +8,8 @@ unless ENV["CI"]
   gem 'ZenTest'
   gem 'autotest-suffix'
 
-  if RUBY_VERSION >= "1.9"
-    gem 'simplecov'
+  if RUBY_ENGINE == 'ruby'
+    gem 'simplecov', require: false
   end
 end
 

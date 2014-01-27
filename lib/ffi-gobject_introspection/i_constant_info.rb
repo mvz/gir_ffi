@@ -23,7 +23,7 @@ module GObjectIntrospection
     def value
       tag = constant_type.tag
       val = value_union[TYPE_TAG_TO_UNION_MEMBER[tag]]
-      if RUBY_VERSION >= "1.9" and tag == :utf8
+      if tag == :utf8
         val.force_encoding("utf-8")
       else
         val
