@@ -3,7 +3,11 @@ source "http://rubygems.org"
 # The gem's dependencies are specified in gir_ffi.gemspec
 gemspec
 
-unless ENV["CI"]
+if ENV["CI"]
+  if RUBY_ENGINE == "ruby"
+    gem 'coveralls', require: false
+  end
+else
   gem 'pry'
   gem 'ZenTest'
   gem 'autotest-suffix'
