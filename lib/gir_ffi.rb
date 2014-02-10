@@ -15,6 +15,7 @@ require 'gir_ffi/zero_terminated'
 require 'gir_ffi/arg_helper'
 require 'gir_ffi/user_defined_type_info'
 require 'gir_ffi/builder'
+require 'gir_ffi/version'
 
 module GirFFI
   def self.setup module_name, version=nil
