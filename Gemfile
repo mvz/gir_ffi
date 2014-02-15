@@ -11,6 +11,7 @@ else
   gem 'pry'
   gem 'ZenTest'
   gem 'autotest-suffix'
+  gem 'yard'
 
   if RUBY_ENGINE == 'ruby'
     gem 'simplecov', require: false
