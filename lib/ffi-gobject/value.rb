@@ -12,26 +12,27 @@ module GObject
       set_value val
     end
 
-    TYPE_TO_SET_METHOD_MAP = {
-      TYPE_BOOLEAN => :set_boolean,
-      TYPE_BOXED => :set_boxed,
-      TYPE_CHAR => :set_char,
-      TYPE_DOUBLE => :set_double,
-      TYPE_ENUM => :set_enum,
-      TYPE_FLOAT => :set_float,
-      TYPE_GTYPE => :set_gtype,
-      TYPE_INT64 => :set_int64,
-      TYPE_INT => :set_int,
-      TYPE_LONG => :set_long,
-      TYPE_OBJECT => :set_instance_enhanced,
-      TYPE_PARAM => :set_param,
-      TYPE_POINTER => :set_pointer,
-      TYPE_STRING => :set_string,
-      TYPE_UCHAR => :set_uchar,
-      TYPE_UINT => :set_uint,
-      TYPE_UINT64 => :set_uint64,
-      TYPE_ULONG => :set_ulong,
-      TYPE_VARIANT => :set_variant,
+    METHOD_MAP = {
+      TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
+      TYPE_BOXED   => [:get_boxed,         :set_boxed],
+      TYPE_CHAR    => [:get_char,          :set_char],
+      TYPE_DOUBLE  => [:get_double,        :set_double],
+      TYPE_ENUM    => [:get_enum_enhanced, :set_enum],
+      TYPE_FLAGS   => [:get_flags,         :set_flags],
+      TYPE_FLOAT   => [:get_float,         :set_float],
+      TYPE_GTYPE   => [:get_gtype,         :set_gtype],
+      TYPE_INT     => [:get_int,           :set_int],
+      TYPE_INT64   => [:get_int64,         :set_int64],
+      TYPE_LONG    => [:get_long,          :set_long],
+      TYPE_OBJECT  => [:get_object,        :set_instance_enhanced],
+      TYPE_PARAM   => [:get_param,         :set_param],
+      TYPE_POINTER => [:get_pointer,       :set_pointer],
+      TYPE_STRING  => [:get_string,        :set_string],
+      TYPE_UCHAR   => [:get_uchar,         :set_uchar],
+      TYPE_UINT    => [:get_uint,          :set_uint],
+      TYPE_UINT64  => [:get_uint64,        :set_uint64],
+      TYPE_ULONG   => [:get_ulong,         :set_ulong],
+      TYPE_VARIANT => [:get_variant,       :set_variant]
     }
 
     def value= val
@@ -71,28 +72,6 @@ module GObject
     def current_gtype_name
       GObject.type_name current_gtype
     end
-
-    TYPE_TO_GET_METHOD_MAP = {
-      TYPE_BOOLEAN => :get_boolean,
-      TYPE_BOXED => :get_boxed,
-      TYPE_CHAR => :get_char,
-      TYPE_DOUBLE => :get_double,
-      TYPE_ENUM => :get_enum_enhanced,
-      TYPE_FLAGS => :get_flags,
-      TYPE_FLOAT => :get_float,
-      TYPE_GTYPE => :get_gtype,
-      TYPE_INT64 => :get_int64,
-      TYPE_INT => :get_int,
-      TYPE_LONG => :get_long,
-      TYPE_OBJECT => :get_object,
-      TYPE_POINTER => :get_pointer,
-      TYPE_STRING => :get_string,
-      TYPE_UCHAR => :get_uchar,
-      TYPE_UINT => :get_uint,
-      TYPE_UINT64 => :get_uint64,
-      TYPE_ULONG => :get_ulong,
-      TYPE_VARIANT => :get_variant,
-    }
 
     def get_value
       value = get_value_plain
@@ -166,15 +145,16 @@ module GObject
     end
 
     def get_method
-      TYPE_TO_GET_METHOD_MAP[current_gtype] or
-        TYPE_TO_GET_METHOD_MAP[current_fundamental_type] or
-        raise "Can't find method to get #{current_gtype_name}"
+      method_map_entry.first
     end
 
     def set_method
-      TYPE_TO_SET_METHOD_MAP[current_gtype] or
-        TYPE_TO_SET_METHOD_MAP[current_fundamental_type] or
-        raise "Can't find method to set #{current_gtype_name}"
+      method_map_entry.last
+    end
+
+    def method_map_entry
+      METHOD_MAP[current_gtype] || METHOD_MAP[current_fundamental_type] ||
+        fail("No method map entry for #{current_gtype_name}")
     end
   end
 end
