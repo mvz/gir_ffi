@@ -9,6 +9,7 @@ if ENV["CI"]
   end
 else
   gem 'pry'
+  gem 'repl_rake'
   gem 'ZenTest'
   gem 'autotest-suffix'
   gem 'yard'
