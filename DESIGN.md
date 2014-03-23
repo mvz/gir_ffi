@@ -61,3 +61,28 @@ introspectable. The interface is specified in terms of structs and
 functions rather than objects and methods. For now, the hard-coded Ruby
 bindings for this don't follow the introspected specification: Gir-FFI
 cannot bootstrap itself.
+
+## Object initialization
+
+An attempt at making Thing.new less hacky.
+
+Goals:
+
+* No aliasing of Ruby's new. Overriding is possible with super being called.
+* #initialize should behave as expected. We may enforce use of super in Ruby
+  subclasses.
+
+Schematic depiction of what happens (can happen):
+
+```ruby
+class GObject::Object
+  def self.new *args
+    # Stage A
+    super(*other_args)
+    # Stage C
+  end
+
+  def initialize *other_args
+    # Stage B
+  end
+end
