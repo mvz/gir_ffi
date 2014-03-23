@@ -12,7 +12,8 @@ module GirFFI
 
     def self.from_native(value, _context)
       return nil if !value || value.null?
-      FFI::Function.new gir_ffi_builder.return_type, gir_ffi_builder.argument_types, value
+      FFI::Function.new(gir_ffi_builder.return_ffi_type,
+                        gir_ffi_builder.argument_ffi_types, value)
     end
 
     def self.to_native(value, _context)
@@ -50,7 +51,8 @@ module GirFFI
     def to_native
       @to_native ||= begin
                        builder = self.class.gir_ffi_builder
-                       FFI::Function.new builder.return_type, builder.argument_types, self
+                       FFI::Function.new(builder.return_ffi_type,
+                                         builder.argument_ffi_types, self)
                      end
     end
 

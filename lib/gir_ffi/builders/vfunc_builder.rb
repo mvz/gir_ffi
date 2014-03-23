@@ -45,12 +45,12 @@ module GirFFI
         @container_info ||= info.container
       end
 
-      def argument_types
-        @argument_types ||= info.argument_ffi_types.unshift(receiver_type_info.to_ffitype)
+      def argument_ffi_types
+        @argument_ffi_types ||= info.argument_ffi_types.unshift(receiver_type_info.to_ffitype)
       end
 
-      def return_type
-        @return_type ||= info.return_ffi_type
+      def return_ffi_type
+        @return_ffi_type ||= info.return_ffi_type
       end
     end
   end
