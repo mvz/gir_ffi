@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.3 / 2014-03-23
+
+* Restore proper handling of enums in callback arguments
+* Simplify Rake configuration
+* Various small fixes
+* Remove remaining Ruby 1.8 version checks
+
 ## 0.7.2 / 2014-01-18
 
 * Officially drop Ruby 1.8 compatibility.
