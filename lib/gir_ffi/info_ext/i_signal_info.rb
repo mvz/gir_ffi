@@ -45,7 +45,7 @@ module GirFFI
       # types as well?
       def ffi_callback_argument_types
         types = args.map do |arg|
-          arg.argument_type.to_callback_ffitype
+          arg.to_callback_ffitype
         end
         types.unshift(:pointer).push(:pointer)
       end

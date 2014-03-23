@@ -92,5 +92,11 @@ describe "The generated Gio module" do
       pass
     end
   end
+
+  describe "the SocketSourceFunc callback" do
+    it "can be cast to a native function" do
+      Gio::SocketSourceFunc.new {|*args| p args}.to_native
+    end
+  end
 end
 
