@@ -23,6 +23,7 @@ require 'gir_ffi-base'
 require 'ffi-gobject_introspection'
 
 GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
+
 module GObjectIntrospection
   class IRepository
     def shared_library_with_regress namespace
