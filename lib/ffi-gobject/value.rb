@@ -123,8 +123,11 @@ module GObject
     end
 
     def get_enum_enhanced
-      value = get_enum
-      GirFFI::Builder.build_by_gtype(current_gtype).wrap(value)
+      current_gtype_class.wrap(get_enum)
+    end
+
+    def current_gtype_class
+      GirFFI::Builder.build_by_gtype(current_gtype)
     end
 
     def check_type_compatibility val
@@ -140,7 +143,7 @@ module GObject
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
       else
-        boxed.wrap_by_gtype current_gtype
+        current_gtype_class.wrap(boxed) unless boxed.null?
       end
     end
 
