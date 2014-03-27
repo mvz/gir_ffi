@@ -1,3 +1,4 @@
+# Argument convertor that does nothing
 class GirFFI::Builders::NullConvertor
   def initialize argument_name
     @argument_name = argument_name
