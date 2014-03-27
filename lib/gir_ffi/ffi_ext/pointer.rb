@@ -9,6 +9,10 @@ module GirFFI
         self
       end
 
+      def zero?
+        null?
+      end
+
       def to_object
         gtype = GObject.type_from_instance_pointer self
         wrap_by_gtype gtype

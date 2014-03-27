@@ -39,7 +39,7 @@ module GirFFI
 
     def read_value offset
       val = @ptr.send(getter_method, offset)
-      return val unless is_null_value?(val)
+      val unless val.zero?
     end
 
     def getter_method
@@ -61,13 +61,8 @@ module GirFFI
       @ffi_type ||= TypeMap.type_specification_to_ffitype element_type
     end
 
-    def is_null_value? value
-      if ffi_type == :pointer
-        value.null?
-      else
-        value == 0
-      end
+    def ffi_type_size
+      @ffi_type_size ||= FFI.type_size(ffi_type)
     end
   end
 end
-
