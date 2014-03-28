@@ -357,7 +357,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #int8_out" do
-      skip "Needs vfunc setup"
+      skip "Introspection data is not generated correctly"
     end
 
     it "has a working method #method" do
