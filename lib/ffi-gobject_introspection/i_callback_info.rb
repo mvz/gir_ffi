@@ -4,4 +4,3 @@ module GObjectIntrospection
   class ICallbackInfo < ICallableInfo
   end
 end
-
