@@ -319,10 +319,10 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it "has a working method #call_vfunc_with_callback" do
-      # NOTE: To call this method, the callback slot vfunc_with_callback has to
-      # be filled in the GIMarshallingTests::Object class structure. The
-      # GIMarshallingTests library doesn't do this.
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_with_callback, proc { }
+      end
+      derived_instance.call_vfunc_with_callback
     end
 
     it "has a working method #full_in" do
