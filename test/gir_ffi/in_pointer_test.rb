@@ -188,7 +188,7 @@ describe GirFFI::InPointer do
       it "stores the string in GirFFI::ArgHelper::OBJECT_STORE" do
         str = "Foo"
         ptr = GirFFI::InPointer.from_closure_data(str)
-        result = GirFFI::ArgHelper::OBJECT_STORE[ptr.address]
+        result = GirFFI::ArgHelper::OBJECT_STORE.fetch(ptr)
         result.must_equal str
       end
     end

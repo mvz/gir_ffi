@@ -4,6 +4,6 @@ class GirFFI::Builders::ClosureConvertor
   end
 
   def conversion
-    "GirFFI::ArgHelper::OBJECT_STORE[#{@argument_name}.address]"
+    "GirFFI::ArgHelper::OBJECT_STORE.fetch(#{@argument_name})"
   end
 end

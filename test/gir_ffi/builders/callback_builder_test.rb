@@ -39,7 +39,7 @@ describe GirFFI::Builders::CallbackBuilder do
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, user_data)
-          _v1 = GirFFI::ArgHelper::OBJECT_STORE[user_data.address]
+          _v1 = GirFFI::ArgHelper::OBJECT_STORE.fetch(user_data)
           _v2 = _proc.call(_v1)
           return _v2
         end

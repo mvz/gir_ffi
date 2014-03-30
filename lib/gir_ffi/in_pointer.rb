@@ -48,7 +48,7 @@ module GirFFI
     class << self
       def from_closure_data obj
         FFI::Pointer.new(obj.object_id).tap {|ptr|
-          ArgHelper::OBJECT_STORE[ptr.address] = obj }
+          ArgHelper::OBJECT_STORE.store(ptr, obj) }
       end
 
       private

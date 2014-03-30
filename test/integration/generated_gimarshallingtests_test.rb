@@ -319,10 +319,14 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it "has a working method #call_vfunc_with_callback" do
+      user_data = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_with_callback, proc { }
+        info.install_vfunc_implementation :vfunc_with_callback, proc { |obj, callback, callback_data|
+          user_data = callback_data.address
+        }
       end
       derived_instance.call_vfunc_with_callback
+      user_data.must_equal 0xdeadbeef
     end
 
     it "has a working method #full_in" do

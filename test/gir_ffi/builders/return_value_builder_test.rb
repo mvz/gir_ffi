@@ -347,7 +347,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it "fetches the stored object in #post_conversion" do
       builder.capture_variable_name.must_equal "_v1"
-      builder.post_conversion.must_equal [ "_v2 = GirFFI::ArgHelper::OBJECT_STORE[_v1.address]" ]
+      builder.post_conversion.must_equal [ "_v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_v1)" ]
     end
 
     it "returns the stored object" do

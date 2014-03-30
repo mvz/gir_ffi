@@ -12,7 +12,7 @@ describe GirFFI::Builders::SignalBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, _user_data)
           _v1 = Regress::TestObj.wrap(_instance)
-          _v2 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_user_data)
           _proc.call(_v1, _v2)
         end
         CODE
@@ -32,7 +32,7 @@ describe GirFFI::Builders::SignalBuilder do
         def self.call_with_argument_mapping(_proc, _instance, i, _user_data)
           _v1 = Regress::TestObj.wrap(_instance)
           _v2 = i
-          _v3 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_user_data)
           _v4 = _proc.call(_v1, _v2, _v3)
           return _v4
         end
@@ -51,7 +51,7 @@ describe GirFFI::Builders::SignalBuilder do
         def self.call_with_argument_mapping(_proc, _instance, result, _user_data)
           _v1 = Gio::MountOperation.wrap(_instance)
           _v2 = Gio::MountOperationResult.wrap(result)
-          _v3 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_user_data)
           _proc.call(_v1, _v2, _v3)
         end
         CODE
@@ -71,7 +71,7 @@ describe GirFFI::Builders::SignalBuilder do
         def self.call_with_argument_mapping(_proc, _instance, arr, len, _user_data)
           _v1 = Regress::TestObj.wrap(_instance)
           _v2 = len
-          _v3 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_user_data)
           _v4 = GirFFI::SizedArray.wrap(:guint32, _v2, arr)
           _proc.call(_v1, _v4, _v3)
         end
@@ -92,7 +92,7 @@ describe GirFFI::Builders::SignalBuilder do
         def self.call_with_argument_mapping(_proc, _instance, i, _user_data)
           _v1 = Regress::TestObj.wrap(_instance)
           _v2 = i
-          _v3 = GirFFI::ArgHelper::OBJECT_STORE[_user_data.address]
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_user_data)
           _v4 = _proc.call(_v1, _v2, _v3)
           _v5 = GLib::Array.from(:gint32, _v4)
           return _v5

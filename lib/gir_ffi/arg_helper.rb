@@ -3,7 +3,27 @@ require 'gir_ffi/builder'
 
 module GirFFI
   module ArgHelper
-    OBJECT_STORE = {}
+    class ObjectStore
+      def initialize
+        @store = {}
+      end
+
+      def store(ptr, obj)
+        @store[ptr.address] = obj
+      end
+
+      def fetch(ptr)
+        return if ptr.null?
+        key = ptr.address
+        if @store.has_key? key
+          @store[key]
+        else
+          ptr
+        end
+      end
+    end
+
+    OBJECT_STORE = ObjectStore.new
 
     def self.ptr_to_utf8_length ptr, len
       ptr.null? ? nil : ptr.read_string(len)
