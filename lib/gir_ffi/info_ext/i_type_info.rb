@@ -139,7 +139,7 @@ module GirFFI
       end
 
       def needs_conversion_for_callbacks?
-        flattened_tag == :enum || needs_conversion_for_functions?
+        [:callback, :enum].include?(flattened_tag) || needs_conversion_for_functions?
       end
 
       def extra_conversion_arguments

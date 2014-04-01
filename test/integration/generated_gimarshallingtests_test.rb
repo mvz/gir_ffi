@@ -319,14 +319,24 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it "has a working method #call_vfunc_with_callback" do
+      cb = nil
       user_data = nil
+      result = nil
+
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_with_callback, proc { |obj, callback, callback_data|
+          cb = callback
           user_data = callback_data.address
+          result = callback.call(42, callback_data)
         }
       end
       derived_instance.call_vfunc_with_callback
+
       user_data.must_equal 0xdeadbeef
+      # TODO: Change implementation of CallbackBase so that this becomes an
+      # instance of GIMarshallingTests::CallbackIntInt
+      cb.must_be_instance_of FFI::Function
+      result.must_equal 42
     end
 
     it "has a working method #full_in" do

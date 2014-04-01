@@ -2,6 +2,8 @@ require 'gir_ffi/type_base'
 
 module GirFFI
   # Base module for callbacks.
+  # NOTE: Another option would be to derive this class from FFI::Function,
+  # allowing a more natural implementation of from_native, to_native and wrap.
   class CallbackBase < Proc
     extend TypeBase
     extend FFI::DataConverter
@@ -20,6 +22,10 @@ module GirFFI
       return nil unless value
       return value if FFI::Function === value
       value.to_native
+    end
+
+    def self.wrap ptr
+      from_native ptr, nil
     end
 
     CALLBACKS = []

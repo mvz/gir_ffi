@@ -39,6 +39,25 @@ describe GirFFI::Builders::VFuncBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a vfunc with a callback argument" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_with_callback" }
+
+      it "returns a valid mapping method including receiver" do
+        skip unless vfunc_info
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = GIMarshallingTests::CallbackIntInt.wrap(callback)
+          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(callback_data)
+          _proc.call(_v1, _v2, _v3)
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
 
