@@ -400,7 +400,13 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_callee" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |obj, arg|
+          2 * arg
+        }
+      end
+      result = derived_instance.method_int8_arg_and_out_callee 32
+      result.must_equal 64
     end
 
     it "has a working method #method_int8_arg_and_out_caller" do

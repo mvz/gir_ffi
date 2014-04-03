@@ -195,5 +195,25 @@ describe GirFFI::Builders::FunctionBuilder do
         CODE
       end
     end
+
+    describe "for GIMarshallingTests::Object.method_int8_arg_and_out_callee" do
+      let(:function_info) {
+        get_method_introspection_data('GIMarshallingTests', 'Object',
+                                      'method_int8_arg_and_out_callee')
+      }
+
+      it "builds a correct definition" do
+        skip unless function_info
+        code.must_equal <<-CODE.reset_indentation
+          def method_int8_arg_and_out_callee arg
+            _v1 = arg
+            _v2 = GirFFI::InOutPointer.for [:pointer, :gint8]
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_method_int8_arg_and_out_callee self, _v1, _v2
+            _v3 = GirFFI::InOutPointer.new(:gint8, _v2.to_value).to_value
+            return _v3
+          end
+        CODE
+      end
+    end
   end
 end

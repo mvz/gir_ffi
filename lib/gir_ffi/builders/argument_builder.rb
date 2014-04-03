@@ -65,6 +65,9 @@ module GirFFI
         base = "#{callarg}.to_value"
         if @type_info.needs_conversion_for_functions?
           CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
+        # TODO: Refactor
+        elsif !@arginfo.caller_allocates? && @type_info.pointer?
+          "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
         else
           base
         end
