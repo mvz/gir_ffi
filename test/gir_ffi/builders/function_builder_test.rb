@@ -181,7 +181,7 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for Regress.has_parameter_named_attrs" do
-      let(:function_info) {get_introspection_data 'Regress', 'has_parameter_named_attrs' }
+      let(:function_info) { get_introspection_data 'Regress', 'has_parameter_named_attrs' }
 
       it "builds a correct definition" do
         skip unless function_info
