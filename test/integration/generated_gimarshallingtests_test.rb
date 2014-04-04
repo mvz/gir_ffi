@@ -56,7 +56,9 @@ describe GIMarshallingTests do
 
       res = GIMarshallingTests::BoxedStruct.inout bx
 
-      assert_equal 42, bx.long_
+      # TODO: Deal with the fact that bx is now invalid (at least with
+      # gobject-introspection 1.40).
+
       assert_equal 0, res.long_
     end
 
