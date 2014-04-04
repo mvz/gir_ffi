@@ -48,7 +48,7 @@ module GirFFI
       def pre_convertor
         @pre_convertor ||= if is_closure
                              ClosureConvertor.new(method_argument_name)
-                           elsif type_info.needs_conversion_for_callbacks?
+                           elsif type_info.needs_c_to_ruby_conversion_for_callbacks?
                              CToRubyConvertor.new(type_info,
                                                   method_argument_name,
                                                   length_argument_name)

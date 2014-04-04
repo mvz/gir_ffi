@@ -132,14 +132,14 @@ module GirFFI
           :struct, :strv, :utf8, :void, :zero_terminated ].include?(flattened_tag)
       end
 
-      def needs_conversion_for_functions?
+      def needs_c_to_ruby_conversion_for_functions?
         [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
           :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
           :utf8, :zero_terminated ].include?(flattened_tag)
       end
 
-      def needs_conversion_for_callbacks?
-        [:callback, :enum].include?(flattened_tag) || needs_conversion_for_functions?
+      def needs_c_to_ruby_conversion_for_callbacks?
+        [:callback, :enum].include?(flattened_tag) || needs_c_to_ruby_conversion_for_functions?
       end
 
       def extra_conversion_arguments

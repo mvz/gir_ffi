@@ -63,7 +63,7 @@ module GirFFI
 
       def output_value
         base = "#{callarg}.to_value"
-        if @type_info.needs_conversion_for_functions?
+        if @type_info.needs_c_to_ruby_conversion_for_functions?
           CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         # TODO: Refactor
         elsif !@arginfo.caller_allocates? && @type_info.pointer?
