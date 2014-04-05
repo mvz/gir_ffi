@@ -63,14 +63,25 @@ module GirFFI
 
       def output_value
         base = "#{callarg}.to_value"
-        if @type_info.needs_c_to_ruby_conversion_for_functions?
+        if needs_out_conversion?
           CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
-        # TODO: Refactor
-        elsif !@arginfo.caller_allocates? && @type_info.pointer?
+        elsif allocated_by_them?
           "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
         else
           base
         end
+      end
+
+      def needs_out_conversion?
+        @type_info.needs_c_to_ruby_conversion_for_functions?
+      end
+
+      # Check if an out argument needs to be allocated by them, the callee. Since
+      # caller_allocates is false by default, we must also check that the type
+      # is a pointer. For example, an out parameter of type gint8* will always
+      # be allocated by the caller (that's us).
+      def allocated_by_them?
+        !@arginfo.caller_allocates? && @type_info.pointer?
       end
 
       def length_argument_name

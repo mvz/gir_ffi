@@ -59,27 +59,22 @@ module GirFFI
 
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
-        # We theoretically have to do the allocation. Since caller_allocates is
-        # false by default, we must also check that the type is a pointer. For
-        # example, gint8* will always be allocate by the caller. For callbacks,
-        # this is not us.
-        # TODO: Refactor
-        if !@arginfo.caller_allocates? && type_info.pointer?
-          case specialized_type_tag
-          when :zero_terminated
-            # FIXME: Do something!
-            "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
-          when :object
-            "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
-          when :gint8
-            "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" +
-              ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
-          else
-            raise "Don't know what to do about #{specialized_type_tag}"
-          end
+        if allocated_by_us?
+          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" +
+            ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
         else
           "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
         end
+      end
+
+      # Check if an out argument needs to be allocated by us, the callee. Since
+      # caller_allocates is false by default, we must also check that the type
+      # is a pointer. For example, an out parameter of type gint8* will always
+      # be allocate by the caller.
+      def allocated_by_us?
+        !@arginfo.caller_allocates? &&
+          type_info.pointer? &&
+          specialized_type_tag != :object
       end
 
       def length_argument_name
