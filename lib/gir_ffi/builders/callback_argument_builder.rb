@@ -37,7 +37,7 @@ module GirFFI
 
       def post_conversion
         if direction == :out
-          [ "#{pre_converted_name}.set_value #{capture_variable_name}" ]
+          [ "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}" ]
         else
           []
         end
@@ -57,6 +57,14 @@ module GirFFI
                            end
       end
 
+      def outgoing_convertor
+        @outgoing_convertor ||= if type_info.needs_ruby_to_c_conversion_for_callbacks?
+                                  RubyToCConvertor.new(type_info, capture_variable_name)
+                                else
+                                  NullConvertor.new(capture_variable_name)
+                                end
+      end
+
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
         if allocated_by_us?
@@ -74,7 +82,7 @@ module GirFFI
       def allocated_by_us?
         !@arginfo.caller_allocates? &&
           type_info.pointer? &&
-          specialized_type_tag != :object
+          ![:object, :zero_terminated].include?(specialized_type_tag)
       end
 
       def length_argument_name

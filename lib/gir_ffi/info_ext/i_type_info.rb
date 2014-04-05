@@ -132,6 +132,10 @@ module GirFFI
           :struct, :strv, :utf8, :void, :zero_terminated ].include?(flattened_tag)
       end
 
+      def needs_ruby_to_c_conversion_for_callbacks?
+        needs_ruby_to_c_conversion_for_functions?
+      end
+
       def needs_c_to_ruby_conversion_for_functions?
         [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
           :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,

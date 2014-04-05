@@ -472,7 +472,17 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_array_out_parameter" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_array_out_parameter, proc {|obj|
+          [1.1, 2.2, 3.3]
+        }
+      end
+      result = derived_instance.vfunc_array_out_parameter
+      arr = result.to_a
+      arr.length.must_equal 3
+      arr[0].must_be_close_to 1.1
+      arr[1].must_be_close_to 2.2
+      arr[2].must_be_close_to 3.3
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
