@@ -319,6 +319,8 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it "has a working method #call_vfunc_with_callback" do
+      skip unless get_method_introspection_data("GIMarshallingTests", "Object",
+                                                "call_vfunc_with_callback")
       cb = nil
       user_data = nil
       result = nil
