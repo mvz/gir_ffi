@@ -404,6 +404,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_callee" do
+      skip unless get_method_introspection_data("GIMarshallingTests", "Object",
+                                                "method_int8_arg_and_out_callee")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |obj, arg|
           2 * arg
@@ -414,6 +416,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_caller" do
+      skip unless get_method_introspection_data("GIMarshallingTests", "Object",
+                                                "method_int8_arg_and_out_caller")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_arg_and_out_caller, proc { |obj, arg|
           2 * arg
