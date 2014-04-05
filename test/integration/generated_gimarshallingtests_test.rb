@@ -492,7 +492,13 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc {|obj|
+          "Hello!"
+        }
+      end
+      result = derived_instance.vfunc_caller_allocated_out_parameter
+      result.get_value.must_equal "Hello!"
     end
 
     it "has a working method #vfunc_meth_with_error" do
