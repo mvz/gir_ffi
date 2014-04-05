@@ -502,7 +502,17 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_meth_with_error" do
-      skip "Needs vfunc setup"
+      a = nil
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_meth_with_err, proc {|object, x|
+          a = x
+          true
+        }
+      end
+      result = derived_instance.vfunc_meth_with_error 42
+      a.must_equal 42
+      result.must_equal true
+      # TODO: Test error handling
     end
 
     it "has a working method #vfunc_multiple_out_parameters" do
