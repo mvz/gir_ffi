@@ -58,6 +58,48 @@ describe GirFFI::Builders::VFuncBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a vfunc with an out argument allocated by them, the caller" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                     "method_int8_arg_and_out_caller") }
+
+      it "returns a valid mapping method including receiver" do
+        skip unless vfunc_info
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance, arg, out)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = arg
+          _v3 = GirFFI::InOutPointer.new(:gint8, out)
+          _v4 = _proc.call(_v1, _v2)
+          _v3.set_value _v4
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
+
+    describe "for a vfunc with an out argument allocated by us, the callee" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                     "method_int8_arg_and_out_callee") }
+
+      it "returns a valid mapping method including receiver" do
+        skip unless vfunc_info
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance, arg, out)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = arg
+          _v3 = GirFFI::InOutPointer.new(:gint8).tap { |ptr| out.put_pointer 0, ptr }
+          _v4 = _proc.call(_v1, _v2)
+          _v3.set_value _v4
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
 

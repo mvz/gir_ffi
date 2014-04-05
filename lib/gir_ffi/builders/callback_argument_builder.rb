@@ -48,7 +48,7 @@ module GirFFI
       def pre_convertor
         @pre_convertor ||= if is_closure
                              ClosureConvertor.new(method_argument_name)
-                           elsif type_info.needs_conversion_for_callbacks?
+                           elsif type_info.needs_c_to_ruby_conversion_for_callbacks?
                              CToRubyConvertor.new(type_info,
                                                   method_argument_name,
                                                   length_argument_name)
@@ -58,7 +58,23 @@ module GirFFI
       end
 
       def out_parameter_preparation
-        "GirFFI::InOutPointer.new(#{type_info.tag_or_class.inspect}, #{method_argument_name})"
+        type_spec = type_info.tag_or_class
+        if allocated_by_us?
+          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" +
+            ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
+        else
+          "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
+        end
+      end
+
+      # Check if an out argument needs to be allocated by us, the callee. Since
+      # caller_allocates is false by default, we must also check that the type
+      # is a pointer. For example, an out parameter of type gint8* will always
+      # be allocate by the caller.
+      def allocated_by_us?
+        !@arginfo.caller_allocates? &&
+          type_info.pointer? &&
+          specialized_type_tag != :object
       end
 
       def length_argument_name

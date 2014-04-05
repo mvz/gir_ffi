@@ -56,7 +56,9 @@ describe GIMarshallingTests do
 
       res = GIMarshallingTests::BoxedStruct.inout bx
 
-      assert_equal 42, bx.long_
+      # TODO: Deal with the fact that bx is now invalid (at least with
+      # gobject-introspection 1.40).
+
       assert_equal 0, res.long_
     end
 
@@ -402,11 +404,23 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_callee" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |obj, arg|
+          2 * arg
+        }
+      end
+      result = derived_instance.method_int8_arg_and_out_callee 32
+      result.must_equal 64
     end
 
     it "has a working method #method_int8_arg_and_out_caller" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_arg_and_out_caller, proc { |obj, arg|
+          2 * arg
+        }
+      end
+      result = derived_instance.method_int8_arg_and_out_caller 32
+      result.must_equal 64
     end
 
     it "has a working method #method_int8_in" do

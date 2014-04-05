@@ -46,7 +46,7 @@ module GirFFI
 
       def has_post_conversion?
         is_closure || needs_constructor_wrap? ||
-          type_info.needs_conversion_for_functions?
+          type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
