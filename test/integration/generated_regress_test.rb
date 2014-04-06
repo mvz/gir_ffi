@@ -699,8 +699,7 @@ describe Regress do
 
     it "has a working method #torture_signature_1" do
       ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
-      assert_equal [true, -21, 2 * -21, "hello".length + 12],
-        [ret, y, z, q]
+      [ret, y, z, q].must_equal [true, -21, 2 * -21, "hello".length + 12]
 
       lambda { instance.torture_signature_1(-21, "hello", 11) }.
         must_raise GirFFI::GLibError
@@ -2400,7 +2399,7 @@ describe Regress do
 
   it "has a working function #test_torture_signature_1" do
     ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
-    assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
+    [ret, y, z, q].must_equal [ true, -21, 2 * -21, "hello".length + 12]
 
     lambda { Regress.test_torture_signature_1(-21, "hello", 11) }.
       must_raise GirFFI::GLibError
