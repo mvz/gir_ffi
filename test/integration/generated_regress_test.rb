@@ -688,7 +688,7 @@ describe Regress do
       result = instance.skip_return_val_no_out 1
       result.must_be_nil
 
-      lambda { instance.skip_return_val_no_out 0 }.must_raise RuntimeError
+      lambda { instance.skip_return_val_no_out 0 }.must_raise GirFFI::GLibError
     end
 
     it "has a working method #torture_signature_0" do
@@ -701,9 +701,9 @@ describe Regress do
       ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
       assert_equal [true, -21, 2 * -21, "hello".length + 12],
         [ret, y, z, q]
-      assert_raises RuntimeError do
-        instance.torture_signature_1(-21, "hello", 11)
-      end
+
+      lambda { instance.torture_signature_1(-21, "hello", 11) }.
+        must_raise GirFFI::GLibError
     end
 
     describe "its 'bare' property" do
@@ -2402,9 +2402,8 @@ describe Regress do
     ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
     assert_equal [true, -21, 2 * -21, "hello".length + 12], [ret, y, z, q]
 
-    assert_raises RuntimeError do
-      Regress.test_torture_signature_1(-21, "hello", 11)
-    end
+    lambda { Regress.test_torture_signature_1(-21, "hello", 11) }.
+      must_raise GirFFI::GLibError
   end
 
   it "has a working function #test_torture_signature_2" do

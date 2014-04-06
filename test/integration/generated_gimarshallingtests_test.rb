@@ -1703,8 +1703,10 @@ describe GIMarshallingTests do
     begin
       GIMarshallingTests.gerror
       flunk "Error should have been raised"
-    rescue RuntimeError => e
+    rescue GirFFI::GLibError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 
@@ -1712,8 +1714,10 @@ describe GIMarshallingTests do
     begin
       GIMarshallingTests.gerror_array_in [1, 2, 3]
       flunk "Error should have been raised"
-    rescue RuntimeError => e
+    rescue GirFFI::GLibError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 
