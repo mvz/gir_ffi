@@ -478,6 +478,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_array_out_parameter" do
+      skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                               "vfunc_array_out_parameter")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_array_out_parameter, proc {|obj|
           [1.1, 2.2, 3.3]
@@ -492,6 +494,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
+      skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                               "vfunc_caller_allocated_out_parameter")
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc {|obj|
           "Hello!"

@@ -6,9 +6,12 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
   describe "for an argument with direction :out" do
     describe "for :zero_terminated" do
-      let(:arg_info) {
+      let(:vfunc_info) {
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                     'vfunc_array_out_parameter').args[0] }
+                                     'vfunc_array_out_parameter') }
+      let(:arg_info) { vfunc_info.args[0] }
+
+      before { skip unless vfunc_info }
 
       it "has the correct value for #pre_conversion" do
         builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.new([:pointer, :zero_terminated], a)" ]
