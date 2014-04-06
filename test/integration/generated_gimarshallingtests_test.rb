@@ -502,17 +502,20 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_meth_with_error" do
-      a = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_meth_with_err, proc {|object, x|
-          a = x
+          raise "This is not the answer!" unless x == 42
           true
         }
       end
       result = derived_instance.vfunc_meth_with_error 42
-      a.must_equal 42
       result.must_equal true
-      # TODO: Test error handling
+
+      err = lambda { derived_instance.vfunc_meth_with_error(21) }.
+        must_raise GirFFI::GLibError
+      err.message.must_equal "This is not the answer!"
+      err.domain.must_equal "gir_ffi_vfunc_implementation"
+      err.code.must_equal 0
     end
 
     it "has a working method #vfunc_multiple_out_parameters" do
