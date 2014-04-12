@@ -100,6 +100,30 @@ describe GirFFI::Builders::VFuncBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a vfunc with an error argument" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data("GIMarshallingTests", "Object",
+                                     "vfunc_meth_with_err") }
+
+      it "returns a valid mapping method including receiver" do
+        skip unless vfunc_info
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance, x, _error)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = x
+          begin
+          _v3 = _proc.call(_v1, _v2)
+          rescue => _v4
+          _error.put_pointer 0, GLib::Error.from_exception(_v4)
+          end
+          return _v3
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end
 

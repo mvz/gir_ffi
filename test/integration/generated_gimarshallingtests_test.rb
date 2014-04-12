@@ -512,7 +512,7 @@ describe GIMarshallingTests do
       err = lambda { derived_instance.vfunc_meth_with_error(21) }.
         must_raise GirFFI::GLibError
       err.message.must_equal "This is not the answer!"
-      err.domain.must_equal "gir_ffi_vfunc_implementation"
+      err.domain.must_equal "gir_ffi"
       err.code.must_equal 0
     end
 

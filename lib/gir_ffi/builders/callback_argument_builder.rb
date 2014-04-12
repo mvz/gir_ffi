@@ -32,12 +32,21 @@ module GirFFI
           [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
         when :out
           [ "#{pre_converted_name} = #{out_parameter_preparation}" ]
+        when :error
+          [ "begin" ]
         end
       end
 
       def post_conversion
-        if direction == :out
+        case direction
+        when :out
           [ "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}" ]
+        when :error
+          [
+            "rescue => #{pre_converted_name}",
+            "#{method_argument_name}.put_pointer 0, GLib::Error.from_exception(#{pre_converted_name})",
+            "end"
+          ]
         else
           []
         end
