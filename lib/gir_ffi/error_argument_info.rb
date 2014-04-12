@@ -22,5 +22,9 @@ module GirFFI
     def closure
       -1
     end
+
+    def caller_allocates?
+      true
+    end
   end
 end

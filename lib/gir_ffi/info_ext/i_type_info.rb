@@ -128,7 +128,7 @@ module GirFFI
       end
 
       def needs_ruby_to_c_conversion_for_functions?
-        [ :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
+        [ :array, :c, :callback, :error, :ghash, :glist, :gslist, :object, :ptr_array,
           :struct, :strv, :utf8, :void, :zero_terminated ].include?(flattened_tag)
       end
 

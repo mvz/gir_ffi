@@ -112,12 +112,13 @@ describe GirFFI::Builders::VFuncBuilder do
         def self.call_with_argument_mapping(_proc, _instance, x, _error)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = x
+          _v3 = GirFFI::InOutPointer.new([:pointer, :error], _error)
           begin
-          _v3 = _proc.call(_v1, _v2)
-          rescue => _v4
-          _error.put_pointer 0, GLib::Error.from_exception(_v4)
+          _v4 = _proc.call(_v1, _v2)
+          rescue => _v5
+          _v3.set_value GLib::Error.from(_v5)
           end
-          return _v3
+          return _v4
         end
         CODE
 

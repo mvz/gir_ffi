@@ -8,5 +8,9 @@ module GLib
     def self.from_exception ex
       new_literal GIR_FFI_DOMAIN, 0, ex.message
     end
+
+    def self.from it
+      from_exception it
+    end
   end
 end

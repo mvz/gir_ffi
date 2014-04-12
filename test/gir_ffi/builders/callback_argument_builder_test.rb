@@ -24,13 +24,16 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
     let(:arg_info) { GirFFI::ErrorArgumentInfo.new }
 
     it "sets up a rescueing block in #pre_conversion" do
-      builder.pre_conversion.must_equal [ "begin" ]
+      builder.pre_conversion.must_equal [
+        "_v1 = GirFFI::InOutPointer.new([:pointer, :error], _error)",
+        "begin"
+      ]
     end
 
     it "converts any exceptions to GLib::Error in #post_conversion" do
       builder.post_conversion.must_equal [
         "rescue => _v1",
-        "_error.put_pointer 0, GLib::Error.from_exception(_v1)",
+        "_v2.set_value GLib::Error.from(_v1)",
         "end"
       ]
     end
