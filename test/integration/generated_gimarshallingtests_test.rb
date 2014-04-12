@@ -277,14 +277,12 @@ describe GIMarshallingTests do
 
     it "has a working function #full_inout" do
       ob = GIMarshallingTests::Object.new 42
-      original_pointer = ob.to_ptr
 
       res = GIMarshallingTests::Object.full_inout ob
 
       # TODO: Deal with the fact that ob is now invalid
 
       assert_instance_of GIMarshallingTests::Object, res
-      res.to_ptr.wont_equal original_pointer
       res.int.must_equal 0
     end
 
