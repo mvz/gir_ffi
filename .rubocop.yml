@@ -1,0 +1,24 @@
+AllCops:
+  Includes:
+    - Rakefile
+
+Blocks:
+  Enabled: false
+
+DotPosition:
+  EnforcedStyle: trailing
+
+LineLength:
+  Max: 92
+
+MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses
+
+SignalException:
+  EnforcedStyle: only_raise
+
+StringLiterals:
+  Enabled: false
+
+RedundantReturn:
+  AllowMultipleReturnValues: true
