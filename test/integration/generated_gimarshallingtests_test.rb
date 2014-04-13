@@ -588,7 +588,23 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_with_callback" do
-      skip "Needs vfunc setup"
+      skip unless get_method_introspection_data("GIMarshallingTests", "Object",
+                                                "vfunc_with_callback")
+
+      result = 1
+
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_with_callback, proc { |obj, callback, callback_data|
+          callback.call(42, callback_data)
+        }
+      end
+
+      derived_instance.vfunc_with_callback proc { |val, user_data| result = val + user_data }, 23
+
+      # The current implementation of the vfunc_with_callback method currently
+      # doesn't actually call the virtual function vfunc_with_callback.
+      result.must_equal 1
+      result.wont_equal 42 + 23
     end
 
     describe "its 'int' property" do
