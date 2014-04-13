@@ -6,6 +6,10 @@ module GObjectIntrospection
       Lib.g_vfunc_info_get_flags @gobj
     end
 
+    def throws?
+      flags & 8 != 0
+    end
+
     def offset
       Lib.g_vfunc_info_get_offset @gobj
     end

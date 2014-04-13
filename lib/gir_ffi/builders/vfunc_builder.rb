@@ -25,6 +25,7 @@ module GirFFI
 
       def mapping_method_definition
         arg_infos = info.args
+        arg_infos << ErrorArgumentInfo.new if info.throws?
 
         receiver_info = ReceiverArgumentInfo.new(receiver_type_info)
 

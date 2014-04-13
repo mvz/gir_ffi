@@ -127,19 +127,27 @@ module GirFFI
         end
       end
 
+      TAGS_NEEDING_RUBY_TO_C_CONVERSION = [
+        :array, :c, :callback, :error, :ghash, :glist, :gslist, :object,
+        :ptr_array, :struct, :strv, :utf8, :void, :zero_terminated
+      ]
+
+      TAGS_NEEDING_C_TO_RUBY_CONVERSION = [
+        :array, :byte_array, :c, :error, :filename, :ghash, :glist, :gslist,
+        :interface, :object, :ptr_array, :struct, :strv, :union, :utf8,
+        :zero_terminated
+      ]
+
       def needs_ruby_to_c_conversion_for_functions?
-        [ :array, :c, :callback, :ghash, :glist, :gslist, :object, :ptr_array,
-          :struct, :strv, :utf8, :void, :zero_terminated ].include?(flattened_tag)
+        TAGS_NEEDING_RUBY_TO_C_CONVERSION.include?(flattened_tag)
+      end
+
+      def needs_c_to_ruby_conversion_for_functions?
+        TAGS_NEEDING_C_TO_RUBY_CONVERSION.include?(flattened_tag)
       end
 
       def needs_ruby_to_c_conversion_for_callbacks?
         needs_ruby_to_c_conversion_for_functions?
-      end
-
-      def needs_c_to_ruby_conversion_for_functions?
-        [ :array, :byte_array, :c, :error, :filename, :ghash, :glist,
-          :gslist, :interface, :object, :ptr_array, :struct, :strv, :union,
-          :utf8, :zero_terminated ].include?(flattened_tag)
       end
 
       def needs_c_to_ruby_conversion_for_callbacks?

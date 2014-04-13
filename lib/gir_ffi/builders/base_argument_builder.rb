@@ -37,6 +37,7 @@ module GirFFI
       end
 
       def specialized_type_tag
+        # SMELL: Law of Demeter, due to this being arginfo.argument_type.flattened_tag
         type_info.flattened_tag
       end
 

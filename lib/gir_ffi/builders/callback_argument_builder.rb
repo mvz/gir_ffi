@@ -21,9 +21,7 @@ module GirFFI
       end
 
       def capture_variable_name
-        if direction == :out
-          @capture_variable_name ||= new_variable
-        end
+        result_name if direction == :out
       end
 
       def pre_conversion
@@ -32,18 +30,34 @@ module GirFFI
           [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
         when :out
           [ "#{pre_converted_name} = #{out_parameter_preparation}" ]
+        when :error
+          [
+            "#{pre_converted_name} = #{out_parameter_preparation}",
+            "begin"
+          ]
         end
       end
 
       def post_conversion
-        if direction == :out
-          [ "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}" ]
+        case direction
+        when :out
+          [ outgoing_post_conversion ]
+        when :error
+          [
+            "rescue => #{result_name}",
+            outgoing_post_conversion,
+            "end"
+          ]
         else
           []
         end
       end
 
       private
+
+      def result_name
+        @result_name ||= new_variable
+      end
 
       def pre_convertor
         @pre_convertor ||= if is_closure
@@ -57,11 +71,15 @@ module GirFFI
                            end
       end
 
+      def outgoing_post_conversion
+        "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}"
+      end
+
       def outgoing_convertor
         @outgoing_convertor ||= if type_info.needs_ruby_to_c_conversion_for_callbacks?
-                                  RubyToCConvertor.new(type_info, capture_variable_name)
+                                  RubyToCConvertor.new(type_info, result_name)
                                 else
-                                  NullConvertor.new(capture_variable_name)
+                                  NullConvertor.new(result_name)
                                 end
       end
 

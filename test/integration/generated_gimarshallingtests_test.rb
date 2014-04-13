@@ -277,14 +277,12 @@ describe GIMarshallingTests do
 
     it "has a working function #full_inout" do
       ob = GIMarshallingTests::Object.new 42
-      original_pointer = ob.to_ptr
 
       res = GIMarshallingTests::Object.full_inout ob
 
       # TODO: Deal with the fact that ob is now invalid
 
       assert_instance_of GIMarshallingTests::Object, res
-      res.to_ptr.wont_equal original_pointer
       res.int.must_equal 0
     end
 
@@ -506,7 +504,20 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_meth_with_error" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_meth_with_err, proc {|object, x|
+          raise "This is not the answer!" unless x == 42
+          true
+        }
+      end
+      result = derived_instance.vfunc_meth_with_error 42
+      result.must_equal true
+
+      err = proc { derived_instance.vfunc_meth_with_error(21) }.
+        must_raise GirFFI::GLibError
+      err.message.must_equal "This is not the answer!"
+      err.domain.must_equal "gir_ffi"
+      err.code.must_equal 0
     end
 
     it "has a working method #vfunc_multiple_out_parameters" do
@@ -1473,7 +1484,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_return_value_only" do
-    result = GIMarshallingTests.callback_return_value_only lambda { 42 }
+    result = GIMarshallingTests.callback_return_value_only proc { 42 }
     result.must_equal 42
   end
 
@@ -1697,8 +1708,10 @@ describe GIMarshallingTests do
     begin
       GIMarshallingTests.gerror
       flunk "Error should have been raised"
-    rescue RuntimeError => e
+    rescue GirFFI::GLibError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 
@@ -1706,8 +1719,10 @@ describe GIMarshallingTests do
     begin
       GIMarshallingTests.gerror_array_in [1, 2, 3]
       flunk "Error should have been raised"
-    rescue RuntimeError => e
+    rescue GirFFI::GLibError => e
       e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 

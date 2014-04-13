@@ -1,5 +1,6 @@
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
+require 'gir_ffi/glib_error'
 
 module GirFFI
   module ArgHelper
@@ -31,7 +32,7 @@ module GirFFI
 
     def self.check_error errpp
       err = GLib::Error.wrap(errpp.read_pointer)
-      raise err.message if err
+      raise GLibError, err if err
     end
 
     def self.check_fixed_array_size size, arr, name

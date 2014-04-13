@@ -210,13 +210,7 @@ module GObjectIntrospection
 
     # IVFuncInfo
 
-    enum :IVFuncInfoFlags, [
-      :must_chain_up, (1 << 0),
-      :must_override, (1 << 1),
-      :must_not_override, (1 << 2)
-    ]
-
-    attach_function :g_vfunc_info_get_flags, [:pointer], :IVFuncInfoFlags
+    attach_function :g_vfunc_info_get_flags, [:pointer], :int
     attach_function :g_vfunc_info_get_offset, [:pointer], :int
     attach_function :g_vfunc_info_get_signal, [:pointer], :pointer
     attach_function :g_vfunc_info_get_invoker, [:pointer], :pointer
