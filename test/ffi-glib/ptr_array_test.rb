@@ -103,8 +103,8 @@ describe GLib::PtrArray do
 
     it "raises an error if the index is out of bounds" do
       arr = GLib::PtrArray.from :utf8, ["1", "2", "3"]
-      lambda { arr.index(16) }.must_raise IndexError
-      lambda { arr.index(-1) }.must_raise IndexError
+      proc { arr.index(16) }.must_raise IndexError
+      proc { arr.index(-1) }.must_raise IndexError
     end
   end
 end

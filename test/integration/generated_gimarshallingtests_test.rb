@@ -513,7 +513,7 @@ describe GIMarshallingTests do
       result = derived_instance.vfunc_meth_with_error 42
       result.must_equal true
 
-      err = lambda { derived_instance.vfunc_meth_with_error(21) }.
+      err = proc { derived_instance.vfunc_meth_with_error(21) }.
         must_raise GirFFI::GLibError
       err.message.must_equal "This is not the answer!"
       err.domain.must_equal "gir_ffi"
@@ -1484,7 +1484,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_return_value_only" do
-    result = GIMarshallingTests.callback_return_value_only lambda { 42 }
+    result = GIMarshallingTests.callback_return_value_only proc { 42 }
     result.must_equal 42
   end
 

@@ -44,7 +44,7 @@ describe GirFFI::SizedArray do
       end
 
       it "raises an error if the array has the wrong number of elements" do
-        lambda { GirFFI::SizedArray.from :gint32, 4, [3, 2, 1] }.must_raise ArgumentError
+        proc { GirFFI::SizedArray.from :gint32, 4, [3, 2, 1] }.must_raise ArgumentError
       end
 
       it "uses the array's size if passed -1 as the size" do
@@ -62,7 +62,7 @@ describe GirFFI::SizedArray do
 
       it "raises an error if the argument has the wrong number of elements" do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
-        lambda { GirFFI::SizedArray.from :gint32, 4, arr }.must_raise ArgumentError
+        proc { GirFFI::SizedArray.from :gint32, 4, arr }.must_raise ArgumentError
       end
     end
 

@@ -42,7 +42,7 @@ describe GObjectIntrospection::IRepository do
 
   describe "#find_by_gtype" do
     it "raises an error if 0 is passed as the gtype" do
-      lambda { gir.find_by_gtype 0 }.must_raise ArgumentError
+      proc { gir.find_by_gtype 0 }.must_raise ArgumentError
     end
   end
 

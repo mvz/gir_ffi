@@ -688,7 +688,7 @@ describe Regress do
       result = instance.skip_return_val_no_out 1
       result.must_be_nil
 
-      lambda { instance.skip_return_val_no_out 0 }.must_raise GirFFI::GLibError
+      proc { instance.skip_return_val_no_out 0 }.must_raise GirFFI::GLibError
     end
 
     it "has a working method #torture_signature_0" do
@@ -701,7 +701,7 @@ describe Regress do
       ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
       [ret, y, z, q].must_equal [true, -21, 2 * -21, "hello".length + 12]
 
-      lambda { instance.torture_signature_1(-21, "hello", 11) }.
+      proc { instance.torture_signature_1(-21, "hello", 11) }.
         must_raise GirFFI::GLibError
     end
 
@@ -1693,7 +1693,7 @@ describe Regress do
     b = nil
     c = 95
 
-    callback = lambda do |one, two|
+    callback = proc do |one, two|
       a = one
       b = two
       c
@@ -2401,7 +2401,7 @@ describe Regress do
     ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
     [ret, y, z, q].must_equal [true, -21, 2 * -21, "hello".length + 12]
 
-    lambda { Regress.test_torture_signature_1(-21, "hello", 11) }.
+    proc { Regress.test_torture_signature_1(-21, "hello", 11) }.
       must_raise GirFFI::GLibError
   end
 
