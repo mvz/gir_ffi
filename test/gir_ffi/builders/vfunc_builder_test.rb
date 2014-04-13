@@ -4,6 +4,12 @@ describe GirFFI::Builders::VFuncBuilder do
   let(:builder) { GirFFI::Builders::VFuncBuilder.new vfunc_info }
 
   describe "#mapping_method_definition" do
+    let(:result) { builder.mapping_method_definition }
+
+    before do
+      skip unless vfunc_info
+    end
+
     describe "for a vfunc with only one argument" do
       let(:vfunc_info) {
         get_vfunc_introspection_data "GIMarshallingTests", "Object", "method_int8_in" }
@@ -17,7 +23,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
 
@@ -26,7 +32,6 @@ describe GirFFI::Builders::VFuncBuilder do
         get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_enum" }
 
       it "returns a valid mapping method including receiver" do
-        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -36,7 +41,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
 
@@ -45,7 +50,6 @@ describe GirFFI::Builders::VFuncBuilder do
         get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_with_callback" }
 
       it "returns a valid mapping method including receiver" do
-        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -55,7 +59,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
 
@@ -65,7 +69,6 @@ describe GirFFI::Builders::VFuncBuilder do
                                      "method_int8_arg_and_out_caller") }
 
       it "returns a valid mapping method including receiver" do
-        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -76,7 +79,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
 
@@ -86,7 +89,6 @@ describe GirFFI::Builders::VFuncBuilder do
                                      "method_int8_arg_and_out_callee") }
 
       it "returns a valid mapping method including receiver" do
-        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -97,17 +99,17 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
 
     describe "for a vfunc with an error argument" do
       let(:vfunc_info) {
         get_vfunc_introspection_data("GIMarshallingTests", "Object",
-                                     "vfunc_meth_with_err") }
+                                     "vfunc_meth_with_err")
+      }
 
       it "returns a valid mapping method including receiver" do
-        skip unless vfunc_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, x, _error)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -122,7 +124,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        result.must_equal expected
       end
     end
   end

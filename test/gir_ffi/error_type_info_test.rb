@@ -6,7 +6,7 @@ describe GirFFI::ErrorTypeInfo do
 
   describe "#array_length" do
     it "returns the correct value" do
-      instance.array_length.must_equal -1
+      instance.array_length.must_equal(-1)
     end
   end
 
@@ -46,4 +46,3 @@ describe GirFFI::ErrorTypeInfo do
     end
   end
 end
-

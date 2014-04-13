@@ -41,11 +41,11 @@ module GirFFI
       def post_conversion
         case direction
         when :out
-          [ "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}" ]
+          [ outgoing_post_conversion ]
         when :error
           [
             "rescue => #{result_name}",
-            "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}",
+            outgoing_post_conversion,
             "end"
           ]
         else
@@ -69,6 +69,10 @@ module GirFFI
                            else
                              NullConvertor.new(method_argument_name)
                            end
+      end
+
+      def outgoing_post_conversion
+        "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}"
       end
 
       def outgoing_convertor
