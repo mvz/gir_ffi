@@ -3,37 +3,38 @@ require 'gir_ffi/sized_array'
 module GirFFI
   module TypeMap
     sz = FFI.type_size(:size_t) * 8
-    gtype_type = "uint#{sz}".to_sym
+    gsize_type = "uint#{sz}".to_sym
 
     TAG_TYPE_MAP = {
-      :enum => :int32,
-      :flags => :int32,
-      :ghash => :pointer,
-      :glist => :pointer,
-      :gslist => :pointer,
-      :strv => :pointer,
-      :object => :pointer,
-      :struct => :pointer,
-      :error => :pointer,
-      :ptr_array => :pointer,
-      :array => :pointer,
-      :c => GirFFI::SizedArray,
-      :utf8 => :pointer,
-      :GType => gtype_type,
-      :gboolean => GLib::Boolean,
-      :gunichar => :uint32,
-      :gint8 => :int8,
-      :guint8 => :uint8,
-      :gint16 => :int16,
-      :guint16 => :uint16,
-      :gint => :int,
-      :gint32 => :int32,
-      :guint32 => :uint32,
-      :gint64 => :int64,
-      :guint64 => :uint64,
-      :gfloat => :float,
-      :gdouble => :double,
-      :void => :void
+      enum:      :int32,
+      flags:     :int32,
+      ghash:     :pointer,
+      glist:     :pointer,
+      gslist:    :pointer,
+      strv:      :pointer,
+      object:    :pointer,
+      struct:    :pointer,
+      error:     :pointer,
+      ptr_array: :pointer,
+      array:     :pointer,
+      c:         GirFFI::SizedArray,
+      utf8:      :pointer,
+      GType:     gsize_type,
+      gboolean:  GLib::Boolean,
+      gunichar:  :uint32,
+      gint8:     :int8,
+      guint8:    :uint8,
+      gint16:    :int16,
+      guint16:   :uint16,
+      gint:      :int,
+      gint32:    :int32,
+      guint32:   :uint32,
+      gint64:    :int64,
+      guint64:   :uint64,
+      gsize:     gsize_type,
+      gfloat:    :float,
+      gdouble:   :double,
+      void:      :void
     }
 
     def self.map_basic_type type

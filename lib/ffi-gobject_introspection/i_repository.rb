@@ -31,27 +31,27 @@ module GObjectIntrospection
   class IRepository
     # Map info type to class. Default is IBaseInfo.
     TYPEMAP = {
-      :invalid => IBaseInfo,
-      :function => IFunctionInfo,
-      :callback => ICallbackInfo,
-      :struct => IStructInfo,
+      invalid:                  IBaseInfo,
+      function:                 IFunctionInfo,
+      callback:                 ICallbackInfo,
+      struct:                   IStructInfo,
       # TODO: There's no GIBoxedInfo, so what does :boxed mean?
-      :boxed => IBaseInfo,
-      :enum => IEnumInfo,
-      :flags => IFlagsInfo,
-      :object => IObjectInfo,
-      :interface => IInterfaceInfo,
-      :constant => IConstantInfo,
-      :invalid_was_error_domain => IBaseInfo,
-      :union => IUnionInfo,
-      :value => IValueInfo,
-      :signal => ISignalInfo,
-      :vfunc => IVFuncInfo,
-      :property => IPropertyInfo,
-      :field => IFieldInfo,
-      :arg => IArgInfo,
-      :type => ITypeInfo,
-      :unresolved => IBaseInfo
+      boxed:                    IBaseInfo,
+      enum:                     IEnumInfo,
+      flags:                    IFlagsInfo,
+      object:                   IObjectInfo,
+      interface:                IInterfaceInfo,
+      constant:                 IConstantInfo,
+      invalid_was_error_domain: IBaseInfo,
+      union:                    IUnionInfo,
+      value:                    IValueInfo,
+      signal:                   ISignalInfo,
+      vfunc:                    IVFuncInfo,
+      property:                 IPropertyInfo,
+      field:                    IFieldInfo,
+      arg:                      IArgInfo,
+      type:                     ITypeInfo,
+      unresolved:               IBaseInfo
     }
 
     def initialize
