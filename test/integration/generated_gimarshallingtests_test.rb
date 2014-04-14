@@ -1682,10 +1682,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gbytes_full_return" do
-    skip "GBytes is not supported yet"
+    res = GIMarshallingTests.gbytes_full_return
+    res.to_a.must_equal [0, 49, 0xFF, 51]
   end
+
   it "has a working function #gbytes_none_in" do
-    skip "GBytes is not supported yet"
+    GIMarshallingTests.gbytes_none_in [0, 49, 0xFF, 51]
+    pass
   end
 
   it "has a working function #gclosure_in" do

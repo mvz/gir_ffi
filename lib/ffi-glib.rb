@@ -5,6 +5,7 @@ GirFFI.setup :GLib
 
 require 'ffi-glib/array'
 require 'ffi-glib/byte_array'
+require 'ffi-glib/bytes'
 require 'ffi-glib/error'
 require 'ffi-glib/hash_table'
 require 'ffi-glib/iconv'
@@ -31,6 +32,8 @@ module GLib
 
     attach_function :g_byte_array_new, [], :pointer
     attach_function :g_byte_array_append, [:pointer, :pointer, :uint], :pointer
+
+    attach_function :g_bytes_get_data, [:pointer, :pointer], :pointer
 
     attach_function :g_array_new, [:int, :int, :uint], :pointer
     attach_function :g_array_append_vals, [:pointer, :pointer, :uint], :pointer

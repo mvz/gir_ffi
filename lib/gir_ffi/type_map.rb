@@ -3,7 +3,7 @@ require 'gir_ffi/sized_array'
 module GirFFI
   module TypeMap
     sz = FFI.type_size(:size_t) * 8
-    gtype_type = "uint#{sz}".to_sym
+    gsize_type = "uint#{sz}".to_sym
 
     TAG_TYPE_MAP = {
       :enum => :int32,
@@ -19,7 +19,7 @@ module GirFFI
       :array => :pointer,
       :c => GirFFI::SizedArray,
       :utf8 => :pointer,
-      :GType => gtype_type,
+      :GType => gsize_type,
       :gboolean => GLib::Boolean,
       :gunichar => :uint32,
       :gint8 => :int8,
@@ -31,6 +31,7 @@ module GirFFI
       :guint32 => :uint32,
       :gint64 => :int64,
       :guint64 => :uint64,
+      :gsize => gsize_type,
       :gfloat => :float,
       :gdouble => :double,
       :void => :void
