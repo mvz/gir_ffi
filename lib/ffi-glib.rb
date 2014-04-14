@@ -34,6 +34,7 @@ module GLib
     attach_function :g_byte_array_append, [:pointer, :pointer, :uint], :pointer
 
     attach_function :g_bytes_get_data, [:pointer, :pointer], :pointer
+    attach_function :g_bytes_new, [:pointer, :size_t], :pointer
 
     attach_function :g_array_new, [:int, :int, :uint], :pointer
     attach_function :g_array_append_vals, [:pointer, :pointer, :uint], :pointer
