@@ -169,9 +169,10 @@ describe GirFFI::Builders::FunctionBuilder do
     describe "for GLib::Variant.get_strv" do
       let(:function_info) { get_method_introspection_data 'GLib', 'Variant', 'get_strv' }
       it "builds a correct definition" do
+        size_type = ":guint#{FFI.type_size(:size_t) * 8}"
         code.must_equal <<-CODE.reset_indentation
           def get_strv 
-            _v1 = GirFFI::InOutPointer.for :guint64
+            _v1 = GirFFI::InOutPointer.for #{size_type}
             _v2 = GLib::Lib.g_variant_get_strv self, _v1
             _v3 = GLib::Strv.wrap(_v2)
             return _v3

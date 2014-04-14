@@ -2060,15 +2060,29 @@ describe Regress do
 
   it "has a working function #test_ghash_gvalue_return" do
     skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
+
     result = Regress.test_ghash_gvalue_return
     hash = result.to_hash
+
+    has_enum_and_flag_keys = hash.key("flags")
+
     hash["integer"].get_value.must_equal 12
     hash["boolean"].get_value.must_equal true
     hash["string"].get_value.must_equal "some text"
     hash["strings"].get_value.to_a.must_equal ["first", "second", "third"]
-    hash["flags"].get_value.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
-    hash["enum"].get_value.must_equal :value2
-    hash.keys.sort.must_equal ["boolean", "enum", "flags", "integer", "string", "strings"]
+
+    if has_enum_and_flag_keys
+      hash["flags"].get_value.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+      hash["enum"].get_value.must_equal :value2
+    end
+
+    expected_keys = if has_enum_and_flag_keys
+                      ["boolean", "enum", "flags", "integer", "string", "strings"]
+                    else
+                      ["boolean", "integer", "string", "strings"]
+                    end
+
+    hash.keys.sort.must_equal expected_keys
   end
 
   it "has a working function #test_ghash_nested_everything_return" do

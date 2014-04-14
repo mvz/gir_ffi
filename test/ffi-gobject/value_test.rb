@@ -65,7 +65,7 @@ describe GObject::Value do
     end
 
     it "handles long values" do
-      value = 0x1234_5678_9012_3456
+      value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
       gv = GObject::Value.for_g_type GObject::TYPE_LONG
       gv.set_value value
       gv.get_long.must_equal value
@@ -93,7 +93,7 @@ describe GObject::Value do
     end
 
     it "handles ulong values" do
-      value = 0x1234_5678_9012_3456
+      value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
       gv = GObject::Value.for_g_type GObject::TYPE_ULONG
       gv.set_value value
       gv.get_ulong.must_equal value
@@ -157,7 +157,7 @@ describe GObject::Value do
     end
 
     it "unwraps a long" do
-      value = 0x1234_5678_9012_3456
+      value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
       gv = GObject::Value.for_g_type GObject::TYPE_LONG
       gv.set_long value
       gv.get_value.must_equal value
@@ -185,7 +185,7 @@ describe GObject::Value do
     end
 
     it "unwraps a ulong" do
-      value = 0x1234_5678_9012_3456
+      value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
       gv = GObject::Value.for_g_type GObject::TYPE_ULONG
       gv.set_ulong value
       gv.get_value.must_equal value
