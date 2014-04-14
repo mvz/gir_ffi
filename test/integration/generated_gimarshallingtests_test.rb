@@ -581,10 +581,10 @@ describe GIMarshallingTests do
 
     it "has a working method #vfunc_return_value_only" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0xdeadbeef }
+        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0x1234_5678 }
       end
       result = derived_instance.vfunc_return_value_only
-      result.must_equal 0xdeadbeef
+      result.must_equal 0x1234_5678
     end
 
     it "has a working method #vfunc_with_callback" do
