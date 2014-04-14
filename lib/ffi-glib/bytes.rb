@@ -5,7 +5,7 @@ module GLib
   class Bytes
     include Enumerable
 
-    remove_method :get_data
+    remove_method :get_data if method_defined? :get_data
 
     # Override for GBytes#get_data, needed due to mis-identification of the
     # element-type of the resulting sized array.
