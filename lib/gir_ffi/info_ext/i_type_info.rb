@@ -7,16 +7,16 @@ module GirFFI
 
       def self.flattened_tag_to_gtype_map
         @flattened_tag_to_gtype_map ||= {
-          :array => GObject::TYPE_ARRAY,
-          :c => GObject::TYPE_POINTER,
-          :gboolean => GObject::TYPE_BOOLEAN,
-          :ghash => GObject::TYPE_HASH_TABLE,
-          :gint32 => GObject::TYPE_INT,
-          :gint64 => GObject::TYPE_INT64,
-          :guint64 => GObject::TYPE_UINT64,
-          :strv => GObject::TYPE_STRV,
-          :utf8 => GObject::TYPE_STRING,
-          :void => GObject::TYPE_NONE
+          array:    GObject::TYPE_ARRAY,
+          c:        GObject::TYPE_POINTER,
+          gboolean: GObject::TYPE_BOOLEAN,
+          ghash:    GObject::TYPE_HASH_TABLE,
+          gint32:   GObject::TYPE_INT,
+          gint64:   GObject::TYPE_INT64,
+          guint64:  GObject::TYPE_UINT64,
+          strv:     GObject::TYPE_STRV,
+          utf8:     GObject::TYPE_STRING,
+          void:     GObject::TYPE_NONE
         }
       end
 
@@ -76,18 +76,18 @@ module GirFFI
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {
-        :array => 'GLib::Array',
-        :byte_array => 'GLib::ByteArray',
-        :c => 'GirFFI::SizedArray',
-        :error => 'GLib::Error',
-        :ghash => 'GLib::HashTable',
-        :glist => 'GLib::List',
-        :gslist => 'GLib::SList',
-        :ptr_array => 'GLib::PtrArray',
-        :strv => 'GLib::Strv',
-        :utf8 => 'GirFFI::InPointer',
-        :void => 'GirFFI::InPointer',
-        :zero_terminated => 'GirFFI::ZeroTerminated'
+        array:           'GLib::Array',
+        byte_array:      'GLib::ByteArray',
+        c:               'GirFFI::SizedArray',
+        error:           'GLib::Error',
+        ghash:           'GLib::HashTable',
+        glist:           'GLib::List',
+        gslist:          'GLib::SList',
+        ptr_array:       'GLib::PtrArray',
+        strv:            'GLib::Strv',
+        utf8:            'GirFFI::InPointer',
+        void:            'GirFFI::InPointer',
+        zero_terminated: 'GirFFI::ZeroTerminated'
       }
 
       # TODO: Use class rather than class name
