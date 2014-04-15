@@ -363,9 +363,17 @@ describe GIMarshallingTests do
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_none" do
       skip "Needs vfunc setup"
     end
+
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_full" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc {|obj|
+          GIMarshallingTests::Object.new 42
+        }
+      end
+      result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_full
+      result.must_equal [1, false]
     end
+
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
       skip "Needs vfunc setup"
     end

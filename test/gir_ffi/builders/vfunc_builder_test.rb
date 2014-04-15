@@ -128,5 +128,38 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
   end
-end
 
+  describe "#argument_ffi_types" do
+    let(:result) { builder.argument_ffi_types }
+
+    before do
+      skip unless vfunc_info
+    end
+
+    describe "for a vfunc with only one argument" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data "GIMarshallingTests", "Object", "method_int8_in" }
+
+      it "returns the correct FFI types including :pointer for the receiver" do
+        result.must_equal [:pointer, :int8]
+      end
+    end
+  end
+
+  describe "#return_ffi_type" do
+    let(:result) { builder.return_ffi_type }
+
+    before do
+      skip unless vfunc_info
+    end
+
+    describe "for a vfunc returning an object" do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_object_transfer_full" }
+
+      it "returns :pointer" do
+        result.must_equal :pointer
+      end
+    end
+  end
+end
