@@ -2064,7 +2064,7 @@ describe Regress do
     result = Regress.test_ghash_gvalue_return
     hash = result.to_hash
 
-    has_enum_and_flag_keys = hash.key("flags")
+    has_enum_and_flag_keys = hash.has_key?("flags")
 
     hash["integer"].get_value.must_equal 12
     hash["boolean"].get_value.must_equal true
