@@ -450,12 +450,20 @@ describe Regress do
       proc { Regress::TestFundamentalObject.new }.must_raise NoMethodError
     end
 
+    # NOTE: Instance methods can only be tested on the subclass, since
+    # TestFundamentalObject is an abstract class.
+    let(:instance) { Regress::TestFundamentalSubObject.new "foo" }
+
     it "has a working method #ref" do
-      skip "Can only be tested in the descendent class"
+      instance.refcount.must_equal 1
+      instance.ref
+      instance.refcount.must_equal 2
     end
 
     it "has a working method #unref" do
-      skip "Can only be tested in the descendent class"
+      instance.refcount.must_equal 1
+      instance.unref
+      instance.refcount.must_equal 0
     end
   end
 
@@ -477,22 +485,6 @@ describe Regress do
 
     it "can access its parent class' fields directly" do
       instance.flags.must_equal 0
-    end
-
-    # NOTE: The following tests test fields and methods on the abstract parent
-    # class.
-    it "has a refcount of 1" do
-      assert_equal 1, instance.refcount
-    end
-
-    it "has a working method #ref" do
-      instance.ref
-      instance.refcount.must_equal 2
-    end
-
-    it "has a working method #unref" do
-      instance.unref
-      instance.refcount.must_equal 0
     end
   end
 
