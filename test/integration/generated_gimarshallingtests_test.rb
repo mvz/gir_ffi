@@ -352,16 +352,49 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_full" do
-      skip "Needs vfunc setup"
+      obj = nil
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc {|this, object|
+          obj = object
+        }
+      end
+      result = derived_instance.
+        get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.get_gtype
+      result.must_equal [1, false]
+      obj.must_be_instance_of GIMarshallingTests::Object
     end
+
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_none" do
-      skip "Needs vfunc setup"
+      klass = nil
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|this, object|
+          klass = object.class
+        }
+      end
+      result = derived_instance.
+        get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.get_gtype
+      result.must_equal [1, false]
+      klass.must_equal GIMarshallingTests::Object
     end
+
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_full" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|obj|
+          GIMarshallingTests::Object.new 42
+        }
+      end
+      result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
+      result.must_equal [1, false]
     end
+
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_none" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc {|obj|
+          GIMarshallingTests::Object.new 42
+        }
+      end
+      result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_none
+      result.must_equal [1, false]
     end
 
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_full" do
@@ -375,7 +408,13 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
-      skip "Needs vfunc setup"
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc {|obj|
+          GIMarshallingTests::Object.new 42
+        }
+      end
+      result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_none
+      result.must_equal [1, false]
     end
 
     it "has a working method #int8_in" do
