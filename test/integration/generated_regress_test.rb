@@ -1155,7 +1155,7 @@ describe Regress do
     end
 
     it "has a private field this_is_private" do
-      skip "GIR identifies this field as readable"
+      skip "This field is identified as readable in the typelib"
       proc { instance.this_is_private }.must_raise NoMethodError
       proc { instance.this_is_private = 42 }.must_raise NoMethodError
     end
