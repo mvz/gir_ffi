@@ -297,7 +297,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working function #inout_same" do
-      skip "This function is only found in the header"
+      skip "This function is defined in the header but not implemented"
     end
 
     it "has a working function #none_inout" do
@@ -348,7 +348,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #full_in" do
-      skip "This function is only found in the header"
+      skip "This function is defined in the header but not implemented"
     end
 
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_full" do
@@ -515,7 +515,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_variant_array_in" do
-      skip "This function is only found in the header"
+      skip "This function is defined in the header but not implemented"
     end
 
     it "has a working method #method_with_default_implementation" do
