@@ -2665,7 +2665,13 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #test_interface_test_int8_in" do
-    skip "Needs implementation of TestInterface"
+    derived_klass.class_eval { include GIMarshallingTests::Interface }
+    instance = make_derived_instance do |info|
+      info.install_vfunc_implementation :test_int8_in, proc {|obj, in_| obj.int = in_ }
+    end
+    instance.int.must_equal 0
+    GIMarshallingTests.test_interface_test_int8_in instance, 8
+    instance.int.must_equal 8
   end
 
   it "has a working function #time_t_in" do
