@@ -85,6 +85,10 @@ retrieve values from them by hand as well. Ideally, we would have `.from_ruby` a
 require a specifice VariantType to be used consistently. Special logic will have
 to be put in place for that.
 
+## Handle ownership-transfer correctly
+
+For how to handle objects, see https://bugzilla.gnome.org/show_bug.cgi?id=657202#c1
+
 ## See Also
 
   dnote
