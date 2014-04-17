@@ -7,6 +7,10 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
   let(:builder) { GirFFI::Builders::CallbackReturnValueBuilder.new(var_gen,
                                                                    return_value_info) }
 
+  before do
+    skip unless callback_info
+  end
+
   describe "for :gint32" do
     let(:callback_info) { get_introspection_data("GIMarshallingTests", "CallbackIntInt") }
 
