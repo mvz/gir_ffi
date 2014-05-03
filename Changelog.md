@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.7.4 / 2014-05-03
+
+* Correctly handle closure data arguments originating from C
+* Handle callee-allocated simple types for callbacks and functions
+* Handle callback out parameters that are zero-terminated arrays
+* Handle virtual functions with GError arguments
+* Support the GBytes type
+* Handle virtual functions returning GObjects
+* Avoid overwriting methods with getters for properties with dashes in the name
+
 ## 0.7.3 / 2014-03-23
 
 * Restore proper handling of enums in callback arguments
