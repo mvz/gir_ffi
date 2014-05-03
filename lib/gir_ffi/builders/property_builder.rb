@@ -16,7 +16,7 @@ module GirFFI
       end
 
       def container_defines_getter_method?
-        container_info.find_instance_method @info.name
+        container_info.find_instance_method getter_name
       end
 
       def setup_setter

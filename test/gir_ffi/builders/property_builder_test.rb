@@ -107,4 +107,19 @@ describe GirFFI::Builders::PropertyBuilder do
       builder.setter_def.must_equal expected
     end
   end
+
+  describe "#container_defines_getter_method?" do
+    let(:property_info) { Object.new.tap {|o| o.extend GirFFI::InfoExt::IPropertyInfo } }
+    let(:container_info) { Object.new }
+
+    before do
+      stub(property_info).container { container_info }
+      stub(property_info).name { "foo-bar" }
+      stub(container_info).find_instance_method("foo_bar") { true }
+    end
+
+    it "finds methods with underscores for properties with dashes" do
+      builder.container_defines_getter_method?.must_equal true
+    end
+  end
 end
