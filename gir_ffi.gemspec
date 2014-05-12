@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('pry')
   s.add_development_dependency('repl_rake')
   s.add_development_dependency('yard')
+  s.add_development_dependency('guard-minitest')
 
   s.require_paths = ["lib"]
 end
