@@ -1039,7 +1039,7 @@ describe GIMarshallingTests do
       end
     end
 
-    describe "its 'some-uuint' property" do
+    describe "its 'some-uint' property" do
       it "can be retrieved with #get_property" do
         instance.get_property("some-uint").get_value.must_equal 0
       end
