@@ -520,6 +520,12 @@ describe Regress do
       o = Regress::TestObj.new_callback Proc.new { a = 2 }, nil, nil
       assert_instance_of Regress::TestObj, o
       a.must_equal 2
+
+      # Regress::TestObj.new_callback adds a callback to the list of notified
+      # callbacks. Thaw the callbacks to make sure the list is cleared for
+      # later tests.
+      result = Regress.test_callback_thaw_notifications
+      result.must_equal 2
     end
 
     it "creates an instance using #new_from_file" do
