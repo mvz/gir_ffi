@@ -1355,6 +1355,18 @@ describe GIMarshallingTests do
     pass
   end
 
+  it "has a working function #array_in_utf8_two_in" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in'
+    GIMarshallingTests.array_in_utf8_two_in [-1, 0, 1, 2], "1", "2"
+    pass
+  end
+
+  it "has a working function #array_in_utf8_two_in_out_of_order" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in_out_of_order'
+    GIMarshallingTests.array_in_utf8_two_in_out_of_order "1", [-1, 0, 1, 2], "2"
+    pass
+  end
+
   it "has a working function #array_inout" do
     res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
     res.must_be :==, [-2, -1, 0, 1, 2]
@@ -1543,6 +1555,21 @@ describe GIMarshallingTests do
   it "has a working function #callback_one_out_parameter" do
     result = GIMarshallingTests.callback_one_out_parameter proc { 42.0 }
     result.must_equal 42.0
+  end
+
+  it "has a working function #callback_owned_boxed" do
+    skip unless get_introspection_data 'GIMarshallingTests', 'callback_owned_boxed'
+    a = nil
+
+    callback = proc { |box, callback_data| a = box.long_ + callback_data }
+
+    result = GIMarshallingTests.callback_owned_boxed callback, 42
+    result.must_equal 1
+    a.must_equal 43
+
+    result = GIMarshallingTests.callback_owned_boxed callback, 42
+    result.must_equal 2
+    a.must_equal 44
   end
 
   it "has a working function #callback_return_value_and_multiple_out_parameters" do
@@ -2403,6 +2430,14 @@ describe GIMarshallingTests do
     assert_equal 0x7fffffff, res
   end
 
+  it "has a working function #int_one_in_utf8_two_in_one_allows_none" do
+    skip unless get_introspection_data('GIMarshallingTests',
+                                       'int_one_in_utf8_two_in_one_allows_none')
+    GIMarshallingTests.int_one_in_utf8_two_in_one_allows_none 1, "2", "3"
+    GIMarshallingTests.int_one_in_utf8_two_in_one_allows_none 1, nil, "3"
+    pass
+  end
+
   it "has a working function #int_out_max" do
     res = GIMarshallingTests.int_out_max
     assert_equal 0x7fffffff, res
@@ -2436,6 +2471,14 @@ describe GIMarshallingTests do
   it "has a working function #int_three_in_three_out" do
     res = GIMarshallingTests.int_three_in_three_out 4, 5, 6
     assert_equal [4, 5, 6], res
+  end
+
+  it "has a working function #int_two_in_utf8_two_in_with_allow_none" do
+    skip unless get_introspection_data('GIMarshallingTests',
+                                       'int_two_in_utf8_two_in_with_allow_none')
+    GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, "3", "4"
+    GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, nil, nil
+    pass
   end
 
   it "has a working function #long_in_max" do
