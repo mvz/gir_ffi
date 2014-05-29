@@ -42,17 +42,19 @@ module GirFFI
         end
       end
 
+      attr_reader :is_constructor
+
       private
 
       def has_post_conversion?
-        is_closure || needs_constructor_wrap? ||
+        is_closure || is_constructor ||
           type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
         @post_convertor ||= if is_closure
                               ClosureConvertor.new(capture_variable_name)
-                            elsif needs_constructor_wrap?
+                            elsif is_constructor
                               ConstructorResultConvertor.new(capture_variable_name)
                             else
                               CToRubyConvertor.new(type_info,
@@ -63,10 +65,6 @@ module GirFFI
 
       def length_argument_name
         length_arg && length_arg.post_converted_name
-      end
-
-      def needs_constructor_wrap?
-        @is_constructor && specialized_type_tag == :object
       end
 
       def is_void_return_value?
