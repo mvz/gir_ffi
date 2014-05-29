@@ -1957,6 +1957,8 @@ describe Regress do
 
   it "has a working function #test_closure_variant" do
     arg = GLib::Variant.new_string "foo"
+
+    # TODO: Convert proc to RubyClosure automatically
     closure = GObject::RubyClosure.new do |variant|
       str = variant.get_string
       if str == "foo"
@@ -1966,7 +1968,6 @@ describe Regress do
       end
     end
 
-    # TODO: Convert proc to RubyClosure automatically
     result = Regress.test_closure_variant closure, arg
 
     result.get_int32.must_equal 40
