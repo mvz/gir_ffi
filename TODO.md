@@ -89,6 +89,15 @@ to be put in place for that.
 
 For how to handle objects, see https://bugzilla.gnome.org/show_bug.cgi?id=657202#c1
 
+## External dependencies
+
+Things that I think GirFFI cannot fix:
+
+* FFI should correctly return :int64 from callbacks.
+* gobject-introspection should correctly mark private fields as not readable.
+* gobject-introspection should ignore functions that are only defined but not
+  implemented, or implement those cases in GIMarshallingTests.
+
 ## See Also
 
   dnote

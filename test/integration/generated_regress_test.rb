@@ -1514,6 +1514,7 @@ describe Regress do
       instance.data1.read_int.must_equal 42
     end
 
+    # TODO: Check what gobject-introspection should/will do with these fields.
     it "has a writable field data2" do
       skip "Introspection data cannot deal with type of this field yet"
     end

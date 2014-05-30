@@ -437,6 +437,7 @@ describe GIMarshallingTests do
       derived_instance.int.must_equal 23
     end
 
+    # TODO: Check if this is fixed
     # See https://bugzilla.gnome.org/show_bug.cgi?id=727665
     it "has a working method #int8_out" do
       skip "Introspection data is not generated correctly"
@@ -2557,6 +2558,7 @@ describe GIMarshallingTests do
     res.must_be_instance_of GIMarshallingTests::OverridesStruct
   end
 
+  # TODO: Check if this is fixed
   # See https://bugzilla.gnome.org/show_bug.cgi?id=728409
   it "has a working function #param_spec_in_bool" do
     skip "param_spec_in_bool tests the wrong type"
