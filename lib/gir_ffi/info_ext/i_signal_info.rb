@@ -17,7 +17,7 @@ module GirFFI
         bldr = Builders::SignalBuilder.new(self)
         wrapped = bldr.build_class.from(block)
         # FIXME: Logically, this should use CallbackBase#to_native
-        FFI::Function.new return_ffi_type, ffi_callback_argument_types, &wrapped
+        FFI::Function.new return_ffi_type, ffi_callback_argument_types, wrapped
       end
 
       # TODO: Use argument info to convert out arguments and array lengths.
