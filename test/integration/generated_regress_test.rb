@@ -1030,9 +1030,10 @@ describe Regress do
         a = int64
       end
 
-      GObject.signal_emit instance, "sig-with-int64-prop", 0x7fffffffffffffff
+      result = GObject.signal_emit instance, "sig-with-int64-prop", 0x7fff_ffff_ffff_ffff
 
-      a.must_equal 0x7fffffffffffffff
+      a.must_equal 0x7fff_ffff_ffff_ffff
+      result.get_value.must_equal 0x7fff_ffff_ffff_ffff
     end
 
     it "handles the 'sig-with-intarray-ret' signal" do
@@ -1088,9 +1089,10 @@ describe Regress do
         a = uint64
       end
 
-      GObject.signal_emit instance, "sig-with-uint64-prop", 0xffffffffffffffff
+      result = GObject.signal_emit instance, "sig-with-uint64-prop", 0xffff_ffff_ffff_ffff
 
-      a.must_equal 0xffffffffffffffff
+      a.must_equal 0xffff_ffff_ffff_ffff
+      result.get_value.must_equal 0xffff_ffff_ffff_ffff
     end
 
     it "handles the 'test' signal" do
