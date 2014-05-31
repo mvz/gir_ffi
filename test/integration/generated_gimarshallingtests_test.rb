@@ -2558,7 +2558,7 @@ describe GIMarshallingTests do
     res.must_be_instance_of GIMarshallingTests::OverridesStruct
   end
 
-  # TODO: Check if this is fixed
+  # TODO: Wait for fixed version of param_spec_in_bool to land in Debian/Ubuntu
   # See https://bugzilla.gnome.org/show_bug.cgi?id=728409
   it "has a working function #param_spec_in_bool" do
     skip "param_spec_in_bool tests the wrong type"
