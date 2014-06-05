@@ -74,14 +74,13 @@ module GObject
   end
 
   def self.signal_connect object, detailed_signal, data=nil, &block
-    signal, _ = detailed_signal.split('::')
-    sig_info = object.class.find_signal signal
-    callback = sig_info.create_callback(&block)
-    GirFFI::CallbackBase.store_callback callback
+    signal_name, _ = detailed_signal.split('::')
+    sig_info = object.class.find_signal signal_name
 
-    data_ptr = GirFFI::InPointer.from_closure_data data
+    closure = sig_info.wrap_in_closure data, &block
 
-    Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
+    # TODO: Provide _after variant
+    self.signal_connect_closure object, detailed_signal, closure, false
   end
 
   # Smells of :reek:LongParameterList: due to the C interface.
