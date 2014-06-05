@@ -1784,6 +1784,7 @@ describe GIMarshallingTests do
   it "has a working function #gclosure_in" do
     cl = GObject::RubyClosure.new { 42 }
     GIMarshallingTests.gclosure_in cl
+    pass
   end
 
   it "has a working function #gclosure_return" do
