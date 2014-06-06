@@ -42,11 +42,15 @@ module GirFFI
     class MappingMethodBuilder
       def self.for_callback argument_infos, return_type_info
         vargen = VariableNameGenerator.new
+
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
+        return_value_info = ReturnValueInfo.new(return_type_info)
+        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
+
         Foo.set_up_argument_relations argument_infos, argument_builders
         foo = Foo.new return_type_info, vargen, argument_builders
-        new return_type_info, vargen, argument_builders, foo
+        new return_value_builder, vargen, argument_builders, foo
       end
 
       def self.for_vfunc receiver_info, argument_infos, return_type_info
@@ -55,22 +59,25 @@ module GirFFI
         receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
         argument_builders = argument_infos.map {|arg|
           CallbackArgumentBuilder.new vargen, arg }
+        return_value_info = ReturnValueInfo.new(return_type_info)
+        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         Foo.set_up_argument_relations argument_infos, argument_builders
 
         argument_builders.unshift receiver_builder
         foo = Foo.new return_type_info, vargen, argument_builders
-        new return_type_info, vargen, argument_builders, foo
+
+        new return_value_builder, vargen, argument_builders, foo
       end
 
-      def initialize return_type_info, vargen, argument_builders, foo
+      def initialize return_value_builder, vargen, argument_builders, foo
         @vargen = vargen
         @argument_builders = argument_builders
-        @return_type_info = return_type_info
+        @return_value_builder = return_value_builder
         @foo = foo
       end
 
-      attr_reader :return_type_info
+      attr_reader :return_value_builder
       attr_reader :vargen
       attr_reader :argument_builders
 
@@ -125,15 +132,6 @@ module GirFFI
       def method_arguments
         @method_arguments ||= argument_builders.map(&:method_argument_name).unshift('_proc')
       end
-
-      def return_value_info
-        @return_value_info ||= ReturnValueInfo.new(return_type_info)
-      end
-
-      def return_value_builder
-        @return_value_builder ||= CallbackReturnValueBuilder.new(vargen, return_value_info)
-      end
     end
   end
 end
-
