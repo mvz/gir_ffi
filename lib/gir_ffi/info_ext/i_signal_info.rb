@@ -26,27 +26,6 @@ module GirFFI
       def gvalue_for_return_value
         return_type.make_g_value
       end
-
-      # TODO: Rename and clarify relation to argument_ffi_types:
-      # The types returned by ffi_callback_argument_types are more basic than
-      # those returned by argument_ffi_types. Is there a way to make these
-      # methods more related? Perhaps argument_ffi_types can return more basic
-      # types as well?
-      def ffi_callback_argument_types
-        types = args.map do |arg|
-          arg.to_callback_ffitype
-        end
-        types.unshift(:pointer).push(:pointer)
-      end
-
-      def return_ffi_type
-        result = return_type.to_ffitype
-        if result == GLib::Boolean
-          :bool
-        else
-          result
-        end
-      end
     end
   end
 end
