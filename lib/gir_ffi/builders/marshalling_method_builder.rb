@@ -22,18 +22,16 @@ module GirFFI
         argument_builders.unshift receiver_builder
         foo = Foo.new return_value_builder, vargen, argument_builders
 
-        new return_value_builder, vargen, argument_builders, foo
+        new return_value_builder, argument_builders, foo
       end
 
-      def initialize return_value_builder, vargen, argument_builders, foo
-        @vargen = vargen
+      def initialize return_value_builder, argument_builders, foo
         @argument_builders = argument_builders
         @return_value_builder = return_value_builder
         @foo = foo
       end
 
       attr_reader :return_value_builder
-      attr_reader :vargen
       attr_reader :argument_builders
 
       def method_definition
