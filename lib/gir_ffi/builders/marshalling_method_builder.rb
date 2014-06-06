@@ -1,5 +1,6 @@
 require 'gir_ffi/builders/closure_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
+require 'gir_ffi/builders/mapping_method_builder'
 
 module GirFFI
   module Builders
@@ -14,34 +15,19 @@ module GirFFI
         argument_builders = argument_infos.map {|arg|
           ClosureArgumentBuilder.new vargen, arg }
 
-        set_up_argument_relations argument_infos, argument_builders
+        Foo.set_up_argument_relations argument_infos, argument_builders
 
         argument_builders.unshift receiver_builder
+        foo = Foo.new return_type_info, vargen, argument_builders
 
-        new return_type_info, vargen, argument_builders
+        new return_type_info, vargen, argument_builders, foo
       end
 
-      def self.set_up_argument_relations argument_infos, argument_builders
-        argument_infos.each do |arg|
-          if (idx = arg.closure) >= 0
-            argument_builders[idx].is_closure = true
-          end
-        end
-        argument_builders.each do |bldr|
-          if (idx = bldr.array_length_idx) >= 0
-            other = argument_builders[idx]
-
-            bldr.length_arg = other
-            other.array_arg = bldr
-          end
-        end
-      end
-
-      def initialize return_type_info, vargen, argument_builders
+      def initialize return_type_info, vargen, argument_builders, foo
         @vargen = vargen
         @argument_builders = argument_builders
-
         @return_type_info = return_type_info
+        @foo = foo
       end
 
       attr_reader :return_type_info

@@ -3,30 +3,15 @@ require 'gir_ffi/builders/callback_return_value_builder'
 
 module GirFFI
   module Builders
-    # Implements the creation mapping method for a callback or signal
-    # handler. This method converts arguments from C to Ruby, and the
-    # result from Ruby to C.
-    class MappingMethodBuilder
-      def self.for_callback argument_infos, return_type_info
-        vargen = VariableNameGenerator.new
-        argument_builders = argument_infos.map {|arg|
-          CallbackArgumentBuilder.new vargen, arg }
-        set_up_argument_relations argument_infos, argument_builders
-        new return_type_info, vargen, argument_builders
-      end
+    class Foo
+      attr_reader :return_type_info
+      attr_reader :vargen
+      attr_reader :argument_builders
 
-      def self.for_vfunc receiver_info, argument_infos, return_type_info
-        vargen = VariableNameGenerator.new
-
-        receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg|
-          CallbackArgumentBuilder.new vargen, arg }
-
-        set_up_argument_relations argument_infos, argument_builders
-
-        argument_builders.unshift receiver_builder
-
-        new return_type_info, vargen, argument_builders
+      def initialize return_type_info, vargen, argument_builders
+        @vargen = vargen
+        @argument_builders = argument_builders
+        @return_type_info = return_type_info
       end
 
       def self.set_up_argument_relations argument_infos, argument_builders
@@ -44,12 +29,40 @@ module GirFFI
           end
         end
       end
+    end
 
-      def initialize return_type_info, vargen, argument_builders
+    # Implements the creation mapping method for a callback or signal
+    # handler. This method converts arguments from C to Ruby, and the
+    # result from Ruby to C.
+    class MappingMethodBuilder
+      def self.for_callback argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+        Foo.set_up_argument_relations argument_infos, argument_builders
+        foo = Foo.new return_type_info, vargen, argument_builders
+        new return_type_info, vargen, argument_builders, foo
+      end
+
+      def self.for_vfunc receiver_info, argument_infos, return_type_info
+        vargen = VariableNameGenerator.new
+
+        receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
+        argument_builders = argument_infos.map {|arg|
+          CallbackArgumentBuilder.new vargen, arg }
+
+        Foo.set_up_argument_relations argument_infos, argument_builders
+
+        argument_builders.unshift receiver_builder
+        foo = Foo.new return_type_info, vargen, argument_builders
+        new return_type_info, vargen, argument_builders, foo
+      end
+
+      def initialize return_type_info, vargen, argument_builders, foo
         @vargen = vargen
         @argument_builders = argument_builders
-
         @return_type_info = return_type_info
+        @foo = foo
       end
 
       attr_reader :return_type_info
