@@ -108,10 +108,6 @@ module GirFFI
       def length_argument_name
         length_arg && length_arg.pre_converted_name
       end
-
-      def is_void_return_value?
-        specialized_type_tag == :void && !type_info.pointer?
-      end
     end
   end
 end
