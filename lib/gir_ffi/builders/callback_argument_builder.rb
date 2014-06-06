@@ -5,6 +5,8 @@ require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
   module Builders
+    # Convertor for arguments for ruby callbacks. Used when building the
+    # argument mapper for callbacks.
     class CallbackArgumentBuilder < BaseArgumentBuilder
       def method_argument_name
         @method_argument_name ||= name || new_variable
@@ -62,13 +64,17 @@ module GirFFI
       def pre_convertor
         @pre_convertor ||= if is_closure
                              ClosureConvertor.new(method_argument_name)
-                           elsif type_info.needs_c_to_ruby_conversion_for_callbacks?
+                           elsif needs_c_to_ruby_conversion?
                              CToRubyConvertor.new(type_info,
                                                   method_argument_name,
                                                   length_argument_name)
                            else
                              NullConvertor.new(method_argument_name)
                            end
+      end
+
+      def needs_c_to_ruby_conversion?
+        type_info.needs_c_to_ruby_conversion_for_callbacks?
       end
 
       def outgoing_post_conversion
@@ -105,10 +111,6 @@ module GirFFI
 
       def length_argument_name
         length_arg && length_arg.pre_converted_name
-      end
-
-      def is_void_return_value?
-        specialized_type_tag == :void && !type_info.pointer?
       end
     end
   end

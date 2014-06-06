@@ -52,8 +52,6 @@ module GObject
     ObjectClass.wrap klsptr
   end
 
-  setup_method :signal_emitv
-
   def self.signal_lookup_from_instance signal, object
     signal_lookup signal, type_from_instance(object)
   end
@@ -62,26 +60,25 @@ module GObject
     signal, detail = detailed_signal.split('::')
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
+
     sig_info = object.class.find_signal signal
+    argument_gvalues = sig_info.arguments_to_gvalues object, args
+    return_gvalue = sig_info.gvalue_for_return_value
 
-    arr_ptr = sig_info.arguments_to_gvalue_array_pointer object, args
+    self.signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
 
-    rval = sig_info.gvalue_for_return_value
-
-    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, rval
-
-    return rval
+    return_gvalue
   end
 
   def self.signal_connect object, detailed_signal, data=nil, &block
-    signal, _ = detailed_signal.split('::')
-    sig_info = object.class.find_signal signal
-    callback = sig_info.create_callback(&block)
-    GirFFI::CallbackBase.store_callback callback
+    raise ArgumentError, "Block needed" unless block_given?
+    signal_name, _ = detailed_signal.split('::')
+    sig_info = object.class.find_signal signal_name
 
-    data_ptr = GirFFI::InPointer.from_closure_data data
+    closure = sig_info.wrap_in_closure {|*args| block.call(*args << data) }
 
-    Lib.g_signal_connect_data object, detailed_signal, callback, data_ptr, nil, 0
+    # TODO: Provide _after variant
+    self.signal_connect_closure object, detailed_signal, closure, false
   end
 
   # Smells of :reek:LongParameterList: due to the C interface.

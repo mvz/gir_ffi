@@ -1050,9 +1050,8 @@ describe Regress do
 
       a.must_equal 3
 
-      # We would expect result to contain the int array, but regress.c uses the
-      # wrong marshalling function
-      result.get_value.must_be_nil
+      # TODO: Use signal info to convert return value
+      GLib::Array.wrap(:gint32, result.get_value_plain).to_a.must_equal [3, 2, 1]
     end
 
     it "handles the 'sig-with-obj' signal" do

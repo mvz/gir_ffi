@@ -156,6 +156,10 @@ module GirFFI
           needs_c_to_ruby_conversion_for_functions?
       end
 
+      def needs_c_to_ruby_conversion_for_closures?
+        [:array, :c, :ghash, :struct, :strv].include?(flattened_tag)
+      end
+
       def extra_conversion_arguments
         case flattened_tag
         when :utf8, :void
