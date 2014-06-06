@@ -11,7 +11,7 @@ module GirFFI
       #                                 passed as a GClosure to C.
       def wrap_in_closure &block
         bldr = Builders::SignalClosureBuilder.new(self)
-        bldr.build_class.new &block
+        bldr.build_class.new(&block)
       end
 
       # TODO: Use argument info to convert out arguments and array lengths.
