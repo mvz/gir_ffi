@@ -588,7 +588,6 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_int64" do
-      skip "FFI doesn't seem to convert the returned :int64 properly yet"
       instance.signal_connect "sig-with-int64-prop" do |obj, i, ud|
         i
       end
@@ -606,7 +605,6 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_uint64" do
-      skip "FFI doesn't seem to convert the returned :uint64 properly yet"
       instance.signal_connect "sig-with-uint64-prop" do |obj, i, ud|
         i
       end
