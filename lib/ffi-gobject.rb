@@ -52,8 +52,6 @@ module GObject
     ObjectClass.wrap klsptr
   end
 
-  setup_method :signal_emitv
-
   def self.signal_lookup_from_instance signal, object
     signal_lookup signal, type_from_instance(object)
   end
@@ -66,9 +64,8 @@ module GObject
     sig_info = object.class.find_signal signal
     argument_gvalues = sig_info.arguments_to_gvalues object, args
     return_gvalue = sig_info.gvalue_for_return_value
-    arr_ptr = GirFFI::InPointer.from_array GObject::Value, argument_gvalues
 
-    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, return_gvalue
+    self.signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
 
     return_gvalue
   end
