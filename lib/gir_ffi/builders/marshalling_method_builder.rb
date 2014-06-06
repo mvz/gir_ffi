@@ -42,7 +42,7 @@ module GirFFI
 
       def method_lines
         param_values_unpack +
-          parameter_preparation +
+          @foo.parameter_preparation +
           call_to_closure +
           return_value_conversion +
           return_value
@@ -67,11 +67,6 @@ module GirFFI
       def param_values_unpack
         # FIXME: Don't add _ if method_arguments has more than one element
         ["#{method_arguments.join(", ")}, _ = param_values.map(&:get_value_plain)" ]
-      end
-
-      def parameter_preparation
-        argument_builders.sort_by.with_index {|arg, i|
-          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
       end
 
       def capture

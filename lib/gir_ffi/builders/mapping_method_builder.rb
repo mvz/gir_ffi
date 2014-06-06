@@ -14,6 +14,11 @@ module GirFFI
         @return_type_info = return_type_info
       end
 
+      def parameter_preparation
+        argument_builders.sort_by.with_index {|arg, i|
+          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
+      end
+
       def self.set_up_argument_relations argument_infos, argument_builders
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
@@ -76,7 +81,10 @@ module GirFFI
       end
 
       def method_lines
-        parameter_preparation + call_to_proc + return_value_conversion + return_value
+        @foo.parameter_preparation +
+          call_to_proc +
+          return_value_conversion +
+          return_value
       end
 
       def return_value
@@ -93,11 +101,6 @@ module GirFFI
 
       def call_to_proc
         ["#{capture}_proc.call(#{call_arguments.join(', ')})"]
-      end
-
-      def parameter_preparation
-        argument_builders.sort_by.with_index {|arg, i|
-          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
       end
 
       def capture
