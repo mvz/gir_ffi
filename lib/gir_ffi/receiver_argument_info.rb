@@ -11,10 +11,6 @@ class GirFFI::ReceiverArgumentInfo
     :in
   end
 
-  def skip?
-    false
-  end
-
   def name
     "_instance"
   end
