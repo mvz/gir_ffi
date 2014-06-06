@@ -20,7 +20,7 @@ module GirFFI
         Foo.set_up_argument_relations argument_infos, argument_builders
 
         argument_builders.unshift receiver_builder
-        foo = Foo.new return_type_info, vargen, argument_builders
+        foo = Foo.new return_value_builder, vargen, argument_builders
 
         new return_value_builder, vargen, argument_builders, foo
       end
@@ -46,7 +46,7 @@ module GirFFI
         param_values_unpack +
           @foo.parameter_preparation +
           call_to_closure +
-          return_value_conversion +
+          @foo.return_value_conversion +
           return_value
       end
 
@@ -56,10 +56,6 @@ module GirFFI
         else
           []
         end
-      end
-
-      def return_value_conversion
-        all_builders.map(&:post_conversion).flatten
       end
 
       def call_to_closure
