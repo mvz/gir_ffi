@@ -23,8 +23,9 @@ module GirFFI
         all_builders.map(&:post_conversion).flatten
       end
 
-      def all_builders
-        @all_builders ||= [return_value_builder] + argument_builders
+      def capture_variable_names
+        @capture_variable_names ||=
+          all_builders.map(&:capture_variable_name).compact
       end
 
       def self.set_up_argument_relations argument_infos, argument_builders
@@ -41,6 +42,12 @@ module GirFFI
             other.array_arg = bldr
           end
         end
+      end
+
+      private
+
+      def all_builders
+        @all_builders ||= [return_value_builder] + argument_builders
       end
     end
 
@@ -115,18 +122,10 @@ module GirFFI
       end
 
       def capture
-        @capture ||= capture_variable_names.any? ?
-          "#{capture_variable_names.join(", ")} = " :
-          ""
-      end
-
-      def capture_variable_names
-        @capture_variable_names ||=
-          all_builders.map(&:capture_variable_name).compact
-      end
-
-      def all_builders
-        @all_builders ||= [return_value_builder] + argument_builders
+        @capture ||= begin
+                       names = @foo.capture_variable_names
+                       names.any? ? "#{names.join(", ")} = " : ""
+                     end
       end
 
       def call_arguments

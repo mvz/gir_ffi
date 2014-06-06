@@ -68,18 +68,10 @@ module GirFFI
       end
 
       def capture
-        @capture ||= capture_variable_names.any? ?
-          "#{capture_variable_names.join(", ")} = " :
-          ""
-      end
-
-      def capture_variable_names
-        @capture_variable_names ||=
-          all_builders.map(&:capture_variable_name).compact
-      end
-
-      def all_builders
-        @all_builders ||= [return_value_builder] + argument_builders
+        @capture ||= begin
+                       names = @foo.capture_variable_names
+                       names.any? ? "#{names.join(", ")} = " : ""
+                     end
       end
 
       def call_arguments
