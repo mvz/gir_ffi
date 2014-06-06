@@ -62,15 +62,15 @@ module GObject
     signal, detail = detailed_signal.split('::')
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
+
     sig_info = object.class.find_signal signal
+    argument_gvalues = sig_info.arguments_to_gvalues object, args
+    return_gvalue = sig_info.gvalue_for_return_value
+    arr_ptr = GirFFI::InPointer.from_array GObject::Value, argument_gvalues
 
-    arr_ptr = sig_info.arguments_to_gvalue_array_pointer object, args
+    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, return_gvalue
 
-    rval = sig_info.gvalue_for_return_value
-
-    Lib.g_signal_emitv arr_ptr, signal_id, detail_quark, rval
-
-    return rval
+    return_gvalue
   end
 
   def self.signal_connect object, detailed_signal, data=nil, &block
