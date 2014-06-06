@@ -59,7 +59,7 @@ module GirFFI
       end
 
       def call_to_closure
-        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_arguments.join(', ')})"]
+        ["#{capture}wrap(closure.to_ptr).invoke_block(#{@foo.call_argument_names.join(', ')})"]
       end
 
       def param_values_unpack
@@ -72,10 +72,6 @@ module GirFFI
                        names = @foo.capture_variable_names
                        names.any? ? "#{names.join(", ")} = " : ""
                      end
-      end
-
-      def call_arguments
-        @call_arguments ||= argument_builders.map(&:call_argument_name).compact
       end
 
       def method_arguments

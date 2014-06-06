@@ -28,6 +28,10 @@ module GirFFI
           all_builders.map(&:capture_variable_name).compact
       end
 
+      def call_argument_names
+        @call_argument_names ||= argument_builders.map(&:call_argument_name).compact
+      end
+
       def self.set_up_argument_relations argument_infos, argument_builders
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
@@ -118,7 +122,7 @@ module GirFFI
       end
 
       def call_to_proc
-        ["#{capture}_proc.call(#{call_arguments.join(', ')})"]
+        ["#{capture}_proc.call(#{@foo.call_argument_names.join(', ')})"]
       end
 
       def capture
@@ -126,10 +130,6 @@ module GirFFI
                        names = @foo.capture_variable_names
                        names.any? ? "#{names.join(", ")} = " : ""
                      end
-      end
-
-      def call_arguments
-        @call_arguments ||= argument_builders.map(&:call_argument_name).compact
       end
 
       def method_arguments
