@@ -20,11 +20,9 @@ module GirFFI
         FFI::Function.new return_ffi_type, ffi_callback_argument_types, wrapped
       end
 
-      def wrap_in_closure data, &block
-        raise ArgumentError, "Block needed" unless block
-
+      def wrap_in_closure &block
         bldr = Builders::SignalClosureBuilder.new(self)
-        bldr.build_class.new {|*args| block.call(*args << data) }
+        bldr.build_class.new &block
       end
 
       # TODO: Use argument info to convert out arguments and array lengths.
