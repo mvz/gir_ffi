@@ -2,24 +2,13 @@ module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ISignalInfo needed by GirFFI
     module ISignalInfo
-      # Create a signal hander callback. Wraps the given block in such a way that
-      # arguments and return value are cast correctly to the ruby world and back.
+      # Create a signal hander closure. Wraps the given block in a custom
+      # descendent of RubyClosure with a marshaller tailored for this signal.
       #
       # @param  block   The body of the signal handler
       #
-      # @return [FFI::Function] The signal handler, ready to be passed as a
-      #   callback to C.
-      def create_callback &block
-        raise ArgumentError, "Block needed" unless block
-
-        # TODO: Find the signal module directly, then retrieve the info
-        # from that, instead of vice versa.
-        bldr = Builders::SignalBuilder.new(self)
-        wrapped = bldr.build_class.from(block)
-        # FIXME: Logically, this should use CallbackBase#to_native
-        FFI::Function.new return_ffi_type, ffi_callback_argument_types, wrapped
-      end
-
+      # @return [GObject::RubyClosure]  The signal handler closure, ready to be
+      #                                 passed as a GClosure to C.
       def wrap_in_closure &block
         bldr = Builders::SignalClosureBuilder.new(self)
         bldr.build_class.new &block
