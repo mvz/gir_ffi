@@ -5,6 +5,8 @@ require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
   module Builders
+    # Convertor for arguments for ruby callbacks. Used when building the
+    # argument mapper for callbacks.
     class CallbackArgumentBuilder < BaseArgumentBuilder
       def method_argument_name
         @method_argument_name ||= name || new_variable
