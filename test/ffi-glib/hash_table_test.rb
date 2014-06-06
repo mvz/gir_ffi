@@ -8,7 +8,7 @@ describe GLib::HashTable do
   end
 
   describe "::from" do
-    it "creates a GHashTable from a Ruby array" do
+    it "creates a GHashTable from a Ruby hash" do
       hsh = GLib::HashTable.from [:utf8, :gint32],
         {"foo" => 23, "bar" => 32}
       assert_equal({"foo" => 23, "bar" => 32}, hsh.to_hash)
