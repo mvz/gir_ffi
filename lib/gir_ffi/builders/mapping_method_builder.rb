@@ -36,6 +36,10 @@ module GirFFI
         @method_argument_names ||= argument_builders.map(&:method_argument_name)
       end
 
+      def return_value_name
+        return_value_builder.return_value_name if return_value_builder.is_relevant?
+      end
+
       def self.set_up_argument_relations argument_infos, argument_builders
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
@@ -116,8 +120,8 @@ module GirFFI
       end
 
       def return_value
-        if return_value_builder.is_relevant?
-          ["return #{return_value_builder.return_value_name}"]
+        if (name = @foo.return_value_name)
+          ["return #{name}"]
         else
           []
         end

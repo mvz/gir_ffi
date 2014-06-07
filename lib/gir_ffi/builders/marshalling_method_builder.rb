@@ -49,8 +49,8 @@ module GirFFI
       end
 
       def return_value
-        if return_value_builder.is_relevant?
-          ["return_value.set_value #{return_value_builder.return_value_name}"]
+        if (name = @foo.return_value_name)
+          ["return_value.set_value #{name}"]
         else
           []
         end
