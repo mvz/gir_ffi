@@ -25,27 +25,33 @@ module GObjectIntrospection
     def n_interfaces
       Lib.g_object_info_get_n_interfaces @gobj
     end
-    def interface(index)
+
+    def interface index
       IInterfaceInfo.wrap(Lib.g_object_info_get_interface @gobj, index)
     end
+
     ##
     build_array_method :interfaces
 
     def n_fields
       Lib.g_object_info_get_n_fields @gobj
     end
-    def field(index)
+
+    def field index
       IFieldInfo.wrap(Lib.g_object_info_get_field @gobj, index)
     end
+
     ##
     build_array_method :fields
 
     def n_properties
       Lib.g_object_info_get_n_properties @gobj
     end
-    def property(index)
+
+    def property index
       IPropertyInfo.wrap(Lib.g_object_info_get_property @gobj, index)
     end
+
     ##
     build_array_method :properties, :property
     build_finder_method :find_property, :n_properties
@@ -54,23 +60,25 @@ module GObjectIntrospection
       Lib.g_object_info_get_n_methods @gobj
     end
 
-    def get_method(index)
+    def get_method index
       IFunctionInfo.wrap(Lib.g_object_info_get_method @gobj, index)
     end
 
     ##
     build_array_method :get_methods
 
-    def find_method(name)
+    def find_method name
       IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj, name)
     end
 
     def n_signals
       Lib.g_object_info_get_n_signals @gobj
     end
-    def signal(index)
+
+    def signal index
       ISignalInfo.wrap(Lib.g_object_info_get_signal @gobj, index)
     end
+
     ##
     build_array_method :signals
     build_finder_method :find_signal
@@ -78,9 +86,11 @@ module GObjectIntrospection
     def n_vfuncs
       Lib.g_object_info_get_n_vfuncs @gobj
     end
-    def vfunc(index)
+
+    def vfunc index
       IVFuncInfo.wrap(Lib.g_object_info_get_vfunc @gobj, index)
     end
+
     def find_vfunc name
       IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj, name)
     end
@@ -90,7 +100,8 @@ module GObjectIntrospection
     def n_constants
       Lib.g_object_info_get_n_constants @gobj
     end
-    def constant(index)
+
+    def constant index
       IConstantInfo.wrap(Lib.g_object_info_get_constant @gobj, index)
     end
     ##

@@ -14,4 +14,3 @@ module GirFFI
 end
 
 GObjectIntrospection::IPropertyInfo.send :include, GirFFI::InfoExt::IPropertyInfo
-

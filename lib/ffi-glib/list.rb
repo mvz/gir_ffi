@@ -1,14 +1,14 @@
 require 'ffi-glib/list_methods'
 
-module GLib
-  load_class :List
+GLib.load_class :List
 
+module GLib
   # Overrides for GList, GLib's doubly linked list implementation.
   class List
     include ListMethods
 
     def self.from_enumerable type, arr
-      arr.inject(self.new type) { |lst, val| lst.append val }
+      arr.inject(new type) { |lst, val| lst.append val }
     end
 
     def append data

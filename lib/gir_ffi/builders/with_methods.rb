@@ -18,8 +18,7 @@ module GirFFI
       private
 
       def meta_class
-        klass = build_class
-        return (class << klass; self; end)
+        (class << build_class; self; end)
       end
 
       def function_definition go
@@ -32,7 +31,7 @@ module GirFFI
         Builder.attach_ffi_function lib, go
         modul.class_eval { remove_method method if method_defined? method }
         build_class.class_eval function_definition(go)
-        return method
+        method
       end
 
       def stub_methods

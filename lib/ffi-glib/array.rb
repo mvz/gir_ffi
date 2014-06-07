@@ -1,9 +1,9 @@
 require 'ffi-glib/container_class_methods'
 require 'ffi-glib/array_methods'
 
-module GLib
-  load_class :Array
+GLib.load_class :Array
 
+module GLib
   # Overrides for GArray, GLib's automatically growing array. It should not
   # be necessary to create objects of this class from Ruby directly.
   class Array
@@ -46,8 +46,8 @@ module GLib
 
     alias element_size get_element_size
 
-    def ==(other)
-      self.to_a == other.to_a
+    def == other
+      to_a == other.to_a
     end
 
     def reset_typespec typespec
@@ -57,7 +57,7 @@ module GLib
     end
 
     def self.from_enumerable elmtype, it
-      self.new(elmtype).tap {|arr| arr.append_vals it }
+      new(elmtype).tap {|arr| arr.append_vals it }
     end
 
     private
@@ -68,11 +68,11 @@ module GLib
     end
 
     def calculated_element_size
-      self.class.calculated_element_size self.element_type
+      self.class.calculated_element_size element_type
     end
 
     def check_element_size_match
-      unless calculated_element_size == self.get_element_size
+      unless calculated_element_size == get_element_size
         warn "WARNING: Element sizes do not match"
       end
     end

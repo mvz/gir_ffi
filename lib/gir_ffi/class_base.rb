@@ -20,39 +20,38 @@ module GirFFI
         raise RuntimeError, "Unable to set up instance method '#{method}' in #{self}"
       end
 
-      self.send method_name, *arguments, &block
+      send method_name, *arguments, &block
     end
 
     if RUBY_PLATFORM == 'java'
       # FIXME: JRuby should fix FFI::MemoryPointer#== to return true for
       # equivalent FFI::Pointer.
-      def ==(other)
-        other.class == self.class && self.to_ptr.address == other.to_ptr.address
+      def == other
+        other.class == self.class && to_ptr.address == other.to_ptr.address
       end
     else
-      def ==(other)
-        other.class == self.class && self.to_ptr == other.to_ptr
+      def == other
+        other.class == self.class && to_ptr == other.to_ptr
       end
     end
 
     def self.setup_and_call method, *arguments, &block
-      method_name = self.try_in_ancestors(:setup_method, method.to_s)
+      method_name = try_in_ancestors(:setup_method, method.to_s)
 
       unless method_name
         raise RuntimeError, "Unable to set up method '#{method}' in #{self}"
       end
 
-      self.send method_name, *arguments, &block
+      send method_name, *arguments, &block
     end
 
-    def self.try_in_ancestors(method, *arguments)
-      self.ancestors.each do |klass|
+    def self.try_in_ancestors method, *arguments
+      ancestors.each do |klass|
         if klass.respond_to?(method)
           result = klass.send(method, *arguments)
           return result if result
         end
       end
-      return
     end
 
     class << self

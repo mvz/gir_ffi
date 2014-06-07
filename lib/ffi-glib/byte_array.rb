@@ -1,6 +1,6 @@
-module GLib
-  load_class :ByteArray
+GLib.load_class :ByteArray
 
+module GLib
   # Overrides for GByteArray, GLib's automatically growing array of bytes.
   class ByteArray
     def to_string
@@ -10,7 +10,7 @@ module GLib
     def append data
       bytes = GirFFI::InPointer.from :utf8, data
       len = data.bytesize
-      self.class.wrap(Lib.g_byte_array_append self.to_ptr, bytes, len)
+      self.class.wrap(Lib.g_byte_array_append to_ptr, bytes, len)
     end
 
     class << self; undef :new; end
@@ -20,4 +20,3 @@ module GLib
     end
   end
 end
-

@@ -21,7 +21,7 @@ module GirFFI
       when Module
         value_ffi_type.get_value_from_pointer(self)
       when Symbol
-        self.send("get_#{value_ffi_type}", 0)
+        send("get_#{value_ffi_type}", 0)
       else
         raise NotImplementedError
       end
@@ -47,7 +47,7 @@ module GirFFI
       when Module
         value_ffi_type.copy_value_to_pointer(value, self)
       when Symbol
-        self.send "put_#{value_ffi_type}", 0, value
+        send "put_#{value_ffi_type}", 0, value
       else
         raise NotImplementedError, value_ffi_type
       end
@@ -58,11 +58,11 @@ module GirFFI
     end
 
     def self.for type
-      self.new(type).tap {|ptr| ptr.clear}
+      new(type).tap {|ptr| ptr.clear}
     end
 
     def self.from type, value
-      self.new(type).tap {|ptr| ptr.set_value value}
+      new(type).tap {|ptr| ptr.set_value value}
     end
 
     private

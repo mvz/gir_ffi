@@ -35,11 +35,11 @@ module GirFFI
       when :utf8, :filename
         from_utf8 val
       when :gint32, :guint32, :gint8
-        self.new val
+        new val
       when Class, :void
         val.to_ptr
       when Module
-        self.new type[val]
+        new type[val]
       else
         raise NotImplementedError, type
       end

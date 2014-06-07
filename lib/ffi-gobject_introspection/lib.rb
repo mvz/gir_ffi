@@ -1,6 +1,7 @@
 require 'ffi'
 
 module GObjectIntrospection
+  # Module for attaching functions from the girepository library
   module Lib
     extend FFI::Library
     ffi_lib "girepository-1.0"
@@ -120,8 +121,6 @@ module GObjectIntrospection
     # Now, attach g_type_tag_to_string again under its own name with an
     # improved signature.
     attach_function :g_type_tag_to_string, [:ITypeTag], :string
-
-    #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
     enum :IArrayType, [
       :c,

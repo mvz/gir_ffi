@@ -1,6 +1,6 @@
-module GObject
-  load_class :Value
+GObject.load_class :Value
 
+module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
     # TODO: Give more generic name
@@ -88,7 +88,7 @@ module GObject
 
     # TODO: Give more generic name
     def self.wrap_ruby_value val
-      self.new.set_ruby_value val
+      new.set_ruby_value val
     end
 
     def self.from val
@@ -104,12 +104,12 @@ module GObject
 
     def self.for_g_type g_type
       return nil if g_type == TYPE_NONE
-      self.new.tap {|it| it.init g_type }
+      new.tap {|it| it.init g_type }
     end
 
     # TODO: Combine with wrap_ruby_value
     def self.wrap_instance instance
-      self.new.tap {|it|
+      new.tap {|it|
         it.init GObject.type_from_instance instance
         it.set_instance instance
       }

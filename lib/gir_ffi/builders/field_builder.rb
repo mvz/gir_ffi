@@ -40,7 +40,7 @@ module GirFFI
         field_ptr = builder.new_variable
         typed_ptr = builder.new_variable
 
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{info.name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
           #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
@@ -57,7 +57,7 @@ module GirFFI
         field_ptr = builder.new_variable
         typed_ptr = builder.new_variable
 
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
           #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})

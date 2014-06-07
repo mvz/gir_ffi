@@ -1,6 +1,6 @@
-module GObject
-  load_class :ObjectClass
+GObject.load_class :ObjectClass
 
+module GObject
   # Overrides for GObjectClass, a struct containing GObject's class data
   class ObjectClass
     def set_property= callback

@@ -4,7 +4,7 @@ module GirFFI
     def method_missing method, *arguments, &block
       result = setup_method method.to_s
       return super unless result
-      self.send method, *arguments, &block
+      send method, *arguments, &block
     end
 
     def const_missing classname
@@ -18,7 +18,7 @@ module GirFFI
     alias load_class setup_class
 
     def gir_ffi_builder
-      self.const_get :GIR_FFI_BUILDER
+      const_get :GIR_FFI_BUILDER
     end
 
     def setup_method name

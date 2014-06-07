@@ -1,6 +1,6 @@
-module GLib
-  load_class :Bytes
+GLib.load_class :Bytes
 
+module GLib
   # Overrides for GBytes, GLib's immutable array of bytes.
   class Bytes
     include Enumerable
@@ -37,7 +37,7 @@ module GLib
 
     def self.new arr
       data = GirFFI::SizedArray.from :guint8, arr.size, arr
-      self.wrap Lib.g_bytes_new data.to_ptr, data.size
+      wrap Lib.g_bytes_new data.to_ptr, data.size
     end
 
     private

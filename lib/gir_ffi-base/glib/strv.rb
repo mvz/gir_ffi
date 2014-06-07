@@ -24,7 +24,7 @@ module GLib
     end
 
     def self.wrap ptr
-      self.new ptr
+      new ptr
     end
 
     private

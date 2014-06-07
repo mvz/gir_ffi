@@ -1,6 +1,6 @@
-module GObject
-  load_class :InitiallyUnowned
+GObject.load_class :InitiallyUnowned
 
+module GObject
   # Overrides for GInitiallyUnowned, GObject's base class for objects that
   # start with a floating reference.
   class InitiallyUnowned
@@ -11,4 +11,3 @@ module GObject
     end
   end
 end
-

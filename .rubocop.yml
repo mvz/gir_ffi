@@ -1,24 +1,43 @@
 AllCops:
-  Includes:
+  Exclude:
+    - 'test/**/*'
+    - 'examples/*'
+    - 'tmp/**/*'
     - Rakefile
+    - gir_ffi.gemspec
 
-Blocks:
+Style/Blocks:
   Enabled: false
 
-DotPosition:
+Style/DotPosition:
   EnforcedStyle: trailing
 
-LineLength:
-  Max: 92
+# Disabled for now to let .rubocop_todo.yml value take over.
+#Style/LineLength:
+  #Max: 92
 
-MethodDefParentheses:
+Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
 
-SignalException:
+Style/SignalException:
   EnforcedStyle: only_raise
 
-StringLiterals:
+Style/StringLiterals:
   Enabled: false
 
-RedundantReturn:
+Style/RedundantReturn:
   AllowMultipleReturnValues: true
+
+# RuboCop has no setting to accept how vim aligns parameters.
+Style/AlignParameters:
+  Enabled: false
+
+# FIXME: GirFFI uses a ffi-something naming scheme.
+Style/FileName:
+  Enabled: false
+
+# TODO: Decide on the desired style (nested or compact)
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+inherit_from: .rubocop_todo.yml

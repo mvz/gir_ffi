@@ -14,24 +14,32 @@ module GObjectIntrospection
       utf8:    :v_string
     }
 
-    def value_union
-      val = Lib::GIArgument.new
-      Lib.g_constant_info_get_value @gobj, val
-      return val
-    end
-
     def value
-      tag = constant_type.tag
-      val = value_union[TYPE_TAG_TO_UNION_MEMBER[tag]]
-      if tag == :utf8
-        val.force_encoding("utf-8")
+      if type_tag == :utf8
+        raw_value.force_encoding("utf-8")
       else
-        val
+        raw_value
       end
     end
 
     def constant_type
       ITypeInfo.wrap(Lib.g_constant_info_get_type @gobj)
+    end
+
+    private
+
+    def type_tag
+      @type_tag ||= constant_type.tag
+    end
+
+    def raw_value
+      value_union = Lib::GIArgument.new
+      Lib.g_constant_info_get_value @gobj, value_union
+      value_union[union_member_key]
+    end
+
+    def union_member_key
+      TYPE_TAG_TO_UNION_MEMBER[type_tag]
     end
   end
 end

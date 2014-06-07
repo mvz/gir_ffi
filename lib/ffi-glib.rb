@@ -15,12 +15,15 @@ require 'ffi-glib/s_list'
 require 'ffi-glib/strv'
 require 'ffi-glib/variant'
 
+# Module representing GLib's GLib namespace.
 module GLib
   load_class :HFunc
   load_class :HashFunc
   load_class :EqualFunc
   load_class :Func
 
+  # Module for attaching functions from the glib library.
+  # NOTE: This module is defined by the call to GirFFI.setup above.
   module Lib
     attach_function :g_slist_prepend, [:pointer, :pointer], :pointer
 

@@ -34,11 +34,10 @@ module GObject
       closure.block = block
       closure.set_marshal Proc.new {|*args| marshaller(*args)}
 
-      return closure
+      closure
     end
 
-    def self.marshaller(closure, return_value, param_values,
-                        _invocation_hint, _marshal_data)
+    def self.marshaller closure, return_value, param_values, _invocation_hint, _marshal_data
       rclosure = wrap(closure.to_ptr)
       param_values ||= []
 

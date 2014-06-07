@@ -28,10 +28,7 @@ module GirFFI
       def setup_class
         setup_layout
         setup_constants
-        #stub_methods
         setup_property_accessors
-        #setup_vfunc_invokers
-        #setup_interfaces
         setup_constructor
       end
 
@@ -81,14 +78,14 @@ module GirFFI
       end
 
       def class_init_proc
-        proc do |object_class_ptr, data|
+        proc do |object_class_ptr, _data|
           setup_properties object_class_ptr
           setup_vfuncs object_class_ptr
         end
       end
 
       def interface_init_proc interface
-        proc do |interface_ptr, data|
+        proc do |interface_ptr, _data|
           setup_interface_vfuncs interface, interface_ptr
         end
       end
@@ -98,7 +95,7 @@ module GirFFI
         properties.each do
           size += FFI.type_size(:int32)
         end
-        return size
+        size
       end
 
       def class_size
@@ -117,13 +114,13 @@ module GirFFI
       end
 
       def property_getter
-        proc do |object, property_id, value, pspec|
+        proc do |object, _property_id, value, pspec|
           value.set_value object.send(pspec.get_name)
         end
       end
 
       def property_setter
-        proc do |object, property_id, value, pspec|
+        proc do |object, _property_id, value, pspec|
           object.send("#{pspec.get_name}=", value.get_value)
         end
       end

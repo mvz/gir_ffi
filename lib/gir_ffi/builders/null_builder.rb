@@ -1,4 +1,5 @@
 module GirFFI
+  # Object Builder that does nothing. Implements the Null Object pattern.
   class NullBuilder
     def find_signal _
       nil

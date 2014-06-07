@@ -3,6 +3,8 @@ require 'gir_ffi/builders/ruby_to_c_convertor'
 
 module GirFFI
   module Builders
+    # Implements building post-processing statements for return values of
+    # callbacks.
     class CallbackReturnValueBuilder < BaseArgumentBuilder
       def is_relevant?
         !is_void_return_value? && !arginfo.skip?

@@ -1,5 +1,6 @@
 module GirFFI
   module FFIExt
+    # Extensions to FFI::Pointer
     module Pointer
       def to_ptr
         self

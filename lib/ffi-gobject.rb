@@ -16,19 +16,19 @@ require 'gir_ffi/builders/user_defined_builder'
 # Module representing GLib's GObject namespace.
 module GObject
   def self.object_ref obj
-    Lib::g_object_ref obj.to_ptr
+    Lib.g_object_ref obj.to_ptr
   end
 
   def self.object_ref_sink obj
-    Lib::g_object_ref_sink obj.to_ptr
+    Lib.g_object_ref_sink obj.to_ptr
   end
 
   def self.object_unref obj
-    Lib::g_object_unref obj.to_ptr
+    Lib.g_object_unref obj.to_ptr
   end
 
   def self.object_is_floating obj
-    Lib::g_object_is_floating obj.to_ptr
+    Lib.g_object_is_floating obj.to_ptr
   end
 
   def self.type_from_instance_pointer inst_ptr
@@ -65,7 +65,7 @@ module GObject
     argument_gvalues = sig_info.arguments_to_gvalues object, args
     return_gvalue = sig_info.gvalue_for_return_value
 
-    self.signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
+    signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
 
     return_gvalue
   end
@@ -78,15 +78,7 @@ module GObject
     closure = sig_info.wrap_in_closure {|*args| block.call(*args << data) }
 
     # TODO: Provide _after variant
-    self.signal_connect_closure object, detailed_signal, closure, false
-  end
-
-  # Smells of :reek:LongParameterList: due to the C interface.
-  def self.param_spec_int(name, nick, blurb, minimum, maximum,
-                          default_value, flags)
-    ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
-                               default_value, flags)
-    ParamSpecInt.wrap(ptr)
+    signal_connect_closure object, detailed_signal, closure, false
   end
 
   load_class :Callback
@@ -95,9 +87,8 @@ module GObject
   load_class :ClosureMarshal
   load_class :ParamFlags
 
+  # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
   module Lib
-    # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
-
     attach_function :g_object_ref, [:pointer], :void
     attach_function :g_object_ref_sink, [:pointer], :void
     attach_function :g_object_unref, [:pointer], :void
@@ -112,10 +103,6 @@ module GObject
       :ulong
     attach_function :g_closure_set_marshal,
       [:pointer, ClosureMarshal], :void
-
-    attach_function :g_param_spec_int,
-      [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
-      :pointer
   end
 
   TYPE_ARRAY = Lib.g_array_get_type

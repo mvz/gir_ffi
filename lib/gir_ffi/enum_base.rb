@@ -18,7 +18,7 @@ module GirFFI
       self::Enum.from_native(*args)
     end
 
-    def [](arg)
+    def [] arg
       self::Enum[arg]
     end
 
@@ -45,7 +45,7 @@ module GirFFI
         raise RuntimeError, "Unable to set up method #{method} in #{self}"
       end
 
-      self.send method, *arguments, &block
+      send method, *arguments, &block
     end
 
     def to_ffitype

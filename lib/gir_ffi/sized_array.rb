@@ -19,14 +19,14 @@ module GirFFI
       ptr.to_ruby_value
     end
 
-    def each &block
+    def each
       size.times do |idx|
         yield index(idx)
       end
     end
 
-    def ==(other)
-      self.to_a == other.to_a
+    def == other
+      to_a == other.to_a
     end
 
     def size_in_bytes
@@ -81,10 +81,10 @@ module GirFFI
         size = arr.size
         check_size expected_size, size
         ptr = GirFFI::InPointer.from_array element_type, arr
-        self.wrap element_type, size, ptr
+        wrap element_type, size, ptr
       end
 
-      def check_size(expected_size, size)
+      def check_size expected_size, size
         if expected_size > 0 && size != expected_size
           raise ArgumentError, "Expected size #{expected_size}, got #{size}"
         end

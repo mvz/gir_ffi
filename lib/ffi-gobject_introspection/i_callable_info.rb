@@ -22,7 +22,7 @@ module GObjectIntrospection
       Lib.g_callable_info_get_n_args @gobj
     end
 
-    def arg(index)
+    def arg index
       IArgInfo.wrap(Lib.g_callable_info_get_arg @gobj, index)
     end
     ##
@@ -33,4 +33,3 @@ module GObjectIntrospection
     end
   end
 end
-

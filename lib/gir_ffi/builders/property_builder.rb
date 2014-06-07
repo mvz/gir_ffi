@@ -44,7 +44,7 @@ module GirFFI
       private
 
       def converting_getter_def
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{getter_name}
           #{getter_builder.capture_variable_name} = get_property("#{property_name}").get_value_plain
           #{getter_builder.post_conversion.join("\n")}
@@ -54,7 +54,7 @@ module GirFFI
       end
 
       def simple_getter_def
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{getter_name}
           get_property("#{property_name}").get_value
         end
@@ -67,7 +67,7 @@ module GirFFI
       end
 
       def converting_setter_def
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{setter_name} value
           #{setter_builder.pre_conversion.join("\n")}
           set_property("#{property_name}", #{setter_builder.callarg})
@@ -76,7 +76,7 @@ module GirFFI
       end
 
       def simple_setter_def
-        return <<-CODE.reset_indentation
+        <<-CODE.reset_indentation
         def #{setter_name} value
           set_property("#{property_name}", value)
         end

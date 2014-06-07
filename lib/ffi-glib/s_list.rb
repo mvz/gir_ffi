@@ -1,14 +1,14 @@
 require 'ffi-glib/list_methods'
 
-module GLib
-  load_class :SList
+GLib.load_class :SList
 
+module GLib
   # Overrides for GSList, GLib's singly-linked list implementation.
   class SList
     include ListMethods
 
     def self.from_enumerable type, arr
-      arr.reverse.inject(self.new type) { |lst, val| lst.prepend val }
+      arr.reverse.inject(new type) { |lst, val| lst.prepend val }
     end
 
     def prepend data
