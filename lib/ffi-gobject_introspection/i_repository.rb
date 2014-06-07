@@ -55,7 +55,7 @@ module GObjectIntrospection
     }
 
     def initialize
-      @gobj = Lib::g_irepository_get_default
+      @gobj = Lib.g_irepository_get_default
     end
 
     include Singleton

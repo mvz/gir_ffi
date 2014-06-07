@@ -16,19 +16,19 @@ require 'gir_ffi/builders/user_defined_builder'
 # Module representing GLib's GObject namespace.
 module GObject
   def self.object_ref obj
-    Lib::g_object_ref obj.to_ptr
+    Lib.g_object_ref obj.to_ptr
   end
 
   def self.object_ref_sink obj
-    Lib::g_object_ref_sink obj.to_ptr
+    Lib.g_object_ref_sink obj.to_ptr
   end
 
   def self.object_unref obj
-    Lib::g_object_unref obj.to_ptr
+    Lib.g_object_unref obj.to_ptr
   end
 
   def self.object_is_floating obj
-    Lib::g_object_is_floating obj.to_ptr
+    Lib.g_object_is_floating obj.to_ptr
   end
 
   def self.type_from_instance_pointer inst_ptr
