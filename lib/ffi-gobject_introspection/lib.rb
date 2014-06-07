@@ -121,8 +121,6 @@ module GObjectIntrospection
     # improved signature.
     attach_function :g_type_tag_to_string, [:ITypeTag], :string
 
-    #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
-
     enum :IArrayType, [
       :c,
       :array,

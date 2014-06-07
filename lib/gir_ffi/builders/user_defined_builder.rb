@@ -28,10 +28,7 @@ module GirFFI
       def setup_class
         setup_layout
         setup_constants
-        #stub_methods
         setup_property_accessors
-        #setup_vfunc_invokers
-        #setup_interfaces
         setup_constructor
       end
 

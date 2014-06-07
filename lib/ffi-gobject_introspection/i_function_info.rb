@@ -10,7 +10,7 @@ module GObjectIntrospection
       Lib.g_function_info_get_flags @gobj
     end
 
-    #TODO: Use some sort of bitfield
+    # TODO: Use some sort of bitfield
     def method?
       flags & 1 != 0
     end
