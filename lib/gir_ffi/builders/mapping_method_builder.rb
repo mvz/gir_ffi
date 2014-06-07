@@ -1,69 +1,9 @@
 require 'gir_ffi/builders/callback_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
+require 'gir_ffi/builders/argument_builder_collection'
 
 module GirFFI
   module Builders
-    class Foo
-      attr_reader :return_value_builder
-      attr_reader :argument_builders
-
-      def initialize return_value_builder, argument_builders, options = {}
-        @receiver_builder = options[:receiver_builder]
-        @argument_builders = argument_builders
-        @return_value_builder = return_value_builder
-        self.class.set_up_argument_relations argument_builders
-        @argument_builders.unshift @receiver_builder if @receiver_builder
-      end
-
-      def parameter_preparation
-        argument_builders.sort_by.with_index {|arg, i|
-          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
-      end
-
-      def return_value_conversion
-        all_builders.map(&:post_conversion).flatten
-      end
-
-      def capture_variable_names
-        @capture_variable_names ||=
-          all_builders.map(&:capture_variable_name).compact
-      end
-
-      def call_argument_names
-        @call_argument_names ||= argument_builders.map(&:call_argument_name).compact
-      end
-
-      def method_argument_names
-        @method_argument_names ||= argument_builders.map(&:method_argument_name)
-      end
-
-      def return_value_name
-        return_value_builder.return_value_name if return_value_builder.is_relevant?
-      end
-
-      def self.set_up_argument_relations argument_builders
-        argument_builders.each do |arg|
-          if (idx = arg.arginfo.closure) >= 0
-            argument_builders[idx].is_closure = true
-          end
-        end
-        argument_builders.each do |bldr|
-          if (idx = bldr.array_length_idx) >= 0
-            other = argument_builders[idx]
-
-            bldr.length_arg = other
-            other.array_arg = bldr
-          end
-        end
-      end
-
-      private
-
-      def all_builders
-        @all_builders ||= [return_value_builder] + argument_builders
-      end
-    end
-
     # Implements the creation mapping method for a callback or signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
@@ -76,8 +16,8 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        foo = Foo.new return_value_builder, argument_builders
-        new foo
+        argument_builder_collection = ArgumentBuilderCollection.new return_value_builder, argument_builders
+        new argument_builder_collection
       end
 
       def self.for_vfunc receiver_info, argument_infos, return_type_info
@@ -89,15 +29,15 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        foo = Foo.new(return_value_builder,
-                      argument_builders,
-                      receiver_builder: receiver_builder)
+        argument_builder_collection = ArgumentBuilderCollection.new(return_value_builder,
+                                                                    argument_builders,
+                                                                    receiver_builder: receiver_builder)
 
-        new foo
+        new argument_builder_collection
       end
 
-      def initialize foo
-        @foo = foo
+      def initialize argument_builder_collection
+        @argument_builder_collection = argument_builder_collection
       end
 
       def method_definition
@@ -107,14 +47,14 @@ module GirFFI
       end
 
       def method_lines
-        @foo.parameter_preparation +
+        @argument_builder_collection.parameter_preparation +
           call_to_proc +
-          @foo.return_value_conversion +
+          @argument_builder_collection.return_value_conversion +
           return_value
       end
 
       def return_value
-        if (name = @foo.return_value_name)
+        if (name = @argument_builder_collection.return_value_name)
           ["return #{name}"]
         else
           []
@@ -122,18 +62,18 @@ module GirFFI
       end
 
       def call_to_proc
-        ["#{capture}_proc.call(#{@foo.call_argument_names.join(', ')})"]
+        ["#{capture}_proc.call(#{@argument_builder_collection.call_argument_names.join(', ')})"]
       end
 
       def capture
         @capture ||= begin
-                       names = @foo.capture_variable_names
+                       names = @argument_builder_collection.capture_variable_names
                        names.any? ? "#{names.join(", ")} = " : ""
                      end
       end
 
       def method_arguments
-        @method_arguments ||= @foo.method_argument_names.dup.unshift('_proc')
+        @method_arguments ||= @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
     end
   end
