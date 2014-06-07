@@ -18,7 +18,7 @@ module GirFFI
       self::Enum.from_native(*args)
     end
 
-    def [](arg)
+    def [] arg
       self::Enum[arg]
     end
 

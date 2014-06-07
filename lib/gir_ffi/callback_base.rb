@@ -12,13 +12,13 @@ module GirFFI
       FFI::Type::POINTER
     end
 
-    def self.from_native(value, _context)
+    def self.from_native value, _context
       return nil if !value || value.null?
       FFI::Function.new(gir_ffi_builder.return_ffi_type,
                         gir_ffi_builder.argument_ffi_types, value)
     end
 
-    def self.to_native(value, _context)
+    def self.to_native value, _context
       return nil unless value
       return value if FFI::Function === value
       value.to_native

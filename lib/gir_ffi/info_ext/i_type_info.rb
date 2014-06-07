@@ -187,7 +187,7 @@ module GirFFI
         subtype_tag_or_class 0
       end
 
-      def subtype_ffitype(index)
+      def subtype_ffitype index
         subtype = param_type(index).to_ffitype
         if subtype == :pointer
           # NOTE: Don't use pointer directly to appease JRuby.

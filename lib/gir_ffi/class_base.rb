@@ -26,11 +26,11 @@ module GirFFI
     if RUBY_PLATFORM == 'java'
       # FIXME: JRuby should fix FFI::MemoryPointer#== to return true for
       # equivalent FFI::Pointer.
-      def ==(other)
+      def == other
         other.class == self.class && self.to_ptr.address == other.to_ptr.address
       end
     else
-      def ==(other)
+      def == other
         other.class == self.class && self.to_ptr == other.to_ptr
       end
     end
@@ -45,7 +45,7 @@ module GirFFI
       self.send method_name, *arguments, &block
     end
 
-    def self.try_in_ancestors(method, *arguments)
+    def self.try_in_ancestors method, *arguments
       self.ancestors.each do |klass|
         if klass.respond_to?(method)
           result = klass.send(method, *arguments)

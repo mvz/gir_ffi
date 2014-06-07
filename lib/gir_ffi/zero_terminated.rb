@@ -31,7 +31,7 @@ module GirFFI
       end
     end
 
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
 
@@ -46,7 +46,7 @@ module GirFFI
       @getter_method ||= "get_#{ffi_type}"
     end
 
-    def wrap_value(val)
+    def wrap_value val
       case element_type
       when Array
         element_type.last.wrap val

@@ -9,11 +9,11 @@ module GirFFI
         @store = {}
       end
 
-      def store(ptr, obj)
+      def store ptr, obj
         @store[ptr.address] = obj
       end
 
-      def fetch(ptr)
+      def fetch ptr
         return if ptr.null?
         key = ptr.address
         if @store.has_key? key

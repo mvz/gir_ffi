@@ -25,7 +25,7 @@ module GLib
       wrap(type, Lib.g_ptr_array_new)
     end
 
-    def self.from_enumerable(type, it)
+    def self.from_enumerable type, it
       self.new(type).tap {|arr| arr.add_array it}
     end
 
@@ -65,7 +65,7 @@ module GLib
       @struct[:len]
     end
 
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
   end

@@ -46,7 +46,7 @@ module GLib
 
     alias element_size get_element_size
 
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
 

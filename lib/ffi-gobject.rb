@@ -82,8 +82,7 @@ module GObject
   end
 
   # Smells of :reek:LongParameterList: due to the C interface.
-  def self.param_spec_int(name, nick, blurb, minimum, maximum,
-                          default_value, flags)
+  def self.param_spec_int name, nick, blurb, minimum, maximum, default_value, flags
     ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
                                default_value, flags)
     ParamSpecInt.wrap(ptr)

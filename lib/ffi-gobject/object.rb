@@ -7,7 +7,7 @@ module GObject
     setup_method "new"
 
     # TODO: Generate accessor methods from GIR at class definition time
-    def method_missing(method, *args)
+    def method_missing method, *args
       if respond_to?("get_#{method}")
         return send("get_#{method}", *args)
       end
@@ -17,7 +17,7 @@ module GObject
       super
     end
 
-    def signal_connect(event, &block)
+    def signal_connect event, &block
       GObject.signal_connect(self, event, &block)
     end
 

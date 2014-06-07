@@ -44,7 +44,7 @@ module GLib
       self
     end
 
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
 

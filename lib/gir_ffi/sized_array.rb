@@ -25,7 +25,7 @@ module GirFFI
       end
     end
 
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
 
@@ -84,7 +84,7 @@ module GirFFI
         self.wrap element_type, size, ptr
       end
 
-      def check_size(expected_size, size)
+      def check_size expected_size, size
         if expected_size > 0 && size != expected_size
           raise ArgumentError, "Expected size #{expected_size}, got #{size}"
         end

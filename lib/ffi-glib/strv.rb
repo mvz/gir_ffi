@@ -1,7 +1,7 @@
 module GLib
   # Extra methods for GLib::Strv. The bulk is defined in `gir_ffi-base/glib/strv.rb`
   class Strv
-    def ==(other)
+    def == other
       self.to_a == other.to_a
     end
 
