@@ -6,4 +6,3 @@ module GirFFI
   class VFuncBase < CallbackBase
   end
 end
-

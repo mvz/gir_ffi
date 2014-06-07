@@ -11,4 +11,3 @@ module GLib
     end
   end
 end
-

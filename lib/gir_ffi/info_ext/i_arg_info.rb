@@ -16,4 +16,3 @@ module GirFFI
 end
 
 GObjectIntrospection::IArgInfo.send :include, GirFFI::InfoExt::IArgInfo
-

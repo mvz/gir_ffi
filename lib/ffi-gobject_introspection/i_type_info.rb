@@ -40,4 +40,3 @@ module GObjectIntrospection
     end
   end
 end
-

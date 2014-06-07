@@ -11,4 +11,3 @@ module GObject
     end
   end
 end
-
