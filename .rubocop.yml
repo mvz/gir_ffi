@@ -30,3 +30,7 @@ Style/AlignParameters:
 # FIXME: GirFFI uses a ffi-something naming scheme.
 Style/FileName:
   Enabled: false
+
+# TODO: Decide on the desired style (nested or compact)
+Style/ClassAndModuleChildren:
+  Enabled: false
