@@ -1,6 +1,6 @@
-module GObject
-  load_class :Closure
+GObject.load_class :Closure
 
+module GObject
   # Overrides for GClosure, GObject's base class for closure objects.
   class Closure
     def set_marshal marshal

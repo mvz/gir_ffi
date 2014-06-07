@@ -1,6 +1,6 @@
-module GObject
-  load_class :Object
+GObject.load_class :Object
 
+module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
 

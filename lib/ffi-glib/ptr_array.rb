@@ -1,9 +1,9 @@
 require 'ffi-glib/container_class_methods'
 require 'ffi-glib/array_methods'
 
-module GLib
-  load_class :PtrArray
+GLib.load_class :PtrArray
 
+module GLib
   # Overrides for GPtrArray, GLib's automatically growing array of
   # pointers.
   class PtrArray

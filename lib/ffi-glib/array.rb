@@ -1,9 +1,9 @@
 require 'ffi-glib/container_class_methods'
 require 'ffi-glib/array_methods'
 
-module GLib
-  load_class :Array
+GLib.load_class :Array
 
+module GLib
   # Overrides for GArray, GLib's automatically growing array. It should not
   # be necessary to create objects of this class from Ruby directly.
   class Array

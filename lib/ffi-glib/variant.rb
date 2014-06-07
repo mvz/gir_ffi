@@ -1,6 +1,6 @@
-module GLib
-  load_class :Variant
+GLib.load_class :Variant
 
+module GLib
   # Overrides for GVariant, GLib's variant data type.
   class Variant
     setup_instance_method "get_string"

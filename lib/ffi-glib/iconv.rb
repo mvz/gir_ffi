@@ -1,6 +1,6 @@
-module GLib
-  load_class :IConv
+GLib.load_class :IConv
 
+module GLib
   # Overrides for IConv
   class IConv
     def self.open to_codeset, from_codeset

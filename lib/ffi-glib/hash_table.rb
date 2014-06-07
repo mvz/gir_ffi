@@ -1,8 +1,8 @@
 require 'ffi-glib/container_class_methods'
 
-module GLib
-  load_class :HashTable
+GLib.load_class :HashTable
 
+module GLib
   # Overrides for GHashTable, GLib's hash table implementation.
   class HashTable
     include Enumerable

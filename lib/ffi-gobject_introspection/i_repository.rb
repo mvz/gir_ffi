@@ -22,9 +22,9 @@ require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 
-module GObjectIntrospection
-  GObject.type_init
+GObject.type_init
 
+module GObjectIntrospection
   # The Gobject Introspection Repository. This class is the point of
   # access to the introspection typelibs.
   # This class wraps the GIRepository struct.

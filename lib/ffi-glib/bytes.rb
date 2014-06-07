@@ -1,6 +1,6 @@
-module GLib
-  load_class :Bytes
+GLib.load_class :Bytes
 
+module GLib
   # Overrides for GBytes, GLib's immutable array of bytes.
   class Bytes
     include Enumerable

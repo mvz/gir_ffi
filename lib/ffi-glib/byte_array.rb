@@ -1,6 +1,6 @@
-module GLib
-  load_class :ByteArray
+GLib.load_class :ByteArray
 
+module GLib
   # Overrides for GByteArray, GLib's automatically growing array of bytes.
   class ByteArray
     def to_string

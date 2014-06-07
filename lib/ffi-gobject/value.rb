@@ -1,6 +1,6 @@
-module GObject
-  load_class :Value
+GObject.load_class :Value
 
+module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
     # TODO: Give more generic name

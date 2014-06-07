@@ -1,6 +1,6 @@
-module GLib
-  load_class :Error
+GLib.load_class :Error
 
+module GLib
   # Overrides for GError, used by GLib for handling non-fatal errors.
   class Error
     # TODO: Auto-convert strings and symbols to quarks
