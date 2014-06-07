@@ -108,8 +108,7 @@ module GObjectIntrospection
     end
 
     def self.wrap ptr
-      return nil if ptr.null?
-      return new ptr
+      new ptr unless ptr.null?
     end
 
     def == other

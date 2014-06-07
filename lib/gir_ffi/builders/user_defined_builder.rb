@@ -98,7 +98,7 @@ module GirFFI
         properties.each do
           size += FFI.type_size(:int32)
         end
-        return size
+        size
       end
 
       def class_size

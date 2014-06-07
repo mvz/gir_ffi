@@ -86,8 +86,7 @@ module GObjectIntrospection
     end
 
     def info namespace, index
-      ptr = Lib.g_irepository_get_info @gobj, namespace, index
-      return wrap ptr
+      wrap_info Lib.g_irepository_get_info(@gobj, namespace, index)
     end
 
     # Utility method
@@ -98,14 +97,12 @@ module GObjectIntrospection
     end
 
     def find_by_name namespace, name
-      ptr = Lib.g_irepository_find_by_name @gobj, namespace, name
-      return wrap ptr
+      wrap_info Lib.g_irepository_find_by_name(@gobj, namespace, name)
     end
 
     def find_by_gtype gtype
       raise ArgumentError, "Type #{gtype} is not a valid type" if gtype == 0
-      ptr = Lib.g_irepository_find_by_gtype @gobj, gtype
-      return wrap ptr
+      wrap_info Lib.g_irepository_find_by_gtype(@gobj, gtype)
     end
 
     def dependencies namespace
@@ -120,17 +117,15 @@ module GObjectIntrospection
 
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
-
       type = Lib.g_base_info_get_type ptr
       klass = TYPEMAP[type]
-
-      return klass.wrap(ptr)
+      klass.wrap ptr
     end
 
     private
 
-    def wrap ptr
-      IRepository.wrap_ibaseinfo_pointer ptr
+    def wrap_info ptr
+      self.class.wrap_ibaseinfo_pointer ptr
     end
   end
 end

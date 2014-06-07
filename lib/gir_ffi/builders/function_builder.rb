@@ -24,7 +24,8 @@ module GirFFI
 
         set_up_argument_relations
         setup_error_argument vargen
-        return filled_out_template
+
+        filled_out_template
       end
 
       private

@@ -52,7 +52,6 @@ module GirFFI
           return result if result
         end
       end
-      return
     end
 
     class << self
