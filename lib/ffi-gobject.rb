@@ -81,6 +81,13 @@ module GObject
     signal_connect_closure object, detailed_signal, closure, false
   end
 
+  # Smells of :reek:LongParameterList: due to the C interface.
+  def self.param_spec_int name, nick, blurb, minimum, maximum, default_value, flags
+    ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
+                               default_value, flags)
+    ParamSpecInt.wrap(ptr)
+  end
+
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
@@ -103,6 +110,10 @@ module GObject
       :ulong
     attach_function :g_closure_set_marshal,
       [:pointer, ClosureMarshal], :void
+
+    attach_function :g_param_spec_int,
+      [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
+      :pointer
   end
 
   TYPE_ARRAY = Lib.g_array_get_type
