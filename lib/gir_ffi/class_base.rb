@@ -9,6 +9,7 @@ module GirFFI
     extend RegisteredTypeBase
     extend Forwardable
 
+    attr_reader :struct
     def_delegators :@struct, :to_ptr
 
     GIR_FFI_BUILDER = NullBuilder.new

@@ -13,6 +13,10 @@ module GirFFI
       self
     end
 
+    def self.to_native value, _context
+      value.struct
+    end
+
     def self.get_value_from_pointer pointer
       pointer.to_ptr
     end

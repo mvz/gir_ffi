@@ -2172,7 +2172,6 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gvalue_flat_array_round_trip" do
-    skip "Fails on JRuby" if RUBY_PLATFORM == 'java'
     result = GIMarshallingTests.gvalue_flat_array_round_trip 42, "42", true
     arr = result.to_a
     arr[0].get_value.must_equal 42
