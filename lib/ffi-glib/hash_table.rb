@@ -12,7 +12,7 @@ module GLib
     attr_reader :value_type
 
     def each
-      prc = proc {|keyptr, valptr, userdata|
+      prc = proc {|keyptr, valptr, _userdata|
         key = GirFFI::ArgHelper.cast_from_pointer key_type, keyptr
         val = GirFFI::ArgHelper.cast_from_pointer value_type, valptr
         yield key, val
