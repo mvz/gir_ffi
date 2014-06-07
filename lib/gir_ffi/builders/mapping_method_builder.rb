@@ -40,9 +40,9 @@ module GirFFI
         return_value_builder.return_value_name if return_value_builder.is_relevant?
       end
 
-      def self.set_up_argument_relations argument_infos, argument_builders
-        argument_infos.each do |arg|
-          if (idx = arg.closure) >= 0
+      def self.set_up_argument_relations argument_builders
+        argument_builders.each do |arg|
+          if (idx = arg.arginfo.closure) >= 0
             argument_builders[idx].is_closure = true
           end
         end
@@ -75,7 +75,7 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        Foo.set_up_argument_relations argument_infos, argument_builders
+        Foo.set_up_argument_relations argument_builders
         foo = Foo.new return_value_builder, vargen, argument_builders
         new foo
       end
@@ -89,7 +89,7 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        Foo.set_up_argument_relations argument_infos, argument_builders
+        Foo.set_up_argument_relations argument_builders
 
         argument_builders.unshift receiver_builder
         foo = Foo.new return_value_builder, vargen, argument_builders
