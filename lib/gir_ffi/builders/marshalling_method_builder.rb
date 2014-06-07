@@ -22,17 +22,12 @@ module GirFFI
         argument_builders.unshift receiver_builder
         foo = Foo.new return_value_builder, vargen, argument_builders
 
-        new return_value_builder, argument_builders, foo
+        new foo
       end
 
-      def initialize return_value_builder, argument_builders, foo
-        @argument_builders = argument_builders
-        @return_value_builder = return_value_builder
+      def initialize foo
         @foo = foo
       end
-
-      attr_reader :return_value_builder
-      attr_reader :argument_builders
 
       def method_definition
         code = "def self.marshaller(#{marshaller_arguments.join(', ')})"
