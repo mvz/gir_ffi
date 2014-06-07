@@ -19,7 +19,7 @@ module GirFFI
       ptr.to_ruby_value
     end
 
-    def each &block
+    def each
       size.times do |idx|
         yield index(idx)
       end

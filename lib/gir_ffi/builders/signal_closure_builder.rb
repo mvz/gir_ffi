@@ -14,7 +14,7 @@ module GirFFI
         klass
       end
 
-      def setup_method method
+      def setup_method _method
         nil
       end
 

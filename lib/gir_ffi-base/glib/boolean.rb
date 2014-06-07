@@ -6,11 +6,11 @@ module GLib
     extend FFI::DataConverter
     native_type FFI::Type::INT
 
-    def self.from_native value, context
+    def self.from_native value, _context
       value != 0 ? true : false
     end
 
-    def self.to_native value, context
+    def self.to_native value, _context
       value ? 1 : 0
     end
 
