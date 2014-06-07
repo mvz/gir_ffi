@@ -32,6 +32,10 @@ module GirFFI
         @call_argument_names ||= argument_builders.map(&:call_argument_name).compact
       end
 
+      def method_argument_names
+        @method_argument_names ||= argument_builders.map(&:method_argument_name)
+      end
+
       def self.set_up_argument_relations argument_infos, argument_builders
         argument_infos.each do |arg|
           if (idx = arg.closure) >= 0
@@ -131,7 +135,7 @@ module GirFFI
       end
 
       def method_arguments
-        @method_arguments ||= argument_builders.map(&:method_argument_name).unshift('_proc')
+        @method_arguments ||= @foo.method_argument_names.dup.unshift('_proc')
       end
     end
   end

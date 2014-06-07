@@ -61,8 +61,7 @@ module GirFFI
       end
 
       def param_values_unpack
-        # FIXME: Don't add _ if method_arguments has more than one element
-        ["#{method_arguments.join(", ")}, _ = param_values.map(&:get_value_plain)" ]
+        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)" ]
       end
 
       def capture
@@ -73,7 +72,8 @@ module GirFFI
       end
 
       def method_arguments
-        @method_arguments ||= argument_builders.map(&:method_argument_name)
+        # FIXME: Don't add _ if method_argument_names has more than one element
+        @method_arguments ||= @foo.method_argument_names.dup.push('_')
       end
 
       def marshaller_arguments
