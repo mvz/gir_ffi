@@ -5,11 +5,9 @@ module GirFFI
   module Builders
     class Foo
       attr_reader :return_value_builder
-      attr_reader :vargen
       attr_reader :argument_builders
 
-      def initialize return_value_builder, vargen, argument_builders
-        @vargen = vargen
+      def initialize return_value_builder, argument_builders
         @argument_builders = argument_builders
         @return_value_builder = return_value_builder
       end
@@ -76,7 +74,7 @@ module GirFFI
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         Foo.set_up_argument_relations argument_builders
-        foo = Foo.new return_value_builder, vargen, argument_builders
+        foo = Foo.new return_value_builder, argument_builders
         new foo
       end
 
@@ -92,7 +90,7 @@ module GirFFI
         Foo.set_up_argument_relations argument_builders
 
         argument_builders.unshift receiver_builder
-        foo = Foo.new return_value_builder, vargen, argument_builders
+        foo = Foo.new return_value_builder, argument_builders
 
         new foo
       end

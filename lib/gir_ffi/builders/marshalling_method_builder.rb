@@ -20,7 +20,7 @@ module GirFFI
         Foo.set_up_argument_relations argument_builders
 
         argument_builders.unshift receiver_builder
-        foo = Foo.new return_value_builder, vargen, argument_builders
+        foo = Foo.new return_value_builder, argument_builders
 
         new foo
       end
