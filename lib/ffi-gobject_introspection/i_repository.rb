@@ -61,7 +61,7 @@ module GObjectIntrospection
     include Singleton
 
     def self.default
-      self.instance
+      instance
     end
 
     def self.prepend_search_path path

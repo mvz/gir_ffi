@@ -15,11 +15,11 @@ module GirFFI
     end
 
     def self.from type, arg
-      self.new type, InPointer.from_array(type, arg)
+      new type, InPointer.from_array(type, arg)
     end
 
     def self.wrap type, arg
-      self.new type, arg
+      new type, arg
     end
 
     def each
@@ -32,7 +32,7 @@ module GirFFI
     end
 
     def == other
-      self.to_a == other.to_a
+      to_a == other.to_a
     end
 
     private

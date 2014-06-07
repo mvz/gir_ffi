@@ -65,7 +65,7 @@ module GObject
     argument_gvalues = sig_info.arguments_to_gvalues object, args
     return_gvalue = sig_info.gvalue_for_return_value
 
-    self.signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
+    signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
 
     return_gvalue
   end
@@ -78,7 +78,7 @@ module GObject
     closure = sig_info.wrap_in_closure {|*args| block.call(*args << data) }
 
     # TODO: Provide _after variant
-    self.signal_connect_closure object, detailed_signal, closure, false
+    signal_connect_closure object, detailed_signal, closure, false
   end
 
   load_class :Callback

@@ -18,17 +18,17 @@ module GLib
         yield key, val
       }
       callback = GLib::HFunc.from prc
-      ::GLib::Lib.g_hash_table_foreach self.to_ptr, callback, nil
+      ::GLib::Lib.g_hash_table_foreach to_ptr, callback, nil
     end
 
     def to_hash
-      Hash[self.to_a]
+      Hash[to_a]
     end
 
     def insert key, value
       keyptr = GirFFI::InPointer.from key_type, key
       valptr = GirFFI::InPointer.from value_type, value
-      ::GLib::Lib.g_hash_table_insert self.to_ptr, keyptr, valptr
+      ::GLib::Lib.g_hash_table_insert to_ptr, keyptr, valptr
     end
 
     class << self; remove_method :new; end
@@ -44,7 +44,7 @@ module GLib
     end
 
     def self.from_enumerable typespec, hash
-      ghash = self.new(*typespec)
+      ghash = new(*typespec)
       hash.each do |key, val|
         ghash.insert key, val
       end

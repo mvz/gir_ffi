@@ -59,7 +59,7 @@ module GObject
     end
 
     def type_class
-      GObject::ObjectClass.wrap(self.to_ptr.get_pointer 0)
+      GObject::ObjectClass.wrap(to_ptr.get_pointer 0)
     end
 
     alias get_property_without_override get_property

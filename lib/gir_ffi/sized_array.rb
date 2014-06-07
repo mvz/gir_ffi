@@ -26,7 +26,7 @@ module GirFFI
     end
 
     def == other
-      self.to_a == other.to_a
+      to_a == other.to_a
     end
 
     def size_in_bytes
@@ -81,7 +81,7 @@ module GirFFI
         size = arr.size
         check_size expected_size, size
         ptr = GirFFI::InPointer.from_array element_type, arr
-        self.wrap element_type, size, ptr
+        wrap element_type, size, ptr
       end
 
       def check_size expected_size, size

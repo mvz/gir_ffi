@@ -45,7 +45,7 @@ module GirFFI
     def self.wrap_in_callback_args_mapper prc
       return nil unless prc
       return prc if FFI::Function === prc
-      self.new do |*args|
+      new do |*args|
         call_with_argument_mapping(prc, *args)
       end
     end

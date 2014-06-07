@@ -10,7 +10,7 @@ module GLib
     def append data
       bytes = GirFFI::InPointer.from :utf8, data
       len = data.bytesize
-      self.class.wrap(Lib.g_byte_array_append self.to_ptr, bytes, len)
+      self.class.wrap(Lib.g_byte_array_append to_ptr, bytes, len)
     end
 
     class << self; undef :new; end

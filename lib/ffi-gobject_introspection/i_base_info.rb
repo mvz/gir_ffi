@@ -40,7 +40,7 @@ module GObjectIntrospection
       method = method.to_s
       single ||= method.to_s[0..-2]
       count = method.sub(/^(get_)?/, "\\1n_")
-      self.class_eval <<-CODE
+      class_eval <<-CODE
         def #{method}
           (0..(#{count} - 1)).map do |i|
             #{single} i
@@ -70,7 +70,7 @@ module GObjectIntrospection
       single = method.sub(/^find_/, "")
       counter ||= "n_#{single}s"
       fetcher ||= "#{single}"
-      self.class_eval <<-CODE
+      class_eval <<-CODE
         def #{method}(name)
           (0..(#{counter} - 1)).each do |i|
             it = #{fetcher}(i)

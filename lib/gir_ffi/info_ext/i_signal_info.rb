@@ -16,7 +16,7 @@ module GirFFI
 
       # TODO: Use argument info to convert out arguments and array lengths.
       def arguments_to_gvalues instance, arguments
-        arg_values = self.args.zip(arguments).map do |info, arg|
+        arg_values = args.zip(arguments).map do |info, arg|
           info.argument_type.make_g_value.set_value(arg)
         end
 
