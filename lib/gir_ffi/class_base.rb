@@ -3,8 +3,8 @@ require 'gir_ffi/builders/null_builder'
 require 'gir_ffi/registered_type_base'
 
 module GirFFI
-  # Base class for all generated classes. Contains code for dealing with
-  # the generated Struct classes.
+  # Base class for all generated classes and structs. Contains code for dealing
+  # with the generated nested Struct classes.
   class ClassBase
     extend RegisteredTypeBase
     extend Forwardable
