@@ -12,8 +12,9 @@ Style/Blocks:
 Style/DotPosition:
   EnforcedStyle: trailing
 
-Style/LineLength:
-  Max: 92
+# Disabled for now to let .rubocop_todo.yml value take over.
+#Style/LineLength:
+  #Max: 92
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
@@ -38,3 +39,5 @@ Style/FileName:
 # TODO: Decide on the desired style (nested or compact)
 Style/ClassAndModuleChildren:
   Enabled: false
+
+inherit_from: .rubocop_todo.yml
