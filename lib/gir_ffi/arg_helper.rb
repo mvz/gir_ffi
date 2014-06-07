@@ -3,7 +3,11 @@ require 'gir_ffi/builder'
 require 'gir_ffi/glib_error'
 
 module GirFFI
+  # Helper module containing methods used during argument conversion in
+  # generated methods.
   module ArgHelper
+    # Helper class for storing objects for later retrieval. Used to store user
+    # data arguments.
     class ObjectStore
       def initialize
         @store = {}

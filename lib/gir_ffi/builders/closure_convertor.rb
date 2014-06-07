@@ -1,3 +1,5 @@
+# Builder that generates code to convert closure arguments ('user data') from
+# C to Ruby. Used by argument builders.
 class GirFFI::Builders::ClosureConvertor
   def initialize argument_name
     @argument_name = argument_name

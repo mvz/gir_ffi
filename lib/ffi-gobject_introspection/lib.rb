@@ -1,6 +1,7 @@
 require 'ffi'
 
 module GObjectIntrospection
+  # Module for attaching functions from the girepository library
   module Lib
     extend FFI::Library
     ffi_lib "girepository-1.0"

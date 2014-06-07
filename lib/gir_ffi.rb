@@ -17,6 +17,8 @@ require 'gir_ffi/user_defined_type_info'
 require 'gir_ffi/builder'
 require 'gir_ffi/version'
 
+# Main module containing classes and modules needed for generating GLib and
+# GObject bindings.
 module GirFFI
   def self.setup module_name, version=nil
     module_name = module_name.to_s

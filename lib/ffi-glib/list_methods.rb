@@ -65,6 +65,7 @@ module GLib
       GirFFI::InPointer.from(element_type, data)
     end
 
+    # Common class methods for List and SList
     module ListClassMethods
       def new type
         _real_new.tap do |it|

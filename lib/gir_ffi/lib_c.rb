@@ -1,6 +1,7 @@
 require 'ffi'
 
 module GirFFI
+  # Library of libc functions.
   module LibC
     extend FFI::Library
     ffi_lib FFI::Library::LIBC

@@ -1,4 +1,5 @@
 module GirFFI
+  # Set of helper methods used in the builders.
   module BuilderHelper
     def optionally_define_constant parent, name
       if parent.const_defined? name, false

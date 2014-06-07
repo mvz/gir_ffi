@@ -1,3 +1,4 @@
+# Preload type contants
 module GObject
   TYPE_INVALID = type_from_name("invalid")
   TYPE_NONE = type_from_name("void")

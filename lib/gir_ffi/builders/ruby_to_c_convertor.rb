@@ -1,3 +1,5 @@
+# Builder that generates code to convert values from Ruby to C. Used by
+# argument builders.
 class GirFFI::Builders::RubyToCConvertor
   def initialize type_info, argument_name
     @type_info = type_info

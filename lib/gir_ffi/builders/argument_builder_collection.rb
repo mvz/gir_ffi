@@ -1,5 +1,8 @@
 module GirFFI
   module Builders
+    # Class representing the argument and return value builders for a callback
+    # mapping function or marshaller. Implements collecting the conversion code
+    # and parameter and variable names for use by function builders.
     class ArgumentBuilderCollection
       attr_reader :return_value_builder
       attr_reader :argument_builders
