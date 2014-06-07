@@ -5,12 +5,15 @@ module GObjectIntrospection
     def pointer?
       Lib.g_type_info_is_pointer @gobj
     end
+
     def tag
       Lib.g_type_info_get_tag @gobj
     end
+
     def param_type(index)
       ITypeInfo.wrap(Lib.g_type_info_get_param_type @gobj, index)
     end
+
     def interface
       ptr = Lib.g_type_info_get_interface @gobj
       IRepository.wrap_ibaseinfo_pointer ptr

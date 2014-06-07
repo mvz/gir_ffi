@@ -5,6 +5,7 @@ module GObjectIntrospection
     def n_fields
       Lib.g_struct_info_get_n_fields @gobj
     end
+
     def field(index)
       IFieldInfo.wrap(Lib.g_struct_info_get_field @gobj, index)
     end
@@ -16,6 +17,7 @@ module GObjectIntrospection
     def get_n_methods
       Lib.g_struct_info_get_n_methods @gobj
     end
+
     def get_method(index)
       IFunctionInfo.wrap(Lib.g_struct_info_get_method @gobj, index)
     end
