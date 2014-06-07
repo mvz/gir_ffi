@@ -588,6 +588,7 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_int64" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-int64-prop"
       instance.signal_connect "sig-with-int64-prop" do |obj, i, ud|
         i
       end
@@ -605,6 +606,7 @@ describe Regress do
     end
 
     it "has a working method #emit_sig_with_uint64" do
+      skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-uint64-prop"
       instance.signal_connect "sig-with-uint64-prop" do |obj, i, ud|
         i
       end
