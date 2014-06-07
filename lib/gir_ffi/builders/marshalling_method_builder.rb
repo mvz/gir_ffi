@@ -8,17 +8,14 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder
-      def self.for_signal receiver_info, argument_infos, return_type_info
+      def self.for_signal receiver_info, argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
         receiver_builder = ClosureArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg|
-          ClosureArgumentBuilder.new vargen, arg }
-        return_value_info = ReturnValueInfo.new(return_type_info)
+        argument_builders = argument_infos.map {|arg| ClosureArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        new ArgumentBuilderCollection.new(return_value_builder,
-                                          argument_builders,
+        new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
                                           receiver_builder: receiver_builder)
       end
 
