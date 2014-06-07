@@ -26,3 +26,7 @@ Style/RedundantReturn:
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false
+
+# FIXME: GirFFI uses a ffi-something naming scheme.
+Style/FileName:
+  Enabled: false
