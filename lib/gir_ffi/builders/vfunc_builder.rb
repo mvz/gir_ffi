@@ -27,11 +27,12 @@ module GirFFI
         arg_infos = info.args
         arg_infos << ErrorArgumentInfo.new if info.throws?
 
-        receiver_info = ReceiverArgumentInfo.new(receiver_type_info)
+        receiver_info = ReceiverArgumentInfo.new receiver_type_info
+        return_value_info = ReturnValueInfo.new info.return_type
 
         MappingMethodBuilder.for_vfunc(receiver_info,
                                        arg_infos,
-                                       info.return_type).method_definition
+                                       return_value_info).method_definition
       end
 
       def receiver_type_info

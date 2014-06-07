@@ -1,5 +1,6 @@
 require 'gir_ffi/builders/callback_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
+require 'gir_ffi/builders/argument_builder_collection'
 
 module GirFFI
   module Builders
@@ -7,54 +8,29 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MappingMethodBuilder
-      def self.for_callback argument_infos, return_type_info
+      def self.for_callback argument_infos, return_value_info
         vargen = VariableNameGenerator.new
-        argument_builders = argument_infos.map {|arg|
-          CallbackArgumentBuilder.new vargen, arg }
-        set_up_argument_relations argument_infos, argument_builders
-        new return_type_info, vargen, argument_builders
+
+        argument_builders = argument_infos.map {|arg| CallbackArgumentBuilder.new vargen, arg }
+        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
+
+        new ArgumentBuilderCollection.new(return_value_builder, argument_builders)
       end
 
-      def self.for_vfunc receiver_info, argument_infos, return_type_info
+      def self.for_vfunc receiver_info, argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
         receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg|
-          CallbackArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.map {|arg| CallbackArgumentBuilder.new vargen, arg }
+        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        set_up_argument_relations argument_infos, argument_builders
-
-        argument_builders.unshift receiver_builder
-
-        new return_type_info, vargen, argument_builders
+        new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
+                                          receiver_builder: receiver_builder)
       end
 
-      def self.set_up_argument_relations argument_infos, argument_builders
-        argument_infos.each do |arg|
-          if (idx = arg.closure) >= 0
-            argument_builders[idx].is_closure = true
-          end
-        end
-        argument_builders.each do |bldr|
-          if (idx = bldr.array_length_idx) >= 0
-            other = argument_builders[idx]
-
-            bldr.length_arg = other
-            other.array_arg = bldr
-          end
-        end
+      def initialize argument_builder_collection
+        @argument_builder_collection = argument_builder_collection
       end
-
-      def initialize return_type_info, vargen, argument_builders
-        @vargen = vargen
-        @argument_builders = argument_builders
-
-        @return_type_info = return_type_info
-      end
-
-      attr_reader :return_type_info
-      attr_reader :vargen
-      attr_reader :argument_builders
 
       def method_definition
         code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
@@ -63,61 +39,34 @@ module GirFFI
       end
 
       def method_lines
-        parameter_preparation + call_to_proc + return_value_conversion + return_value
+        @argument_builder_collection.parameter_preparation +
+          call_to_proc +
+          @argument_builder_collection.return_value_conversion +
+          return_value
       end
 
       def return_value
-        if return_value_builder.is_relevant?
-          ["return #{return_value_builder.return_value_name}"]
+        if (name = @argument_builder_collection.return_value_name)
+          ["return #{name}"]
         else
           []
         end
       end
 
-      def return_value_conversion
-        all_builders.map(&:post_conversion).flatten
-      end
-
       def call_to_proc
-        ["#{capture}_proc.call(#{call_arguments.join(', ')})"]
-      end
-
-      def parameter_preparation
-        argument_builders.sort_by.with_index {|arg, i|
-          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
+        ["#{capture}_proc.call(#{@argument_builder_collection.call_argument_names.join(', ')})"]
       end
 
       def capture
-        @capture ||= capture_variable_names.any? ?
-          "#{capture_variable_names.join(", ")} = " :
-          ""
-      end
-
-      def capture_variable_names
-        @capture_variable_names ||=
-          all_builders.map(&:capture_variable_name).compact
-      end
-
-      def all_builders
-        @all_builders ||= [return_value_builder] + argument_builders
-      end
-
-      def call_arguments
-        @call_arguments ||= argument_builders.map(&:call_argument_name).compact
+        @capture ||= begin
+                       names = @argument_builder_collection.capture_variable_names
+                       names.any? ? "#{names.join(", ")} = " : ""
+                     end
       end
 
       def method_arguments
-        @method_arguments ||= argument_builders.map(&:method_argument_name).unshift('_proc')
-      end
-
-      def return_value_info
-        @return_value_info ||= ReturnValueInfo.new(return_type_info)
-      end
-
-      def return_value_builder
-        @return_value_builder ||= CallbackReturnValueBuilder.new(vargen, return_value_info)
+        @method_arguments ||= @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
     end
   end
 end
-

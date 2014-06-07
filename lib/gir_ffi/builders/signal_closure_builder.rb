@@ -23,10 +23,11 @@ module GirFFI
 
         container_type_info = ReceiverTypeInfo.new(container_info)
         receiver_info = ReceiverArgumentInfo.new(container_type_info)
+        return_value_info = ReturnValueInfo.new info.return_type
 
         MarshallingMethodBuilder.for_signal(receiver_info,
                                             arg_infos,
-                                            info.return_type).method_definition
+                                            return_value_info).method_definition
       end
 
       def klass
