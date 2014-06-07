@@ -1,6 +1,10 @@
 AllCops:
-  Include:
+  Exclude:
+    - 'test/**/*'
+    - 'examples/*'
+    - 'tmp/**/*'
     - Rakefile
+    - gir_ffi.gemspec
 
 Style/Blocks:
   Enabled: false
