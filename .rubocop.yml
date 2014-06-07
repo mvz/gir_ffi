@@ -22,3 +22,7 @@ Style/StringLiterals:
 
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
+
+# RuboCop has no setting to accept how vim aligns parameters.
+Style/AlignParameters:
+  Enabled: false
