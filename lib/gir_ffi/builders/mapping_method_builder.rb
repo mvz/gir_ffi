@@ -7,9 +7,12 @@ module GirFFI
       attr_reader :return_value_builder
       attr_reader :argument_builders
 
-      def initialize return_value_builder, argument_builders
+      def initialize return_value_builder, argument_builders, options = {}
+        @receiver_builder = options[:receiver_builder]
         @argument_builders = argument_builders
         @return_value_builder = return_value_builder
+        self.class.set_up_argument_relations argument_builders
+        @argument_builders.unshift @receiver_builder if @receiver_builder
       end
 
       def parameter_preparation
@@ -73,7 +76,6 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        Foo.set_up_argument_relations argument_builders
         foo = Foo.new return_value_builder, argument_builders
         new foo
       end
@@ -87,10 +89,9 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        Foo.set_up_argument_relations argument_builders
-
-        argument_builders.unshift receiver_builder
-        foo = Foo.new return_value_builder, argument_builders
+        foo = Foo.new(return_value_builder,
+                      argument_builders,
+                      receiver_builder: receiver_builder)
 
         new foo
       end

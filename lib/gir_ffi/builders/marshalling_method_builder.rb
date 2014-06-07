@@ -17,10 +17,9 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(return_type_info)
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
-        Foo.set_up_argument_relations argument_builders
-
-        argument_builders.unshift receiver_builder
-        foo = Foo.new return_value_builder, argument_builders
+        foo = Foo.new(return_value_builder,
+                      argument_builders,
+                      receiver_builder: receiver_builder)
 
         new foo
       end
