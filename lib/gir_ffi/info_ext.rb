@@ -1,3 +1,4 @@
+require 'gir_ffi/info_ext/full_type_name'
 require 'gir_ffi/info_ext/i_arg_info'
 require 'gir_ffi/info_ext/i_callable_info'
 require 'gir_ffi/info_ext/i_callback_info'

@@ -12,11 +12,6 @@ module GirFFI
           end
         end
       end
-
-      # FIXME: This is invalid for ISignalInfo and IVFuncInfo
-      def full_type_name
-        "#{safe_namespace}::#{safe_name}"
-      end
     end
   end
 end
