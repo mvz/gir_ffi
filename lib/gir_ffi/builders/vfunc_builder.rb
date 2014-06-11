@@ -3,13 +3,14 @@ require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/mapping_method_builder'
 require 'gir_ffi/receiver_type_info'
 require 'gir_ffi/receiver_argument_info'
-require 'gir_ffi/vfunc_base'
+require 'gir_ffi/callback_base'
 
 module GirFFI
   module Builders
     # Implements the creation of a class representing the implementation of a
     # vfunc. This class will be able to turn a proc into an FFI::Function that
-    # can serve as such an implementation in C.
+    # can serve as such an implementation in C. The class will be namespaced
+    # inside class defining the vfunc.
     class VFuncBuilder < BaseTypeBuilder
       def instantiate_class
         unless already_set_up

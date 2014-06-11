@@ -1,7 +1,7 @@
 require 'gir_ffi/type_base'
 
 module GirFFI
-  # Base module for callbacks.
+  # Base module for callbacks and vfuncs.
   # NOTE: Another option would be to derive this class from FFI::Function,
   # allowing a more natural implementation of from_native, to_native and wrap.
   class CallbackBase < Proc

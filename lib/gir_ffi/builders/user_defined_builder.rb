@@ -164,10 +164,6 @@ module GirFFI
 
       def install_vfunc container_struct, vfunc_name, vfunc_info, implementation
         vfunc = VFuncBuilder.new(vfunc_info).build_class
-        # NOTE: This assigns a VFuncBase to a CallbackBase.
-        # This suggests that the two should be combined, but it seems
-        # CallbackBase will not cast the first argument correctly if used
-        # to map the implementation proc arguments.
         container_struct[vfunc_name] = vfunc.from implementation
       end
 
