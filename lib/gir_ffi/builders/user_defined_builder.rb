@@ -38,7 +38,7 @@ module GirFFI
 
       private
 
-      # FIXME: Is this really used?
+      # This is used in setup_constants
       def target_gtype
         @gtype
       end
