@@ -112,16 +112,22 @@ module GirFFI
         end
       end
 
+      # TODO: Use either ffitype or ffi_type everywhere
       def to_callback_ffitype
         return :pointer if pointer?
 
-        if tag == :interface
+        case tag
+        when :interface
+          # TODO: Move this logic into interface
           case interface.info_type
           when :enum, :flags
             :int32
           else
             :pointer
           end
+        when :gboolean
+          # TODO: Move this logic into TypeMap
+          :bool
         else
           TypeMap.map_basic_type tag
         end
