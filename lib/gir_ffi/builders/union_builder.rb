@@ -1,6 +1,5 @@
 require 'gir_ffi/builders/registered_type_builder'
 require 'gir_ffi/builders/with_layout'
-require 'gir_ffi/builders/with_methods'
 require 'gir_ffi/union_base'
 
 module GirFFI
@@ -8,7 +7,6 @@ module GirFFI
     # Implements the creation of a class representing union type. The
     # class will have a nested FFI::Union class to represent its C union.
     class UnionBuilder < RegisteredTypeBuilder
-      include WithMethods
       include WithLayout
 
       def layout_superclass

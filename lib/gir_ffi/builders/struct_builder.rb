@@ -1,13 +1,11 @@
 require 'gir_ffi/builders/registered_type_builder'
 require 'gir_ffi/builders/with_layout'
-require 'gir_ffi/builders/with_methods'
 require 'gir_ffi/struct_base'
 
 module GirFFI
   module Builders
     # Implements the creation of a class representing a Struct.
     class StructBuilder < RegisteredTypeBuilder
-      include WithMethods
       include WithLayout
 
       private

@@ -1,6 +1,5 @@
 require 'gir_ffi/builders/registered_type_builder'
 require 'gir_ffi/builders/with_layout'
-require 'gir_ffi/builders/with_methods'
 require 'gir_ffi/builders/property_builder'
 require 'gir_ffi/object_base'
 
@@ -8,7 +7,6 @@ module GirFFI
   module Builders
     # Implements the creation of a class representing a GObject Object.
     class ObjectBuilder < RegisteredTypeBuilder
-      include WithMethods
       include WithLayout
 
       def find_signal signal_name

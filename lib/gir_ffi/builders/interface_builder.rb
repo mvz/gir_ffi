@@ -1,13 +1,10 @@
 require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/builders/with_methods'
 require 'gir_ffi/interface_base'
 
 module GirFFI
   module Builders
     # Implements the creation of a module representing an Interface.
     class InterfaceBuilder < RegisteredTypeBuilder
-      include WithMethods
-
       def interface_struct
         @interface_struct ||= Builder.build_class iface_struct_info
       end

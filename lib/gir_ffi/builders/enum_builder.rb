@@ -1,5 +1,4 @@
 require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/builders/with_methods'
 require 'gir_ffi/enum_base'
 
 module GirFFI
@@ -8,8 +7,6 @@ module GirFFI
     # attached to the appropriate namespace module, and will be defined
     # as an enum for FFI.
     class EnumBuilder < RegisteredTypeBuilder
-      include WithMethods
-
       private
 
       def enum_sym
