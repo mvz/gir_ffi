@@ -18,6 +18,10 @@ module GirFFI
         attach_and_define_method method, go, build_class
       end
 
+      def target_gtype
+        info.g_type
+      end
+
       private
 
       def meta_class
@@ -41,10 +45,6 @@ module GirFFI
         info.get_methods.each do |minfo|
           klass.class_eval MethodStubber.new(minfo).method_stub
         end
-      end
-
-      def target_gtype
-        info.g_type
       end
 
       def setup_constants

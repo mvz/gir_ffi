@@ -100,7 +100,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
       gtype = klass.get_gtype
       other_builder = GirFFI::Builders::UserDefinedBuilder.new info
       other_builder.build_class
-      other_builder.gtype.must_equal gtype
+      # FIXME: Does not really test what we want to test: other_builder might lie!
+      other_builder.target_gtype.must_equal gtype
     end
   end
 end

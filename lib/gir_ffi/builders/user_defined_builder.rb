@@ -32,16 +32,11 @@ module GirFFI
         setup_constructor
       end
 
-      def gtype
+      def target_gtype
         @gtype
       end
 
       private
-
-      # This is used in setup_constants
-      def target_gtype
-        @gtype
-      end
 
       def parent
         @parent ||= gir.find_by_gtype(parent_gtype.to_i)
