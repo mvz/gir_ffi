@@ -5,14 +5,12 @@ module GirFFI
     # and parameter and variable names for use by function builders.
     class ArgumentBuilderCollection
       attr_reader :return_value_builder
-      attr_reader :argument_builders
 
       def initialize return_value_builder, argument_builders, options = {}
         @receiver_builder = options[:receiver_builder]
-        @argument_builders = argument_builders
+        @base_argument_builders = argument_builders
         @return_value_builder = return_value_builder
-        self.class.set_up_argument_relations argument_builders
-        @argument_builders.unshift @receiver_builder if @receiver_builder
+        set_up_argument_relations
       end
 
       def parameter_preparation
@@ -41,23 +39,31 @@ module GirFFI
         return_value_builder.return_value_name if return_value_builder.is_relevant?
       end
 
-      def self.set_up_argument_relations argument_builders
-        argument_builders.each do |arg|
+      def argument_builders
+        @argument_builders ||= if @receiver_builder
+                                 @base_argument_builders.dup.unshift @receiver_builder
+                               else
+                                 @base_argument_builders
+                               end
+      end
+
+      private
+
+      def set_up_argument_relations
+        @base_argument_builders.each do |arg|
           if (idx = arg.arginfo.closure) >= 0
-            argument_builders[idx].is_closure = true
+            @base_argument_builders[idx].is_closure = true
           end
         end
-        argument_builders.each do |bldr|
+        @base_argument_builders.each do |bldr|
           if (idx = bldr.array_length_idx) >= 0
-            other = argument_builders[idx]
+            other = @base_argument_builders[idx]
 
             bldr.length_arg = other
             other.array_arg = bldr
           end
         end
       end
-
-      private
 
       def all_builders
         @all_builders ||= [return_value_builder] + argument_builders
