@@ -13,17 +13,16 @@ module GirFFI
     class FunctionBuilder
       def initialize info
         @info = info
-      end
-
-      def generate
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
         @return_value_builder = ReturnValueBuilder.new(vargen,
                                                        ReturnValueInfo.new(@info.return_type, @info.skip_return?),
                                                        @info.constructor?)
+        @errarg = error_argument vargen
+      end
 
+      def generate
         set_up_argument_relations
-        setup_error_argument vargen
 
         filled_out_template
       end
@@ -52,12 +51,12 @@ module GirFFI
         end
       end
 
-      def setup_error_argument vargen
-        @errarg = if @info.throws?
-                    ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
-                  else
-                    NullArgumentBuilder.new
-                  end
+      def error_argument vargen
+        if @info.throws?
+          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+        else
+          NullArgumentBuilder.new
+        end
       end
 
       def filled_out_template
