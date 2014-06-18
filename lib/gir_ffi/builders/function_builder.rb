@@ -19,11 +19,11 @@ module GirFFI
                                                        ReturnValueInfo.new(@info.return_type, @info.skip_return?),
                                                        @info.constructor?)
         @errarg = error_argument vargen
+        @argument_builder_collection = ArgumentBuilderCollection.new(@return_value_builder,
+                                                                     @argument_builders)
       end
 
       def generate
-        set_up_argument_relations
-
         filled_out_template
       end
 
@@ -31,24 +31,6 @@ module GirFFI
 
       def lib_module_name
         "#{@info.safe_namespace}::Lib"
-      end
-
-      def set_up_argument_relations
-        alldata = @argument_builders.dup << @return_value_builder
-
-        alldata.each do |data|
-          if (idx = data.array_length_idx) >= 0
-            other_data = @argument_builders[idx]
-            data.length_arg = other_data
-            other_data.array_arg = data
-          end
-        end
-
-        @argument_builders.each do |data|
-          if (idx = data.arginfo.closure) >= 0
-            @argument_builders[idx].is_closure = true
-          end
-        end
       end
 
       def error_argument vargen

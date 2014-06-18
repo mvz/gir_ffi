@@ -55,7 +55,7 @@ module GirFFI
             @base_argument_builders[idx].is_closure = true
           end
         end
-        @base_argument_builders.each do |bldr|
+        all_builders.each do |bldr|
           if (idx = bldr.array_length_idx) >= 0
             other = @base_argument_builders[idx]
 
