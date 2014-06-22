@@ -24,7 +24,11 @@ module GirFFI
       end
 
       def generate
-        filled_out_template
+        meta = @info.method? ? '' : "self."
+
+        code = "def #{meta}#{@info.safe_name} #{method_arguments.join(', ')}\n"
+        code << method_body
+        code << "\nend\n"
       end
 
       private
@@ -39,14 +43,6 @@ module GirFFI
         else
           NullArgumentBuilder.new
         end
-      end
-
-      def filled_out_template
-        meta = @info.method? ? '' : "self."
-
-        code = "def #{meta}#{@info.safe_name} #{method_arguments.join(', ')}\n"
-        code << method_body
-        code << "\nend\n"
       end
 
       def method_body
