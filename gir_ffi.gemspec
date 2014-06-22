@@ -36,10 +36,10 @@ Gem::Specification.new do |s|
   s.add_development_dependency('minitest', ["~> 5.2"])
   s.add_development_dependency('rr', ["~> 1.1.2"])
   s.add_development_dependency('rake', ["~> 10.1"])
-  s.add_development_dependency('simplecov')
-  s.add_development_dependency('pry')
-  s.add_development_dependency('repl_rake')
-  s.add_development_dependency('yard')
+  s.add_development_dependency('simplecov', ["~> 0.8.2"])
+  s.add_development_dependency('pry', ["~> 0.10.0"])
+  s.add_development_dependency('repl_rake', ["0.0.3"])
+  s.add_development_dependency('yard', ["~> 0.8.7"])
 
   s.require_paths = ["lib"]
 end
