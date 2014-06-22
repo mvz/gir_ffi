@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.5 / 2014-06-22
+
+* Use closures as signal handlers, rather than callbacks
+* Obtain reference to GVariant on creation
+* Make struct arguments work in JRuby
+* Various refactoring & code cleanup
+
 ## 0.7.4 / 2014-05-03
 
 * Correctly handle closure data arguments originating from C
