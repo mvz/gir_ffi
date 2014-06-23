@@ -51,7 +51,9 @@ module GirFFI
 
       def method_lines
         @argument_builder_collection.parameter_preparation +
-          function_call + post_processing + return_statement
+          function_call +
+          @argument_builder_collection.return_value_conversion +
+          return_statement
       end
 
       def return_statement
@@ -82,15 +84,6 @@ module GirFFI
         else
           ""
         end
-      end
-
-      def post_processing
-        # FIXME: Sorting knows too much about internals of ArgumentBuilder.
-        args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
-
-        result = args.map {|arg| arg.post_conversion}.flatten
-        result += @errarg.post_conversion
-        result + @return_value_builder.post_conversion
       end
 
       def has_capture?

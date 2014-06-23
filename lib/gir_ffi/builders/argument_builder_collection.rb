@@ -15,12 +15,11 @@ module GirFFI
       end
 
       def parameter_preparation
-        argument_builders.sort_by.with_index {|arg, i|
-          [arg.array_length_idx, i] }.map(&:pre_conversion).flatten
+        builders_for_pre_conversion.map(&:pre_conversion).flatten
       end
 
       def return_value_conversion
-        all_builders.map(&:post_conversion).flatten
+        builders_for_post_conversion.map(&:post_conversion).flatten
       end
 
       def capture_variable_names
@@ -75,6 +74,26 @@ module GirFFI
 
       def all_builders
         @all_builders ||= [return_value_builder] + argument_builders
+      end
+
+      def builders_for_pre_conversion
+        @builders_for_pre_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
+            builders.unshift @receiver_builder if @receiver_builder
+            builders.push @error_argument_builder if @error_argument_builder
+          end
+      end
+
+      def builders_for_post_conversion
+        @builders_for_post_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
+            builders.unshift @receiver_builder if @receiver_builder
+            builders.unshift @error_argument_builder if @error_argument_builder
+            builders.push return_value_builder
+          end
+      end
+
+      def sorted_base_argument_builders
+        @sorted_base_argument_builders ||= @base_argument_builders.
+          sort_by.with_index {|arg, i| [arg.array_length_idx, i] }
       end
     end
   end
