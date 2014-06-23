@@ -408,7 +408,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(type_info).interface { interface_type_info }
       end
 
-      it "has the correct value for #pre" do
+      it "returns an empty array" do
         type_info.extra_conversion_arguments.must_equal []
       end
     end
