@@ -52,8 +52,8 @@ module GirFFI
       end
 
       def return_statement
-        if has_return_values?
-          ["return #{return_values.join(', ')}"]
+        if @argument_builder_collection.has_return_values?
+          ["return #{@argument_builder_collection.return_value_names.join(', ')}"]
         else
           []
         end
@@ -95,15 +95,6 @@ module GirFFI
         result = args.map {|arg| arg.post_conversion}.flatten
         result += @errarg.post
         result + @return_value_builder.post_conversion
-      end
-
-      def return_values
-        @return_values ||= ([@return_value_builder.return_value_name] +
-                            @argument_builders.map(&:return_value_name)).compact
-      end
-
-      def has_return_values?
-        !return_values.empty?
       end
 
       def has_capture?

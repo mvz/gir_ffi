@@ -39,6 +39,14 @@ module GirFFI
         return_value_builder.return_value_name if return_value_builder.is_relevant?
       end
 
+      def return_value_names
+        @return_value_names ||= all_builders.map(&:return_value_name).compact
+      end
+
+      def has_return_values?
+        return_value_names.any?
+      end
+
       def argument_builders
         @argument_builders ||= if @receiver_builder
                                  @base_argument_builders.dup.unshift @receiver_builder
