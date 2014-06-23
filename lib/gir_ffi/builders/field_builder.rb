@@ -62,7 +62,7 @@ module GirFFI
           #{field_ptr} = @struct.to_ptr + #{info.offset}
           #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
-          #{typed_ptr}.set_value #{builder.callarg}
+          #{typed_ptr}.set_value #{builder.call_argument_name}
         end
         CODE
       end

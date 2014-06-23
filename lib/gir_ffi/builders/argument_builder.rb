@@ -18,7 +18,7 @@ module GirFFI
         @post_converted_name ||= if has_post_conversion?
                                    new_variable
                                  else
-                                   callarg
+                                   call_argument_name
                                  end
       end
 
@@ -34,12 +34,12 @@ module GirFFI
         when :in
           pr << fixed_array_size_check if needs_size_check?
           pr << array_length_assignment if is_array_length_parameter?
-          pr << "#{callarg} = #{ingoing_convertor.conversion}"
+          pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
         when :inout
           pr << fixed_array_size_check if needs_size_check?
           pr << array_length_assignment if is_array_length_parameter?
           pr << out_parameter_preparation
-          pr << "#{callarg}.set_value #{ingoing_convertor.conversion}"
+          pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
         when :out
           pr << out_parameter_preparation
         end
@@ -62,7 +62,7 @@ module GirFFI
       end
 
       def output_value
-        base = "#{callarg}.to_value"
+        base = "#{call_argument_name}.to_value"
         if needs_out_conversion?
           CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
@@ -129,7 +129,7 @@ module GirFFI
                 else
                   "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
                 end
-        "#{callarg} = #{value}"
+        "#{call_argument_name} = #{value}"
       end
 
       def is_caller_allocated_object?

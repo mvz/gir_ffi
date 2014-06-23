@@ -13,6 +13,6 @@ module GirFFI
 
     def return_value_name; nil; end
 
-    def callarg; end
+    def call_argument_name; end
   end
 end

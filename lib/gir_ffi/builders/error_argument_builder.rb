@@ -15,11 +15,11 @@ module GirFFI
       end
 
       def pre_conversion
-        [ "#{callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
+        [ "#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
       end
 
       def post
-        [ "GirFFI::ArgHelper.check_error(#{callarg})" ]
+        [ "GirFFI::ArgHelper.check_error(#{call_argument_name})" ]
       end
     end
   end

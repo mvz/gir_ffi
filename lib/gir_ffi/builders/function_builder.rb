@@ -71,8 +71,8 @@ module GirFFI
       end
 
       def function_call_arguments
-        ca = @argument_builders.map(&:callarg)
-        ca << @errarg.callarg
+        ca = @argument_builders.map(&:call_argument_name)
+        ca << @errarg.call_argument_name
         ca.unshift "self" if @info.method?
         ca.compact
       end
