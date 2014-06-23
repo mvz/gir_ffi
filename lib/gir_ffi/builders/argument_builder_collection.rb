@@ -48,14 +48,14 @@ module GirFFI
         return_value_names.any?
       end
 
+      private
+
       def argument_builders
         @argument_builders ||= @base_argument_builders.dup.tap do |builders|
           builders.unshift @receiver_builder if @receiver_builder
           builders.push @error_argument_builder if @error_argument_builder
         end
       end
-
-      private
 
       def set_up_argument_relations
         @base_argument_builders.each do |arg|
