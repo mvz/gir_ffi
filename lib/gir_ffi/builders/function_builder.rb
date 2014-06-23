@@ -24,14 +24,16 @@ module GirFFI
       end
 
       def generate
-        meta = @info.method? ? '' : "self."
-
-        code = "def #{meta}#{@info.safe_name} #{method_arguments.join(', ')}\n"
+        code = "def #{qualified_method_name} #{method_arguments.join(', ')}\n"
         code << method_body
         code << "\nend\n"
       end
 
       private
+
+      def qualified_method_name
+        "#{@info.method? ? '' : "self."}#{@info.safe_name}"
+      end
 
       def lib_module_name
         "#{@info.safe_namespace}::Lib"
