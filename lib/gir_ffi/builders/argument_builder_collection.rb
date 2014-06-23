@@ -8,6 +8,7 @@ module GirFFI
 
       def initialize return_value_builder, argument_builders, options = {}
         @receiver_builder = options[:receiver_builder]
+        @error_argument_builder = options[:error_argument_builder]
         @base_argument_builders = argument_builders
         @return_value_builder = return_value_builder
         set_up_argument_relations
@@ -15,7 +16,7 @@ module GirFFI
 
       def parameter_preparation
         argument_builders.sort_by.with_index {|arg, i|
-          [arg.type_info.array_length, i] }.map(&:pre_conversion).flatten
+          [arg.array_length_idx, i] }.map(&:pre_conversion).flatten
       end
 
       def return_value_conversion
@@ -48,11 +49,10 @@ module GirFFI
       end
 
       def argument_builders
-        @argument_builders ||= if @receiver_builder
-                                 @base_argument_builders.dup.unshift @receiver_builder
-                               else
-                                 @base_argument_builders
-                               end
+        @argument_builders ||= @base_argument_builders.dup.tap do |builders|
+          builders.unshift @receiver_builder if @receiver_builder
+          builders.push @error_argument_builder if @error_argument_builder
+        end
       end
 
       private

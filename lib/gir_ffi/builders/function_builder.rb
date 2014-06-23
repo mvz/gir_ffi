@@ -19,8 +19,10 @@ module GirFFI
                                                        ReturnValueInfo.new(@info.return_type, @info.skip_return?),
                                                        @info.constructor?)
         @errarg = error_argument vargen
-        @argument_builder_collection = ArgumentBuilderCollection.new(@return_value_builder,
-                                                                     @argument_builders)
+        @argument_builder_collection =
+          ArgumentBuilderCollection.new(@return_value_builder,
+                                        @argument_builders,
+                                        error_argument_builder: @errarg)
       end
 
       def generate
@@ -48,7 +50,8 @@ module GirFFI
       end
 
       def method_lines
-        preparation + function_call + post_processing + return_statement
+        @argument_builder_collection.parameter_preparation +
+          function_call + post_processing + return_statement
       end
 
       def return_statement
@@ -72,12 +75,6 @@ module GirFFI
         ca << @errarg.callarg
         ca.unshift "self" if @info.method?
         ca.compact
-      end
-
-      def preparation
-        pr = @argument_builders.map(&:pre_conversion)
-        pr << @errarg.pre_conversion
-        pr.flatten
       end
 
       def capture

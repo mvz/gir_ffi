@@ -6,6 +6,14 @@ module GirFFI
     # arguments are not part of the introspected signature, but their
     # presence is indicated by the 'throws' attribute of the function.
     class ErrorArgumentBuilder < BaseArgumentBuilder
+      def method_argument_name
+        nil
+      end
+
+      def return_value_name
+        nil
+      end
+
       def pre_conversion
         [ "#{callarg} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
       end
