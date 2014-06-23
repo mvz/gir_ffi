@@ -3,7 +3,6 @@ require 'gir_ffi/return_value_info'
 require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
-require 'gir_ffi/builders/null_argument_builder'
 require 'gir_ffi/variable_name_generator'
 
 module GirFFI
@@ -18,11 +17,10 @@ module GirFFI
         @return_value_builder = ReturnValueBuilder.new(vargen,
                                                        ReturnValueInfo.new(@info.return_type, @info.skip_return?),
                                                        @info.constructor?)
-        @errarg = error_argument vargen
         @argument_builder_collection =
           ArgumentBuilderCollection.new(@return_value_builder,
                                         @argument_builders,
-                                        error_argument_builder: @errarg)
+                                        error_argument_builder: error_argument(vargen))
       end
 
       def generate
@@ -44,8 +42,6 @@ module GirFFI
       def error_argument vargen
         if @info.throws?
           ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
-        else
-          NullArgumentBuilder.new
         end
       end
 
