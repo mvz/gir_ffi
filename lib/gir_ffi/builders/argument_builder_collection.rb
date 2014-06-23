@@ -32,7 +32,7 @@ module GirFFI
       end
 
       def method_argument_names
-        @method_argument_names ||= argument_builders.map(&:method_argument_name)
+        @method_argument_names ||= argument_builders.map(&:method_argument_name).compact
       end
 
       def return_value_name

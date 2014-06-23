@@ -64,7 +64,7 @@ module GirFFI
       end
 
       def method_arguments
-        @argument_builders.map(&:method_argument_name).compact
+        @argument_builder_collection.method_argument_names
       end
 
       def function_call_arguments
