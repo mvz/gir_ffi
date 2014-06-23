@@ -3,7 +3,7 @@ module GirFFI
   class NullArgumentBuilder
     def initialize *; end
 
-    def pre; []; end
+    def pre_conversion; []; end
 
     def post; []; end
 

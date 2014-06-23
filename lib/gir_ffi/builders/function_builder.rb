@@ -76,7 +76,7 @@ module GirFFI
 
       def preparation
         pr = @argument_builders.map(&:pre_conversion)
-        pr << @errarg.pre
+        pr << @errarg.pre_conversion
         pr.flatten
       end
 
