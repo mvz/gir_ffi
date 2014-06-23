@@ -5,7 +5,7 @@ module GirFFI
 
     def pre_conversion; []; end
 
-    def post; []; end
+    def post_conversion; []; end
 
     def array_length_idx; -1; end
 

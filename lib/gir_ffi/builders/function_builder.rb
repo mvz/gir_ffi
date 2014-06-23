@@ -89,7 +89,7 @@ module GirFFI
         args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
 
         result = args.map {|arg| arg.post_conversion}.flatten
-        result += @errarg.post
+        result += @errarg.post_conversion
         result + @return_value_builder.post_conversion
       end
 

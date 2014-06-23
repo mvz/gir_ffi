@@ -18,7 +18,7 @@ module GirFFI
         [ "#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil" ]
       end
 
-      def post
+      def post_conversion
         [ "GirFFI::ArgHelper.check_error(#{call_argument_name})" ]
       end
     end
