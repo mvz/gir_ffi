@@ -24,8 +24,8 @@ module GirFFI
       end
 
       def generate
-        code = "def #{qualified_method_name} #{method_arguments.join(', ')}\n"
-        code << method_body
+        code = "def #{qualified_method_name} #{method_arguments.join(', ')}"
+        method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
       end
 
@@ -47,14 +47,20 @@ module GirFFI
         end
       end
 
-      def method_body
-        lines = preparation << function_call << post_processing
-        lines << "return #{return_values.join(', ')}" if has_return_values?
-        lines.flatten.join("\n").indent
+      def method_lines
+        preparation + function_call + post_processing + return_statement
+      end
+
+      def return_statement
+        if has_return_values?
+          ["return #{return_values.join(', ')}"]
+        else
+          []
+        end
       end
 
       def function_call
-        "#{capture}#{lib_module_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
+        ["#{capture}#{lib_module_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"]
       end
 
       def method_arguments
@@ -86,9 +92,9 @@ module GirFFI
         # FIXME: Sorting knows too much about internals of ArgumentBuilder.
         args = @argument_builders.sort_by {|arg| arg.type_info.array_length}
 
-        result = args.map {|arg| arg.post_conversion}
-        result.unshift @errarg.post
-        result << @return_value_builder.post_conversion
+        result = args.map {|arg| arg.post_conversion}.flatten
+        result += @errarg.post
+        result + @return_value_builder.post_conversion
       end
 
       def return_values
