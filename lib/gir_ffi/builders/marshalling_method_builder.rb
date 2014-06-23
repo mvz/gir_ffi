@@ -29,6 +29,8 @@ module GirFFI
         code << "\nend\n"
       end
 
+      private
+
       def method_lines
         param_values_unpack +
           @argument_builder_collection.parameter_preparation +
