@@ -58,8 +58,8 @@ module GirFFI
         end
       end
 
-      def callarg
-        @callarg ||= new_variable
+      def call_argument_name
+        @call_argument_name ||= new_variable
       end
 
       def new_variable

@@ -70,7 +70,7 @@ module GirFFI
         <<-CODE.reset_indentation
         def #{setter_name} value
           #{setter_builder.pre_conversion.join("\n")}
-          set_property("#{property_name}", #{setter_builder.callarg})
+          set_property("#{property_name}", #{setter_builder.call_argument_name})
         end
         CODE
       end

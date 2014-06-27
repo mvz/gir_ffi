@@ -38,6 +38,8 @@ module GirFFI
         code << "\nend\n"
       end
 
+      private
+
       def method_lines
         @argument_builder_collection.parameter_preparation +
           call_to_proc +
