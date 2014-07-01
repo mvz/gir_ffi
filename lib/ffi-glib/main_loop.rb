@@ -8,17 +8,11 @@ module GLib
 
       def initialize(timeout = DEFAULT_TIMEOUT)
         @timeout = timeout
-        @handler = proc { let_other_threads_run; true }
+        @handler = proc { true }
       end
 
       def idle_handler
         GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
-      end
-
-      private
-
-      def let_other_threads_run
-        Thread.pass
       end
     end
 
