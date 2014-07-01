@@ -10,8 +10,7 @@ Signal.trap("INT") do
 end
 
 class Foo
-  def initialize(min_delta = 0.001, timeout = 100)
-    @min_delta = min_delta
+  def initialize(timeout = 10)
     @timeout = timeout
     @handler = proc { self.idle_handler; false }
   end
@@ -28,12 +27,16 @@ class Foo
   end
 
   def delta
-    @after - @before
+    ((@after - @before) * 1000).to_i
+  end
+
+  def new_timeout
+    @timeout - delta
   end
 
   def set_idle_proc
-    if delta < @min_delta
-      GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
+    if delta < @timeout
+      GLib.timeout_add(GLib::PRIORITY_DEFAULT, new_timeout, @handler, nil, nil)
     else
       GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, @handler, nil, nil)
     end
