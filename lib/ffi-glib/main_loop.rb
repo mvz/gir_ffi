@@ -1,8 +1,12 @@
+require 'singleton'
+
 GLib.load_class :MainLoop
 
 module GLib
   class MainLoop
     class ThreadEnabler
+      include Singleton
+
       FRAMERATE = 25
       DEFAULT_TIMEOUT = 1000 / FRAMERATE
 
@@ -12,15 +16,16 @@ module GLib
       end
 
       def setup_idle_handler
-        GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
+        @handler_id ||= GLib.timeout_add(GLib::PRIORITY_DEFAULT,
+                                         @timeout, @handler,
+                                         nil, nil)
       end
     end
 
     setup_instance_method "run_with_thread_enabler"
 
     def run_with_thread_enabler
-      @enabler = ThreadEnabler.new
-      @enabler.setup_idle_handler
+      ThreadEnabler.instance.setup_idle_handler
       run_without_thread_enabler
     end
 
