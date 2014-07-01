@@ -5,8 +5,8 @@ module GLib
     class ThreadEnabler
       FRAMERATE = 25
       DEFAULT_TIMEOUT = 1000 / FRAMERATE
-      def initialize(min_delta = 0.001, timeout = DEFAULT_TIMEOUT)
-        @min_delta = min_delta
+
+      def initialize(timeout = DEFAULT_TIMEOUT)
         @timeout = timeout
         @handler = proc { let_other_threads_run; true }
       end
