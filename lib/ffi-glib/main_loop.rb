@@ -3,35 +3,22 @@ GLib.load_class :MainLoop
 module GLib
   class MainLoop
     class ThreadEnabler
-      def initialize(min_delta = 0.001, timeout = 10)
+      FRAMERATE = 25
+      DEFAULT_TIMEOUT = 1000 / FRAMERATE
+      def initialize(min_delta = 0.001, timeout = DEFAULT_TIMEOUT)
         @min_delta = min_delta
         @timeout = timeout
-        @handler = proc { self.idle_handler; false }
+        @handler = proc { let_other_threads_run; true }
       end
 
       def idle_handler
-        let_other_threads_run
-        set_idle_proc
+        GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
       end
 
       private
 
       def let_other_threads_run
-        @before = Time.now
         Thread.pass
-        @after = Time.now
-      end
-
-      def delta
-        @after - @before
-      end
-
-      def set_idle_proc
-        if delta < @min_delta
-          GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
-        else
-          GLib.idle_add(GLib::PRIORITY_DEFAULT_IDLE, @handler, nil, nil)
-        end
       end
     end
 
