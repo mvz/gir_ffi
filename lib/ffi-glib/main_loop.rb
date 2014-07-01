@@ -11,7 +11,7 @@ module GLib
         @handler = proc { true }
       end
 
-      def idle_handler
+      def setup_idle_handler
         GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, @handler, nil, nil)
       end
     end
@@ -20,7 +20,7 @@ module GLib
 
     def run_with_thread_enabler
       @enabler = ThreadEnabler.new
-      @enabler.idle_handler
+      @enabler.setup_idle_handler
       run_without_thread_enabler
     end
 
