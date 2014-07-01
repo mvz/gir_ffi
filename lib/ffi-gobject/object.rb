@@ -17,8 +17,8 @@ module GObject
       super
     end
 
-    def signal_connect event, &block
-      GObject.signal_connect(self, event, &block)
+    def signal_connect event, data=nil, &block
+      GObject.signal_connect(self, event, data, &block)
     end
 
     setup_instance_method "get_property"

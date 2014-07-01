@@ -35,9 +35,19 @@ describe GObject::Object do
 
   describe "#signal_connect" do
     subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
+
     it 'delegates to GObject' do
-      mock(GObject).signal_connect(subject, 'some-event')
+      mock(GObject).signal_connect(subject, 'some-event', nil)
       subject.signal_connect('some-event') do
+        nothing
+      end
+
+      RR.verify
+    end
+
+    it 'delegates to GObject if an optional data argument is passed' do
+      mock(GObject).signal_connect(subject, 'some-event', 'data')
+      subject.signal_connect('some-event', 'data') do
         nothing
       end
 
