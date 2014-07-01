@@ -1,7 +1,7 @@
 require 'gir_ffi_test_helper'
 
 describe GLib::Bytes do
-  it "can succesfully be created with Glib::Bytes.new" do
+  it "can succesfully be created with GLib::Bytes.new" do
     bytes = GLib::Bytes.new [1, 2, 3]
     bytes.must_be_instance_of GLib::Bytes
   end
