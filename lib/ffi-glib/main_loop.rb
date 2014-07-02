@@ -43,7 +43,7 @@ module GLib
       run_without_thread_enabler
     end
 
-    alias run_without_thread_enabler run
-    alias run run_with_thread_enabler
+    alias_method :run_without_thread_enabler, :run
+    alias_method :run, :run_with_thread_enabler
   end
 end

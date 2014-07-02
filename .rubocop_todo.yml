@@ -9,11 +9,6 @@
 Style/AccessorMethodName:
   Enabled: false
 
-# Offense count: 8
-# Cop supports --auto-correct.
-Style/Alias:
-  Enabled: false
-
 # Offense count: 9
 # Cop supports --auto-correct.
 Style/AndOr:

@@ -13,7 +13,7 @@ module GLib
       super.tap {|variant| variant.ref }
     end
 
-    alias get_string_without_override get_string
-    alias get_string get_string_with_override
+    alias_method :get_string_without_override, :get_string
+    alias_method :get_string, :get_string_with_override
   end
 end

@@ -62,11 +62,11 @@ module GObject
       GObject::ObjectClass.wrap(to_ptr.get_pointer 0)
     end
 
-    alias get_property_without_override get_property
-    alias get_property get_property_with_override
+    alias_method :get_property_without_override, :get_property
+    alias_method :get_property, :get_property_with_override
 
-    alias set_property_without_override set_property
-    alias set_property set_property_with_override
+    alias_method :set_property_without_override, :set_property
+    alias_method :set_property, :set_property_with_override
 
     private
 
