@@ -6,6 +6,9 @@ AllCops:
     - Rakefile
     - gir_ffi.gemspec
 
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
 Style/Blocks:
   Enabled: false
 
