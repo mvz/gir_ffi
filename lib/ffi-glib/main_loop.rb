@@ -3,14 +3,17 @@ require 'singleton'
 GLib.load_class :MainLoop
 
 module GLib
+  # Overrides for GMainLoop, GLib's event loop
   class MainLoop
+    # Class encepsulationg logic for running an idle handler to make Ruby code
+    # run during GLib's event loop.
     class ThreadEnabler
       include Singleton
 
       FRAMERATE = 25
       DEFAULT_TIMEOUT = 1000 / FRAMERATE
 
-      def initialize(timeout = DEFAULT_TIMEOUT)
+      def initialize timeout = DEFAULT_TIMEOUT
         @timeout = timeout
         @handler = proc { true }
       end
