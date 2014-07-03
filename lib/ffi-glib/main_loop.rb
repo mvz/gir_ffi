@@ -15,7 +15,7 @@ module GLib
 
       def initialize timeout = DEFAULT_TIMEOUT
         @timeout = timeout
-        @handler = proc { true }
+        @handler = proc { Thread.pass; true }
       end
 
       def setup_idle_handler
