@@ -22,6 +22,16 @@ describe GirFFI::Builders::ObjectBuilder do
       sig = builder.find_signal 'changed'
       sig.name.must_equal 'changed'
     end
+
+    it "raises an error for a signal that doesn't exist" do
+      msg = nil
+      begin
+        obj_builder.find_signal 'foo'
+      rescue RuntimeError => e
+        msg = e.message
+      end
+      assert_match(/^Signal/, msg)
+    end
   end
 
   describe "#find_property" do
