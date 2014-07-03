@@ -18,9 +18,11 @@ module GirFFI
       end
 
       def find_property property_name
-        info.find_property property_name or
-          superclass.find_property property_name or
-          raise "Property #{property_name} not found"
+        signal_definers.each do |inf|
+          prop = inf.find_property property_name
+          return prop if prop
+        end
+        raise "Property #{property_name} not found"
       end
 
       def object_class_struct

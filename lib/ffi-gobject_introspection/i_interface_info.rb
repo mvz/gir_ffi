@@ -23,6 +23,7 @@ module GObjectIntrospection
 
     ##
     build_array_method :properties, :property
+    build_finder_method :find_property, :n_properties
 
     def get_n_methods
       Lib.g_interface_info_get_n_methods @gobj
