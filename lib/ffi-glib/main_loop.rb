@@ -32,7 +32,12 @@ module GLib
     setup_instance_method "run_with_thread_enabler"
 
     def run_with_thread_enabler
-      ThreadEnabler.instance.setup_idle_handler
+      case RUBY_ENGINE
+      when 'jruby'
+      when 'rbx'
+      else # 'ruby' most likely
+        ThreadEnabler.instance.setup_idle_handler
+      end
       run_without_thread_enabler
     end
 
