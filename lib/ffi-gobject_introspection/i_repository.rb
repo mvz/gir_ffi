@@ -72,7 +72,7 @@ module GObjectIntrospection
       Lib.g_type_tag_to_string type
     end
 
-    def require namespace, version=nil, flags=0
+    def require namespace, version = nil, flags = 0
       errpp = FFI::MemoryPointer.new(:pointer).write_pointer nil
 
       Lib.g_irepository_require @gobj, namespace, version, flags, errpp

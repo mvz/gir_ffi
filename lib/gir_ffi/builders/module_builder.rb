@@ -10,7 +10,7 @@ module GirFFI
     class ModuleBuilder
       include BuilderHelper
 
-      def initialize namespace, version=nil
+      def initialize namespace, version = nil
         @namespace = namespace
         @version = version
         # FIXME: Pass safe namespace as an argument

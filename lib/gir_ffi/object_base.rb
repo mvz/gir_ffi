@@ -33,7 +33,7 @@ module GirFFI
       :pointer
     end
 
-    def self.copy_value_to_pointer value, pointer, offset=0
+    def self.copy_value_to_pointer value, pointer, offset = 0
       pointer.put_pointer offset, value.to_ptr
     end
 

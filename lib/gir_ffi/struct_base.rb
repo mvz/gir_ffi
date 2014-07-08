@@ -21,7 +21,7 @@ module GirFFI
       pointer.to_ptr
     end
 
-    def self.copy_value_to_pointer value, pointer, offset=0
+    def self.copy_value_to_pointer value, pointer, offset = 0
       size = self::Struct.size
       pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
     end

@@ -16,7 +16,7 @@ module GObject
       super
     end
 
-    def signal_connect event, data=nil, &block
+    def signal_connect event, data = nil, &block
       GObject.signal_connect(self, event, data, &block)
     end
 

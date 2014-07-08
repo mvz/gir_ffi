@@ -21,7 +21,7 @@ module GirFFI
       build_class info
     end
 
-    def self.build_module namespace, version=nil
+    def self.build_module namespace, version = nil
       Builders::ModuleBuilder.new(namespace, version).generate
     end
 

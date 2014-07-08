@@ -2,7 +2,7 @@ module GObjectIntrospection
   # Wraps GIBaseInfo struct, the base \type for all info types.
   # Decendant types will be implemented as needed.
   class IBaseInfo
-    def initialize ptr, lib=Lib
+    def initialize ptr, lib = Lib
       raise ArgumentError, "ptr must not be null" if ptr.null?
 
       unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'

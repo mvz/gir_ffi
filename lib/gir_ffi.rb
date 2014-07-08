@@ -20,7 +20,7 @@ require 'gir_ffi/version'
 # Main module containing classes and modules needed for generating GLib and
 # GObject bindings.
 module GirFFI
-  def self.setup module_name, version=nil
+  def self.setup module_name, version = nil
     module_name = module_name.to_s
     GirFFI::Builder.build_module module_name, version
   end
