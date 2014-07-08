@@ -27,11 +27,6 @@ Style/LineLength:
 Style/MethodLength:
   Max: 23
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/NegatedIf:
-  Enabled: false
-
 # Offense count: 7
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/Next:

@@ -4,7 +4,7 @@ module GirFFI
   # arrays, strings, or interfaces.
   class InPointer < FFI::Pointer
     def self.from_array type, ary
-      return if !ary
+      return unless ary
       case type
       when :utf8, :filename
         from_utf8_array ary
@@ -30,7 +30,7 @@ module GirFFI
     end
 
     def self.from type, val
-      return if !val
+      return unless val
       case type
       when :utf8, :filename
         from_utf8 val
