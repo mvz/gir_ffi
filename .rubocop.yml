@@ -31,6 +31,9 @@ Style/StringLiterals:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
+Style/GuardClause:
+  MinBodyLength: 2
+
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false

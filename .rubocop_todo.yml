@@ -18,11 +18,6 @@ Style/ClassLength:
 Style/CyclomaticComplexity:
   Max: 10
 
-# Offense count: 12
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Enabled: false
-
 # Offense count: 8
 # Configuration parameters: MaxLineLength.
 Style/IfUnlessModifier:
