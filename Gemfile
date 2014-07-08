@@ -4,9 +4,9 @@ source "https://rubygems.org"
 gemspec
 
 if ENV["CI"]
-  gem 'coveralls', require: false, type: :development, platform: :mri
+  gem 'coveralls', type: :development, platform: :mri
 else
-  gem 'simplecov', '~> 0.8.2', require: false, type: :development, platform: :mri
+  gem 'simplecov', '~> 0.8.2', type: :development, platform: :mri
   gem 'pry', '~> 0.10.0', type: :development
   gem 'repl_rake', '0.0.3', type: :development
   gem 'yard', '~> 0.8.7', type: :development
