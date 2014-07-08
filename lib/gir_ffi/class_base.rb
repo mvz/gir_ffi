@@ -1,5 +1,4 @@
 require 'forwardable'
-require 'gir_ffi/builders/null_builder'
 require 'gir_ffi/registered_type_base'
 
 module GirFFI
@@ -11,8 +10,6 @@ module GirFFI
 
     attr_reader :struct
     def_delegators :@struct, :to_ptr
-
-    GIR_FFI_BUILDER = NullBuilder.new
 
     def setup_and_call method, *arguments, &block
       method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)

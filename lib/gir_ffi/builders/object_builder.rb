@@ -14,18 +14,23 @@ module GirFFI
           sig = inf.find_signal signal_name
           return sig if sig
         end
-        superclass.find_signal signal_name or
-          raise "Signal #{signal_name} not found"
+        raise "Signal #{signal_name} not found"
       end
 
       def find_property property_name
-        info.find_property property_name or
-          superclass.find_property property_name or
-          raise "Property #{property_name} not found"
+        signal_definers.each do |inf|
+          prop = inf.find_property property_name
+          return prop if prop
+        end
+        raise "Property #{property_name} not found"
       end
 
       def object_class_struct
         @object_class_struct ||= Builder.build_class object_class_struct_info
+      end
+
+      def signal_definers
+        @signal_definers ||= [info] + info.interfaces + parent_signal_definers
       end
 
       private
@@ -68,6 +73,14 @@ module GirFFI
                         end
       end
 
+      def parent_signal_definers
+        @parent_signal_definers ||= if parent
+                                      superclass.gir_ffi_builder.signal_definers
+                                    else
+                                      []
+                                    end
+      end
+
       def setup_property_accessors
         info.properties.each do |prop|
           PropertyBuilder.new(prop).build
@@ -97,10 +110,6 @@ module GirFFI
         interfaces.each do |iface|
           klass.send :include, iface
         end
-      end
-
-      def signal_definers
-        [info] + info.interfaces
       end
 
       def interfaces
