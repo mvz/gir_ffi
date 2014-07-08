@@ -4,7 +4,6 @@ module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
-
       def self.flattened_tag_to_gtype_map
         @flattened_tag_to_gtype_map ||= {
           array:    GObject::TYPE_ARRAY,

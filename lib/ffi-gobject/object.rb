@@ -3,7 +3,6 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-
     setup_method "new"
 
     # TODO: Generate accessor methods from GIR at class definition time

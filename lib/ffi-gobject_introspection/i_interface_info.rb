@@ -81,6 +81,5 @@ module GObjectIntrospection
     def iface_struct
       IStructInfo.wrap(Lib.g_interface_info_get_iface_struct @gobj)
     end
-
   end
 end

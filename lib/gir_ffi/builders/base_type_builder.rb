@@ -1,7 +1,6 @@
 require 'gir_ffi/builder_helper'
 
 module GirFFI
-
   # Base class for type builders.
   class BaseTypeBuilder
     include BuilderHelper
