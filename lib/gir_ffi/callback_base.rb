@@ -19,9 +19,14 @@ module GirFFI
     end
 
     def self.to_native value, _context
-      return nil unless value
-      return value if FFI::Function === value
-      value.to_native
+      case value
+      when CallbackBase
+        value.to_native
+      when FFI::Function
+        value
+      else
+        nil
+      end
     end
 
     def self.wrap ptr
@@ -43,10 +48,15 @@ module GirFFI
     end
 
     def self.wrap_in_callback_args_mapper prc
-      return nil unless prc
-      return prc if FFI::Function === prc
-      new do |*args|
-        call_with_argument_mapping(prc, *args)
+      case prc
+      when FFI::Function
+        prc
+      when Proc
+        new do |*args|
+          call_with_argument_mapping(prc, *args)
+        end
+      else
+        nil
       end
     end
 

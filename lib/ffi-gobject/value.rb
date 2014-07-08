@@ -45,15 +45,15 @@ module GObject
     end
 
     CLASS_TO_GTYPE_MAP = {
-      true => TYPE_BOOLEAN,
-      false => TYPE_BOOLEAN,
+      TrueClass => TYPE_BOOLEAN,
+      FalseClass => TYPE_BOOLEAN,
       Integer => TYPE_INT,
       String => TYPE_STRING
     }
 
     def init_for_ruby_value val
       CLASS_TO_GTYPE_MAP.each do |klass, type|
-        if klass === val
+        if val.is_a? klass
           init type
           return self
         end

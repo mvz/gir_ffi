@@ -10,10 +10,6 @@ Style/AccessorMethodName:
   Enabled: false
 
 # Offense count: 3
-Style/CaseEquality:
-  Enabled: false
-
-# Offense count: 3
 # Configuration parameters: CountComments.
 Style/ClassLength:
   Max: 171
