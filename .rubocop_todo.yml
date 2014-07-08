@@ -14,12 +14,6 @@ Style/AccessorMethodName:
 Style/ClassLength:
   Max: 171
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: PreferredMethods.
-Style/CollectionMethods:
-  Enabled: false
-
 # Offense count: 3
 Style/CyclomaticComplexity:
   Max: 10

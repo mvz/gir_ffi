@@ -8,7 +8,7 @@ module GLib
     include ListMethods
 
     def self.from_enumerable type, arr
-      arr.reverse.inject(new type) { |lst, val| lst.prepend val }
+      arr.reverse.reduce(new type) { |lst, val| lst.prepend val }
     end
 
     def prepend data
