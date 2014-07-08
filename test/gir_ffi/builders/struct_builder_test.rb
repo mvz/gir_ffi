@@ -56,6 +56,7 @@ describe GirFFI::Builders::StructBuilder do
       stub(info).info_type { :object }
       stub(info).safe_name { 'Bar' }
       stub(info).namespace { 'Foo' }
+      stub(info).full_type_name { 'Foo::Bar' }
 
       @classbuilder = GirFFI::Builders::ObjectBuilder.new info
 

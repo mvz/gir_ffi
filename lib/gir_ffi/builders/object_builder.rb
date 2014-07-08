@@ -55,12 +55,9 @@ module GirFFI
 
       def parent
         unless defined? @parent
-          pr = info.parent
-          if pr.nil? or (pr.safe_name == @classname and pr.namespace == @namespace)
-            @parent = nil
-          else
-            @parent = pr
-          end
+          @parent = if (parent = info.parent) && parent.full_type_name != info.full_type_name
+                      parent
+                    end
         end
         @parent
       end
