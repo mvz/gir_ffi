@@ -12,9 +12,7 @@ module GirFFI
     end
 
     def build_class
-      unless defined? @klass
-        instantiate_class
-      end
+      instantiate_class unless defined? @klass
       @klass
     end
 

@@ -41,7 +41,7 @@ module GirFFI
 
       def error_argument vargen
         if @info.throws?
-          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new if @info.throws?
         end
       end
 

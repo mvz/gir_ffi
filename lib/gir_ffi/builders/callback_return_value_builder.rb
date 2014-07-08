@@ -11,9 +11,7 @@ module GirFFI
       end
 
       def capture_variable_name
-        if is_relevant?
-          @capture_variable_name ||= new_variable
-        end
+        @capture_variable_name ||= new_variable if is_relevant?
       end
 
       def post_converted_name
@@ -25,9 +23,7 @@ module GirFFI
       end
 
       def return_value_name
-        if is_relevant?
-          post_converted_name unless array_arg
-        end
+        post_converted_name if has_return_value_name?
       end
 
       def post_conversion
@@ -54,6 +50,10 @@ module GirFFI
 
       def is_void_return_value?
         specialized_type_tag == :void && !type_info.pointer?
+      end
+
+      def has_return_value_name?
+        is_relevant? && !array_arg
       end
     end
   end

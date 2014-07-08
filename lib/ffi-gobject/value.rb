@@ -5,10 +5,7 @@ module GObject
   class Value
     # TODO: Give more generic name
     def set_ruby_value val
-      if current_gtype == 0
-        init_for_ruby_value val
-      end
-
+      init_for_ruby_value val if current_gtype == 0
       set_value val
     end
 

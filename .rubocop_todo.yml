@@ -18,11 +18,6 @@ Style/ClassLength:
 Style/CyclomaticComplexity:
   Max: 10
 
-# Offense count: 8
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Enabled: false
-
 # Offense count: 13
 Style/LineLength:
   Max: 119

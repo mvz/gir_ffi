@@ -34,6 +34,9 @@ Style/RedundantReturn:
 Style/GuardClause:
   MinBodyLength: 2
 
+Style/IfUnlessModifier:
+  MaxLineLength: 60
+
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false
