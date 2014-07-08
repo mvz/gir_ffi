@@ -36,7 +36,7 @@ module GirFFI
       def element_type
         case tag
         when :glist, :gslist, :array, :c
-          enumerable_element_type 
+          enumerable_element_type
         when :ghash
           dictionary_element_type
         else

@@ -8,7 +8,7 @@ class GirFFI::GType
   def to_i
     @gtype
   end
-  
+
   def class_size
     type_query.class_size
   end
