@@ -20,7 +20,7 @@ module GirFFI
       def fetch ptr
         return if ptr.null?
         key = ptr.address
-        if @store.has_key? key
+        if @store.key? key
           @store[key]
         else
           ptr
