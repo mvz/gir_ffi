@@ -15,7 +15,11 @@ module GLib
 
       def initialize timeout = DEFAULT_TIMEOUT
         @timeout = timeout
-        @handler = proc { Thread.pass; true }
+        @handler = if RUBY_VERSION == "1.9.2"
+                     proc { sleep 0.0001; Thread.pass; true }
+                   else
+                     proc { Thread.pass; true }
+                   end
       end
 
       def setup_idle_handler
