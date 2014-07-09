@@ -7,11 +7,11 @@ module GObject
 
     # TODO: Generate accessor methods from GIR at class definition time
     def method_missing method, *args
-      if respond_to?("get_#{method}")
-        return send("get_#{method}", *args)
-      end
-      if method.to_s =~ /(.*)=$/ && respond_to?("set_#{$1}")
-        return send("set_#{$1}", *args)
+      getter_name = "get_#{method}"
+      return send(getter_name, *args) if respond_to?(getter_name)
+      if method.to_s =~ /(.*)=$/
+        setter_name = "set_#{Regexp.last_match[1]}"
+        return send(setter_name, *args) if respond_to?(setter_name)
       end
       super
     end

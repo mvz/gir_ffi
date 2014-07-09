@@ -14,7 +14,7 @@ module GirFFI
         @namespace = namespace
         @version = version
         # FIXME: Pass safe namespace as an argument
-        @safe_namespace = @namespace.gsub(/^(.)/) { $1.upcase }
+        @safe_namespace = @namespace.gsub(/^./, &:upcase)
       end
 
       def generate

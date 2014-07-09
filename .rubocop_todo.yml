@@ -32,11 +32,6 @@ Style/MethodLength:
 Style/Next:
   Enabled: false
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/PerlBackrefs:
-  Enabled: false
-
 # Offense count: 14
 # Configuration parameters: NamePrefixBlacklist.
 Style/PredicateName:
