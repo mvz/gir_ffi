@@ -11,7 +11,8 @@ module GirFFI
       def self.for_callback argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
-        argument_builders = argument_infos.map { |arg| CallbackArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.
+          map { |arg| CallbackArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders)
@@ -21,7 +22,8 @@ module GirFFI
         vargen = VariableNameGenerator.new
 
         receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map { |arg| CallbackArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.
+          map { |arg| CallbackArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
@@ -56,7 +58,11 @@ module GirFFI
       end
 
       def call_to_proc
-        ["#{capture}_proc.call(#{@argument_builder_collection.call_argument_names.join(', ')})"]
+        ["#{capture}_proc.call(#{call_argument_list})"]
+      end
+
+      def call_argument_list
+        @argument_builder_collection.call_argument_names.join(', ')
       end
 
       def capture
@@ -67,7 +73,8 @@ module GirFFI
       end
 
       def method_arguments
-        @method_arguments ||= @argument_builder_collection.method_argument_names.dup.unshift('_proc')
+        @method_arguments ||=
+          @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
     end
   end

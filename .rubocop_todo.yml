@@ -14,10 +14,6 @@ Style/ClassLength:
 Style/CyclomaticComplexity:
   Max: 10
 
-# Offense count: 13
-Style/LineLength:
-  Max: 119
-
 # Offense count: 14
 # Configuration parameters: CountComments.
 Style/MethodLength:

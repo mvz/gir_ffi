@@ -77,18 +77,20 @@ module GirFFI
       end
 
       def builders_for_pre_conversion
-        @builders_for_pre_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
-          builders.unshift @receiver_builder if @receiver_builder
-          builders.push @error_argument_builder if @error_argument_builder
-        end
+        @builders_for_pre_conversion ||=
+          sorted_base_argument_builders.dup.tap do |builders|
+            builders.unshift @receiver_builder if @receiver_builder
+            builders.push @error_argument_builder if @error_argument_builder
+          end
       end
 
       def builders_for_post_conversion
-        @builders_for_post_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
-          builders.unshift @receiver_builder if @receiver_builder
-          builders.unshift @error_argument_builder if @error_argument_builder
-          builders.push return_value_builder
-        end
+        @builders_for_post_conversion ||=
+          sorted_base_argument_builders.dup.tap do |builders|
+            builders.unshift @receiver_builder if @receiver_builder
+            builders.unshift @error_argument_builder if @error_argument_builder
+            builders.push return_value_builder
+          end
       end
 
       def sorted_base_argument_builders
