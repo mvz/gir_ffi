@@ -93,7 +93,7 @@ module GirFFI
 
       def sorted_base_argument_builders
         @sorted_base_argument_builders ||= @base_argument_builders.
-          sort_by.with_index {|arg, i| [arg.array_length_idx, i] }
+          sort_by.with_index { |arg, i| [arg.array_length_idx, i] }
       end
     end
   end

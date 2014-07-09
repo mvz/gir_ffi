@@ -13,7 +13,7 @@ module GirFFI
       def initialize info
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
-        @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
+        @argument_builders = @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
         @return_value_builder = ReturnValueBuilder.new(vargen,
                                                        ReturnValueInfo.new(@info.return_type, @info.skip_return?),
                                                        @info.constructor?)

@@ -101,7 +101,7 @@ module GObject
 
     def self.for_g_type g_type
       return nil if g_type == TYPE_NONE
-      new.tap {|it| it.init g_type }
+      new.tap { |it| it.init g_type }
     end
 
     # TODO: Combine with wrap_ruby_value

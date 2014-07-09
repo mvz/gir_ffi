@@ -11,7 +11,7 @@ module GirFFI
       def self.for_callback argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
-        argument_builders = argument_infos.map {|arg| CallbackArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.map { |arg| CallbackArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders)
@@ -21,7 +21,7 @@ module GirFFI
         vargen = VariableNameGenerator.new
 
         receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg| CallbackArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.map { |arg| CallbackArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders,

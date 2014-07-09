@@ -12,7 +12,7 @@ module GirFFI
         vargen = VariableNameGenerator.new
 
         receiver_builder = ClosureArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg| ClosureArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.map { |arg| ClosureArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders,

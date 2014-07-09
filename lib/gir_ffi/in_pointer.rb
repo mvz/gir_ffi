@@ -55,15 +55,15 @@ module GirFFI
       private
 
       def from_utf8_array ary
-        from_basic_type_array :pointer, ary.map {|str| from_utf8 str}
+        from_basic_type_array :pointer, ary.map { |str| from_utf8 str }
       end
 
       def from_boolean_array ary
-        from_basic_type_array :int, ary.map {|val| val ? 1 : 0}
+        from_basic_type_array :int, ary.map { |val| val ? 1 : 0 }
       end
 
       def from_pointer_array type, ary
-        from_basic_type_array :pointer, ary.map {|elem| from type, elem }
+        from_basic_type_array :pointer, ary.map { |elem| from type, elem }
       end
 
       def from_gvalue_array type, ary
@@ -91,7 +91,7 @@ module GirFFI
       end
 
       def from_enum_array type, ary
-        from_basic_type_array :int32, ary.map {|sym| type.to_native sym, nil }
+        from_basic_type_array :int32, ary.map { |sym| type.to_native sym, nil }
       end
 
       def from_utf8 str

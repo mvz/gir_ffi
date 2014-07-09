@@ -57,7 +57,7 @@ module GLib
     end
 
     def self.from_enumerable elmtype, it
-      new(elmtype).tap {|arr| arr.append_vals it }
+      new(elmtype).tap { |arr| arr.append_vals it }
     end
 
     private
