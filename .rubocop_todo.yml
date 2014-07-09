@@ -48,11 +48,6 @@ Style/SingleLineBlockParams:
 Style/SingleLineMethods:
   Enabled: false
 
-# Offense count: 21
-# Cop supports --auto-correct.
-Style/SpaceInsideBrackets:
-  Enabled: false
-
 # Offense count: 11
 # Cop supports --auto-correct.
 # Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, Whitelist.

@@ -34,7 +34,7 @@ module GirFFI
 
       def post_conversion
         if has_post_conversion?
-          [ "#{post_converted_name} = #{post_convertor.conversion}" ]
+          ["#{post_converted_name} = #{post_convertor.conversion}"]
         else
           []
         end

@@ -29,9 +29,9 @@ module GirFFI
       def post_conversion
         if has_post_conversion?
           if type_info.flattened_tag == :object
-            [ "#{post_converted_name} = #{post_convertor.conversion}.to_ptr" ]
+            ["#{post_converted_name} = #{post_convertor.conversion}.to_ptr"]
           else
-            [ "#{post_converted_name} = #{post_convertor.conversion}" ]
+            ["#{post_converted_name} = #{post_convertor.conversion}"]
           end
         else
           []

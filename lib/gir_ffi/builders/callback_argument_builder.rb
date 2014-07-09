@@ -29,9 +29,9 @@ module GirFFI
       def pre_conversion
         case direction
         when :in
-          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
+          ["#{pre_converted_name} = #{pre_convertor.conversion}"]
         when :out
-          [ "#{pre_converted_name} = #{out_parameter_preparation}" ]
+          ["#{pre_converted_name} = #{out_parameter_preparation}"]
         when :error
           [
             "#{pre_converted_name} = #{out_parameter_preparation}",
@@ -43,7 +43,7 @@ module GirFFI
       def post_conversion
         case direction
         when :out
-          [ outgoing_post_conversion ]
+          [outgoing_post_conversion]
         when :error
           [
             "rescue => #{result_name}",

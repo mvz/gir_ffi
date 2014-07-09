@@ -133,7 +133,7 @@ module GirFFI
       end
 
       def is_caller_allocated_object?
-        [ :struct, :array ].include?(specialized_type_tag) &&
+        [:struct, :array].include?(specialized_type_tag) &&
           @arginfo.caller_allocates?
       end
 

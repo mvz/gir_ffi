@@ -52,7 +52,7 @@ module GirFFI
       end
 
       def param_values_unpack
-        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)" ]
+        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)"]
       end
 
       def capture
