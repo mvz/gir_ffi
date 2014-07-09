@@ -34,8 +34,8 @@ module GirFFI
       def build_namespaced_class classname
         info = gir.find_by_name @namespace, classname.to_s
         unless info
-          raise NameError.new(
-            "Class #{classname} not found in namespace #{@namespace}")
+          raise NameError,
+            "Class #{classname} not found in namespace #{@namespace}"
         end
         Builder.build_class info
       end
