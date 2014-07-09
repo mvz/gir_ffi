@@ -40,6 +40,11 @@ Style/IfUnlessModifier:
 Style/TrivialAccessors:
   ExactNameMatch: true
 
+# TODO: See about has_ and have_
+Style/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false

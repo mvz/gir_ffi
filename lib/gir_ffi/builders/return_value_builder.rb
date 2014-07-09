@@ -12,8 +12,8 @@ module GirFFI
         @is_constructor = is_constructor
       end
 
-      def is_relevant?
-        !is_void_return_value? && !arginfo.skip?
+      def relevant?
+        !void_return_value? && !arginfo.skip?
       end
 
       def capture_variable_name
@@ -65,12 +65,12 @@ module GirFFI
         length_arg && length_arg.post_converted_name
       end
 
-      def is_void_return_value?
+      def void_return_value?
         specialized_type_tag == :void && !type_info.pointer?
       end
 
       def has_return_value_name?
-        is_relevant? && !array_arg
+        relevant? && !array_arg
       end
     end
   end

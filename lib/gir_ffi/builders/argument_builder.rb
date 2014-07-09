@@ -9,9 +9,7 @@ module GirFFI
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
       def method_argument_name
-        if has_input_value? && !is_array_length_parameter?
-          name
-        end
+        name if has_input_value? && !array_length_parameter?
       end
 
       def post_converted_name
@@ -24,7 +22,7 @@ module GirFFI
 
       def return_value_name
         if has_output_value?
-          post_converted_name unless is_array_length_parameter?
+          post_converted_name unless array_length_parameter?
         end
       end
 
@@ -33,11 +31,11 @@ module GirFFI
         case direction
         when :in
           pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if is_array_length_parameter?
+          pr << array_length_assignment if array_length_parameter?
           pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
         when :inout
           pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if is_array_length_parameter?
+          pr << array_length_assignment if array_length_parameter?
           pr << out_parameter_preparation
           pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
         when :out
@@ -58,7 +56,7 @@ module GirFFI
       private
 
       def has_post_conversion?
-        has_output_value? && !is_caller_allocated_object?
+        has_output_value? && !caller_allocated_object?
       end
 
       def output_value
@@ -88,7 +86,7 @@ module GirFFI
         length_arg && length_arg.post_converted_name
       end
 
-      def is_array_length_parameter?
+      def array_length_parameter?
         @array_arg
       end
 
@@ -120,7 +118,7 @@ module GirFFI
       end
 
       def out_parameter_preparation
-        value = if is_caller_allocated_object?
+        value = if caller_allocated_object?
                   if specialized_type_tag == :array
                     "#{argument_class_name}.new #{type_info.element_type.inspect}"
                   else
@@ -132,7 +130,7 @@ module GirFFI
         "#{call_argument_name} = #{value}"
       end
 
-      def is_caller_allocated_object?
+      def caller_allocated_object?
         [:struct, :array].include?(specialized_type_tag) &&
           @arginfo.caller_allocates?
       end

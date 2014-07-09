@@ -83,7 +83,7 @@ module GirFFI
       end
 
       def has_capture?
-        @return_value_builder.is_relevant?
+        @return_value_builder.relevant?
       end
     end
   end

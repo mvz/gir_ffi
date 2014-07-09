@@ -32,11 +32,6 @@ Style/MethodLength:
 Style/Next:
   Enabled: false
 
-# Offense count: 14
-# Configuration parameters: NamePrefixBlacklist.
-Style/PredicateName:
-  Enabled: false
-
 # Offense count: 2
 # Configuration parameters: Methods.
 Style/SingleLineBlockParams:

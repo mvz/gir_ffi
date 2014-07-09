@@ -27,11 +27,7 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def if is_writable_field?
-      end
-
-      def is_writable_field?
-        info.writable?
+        container_class.class_eval setter_def if info.writable?
       end
 
       def getter_def

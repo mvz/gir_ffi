@@ -329,7 +329,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "marks itself as irrelevant" do
-      builder.is_relevant?.must_equal false
+      builder.relevant?.must_equal false
     end
 
     it "returns nothing" do
@@ -366,7 +366,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "marks itself as irrelevant" do
-      builder.is_relevant?.must_equal false
+      builder.relevant?.must_equal false
     end
 
     it "returns nothing" do

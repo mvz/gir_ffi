@@ -6,12 +6,12 @@ module GirFFI
     # Implements building post-processing statements for return values of
     # callbacks.
     class CallbackReturnValueBuilder < BaseArgumentBuilder
-      def is_relevant?
-        !is_void_return_value? && !arginfo.skip?
+      def relevant?
+        !void_return_value? && !arginfo.skip?
       end
 
       def capture_variable_name
-        @capture_variable_name ||= new_variable if is_relevant?
+        @capture_variable_name ||= new_variable if relevant?
       end
 
       def post_converted_name
@@ -48,12 +48,12 @@ module GirFFI
         @post_convertor ||= RubyToCConvertor.new(type_info, capture_variable_name)
       end
 
-      def is_void_return_value?
+      def void_return_value?
         specialized_type_tag == :void && !type_info.pointer?
       end
 
       def has_return_value_name?
-        is_relevant? && !array_arg
+        relevant? && !array_arg
       end
     end
   end
