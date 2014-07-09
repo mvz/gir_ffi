@@ -32,7 +32,7 @@ module GObject
 
       closure = wrap(new_simple(self::Struct.size, nil).to_ptr)
       closure.block = block
-      closure.set_marshal Proc.new {|*args| marshaller(*args)}
+      closure.set_marshal proc {|*args| marshaller(*args)}
 
       closure
     end
