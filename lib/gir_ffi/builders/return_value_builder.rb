@@ -7,9 +7,9 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      def initialize var_gen, arginfo, is_constructor = false
+      def initialize var_gen, arginfo, constructor_result = false
         super var_gen, arginfo
-        @is_constructor = is_constructor
+        @constructor_result = constructor_result
       end
 
       def relevant?
@@ -40,19 +40,21 @@ module GirFFI
         end
       end
 
-      attr_reader :is_constructor
-
       private
 
+      def constructor_result?
+        @constructor_result
+      end
+
       def has_post_conversion?
-        is_closure || is_constructor ||
+        is_closure || constructor_result? ||
           type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
         @post_convertor ||= if is_closure
                               ClosureConvertor.new(capture_variable_name)
-                            elsif is_constructor
+                            elsif constructor_result?
                               ConstructorResultConvertor.new(capture_variable_name)
                             else
                               CToRubyConvertor.new(type_info,
