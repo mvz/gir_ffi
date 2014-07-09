@@ -53,8 +53,3 @@ Style/SingleLineMethods:
 # Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, Whitelist.
 Style/TrivialAccessors:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/WordArray:
-  MinSize: 35
