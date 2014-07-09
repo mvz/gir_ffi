@@ -36,7 +36,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       describe "when it is a regular argument" do
         before do
-          builder.is_closure = false
+          builder.closure = false
         end
 
         it "has the correct value for #pre_conversion" do
@@ -50,7 +50,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       describe "when it is a closure" do
         before do
-          builder.is_closure = true
+          builder.closure = true
         end
 
         it "has the correct value for #pre_conversion" do

@@ -62,7 +62,7 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= if is_closure
+        @pre_convertor ||= if closure?
                              ClosureConvertor.new(method_argument_name)
                            elsif needs_c_to_ruby_conversion?
                              CToRubyConvertor.new(type_info,

@@ -14,7 +14,14 @@ module GirFFI
 
       attr_reader :arginfo
       attr_accessor :length_arg, :array_arg
-      attr_accessor :is_closure
+
+      def closure?
+        @is_closure
+      end
+
+      def closure= arg
+        @is_closure = arg
+      end
 
       def initialize var_gen, arginfo
         @var_gen = var_gen

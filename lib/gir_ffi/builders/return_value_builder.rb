@@ -33,6 +33,7 @@ module GirFFI
       end
 
       def post_conversion
+        # TODO: Avoid conditional by using NullConvertor
         if has_post_conversion?
           ["#{post_converted_name} = #{post_convertor.conversion}"]
         else
@@ -47,12 +48,12 @@ module GirFFI
       end
 
       def has_post_conversion?
-        is_closure || constructor_result? ||
+        closure? || constructor_result? ||
           type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
-        @post_convertor ||= if is_closure
+        @post_convertor ||= if closure?
                               ClosureConvertor.new(capture_variable_name)
                             elsif constructor_result?
                               ConstructorResultConvertor.new(capture_variable_name)
