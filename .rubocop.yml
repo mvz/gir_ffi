@@ -43,6 +43,9 @@ Style/TrivialAccessors:
 Style/SingleLineBlockParams:
   Enabled: false
 
+Style/Next:
+  Enabled: false
+
 # TODO: See about has_ and have_
 Style/PredicateName:
   NamePrefixBlacklist:

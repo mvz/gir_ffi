@@ -26,8 +26,3 @@ Style/LineLength:
 # Configuration parameters: CountComments.
 Style/MethodLength:
   Max: 23
-
-# Offense count: 7
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/Next:
-  Enabled: false
