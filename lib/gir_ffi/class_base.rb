@@ -15,7 +15,7 @@ module GirFFI
       method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)
 
       unless method_name
-        raise RuntimeError, "Unable to set up instance method '#{method}' in #{self}"
+        raise "Unable to set up instance method '#{method}' in #{self}"
       end
 
       send method_name, *arguments, &block
@@ -31,7 +31,7 @@ module GirFFI
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
       unless method_name
-        raise RuntimeError, "Unable to set up method '#{method}' in #{self}"
+        raise "Unable to set up method '#{method}' in #{self}"
       end
 
       send method_name, *arguments, &block

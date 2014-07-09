@@ -42,7 +42,7 @@ module GirFFI
       result = setup_method method.to_s
 
       unless result
-        raise RuntimeError, "Unable to set up method #{method} in #{self}"
+        raise "Unable to set up method #{method} in #{self}"
       end
 
       send method, *arguments, &block

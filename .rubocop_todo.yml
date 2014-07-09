@@ -37,10 +37,6 @@ Style/Next:
 Style/PredicateName:
   Enabled: false
 
-# Offense count: 3
-Style/RedundantException:
-  Enabled: false
-
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
