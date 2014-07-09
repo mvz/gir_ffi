@@ -15,6 +15,8 @@ module GLib
 
       def initialize timeout = DEFAULT_TIMEOUT
         @timeout = timeout
+        # TODO: Remove 1.9.2 option on or after July 31, 2014:
+        # https://www.ruby-lang.org/en/news/2014/07/01/eol-for-1-8-7-and-1-9-2/
         @handler = if RUBY_VERSION == "1.9.2"
                      proc { sleep 0.0001; Thread.pass; true }
                    else
