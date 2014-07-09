@@ -197,7 +197,7 @@ module GirFFI
         subtype = param_type(index).to_ffitype
         if subtype == :pointer
           # NOTE: Don't use pointer directly to appease JRuby.
-          :"uint#{FFI.type_size(:pointer)*8}"
+          :"uint#{FFI.type_size(:pointer) * 8}"
         else
           subtype
         end

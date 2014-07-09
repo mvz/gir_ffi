@@ -7,7 +7,7 @@ module GObjectIntrospection
     ffi_lib "girepository-1.0"
 
     # IRepository
-    enum :IRepositoryLoadFlags, [:LAZY, (1<<0)]
+    enum :IRepositoryLoadFlags, [:LAZY, (1 << 0)]
 
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_prepend_search_path, [:string], :void

@@ -48,11 +48,6 @@ Style/SingleLineBlockParams:
 Style/SingleLineMethods:
   Enabled: false
 
-# Offense count: 3
-# Cop supports --auto-correct.
-Style/SpaceAroundOperators:
-  Enabled: false
-
 # Offense count: 32
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.

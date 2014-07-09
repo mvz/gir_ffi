@@ -74,7 +74,7 @@ module GirFFI
 
     def self.cast_uint32_to_int32 val
       if val >= 0x80000000
-        -(0x100000000-val)
+        -(0x100000000 - val)
       else
         val
       end
