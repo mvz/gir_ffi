@@ -55,7 +55,7 @@ module GirFFI
 
       def parent
         unless defined? @parent
-          @parent = if (parent = info.parent) && parent.full_type_name != info.full_type_name
+          @parent = if (parent = info.parent) && parent != info
                       parent
                     end
         end

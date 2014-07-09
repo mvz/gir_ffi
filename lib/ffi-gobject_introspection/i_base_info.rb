@@ -112,7 +112,7 @@ module GObjectIntrospection
     end
 
     def == other
-      Lib.g_base_info_equal @gobj, other.to_ptr
+      other.is_a?(IBaseInfo) && Lib.g_base_info_equal(@gobj, other)
     end
   end
 end
