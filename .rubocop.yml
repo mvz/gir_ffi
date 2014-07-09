@@ -37,6 +37,9 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   MaxLineLength: 60
 
+Style/TrivialAccessors:
+  ExactNameMatch: true
+
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:
   Enabled: false

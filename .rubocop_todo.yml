@@ -41,9 +41,3 @@ Style/PredicateName:
 # Configuration parameters: Methods.
 Style/SingleLineBlockParams:
   Enabled: false
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, Whitelist.
-Style/TrivialAccessors:
-  Enabled: false
