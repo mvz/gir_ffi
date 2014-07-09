@@ -46,6 +46,9 @@ Style/SingleLineBlockParams:
 Style/Next:
   Enabled: false
 
+Style/AccessorMethodName:
+  Enabled: false
+
 # TODO: See about has_ and have_
 Style/PredicateName:
   NamePrefixBlacklist:
