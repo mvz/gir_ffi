@@ -40,6 +40,9 @@ Style/IfUnlessModifier:
 Style/TrivialAccessors:
   ExactNameMatch: true
 
+Style/SingleLineBlockParams:
+  Enabled: false
+
 # TODO: See about has_ and have_
 Style/PredicateName:
   NamePrefixBlacklist:
