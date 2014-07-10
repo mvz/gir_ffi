@@ -1,7 +1,5 @@
 require 'gir_ffi_test_helper'
 
-require 'gir_ffi/in_out_pointer'
-
 describe GirFFI::InOutPointer do
   describe ".new" do
     it "wraps an existing pointer and a type" do
