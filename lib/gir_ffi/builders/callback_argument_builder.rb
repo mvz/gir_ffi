@@ -29,9 +29,9 @@ module GirFFI
       def pre_conversion
         case direction
         when :in
-          [ "#{pre_converted_name} = #{pre_convertor.conversion}" ]
+          ["#{pre_converted_name} = #{pre_convertor.conversion}"]
         when :out
-          [ "#{pre_converted_name} = #{out_parameter_preparation}" ]
+          ["#{pre_converted_name} = #{out_parameter_preparation}"]
         when :error
           [
             "#{pre_converted_name} = #{out_parameter_preparation}",
@@ -43,7 +43,7 @@ module GirFFI
       def post_conversion
         case direction
         when :out
-          [ outgoing_post_conversion ]
+          [outgoing_post_conversion]
         when :error
           [
             "rescue => #{result_name}",
@@ -62,7 +62,7 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= if is_closure
+        @pre_convertor ||= if closure?
                              ClosureConvertor.new(method_argument_name)
                            elsif needs_c_to_ruby_conversion?
                              CToRubyConvertor.new(type_info,
@@ -92,7 +92,7 @@ module GirFFI
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
         if allocated_by_us?
-          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" +
+          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
             ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
         else
           "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"

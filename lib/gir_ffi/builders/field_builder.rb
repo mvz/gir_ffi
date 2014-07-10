@@ -27,11 +27,7 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def if is_writable_field?
-      end
-
-      def is_writable_field?
-        info.writable?
+        container_class.class_eval setter_def if info.writable?
       end
 
       def getter_def
@@ -43,7 +39,7 @@ module GirFFI
         <<-CODE.reset_indentation
         def #{info.name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
+          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class}, #{field_ptr})
           #{builder.capture_variable_name} = #{typed_ptr}.to_value
           #{builder.post_conversion.join("\n")}
           #{builder.return_value_name}
@@ -60,7 +56,7 @@ module GirFFI
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class.inspect}, #{field_ptr})
+          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
           #{typed_ptr}.set_value #{builder.call_argument_name}
         end
@@ -74,7 +70,7 @@ module GirFFI
       end
 
       def field_type_tag_or_class
-        @field_type_tag_or_class ||= info.field_type.tag_or_class
+        @field_type_tag_or_class ||= info.field_type.tag_or_class.inspect
       end
 
       def container_class

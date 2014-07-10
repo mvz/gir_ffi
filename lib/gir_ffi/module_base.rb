@@ -15,7 +15,7 @@ module GirFFI
       gir_ffi_builder.build_namespaced_class classname.to_s
     end
 
-    alias load_class setup_class
+    alias_method :load_class, :setup_class
 
     def gir_ffi_builder
       const_get :GIR_FFI_BUILDER

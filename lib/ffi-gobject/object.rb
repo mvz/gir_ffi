@@ -3,21 +3,20 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-
     setup_method "new"
 
     # TODO: Generate accessor methods from GIR at class definition time
     def method_missing method, *args
-      if respond_to?("get_#{method}")
-        return send("get_#{method}", *args)
-      end
-      if method.to_s =~ /(.*)=$/ && respond_to?("set_#{$1}")
-        return send("set_#{$1}", *args)
+      getter_name = "get_#{method}"
+      return send(getter_name, *args) if respond_to?(getter_name)
+      if method.to_s =~ /(.*)=$/
+        setter_name = "set_#{Regexp.last_match[1]}"
+        return send(setter_name, *args) if respond_to?(setter_name)
       end
       super
     end
 
-    def signal_connect event, data=nil, &block
+    def signal_connect event, data = nil, &block
       GObject.signal_connect(self, event, data, &block)
     end
 
@@ -62,11 +61,11 @@ module GObject
       GObject::ObjectClass.wrap(to_ptr.get_pointer 0)
     end
 
-    alias get_property_without_override get_property
-    alias get_property get_property_with_override
+    alias_method :get_property_without_override, :get_property
+    alias_method :get_property, :get_property_with_override
 
-    alias set_property_without_override set_property
-    alias set_property set_property_with_override
+    alias_method :set_property_without_override, :set_property
+    alias_method :set_property, :set_property_with_override
 
     private
 

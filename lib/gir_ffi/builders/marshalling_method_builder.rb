@@ -12,7 +12,8 @@ module GirFFI
         vargen = VariableNameGenerator.new
 
         receiver_builder = ClosureArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.map {|arg| ClosureArgumentBuilder.new vargen, arg }
+        argument_builders = argument_infos.
+          map { |arg| ClosureArgumentBuilder.new vargen, arg }
         return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
 
         new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
@@ -48,11 +49,15 @@ module GirFFI
       end
 
       def call_to_closure
-        ["#{capture}wrap(closure.to_ptr).invoke_block(#{@argument_builder_collection.call_argument_names.join(', ')})"]
+        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
+      end
+
+      def call_argument_list
+        @argument_builder_collection.call_argument_names.join(', ')
       end
 
       def param_values_unpack
-        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)" ]
+        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)"]
       end
 
       def capture
@@ -64,7 +69,8 @@ module GirFFI
 
       def method_arguments
         # FIXME: Don't add _ if method_argument_names has more than one element
-        @method_arguments ||= @argument_builder_collection.method_argument_names.dup.push('_')
+        @method_arguments ||=
+          @argument_builder_collection.method_argument_names.dup.push('_')
       end
 
       def marshaller_arguments

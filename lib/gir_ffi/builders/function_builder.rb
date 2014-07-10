@@ -13,10 +13,11 @@ module GirFFI
       def initialize info
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
-        @argument_builders = @info.args.map {|arg| ArgumentBuilder.new vargen, arg }
-        @return_value_builder = ReturnValueBuilder.new(vargen,
-                                                       ReturnValueInfo.new(@info.return_type, @info.skip_return?),
-                                                       @info.constructor?)
+        @argument_builders = @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
+        @return_value_builder =
+          ReturnValueBuilder.new(vargen,
+                                 ReturnValueInfo.new(@info.return_type, @info.skip_return?),
+                                 @info.constructor?)
         @argument_builder_collection =
           ArgumentBuilderCollection.new(@return_value_builder,
                                         @argument_builders,
@@ -35,13 +36,13 @@ module GirFFI
         "#{@info.method? ? '' : "self."}#{@info.safe_name}"
       end
 
-      def lib_module_name
+      def lib_name
         "#{@info.safe_namespace}::Lib"
       end
 
       def error_argument vargen
         if @info.throws?
-          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new if @info.throws?
         end
       end
 
@@ -61,7 +62,7 @@ module GirFFI
       end
 
       def function_call
-        ["#{capture}#{lib_module_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"]
+        ["#{capture}#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"]
       end
 
       def method_arguments
@@ -83,7 +84,7 @@ module GirFFI
       end
 
       def has_capture?
-        @return_value_builder.is_relevant?
+        @return_value_builder.relevant?
       end
     end
   end

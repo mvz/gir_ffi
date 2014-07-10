@@ -15,7 +15,7 @@ module GirFFI
       method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)
 
       unless method_name
-        raise RuntimeError, "Unable to set up instance method '#{method}' in #{self}"
+        raise "Unable to set up instance method '#{method}' in #{self}"
       end
 
       send method_name, *arguments, &block
@@ -31,7 +31,7 @@ module GirFFI
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
       unless method_name
-        raise RuntimeError, "Unable to set up method '#{method}' in #{self}"
+        raise "Unable to set up method '#{method}' in #{self}"
       end
 
       send method_name, *arguments, &block
@@ -71,9 +71,9 @@ module GirFFI
       # Wrap the passed pointer in an instance of the current class. Will not
       # do any casting to subtypes.
       def direct_wrap ptr
-        return nil if !ptr or ptr.null?
+        return nil if !ptr || ptr.null?
         obj = _real_new
-        obj.instance_variable_set :@struct, self::Struct.new(ptr.to_ptr)
+        obj.instance_variable_set :@struct, self::Struct.new(ptr)
         obj
       end
 

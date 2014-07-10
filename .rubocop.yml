@@ -6,15 +6,17 @@ AllCops:
     - Rakefile
     - gir_ffi.gemspec
 
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: true
+
 Style/Blocks:
   Enabled: false
 
 Style/DotPosition:
   EnforcedStyle: trailing
 
-# Disabled for now to let .rubocop_todo.yml value take over.
-#Style/LineLength:
-  #Max: 92
+Style/LineLength:
+  Max: 92
 
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
@@ -27,6 +29,29 @@ Style/StringLiterals:
 
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
+
+Style/GuardClause:
+  MinBodyLength: 2
+
+Style/IfUnlessModifier:
+  MaxLineLength: 60
+
+Style/TrivialAccessors:
+  ExactNameMatch: true
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/Next:
+  Enabled: false
+
+Style/AccessorMethodName:
+  Enabled: false
+
+# TODO: See about has_ and have_
+Style/PredicateName:
+  NamePrefixBlacklist:
+    - is_
 
 # RuboCop has no setting to accept how vim aligns parameters.
 Style/AlignParameters:

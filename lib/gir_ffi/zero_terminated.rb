@@ -25,7 +25,7 @@ module GirFFI
     def each
       return if @ptr.null?
       offset = 0
-      while val = read_value(offset)
+      while (val = read_value(offset))
         offset += ffi_type_size
         yield wrap_value(val)
       end

@@ -26,7 +26,7 @@ module GLib
     end
 
     def self.from_enumerable type, it
-      new(type).tap {|arr| arr.add_array it}
+      new(type).tap { |arr| arr.add_array it }
     end
 
     def self.add array, data
@@ -44,7 +44,7 @@ module GLib
     end
 
     def add_array ary
-      ary.each {|item| add item}
+      ary.each { |item| add item }
     end
 
     def data_ptr

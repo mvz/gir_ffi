@@ -1,7 +1,6 @@
 require 'gir_ffi/builder_helper'
 
 module GirFFI
-
   # Base class for type builders.
   class BaseTypeBuilder
     include BuilderHelper
@@ -13,9 +12,7 @@ module GirFFI
     end
 
     def build_class
-      unless defined? @klass
-        instantiate_class
-      end
+      instantiate_class unless defined? @klass
       @klass
     end
 

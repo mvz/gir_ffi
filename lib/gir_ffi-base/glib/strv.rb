@@ -17,7 +17,8 @@ module GLib
     end
 
     def each
-      reset_iterator or return
+      return if @ptr.null?
+      reset_iterator
       while (ptr = next_ptr)
         yield ptr.read_string
       end
@@ -30,7 +31,6 @@ module GLib
     private
 
     def reset_iterator
-      return if @ptr.null?
       @offset = 0
     end
 

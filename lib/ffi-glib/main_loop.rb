@@ -18,9 +18,9 @@ module GLib
         # TODO: Remove 1.9.2 option on or after July 31, 2014:
         # https://www.ruby-lang.org/en/news/2014/07/01/eol-for-1-8-7-and-1-9-2/
         @handler = if RUBY_VERSION == "1.9.2"
-                     proc { sleep 0.0001; Thread.pass; true }
+                     sleepy_handler
                    else
-                     proc { Thread.pass; true }
+                     quick_handler
                    end
       end
 
@@ -28,6 +28,23 @@ module GLib
         @handler_id ||= GLib.timeout_add(GLib::PRIORITY_DEFAULT,
                                          @timeout, @handler,
                                          nil, nil)
+      end
+
+      private
+
+      def quick_handler
+        proc do
+          Thread.pass
+          true
+        end
+      end
+
+      def sleepy_handler
+        proc do
+          sleep 0.0001
+          Thread.pass
+          true
+        end
       end
     end
 
@@ -43,7 +60,7 @@ module GLib
       run_without_thread_enabler
     end
 
-    alias run_without_thread_enabler run
-    alias run run_with_thread_enabler
+    alias_method :run_without_thread_enabler, :run
+    alias_method :run, :run_with_thread_enabler
   end
 end

@@ -3,7 +3,7 @@ module GLib
   module ArrayMethods
     # Re-implementation of the g_array_index and g_ptr_array_index macros
     def index idx
-      if idx >= length or idx < 0
+      if idx >= length || idx < 0
         raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
       end
       ptr = GirFFI::InOutPointer.new element_type, data_ptr + idx * element_size

@@ -4,7 +4,7 @@ module GirFFI
   # arrays, strings, or interfaces.
   class InPointer < FFI::Pointer
     def self.from_array type, ary
-      return if !ary
+      return unless ary
       case type
       when :utf8, :filename
         from_utf8_array ary
@@ -30,7 +30,7 @@ module GirFFI
     end
 
     def self.from type, val
-      return if !val
+      return unless val
       case type
       when :utf8, :filename
         from_utf8 val
@@ -47,22 +47,23 @@ module GirFFI
 
     class << self
       def from_closure_data obj
-        FFI::Pointer.new(obj.object_id).tap {|ptr|
-          ArgHelper::OBJECT_STORE.store(ptr, obj) }
+        FFI::Pointer.new(obj.object_id).tap do |ptr|
+          ArgHelper::OBJECT_STORE.store(ptr, obj)
+        end
       end
 
       private
 
       def from_utf8_array ary
-        from_basic_type_array :pointer, ary.map {|str| from_utf8 str}
+        from_basic_type_array :pointer, ary.map { |str| from_utf8 str }
       end
 
       def from_boolean_array ary
-        from_basic_type_array :int, ary.map {|val| val ? 1 : 0}
+        from_basic_type_array :int, ary.map { |val| val ? 1 : 0 }
       end
 
       def from_pointer_array type, ary
-        from_basic_type_array :pointer, ary.map {|elem| from type, elem }
+        from_basic_type_array :pointer, ary.map { |elem| from type, elem }
       end
 
       def from_gvalue_array type, ary
@@ -90,7 +91,7 @@ module GirFFI
       end
 
       def from_enum_array type, ary
-        from_basic_type_array :int32, ary.map {|sym| type.to_native sym, nil }
+        from_basic_type_array :int32, ary.map { |sym| type.to_native sym, nil }
       end
 
       def from_utf8 str

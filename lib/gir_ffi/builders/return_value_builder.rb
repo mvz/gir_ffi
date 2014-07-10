@@ -7,13 +7,13 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      def initialize var_gen, arginfo, is_constructor = false
+      def initialize var_gen, arginfo, constructor_result = false
         super var_gen, arginfo
-        @is_constructor = is_constructor
+        @constructor_result = constructor_result
       end
 
-      def is_relevant?
-        !is_void_return_value? && !arginfo.skip?
+      def relevant?
+        !void_return_value? && !arginfo.skip?
       end
 
       def capture_variable_name
@@ -29,32 +29,33 @@ module GirFFI
       end
 
       def return_value_name
-        if is_relevant?
-          post_converted_name unless array_arg
-        end
+        post_converted_name if has_return_value_name?
       end
 
       def post_conversion
+        # TODO: Avoid conditional by using NullConvertor
         if has_post_conversion?
-          [ "#{post_converted_name} = #{post_convertor.conversion}" ]
+          ["#{post_converted_name} = #{post_convertor.conversion}"]
         else
           []
         end
       end
 
-      attr_reader :is_constructor
-
       private
 
+      def constructor_result?
+        @constructor_result
+      end
+
       def has_post_conversion?
-        is_closure || is_constructor ||
+        closure? || constructor_result? ||
           type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
-        @post_convertor ||= if is_closure
+        @post_convertor ||= if closure?
                               ClosureConvertor.new(capture_variable_name)
-                            elsif is_constructor
+                            elsif constructor_result?
                               ConstructorResultConvertor.new(capture_variable_name)
                             else
                               CToRubyConvertor.new(type_info,
@@ -67,8 +68,12 @@ module GirFFI
         length_arg && length_arg.post_converted_name
       end
 
-      def is_void_return_value?
+      def void_return_value?
         specialized_type_tag == :void && !type_info.pointer?
+      end
+
+      def has_return_value_name?
+        relevant? && !array_arg
       end
     end
   end

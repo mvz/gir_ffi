@@ -44,7 +44,7 @@ module GLib
       Lib.g_array_get_element_size self
     end
 
-    alias element_size get_element_size
+    alias_method :element_size, :get_element_size
 
     def == other
       to_a == other.to_a
@@ -57,7 +57,7 @@ module GLib
     end
 
     def self.from_enumerable elmtype, it
-      new(elmtype).tap {|arr| arr.append_vals it }
+      new(elmtype).tap { |arr| arr.append_vals it }
     end
 
     private

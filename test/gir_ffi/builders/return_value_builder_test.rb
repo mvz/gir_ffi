@@ -329,7 +329,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "marks itself as irrelevant" do
-      builder.is_relevant?.must_equal false
+      builder.relevant?.must_equal false
     end
 
     it "returns nothing" do
@@ -342,7 +342,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
       get_introspection_data("Regress", "TestCallbackUserData").args[0].argument_type }
 
     before do
-      builder.is_closure = true
+      builder.closure = true
     end
 
     it "fetches the stored object in #post_conversion" do
@@ -366,7 +366,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     end
 
     it "marks itself as irrelevant" do
-      builder.is_relevant?.must_equal false
+      builder.relevant?.must_equal false
     end
 
     it "returns nothing" do

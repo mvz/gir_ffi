@@ -8,7 +8,7 @@ module GLib
     include ListMethods
 
     def self.from_enumerable type, arr
-      arr.inject(new type) { |lst, val| lst.append val }
+      arr.reduce(new type) { |lst, val| lst.append val }
     end
 
     def append data

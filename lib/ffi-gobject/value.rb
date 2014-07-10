@@ -5,10 +5,7 @@ module GObject
   class Value
     # TODO: Give more generic name
     def set_ruby_value val
-      if current_gtype == 0
-        init_for_ruby_value val
-      end
-
+      init_for_ruby_value val if current_gtype == 0
       set_value val
     end
 
@@ -45,15 +42,15 @@ module GObject
     end
 
     CLASS_TO_GTYPE_MAP = {
-      true => TYPE_BOOLEAN,
-      false => TYPE_BOOLEAN,
+      TrueClass => TYPE_BOOLEAN,
+      FalseClass => TYPE_BOOLEAN,
       Integer => TYPE_INT,
       String => TYPE_STRING
     }
 
     def init_for_ruby_value val
       CLASS_TO_GTYPE_MAP.each do |klass, type|
-        if klass === val
+        if val.is_a? klass
           init type
           return self
         end
@@ -104,7 +101,7 @@ module GObject
 
     def self.for_g_type g_type
       return nil if g_type == TYPE_NONE
-      new.tap {|it| it.init g_type }
+      new.tap { |it| it.init g_type }
     end
 
     # TODO: Combine with wrap_ruby_value
@@ -131,7 +128,7 @@ module GObject
     end
 
     def check_type_compatibility val
-      if !GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
+      unless GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
         raise ArgumentError, "#{val.class} is incompatible with #{current_gtype_name}"
       end
     end
@@ -157,7 +154,7 @@ module GObject
 
     def method_map_entry
       METHOD_MAP[current_gtype] || METHOD_MAP[current_fundamental_type] ||
-        fail("No method map entry for #{current_gtype_name}")
+        raise("No method map entry for #{current_gtype_name}")
     end
   end
 end

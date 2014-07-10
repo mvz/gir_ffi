@@ -47,7 +47,7 @@ module GirFFI
       end
 
       def interface_gtypes
-        included_interfaces.map {|interface| GType.new(interface.get_gtype) }
+        included_interfaces.map { |interface| GType.new(interface.get_gtype) }
       end
 
       def included_interfaces

@@ -4,7 +4,6 @@ module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
-
       def self.flattened_tag_to_gtype_map
         @flattened_tag_to_gtype_map ||= {
           array:    GObject::TYPE_ARRAY,
@@ -22,10 +21,11 @@ module GirFFI
 
       def g_type
         if tag == :interface
-          interface.g_type
+          return interface.g_type
+        elsif (type = ITypeInfo.flattened_tag_to_gtype_map[flattened_tag])
+          return type
         else
-          ITypeInfo.flattened_tag_to_gtype_map[flattened_tag] or
-            raise "Can't find type for #{flattened_tag} pointer? = #{pointer?}"
+          raise "Can't find GType for #{flattened_tag} pointer? = #{pointer?}"
         end
       end
 
@@ -36,7 +36,7 @@ module GirFFI
       def element_type
         case tag
         when :glist, :gslist, :array, :c
-          enumerable_element_type 
+          enumerable_element_type
         when :ghash
           dictionary_element_type
         else
@@ -197,7 +197,7 @@ module GirFFI
         subtype = param_type(index).to_ffitype
         if subtype == :pointer
           # NOTE: Don't use pointer directly to appease JRuby.
-          :"uint#{FFI.type_size(:pointer)*8}"
+          :"uint#{FFI.type_size(:pointer) * 8}"
         else
           subtype
         end

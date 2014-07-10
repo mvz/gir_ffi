@@ -70,12 +70,12 @@ module GObject
     return_gvalue
   end
 
-  def self.signal_connect object, detailed_signal, data=nil, &block
+  def self.signal_connect object, detailed_signal, data = nil, &block
     raise ArgumentError, "Block needed" unless block_given?
     signal_name, _ = detailed_signal.split('::')
     sig_info = object.class.find_signal signal_name
 
-    closure = sig_info.wrap_in_closure {|*args| block.call(*args << data) }
+    closure = sig_info.wrap_in_closure { |*args| block.call(*args << data) }
 
     # TODO: Provide _after variant
     signal_connect_closure object, detailed_signal, closure, false

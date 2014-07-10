@@ -36,7 +36,7 @@ module GirFFI
       end
 
       def return_value_name
-        return_value_builder.return_value_name if return_value_builder.is_relevant?
+        return_value_builder.return_value_name if return_value_builder.relevant?
       end
 
       def return_value_names
@@ -59,7 +59,7 @@ module GirFFI
       def set_up_argument_relations
         @base_argument_builders.each do |arg|
           if (idx = arg.arginfo.closure) >= 0
-            @base_argument_builders[idx].is_closure = true
+            @base_argument_builders[idx].closure = true
           end
         end
         all_builders.each do |bldr|
@@ -77,14 +77,16 @@ module GirFFI
       end
 
       def builders_for_pre_conversion
-        @builders_for_pre_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
+        @builders_for_pre_conversion ||=
+          sorted_base_argument_builders.dup.tap do |builders|
             builders.unshift @receiver_builder if @receiver_builder
             builders.push @error_argument_builder if @error_argument_builder
           end
       end
 
       def builders_for_post_conversion
-        @builders_for_post_conversion ||= sorted_base_argument_builders.dup.tap do |builders|
+        @builders_for_post_conversion ||=
+          sorted_base_argument_builders.dup.tap do |builders|
             builders.unshift @receiver_builder if @receiver_builder
             builders.unshift @error_argument_builder if @error_argument_builder
             builders.push return_value_builder
@@ -93,7 +95,7 @@ module GirFFI
 
       def sorted_base_argument_builders
         @sorted_base_argument_builders ||= @base_argument_builders.
-          sort_by.with_index {|arg, i| [arg.array_length_idx, i] }
+          sort_by.with_index { |arg, i| [arg.array_length_idx, i] }
       end
     end
   end

@@ -10,11 +10,11 @@ module GirFFI
     class ModuleBuilder
       include BuilderHelper
 
-      def initialize namespace, version=nil
+      def initialize namespace, version = nil
         @namespace = namespace
         @version = version
         # FIXME: Pass safe namespace as an argument
-        @safe_namespace = @namespace.gsub(/^(.)/) { $1.upcase }
+        @safe_namespace = @namespace.gsub(/^./, &:upcase)
       end
 
       def generate
@@ -34,8 +34,8 @@ module GirFFI
       def build_namespaced_class classname
         info = gir.find_by_name @namespace, classname.to_s
         unless info
-          raise NameError.new(
-            "Class #{classname} not found in namespace #{@namespace}")
+          raise NameError,
+            "Class #{classname} not found in namespace #{@namespace}"
         end
         Builder.build_class info
       end
