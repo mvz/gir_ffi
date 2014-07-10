@@ -25,7 +25,8 @@ module GirFFI
       end
 
       def generate
-        code = "def #{qualified_method_name} #{method_arguments.join(', ')}"
+        code = "def #{qualified_method_name}"
+        code << " #{method_arguments.join(', ')}" if method_arguments.any?
         method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
       end

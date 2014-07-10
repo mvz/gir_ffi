@@ -8,7 +8,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.test_array_fixed_out_objects 
+      def self.test_array_fixed_out_objects
         _v1 = GirFFI::InOutPointer.for [:pointer, :c]
         Regress::Lib.regress_test_array_fixed_out_objects _v1
         _v2 = GirFFI::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.to_value)
@@ -112,7 +112,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.test_array_int_null_out 
+      def self.test_array_int_null_out
         _v1 = GirFFI::InOutPointer.for :gint32
         _v2 = GirFFI::InOutPointer.for [:pointer, :c]
         Regress::Lib.regress_test_array_int_null_out _v2, _v1
@@ -153,7 +153,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def instance_method 
+      def instance_method
         _v1 = Regress::Lib.regress_test_obj_instance_method self
         return _v1
       end
@@ -171,7 +171,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "builds a correct definition" do
         size_type = ":guint#{FFI.type_size(:size_t) * 8}"
         code.must_equal <<-CODE.reset_indentation
-          def get_strv 
+          def get_strv
             _v1 = GirFFI::InOutPointer.for #{size_type}
             _v2 = GLib::Lib.g_variant_get_strv self, _v1
             _v3 = GLib::Strv.wrap(_v2)
