@@ -23,6 +23,7 @@ module GirFFI
         container_class.class_eval setter_def
       end
 
+      # TODO: Fix argument builders so converting_getter_def can always be used.
       def getter_def
         case type_info.tag
         when :glist, :ghash
@@ -32,6 +33,7 @@ module GirFFI
         end
       end
 
+      # TODO: Fix argument builders so converting_setter_def can always be used.
       def setter_def
         case type_info.flattened_tag
         when :glist, :ghash, :strv
@@ -43,6 +45,7 @@ module GirFFI
 
       private
 
+      # TODO: Use a builder like MarshallingMethodBuilder
       def converting_getter_def
         <<-CODE.reset_indentation
         def #{getter_name}
