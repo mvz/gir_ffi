@@ -47,9 +47,10 @@ module GirFFI
 
       # TODO: Use a builder like MarshallingMethodBuilder
       def converting_getter_def
+        capture = getter_builder.capture_variable_name
         <<-CODE.reset_indentation
         def #{getter_name}
-          #{getter_builder.capture_variable_name} = get_property("#{property_name}").get_value_plain
+          #{capture} = get_property("#{property_name}").get_value_plain
           #{getter_builder.post_conversion.join("\n")}
           #{getter_builder.return_value_name}
         end
