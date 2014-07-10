@@ -13,8 +13,6 @@ module GirFFI
       super ptr
     end
 
-    private :initialize
-
     # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
