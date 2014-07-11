@@ -25,7 +25,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.test_array_gint16_in ints
+      def self.test_array_gint16_in(ints)
         n_ints = ints.nil? ? 0 : ints.length
         _v1 = n_ints
         _v2 = GirFFI::SizedArray.from(:gint16, -1, ints)
@@ -43,7 +43,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.test_callback_destroy_notify callback, user_data, notify
+      def self.test_callback_destroy_notify(callback, user_data, notify)
         _v1 = Regress::TestCallbackUserData.from(callback)
         _v2 = GirFFI::InPointer.from_closure_data(user_data)
         _v3 = GLib::DestroyNotify.from(notify)
@@ -61,7 +61,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.new_from_file x
+      def self.new_from_file(x)
         _v1 = GirFFI::InPointer.from(:utf8, x)
         _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
         _v3 = Regress::Lib.regress_test_obj_new_from_file _v1, _v2
@@ -80,7 +80,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.gvalue_in value
+      def self.gvalue_in(value)
         _v1 = GObject::Value.from(value)
         GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_in _v1
       end
@@ -95,7 +95,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def self.test_array_int_null_in arr
+      def self.test_array_int_null_in(arr)
         len = arr.nil? ? 0 : arr.length
         _v1 = len
         _v2 = GirFFI::SizedArray.from(:gint32, -1, arr)
@@ -131,7 +131,7 @@ describe GirFFI::Builders::FunctionBuilder do
     code = fbuilder.generate
 
     expected = <<-CODE
-      def method_array_inout ints
+      def method_array_inout(ints)
         length = ints.nil? ? 0 : ints.length
         _v1 = GirFFI::InOutPointer.for :gint32
         _v1.set_value length
@@ -187,7 +187,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "builds a correct definition" do
         skip unless function_info
         code.must_equal <<-CODE.reset_indentation
-          def self.has_parameter_named_attrs foo, attributes
+          def self.has_parameter_named_attrs(foo, attributes)
             _v1 = foo
             GirFFI::ArgHelper.check_fixed_array_size 32, attributes, \"attributes\"
             _v2 = GirFFI::SizedArray.from([:pointer, :guint32], 32, attributes)
@@ -206,7 +206,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "builds a correct definition" do
         skip unless function_info
         code.must_equal <<-CODE.reset_indentation
-          def method_int8_arg_and_out_callee arg
+          def method_int8_arg_and_out_callee(arg)
             _v1 = arg
             _v2 = GirFFI::InOutPointer.for [:pointer, :gint8]
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_int8_arg_and_out_callee self, _v1, _v2
