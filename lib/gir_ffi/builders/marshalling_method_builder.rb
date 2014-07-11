@@ -16,22 +16,35 @@ module GirFFI
         code << "\nend\n"
       end
 
-      def result_assignment
-        @result_assignment ||=
-          begin
-            names = @argument_builder_collection.capture_variable_names
-            names.any? ? "#{names.join(", ")} = " : ""
-          end
-      end
-
       private
 
       def method_lines
         @builder.preparation +
           @argument_builder_collection.parameter_preparation +
-          @builder.invocation +
+          invocation +
           @argument_builder_collection.return_value_conversion +
           @builder.result
+      end
+
+      def result_name_list
+        @result_name_list ||=
+          @argument_builder_collection.capture_variable_names.join(", ")
+      end
+
+      def invocation
+        if result_name_list.empty?
+          plain_invocation
+        else
+          capturing_invocation
+        end
+      end
+
+      def capturing_invocation
+        ["#{result_name_list} = #{@builder.invocation}"]
+      end
+
+      def plain_invocation
+        [@builder.invocation]
       end
     end
 
@@ -73,7 +86,7 @@ module GirFFI
       end
 
       def invocation
-        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
+        "wrap(closure.to_ptr).invoke_block(#{call_argument_list})"
       end
 
       def result
@@ -88,10 +101,6 @@ module GirFFI
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
-      end
-
-      def capture
-        @capture ||= @template.result_assignment
       end
 
       def param_names

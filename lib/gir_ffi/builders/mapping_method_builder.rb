@@ -53,7 +53,7 @@ module GirFFI
       end
 
       def invocation
-        ["#{capture}_proc.call(#{call_argument_list})"]
+        "_proc.call(#{call_argument_list})"
       end
 
       def result
@@ -68,10 +68,6 @@ module GirFFI
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
-      end
-
-      def capture
-        @capture ||= @template.result_assignment
       end
     end
   end
