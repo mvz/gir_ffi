@@ -32,7 +32,7 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
-        @template = Template.new(self, @argument_builder_collection)
+        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_definition

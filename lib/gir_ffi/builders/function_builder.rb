@@ -21,7 +21,7 @@ module GirFFI
         @argument_builder_collection = ArgumentBuilderCollection.new(
           @return_value_builder, @argument_builders,
           error_argument_builder: error_argument(vargen))
-        @template = Template.new(self, @argument_builder_collection)
+        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def generate
