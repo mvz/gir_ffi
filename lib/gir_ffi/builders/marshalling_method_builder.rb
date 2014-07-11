@@ -50,16 +50,20 @@ module GirFFI
       end
 
       def method_lines
-        param_values_unpack +
+        preparation +
           @argument_builder_collection.parameter_preparation +
           invocation +
           @argument_builder_collection.return_value_conversion +
-          return_value
+          result
+      end
+
+      def preparation
+        param_values_unpack
       end
 
       private
 
-      def return_value
+      def result
         if (name = @argument_builder_collection.return_value_name)
           ["return_value.set_value #{name}"]
         else

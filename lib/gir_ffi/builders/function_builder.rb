@@ -48,13 +48,18 @@ module GirFFI
       end
 
       def method_lines
+        preparation +
         @argument_builder_collection.parameter_preparation +
-          function_call +
+          invocation +
           @argument_builder_collection.return_value_conversion +
-          return_statement
+          result
       end
 
-      def return_statement
+      def preparation
+        []
+      end
+
+      def result
         if @argument_builder_collection.has_return_values?
           ["return #{@argument_builder_collection.return_value_names.join(', ')}"]
         else
@@ -62,7 +67,7 @@ module GirFFI
         end
       end
 
-      def function_call
+      def invocation
         ["#{capture}#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"]
       end
 

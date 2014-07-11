@@ -49,15 +49,20 @@ module GirFFI
       end
 
       def method_lines
+        preparation +
         @argument_builder_collection.parameter_preparation +
           invocation +
           @argument_builder_collection.return_value_conversion +
-          return_value
+          result
+      end
+
+      def preparation
+        []
       end
 
       private
 
-      def return_value
+      def result
         if (name = @argument_builder_collection.return_value_name)
           ["return #{name}"]
         else
