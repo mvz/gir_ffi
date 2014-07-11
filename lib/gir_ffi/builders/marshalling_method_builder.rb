@@ -8,6 +8,12 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder
+      class Template
+        def initialize(builder)
+          @builder = builder
+        end
+      end
+
       def self.for_signal receiver_info, argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
@@ -22,6 +28,7 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
+        @template = Template.new(self)
       end
 
       def method_definition
