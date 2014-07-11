@@ -44,7 +44,7 @@ module GirFFI
 
       def method_lines
         @argument_builder_collection.parameter_preparation +
-          call_to_proc +
+          invocation +
           @argument_builder_collection.return_value_conversion +
           return_value
       end
@@ -57,7 +57,7 @@ module GirFFI
         end
       end
 
-      def call_to_proc
+      def invocation
         ["#{capture}_proc.call(#{call_argument_list})"]
       end
 

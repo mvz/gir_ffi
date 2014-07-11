@@ -52,7 +52,7 @@ module GirFFI
       def method_lines
         param_values_unpack +
           @argument_builder_collection.parameter_preparation +
-          call_to_closure +
+          invocation +
           @argument_builder_collection.return_value_conversion +
           return_value
       end
@@ -67,7 +67,7 @@ module GirFFI
         end
       end
 
-      def call_to_closure
+      def invocation
         ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
       end
 
