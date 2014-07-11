@@ -4,22 +4,22 @@ require 'gir_ffi/builders/argument_builder_collection'
 
 module GirFFI
   module Builders
+    class Template
+      def initialize(builder)
+        @builder = builder
+      end
+
+      def method_definition
+        code = "def self.#{@builder.method_name}(#{@builder.method_arguments.join(', ')})"
+        @builder.method_lines.each { |line| code << "\n  #{line}" }
+        code << "\nend\n"
+      end
+    end
+
     # Implements the creation mapping method for a callback or signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder
-      class Template
-        def initialize(builder)
-          @builder = builder
-        end
-
-        def method_definition
-          code = "def self.#{@builder.method_name}(#{@builder.method_arguments.join(', ')})"
-          @builder.method_lines.each { |line| code << "\n  #{line}" }
-          code << "\nend\n"
-        end
-      end
-
       def self.for_signal receiver_info, argument_infos, return_value_info
         vargen = VariableNameGenerator.new
 
