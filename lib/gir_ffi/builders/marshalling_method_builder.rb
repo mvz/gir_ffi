@@ -5,14 +5,25 @@ require 'gir_ffi/builders/argument_builder_collection'
 module GirFFI
   module Builders
     class Template
-      def initialize(builder)
+      def initialize(builder, argument_builder_collection)
         @builder = builder
+        @argument_builder_collection = argument_builder_collection
       end
 
       def method_definition
         code = "def self.#{@builder.method_name}(#{@builder.method_arguments.join(', ')})"
-        @builder.method_lines.each { |line| code << "\n  #{line}" }
+        method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
+      end
+
+      private
+
+      def method_lines
+        @builder.preparation +
+          @argument_builder_collection.parameter_preparation +
+          @builder.invocation +
+          @argument_builder_collection.return_value_conversion +
+          @builder.result
       end
     end
 
@@ -34,7 +45,7 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
-        @template = Template.new(self)
+        @template = Template.new(self, @argument_builder_collection)
       end
 
       def method_definition
@@ -49,19 +60,13 @@ module GirFFI
         %w(closure return_value param_values _invocation_hint _marshal_data)
       end
 
-      def method_lines
-        preparation +
-          @argument_builder_collection.parameter_preparation +
-          invocation +
-          @argument_builder_collection.return_value_conversion +
-          result
-      end
-
       def preparation
         param_values_unpack
       end
 
-      private
+      def invocation
+        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
+      end
 
       def result
         if (name = @argument_builder_collection.return_value_name)
@@ -71,9 +76,7 @@ module GirFFI
         end
       end
 
-      def invocation
-        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
-      end
+      private
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')

@@ -32,7 +32,7 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
-        @template = Template.new(self)
+        @template = Template.new(self, @argument_builder_collection)
       end
 
       def method_definition
@@ -48,19 +48,13 @@ module GirFFI
           @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
 
-      def method_lines
-        preparation +
-        @argument_builder_collection.parameter_preparation +
-          invocation +
-          @argument_builder_collection.return_value_conversion +
-          result
-      end
-
       def preparation
         []
       end
 
-      private
+      def invocation
+        ["#{capture}_proc.call(#{call_argument_list})"]
+      end
 
       def result
         if (name = @argument_builder_collection.return_value_name)
@@ -70,9 +64,7 @@ module GirFFI
         end
       end
 
-      def invocation
-        ["#{capture}_proc.call(#{call_argument_list})"]
-      end
+      private
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
