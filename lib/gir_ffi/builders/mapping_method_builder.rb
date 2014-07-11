@@ -71,10 +71,7 @@ module GirFFI
       end
 
       def capture
-        @capture ||= begin
-                       names = @argument_builder_collection.capture_variable_names
-                       names.any? ? "#{names.join(", ")} = " : ""
-                     end
+        @capture ||= @template.result_assignment
       end
     end
   end

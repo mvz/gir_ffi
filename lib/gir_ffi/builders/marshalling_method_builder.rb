@@ -16,6 +16,14 @@ module GirFFI
         code << "\nend\n"
       end
 
+      def result_assignment
+        @result_assignment ||=
+          begin
+            names = @argument_builder_collection.capture_variable_names
+            names.any? ? "#{names.join(", ")} = " : ""
+          end
+      end
+
       private
 
       def method_lines
@@ -83,10 +91,7 @@ module GirFFI
       end
 
       def capture
-        @capture ||= begin
-                       names = @argument_builder_collection.capture_variable_names
-                       names.any? ? "#{names.join(", ")} = " : ""
-                     end
+        @capture ||= @template.result_assignment
       end
 
       def param_names
