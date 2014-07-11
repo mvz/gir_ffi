@@ -1,6 +1,8 @@
+require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/callback_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
 require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/method_template'
 
 module GirFFI
   module Builders
@@ -32,24 +34,31 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
+        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_definition
-        code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
-        method_lines.each { |line| code << "\n  #{line}" }
-        code << "\nend\n"
+        @template.method_definition
       end
 
-      private
-
-      def method_lines
-        @argument_builder_collection.parameter_preparation +
-          call_to_proc +
-          @argument_builder_collection.return_value_conversion +
-          return_value
+      def method_name
+        "call_with_argument_mapping"
       end
 
-      def return_value
+      def method_arguments
+        @method_arguments ||=
+          @argument_builder_collection.method_argument_names.dup.unshift('_proc')
+      end
+
+      def preparation
+        []
+      end
+
+      def invocation
+        "_proc.call(#{call_argument_list})"
+      end
+
+      def result
         if (name = @argument_builder_collection.return_value_name)
           ["return #{name}"]
         else
@@ -57,24 +66,14 @@ module GirFFI
         end
       end
 
-      def call_to_proc
-        ["#{capture}_proc.call(#{call_argument_list})"]
+      def singleton_method?
+        true
       end
+
+      private
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
-      end
-
-      def capture
-        @capture ||= begin
-                       names = @argument_builder_collection.capture_variable_names
-                       names.any? ? "#{names.join(", ")} = " : ""
-                     end
-      end
-
-      def method_arguments
-        @method_arguments ||=
-          @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
     end
   end

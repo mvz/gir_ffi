@@ -1,6 +1,8 @@
+require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/closure_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
 require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/method_template'
 
 module GirFFI
   module Builders
@@ -22,25 +24,30 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
+        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_definition
-        code = "def self.marshaller(#{marshaller_arguments.join(', ')})"
-        method_lines.each { |line| code << "\n  #{line}" }
-        code << "\nend\n"
+        @template.method_definition
       end
 
-      private
-
-      def method_lines
-        param_values_unpack +
-          @argument_builder_collection.parameter_preparation +
-          call_to_closure +
-          @argument_builder_collection.return_value_conversion +
-          return_value
+      def method_name
+        "marshaller"
       end
 
-      def return_value
+      def method_arguments
+        %w(closure return_value param_values _invocation_hint _marshal_data)
+      end
+
+      def preparation
+        ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
+      end
+
+      def invocation
+        "wrap(closure.to_ptr).invoke_block(#{call_argument_list})"
+      end
+
+      def result
         if (name = @argument_builder_collection.return_value_name)
           ["return_value.set_value #{name}"]
         else
@@ -48,33 +55,20 @@ module GirFFI
         end
       end
 
-      def call_to_closure
-        ["#{capture}wrap(closure.to_ptr).invoke_block(#{call_argument_list})"]
+      def singleton_method?
+        true
       end
+
+      private
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
       end
 
-      def param_values_unpack
-        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)"]
-      end
-
-      def capture
-        @capture ||= begin
-                       names = @argument_builder_collection.capture_variable_names
-                       names.any? ? "#{names.join(", ")} = " : ""
-                     end
-      end
-
-      def method_arguments
+      def param_names
         # FIXME: Don't add _ if method_argument_names has more than one element
-        @method_arguments ||=
+        @param_names ||=
           @argument_builder_collection.method_argument_names.dup.push('_')
-      end
-
-      def marshaller_arguments
-        %w(closure return_value param_values _invocation_hint _marshal_data)
       end
     end
   end
