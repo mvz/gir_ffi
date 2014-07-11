@@ -14,6 +14,10 @@ module GirFFI
         nil
       end
 
+      def capture_variable_name
+        nil
+      end
+
       def pre_conversion
         ["#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil"]
       end

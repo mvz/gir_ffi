@@ -77,15 +77,10 @@ module GirFFI
       end
 
       def capture
-        if has_capture?
-          "#{@return_value_builder.capture_variable_name} = "
-        else
-          ""
-        end
-      end
-
-      def has_capture?
-        @return_value_builder.relevant?
+        @capture ||= begin
+                       names = @argument_builder_collection.capture_variable_names
+                       names.any? ? "#{names.join(", ")} = " : ""
+                     end
       end
     end
   end

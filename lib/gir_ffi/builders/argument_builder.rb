@@ -26,6 +26,10 @@ module GirFFI
         end
       end
 
+      def capture_variable_name
+        nil
+      end
+
       def pre_conversion
         pr = []
         case direction
