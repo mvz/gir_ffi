@@ -12,6 +12,12 @@ module GirFFI
         def initialize(builder)
           @builder = builder
         end
+
+        def method_definition
+          code = "def self.#{@builder.method_name}(#{@builder.method_arguments.join(', ')})"
+          @builder.method_lines.each { |line| code << "\n  #{line}" }
+          code << "\nend\n"
+        end
       end
 
       def self.for_signal receiver_info, argument_infos, return_value_info
@@ -32,12 +38,16 @@ module GirFFI
       end
 
       def method_definition
-        code = "def self.marshaller(#{method_arguments.join(', ')})"
-        method_lines.each { |line| code << "\n  #{line}" }
-        code << "\nend\n"
+        @template.method_definition
       end
 
-      private
+      def method_name
+        "marshaller"
+      end
+
+      def method_arguments
+        %w(closure return_value param_values _invocation_hint _marshal_data)
+      end
 
       def method_lines
         param_values_unpack +
@@ -46,6 +56,8 @@ module GirFFI
           @argument_builder_collection.return_value_conversion +
           return_value
       end
+
+      private
 
       def return_value
         if (name = @argument_builder_collection.return_value_name)
@@ -78,10 +90,6 @@ module GirFFI
         # FIXME: Don't add _ if method_argument_names has more than one element
         @param_names ||=
           @argument_builder_collection.method_argument_names.dup.push('_')
-      end
-
-      def method_arguments
-        %w(closure return_value param_values _invocation_hint _marshal_data)
       end
     end
   end
