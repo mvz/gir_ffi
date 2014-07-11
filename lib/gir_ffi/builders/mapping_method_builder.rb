@@ -64,6 +64,10 @@ module GirFFI
         end
       end
 
+      def singleton_method?
+        true
+      end
+
       private
 
       def call_argument_list
