@@ -32,15 +32,21 @@ module GirFFI
 
       def initialize argument_builder_collection
         @argument_builder_collection = argument_builder_collection
+        @template = Template.new(self)
       end
 
       def method_definition
-        code = "def self.call_with_argument_mapping(#{method_arguments.join(', ')})"
-        method_lines.each { |line| code << "\n  #{line}" }
-        code << "\nend\n"
+        @template.method_definition
       end
 
-      private
+      def method_name
+        "call_with_argument_mapping"
+      end
+
+      def method_arguments
+        @method_arguments ||=
+          @argument_builder_collection.method_argument_names.dup.unshift('_proc')
+      end
 
       def method_lines
         @argument_builder_collection.parameter_preparation +
@@ -48,6 +54,8 @@ module GirFFI
           @argument_builder_collection.return_value_conversion +
           return_value
       end
+
+      private
 
       def return_value
         if (name = @argument_builder_collection.return_value_name)
@@ -70,11 +78,6 @@ module GirFFI
                        names = @argument_builder_collection.capture_variable_names
                        names.any? ? "#{names.join(", ")} = " : ""
                      end
-      end
-
-      def method_arguments
-        @method_arguments ||=
-          @argument_builder_collection.method_argument_names.dup.unshift('_proc')
       end
     end
   end
