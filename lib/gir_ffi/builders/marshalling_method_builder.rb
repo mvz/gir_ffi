@@ -1,3 +1,4 @@
+require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/closure_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
 require 'gir_ffi/builders/argument_builder_collection'

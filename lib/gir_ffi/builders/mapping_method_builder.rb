@@ -1,6 +1,8 @@
+require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/callback_argument_builder'
 require 'gir_ffi/builders/callback_return_value_builder'
 require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/method_template'
 
 module GirFFI
   module Builders
