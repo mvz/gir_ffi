@@ -19,16 +19,19 @@ module GirFFI
       private
 
       def method_lines
-        @builder.preparation +
-          @argument_builder_collection.parameter_preparation +
+        method_preparation +
+          parameter_preparation +
           invocation +
-          @argument_builder_collection.return_value_conversion +
-          @builder.result
+          return_value_conversion +
+          result
       end
 
-      def result_name_list
-        @result_name_list ||=
-          @argument_builder_collection.capture_variable_names.join(", ")
+      def method_preparation
+        @builder.preparation
+      end
+
+      def parameter_preparation
+        @argument_builder_collection.parameter_preparation
       end
 
       def invocation
@@ -37,6 +40,19 @@ module GirFFI
         else
           capturing_invocation
         end
+      end
+
+      def return_value_conversion
+        @argument_builder_collection.return_value_conversion
+      end
+
+      def result
+        @builder.result
+      end
+
+      def result_name_list
+        @result_name_list ||=
+          @argument_builder_collection.capture_variable_names.join(", ")
       end
 
       def capturing_invocation
