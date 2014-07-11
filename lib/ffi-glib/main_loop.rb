@@ -15,33 +15,18 @@ module GLib
 
       def initialize timeout = DEFAULT_TIMEOUT
         @timeout = timeout
-        # TODO: Remove 1.9.2 option on or after July 31, 2014:
-        # https://www.ruby-lang.org/en/news/2014/07/01/eol-for-1-8-7-and-1-9-2/
-        @handler = if RUBY_VERSION == "1.9.2"
-                     sleepy_handler
-                   else
-                     quick_handler
-                   end
       end
 
       def setup_idle_handler
         @handler_id ||= GLib.timeout_add(GLib::PRIORITY_DEFAULT,
-                                         @timeout, @handler,
+                                         @timeout, handler_proc,
                                          nil, nil)
       end
 
       private
 
-      def quick_handler
+      def handler_proc
         proc do
-          Thread.pass
-          true
-        end
-      end
-
-      def sleepy_handler
-        proc do
-          sleep 0.0001
           Thread.pass
           true
         end
