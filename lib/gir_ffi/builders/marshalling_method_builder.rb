@@ -61,7 +61,7 @@ module GirFFI
       end
 
       def preparation
-        param_values_unpack
+        ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
       end
 
       def invocation
@@ -80,10 +80,6 @@ module GirFFI
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
-      end
-
-      def param_values_unpack
-        ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
       end
 
       def capture
