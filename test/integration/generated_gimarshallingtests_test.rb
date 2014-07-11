@@ -242,7 +242,7 @@ describe GIMarshallingTests do
     it "has the member :value2" do
       assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
     end
-    it "has the member :value" do
+    it "has the member :value3" do
       assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
     end
     it "has the member :mask" do
