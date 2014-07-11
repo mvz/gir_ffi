@@ -32,7 +32,7 @@ module GirFFI
       end
 
       def method_definition
-        code = "def self.marshaller(#{marshaller_arguments.join(', ')})"
+        code = "def self.marshaller(#{method_arguments.join(', ')})"
         method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
       end
@@ -64,7 +64,7 @@ module GirFFI
       end
 
       def param_values_unpack
-        ["#{method_arguments.join(", ")} = param_values.map(&:get_value_plain)"]
+        ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
       end
 
       def capture
@@ -74,13 +74,13 @@ module GirFFI
                      end
       end
 
-      def method_arguments
+      def param_names
         # FIXME: Don't add _ if method_argument_names has more than one element
-        @method_arguments ||=
+        @param_names ||=
           @argument_builder_collection.method_argument_names.dup.push('_')
       end
 
-      def marshaller_arguments
+      def method_arguments
         %w(closure return_value param_values _invocation_hint _marshal_data)
       end
     end
