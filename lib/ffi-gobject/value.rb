@@ -139,6 +139,8 @@ module GObject
         GLib::Strv.wrap boxed
       when TYPE_HASH_TABLE
         GLib::HashTable.wrap [:gpointer, :gpointer], boxed
+      when TYPE_ARRAY
+        GLib::Array.wrap :pointer, boxed
       else
         current_gtype_class.wrap(boxed) unless boxed.null?
       end
