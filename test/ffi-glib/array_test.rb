@@ -153,4 +153,32 @@ describe GLib::Array do
       proc { arr.index(-1) }.must_raise IndexError
     end
   end
+
+  describe "#reset_typespec" do
+    describe "when it needs to guess the type" do
+      it "guesses :uint8 for size 1" do
+        arr = GLib::Array.from :int8, [1, 2, 3]
+        arr.reset_typespec
+        arr.element_type.must_equal :uint8
+      end
+
+      it "guesses :uint16 for size 2" do
+        arr = GLib::Array.from :int16, [1, 2, 3]
+        arr.reset_typespec
+        arr.element_type.must_equal :uint16
+      end
+
+      it "guesses :uint32 for size 4" do
+        arr = GLib::Array.from :int32, [1, 2, 3]
+        arr.reset_typespec
+        arr.element_type.must_equal :uint32
+      end
+
+      it "guesses :uint64 for size 8" do
+        arr = GLib::Array.from :int64, [1, 2, 3]
+        arr.reset_typespec
+        arr.element_type.must_equal :uint64
+      end
+    end
+  end
 end

@@ -208,6 +208,17 @@ describe GObject::Value do
       result.to_string.must_equal "some bytes"
       result.must_be_kind_of GLib::ByteArray
     end
+
+    it "works with an Array" do
+      arr = GLib::Array.from(:uint, [1, 2, 3])
+      v = GObject::Value.for_g_type GObject::TYPE_ARRAY
+      v.set_boxed arr
+
+      result = v.get_value
+
+      result.must_be_kind_of GLib::Array
+      result.reset_typespec(:uint).to_a.must_equal [1, 2, 3]
+    end
   end
 
   describe "::from" do

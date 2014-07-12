@@ -50,9 +50,13 @@ module GLib
       to_a == other.to_a
     end
 
-    def reset_typespec typespec
-      @element_type = typespec
-      check_element_size_match
+    def reset_typespec typespec = nil
+      if typespec
+        @element_type = typespec
+        check_element_size_match
+      else
+        @element_type = guess_element_type
+      end
       self
     end
 
@@ -74,6 +78,15 @@ module GLib
     def check_element_size_match
       unless calculated_element_size == get_element_size
         warn "WARNING: Element sizes do not match"
+      end
+    end
+
+    def guess_element_type
+      case get_element_size
+      when 1 then :uint8
+      when 2 then :uint16
+      when 4 then :uint32
+      when 8 then :uint64
       end
     end
   end
