@@ -15,6 +15,9 @@ module GirFFI
       attr_reader :arginfo
       attr_accessor :length_arg, :array_arg
 
+      # TODO: closure unfortunately means two things in GLib: a closure
+      # argument (user_data), and the Closure class (a callable object). Make
+      # the distinction more explicit in GirFFI.
       def closure?
         @is_closure
       end
