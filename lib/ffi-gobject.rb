@@ -102,6 +102,7 @@ module GObject
     attach_function :g_object_is_floating, [:pointer], :bool
 
     attach_function :g_array_get_type, [], :size_t
+    attach_function :g_byte_array_get_type, [], :size_t
     attach_function :g_hash_table_get_type, [], :size_t
     attach_function :g_strv_get_type, [], :size_t
 
@@ -117,6 +118,7 @@ module GObject
   end
 
   TYPE_ARRAY = Lib.g_array_get_type
+  TYPE_BYTE_ARRAY = Lib.g_byte_array_get_type
   TYPE_HASH_TABLE = Lib.g_hash_table_get_type
   TYPE_STRV = Lib.g_strv_get_type
 end

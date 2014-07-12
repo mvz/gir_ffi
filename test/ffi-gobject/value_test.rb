@@ -200,7 +200,7 @@ describe GObject::Value do
 
     it "works with a ByteArray" do
       ba = GLib::ByteArray.new.append("some bytes")
-      v = GObject::Value.for_g_type GObject.type_from_name("GByteArray")
+      v = GObject::Value.for_g_type GObject::TYPE_BYTE_ARRAY
       v.set_boxed ba
 
       result = v.get_value
