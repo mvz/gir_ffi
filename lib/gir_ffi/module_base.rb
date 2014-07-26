@@ -11,6 +11,7 @@ module GirFFI
       load_class(classname) || super
     end
 
+    # @deprecated The load_class method should always be used. Remove in 0.8.0
     def setup_class classname
       gir_ffi_builder.build_namespaced_class classname.to_s
     end
