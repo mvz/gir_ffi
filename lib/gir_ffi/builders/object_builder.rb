@@ -63,13 +63,13 @@ module GirFFI
         FFI::Struct
       end
 
-      def parent
-        unless defined? @parent
-          @parent = if (parent = info.parent) && parent != info
-                      parent
-                    end
+      def parent_info
+        unless defined? @parent_info
+          @parent_info = if (parent = info.parent) && parent != info
+                           parent
+                         end
         end
-        @parent
+        @parent_info
       end
 
       def superclass
@@ -77,8 +77,8 @@ module GirFFI
       end
 
       def parent_builder
-        @parent_builder ||= if parent
-                              Builders::TypeBuilder.builder_for(parent)
+        @parent_builder ||= if parent_info
+                              Builders::TypeBuilder.builder_for(parent_info)
                             else
                               ObjectBaseBuilder.new
                             end

@@ -38,8 +38,8 @@ module GirFFI
 
       private
 
-      def parent
-        @parent ||= gir.find_by_gtype(parent_gtype.to_i)
+      def parent_info
+        @parent_info ||= gir.find_by_gtype(parent_gtype.to_i)
       end
 
       def parent_gtype
@@ -141,7 +141,7 @@ module GirFFI
 
       def setup_vfunc super_class_struct, impl
         vfunc_name = impl.name
-        vfunc_info = parent.find_vfunc vfunc_name.to_s
+        vfunc_info = parent_info.find_vfunc vfunc_name.to_s
 
         if vfunc_info
           install_vfunc super_class_struct, vfunc_name, vfunc_info, impl.implementation

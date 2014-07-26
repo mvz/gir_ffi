@@ -61,7 +61,7 @@ module GirFFI
         }
       end
 
-      def parent
+      def parent_info
         nil
       end
 
