@@ -20,19 +20,13 @@ module GirFFI
       end
 
       def find_signal signal_name
-        ancestor_infos.each do |inf|
-          sig = inf.find_signal signal_name
-          return sig if sig
-        end
-        raise "Signal #{signal_name} not found"
+        seek_in_ancestor_infos { |info| info.find_signal signal_name } or
+          raise "Signal #{signal_name} not found"
       end
 
       def find_property property_name
-        ancestor_infos.each do |inf|
-          prop = inf.find_property property_name
-          return prop if prop
-        end
-        raise "Property #{property_name} not found"
+        seek_in_ancestor_infos { |info| info.find_property property_name } or
+          raise "Property #{property_name} not found"
       end
 
       def object_class_struct
@@ -127,6 +121,14 @@ module GirFFI
 
       def object_class_struct_info
         @object_class_struct_info ||= info.class_struct
+      end
+
+      def seek_in_ancestor_infos
+        ancestor_infos.each do |info|
+          item = yield info
+          return item if item
+        end
+        nil
       end
     end
   end
