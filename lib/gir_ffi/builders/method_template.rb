@@ -1,5 +1,14 @@
 module GirFFI
   module Builders
+    # Encapsulates the general structure of generated methods, consisting of a
+    # preparation phase where arguments are converted to the form needed by the
+    # main call of the method, the main call itself, a post-processing phase
+    # where the return values and any 'out' arguments of the main call are
+    # converted into a form suitable for returning, and finally the returning
+    # of said values to the caller.
+    #
+    # The different method builders collaborate with MethodTemplate to build
+    # the desired method.
     class MethodTemplate
       def initialize(builder, argument_builder_collection)
         @builder = builder
