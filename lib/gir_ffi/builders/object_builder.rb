@@ -9,6 +9,16 @@ module GirFFI
     class ObjectBuilder < RegisteredTypeBuilder
       include WithLayout
 
+      class ObjectBaseBuilder
+        def build_class
+          ObjectBase
+        end
+
+        def ancestor_infos
+          []
+        end
+      end
+
       def find_signal signal_name
         ancestor_infos.each do |inf|
           sig = inf.find_signal signal_name
@@ -63,20 +73,19 @@ module GirFFI
       end
 
       def superclass
-        @superclass ||= if parent
-                          Builder.build_class parent
-                        else
-                          ObjectBase
-                        end
+        @superclass ||= parent_builder.build_class
+      end
+
+      def parent_builder
+        @parent_builder ||= if parent
+                              Builders::TypeBuilder.builder_for(parent)
+                            else
+                              ObjectBaseBuilder.new
+                            end
       end
 
       def parent_ancestor_infos
-        @parent_ancestor_infos ||=
-          if parent
-            superclass.gir_ffi_builder.ancestor_infos
-          else
-            []
-          end
+        @parent_ancestor_infos ||= parent_builder.ancestor_infos
       end
 
       def setup_property_accessors
