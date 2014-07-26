@@ -10,7 +10,7 @@ module GirFFI
     # The different method builders collaborate with MethodTemplate to build
     # the desired method.
     class MethodTemplate
-      def initialize(builder, argument_builder_collection)
+      def initialize builder, argument_builder_collection
         @builder = builder
         @argument_builder_collection = argument_builder_collection
       end
