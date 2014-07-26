@@ -9,6 +9,7 @@ module GirFFI
     class ObjectBuilder < RegisteredTypeBuilder
       include WithLayout
 
+      # Dummy builder for the ObjectBase class
       class ObjectBaseBuilder
         def build_class
           ObjectBase
