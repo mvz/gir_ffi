@@ -58,7 +58,7 @@
   * Register defined properties in a subclass
   * Support setting virtual function implementations in a subclass
   * Support adding an interface to a subclass
-  * Support implementing an interface's virtual functions in a subclass 
+  * Support implementing an interface's virtual functions in a subclass
 * Use FFI's DataConvertor system to handle enums and callbacks
 * Stop using deprecated GValueArray to construct argument array for signal_emit
 * Make ITypeInfo#g_type return correct value for c arrays
