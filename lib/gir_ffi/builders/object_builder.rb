@@ -10,7 +10,7 @@ module GirFFI
       include WithLayout
 
       def find_signal signal_name
-        signal_definers.each do |inf|
+        ancestor_infos.each do |inf|
           sig = inf.find_signal signal_name
           return sig if sig
         end
@@ -18,7 +18,7 @@ module GirFFI
       end
 
       def find_property property_name
-        signal_definers.each do |inf|
+        ancestor_infos.each do |inf|
           prop = inf.find_property property_name
           return prop if prop
         end
@@ -29,8 +29,8 @@ module GirFFI
         @object_class_struct ||= Builder.build_class object_class_struct_info
       end
 
-      def signal_definers
-        @signal_definers ||= [info] + info.interfaces + parent_signal_definers
+      def ancestor_infos
+        @ancestor_infos ||= [info] + info.interfaces + parent_ancestor_infos
       end
 
       private
@@ -70,12 +70,13 @@ module GirFFI
                         end
       end
 
-      def parent_signal_definers
-        @parent_signal_definers ||= if parent
-                                      superclass.gir_ffi_builder.signal_definers
-                                    else
-                                      []
-                                    end
+      def parent_ancestor_infos
+        @parent_ancestor_infos ||=
+          if parent
+            superclass.gir_ffi_builder.ancestor_infos
+          else
+            []
+          end
       end
 
       def setup_property_accessors

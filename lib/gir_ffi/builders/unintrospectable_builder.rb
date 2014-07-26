@@ -26,7 +26,7 @@ module GirFFI
 
       private
 
-      def signal_definers
+      def ancestor_infos
         info.interfaces
       end
     end
