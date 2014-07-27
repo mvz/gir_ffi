@@ -11,29 +11,22 @@ module GirFFI
     # result from Ruby to C.
     class MappingMethodBuilder
       def self.for_callback argument_infos, return_value_info
-        vargen = VariableNameGenerator.new
-
-        argument_builders = argument_infos.
-          map { |arg| CallbackArgumentBuilder.new vargen, arg }
-        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
-
-        new ArgumentBuilderCollection.new(return_value_builder, argument_builders)
+        new argument_infos, return_value_info
       end
 
       def self.for_vfunc receiver_info, argument_infos, return_value_info
-        vargen = VariableNameGenerator.new
-
-        receiver_builder = CallbackArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.
-          map { |arg| CallbackArgumentBuilder.new vargen, arg }
-        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
-
-        new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                          receiver_builder: receiver_builder)
+        new receiver_info, argument_infos, return_value_info
       end
 
-      def initialize argument_builder_collection
-        @argument_builder_collection = argument_builder_collection
+      def initialize receiver_info = nil, argument_infos, return_value_info
+        receiver_builder = make_argument_builder receiver_info if receiver_info
+        argument_builders = argument_infos.map { |info| make_argument_builder info }
+        return_value_builder =
+          CallbackReturnValueBuilder.new(variable_generator, return_value_info)
+
+        @argument_builder_collection =
+          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
+                                        receiver_builder: receiver_builder)
         @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
@@ -74,6 +67,14 @@ module GirFFI
 
       def call_argument_list
         @argument_builder_collection.call_argument_names.join(', ')
+      end
+
+      def variable_generator
+        @variable_generator ||= VariableNameGenerator.new
+      end
+
+      def make_argument_builder argument_info
+        CallbackArgumentBuilder.new variable_generator, argument_info
       end
     end
   end

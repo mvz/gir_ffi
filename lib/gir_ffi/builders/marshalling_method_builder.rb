@@ -11,19 +11,18 @@ module GirFFI
     # result from Ruby to C.
     class MarshallingMethodBuilder
       def self.for_signal receiver_info, argument_infos, return_value_info
-        vargen = VariableNameGenerator.new
-
-        receiver_builder = ClosureArgumentBuilder.new vargen, receiver_info
-        argument_builders = argument_infos.
-          map { |arg| ClosureArgumentBuilder.new vargen, arg }
-        return_value_builder = CallbackReturnValueBuilder.new(vargen, return_value_info)
-
-        new ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                          receiver_builder: receiver_builder)
+        new receiver_info, argument_infos, return_value_info
       end
 
-      def initialize argument_builder_collection
-        @argument_builder_collection = argument_builder_collection
+      def initialize receiver_info, argument_infos, return_value_info
+        receiver_builder = make_argument_builder receiver_info
+        argument_builders = argument_infos.map { |arg| make_argument_builder arg }
+        return_value_builder =
+          CallbackReturnValueBuilder.new(variable_generator, return_value_info)
+
+        @argument_builder_collection =
+          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
+                                        receiver_builder: receiver_builder)
         @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
@@ -69,6 +68,14 @@ module GirFFI
         # FIXME: Don't add _ if method_argument_names has more than one element
         @param_names ||=
           @argument_builder_collection.method_argument_names.dup.push('_')
+      end
+
+      def variable_generator
+        @variable_generator ||= VariableNameGenerator.new
+      end
+
+      def make_argument_builder argument_info
+        ClosureArgumentBuilder.new variable_generator, argument_info
       end
     end
   end
