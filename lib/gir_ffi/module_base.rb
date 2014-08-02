@@ -19,7 +19,7 @@ module GirFFI
     alias_method :load_class, :setup_class
 
     def gir_ffi_builder
-      const_get :GIR_FFI_BUILDER
+      self::GIR_FFI_BUILDER
     end
 
     def setup_method name

@@ -25,7 +25,7 @@ module GirFFI
     end
 
     def lib
-      @lib ||= namespace_module.const_get :Lib
+      @lib ||= namespace_module::Lib
     end
 
     def setup_constants

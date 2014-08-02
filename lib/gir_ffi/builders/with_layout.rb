@@ -24,7 +24,7 @@ module GirFFI
 
       def dummy_layout_specification
         if parent_info
-          [:parent, superclass.const_get(:Struct), 0]
+          [:parent, superclass::Struct, 0]
         else
           [:dummy, :char, 0]
         end
