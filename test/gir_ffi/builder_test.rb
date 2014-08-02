@@ -161,9 +161,10 @@ describe GirFFI::Builder do
       GirFFI::Builder.build_class get_introspection_data('Regress', 'TestSubObj')
     end
 
-    it "builds Regress namespace" do
+    it "sets up the Regress namespace" do
       assert Regress.const_defined? :Lib
-      assert Regress.respond_to? :method_missing
+      assert Regress.respond_to? :gir_ffi_builder
+      assert Regress.const_defined? :GIR_FFI_BUILDER
     end
 
     it "creates the Regress::Lib module ready to attach functions from the shared library" do

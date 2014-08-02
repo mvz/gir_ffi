@@ -70,7 +70,7 @@ module GirFFI
       end
 
       def already_set_up
-        @module.respond_to? :method_missing
+        @module.const_defined? :GIR_FFI_BUILDER
       end
 
       def setup_lib_for_ffi
