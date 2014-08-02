@@ -48,6 +48,10 @@ Style/Next:
 Style/AccessorMethodName:
   Enabled: false
 
+# Support use of and and or for control flow.
+Style/AndOr:
+  Enabled: false
+
 # TODO: See about has_ and have_
 Style/PredicateName:
   NamePrefixBlacklist:
