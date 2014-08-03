@@ -32,13 +32,11 @@ module GObject
       TYPE_VARIANT => [:get_variant,       :set_variant]
     }
 
-    def value= val
-      send set_method, val
-    end
-
     def set_value val
       send set_method, val
     end
+
+    alias_method :value=, :set_value
 
     CLASS_TO_GTYPE_MAP = {
       TrueClass => TYPE_BOOLEAN,
