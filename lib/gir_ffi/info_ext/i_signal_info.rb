@@ -15,11 +15,12 @@ module GirFFI
       end
 
       def arguments_to_gvalues instance, arguments
-        arg_values = args.zip(arguments).map do |info, arg|
-          info.argument_type.make_g_value.set_value(arg)
+        arg_g_values = args.map { |info| info.argument_type.make_g_value }
+        arg_g_values.zip(arguments).each do |g_value, arg|
+          g_value.set_value arg
         end
 
-        arg_values.unshift GObject::Value.wrap_instance(instance)
+        arg_g_values.unshift GObject::Value.wrap_instance(instance)
       end
 
       def gvalue_for_return_value
