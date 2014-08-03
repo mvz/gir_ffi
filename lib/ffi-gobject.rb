@@ -27,10 +27,6 @@ module GObject
     Lib.g_object_unref obj.to_ptr
   end
 
-  def self.object_is_floating obj
-    Lib.g_object_is_floating obj.to_ptr
-  end
-
   def self.type_from_instance_pointer inst_ptr
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
@@ -99,7 +95,6 @@ module GObject
     attach_function :g_object_ref, [:pointer], :void
     attach_function :g_object_ref_sink, [:pointer], :void
     attach_function :g_object_unref, [:pointer], :void
-    attach_function :g_object_is_floating, [:pointer], :bool
 
     attach_function :g_array_get_type, [], :size_t
     attach_function :g_byte_array_get_type, [], :size_t

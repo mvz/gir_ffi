@@ -435,7 +435,7 @@ describe Regress do
       end
 
       it "has been sunk" do
-        assert !is_floating?(@o)
+        @o.wont_be :floating?
       end
     end
   end
@@ -564,7 +564,7 @@ describe Regress do
     end
 
     it "does not float" do
-      assert !is_floating?(instance)
+      instance.wont_be :floating?
     end
 
     it "has a working method #matrix" do
