@@ -15,18 +15,6 @@ require 'gir_ffi/builders/user_defined_builder'
 
 # Module representing GLib's GObject namespace.
 module GObject
-  def self.object_ref obj
-    Lib.g_object_ref obj.to_ptr
-  end
-
-  def self.object_ref_sink obj
-    Lib.g_object_ref_sink obj.to_ptr
-  end
-
-  def self.object_unref obj
-    Lib.g_object_unref obj.to_ptr
-  end
-
   def self.type_from_instance_pointer inst_ptr
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
@@ -92,9 +80,7 @@ module GObject
 
   # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
   module Lib
-    attach_function :g_object_ref, [:pointer], :void
     attach_function :g_object_ref_sink, [:pointer], :void
-    attach_function :g_object_unref, [:pointer], :void
 
     attach_function :g_array_get_type, [], :size_t
     attach_function :g_byte_array_get_type, [], :size_t
