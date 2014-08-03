@@ -68,10 +68,6 @@ module GirFFI
       def fields
         info.fields
       end
-
-      def superclass
-        ClassBase
-      end
     end
   end
 end
