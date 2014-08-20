@@ -6,33 +6,43 @@ AllCops:
     - Rakefile
     - gir_ffi.gemspec
 
+# Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Allow multi-line blocks of all sorts
 Style/Blocks:
   Enabled: false
 
+# Dot at end of line makes it clearer that the line is not done
 Style/DotPosition:
   EnforcedStyle: trailing
 
+# Require lines to fit in pull requests.
 Style/LineLength:
   Max: 92
 
+# Prefer no parentheses in method definitions
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
 
+# Always use raise to raise exceptions
 Style/SignalException:
   EnforcedStyle: only_raise
 
+# Allow non-interpolated strings with double quotes
 Style/StringLiterals:
   Enabled: false
 
+# Allow explicit return with multiple return values
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
+# Require at least two dependent lines before suggesting a guard clause
 Style/GuardClause:
   MinBodyLength: 2
 
+# Don't use if or unless as modifier if the line gets too long
 Style/IfUnlessModifier:
   MaxLineLength: 60
 
@@ -42,6 +52,7 @@ Style/TrivialAccessors:
 Style/SingleLineBlockParams:
   Enabled: false
 
+# Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
 
