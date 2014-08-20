@@ -40,7 +40,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, i, _ = param_values.map(&:get_value_plain)
+          _instance, i = param_values.map(&:get_value_plain)
           _v1 = _instance
           _v2 = i
           _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
@@ -59,7 +59,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       it "returns a valid mapping method" do
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, result, _ = param_values.map(&:get_value_plain)
+          _instance, result = param_values.map(&:get_value_plain)
           _v1 = _instance
           _v2 = result
           wrap(closure.to_ptr).invoke_block(_v1, _v2)
@@ -79,7 +79,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, arr, len, _ = param_values.map(&:get_value_plain)
+          _instance, arr, len = param_values.map(&:get_value_plain)
           _v1 = _instance
           _v2 = len
           _v3 = GirFFI::SizedArray.wrap(:guint32, _v2, arr)
@@ -100,7 +100,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, object, _ = param_values.map(&:get_value_plain)
+          _instance, object = param_values.map(&:get_value_plain)
           _v1 = _instance
           _v2 = Regress::TestSimpleBoxedA.wrap(object)
           wrap(closure.to_ptr).invoke_block(_v1, _v2)
@@ -120,7 +120,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, i, _ = param_values.map(&:get_value_plain)
+          _instance, i = param_values.map(&:get_value_plain)
           _v1 = _instance
           _v2 = i
           _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)

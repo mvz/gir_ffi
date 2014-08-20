@@ -65,9 +65,9 @@ module GirFFI
       end
 
       def param_names
-        # FIXME: Don't add _ if method_argument_names has more than one element
-        @param_names ||=
-          @argument_builder_collection.method_argument_names.dup.push('_')
+        @param_names ||= @argument_builder_collection.method_argument_names.dup.tap do |names|
+          names.push('_') if names.size == 1
+        end
       end
 
       def variable_generator
