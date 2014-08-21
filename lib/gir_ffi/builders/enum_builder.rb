@@ -20,14 +20,8 @@ module GirFFI
         }.flatten
       end
 
-      def instantiate_class
-        @enum = optionally_define_constant klass, :Enum do
-          lib.enum(enum_sym, value_spec)
-        end
-        setup_class unless already_set_up
-      end
-
       def setup_class
+        setup_ffi_enum
         klass.extend superclass
         setup_constants
         stub_methods
@@ -36,6 +30,12 @@ module GirFFI
 
       def klass
         @klass ||= get_or_define_module namespace_module, @classname
+      end
+
+      def setup_ffi_enum
+        @enum = optionally_define_constant klass, :Enum do
+          lib.enum(enum_sym, value_spec)
+        end
       end
 
       def setup_inspect

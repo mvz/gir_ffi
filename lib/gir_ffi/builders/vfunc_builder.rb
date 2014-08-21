@@ -12,12 +12,9 @@ module GirFFI
     # can serve as such an implementation in C. The class will be namespaced
     # inside class defining the vfunc.
     class VFuncBuilder < BaseTypeBuilder
-      def instantiate_class
-        unless already_set_up
-          setup_constants
-          klass.class_eval mapping_method_definition
-        end
-        klass
+      def setup_class
+        setup_constants
+        klass.class_eval mapping_method_definition
       end
 
       def klass

@@ -6,12 +6,9 @@ module GirFFI
     # Implements the creation of a closure class for handling a particular
     # signal. The type will be attached to the appropriate class.
     class SignalClosureBuilder < BaseTypeBuilder
-      def instantiate_class
-        unless already_set_up
-          setup_constants
-          klass.class_eval marshaller_definition
-        end
-        klass
+      def setup_class
+        setup_constants
+        klass.class_eval marshaller_definition
       end
 
       def setup_method _method

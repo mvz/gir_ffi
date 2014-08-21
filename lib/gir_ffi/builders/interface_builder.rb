@@ -11,17 +11,12 @@ module GirFFI
 
       private
 
-      # FIXME: The word 'class' is not really correct.
-      def instantiate_class
-        klass
-        setup_module unless already_set_up
-      end
-
       def klass
         @klass ||= get_or_define_module namespace_module, @classname
       end
 
-      def setup_module
+      # FIXME: The word 'class' is not really correct.
+      def setup_class
         klass.extend InterfaceBase
         setup_constants
         stub_methods

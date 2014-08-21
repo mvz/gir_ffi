@@ -9,34 +9,30 @@ module GirFFI
         @info = info
       end
 
-      def instantiate_class
-        if already_set_up
-          @gtype = klass.get_gtype
-        else
-          @gtype = GObject.type_register_static(parent_gtype.to_i,
-                                                info.g_name,
-                                                gobject_type_info, 0)
-          included_interfaces.each do |interface|
-            ifinfo = gobject_interface_info interface
-            GObject.type_add_interface_static @gtype, interface.get_gtype, ifinfo
-          end
-          setup_class
-          TypeBuilder::CACHE[@gtype] = klass
-        end
-      end
-
       def setup_class
+        register_type
         setup_layout
         setup_constants
         setup_property_accessors
         setup_constructor
+        TypeBuilder::CACHE[@gtype] = klass
       end
 
       def target_gtype
-        @gtype
+        @gtype ||= klass.get_gtype
       end
 
       private
+
+      def register_type
+        @gtype = GObject.type_register_static(parent_gtype.to_i,
+                                              info.g_name,
+                                              gobject_type_info, 0)
+        included_interfaces.each do |interface|
+          ifinfo = gobject_interface_info interface
+          GObject.type_add_interface_static @gtype, interface.get_gtype, ifinfo
+        end
+      end
 
       def parent_info
         @parent_info ||= gir.find_by_gtype(parent_gtype.to_i)

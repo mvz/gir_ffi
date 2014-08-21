@@ -8,10 +8,6 @@ module GirFFI
     # attached to the appropriate namespace module, and will be defined
     # as a callback for FFI.
     class CallbackBuilder < BaseTypeBuilder
-      def instantiate_class
-        setup_class unless already_set_up
-      end
-
       def setup_class
         setup_callback
         setup_constants

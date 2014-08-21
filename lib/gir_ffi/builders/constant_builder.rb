@@ -6,10 +6,8 @@ module GirFFI
     # triggered by a missing constant in the parent namespace.  The
     # constant will be attached to the appropriate namespace module.
     class ConstantBuilder < BaseTypeBuilder
-      private
-
-      def instantiate_class
-        @klass = optionally_define_constant namespace_module, @classname do
+      def build_class
+        @klass ||= optionally_define_constant namespace_module, @classname do
           info.value
         end
       end

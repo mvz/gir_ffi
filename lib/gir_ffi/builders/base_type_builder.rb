@@ -16,6 +16,10 @@ module GirFFI
       @klass
     end
 
+    def instantiate_class
+      setup_class unless already_set_up
+    end
+
     attr_reader :info
 
     private

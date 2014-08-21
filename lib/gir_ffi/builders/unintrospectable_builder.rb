@@ -6,10 +6,6 @@ module GirFFI
     # which no data is found in the GIR. Typically, these are created to
     # cast objects returned by a function that returns an interface.
     class UnintrospectableBuilder < ObjectBuilder
-      def instantiate_class
-        setup_class unless already_set_up
-      end
-
       def klass
         @klass ||= TypeBuilder::CACHE[target_gtype] ||= Class.new(superclass)
       end

@@ -40,10 +40,6 @@ module GirFFI
         end
       end
 
-      def instantiate_class
-        setup_class unless already_set_up
-      end
-
       def klass
         @klass ||= get_or_define_class namespace_module, @classname, superclass
       end
