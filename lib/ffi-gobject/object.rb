@@ -67,6 +67,9 @@ module GObject
     alias_method :set_property_without_override, :set_property
     alias_method :set_property, :set_property_with_override
 
+    setup_instance_method 'is_floating'
+    alias_method :floating?, :is_floating
+
     private
 
     def get_property_type property_name

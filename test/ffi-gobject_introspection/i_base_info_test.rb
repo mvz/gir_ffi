@@ -15,6 +15,20 @@ describe GObjectIntrospection::IBaseInfo do
     end
   end
 
+  describe "#deprecated?" do
+    let(:deprecated_info) { get_introspection_data 'Regress', 'test_versioning' }
+    let(:other_info) { get_introspection_data 'Regress', 'test_value_return' }
+
+    it "returns true for a deprecated item" do
+      skip unless deprecated_info
+      deprecated_info.must_be :deprecated?
+    end
+
+    it "returns false for a non-deprecated item" do
+      other_info.wont_be :deprecated?
+    end
+  end
+
   describe "upon garbage collection" do
     it "calls g_base_info_unref" do
       if defined?(RUBY_ENGINE) && ['jruby', 'rbx'].include?(RUBY_ENGINE)

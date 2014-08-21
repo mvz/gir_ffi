@@ -48,15 +48,10 @@ module GirFFI
     end
 
     def self.wrap_in_callback_args_mapper prc
-      case prc
-      when FFI::Function
-        prc
-      when Proc
-        new do |*args|
-          call_with_argument_mapping(prc, *args)
-        end
-      else
-        nil
+      return unless prc
+
+      new do |*args|
+        call_with_argument_mapping(prc, *args)
       end
     end
 

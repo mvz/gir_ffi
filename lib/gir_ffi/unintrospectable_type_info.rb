@@ -4,7 +4,6 @@ module GirFFI
   # Represents a type not found in the GIR, conforming, as needed, to the
   # interface of GObjectIntrospection::IObjectInfo.
   class UnintrospectableTypeInfo
-    include InfoExt::FullTypeName
     attr_reader :g_type
 
     def initialize gtype, gir = GObjectIntrospection::IRepository.default, gobject = GObject
@@ -31,10 +30,6 @@ module GirFFI
 
     def namespace
       parent.namespace
-    end
-
-    def safe_namespace
-      parent.safe_namespace
     end
 
     def interfaces

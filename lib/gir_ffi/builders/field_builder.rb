@@ -65,10 +65,6 @@ module GirFFI
 
       private
 
-      def struct_class
-        container_class::Struct
-      end
-
       def field_type_tag_or_class
         @field_type_tag_or_class ||= info.field_type.tag_or_class.inspect
       end
@@ -83,10 +79,6 @@ module GirFFI
 
       def container_info
         @container_info ||= info.container
-      end
-
-      def field_symbol
-        @info.name.to_sym
       end
 
       def field_type

@@ -32,14 +32,11 @@ module GObject
       TYPE_VARIANT => [:get_variant,       :set_variant]
     }
 
-    def value= val
-      set_value val
-    end
-
     def set_value val
       send set_method, val
-      self
     end
+
+    alias_method :value=, :set_value
 
     CLASS_TO_GTYPE_MAP = {
       TrueClass => TYPE_BOOLEAN,
@@ -85,7 +82,7 @@ module GObject
 
     # TODO: Give more generic name
     def self.wrap_ruby_value val
-      new.set_ruby_value val
+      new.tap { |gv| gv.set_ruby_value val }
     end
 
     def self.from val

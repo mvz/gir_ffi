@@ -59,10 +59,6 @@ class Minitest::Test
     GObject::Object::Struct.new(object.to_ptr)[:ref_count]
   end
 
-  def is_floating? object
-    (GObject::Object::Struct.new(object.to_ptr)[:qdata].address & 2) == 2
-  end
-
   def max_for_unsigned_type type
     ( 1 << (FFI.type_size(type) * 8) ) - 1
   end
