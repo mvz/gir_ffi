@@ -39,7 +39,11 @@ module GirFFI
       end
 
       def preparation
-        ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
+        if param_names.size == 1
+          ["#{param_names.first} = param_values.first.get_value_plain"]
+        else
+          ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
+        end
       end
 
       def invocation
@@ -65,9 +69,7 @@ module GirFFI
       end
 
       def param_names
-        @param_names ||= @argument_builder_collection.method_argument_names.dup.tap do |names|
-          names.push('_') if names.size == 1
-        end
+        @param_names ||= @argument_builder_collection.method_argument_names
       end
 
       def variable_generator

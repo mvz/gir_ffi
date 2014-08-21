@@ -21,7 +21,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       it "returns a valid marshaller converting only the receiver" do
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, _ = param_values.map(&:get_value_plain)
+          _instance = param_values.first.get_value_plain
           _v1 = _instance
           wrap(closure.to_ptr).invoke_block(_v1)
         end
