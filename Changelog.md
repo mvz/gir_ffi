@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.6 / 2014-08-22
+
+* Work around respond_to? behavior in JRuby 1.6.13
+* Deprecate setup_class in favor of load_class
+* Support GValue containing GArray
+* Provide constant TYPE_BYTE_ARRAY
+* Don't recurse looking for signals and properties
+* Clean up generated code:
+  * Avoid use of an ignored dummy argument
+  * Clean up trailing whitespace
+* Drop support for Ruby 1.9.2
+* Allow data argument for GObject::Object#signal_connect
+* Let Ruby threads run during GLib's main loop
+* Make all dependencies versioned
+* Various refactoring & code cleanup
+
 ## 0.7.5 / 2014-06-22
 
 * Use closures as signal handlers, rather than callbacks
