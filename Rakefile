@@ -10,6 +10,5 @@ end
 MyGemHelper.install_tasks
 
 load 'tasks/test.rake'
-load 'tasks/valgrind.rake'
 
 task :default => 'test:all'
