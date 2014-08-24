@@ -5,7 +5,7 @@ GLib.load_class :MainLoop
 module GLib
   # Overrides for GMainLoop, GLib's event loop
   class MainLoop
-    # Class encepsulationg logic for running an idle handler to make Ruby code
+    # Class encapsulationg logic for running an idle handler to make Ruby code
     # run during GLib's event loop.
     class ThreadEnabler
       include Singleton
