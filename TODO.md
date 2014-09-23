@@ -1,5 +1,7 @@
 # TODO
 
+MAKE CONSTRUCTOR_WRAP CHECK TYPES?
+
 ## Memory managment
 
 GirFFI does not attempt to free any memory at the moment, or lower the
@@ -7,6 +9,8 @@ reference count of any objects it gets from GObject. This task therefore involve
 
 - Free non-GObject pointers as needed (at garbage-collection time)
 - Lower reference count of GObjects (at garbage-collection time)
+
+**Use memory_profiler to check memory use (https://github.com/SamSaffron/memory_profiler)**
 
 ## Refactorings
 
