@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir[ '{lib,test,tasks,examples}/**/*',
                  "*.md",
+                 "*.gemspec",
                  "Rakefile",
                  "COPYING.LIB" ] & `git ls-files -z`.split("\0")
 
