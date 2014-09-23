@@ -26,8 +26,6 @@ Gem::Specification.new do |s|
                  "Rakefile",
                  "COPYING.LIB" ] & `git ls-files -z`.split("\0")
 
-  s.test_files = `git ls-files -z -- test`.split("\0")
-
   s.rdoc_options = ["--main", "README.md"]
   s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
