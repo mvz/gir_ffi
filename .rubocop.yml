@@ -56,6 +56,7 @@ Style/SingleLineBlockParams:
 Style/Next:
   Enabled: false
 
+# Gtk+ has a lot of accessor method starting with get_ or set_
 Style/AccessorMethodName:
   Enabled: false
 
