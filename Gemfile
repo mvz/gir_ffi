@@ -9,5 +9,3 @@ else
   gem 'simplecov', '~> 0.9.0', type: :development, platform: :mri
   gem 'pry', '~> 0.10.0', type: :development
 end
-
-gem 'rubysl', :platform => :rbx
