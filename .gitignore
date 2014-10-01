@@ -28,6 +28,7 @@ test/lib/*.lo
 test/lib/*.o
 test/lib/libtool
 test/lib/ltmain.sh
+test/lib/stamp-h1
 test/lib/m4/libtool.m4
 test/lib/m4/lt*.m4
 test/lib/missing
