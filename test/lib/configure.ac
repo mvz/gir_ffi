@@ -6,7 +6,7 @@ AC_INIT(dummy_test_lib, 0.0.1)
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.7 foreign])
 AM_MAINTAINER_MODE
-AC_CONFIG_HEADERS([config.h])
+AM_CONFIG_HEADER([config.h])
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
 
