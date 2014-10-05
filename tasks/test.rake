@@ -189,6 +189,6 @@ file "test/lib/Makefile" => "test/lib/configure" do
   sh %{cd test/lib && ./configure --enable-maintainer-mode}
 end
 
-file "test/lib/configure" do
+file "test/lib/configure" => ["test/lib/autogen.sh", "test/lib/configure.ac"] do
   sh %{cd test/lib && NOCONFIGURE=1 ./autogen.sh}
 end

@@ -74,6 +74,7 @@ libtoolize --force || exit $?
 $ACLOCAL -I m4 || exit $?
 
 autoconf || exit $?
+autoheader || exit $?
 
 $AUTOMAKE --add-missing || exit $?
 
