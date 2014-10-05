@@ -82,7 +82,7 @@ describe GirFFI::ClassBase do
       end
       sub_klass.const_set :GIR_FFI_BUILDER, sub_builder
 
-      sub_klass.setup_and_call :foo
+      sub_klass.setup_and_call :foo, []
     end
 
     it "calls the method given by the result of .setup_method" do
@@ -95,7 +95,7 @@ describe GirFFI::ClassBase do
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      result = klass.setup_and_call :foo
+      result = klass.setup_and_call :foo, []
       result.must_equal "correct-result"
     end
   end
@@ -116,7 +116,7 @@ describe GirFFI::ClassBase do
 
       obj = sub_klass.new
 
-      obj.setup_and_call :foo
+      obj.setup_and_call :foo, []
     end
 
     it "calls the method given by the result of .setup_instance_method" do
@@ -131,7 +131,7 @@ describe GirFFI::ClassBase do
 
       obj = klass.new
 
-      result = obj.setup_and_call :foo
+      result = obj.setup_and_call :foo, []
       result.must_equal "correct-result"
     end
   end

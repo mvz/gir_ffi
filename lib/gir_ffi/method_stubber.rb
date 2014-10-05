@@ -9,7 +9,7 @@ module GirFFI
     def method_stub
       <<-STUB.reset_indentation
         def #{@info.method? ? '' : 'self.'}#{@info.safe_name} *args, &block
-          setup_and_call "#{@info.name}", *args, &block
+          setup_and_call "#{@info.name}", args, &block
         end
       STUB
     end

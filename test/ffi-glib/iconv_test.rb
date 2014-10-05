@@ -12,7 +12,7 @@ describe GLib::IConv do
 
   describe "#setup_and_call" do
     it "works for the method called ''" do
-      instance.setup_and_call :'', nil, nil, nil, nil
+      instance.setup_and_call :'', [nil, nil, nil, nil]
     end
   end
 end
