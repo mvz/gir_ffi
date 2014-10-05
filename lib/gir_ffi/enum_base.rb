@@ -38,7 +38,7 @@ module GirFFI
       from_native pointer.get_int32(0), nil
     end
 
-    def setup_and_call method, *arguments, &block
+    def setup_and_call method, arguments, &block
       result = setup_method method.to_s
 
       unless result
