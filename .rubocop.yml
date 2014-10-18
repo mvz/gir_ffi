@@ -10,33 +10,37 @@ AllCops:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Require lines to fit in pull requests.
+Metrics/LineLength:
+  Max: 92
+
+# Gtk+ has a lot of accessor method starting with get_ or set_
+Style/AccessorMethodName:
+  Enabled: false
+
+# RuboCop has no setting to accept how vim aligns parameters.
+Style/AlignParameters:
+  Enabled: false
+
+# Support use of and and or for control flow.
+Style/AndOr:
+  Enabled: false
+
 # Allow multi-line blocks of all sorts
 Style/Blocks:
+  Enabled: false
+
+# TODO: Decide on the desired style (nested or compact)
+Style/ClassAndModuleChildren:
   Enabled: false
 
 # Dot at end of line makes it clearer that the line is not done
 Style/DotPosition:
   EnforcedStyle: trailing
 
-# Require lines to fit in pull requests.
-Style/LineLength:
-  Max: 92
-
-# Prefer no parentheses in method definitions
-Style/MethodDefParentheses:
-  EnforcedStyle: require_no_parentheses
-
-# Always use raise to raise exceptions
-Style/SignalException:
-  EnforcedStyle: only_raise
-
-# Allow non-interpolated strings with double quotes
-Style/StringLiterals:
+# FIXME: GirFFI uses a ffi-something naming scheme.
+Style/FileName:
   Enabled: false
-
-# Allow explicit return with multiple return values
-Style/RedundantReturn:
-  AllowMultipleReturnValues: true
 
 # Require at least two dependent lines before suggesting a guard clause
 Style/GuardClause:
@@ -46,22 +50,12 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   MaxLineLength: 60
 
-Style/TrivialAccessors:
-  ExactNameMatch: true
-
-Style/SingleLineBlockParams:
-  Enabled: false
+# Prefer no parentheses in method definitions
+Style/MethodDefParentheses:
+  EnforcedStyle: require_no_parentheses
 
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
-  Enabled: false
-
-# Gtk+ has a lot of accessor method starting with get_ or set_
-Style/AccessorMethodName:
-  Enabled: false
-
-# Support use of and and or for control flow.
-Style/AndOr:
   Enabled: false
 
 # TODO: See about has_ and have_
@@ -69,20 +63,27 @@ Style/PredicateName:
   NamePrefixBlacklist:
     - is_
 
-# RuboCop has no setting to accept how vim aligns parameters.
-Style/AlignParameters:
+# Allow explicit return with multiple return values
+Style/RedundantReturn:
+  AllowMultipleReturnValues: true
+
+# Always use raise to raise exceptions
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+# Allow non-interpolated strings with double quotes
+Style/StringLiterals:
   Enabled: false
 
 # Allow semantic choice of trailing comma
 Style/TrailingComma:
   Enabled: false
 
-# FIXME: GirFFI uses a ffi-something naming scheme.
-Style/FileName:
-  Enabled: false
-
-# TODO: Decide on the desired style (nested or compact)
-Style/ClassAndModuleChildren:
-  Enabled: false
+# Accessors are only trivial if they match the ivar name
+Style/TrivialAccessors:
+  ExactNameMatch: true
 
 inherit_from: .rubocop_todo.yml
