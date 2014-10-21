@@ -7,7 +7,7 @@ module GirFFI
       end
 
       def argument_ffi_types
-        args.map { |arg| arg.to_callback_ffitype }
+        args.map(&:to_callback_ffitype)
       end
 
       def return_ffi_type

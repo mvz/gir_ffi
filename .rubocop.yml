@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'test/**/*'
     - 'examples/*'
+    - 'tasks/**/*.rake'
     - 'tmp/**/*'
     - Rakefile
     - gir_ffi.gemspec

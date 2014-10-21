@@ -56,7 +56,7 @@ module GirFFI
     end
 
     def self.for type
-      new(type).tap { |ptr| ptr.clear }
+      new(type).tap(&:clear)
     end
 
     def self.from type, value
