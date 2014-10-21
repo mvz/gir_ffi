@@ -10,7 +10,7 @@ module GLib
     end
 
     def self.constructor_wrap ptr
-      super.tap { |variant| variant.ref }
+      super.tap(&:ref)
     end
 
     alias_method :get_string_without_override, :get_string

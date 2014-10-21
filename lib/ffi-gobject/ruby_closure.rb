@@ -42,7 +42,7 @@ module GObject
       rclosure = wrap(closure.to_ptr)
       param_values ||= []
 
-      args = param_values.map { |value| value.get_value }
+      args = param_values.map(&:get_value)
 
       result = rclosure.invoke_block(*args)
 
