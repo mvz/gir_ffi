@@ -1,5 +1,18 @@
 # Changelog
 
+## Unreleased
+
+* Handle introspecting boolean constants
+* Provide config.h for versions of the test libs that need it
+* Include gemspec in the gem
+* Avoid needless casting from string to symbol by making #setup_and_call take a
+  string
+* Avoid argument list unpacking by making #setup_and_call take an array of
+  arguments rather than a variable number of arguments
+* Remove old example files
+* Let rubygems know about required Ruby version
+* Various clean-ups
+
 ## 0.7.6 / 2014-08-22
 
 * Work around respond_to? behavior in JRuby 1.6.13
