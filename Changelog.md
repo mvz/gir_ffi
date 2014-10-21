@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.7 / 2014-10-21
 
 * Handle introspecting boolean constants
 * Provide config.h for versions of the test libs that need it
