@@ -7,14 +7,14 @@
 
 # Offense count: 3
 # Configuration parameters: CountComments.
-Style/ClassLength:
+Metrics/ClassLength:
   Max: 171
 
 # Offense count: 3
-Style/CyclomaticComplexity:
+Metrics/CyclomaticComplexity:
   Max: 10
 
 # Offense count: 14
 # Configuration parameters: CountComments.
-Style/MethodLength:
+Metrics/MethodLength:
   Max: 23
