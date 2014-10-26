@@ -8,7 +8,7 @@ module GirFFI
     end
 
     def const_missing classname
-      load_class(classname) || super
+      load_class(classname)
     end
 
     # @deprecated The load_class method should always be used. Remove in 0.8.0

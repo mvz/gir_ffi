@@ -1,5 +1,9 @@
 # Changelog
 
+## Upcoming
+
+* Support constants with a falsy value
+
 ## 0.7.7 / 2014-10-21
 
 * Handle introspecting boolean constants
