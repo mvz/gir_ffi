@@ -46,16 +46,16 @@ describe GObjectIntrospection::IRepository do
     end
   end
 
-  describe "enumerating the infos for GObject" do
-    before do
+  describe "#n_infos" do
+    it "yields more than one object for the GObject namespace" do
       gir.require 'GObject', "2.0"
-    end
-
-    it "yields more than one object" do
       assert_operator gir.n_infos('GObject'), :>, 0
     end
+  end
 
+  describe "#info" do
     it "yields IBaseInfo objects" do
+      gir.require 'GObject', "2.0"
       assert_kind_of GObjectIntrospection::IBaseInfo, gir.info('GObject', 0)
     end
   end
