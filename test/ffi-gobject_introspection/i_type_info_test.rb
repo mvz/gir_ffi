@@ -14,4 +14,18 @@ describe GObjectIntrospection::ITypeInfo do
       }.must_raise RuntimeError
     end
   end
+
+  describe '#interface' do
+    describe "for unresolvable interface types" do
+      let(:function_info) { get_introspection_data 'GObject', 'signal_set_va_marshaller' }
+      let(:argument_info) { function_info.args.last }
+      let(:type_info) { argument_info.argument_type }
+
+      it "returns an IUnresolvableInfo object" do
+        result = type_info.interface
+        result.info_type.must_equal :unresolved
+        result.must_be_kind_of GObjectIntrospection::IUnresolvedInfo
+      end
+    end
+  end
 end
