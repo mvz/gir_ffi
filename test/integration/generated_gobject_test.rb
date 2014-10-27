@@ -1,7 +1,7 @@
 require 'gir_ffi_test_helper'
 
 describe GObject do
-  describe "#type_interfaces" do
+  describe ".type_interfaces" do
     it "works, showing that returning an array of GType works" do
       klass = GObject::TypeModule
       ifcs = GObject.type_interfaces klass.get_gtype
