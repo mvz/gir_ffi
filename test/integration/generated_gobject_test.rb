@@ -9,6 +9,13 @@ describe GObject do
     end
   end
 
+  describe ".signal_set_va_marshaller" do
+    it "can be set up" do
+      result = GObject.setup_method 'signal_set_va_marshaller'
+      result.must_equal true
+    end
+  end
+
   describe GObject::TypeInfo do
     let(:instance) { GObject::TypeInfo.new }
     it "has a working field setter for class_init" do
