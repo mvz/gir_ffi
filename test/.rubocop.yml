@@ -15,3 +15,7 @@ Style/Documentation:
 # Allow compact procs
 Style/Semicolon:
   Enabled: false
+
+# TODO: Fix FieldBuilder so it doesn't generate code with trailing whitespace
+Style/TrailingWhitespace:
+  Enabled: false
