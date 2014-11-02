@@ -4,9 +4,9 @@ require 'gir_ffi'
 
 # Global sequence provider. Needed to make unique class names.
 class Sequence
-  @@seq = 0
   def self.next
-    @@seq += 1
+    @seq ||= 0
+    @seq += + 1
   end
 end
 
