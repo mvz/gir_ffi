@@ -66,6 +66,7 @@ module GObject
   end
 
   # Smells of :reek:LongParameterList: due to the C interface.
+  # rubocop:disable Metrics/ParameterLists
   def self.param_spec_int name, nick, blurb, minimum, maximum, default_value, flags
     ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
                                default_value, flags)
