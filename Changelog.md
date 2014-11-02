@@ -3,6 +3,7 @@
 ## Upcoming
 
 * Support constants with a falsy value
+* Support type aliases that resolve to a type that is not introspectable
 
 ## 0.7.7 / 2014-10-21
 

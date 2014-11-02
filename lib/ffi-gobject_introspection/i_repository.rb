@@ -21,6 +21,7 @@ require 'ffi-gobject_introspection/i_value_info'
 require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
+require 'ffi-gobject_introspection/i_unresolved_info'
 
 GObject.type_init
 
@@ -30,6 +31,8 @@ module GObjectIntrospection
   # This class wraps the GIRepository struct.
   class IRepository
     # Map info type to class. Default is IBaseInfo.
+    # SMELL: This doesn't really belong here, since it is used by IBaseInfo and
+    # descendants as well.
     TYPEMAP = {
       invalid:                  IBaseInfo,
       function:                 IFunctionInfo,
@@ -51,7 +54,7 @@ module GObjectIntrospection
       field:                    IFieldInfo,
       arg:                      IArgInfo,
       type:                     ITypeInfo,
-      unresolved:               IBaseInfo
+      unresolved:               IUnresolvedInfo
     }
 
     def initialize
