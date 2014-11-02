@@ -19,13 +19,13 @@ describe GObject do
   describe GObject::TypeInfo do
     let(:instance) { GObject::TypeInfo.new }
     it "has a working field setter for class_init" do
-      instance.class_init = proc do |object_class, data|
+      instance.class_init = proc do |_object_class, _data|
       end
     end
 
     it "has a working field getter for class_init" do
       instance.class_init.must_be_nil
-      instance.class_init = proc do |object_class, data|
+      instance.class_init = proc do |_object_class, _data|
       end
       result = instance.class_init
       result.wont_be_nil

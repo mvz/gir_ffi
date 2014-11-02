@@ -20,7 +20,7 @@ describe GirFFI::Builder do
 
       mock(lib).
         attach_function("regress_test_callback_destroy_notify",
-                        [ Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify ],
+                        [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
                         :int32) { true }
 
       GirFFI::Builder.attach_ffi_function(lib, function_info)

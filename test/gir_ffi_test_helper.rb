@@ -39,7 +39,7 @@ class Minitest::Test
 
   def save_module name
     if Object.const_defined? name
-      puts "Saving #{name} over existing" if SAVED_MODULES.has_key? name
+      puts "Saving #{name} over existing" if SAVED_MODULES.key? name
       SAVED_MODULES[name] = Object.const_get name
       Object.send(:remove_const, name)
     end
@@ -49,7 +49,7 @@ class Minitest::Test
     if Object.const_defined? name
       Object.send(:remove_const, name)
     end
-    if SAVED_MODULES.has_key? name
+    if SAVED_MODULES.key? name
       Object.const_set name, SAVED_MODULES[name]
       SAVED_MODULES.delete name
     end
@@ -60,11 +60,11 @@ class Minitest::Test
   end
 
   def max_for_unsigned_type type
-    ( 1 << (FFI.type_size(type) * 8) ) - 1
+    (1 << (FFI.type_size(type) * 8)) - 1
   end
 
   def max_for_type type
-    ( 1 << (FFI.type_size(type) * 8 - 1) ) - 1
+    (1 << (FFI.type_size(type) * 8 - 1)) - 1
   end
 
   def min_for_type type
@@ -104,4 +104,3 @@ class Minitest::Test
     max_for_unsigned_type :ulong
   end
 end
-

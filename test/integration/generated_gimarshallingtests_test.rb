@@ -7,8 +7,10 @@ GirFFI.setup :GIMarshallingTests
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
-  let(:derived_klass) { Object.const_set("DerivedClass#{Sequence.next}",
-                                         Class.new(GIMarshallingTests::Object)) }
+  let(:derived_klass) {
+    Object.const_set("DerivedClass#{Sequence.next}",
+                                         Class.new(GIMarshallingTests::Object))
+  }
 
   def make_derived_instance
     GirFFI.define_type derived_klass do |info|
@@ -35,8 +37,8 @@ describe GIMarshallingTests do
 
     it "has a writable field g_strv" do
       instance.g_strv.must_be :==, []
-      instance.g_strv = ["foo", "bar"]
-      instance.g_strv.must_be :==, ["foo", "bar"]
+      instance.g_strv = %w(foo bar)
+      instance.g_strv.must_be :==, %w(foo bar)
     end
 
     it "creates an instance using #new" do
@@ -70,7 +72,7 @@ describe GIMarshallingTests do
     it "has a working function #returnv" do
       res = GIMarshallingTests::BoxedStruct.returnv
       assert_equal 42, res.long_
-      res.g_strv.must_be :==, ["0", "1", "2"]
+      res.g_strv.must_be :==, %w(0 1 2)
     end
   end
 
@@ -197,7 +199,7 @@ describe GIMarshallingTests do
     it "has a working method #test_int8_in" do
       derived_klass.class_eval { include GIMarshallingTests::Interface }
       instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :test_int8_in, proc {|obj, in_| obj.int = in_ }
+        info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       instance.test_int8_in 8
       instance.int.must_equal 8
@@ -216,7 +218,8 @@ describe GIMarshallingTests do
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
       instance = make_derived_instance do |info|
         info.install_vfunc_implementation :test_variant_array_in, proc {|obj, in_|
-          obj.int = in_.to_a.first.get_byte }
+          obj.int = in_.to_a.first.get_byte
+        }
       end
       instance.test_variant_array_in [GLib::Variant.new_byte(42)]
       instance.int.must_equal 42
@@ -332,7 +335,7 @@ describe GIMarshallingTests do
       result = nil
 
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_with_callback, proc { |obj, callback, callback_data|
+        info.install_vfunc_implementation :vfunc_with_callback, proc { |_obj, callback, callback_data|
           cb = callback
           user_data = callback_data.address
           result = callback.call(42, callback_data)
@@ -356,7 +359,7 @@ describe GIMarshallingTests do
                                                "vfunc_in_object_transfer_full")
       obj = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc {|this, object|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc {|_this, object|
           obj = object
         }
       end
@@ -371,7 +374,7 @@ describe GIMarshallingTests do
                                                "vfunc_in_object_transfer_none")
       klass = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|this, object|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|_this, object|
           klass = object.class
         }
       end
@@ -385,7 +388,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_out_object_transfer_full")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|obj|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -397,7 +400,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_out_object_transfer_none")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc {|obj|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc {|_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -409,7 +412,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_return_object_transfer_full")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc {|obj|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc {|_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -421,7 +424,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_return_object_transfer_none")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc {|obj|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc {|_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -431,7 +434,7 @@ describe GIMarshallingTests do
 
     it "has a working method #int8_in" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
+        info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.int8_in 23
       derived_instance.int.must_equal 23
@@ -472,7 +475,7 @@ describe GIMarshallingTests do
       skip unless get_method_introspection_data("GIMarshallingTests", "Object",
                                                 "method_int8_arg_and_out_callee")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |obj, arg|
+        info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |_obj, arg|
           2 * arg
         }
       end
@@ -484,7 +487,7 @@ describe GIMarshallingTests do
       skip unless get_method_introspection_data("GIMarshallingTests", "Object",
                                                 "method_int8_arg_and_out_caller")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_arg_and_out_caller, proc { |obj, arg|
+        info.install_vfunc_implementation :method_int8_arg_and_out_caller, proc { |_obj, arg|
           2 * arg
         }
       end
@@ -494,7 +497,7 @@ describe GIMarshallingTests do
 
     it "has a working method #method_int8_in" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_in, proc {|obj, in_| obj.int = in_ }
+        info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.method_int8_in 108
       derived_instance.int.must_equal 108
@@ -502,7 +505,7 @@ describe GIMarshallingTests do
 
     it "has a working method #method_int8_out" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_out, proc {|obj| 42 }
+        info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
       derived_instance.method_int8_out.must_equal 42
     end
@@ -511,7 +514,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "method_str_arg_out_ret")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_str_arg_out_ret, proc {|obj, arg| [arg, 42] }
+        info.install_vfunc_implementation :method_str_arg_out_ret, proc { |_obj, arg| [arg, 42] }
       end
       derived_instance.method_str_arg_out_ret("foo").must_equal ["foo", 42]
     end
@@ -540,7 +543,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_array_out_parameter")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_array_out_parameter, proc {|obj|
+        info.install_vfunc_implementation :vfunc_array_out_parameter, proc {|_obj|
           [1.1, 2.2, 3.3]
         }
       end
@@ -556,7 +559,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_caller_allocated_out_parameter")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc {|obj|
+        info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc {|_obj|
           "Hello!"
         }
       end
@@ -566,7 +569,7 @@ describe GIMarshallingTests do
 
     it "has a working method #vfunc_meth_with_error" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_meth_with_err, proc {|object, x|
+        info.install_vfunc_implementation :vfunc_meth_with_err, proc {|_object, x|
           raise "This is not the answer!" unless x == 42
           true
         }
@@ -585,7 +588,7 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation(
           :vfunc_multiple_out_parameters,
-          proc {|*args| [42.1, -142.3] })
+          proc { |*_args| [42.1, -142.3] })
       end
       result = derived_instance.vfunc_multiple_out_parameters
       result[0].must_be_close_to 42.1
@@ -596,7 +599,7 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation(
           :vfunc_one_out_parameter,
-          proc {|*args| 23.4 })
+          proc { |*_args| 23.4 })
       end
       derived_instance.vfunc_one_out_parameter.
         must_be_within_epsilon 23.4
@@ -606,7 +609,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_out_enum")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_enum, proc {|obj| :value2 }
+        info.install_vfunc_implementation :vfunc_out_enum, proc { |_obj| :value2 }
       end
       derived_instance.vfunc_out_enum.must_equal :value2
     end
@@ -615,7 +618,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                                "vfunc_return_enum")
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_enum, proc {|obj| :value2 }
+        info.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
       end
       derived_instance.vfunc_return_enum.must_equal :value2
     end
@@ -624,7 +627,7 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation(
           :vfunc_return_value_and_multiple_out_parameters,
-          proc {|*args| [42, -142, 3] })
+          proc { |*_args| [42, -142, 3] })
       end
       derived_instance.vfunc_return_value_and_multiple_out_parameters.
         must_equal [42, -142, 3]
@@ -634,7 +637,7 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation(
           :vfunc_return_value_and_one_out_parameter,
-          proc {|*args| [42, -142] })
+          proc { |*_args| [42, -142] })
       end
       derived_instance.vfunc_return_value_and_one_out_parameter.
         must_equal [42, -142]
@@ -642,7 +645,7 @@ describe GIMarshallingTests do
 
     it "has a working method #vfunc_return_value_only" do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_value_only, proc {|obj| 0x1234_5678 }
+        info.install_vfunc_implementation :vfunc_return_value_only, proc { |_obj| 0x1234_5678 }
       end
       result = derived_instance.vfunc_return_value_only
       result.must_equal 0x1234_5678
@@ -655,7 +658,7 @@ describe GIMarshallingTests do
       result = 1
 
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_with_callback, proc { |obj, callback, callback_data|
+        info.install_vfunc_implementation :vfunc_with_callback, proc { |_obj, callback, callback_data|
           callback.call(42, callback_data)
         }
       end
@@ -1010,13 +1013,13 @@ describe GIMarshallingTests do
       end
 
       it "can be set with #set_property_extended" do
-        instance.set_property_extended("some-strv", ["foo", "bar"])
-        instance.get_property("some-strv").get_value.must_be :==, ["foo", "bar"]
+        instance.set_property_extended("some-strv", %w(foo bar))
+        instance.get_property("some-strv").get_value.must_be :==, %w(foo bar)
       end
 
       it "can be set with #some_strv=" do
-        instance.some_strv = ["foo", "bar"]
-        instance.some_strv.must_be :==, ["foo", "bar"]
+        instance.some_strv = %w(foo bar)
+        instance.some_strv.must_be :==, %w(foo bar)
       end
     end
 
@@ -1282,7 +1285,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_out_struct" do
     res = GIMarshallingTests.array_fixed_out_struct
-    assert_equal [[7, 6], [6, 7]], res.map {|s| [s.long_, s.int8]}
+    assert_equal [[7, 6], [6, 7]], res.map { |s| [s.long_, s.int8] }
   end
 
   it "has a working function #array_fixed_short_in" do
@@ -1409,7 +1412,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_string_in" do
-    GIMarshallingTests.array_string_in ["foo", "bar"]
+    GIMarshallingTests.array_string_in %w(foo bar)
     pass
   end
 
@@ -1443,23 +1446,23 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_zero_terminated_in" do
-    GIMarshallingTests.array_zero_terminated_in ["0", "1", "2"]
+    GIMarshallingTests.array_zero_terminated_in %w(0 1 2)
     pass
   end
 
   it "has a working function #array_zero_terminated_inout" do
-    res = GIMarshallingTests.array_zero_terminated_inout ["0", "1", "2"]
+    res = GIMarshallingTests.array_zero_terminated_inout %w(0 1 2)
     res.must_be :==, ["-1", "0", "1", "2"]
   end
 
   it "has a working function #array_zero_terminated_out" do
     res = GIMarshallingTests.array_zero_terminated_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #array_zero_terminated_return" do
     res = GIMarshallingTests.array_zero_terminated_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #array_zero_terminated_return_null" do
@@ -1527,7 +1530,7 @@ describe GIMarshallingTests do
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
     assert_equal 42, res.long_
-    res.g_strv.must_be :==, ["0", "1", "2"]
+    res.g_strv.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #bytearray_full_return" do
@@ -1547,7 +1550,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_multiple_out_parameters" do
-    result = GIMarshallingTests.callback_multiple_out_parameters proc { |*args|
+    result = GIMarshallingTests.callback_multiple_out_parameters proc { |*_args|
       [12.0, 13.0]
     }
     result.must_equal [12.0, 13.0]
@@ -1574,14 +1577,14 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #callback_return_value_and_multiple_out_parameters" do
-    result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters proc { |*args|
+    result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters proc { |*_args|
       [42, -142, 3]
     }
     result.must_equal [42, -142, 3]
   end
 
   it "has a working function #callback_return_value_and_one_out_parameter" do
-    result = GIMarshallingTests.callback_return_value_and_one_out_parameter proc { |*args|
+    result = GIMarshallingTests.callback_return_value_and_one_out_parameter proc { |*_args|
       [42, -142]
     }
     result.must_equal [42, -142]
@@ -1710,63 +1713,63 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_utf8_container_inout" do
-    res = GIMarshallingTests.garray_utf8_container_inout ["0", "1", "2"]
+    res = GIMarshallingTests.garray_utf8_container_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_container_out" do
     res = GIMarshallingTests.garray_utf8_container_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_container_return" do
     res = GIMarshallingTests.garray_utf8_container_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_full_inout" do
-    arr = ["0", "1", "2"]
+    arr = %w(0 1 2)
     res = GIMarshallingTests.garray_utf8_full_inout arr
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_full_out" do
     res = GIMarshallingTests.garray_utf8_full_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_full_out_caller_allocated" do
     skip unless get_introspection_data 'GIMarshallingTests',
       'garray_utf8_full_out_caller_allocated'
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_full_return" do
     res = GIMarshallingTests.garray_utf8_full_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_none_in" do
-    arr = ["0", "1", "2"]
+    arr = %w(0 1 2)
     GIMarshallingTests.garray_utf8_none_in arr
     pass
   end
 
   it "has a working function #garray_utf8_none_inout" do
-    arr = ["0", "1", "2"]
+    arr = %w(0 1 2)
     res = GIMarshallingTests.garray_utf8_none_inout arr
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_none_out" do
     res = GIMarshallingTests.garray_utf8_none_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #garray_utf8_none_return" do
     res = GIMarshallingTests.garray_utf8_none_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gbytes_full_return" do
@@ -1855,12 +1858,12 @@ describe GIMarshallingTests do
 
   it "has a working function #ghashtable_int_none_in" do
     GIMarshallingTests.ghashtable_int_none_in(
-      {-1 => 1, 0 => 0, 1 => -1, 2 => -2})
+      -1 => 1, 0 => 0, 1 => -1, 2 => -2)
   end
 
   it "has a working function #ghashtable_int_none_return" do
     gh = GIMarshallingTests.ghashtable_int_none_return
-    assert_equal({-1 => 1, 0 => 0, 1 => -1, 2 => -2}, gh.to_hash)
+    assert_equal({ -1 => 1, 0 => 0, 1 => -1, 2 => -2 }, gh.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_container_in" do
@@ -1868,20 +1871,20 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #ghashtable_utf8_container_inout" do
-    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_container_inout hsh
-    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_container_out" do
     res = GIMarshallingTests.ghashtable_utf8_container_out
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_container_return" do
     res = GIMarshallingTests.ghashtable_utf8_container_return
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
@@ -1890,44 +1893,44 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #ghashtable_utf8_full_inout" do
-    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_full_inout hsh
-    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_full_out" do
     res = GIMarshallingTests.ghashtable_utf8_full_out
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_full_return" do
     res = GIMarshallingTests.ghashtable_utf8_full_return
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_none_in" do
-    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     GIMarshallingTests.ghashtable_utf8_none_in hsh
     pass
   end
 
   it "has a working function #ghashtable_utf8_none_inout" do
-    hsh = {"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"}
+    hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_none_inout hsh
-    assert_equal({"-1" => "1", "0" => "0", "1" => "1"}, res.to_hash)
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_none_out" do
     res = GIMarshallingTests.ghashtable_utf8_none_out
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_none_return" do
     res = GIMarshallingTests.ghashtable_utf8_none_return
-    assert_equal({"-1" => "1", "0" => "0", "1" => "-1", "2" => "-2"},
+    assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
@@ -1954,101 +1957,101 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #glist_utf8_container_inout" do
-    res = GIMarshallingTests.glist_utf8_container_inout ["0", "1", "2"]
+    res = GIMarshallingTests.glist_utf8_container_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_container_out" do
     res = GIMarshallingTests.glist_utf8_container_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_container_return" do
     res = GIMarshallingTests.glist_utf8_container_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_full_inout" do
-    res = GIMarshallingTests.glist_utf8_full_inout ["0", "1", "2"]
+    res = GIMarshallingTests.glist_utf8_full_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_full_out" do
     res = GIMarshallingTests.glist_utf8_full_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_full_return" do
     res = GIMarshallingTests.glist_utf8_full_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_none_in" do
-    GIMarshallingTests.glist_utf8_none_in ["0", "1", "2"]
+    GIMarshallingTests.glist_utf8_none_in %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_none_inout" do
-    res = GIMarshallingTests.glist_utf8_none_inout ["0", "1", "2"]
+    res = GIMarshallingTests.glist_utf8_none_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_none_out" do
     res = GIMarshallingTests.glist_utf8_none_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #glist_utf8_none_return" do
     res = GIMarshallingTests.glist_utf8_none_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_container_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_container_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gptrarray_utf8_container_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_container_out" do
     res = GIMarshallingTests.gptrarray_utf8_container_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_container_return" do
     res = GIMarshallingTests.gptrarray_utf8_container_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_full_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_full_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gptrarray_utf8_full_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_full_out" do
     res = GIMarshallingTests.gptrarray_utf8_full_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_full_return" do
     res = GIMarshallingTests.gptrarray_utf8_full_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_none_in" do
-    GIMarshallingTests.gptrarray_utf8_none_in ["0", "1", "2"]
+    GIMarshallingTests.gptrarray_utf8_none_in %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_none_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_none_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gptrarray_utf8_none_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_none_out" do
     res = GIMarshallingTests.gptrarray_utf8_none_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gptrarray_utf8_none_return" do
     res = GIMarshallingTests.gptrarray_utf8_none_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_int_none_in" do
@@ -2062,73 +2065,73 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gslist_utf8_container_inout" do
-    res = GIMarshallingTests.gslist_utf8_container_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gslist_utf8_container_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_container_out" do
     res = GIMarshallingTests.gslist_utf8_container_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_utf8_container_return" do
     res = GIMarshallingTests.gslist_utf8_container_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_utf8_full_inout" do
-    res = GIMarshallingTests.gslist_utf8_full_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gslist_utf8_full_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_full_out" do
     res = GIMarshallingTests.gslist_utf8_full_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_utf8_full_return" do
     res = GIMarshallingTests.gslist_utf8_full_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_utf8_none_in" do
-    GIMarshallingTests.gslist_utf8_none_in ["0", "1", "2"]
+    GIMarshallingTests.gslist_utf8_none_in %w(0 1 2)
     pass
   end
 
   it "has a working function #gslist_utf8_none_inout" do
-    res = GIMarshallingTests.gslist_utf8_none_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gslist_utf8_none_inout %w(0 1 2)
     res.must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_none_out" do
     res = GIMarshallingTests.gslist_utf8_none_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gslist_utf8_none_return" do
     res = GIMarshallingTests.gslist_utf8_none_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gstrv_in" do
-    GIMarshallingTests.gstrv_in ["0", "1", "2"]
+    GIMarshallingTests.gstrv_in %w(0 1 2)
     pass
   end
 
   it "has a working function #gstrv_inout" do
-    res = GIMarshallingTests.gstrv_inout ["0", "1", "2"]
+    res = GIMarshallingTests.gstrv_inout %w(0 1 2)
     res.must_be :==, ["-1", "0", "1", "2"]
   end
 
   it "has a working function #gstrv_out" do
     res = GIMarshallingTests.gstrv_out
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gstrv_return" do
     res = GIMarshallingTests.gstrv_return
-    res.must_be :==, ["0", "1", "2"]
+    res.must_be :==, %w(0 1 2)
   end
 
   it "has a working function #gtype_in" do
@@ -2246,9 +2249,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #init_function" do
-    res, arr = GIMarshallingTests.init_function ["foo", "bar", "baz"]
+    res, arr = GIMarshallingTests.init_function %w(foo bar baz)
     res.must_equal true
-    arr.must_be :==, ["foo", "bar"]
+    arr.must_be :==, %w(foo bar)
   end
 
   it "has a working function #int16_in_max" do
@@ -2523,7 +2526,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #multi_array_key_value_in" do
-    keys = ["one", "two", "three"]
+    keys = %w(one two three)
     values = [1, 2, 3].map { |val| GObject::Value.wrap_ruby_value val }
     GIMarshallingTests.multi_array_key_value_in keys, values
   end
@@ -2715,7 +2718,7 @@ describe GIMarshallingTests do
   it "has a working function #test_interface_test_int8_in" do
     derived_klass.class_eval { include GIMarshallingTests::Interface }
     instance = make_derived_instance do |info|
-      info.install_vfunc_implementation :test_int8_in, proc {|obj, in_| obj.int = in_ }
+      info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
     end
     instance.int.must_equal 0
     GIMarshallingTests.test_interface_test_int8_in instance, 8
@@ -2723,23 +2726,23 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #time_t_in" do
-    GIMarshallingTests.time_t_in 1234567890
+    GIMarshallingTests.time_t_in 1_234_567_890
     pass
   end
 
   it "has a working function #time_t_inout" do
-    res = GIMarshallingTests.time_t_inout 1234567890
+    res = GIMarshallingTests.time_t_inout 1_234_567_890
     assert_equal 0, res
   end
 
   it "has a working function #time_t_out" do
     res = GIMarshallingTests.time_t_out
-    assert_equal 1234567890, res
+    assert_equal 1_234_567_890, res
   end
 
   it "has a working function #time_t_return" do
     res = GIMarshallingTests.time_t_return
-    assert_equal 1234567890, res
+    assert_equal 1_234_567_890, res
   end
 
   it "has a working function #uint16_in" do
@@ -2907,7 +2910,6 @@ describe GIMarshallingTests do
   it "has a working function #utf8_full_in" do
     skip "This function is defined in the header but not implemented"
   end
-
 
   it "has a working function #utf8_full_inout" do
     res = GIMarshallingTests.utf8_full_inout "const ♥ utf8"

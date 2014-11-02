@@ -20,7 +20,7 @@ describe GObject do
       s = Gio::SocketService.new
 
       argtypes = [:pointer, :pointer, :pointer, :pointer]
-      callback = FFI::Function.new(:bool, argtypes) { |a,b,c,d| true }
+      callback = FFI::Function.new(:bool, argtypes) { |_a, _b, _c, _d| true }
       ::GObject::Lib.g_signal_connect_data s, "incoming", callback, nil, nil, 0
       rv = GObject.signal_emit s, "incoming"
       assert_equal true, rv.get_value
@@ -35,7 +35,7 @@ describe GObject do
       b2 = nil
 
       argtypes = [:pointer, :pointer, :pointer]
-      callback = FFI::Function.new(:void, argtypes) do |a,b,c|
+      callback = FFI::Function.new(:void, argtypes) do |_a, b, _c|
         b2 = b
       end
       ::GObject::Lib.g_signal_connect_data o, "test-with-static-scope-arg", callback, nil, nil, 0
@@ -70,7 +70,7 @@ describe GObject do
     it "passes user data to handler" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, "test", 2) { |i, d| a = d }
+      GObject.signal_connect(o, "test", 2) { |_i, d| a = d }
       GObject.signal_emit o, "test"
       assert_equal 2, a
     end
@@ -78,7 +78,7 @@ describe GObject do
     it "passes object to handler" do
       o = Regress::TestSubObj.new
       o2 = nil
-      GObject.signal_connect(o, "test") { |i, d| o2 = i }
+      GObject.signal_connect(o, "test") { |i, _d| o2 = i }
       GObject.signal_emit o, "test"
       assert_instance_of Regress::TestSubObj, o2
       assert_equal o.to_ptr, o2.to_ptr
@@ -108,7 +108,7 @@ describe GObject do
     it "allows specifying signal detail" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, "notify::detail", 2) { |i, _, d| a = d }
+      GObject.signal_connect(o, "notify::detail", 2) { |_i, _, d| a = d }
       GObject.signal_emit o, "notify::detail"
       assert_equal 2, a
     end
@@ -122,7 +122,7 @@ describe GObject do
         sb = Regress::TestSimpleBoxedA.new
         sb.some_int = 23
 
-        GObject.signal_connect(o, "test-with-static-scope-arg", 2) { |instance, object, user_data|
+        GObject.signal_connect(o, "test-with-static-scope-arg", 2) { |_instance, object, user_data|
           @a = user_data
           @b = object
         }

@@ -14,4 +14,3 @@ describe GObjectIntrospection::IEnumInfo do
     end
   end
 end
-

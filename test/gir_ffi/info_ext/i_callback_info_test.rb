@@ -1,9 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ICallbackInfo do
-  let(:klass) { Class.new do
-    include GirFFI::InfoExt::ICallbackInfo
-  end }
+  let(:klass) {
+    Class.new do
+      include GirFFI::InfoExt::ICallbackInfo
+    end
+  }
   let(:callback_info) { klass.new }
 
   describe "#return_ffi_type" do
@@ -15,5 +17,3 @@ describe GirFFI::InfoExt::ICallbackInfo do
     end
   end
 end
-
-

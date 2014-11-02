@@ -8,4 +8,3 @@ describe GirFFI::CallbackBase do
     end
   end
 end
-

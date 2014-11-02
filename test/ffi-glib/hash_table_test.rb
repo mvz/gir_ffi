@@ -10,18 +10,18 @@ describe GLib::HashTable do
   describe "::from" do
     it "creates a GHashTable from a Ruby hash" do
       hsh = GLib::HashTable.from [:utf8, :gint32],
-        {"foo" => 23, "bar" => 32}
-      assert_equal({"foo" => 23, "bar" => 32}, hsh.to_hash)
+        "foo" => 23, "bar" => 32
+      assert_equal({ "foo" => 23, "bar" => 32 }, hsh.to_hash)
     end
 
     it "return its argument if given a GHashTable" do
-      hsh = GLib::HashTable.from [:utf8, :gint32], {"foo" => 23, "bar" => 32}
+      hsh = GLib::HashTable.from [:utf8, :gint32], "foo" => 23, "bar" => 32
       hsh2 = GLib::HashTable.from [:utf8, :gint32], hsh
       assert hsh2.equal? hsh
     end
 
     it "wraps its argument if given a pointer" do
-      hsh = GLib::HashTable.from [:utf8, :gint32], {"foo" => 23, "bar" => 32}
+      hsh = GLib::HashTable.from [:utf8, :gint32], "foo" => 23, "bar" => 32
       pointer = hsh.to_ptr
       assert_instance_of FFI::Pointer, pointer
       hsh2 = GLib::HashTable.from [:utf8, :gint32], pointer
@@ -38,7 +38,7 @@ describe GLib::HashTable do
   end
 
   it "includes Enumerable" do
-    GLib::HashTable.must_include Enumerable 
+    GLib::HashTable.must_include Enumerable
   end
 
   describe "a HashTable provided by the system" do
@@ -49,15 +49,14 @@ describe GLib::HashTable do
 
     it "has a working #each method" do
       a = {}
-      @hash.each {|k, v| a[k] = v}
-      a.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
+      @hash.each { |k, v| a[k] = v }
+      a.must_be :==, "foo" => "bar", "baz" => "bat",
+        "qux" => "quux"
     end
 
     it "has a working #to_hash method" do
-      @hash.to_hash.must_be :==, {"foo" => "bar", "baz" => "bat",
-        "qux" => "quux"}
+      @hash.to_hash.must_be :==, "foo" => "bar", "baz" => "bat",
+        "qux" => "quux"
     end
   end
 end
-

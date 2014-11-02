@@ -27,4 +27,3 @@ describe GirFFI::Builders::UnionBuilder do
     end
   end
 end
-

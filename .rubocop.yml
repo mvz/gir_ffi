@@ -1,6 +1,5 @@
 AllCops:
   Exclude:
-    - 'test/**/*'
     - 'examples/*'
     - 'tasks/**/*.rake'
     - 'tmp/**/*'

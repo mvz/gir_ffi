@@ -8,17 +8,18 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
     describe "for :zero_terminated" do
       let(:vfunc_info) {
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                     'vfunc_array_out_parameter') }
+                                     'vfunc_array_out_parameter')
+      }
       let(:arg_info) { vfunc_info.args[0] }
 
       before { skip unless vfunc_info }
 
       it "has the correct value for #pre_conversion" do
-        builder.pre_conversion.must_equal [ "_v1 = GirFFI::InOutPointer.new([:pointer, :zero_terminated], a)" ]
+        builder.pre_conversion.must_equal ["_v1 = GirFFI::InOutPointer.new([:pointer, :zero_terminated], a)"]
       end
 
       it "has the correct value for #post_conversion" do
-        builder.post_conversion.must_equal [ "_v1.set_value GirFFI::ZeroTerminated.from(:gfloat, _v2)" ]
+        builder.post_conversion.must_equal ["_v1.set_value GirFFI::ZeroTerminated.from(:gfloat, _v2)"]
       end
     end
   end

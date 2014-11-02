@@ -3,8 +3,10 @@ require 'gir_ffi_test_helper'
 GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builders::UserDefinedBuilder do
-  let(:klass) { Object.const_set("DerivedClass#{Sequence.next}",
-                                 Class.new(GIMarshallingTests::Object)) }
+  let(:klass) {
+    Object.const_set("DerivedClass#{Sequence.next}",
+                                 Class.new(GIMarshallingTests::Object))
+  }
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
   let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
 
@@ -14,12 +16,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing one property" do
-      let(:info) { GirFFI::UserDefinedTypeInfo.new klass do |info|
-        info.install_property GObject.param_spec_int("foo", "foo bar",
-                                                     "The Foo Bar Property",
-                                                     10, 20, 15,
-                                                     3)
-      end }
+      let(:info) {
+        GirFFI::UserDefinedTypeInfo.new klass do |info|
+          info.install_property GObject.param_spec_int("foo", "foo bar",
+                                                       "The Foo Bar Property",
+                                                       10, 20, 15,
+                                                       3)
+        end
+      }
 
       it "registers a type that is bigger than the parent" do
         gtype = klass.get_gtype
@@ -51,9 +55,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing an overridden g_name" do
-      let(:info) { GirFFI::UserDefinedTypeInfo.new klass do |info|
-        info.g_name = "OtherName#{Sequence.next}"
-      end }
+      let(:info) {
+        GirFFI::UserDefinedTypeInfo.new klass do |info|
+          info.g_name = "OtherName#{Sequence.next}"
+        end
+      }
 
       it "registers a type under the overridden name" do
         registered_name = GObject.type_name(klass.get_gtype)
@@ -63,10 +69,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing a vfunc" do
-      let(:info) { GirFFI::UserDefinedTypeInfo.new klass do |info|
-        info.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
-          instance.int = in_ }
-      end }
+      let(:info) {
+        GirFFI::UserDefinedTypeInfo.new klass do |info|
+          info.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
+            instance.int = in_
+          }
+        end
+      }
 
       it "allows the vfunc to be called through its invoker" do
         obj = klass.new
@@ -80,7 +89,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         klass.class_eval { include GIMarshallingTests::Interface }
         GirFFI::UserDefinedTypeInfo.new klass do |info|
           info.install_vfunc_implementation :test_int8_in,
-            proc {|instance, in_| instance.int = in_ }
+            proc { |instance, in_| instance.int = in_ }
         end
       end
 

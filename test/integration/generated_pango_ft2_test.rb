@@ -14,4 +14,3 @@ describe PangoFT2 do
     end
   end
 end
-

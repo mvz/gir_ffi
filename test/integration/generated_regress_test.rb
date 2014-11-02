@@ -8,7 +8,7 @@ describe Regress do
   describe Regress::Lib do
     it "extends FFI::Library" do
       class << Regress::Lib
-        self.must_be :include?, FFI::Library
+        must_be :include?, FFI::Library
       end
     end
   end
@@ -36,12 +36,12 @@ describe Regress do
 
   it "has the constant GUINT64_CONSTANT" do
     skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANT'
-    Regress::GUINT64_CONSTANT.must_equal 18446744073709551615
+    Regress::GUINT64_CONSTANT.must_equal 18_446_744_073_709_551_615
   end
 
   it "has the constant GUINT64_CONSTANTA" do
     skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANTA'
-    Regress::GUINT64_CONSTANTA.must_equal 18446744073709551615
+    Regress::GUINT64_CONSTANTA.must_equal 18_446_744_073_709_551_615
   end
 
   it "has the constant G_GINT64_CONSTANT" do
@@ -174,9 +174,9 @@ describe Regress do
     it "has a writable field nested_a" do
       instance.nested_a.some_int.must_equal 0
       nested = Regress::TestSimpleBoxedA.new
-      nested.some_int = 12345
+      nested.some_int = 12_345
       instance.nested_a = nested
-      instance.nested_a.some_int.must_equal 12345
+      instance.nested_a.some_int.must_equal 12_345
     end
 
     it "has a writable field priv" do
@@ -380,7 +380,7 @@ describe Regress do
 
     # NOTE In c, the positive and negative values are not distinguished
     it "has the member :value2" do
-      Regress::TestEnumUnsigned[:value2].must_equal(-2147483648)
+      Regress::TestEnumUnsigned[:value2].must_equal(-2_147_483_648)
     end
   end
 
@@ -517,7 +517,7 @@ describe Regress do
 
     it "creates an instance using #new_callback" do
       a = 1
-      o = Regress::TestObj.new_callback Proc.new { a = 2 }, nil, nil
+      o = Regress::TestObj.new_callback proc { a = 2 }, nil, nil
       assert_instance_of Regress::TestObj, o
       a.must_equal 2
 
@@ -545,7 +545,7 @@ describe Regress do
 
     it "has a working function #static_method_callback" do
       a = 1
-      Regress::TestObj.static_method_callback Proc.new { a = 2 }
+      Regress::TestObj.static_method_callback proc { a = 2 }
       assert_equal 2, a
     end
 
@@ -579,7 +579,7 @@ describe Regress do
       skip unless get_method_introspection_data('Regress', 'TestObj',
                                                 'emit_sig_with_foreign_struct')
       has_fired = false
-      instance.signal_connect "sig-with-foreign-struct" do |obj, cr|
+      instance.signal_connect "sig-with-foreign-struct" do |_obj, cr|
         has_fired = true
         cr.must_be_instance_of Cairo::Context
       end
@@ -589,7 +589,7 @@ describe Regress do
 
     it "has a working method #emit_sig_with_int64" do
       skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-int64-prop"
-      instance.signal_connect "sig-with-int64-prop" do |obj, i, ud|
+      instance.signal_connect "sig-with-int64-prop" do |_obj, i, _ud|
         i
       end
       instance.emit_sig_with_int64
@@ -597,7 +597,7 @@ describe Regress do
 
     it "has a working method #emit_sig_with_obj" do
       has_fired = false
-      instance.signal_connect "sig-with-obj" do |it, obj|
+      instance.signal_connect "sig-with-obj" do |_it, obj|
         has_fired = true
         obj.int.must_equal 3
       end
@@ -607,7 +607,7 @@ describe Regress do
 
     it "has a working method #emit_sig_with_uint64" do
       skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-uint64-prop"
-      instance.signal_connect "sig-with-uint64-prop" do |obj, i, ud|
+      instance.signal_connect "sig-with-uint64-prop" do |_obj, i, _ud|
         i
       end
       instance.emit_sig_with_uint64
@@ -625,7 +625,7 @@ describe Regress do
 
     it "has a working method #instance_method_callback" do
       a = 1
-      instance.instance_method_callback Proc.new { a = 2 }
+      instance.instance_method_callback proc { a = 2 }
       assert_equal 2, a
     end
 
@@ -827,15 +827,15 @@ describe Regress do
       end
 
       it "can be set with #set_property_extended" do
-        instance.set_property_extended "hash-table", {"foo" => -4, "bar" => 83}
-        instance.hash_table.to_hash.must_equal({"foo" => -4, "bar" => 83})
+        instance.set_property_extended "hash-table", "foo" => -4, "bar" => 83
+        instance.hash_table.to_hash.must_equal("foo" => -4, "bar" => 83)
       end
 
       it "can be set with #hash_table=" do
-        instance.hash_table = {"foo" => -4, "bar" => 83}
-        instance.hash_table.to_hash.must_equal({"foo" => -4, "bar" => 83})
-        instance.get_property_extended("hash-table").to_hash.must_equal({"foo" => -4,
-                                                                         "bar" => 83})
+        instance.hash_table = { "foo" => -4, "bar" => 83 }
+        instance.hash_table.to_hash.must_equal("foo" => -4, "bar" => 83)
+        instance.get_property_extended("hash-table").to_hash.must_equal("foo" => -4,
+                                                                        "bar" => 83)
       end
     end
 
@@ -849,15 +849,15 @@ describe Regress do
       end
 
       it "can be set with #set_property_extended" do
-        instance.set_property_extended "hash-table-old", {"foo" => 34, "bar" => -3}
-        instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => -3})
+        instance.set_property_extended "hash-table-old", "foo" => 34, "bar" => -3
+        instance.hash_table_old.to_hash.must_equal("foo" => 34, "bar" => -3)
       end
 
       it "can be set with #hash_table_old=" do
-        instance.hash_table_old = {"foo" => 34, "bar" => -3}
-        instance.hash_table_old.to_hash.must_equal({"foo" => 34, "bar" => -3})
-        instance.get_property_extended("hash-table-old").to_hash.must_equal({"foo" => 34,
-                                                                             "bar" => -3})
+        instance.hash_table_old = { "foo" => 34, "bar" => -3 }
+        instance.hash_table_old.to_hash.must_equal("foo" => 34, "bar" => -3)
+        instance.get_property_extended("hash-table-old").to_hash.must_equal("foo" => 34,
+                                                                            "bar" => -3)
       end
     end
 
@@ -892,14 +892,14 @@ describe Regress do
       end
 
       it "can be set with #set_property_extended" do
-        instance.set_property_extended "list", ["foo", "bar"]
-        instance.list.to_a.must_equal ["foo", "bar"]
+        instance.set_property_extended "list", %w(foo bar)
+        instance.list.to_a.must_equal %w(foo bar)
       end
 
       it "can be set with #list=" do
-        instance.list = ["foo", "bar"]
-        instance.list.to_a.must_equal ["foo", "bar"]
-        instance.get_property_extended("list").must_be :==, ["foo", "bar"]
+        instance.list = %w(foo bar)
+        instance.list.to_a.must_equal %w(foo bar)
+        instance.get_property_extended("list").must_be :==, %w(foo bar)
       end
     end
 
@@ -913,14 +913,14 @@ describe Regress do
       end
 
       it "can be set with #set_property_extended" do
-        instance.set_property_extended "list-old", ["foo", "bar"]
-        instance.list_old.must_be :==, ["foo",  "bar"]
+        instance.set_property_extended "list-old", %w(foo bar)
+        instance.list_old.must_be :==, %w(foo bar)
       end
 
       it "can be set with #list_old=" do
-        instance.list_old = ["foo", "bar"]
-        instance.list_old.must_be :==, ["foo",  "bar"]
-        instance.get_property_extended("list-old").must_be :==, ["foo", "bar"]
+        instance.list_old = %w(foo bar)
+        instance.list_old.must_be :==, %w(foo bar)
+        instance.get_property_extended("list-old").must_be :==, %w(foo bar)
       end
     end
 
@@ -971,7 +971,7 @@ describe Regress do
 
       a = nil
 
-      GObject.signal_connect(instance, "sig-with-array-len-prop") do |obj, arr, user_data|
+      GObject.signal_connect(instance, "sig-with-array-len-prop") do |_obj, arr, _user_data|
         a = arr
       end
 
@@ -983,7 +983,7 @@ describe Regress do
 
     it "handles the 'sig-with-array-prop' signal" do
       a = nil
-      GObject.signal_connect(instance, "sig-with-array-prop") {|_, arr, _| a = arr }
+      GObject.signal_connect(instance, "sig-with-array-prop") { |_, arr, _| a = arr }
       GObject.signal_emit instance, "sig-with-array-prop",
         GLib::Array.from(:uint, [1, 2, 3])
       a.to_a.must_equal [1, 2, 3]
@@ -993,7 +993,7 @@ describe Regress do
       skip unless get_signal_introspection_data "Regress", "TestObj", "sig-with-foreign-struct"
 
       a = nil
-      instance.signal_connect "sig-with-foreign-struct" do |obj, ct|
+      instance.signal_connect "sig-with-foreign-struct" do |_obj, ct|
         a = ct
       end
 
@@ -1013,7 +1013,7 @@ describe Regress do
       end
 
       g_hash_table = GLib::HashTable.from([:utf8, GObject::Value],
-                                          {"foo" => GObject::Value.from("bar")})
+                                          "foo" => GObject::Value.from("bar"))
 
       GObject.signal_emit instance, "sig-with-hash-prop", g_hash_table
 
@@ -1026,7 +1026,7 @@ describe Regress do
 
       a = nil
 
-      GObject.signal_connect(instance, "sig-with-int64-prop") do |obj, int64, user_data|
+      GObject.signal_connect(instance, "sig-with-int64-prop") do |_obj, int64, _user_data|
         a = int64
       end
 
@@ -1074,9 +1074,9 @@ describe Regress do
         a = strs
       end
 
-      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(["foo", "bar"])
+      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(%w(foo bar))
 
-      a.to_a.must_equal ["foo", "bar"]
+      a.to_a.must_equal %w(foo bar)
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
@@ -1110,10 +1110,10 @@ describe Regress do
       end
 
       arg = Regress::TestSimpleBoxedA.new
-      arg.some_int = 12345
+      arg.some_int = 12_345
       GObject.signal_emit instance, "test-with-static-scope-arg", arg
 
-      a.some_int.must_equal 12345
+      a.some_int.must_equal 12_345
     end
   end
 
@@ -1448,26 +1448,26 @@ describe Regress do
     let(:instance) { Regress::TestStructE__some_union__union.new }
     it "has a writable field v_int" do
       instance.v_int.must_equal 0
-      instance.v_int = -54321
-      instance.v_int.must_equal(-54321)
+      instance.v_int = -54_321
+      instance.v_int.must_equal(-54_321)
     end
 
     it "has a writable field v_uint" do
       instance.v_uint.must_equal 0
-      instance.v_uint = 54321
-      instance.v_uint.must_equal 54321
+      instance.v_uint = 54_321
+      instance.v_uint.must_equal 54_321
     end
 
     it "has a writable field v_long" do
       instance.v_long.must_equal 0
-      instance.v_long = -54321
-      instance.v_long.must_equal(-54321)
+      instance.v_long = -54_321
+      instance.v_long.must_equal(-54_321)
     end
 
     it "has a writable field v_ulong" do
       instance.v_long.must_equal 0
-      instance.v_long = 54321
-      instance.v_long.must_equal 54321
+      instance.v_long = 54_321
+      instance.v_long.must_equal 54_321
     end
 
     it "has a writable field v_int64" do
@@ -1492,8 +1492,8 @@ describe Regress do
     end
     it "has a writable field v_pointer" do
       instance.v_pointer.must_be :null?
-      instance.v_pointer = FFI::Pointer.new 54321
-      instance.v_pointer.address.must_equal 54321
+      instance.v_pointer = FFI::Pointer.new 54_321
+      instance.v_pointer.address.must_equal 54_321
     end
   end
   describe "Regress::TestStructF" do
@@ -1554,7 +1554,7 @@ describe Regress do
     it "has a working method #frob" do
       instance.array = (0..9).to_a
       instance.frob
-      instance.array.must_be :==, (42..42+9).to_a
+      instance.array.must_be :==, (42..42 + 9).to_a
       instance.just_int.must_equal 7
     end
   end
@@ -1703,7 +1703,7 @@ describe Regress do
 
     result.must_equal 2 * c
     a.to_a.must_equal [-1, 0, 1, 2]
-    b.to_a.must_equal ["one", "two", "three"]
+    b.to_a.must_equal %w(one two three)
   end
 
   it "has a working function #test_array_fixed_out_objects" do
@@ -1793,7 +1793,7 @@ describe Regress do
     main_loop = GLib::MainLoop.new nil, false
 
     a = 1
-    Regress.test_async_ready_callback Proc.new {
+    Regress.test_async_ready_callback proc {
       main_loop.quit
       a = 2
     }
@@ -1847,13 +1847,13 @@ describe Regress do
   end
 
   it "has a working function #test_callback" do
-    result = Regress.test_callback Proc.new { 5 }
+    result = Regress.test_callback proc { 5 }
     assert_equal 5, result
   end
 
   it "has a working function #test_callback_async" do
     a = 1
-    Regress.test_callback_async Proc.new {|b|
+    Regress.test_callback_async proc {|b|
       a = 2
       b
     }, 44
@@ -1864,10 +1864,10 @@ describe Regress do
 
   it "has a working function #test_callback_destroy_notify" do
     a = 1
-    r1 = Regress.test_callback_destroy_notify Proc.new {|b|
+    r1 = Regress.test_callback_destroy_notify proc {|b|
       a = 2
       b
-    }, 42, Proc.new { a = 3 }
+    }, 42, proc { a = 3 }
     assert_equal 2, a
     assert_equal 42, r1
     r2 = Regress.test_callback_thaw_notifications
@@ -1882,13 +1882,13 @@ describe Regress do
     notify_times_called = 0
     b = :not_nil
 
-    callback = Proc.new {|user_data|
+    callback = proc {|user_data|
       callback_times_called += 1
       b = user_data
       callback_times_called * 5
     }
 
-    notify = Proc.new { notify_times_called += 1 }
+    notify = proc { notify_times_called += 1 }
 
     result = Regress.test_callback_destroy_notify_no_user_data callback, notify
 
@@ -1907,9 +1907,9 @@ describe Regress do
 
   it "has a working function #test_callback_thaw_async" do
     invoked = []
-    Regress.test_callback_async Proc.new { invoked << 1; 1 }, nil
-    Regress.test_callback_async Proc.new { invoked << 2; 2 }, nil
-    Regress.test_callback_async Proc.new { invoked << 3; 3 }, nil
+    Regress.test_callback_async proc { invoked << 1; 1 }, nil
+    Regress.test_callback_async proc { invoked << 2; 2 }, nil
+    Regress.test_callback_async proc { invoked << 3; 3 }, nil
     result = Regress.test_callback_thaw_async
     invoked.must_equal [3, 2, 1]
     result.must_equal 1
@@ -1917,8 +1917,8 @@ describe Regress do
 
   it "has a working function #test_callback_thaw_notifications" do
     invoked = false
-    Regress.test_callback_destroy_notify Proc.new { 42 }, nil, nil
-    Regress.test_callback_destroy_notify Proc.new { 24 }, nil, Proc.new { invoked = true }
+    Regress.test_callback_destroy_notify proc { 42 }, nil, nil
+    Regress.test_callback_destroy_notify proc { 24 }, nil, proc { invoked = true }
     result = Regress.test_callback_thaw_notifications
     result.must_equal 66
     invoked.must_equal true
@@ -1926,7 +1926,7 @@ describe Regress do
 
   it "has a working function #test_callback_user_data" do
     a = "old-value"
-    result = Regress.test_callback_user_data Proc.new {|u|
+    result = Regress.test_callback_user_data proc {|u|
       a = u
       5
     }, "new-value"
@@ -1937,7 +1937,7 @@ describe Regress do
   describe "the #test_callback_user_data function" do
     it "handles boolean user_data" do
       a = false
-      Regress.test_callback_user_data Proc.new {|u|
+      Regress.test_callback_user_data proc {|u|
         a = u
         5
       }, true
@@ -2032,7 +2032,7 @@ describe Regress do
 
   it "has a working function #test_gerror_callback" do
     result = nil
-    Regress.test_gerror_callback Proc.new {|err| result = err.message }
+    Regress.test_gerror_callback proc { |err| result = err.message }
     result.must_equal "regression test error"
   end
 
@@ -2046,9 +2046,9 @@ describe Regress do
 
   it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
-    ghash.to_hash.must_be :==, {"foo" => "bar",
-                                "baz" => "bat",
-                                "qux" => "quux"}
+    ghash.to_hash.must_be :==, "foo" => "bar",
+                               "baz" => "bat",
+                               "qux" => "quux"
   end
 
   it "has a working function #test_ghash_gvalue_in" do
@@ -2064,12 +2064,12 @@ describe Regress do
     result = Regress.test_ghash_gvalue_return
     hash = result.to_hash
 
-    has_enum_and_flag_keys = hash.has_key?("flags")
+    has_enum_and_flag_keys = hash.key?("flags")
 
     hash["integer"].get_value.must_equal 12
     hash["boolean"].get_value.must_equal true
     hash["string"].get_value.must_equal "some text"
-    hash["strings"].get_value.to_a.must_equal ["first", "second", "third"]
+    hash["strings"].get_value.to_a.must_equal %w(first second third)
 
     if has_enum_and_flag_keys
       hash["flags"].get_value.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
@@ -2077,9 +2077,9 @@ describe Regress do
     end
 
     expected_keys = if has_enum_and_flag_keys
-                      ["boolean", "enum", "flags", "integer", "string", "strings"]
+                      %w(boolean enum flags integer string strings)
                     else
-                      ["boolean", "integer", "string", "strings"]
+                      %w(boolean integer string strings)
                     end
 
     hash.keys.sort.must_equal expected_keys
@@ -2089,44 +2089,44 @@ describe Regress do
     result = Regress.test_ghash_nested_everything_return
     hash = result.to_hash
     hash.keys.must_equal ["wibble"]
-    hash["wibble"].to_hash.must_equal({"foo" => "bar",
-                                       "baz" => "bat",
-                                       "qux" => "quux"})
+    hash["wibble"].to_hash.must_equal("foo" => "bar",
+                                      "baz" => "bat",
+                                      "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nested_everything_return2" do
     result = Regress.test_ghash_nested_everything_return2
     hash = result.to_hash
     hash.keys.must_equal ["wibble"]
-    hash["wibble"].to_hash.must_equal({"foo" => "bar",
-                                       "baz" => "bat",
-                                       "qux" => "quux"})
+    hash["wibble"].to_hash.must_equal("foo" => "bar",
+                                      "baz" => "bat",
+                                      "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nothing_in" do
-    Regress.test_ghash_nothing_in({"foo" => "bar",
-                                   "baz" => "bat",
-                                   "qux" => "quux"})
+    Regress.test_ghash_nothing_in("foo" => "bar",
+                                  "baz" => "bat",
+                                  "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nothing_in2" do
-    Regress.test_ghash_nothing_in2({"foo" => "bar",
-                                    "baz" => "bat",
-                                    "qux" => "quux"})
+    Regress.test_ghash_nothing_in2("foo" => "bar",
+                                   "baz" => "bat",
+                                   "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
-    ghash.to_hash.must_be :==, {"foo" => "bar",
-                                "baz" => "bat",
-                                "qux" => "quux"}
+    ghash.to_hash.must_be :==, "foo" => "bar",
+                               "baz" => "bat",
+                               "qux" => "quux"
   end
 
   it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
-    ghash.to_hash.must_be :==, {"foo" => "bar",
-                                "baz" => "bat",
-                                "qux" => "quux"}
+    ghash.to_hash.must_be :==, "foo" => "bar",
+                               "baz" => "bat",
+                               "qux" => "quux"
   end
 
   it "has a working function #test_ghash_null_in" do
@@ -2146,32 +2146,32 @@ describe Regress do
   it "has a working function #test_glist_container_return" do
     list = Regress.test_glist_container_return
     assert_instance_of GLib::List, list
-    list.must_be :==, ["1", "2", "3"]
+    list.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_glist_everything_return" do
     list = Regress.test_glist_everything_return
-    list.must_be :==, ["1", "2", "3"]
+    list.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_glist_nothing_in" do
-    Regress.test_glist_nothing_in ["1", "2", "3"]
+    Regress.test_glist_nothing_in %w(1 2 3)
     pass
   end
 
   it "has a working function #test_glist_nothing_in2" do
-    Regress.test_glist_nothing_in2 ["1", "2", "3"]
+    Regress.test_glist_nothing_in2 %w(1 2 3)
     pass
   end
 
   it "has a working function #test_glist_nothing_return" do
     list = Regress.test_glist_nothing_return
-    list.must_be :==, ["1", "2", "3"]
+    list.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_glist_nothing_return2" do
     list = Regress.test_glist_nothing_return2
-    list.must_be :==, ["1", "2", "3"]
+    list.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_glist_null_in" do
@@ -2187,32 +2187,32 @@ describe Regress do
   it "has a working function #test_gslist_container_return" do
     slist = Regress.test_gslist_container_return
     assert_instance_of GLib::SList, slist
-    slist.must_be :==, ["1", "2", "3"]
+    slist.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_gslist_everything_return" do
     slist = Regress.test_gslist_everything_return
-    slist.must_be :==, ["1", "2", "3"]
+    slist.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_gslist_nothing_in" do
-    Regress.test_gslist_nothing_in ["1", "2", "3"]
+    Regress.test_gslist_nothing_in %w(1 2 3)
     pass
   end
 
   it "has a working function #test_gslist_nothing_in2" do
-    Regress.test_gslist_nothing_in2 ["1", "2", "3"]
+    Regress.test_gslist_nothing_in2 %w(1 2 3)
     pass
   end
 
   it "has a working function #test_gslist_nothing_return" do
     slist = Regress.test_gslist_nothing_return
-    slist.must_be :==, ["1", "2", "3"]
+    slist.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_gslist_nothing_return2" do
     slist = Regress.test_gslist_nothing_return2
-    slist.must_be :==, ["1", "2", "3"]
+    slist.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_gslist_null_in" do
@@ -2231,7 +2231,7 @@ describe Regress do
   end
 
   it "has a working function #test_gvariant_as" do
-    Regress.test_gvariant_as.get_strv.to_a.must_equal ["one", "two", "three"]
+    Regress.test_gvariant_as.get_strv.to_a.must_equal %w(one two three)
   end
 
   it "has a working function #test_gvariant_asv" do
@@ -2255,8 +2255,8 @@ describe Regress do
 
   it "has a working function #test_hash_table_callback" do
     value = nil
-    Regress.test_hash_table_callback({"foo" => 42}, Proc.new {|hash| value = hash})
-    value.to_hash.must_equal({"foo" => 42})
+    Regress.test_hash_table_callback({ "foo" => 42 }, proc { |hash| value = hash })
+    value.to_hash.must_equal("foo" => 42)
   end
 
   it "has a working function #test_int" do
@@ -2275,8 +2275,8 @@ describe Regress do
   end
 
   it "has a working function #test_int64" do
-    result = Regress.test_int64 2300000000000
-    assert_equal 2300000000000, result
+    result = Regress.test_int64 2_300_000_000_000
+    assert_equal 2_300_000_000_000, result
   end
 
   it "has a working function #test_int8" do
@@ -2305,7 +2305,7 @@ describe Regress do
 
   it "has a working function #test_multi_callback" do
     a = 1
-    result = Regress.test_multi_callback Proc.new {
+    result = Regress.test_multi_callback proc {
       a += 1
       23
     }
@@ -2329,13 +2329,13 @@ describe Regress do
 
   it "has a working function #test_null_gerror_callback" do
     value = nil
-    Regress.test_owned_gerror_callback Proc.new {|err| value = err }
+    Regress.test_owned_gerror_callback proc { |err| value = err }
     value.message.must_equal "regression test owned error"
   end
 
   it "has a working function #test_owned_gerror_callback" do
     value = nil
-    Regress.test_owned_gerror_callback Proc.new {|err| value = err }
+    Regress.test_owned_gerror_callback proc { |err| value = err }
     value.message.must_equal "regression test owned error"
   end
 
@@ -2351,7 +2351,7 @@ describe Regress do
 
   it "has a working function #test_simple_callback" do
     a = 0
-    Regress.test_simple_callback Proc.new { a = 1 }
+    Regress.test_simple_callback proc { a = 1 }
     assert_equal 1, a
   end
 
@@ -2371,32 +2371,32 @@ describe Regress do
   end
 
   it "has a working function #test_strv_in" do
-    assert_equal true, Regress.test_strv_in(['1', '2', '3'])
+    assert_equal true, Regress.test_strv_in(%w(1 2 3))
   end
 
   it "has a working function #test_strv_in_gvalue" do
     gv = Regress.test_strv_in_gvalue
-    gv.get_value.must_be :==, ['one', 'two', 'three']
+    gv.get_value.must_be :==, %w(one two three)
   end
 
   it "has a working function #test_strv_out" do
     arr = Regress.test_strv_out
-    arr.must_be :==, ["thanks", "for", "all", "the", "fish"]
+    arr.must_be :==, %w(thanks for all the fish)
   end
 
   it "has a working function #test_strv_out_c" do
     arr = Regress.test_strv_out_c
-    arr.must_be :==, ["thanks", "for", "all", "the", "fish"]
+    arr.must_be :==, %w(thanks for all the fish)
   end
 
   it "has a working function #test_strv_out_container" do
     arr = Regress.test_strv_out_container
-    arr.must_be :==, ['1', '2', '3']
+    arr.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_strv_outarg" do
     arr = Regress.test_strv_outarg
-    arr.must_be :==, ['1', '2', '3']
+    arr.must_be :==, %w(1 2 3)
   end
 
   it "has a working function #test_timet" do
@@ -2408,7 +2408,7 @@ describe Regress do
 
   it "has a working function #test_torture_signature_0" do
     y, z, q = Regress.test_torture_signature_0 86, "foo", 2
-    assert_equal [86, 2*86, 3+2], [y, z, q]
+    assert_equal [86, 2 * 86, 3 + 2], [y, z, q]
   end
 
   it "has a working function #test_torture_signature_1" do
@@ -2422,9 +2422,9 @@ describe Regress do
   it "has a working function #test_torture_signature_2" do
     a = 1
     y, z, q = Regress.test_torture_signature_2 244,
-      Proc.new {|u| a = u }, 2, Proc.new { a = 3 },
+      proc { |u| a = u }, 2, proc { a = 3 },
       "foofoo", 31
-    assert_equal [244, 2*244, 6+31], [y, z, q]
+    assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
     assert_equal 3, a
   end
 
@@ -2437,7 +2437,7 @@ describe Regress do
   end
 
   it "has a working function #test_uint32" do
-    assert_equal 540000, Regress.test_uint32(540000)
+    assert_equal 540_000, Regress.test_uint32(540_000)
   end
 
   it "has a working function #test_uint64" do
@@ -2508,12 +2508,12 @@ describe Regress do
 
   it "has a working function #test_utf8_out_nonconst_return" do
     r, out = Regress.test_utf8_out_nonconst_return
-    assert_equal ["first", "second"], [r, out]
+    assert_equal %w(first second), [r, out]
   end
 
   it "has a working function #test_utf8_out_out" do
     out0, out1 = Regress.test_utf8_out_nonconst_return
-    assert_equal ["first", "second"], [out0, out1]
+    assert_equal %w(first second), [out0, out1]
   end
 
   it "has a working function #test_value_return" do

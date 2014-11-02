@@ -16,8 +16,8 @@ describe GLib::Strv do
 
   describe "#each" do
     it "yields each string element" do
-      ary = ["one", "two", "three"]
-      ptrs = ary.map {|a| FFI::MemoryPointer.from_string(a)}
+      ary = %w(one two three)
+      ptrs = ary.map { |a| FFI::MemoryPointer.from_string(a) }
       ptrs << nil
       block = FFI::MemoryPointer.new(:pointer, ptrs.length)
       block.write_array_of_pointer ptrs
@@ -27,12 +27,12 @@ describe GLib::Strv do
       strv.each do |str|
         arr << str
       end
-      assert_equal ["one", "two", "three"], arr
+      assert_equal %w(one two three), arr
     end
 
     it "yields zero times for a Strv wrapping a null pointer" do
       strv = GLib::Strv.new FFI::Pointer.new(0)
-      strv.each do |str|
+      strv.each do |_str|
         flunk
       end
     end

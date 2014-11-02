@@ -91,7 +91,9 @@ describe GirFFI::ClassBase do
         def self.bar
           "correct-result"
         end
-        def self.new; self._real_new; end
+        def self.new
+          _real_new
+        end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 
@@ -109,8 +111,11 @@ describe GirFFI::ClassBase do
       mock(sub_builder = Object.new).setup_instance_method("foo") { nil }
       sub_klass = Class.new klass do
         def foo; end
+
         def initialize; end
-        def self.new; self._real_new; end
+        def self.new
+          _real_new
+        end
       end
       sub_klass.const_set :GIR_FFI_BUILDER, sub_builder
 
@@ -125,7 +130,9 @@ describe GirFFI::ClassBase do
         def bar
           "correct-result"
         end
-        def self.new; self._real_new; end
+        def self.new
+          _real_new
+        end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 

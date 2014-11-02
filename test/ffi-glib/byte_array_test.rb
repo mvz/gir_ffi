@@ -18,4 +18,3 @@ describe GLib::ByteArray do
     assert_equal "abdc", ba.to_string
   end
 end
-

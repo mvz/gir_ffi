@@ -44,7 +44,7 @@ describe GirFFI::UnintrospectableTypeInfo do
       gobject = Object.new
       gir = Object.new
 
-      mock(gobject).type_interfaces(:some_type) { [:foo, :bar ] }
+      mock(gobject).type_interfaces(:some_type) { [:foo, :bar] }
       mock(gir).find_by_gtype(:foo) { :foo_info }
       mock(gir).find_by_gtype(:bar) { :bar_info }
 
@@ -57,7 +57,7 @@ describe GirFFI::UnintrospectableTypeInfo do
       gobject = Object.new
       gir = Object.new
 
-      mock(gobject).type_interfaces(:some_type) { [:foo, :bar ] }
+      mock(gobject).type_interfaces(:some_type) { [:foo, :bar] }
       mock(gir).find_by_gtype(:foo) { :foo_info }
       mock(gir).find_by_gtype(:bar) { nil }
 

@@ -19,7 +19,7 @@ describe GirFFI::Builders::StructBuilder do
       @struct = Object.new
       stub(@struct).namespace { 'Foo' }
       stub(@struct).safe_name { 'Bar' }
-      stub(@struct).fields { [ @field ] }
+      stub(@struct).fields { [@field] }
 
       @builder = GirFFI::Builders::StructBuilder.new @struct
     end
@@ -35,7 +35,7 @@ describe GirFFI::Builders::StructBuilder do
     it "does not flatten the complex type specification" do
       mock(simplefield = Object.new).layout_specification { [:bar, :foo, 0] }
       mock(complexfield = Object.new).layout_specification { [:baz, [:qux, 2], 0] }
-      mock(struct = Object.new).fields { [ simplefield, complexfield ] }
+      mock(struct = Object.new).fields { [simplefield, complexfield] }
 
       stub(struct).safe_name { 'Bar' }
       stub(struct).namespace { 'Foo' }

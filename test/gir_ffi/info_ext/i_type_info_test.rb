@@ -1,9 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ITypeInfo do
-  let(:klass) { Class.new do
-    include GirFFI::InfoExt::ITypeInfo
-  end }
+  let(:klass) {
+    Class.new do
+      include GirFFI::InfoExt::ITypeInfo
+    end
+  }
 
   let(:type_info) { klass.new }
   let(:elmtype_info) { klass.new }
@@ -12,10 +14,12 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:iface_info) { Object.new }
 
   let(:callback_type_info) {
-    get_introspection_data('Regress', 'test_callback').args[0].argument_type }
+    get_introspection_data('Regress', 'test_callback').args[0].argument_type
+  }
   let(:ghash_type_info) {
     get_introspection_data('Regress',
-                           'test_ghash_nested_everything_return').return_type }
+                           'test_ghash_nested_everything_return').return_type
+  }
 
   describe "#to_ffitype" do
     it "returns an array with elements subtype and size for type :array" do
@@ -50,7 +54,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       stub(elmtype_info).tag { :foo }
       mock(elmtype_info).pointer? { false }
 
-      mock(type_info).tag {:glist}
+      mock(type_info).tag { :glist }
       mock(type_info).param_type(0) { elmtype_info }
 
       result = type_info.element_type
@@ -63,7 +67,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       stub(valtype_info).tag { :bar }
       mock(valtype_info).pointer? { false }
 
-      mock(type_info).tag {:ghash}
+      mock(type_info).tag { :ghash }
       mock(type_info).param_type(0) { keytype_info }
       mock(type_info).param_type(1) { valtype_info }
 
@@ -72,7 +76,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     it "returns nil for other types" do
-      mock(type_info).tag {:foo}
+      mock(type_info).tag { :foo }
 
       result = type_info.element_type
       result.must_be_nil
@@ -81,7 +85,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     it "returns [:pointer, :void] if the element type is a pointer with tag :void" do
       stub(elmtype_info).tag_or_class { [:pointer, :void] }
 
-      mock(type_info).tag {:glist}
+      mock(type_info).tag { :glist }
       mock(type_info).param_type(0) { elmtype_info }
 
       assert_equal [:pointer, :void], type_info.element_type
@@ -245,11 +249,11 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe "for a complex nested hash type" do
       it "returns a representeation of the nested structure" do
         ghash_type_info.tag_or_class.must_equal(
-          [ :pointer,
-            [ :ghash,
-              :utf8,
-              [ :pointer,
-                [ :ghash, :utf8, :utf8 ] ] ] ])
+          [:pointer,
+           [:ghash,
+            :utf8,
+            [:pointer,
+             [:ghash, :utf8, :utf8]]]])
       end
     end
   end
@@ -344,7 +348,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe "for a GHashTable" do
       before do
-        stub(type_info).tag {:ghash}
+        stub(type_info).tag { :ghash }
         stub(type_info).param_type(0) { keytype_info }
         stub(type_info).param_type(1) { valtype_info }
 
@@ -388,7 +392,6 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(type_info).tag { :array }
         stub(type_info).zero_terminated? { false }
         stub(type_info).array_type { :ptr_array }
-
 
         stub(type_info).param_type(0) { elmtype_info }
         stub(elmtype_info).tag_or_class { :foo }

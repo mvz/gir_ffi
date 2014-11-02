@@ -20,7 +20,7 @@ module Minitest
     end
   end
 
-  def self.plugin_stats_init(options)
-    self.reporter << StatsReporter.new(options)
+  def self.plugin_stats_init options
+    reporter << StatsReporter.new(options)
   end
 end

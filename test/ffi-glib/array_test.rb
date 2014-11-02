@@ -28,7 +28,7 @@ describe GLib::Array do
 
     it "iterates over the values" do
       a = []
-      @arr.each {|v| a << v }
+      @arr.each { |v| a << v }
 
       assert_equal [1, 2, 3], a
     end
@@ -49,7 +49,7 @@ describe GLib::Array do
     end
 
     it "handles a struct as the element type" do
-      vals = [1, 2, 3].map {|i| GObject::EnumValue.new.tap {|ev| ev.value = i} }
+      vals = [1, 2, 3].map { |i| GObject::EnumValue.new.tap { |ev| ev.value = i } }
       arr = GLib::Array.new GObject::EnumValue
       arr.append_vals vals
       arr2 = GLib::Array.wrap GObject::EnumValue, arr.to_ptr
@@ -132,7 +132,7 @@ describe GLib::Array do
     end
 
     it "returns the proper element for an array of :utf8" do
-      arr = GLib::Array.from :utf8, ["a", "b", "c"]
+      arr = GLib::Array.from :utf8, %w(a b c)
       arr.index(1).must_equal "b"
     end
 
@@ -142,7 +142,7 @@ describe GLib::Array do
     end
 
     it "returns the proper element for an array of struct" do
-      vals = [1, 2, 3].map {|i| GObject::EnumValue.new.tap {|ev| ev.value = i} }
+      vals = [1, 2, 3].map { |i| GObject::EnumValue.new.tap { |ev| ev.value = i } }
       arr = GLib::Array.from GObject::EnumValue, vals
       arr.index(1).value.must_equal 2
     end

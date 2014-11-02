@@ -35,7 +35,7 @@ describe GirFFI::ZeroTerminated do
 
     it "yields zero times for a ZeroTerminated wrapping a null pointer" do
       zt = GirFFI::ZeroTerminated.wrap :int32, FFI::Pointer.new(0)
-      zt.each do |str|
+      zt.each do |_str|
         flunk
       end
     end
@@ -83,4 +83,3 @@ describe GirFFI::ZeroTerminated do
     GirFFI::ZeroTerminated.must_include Enumerable
   end
 end
-

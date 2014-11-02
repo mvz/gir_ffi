@@ -35,7 +35,7 @@ describe "For derived classes" do
   describe "the initializer" do
     it "does not have to call super" do
       klass = Class.new Regress::TestSubObj do
-        def initialize *args
+        def initialize *_args
         end
       end
 

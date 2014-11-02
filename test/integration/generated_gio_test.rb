@@ -56,7 +56,7 @@ describe "The generated Gio module" do
 
     it "correctly passes on the string parameter 'action_name'" do
       a = nil
-      GObject.signal_connect @grp, "action-added" do |grp, action_name, user_data|
+      GObject.signal_connect @grp, "action-added" do |_grp, action_name, _user_data|
         a = action_name
       end
       GObject.signal_emit @grp, "action-added", "foo"
@@ -71,7 +71,7 @@ describe "The generated Gio module" do
 
     it "correctly passes on the enum parameter 'result'" do
       a = nil
-      GObject.signal_connect @mo, "reply" do |mnt, result, user_data|
+      GObject.signal_connect @mo, "reply" do |_mnt, result, _user_data|
         a = result
       end
       GObject.signal_emit @mo, "reply", 2
@@ -95,8 +95,7 @@ describe "The generated Gio module" do
 
   describe "the SocketSourceFunc callback" do
     it "can be cast to a native function" do
-      Gio::SocketSourceFunc.new {|*args| p args}.to_native
+      Gio::SocketSourceFunc.new { |*args| p args }.to_native
     end
   end
 end
-

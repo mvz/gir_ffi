@@ -37,8 +37,8 @@ module GObjectIntrospection
       end
     end
 
-    alias shared_library_without_regress shared_library
-    alias shared_library shared_library_with_regress
+    alias_method :shared_library_without_regress, :shared_library
+    alias_method :shared_library, :shared_library_with_regress
   end
 end
 
@@ -47,9 +47,9 @@ Thread.abort_on_exception = true
 class Minitest::Test
   def assert_defines_singleton_method klass, method, msg = nil
     method = method.to_sym
-    methods = klass.singleton_methods(false).map { |name| name.to_sym }
+    methods = klass.singleton_methods(false).map(&:to_sym)
     msg = message(msg) {
-      "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}, " +
+      "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}, " \
         "but only found #{mu_pp(methods)}"
     }
     assert_includes methods, method, msg
@@ -57,7 +57,7 @@ class Minitest::Test
 
   def refute_defines_singleton_method klass, method, msg = nil
     method = method.to_sym
-    methods = klass.singleton_methods(false).map { |name| name.to_sym }
+    methods = klass.singleton_methods(false).map(&:to_sym)
     msg = message(msg) {
       "Expected #{mu_pp(klass)} not to define singleton method #{mu_pp(method)}"
     }
@@ -66,9 +66,9 @@ class Minitest::Test
 
   def assert_defines_instance_method klass, method, msg = nil
     method = method.to_sym
-    methods = klass.instance_methods(false).map { |name| name.to_sym }
+    methods = klass.instance_methods(false).map(&:to_sym)
     msg = message(msg) {
-      "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}, " +
+      "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}, " \
         "but only found #{mu_pp(methods)}"
     }
     assert_includes methods, method, msg
@@ -76,7 +76,7 @@ class Minitest::Test
 
   def refute_defines_instance_method klass, method, msg = nil
     method = method.to_sym
-    methods = klass.instance_methods(false).map { |name| name.to_sym }
+    methods = klass.instance_methods(false).map(&:to_sym)
     msg = message(msg) {
       "Expected #{mu_pp(klass)} not to define instance method #{mu_pp(method)}"
     }

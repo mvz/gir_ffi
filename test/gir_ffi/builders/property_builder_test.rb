@@ -56,9 +56,11 @@ describe GirFFI::Builders::PropertyBuilder do
   end
 
   describe "for a property of type :strv" do
-    let(:property_info) { get_property_introspection_data("GIMarshallingTests",
+    let(:property_info) {
+      get_property_introspection_data("GIMarshallingTests",
                                                           "PropertiesObject",
-                                                          "some-strv") }
+                                                          "some-strv")
+    }
     before do
       skip unless property_info
     end
@@ -109,7 +111,7 @@ describe GirFFI::Builders::PropertyBuilder do
   end
 
   describe "#container_defines_getter_method?" do
-    let(:property_info) { Object.new.tap {|o| o.extend GirFFI::InfoExt::IPropertyInfo } }
+    let(:property_info) { Object.new.tap { |o| o.extend GirFFI::InfoExt::IPropertyInfo } }
     let(:container_info) { Object.new }
 
     before do

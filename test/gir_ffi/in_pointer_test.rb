@@ -75,23 +75,23 @@ describe GirFFI::InPointer do
 
   describe "an instance created with .from_array :utf8" do
     before do
-      @result = GirFFI::InPointer.from_array :utf8, ["foo", "bar", "baz"]
+      @result = GirFFI::InPointer.from_array :utf8, %w(foo bar baz)
     end
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
-      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+      assert_equal %w(foo bar baz), ary.map(&:read_string)
     end
   end
 
   describe "an instance created with .from_array :filename" do
     before do
-      @result = GirFFI::InPointer.from_array :filename, ["foo", "bar", "baz"]
+      @result = GirFFI::InPointer.from_array :filename, %w(foo bar baz)
     end
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
-      assert_equal ["foo", "bar", "baz"], ary.map {|p| p.read_string}
+      assert_equal %w(foo bar baz), ary.map(&:read_string)
     end
   end
 
@@ -111,11 +111,11 @@ describe GirFFI::InPointer do
 
   describe "an instance created with .from :guint32" do
     before do
-      @result = GirFFI::InPointer.from :guint32, 12345
+      @result = GirFFI::InPointer.from :guint32, 12_345
     end
 
     it "returns a pointer with an address equal to the given value" do
-      assert_equal 12345, @result.address
+      assert_equal 12_345, @result.address
     end
 
     it "is an instance of GirFFI::InPointer" do
@@ -147,7 +147,7 @@ describe GirFFI::InPointer do
     it "handles enum types" do
       e = Module.new do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz]
-        def self.[](val)
+        def self.[] val
           self::Enum[val]
         end
       end
@@ -158,7 +158,9 @@ describe GirFFI::InPointer do
     describe "for type :void" do
       it "returns the result of to_ptr" do
         obj = Object.new
-        def obj.to_ptr; :test_value; end
+        def obj.to_ptr
+          :test_value
+        end
         GirFFI::InPointer.from(:void, obj).must_equal :test_value
       end
 
@@ -171,7 +173,9 @@ describe GirFFI::InPointer do
       it "returns the result of to_ptr" do
         klass = Class.new
         obj = klass.new
-        def obj.to_ptr; :test_value; end
+        def obj.to_ptr
+          :test_value
+        end
         GirFFI::InPointer.from(klass, obj).must_equal :test_value
       end
     end
