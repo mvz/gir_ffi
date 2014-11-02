@@ -111,7 +111,7 @@ describe GirFFI::Builder do
     end
 
     it "knows its own module builder" do
-      assert GirFFI::Builders::ModuleBuilder === Regress.gir_ffi_builder
+      Regress.gir_ffi_builder.must_be_instance_of GirFFI::Builders::ModuleBuilder
     end
 
     after do

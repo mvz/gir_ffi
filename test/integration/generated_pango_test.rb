@@ -10,7 +10,7 @@ describe Pango do
       lang = Pango::Language.from_string 'ja'
       result = lang.get_scripts
 
-      if GirFFI::SizedArray === result
+      if result.is_a? GirFFI::SizedArray
         scripts = result
       else
         ptr, size = *result

@@ -1,6 +1,4 @@
-if RUBY_PLATFORM == 'java'
-  require 'rubygems'
-end
+require 'rubygems' if RUBY_PLATFORM == 'java'
 
 begin
   require 'simplecov'

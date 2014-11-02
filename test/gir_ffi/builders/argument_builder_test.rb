@@ -116,7 +116,9 @@ describe GirFFI::Builders::ArgumentBuilder do
         }
 
         it "has the correct value for #pre_conversion" do
-          builder.pre_conversion.must_equal ["_v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::BoxedStruct]"]
+          builder.pre_conversion.must_equal [
+            "_v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::BoxedStruct]"
+          ]
         end
 
         it "has the correct value for #post_conversion" do

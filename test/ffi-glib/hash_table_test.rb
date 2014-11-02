@@ -50,12 +50,16 @@ describe GLib::HashTable do
     it "has a working #each method" do
       a = {}
       @hash.each { |k, v| a[k] = v }
-      a.must_be :==, "foo" => "bar", "baz" => "bat",
+      a.must_be :==,
+        "foo" => "bar",
+        "baz" => "bat",
         "qux" => "quux"
     end
 
     it "has a working #to_hash method" do
-      @hash.to_hash.must_be :==, "foo" => "bar", "baz" => "bat",
+      @hash.to_hash.must_be :==,
+        "foo" => "bar",
+        "baz" => "bat",
         "qux" => "quux"
     end
   end
