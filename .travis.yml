@@ -5,6 +5,8 @@ rvm:
   - 2.1
   - jruby-19mode
   - rbx-2
+install:
+  - bundle install --retry=3
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection
