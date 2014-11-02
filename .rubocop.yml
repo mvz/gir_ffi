@@ -54,6 +54,11 @@ Style/IfUnlessModifier:
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses
 
+# Multi-line assignment should be simply indented. Aligning them makes it even
+# harder to keep a sane line length.
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
