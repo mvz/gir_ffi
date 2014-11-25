@@ -30,8 +30,20 @@ describe Regress do
     end
   end
 
+  it "has the constant BOOL_CONSTANT" do
+    Regress::BOOL_CONSTANT.must_equal true
+  end
+
   it "has the constant DOUBLE_CONSTANT" do
     assert_equal 44.22, Regress::DOUBLE_CONSTANT
+  end
+
+  it "has the constant GI_SCANNER_ELSE" do
+    Regress::GI_SCANNER_ELSE.must_equal 3
+  end
+
+  it "has the constant GI_SCANNER_IFDEF" do
+    Regress::GI_SCANNER_IFDEF.must_equal 3
   end
 
   it "has the constant GUINT64_CONSTANT" do
@@ -212,6 +224,13 @@ describe Regress do
 
     it "has non-zero positive result for #get_gtype" do
       assert Regress::TestBoxed.get_gtype > 0
+    end
+
+    it "has a working method #_not_a_method" do
+      # FIXME: This method has been moved to a function. Should we still expose
+      # it as a method?
+      instance._not_a_method
+      pass
     end
 
     it "has a working method #copy" do
@@ -629,6 +648,13 @@ describe Regress do
       assert_equal 2, a
     end
 
+    it "has a working method #instance_method_full" do
+      instance.instance_method_full
+      # FIXME: Is this the behavior we want, or do we want to increase the
+      # refcount beforehand?
+      ref_count(instance).must_equal 0
+    end
+
     it "has a working method #set_bare" do
       obj = Regress::TestObj.new_from_file("bar")
       instance.set_bare obj
@@ -924,6 +950,32 @@ describe Regress do
       end
     end
 
+    describe "its 'pptrarray' property" do
+      it "can be retrieved with #get_property" do
+        skip 'pptrarray is not implemented properly'
+        instance.get_property("pptrarray").must_be_nil
+      end
+
+      it "can be retrieved with #pptrarray" do
+        skip 'pptrarray is not implemented properly'
+        instance.pptrarray.must_be_nil
+      end
+
+      it "can be set with #set_property" do
+        skip 'pptrarray is not implemented properly'
+        arr = Regress.test_garray_container_return
+        instance.set_property 'pptrarray', arr
+        instance.pptrarray.must_be :==, arr
+      end
+
+      it "can be set with #pptrarray=" do
+        skip 'pptrarray is not implemented properly'
+        arr = Regress.test_garray_container_return
+        instance.pptrarray = arr
+        instance.pptrarray.must_be :==, arr
+        instance.get_property("pptrarray").must_be :==, arr
+      end
+    end
     describe "its 'string' property" do
       it "can be retrieved with #get_property" do
         assert_nil instance.get_property("string").get_value
@@ -1814,6 +1866,17 @@ describe Regress do
 
   it "has a working function #test_boolean_true" do
     assert_equal true, Regress.test_boolean_true(true)
+  end
+
+  it "has a working function #test_boxeds_not_a_method" do
+    boxed = Regress::TestBoxed.new_alternative_constructor1 123
+    Regress.test_boxeds_not_a_method boxed
+    pass
+  end
+
+  it "has a working function #test_boxeds_not_a_static" do
+    Regress.test_boxeds_not_a_static
+    pass
   end
 
   it "has a working function #test_cairo_context_full_return" do
