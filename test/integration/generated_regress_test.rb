@@ -1812,6 +1812,16 @@ describe Regress do
     assert_equal "[gboolean,gint64,]", Regress.test_array_gtype_in([t1, t2])
   end
 
+  it "has a working function #test_array_inout_callback" do
+    skip unless get_introspection_data 'Regress', 'test_array_inout_callback'
+    Regress.test_array_inout_callback proc { |ints|
+      arr = ints.to_a
+      arr.shift
+      arr
+    }
+    pass
+  end
+
   it "has a working function #test_array_int_full_out" do
     Regress.test_array_int_full_out.must_be :==, [0, 1, 2, 3, 4]
   end
