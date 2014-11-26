@@ -66,5 +66,28 @@ describe GirFFI::Builders::CallbackBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe "for a callback with an inout array argument" do
+      let(:callback_info) {
+        get_introspection_data("Regress",
+                               "TestCallbackArrayInOut")
+      }
+      it "returns a valid mapping method" do
+        skip unless callback_info
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, ints, length)
+          _v1 = GirFFI::InOutPointer.new(:gint32, length)
+          _v2 = _v1.to_value
+          _v3 = GirFFI::InOutPointer.new([:pointer, :c], ints)
+          _v4 = GirFFI::SizedArray.wrap(:gint32, _v2, _v3.to_value)
+          _v5 = _proc.call(_v4)
+          _v1.set_value _v5.length
+          _v3.set_value GirFFI::SizedArray.from(:gint32, -1, _v5)
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
   end
 end

@@ -16,33 +16,41 @@ module GirFFI
         @pre_converted_name ||= new_variable
       end
 
+      def out_parameter_name
+        @out_parameter_name ||=
+          if direction == :inout
+            new_variable
+          else
+            pre_converted_name
+          end
+      end
+
       def call_argument_name
-        if direction == :in
+        if [:in, :inout].include? direction
           pre_converted_name unless array_arg
         end
       end
 
       def capture_variable_name
-        result_name if direction == :out
+        result_name if [:out, :inout].include? direction unless array_arg
       end
 
       def pre_conversion
         case direction
         when :in
-          ["#{pre_converted_name} = #{pre_convertor.conversion}"]
+          [ingoing_pre_conversion]
         when :out
-          ["#{pre_converted_name} = #{out_parameter_preparation}"]
+          [out_parameter_preparation]
+        when :inout
+          [out_parameter_preparation, ingoing_pre_conversion]
         when :error
-          [
-            "#{pre_converted_name} = #{out_parameter_preparation}",
-            "begin"
-          ]
+          [out_parameter_preparation, "begin"]
         end
       end
 
       def post_conversion
         case direction
-        when :out
+        when :out, :inout
           [outgoing_post_conversion]
         when :error
           [
@@ -61,15 +69,23 @@ module GirFFI
         @result_name ||= new_variable
       end
 
+      def pre_convertor_argument
+        if direction == :inout
+          "#{out_parameter_name}.to_value"
+        else
+          method_argument_name
+        end
+      end
+
       def pre_convertor
         @pre_convertor ||= if closure?
-                             ClosureConvertor.new(method_argument_name)
+                             ClosureConvertor.new(pre_convertor_argument)
                            elsif needs_c_to_ruby_conversion?
                              CToRubyConvertor.new(type_info,
-                                                  method_argument_name,
+                                                  pre_convertor_argument,
                                                   length_argument_name)
                            else
-                             NullConvertor.new(method_argument_name)
+                             NullConvertor.new(pre_convertor_argument)
                            end
       end
 
@@ -77,26 +93,39 @@ module GirFFI
         type_info.needs_c_to_ruby_conversion_for_callbacks?
       end
 
-      def outgoing_post_conversion
-        "#{pre_converted_name}.set_value #{outgoing_convertor.conversion}"
+      def ingoing_pre_conversion
+        "#{pre_converted_name} = #{pre_convertor.conversion}"
       end
 
-      def outgoing_convertor
-        @outgoing_convertor ||= if type_info.needs_ruby_to_c_conversion_for_callbacks?
-                                  RubyToCConvertor.new(type_info, result_name)
-                                else
-                                  NullConvertor.new(result_name)
-                                end
+      def outgoing_post_conversion
+        "#{out_parameter_name}.set_value #{post_convertor.conversion}"
+      end
+
+      def post_convertor
+        @post_convertor ||= if type_info.needs_ruby_to_c_conversion_for_callbacks?
+                              RubyToCConvertor.new(type_info, post_convertor_argument)
+                            else
+                              NullConvertor.new(post_convertor_argument)
+                            end
+      end
+
+      def post_convertor_argument
+        if array_arg
+          "#{array_arg.capture_variable_name}.length"
+        else
+          result_name
+        end
       end
 
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
-        if allocated_by_us?
-          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
-            ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
-        else
-          "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
-        end
+        value = if allocated_by_us?
+                  "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
+                    ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
+                else
+                  "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
+                end
+        "#{out_parameter_name} = #{value}"
       end
 
       # Check if an out argument needs to be allocated by us, the callee. Since
@@ -104,7 +133,8 @@ module GirFFI
       # is a pointer. For example, an out parameter of type gint8* will always
       # be allocate by the caller.
       def allocated_by_us?
-        !@arginfo.caller_allocates? &&
+        direction == :out &&
+          !@arginfo.caller_allocates? &&
           type_info.pointer? &&
           ![:object, :zero_terminated].include?(specialized_type_tag)
       end

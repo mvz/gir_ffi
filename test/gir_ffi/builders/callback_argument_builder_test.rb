@@ -42,4 +42,69 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       ]
     end
   end
+
+  describe "for an argument with direction :inout" do
+    let(:callback_info) {
+      get_introspection_data("Regress",
+                             "TestCallbackArrayInOut")
+    }
+    let(:array_arg_info) { callback_info.args[0] }
+    let(:array_arg_builder) {
+      GirFFI::Builders::CallbackArgumentBuilder.new(var_gen, array_arg_info)
+    }
+    let(:length_arg_info) { callback_info.args[1] }
+    let(:length_arg_builder) {
+      GirFFI::Builders::CallbackArgumentBuilder.new(var_gen, length_arg_info)
+    }
+
+    before do
+      skip unless callback_info
+      length_arg_builder.array_arg = array_arg_builder
+      array_arg_builder.length_arg = length_arg_builder
+    end
+
+    describe "for arrays with a length argument" do
+      it "provides a call argument name" do
+        array_arg_builder.call_argument_name.must_equal "_v1"
+      end
+
+      it "provides a capture variable name" do
+        array_arg_builder.capture_variable_name.must_equal "_v1"
+      end
+
+      it "has the correct value for #pre_conversion" do
+        array_arg_builder.pre_conversion.
+          must_equal ["_v1 = GirFFI::InOutPointer.new([:pointer, :c], ints)",
+                      "_v2 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.to_value)"]
+      end
+
+      it "has the correct value for #post_conversion" do
+        array_arg_builder.pre_conversion
+        array_arg_builder.post_conversion.
+          must_equal ["_v1.set_value GirFFI::SizedArray.from(:gint32, -1, _v4)"]
+      end
+    end
+
+    describe "for an array length argument" do
+      it "does not provide a call argument name" do
+        length_arg_builder.call_argument_name.must_be_nil
+      end
+
+      it "does not provide a capture variable name" do
+        length_arg_builder.capture_variable_name.must_be_nil
+      end
+
+      it "has the correct value for #pre_conversion" do
+        length_arg_builder.pre_conversion.
+          must_equal ["_v1 = GirFFI::InOutPointer.new(:gint32, length)",
+                      "_v2 = _v1.to_value"]
+      end
+
+      it "has the correct value for #post_conversion" do
+        length_arg_builder.pre_conversion
+        length_arg_builder.post_conversion.
+          must_equal ["_v1.set_value _v3.length"]
+      end
+    end
+  end
 end
