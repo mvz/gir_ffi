@@ -16,6 +16,6 @@ class GirFFI::UserDataArgumentInfo
   end
 
   def name
-    "_user_data"
+    '_user_data'
   end
 end

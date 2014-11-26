@@ -3,7 +3,7 @@ require 'rubygems' if RUBY_PLATFORM == 'java'
 begin
   require 'simplecov'
   SimpleCov.start do
-    add_filter "/test/"
+    add_filter '/test/'
   end
 rescue LoadError
 end
@@ -26,9 +26,9 @@ module GObjectIntrospection
   class IRepository
     def shared_library_with_regress namespace
       case namespace
-      when "Regress"
+      when 'Regress'
         return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
-      when "GIMarshallingTests"
+      when 'GIMarshallingTests'
         return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
       else
         return shared_library_without_regress namespace

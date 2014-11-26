@@ -12,7 +12,7 @@ end
 
 class Minitest::Test
   def cws code
-    code.gsub(/(^\s*|\s*$)/, "")
+    code.gsub(/(^\s*|\s*$)/, '')
   end
 
   def get_field_introspection_data namespace, klass, name

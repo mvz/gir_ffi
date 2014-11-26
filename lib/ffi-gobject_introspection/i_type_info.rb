@@ -36,7 +36,7 @@ module GObjectIntrospection
     end
 
     def name
-      raise "Should not call this for ITypeInfo"
+      raise 'Should not call this for ITypeInfo'
     end
   end
 end

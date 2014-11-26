@@ -27,9 +27,3 @@ Metrics/MethodLength:
 # Configuration parameters: EnforcedStyle, SupportedStyles.
 Style/ClassAndModuleChildren:
   Enabled: false
-
-# Offense count: 3235
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/StringLiterals:
-  Enabled: false

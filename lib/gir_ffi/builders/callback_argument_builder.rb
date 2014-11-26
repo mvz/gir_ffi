@@ -44,7 +44,7 @@ module GirFFI
         when :inout
           [out_parameter_preparation, ingoing_pre_conversion]
         when :error
-          [out_parameter_preparation, "begin"]
+          [out_parameter_preparation, 'begin']
         end
       end
 
@@ -56,7 +56,7 @@ module GirFFI
           [
             "rescue => #{result_name}",
             outgoing_post_conversion,
-            "end"
+            'end'
           ]
         else
           []

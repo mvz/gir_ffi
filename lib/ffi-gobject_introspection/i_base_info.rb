@@ -3,7 +3,7 @@ module GObjectIntrospection
   # Decendant types will be implemented as needed.
   class IBaseInfo
     def initialize ptr, lib = Lib
-      raise ArgumentError, "ptr must not be null" if ptr.null?
+      raise ArgumentError, 'ptr must not be null' if ptr.null?
 
       unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
         ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
@@ -39,7 +39,7 @@ module GObjectIntrospection
     def self.build_array_method method, single = nil
       method = method.to_s
       single ||= method.to_s[0..-2]
-      count = method.sub(/^(get_)?/, "\\1n_")
+      count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE
         def #{method}
           (0..(#{count} - 1)).map do |i|
@@ -67,7 +67,7 @@ module GObjectIntrospection
     #
     def self.build_finder_method method, counter = nil, fetcher = nil
       method = method.to_s
-      single = method.sub(/^find_/, "")
+      single = method.sub(/^find_/, '')
       counter ||= "n_#{single}s"
       fetcher ||= "#{single}"
       class_eval <<-CODE

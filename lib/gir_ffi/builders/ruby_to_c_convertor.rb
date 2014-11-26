@@ -12,6 +12,6 @@ class GirFFI::Builders::RubyToCConvertor
   end
 
   def conversion_arguments name
-    @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
+    @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(', ')
   end
 end

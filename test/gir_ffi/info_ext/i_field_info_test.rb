@@ -7,11 +7,11 @@ describe GirFFI::InfoExt::IFieldInfo do
     end
   }
   let(:field_info) { klass.new }
-  describe "#layout_specification" do
-    it "returns an array of name, typespec and offset" do
+  describe '#layout_specification' do
+    it 'returns an array of name, typespec and offset' do
       mock(type = Object.new).to_ffitype { :bar }
 
-      mock(field_info).name { "foo" }
+      mock(field_info).name { 'foo' }
       mock(field_info).field_type { type }
       mock(field_info).offset { 0 }
 
@@ -20,10 +20,10 @@ describe GirFFI::InfoExt::IFieldInfo do
       assert_equal [:foo, :bar, 0], result
     end
 
-    it "keeps a complex typespec intact" do
+    it 'keeps a complex typespec intact' do
       mock(type = Object.new).to_ffitype { [:bar, 2] }
 
-      mock(field_info).name { "foo" }
+      mock(field_info).name { 'foo' }
       mock(field_info).field_type { type }
       mock(field_info).offset { 0 }
 

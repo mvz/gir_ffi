@@ -16,7 +16,7 @@ module GirFFI
     end
 
     def name
-      "_error"
+      '_error'
     end
 
     def closure

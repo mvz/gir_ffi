@@ -12,6 +12,6 @@ class GirFFI::ReceiverArgumentInfo
   end
 
   def name
-    "_instance"
+    '_instance'
   end
 end

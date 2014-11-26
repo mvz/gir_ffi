@@ -6,7 +6,7 @@ GirFFI.setup :Pango
 # Tests generated methods and functions in the Pango namespace.
 describe Pango do
   describe Pango::Language do
-    it "has a working method #get_scripts" do
+    it 'has a working method #get_scripts' do
       lang = Pango::Language.from_string 'ja'
       result = lang.get_scripts
 

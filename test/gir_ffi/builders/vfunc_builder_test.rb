@@ -3,19 +3,19 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::VFuncBuilder do
   let(:builder) { GirFFI::Builders::VFuncBuilder.new vfunc_info }
 
-  describe "#mapping_method_definition" do
+  describe '#mapping_method_definition' do
     let(:result) { builder.mapping_method_definition }
 
     before do
       skip unless vfunc_info
     end
 
-    describe "for a vfunc with only one argument" do
+    describe 'for a vfunc with only one argument' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "method_int8_in"
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, in_)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -28,12 +28,12 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc returning an enum" do
+    describe 'for a vfunc returning an enum' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_enum"
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_enum'
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -47,12 +47,12 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with a callback argument" do
+    describe 'for a vfunc with a callback argument' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_with_callback"
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_with_callback'
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -66,13 +66,13 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with an out argument allocated by them, the caller" do
+    describe 'for a vfunc with an out argument allocated by them, the caller' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data("GIMarshallingTests", "Object",
-                                     "method_int8_arg_and_out_caller")
+        get_vfunc_introspection_data('GIMarshallingTests', 'Object',
+                                     'method_int8_arg_and_out_caller')
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -87,13 +87,13 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with an out argument allocated by us, the callee" do
+    describe 'for a vfunc with an out argument allocated by us, the callee' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data("GIMarshallingTests", "Object",
-                                     "method_int8_arg_and_out_callee")
+        get_vfunc_introspection_data('GIMarshallingTests', 'Object',
+                                     'method_int8_arg_and_out_callee')
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -108,13 +108,13 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with an error argument" do
+    describe 'for a vfunc with an error argument' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data("GIMarshallingTests", "Object",
-                                     "vfunc_meth_with_err")
+        get_vfunc_introspection_data('GIMarshallingTests', 'Object',
+                                     'vfunc_meth_with_err')
       }
 
-      it "returns a valid mapping method including receiver" do
+      it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, x, _error)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
@@ -134,37 +134,37 @@ describe GirFFI::Builders::VFuncBuilder do
     end
   end
 
-  describe "#argument_ffi_types" do
+  describe '#argument_ffi_types' do
     let(:result) { builder.argument_ffi_types }
 
     before do
       skip unless vfunc_info
     end
 
-    describe "for a vfunc with only one argument" do
+    describe 'for a vfunc with only one argument' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "method_int8_in"
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
       }
 
-      it "returns the correct FFI types including :pointer for the receiver" do
+      it 'returns the correct FFI types including :pointer for the receiver' do
         result.must_equal [:pointer, :int8]
       end
     end
   end
 
-  describe "#return_ffi_type" do
+  describe '#return_ffi_type' do
     let(:result) { builder.return_ffi_type }
 
     before do
       skip unless vfunc_info
     end
 
-    describe "for a vfunc returning an object" do
+    describe 'for a vfunc returning an object' do
       let(:vfunc_info) {
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_object_transfer_full"
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_object_transfer_full'
       }
 
-      it "returns :pointer" do
+      it 'returns :pointer' do
         result.must_equal :pointer
       end
     end

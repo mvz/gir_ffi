@@ -3,14 +3,14 @@ require 'gir_ffi_test_helper'
 require 'ffi-gobject'
 
 describe GObject::Object do
-  describe "#get_property" do
-    it "is overridden to have arity 1" do
+  describe '#get_property' do
+    it 'is overridden to have arity 1' do
       assert_equal 1,
-        GObject::Object.instance_method("get_property").arity
+        GObject::Object.instance_method('get_property').arity
     end
   end
 
-  describe "automatic accessor methods" do
+  describe 'automatic accessor methods' do
     class AccessorTest < GObject::Object
       def get_x
         @x
@@ -34,7 +34,7 @@ describe GObject::Object do
     end
   end
 
-  describe "#signal_connect" do
+  describe '#signal_connect' do
     subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
 
     it 'delegates to GObject' do

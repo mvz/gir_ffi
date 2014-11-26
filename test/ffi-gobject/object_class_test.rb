@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 require 'ffi-gobject'
 
 describe GObject::ObjectClass do
-  describe "#list_properties" do
+  describe '#list_properties' do
     it "returns GIMarshallingTests::OverridesObject's properties" do
       obj = GIMarshallingTests::OverridesObject.new
       object_class = GObject.object_class_from_instance obj

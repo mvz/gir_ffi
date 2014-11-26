@@ -22,7 +22,7 @@ class GirFFI::Builders::CToRubyConvertor
     if @type_info.flattened_tag == :c
       "#{@type_info.element_type.inspect}, #{array_size}, #{@argument_name}"
     else
-      @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name).join(", ")
+      @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name).join(', ')
     end
   end
 

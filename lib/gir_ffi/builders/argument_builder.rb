@@ -141,7 +141,7 @@ module GirFFI
 
       def ingoing_convertor
         if skipped?
-          NullConvertor.new("0")
+          NullConvertor.new('0')
         elsif closure?
           ClosureToPointerConvertor.new(name)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
