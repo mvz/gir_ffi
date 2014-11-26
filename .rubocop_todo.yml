@@ -22,8 +22,3 @@ Metrics/CyclomaticComplexity:
 # Configuration parameters: CountComments.
 Metrics/MethodLength:
   Max: 23
-
-# Offense count: 12
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-Style/ClassAndModuleChildren:
-  Enabled: false

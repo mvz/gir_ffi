@@ -42,7 +42,7 @@ end
 
 Thread.abort_on_exception = true
 
-class Minitest::Test
+module BaseTestExtensions
   def assert_defines_singleton_method klass, method, msg = nil
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
@@ -81,3 +81,5 @@ class Minitest::Test
     refute_includes methods, method, msg
   end
 end
+
+Minitest::Test.send :include, BaseTestExtensions
