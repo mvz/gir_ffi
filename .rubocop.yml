@@ -22,16 +22,12 @@ Style/AccessorMethodName:
 Style/AlignParameters:
   Enabled: false
 
-# Support use of and and or for control flow.
+# Allow and/or for control flow only
 Style/AndOr:
-  Enabled: false
+  EnforcedStyle: conditionals
 
 # Allow multi-line blocks of all sorts
 Style/Blocks:
-  Enabled: false
-
-# TODO: Decide on the desired style (nested or compact)
-Style/ClassAndModuleChildren:
   Enabled: false
 
 # Dot at end of line makes it clearer that the line is not done
@@ -77,10 +73,6 @@ Style/SignalException:
   EnforcedStyle: only_raise
 
 Style/SingleLineBlockParams:
-  Enabled: false
-
-# Allow non-interpolated strings with double quotes
-Style/StringLiterals:
   Enabled: false
 
 # Allow semantic choice of trailing comma
