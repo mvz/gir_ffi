@@ -38,19 +38,13 @@ module GirFFI
       def pre_conversion
         case direction
         when :in
-          ["#{pre_converted_name} = #{pre_convertor.conversion}"]
+          [ingoing_pre_conversion]
         when :out
-          ["#{out_parameter_name} = #{out_parameter_preparation}"]
+          [out_parameter_preparation]
         when :inout
-          [
-            "#{out_parameter_name} = #{out_parameter_preparation}",
-            "#{pre_converted_name} = #{pre_convertor.conversion}",
-          ]
+          [out_parameter_preparation, ingoing_pre_conversion]
         when :error
-          [
-            "#{out_parameter_name} = #{out_parameter_preparation}",
-            "begin"
-          ]
+          [out_parameter_preparation, "begin"]
         end
       end
 
@@ -99,6 +93,10 @@ module GirFFI
         type_info.needs_c_to_ruby_conversion_for_callbacks?
       end
 
+      def ingoing_pre_conversion
+        "#{pre_converted_name} = #{pre_convertor.conversion}"
+      end
+
       def outgoing_post_conversion
         "#{out_parameter_name}.set_value #{post_convertor.conversion}"
       end
@@ -121,12 +119,13 @@ module GirFFI
 
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
-        if allocated_by_us?
-          "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
-            ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
-        else
-          "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
-        end
+        value = if allocated_by_us?
+                  "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
+                    ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
+                else
+                  "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
+                end
+        "#{out_parameter_name} = #{value}"
       end
 
       # Check if an out argument needs to be allocated by us, the callee. Since
