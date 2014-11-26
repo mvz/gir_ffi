@@ -20,6 +20,10 @@ module GObject
       GObject.signal_connect(self, event, data, &block)
     end
 
+    def signal_connect_after event, data = nil, &block
+      GObject.signal_connect_after(self, event, data, &block)
+    end
+
     setup_instance_method 'get_property'
     setup_instance_method 'set_property'
 
