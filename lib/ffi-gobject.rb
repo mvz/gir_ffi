@@ -18,8 +18,7 @@ module GObject
   def self.type_from_instance_pointer inst_ptr
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
-    # TODO: Cache the message name somewhere.
-    klsptr.send "get_#{GirFFI::TypeMap::TAG_TYPE_MAP[:GType]}", 0
+    GirFFI::InOutPointer.new(:GType, klsptr).to_value
   end
 
   def self.type_from_instance instance
