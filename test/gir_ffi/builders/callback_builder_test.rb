@@ -73,6 +73,7 @@ describe GirFFI::Builders::CallbackBuilder do
                                "TestCallbackArrayInOut")
       }
       it "returns a valid mapping method" do
+        skip unless callback_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, ints, length)
           _v1 = GirFFI::InOutPointer.new(:gint32, length)

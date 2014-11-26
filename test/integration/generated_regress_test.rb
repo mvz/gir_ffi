@@ -31,6 +31,7 @@ describe Regress do
   end
 
   it "has the constant BOOL_CONSTANT" do
+    skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
   end
 
@@ -39,10 +40,12 @@ describe Regress do
   end
 
   it "has the constant GI_SCANNER_ELSE" do
+    skip unless get_introspection_data 'Regress', 'GI_SCANNER_ELSE'
     Regress::GI_SCANNER_ELSE.must_equal 3
   end
 
   it "has the constant GI_SCANNER_IFDEF" do
+    skip unless get_introspection_data 'Regress', 'GI_SCANNER_IFDEF'
     Regress::GI_SCANNER_IFDEF.must_equal 3
   end
 
@@ -227,6 +230,7 @@ describe Regress do
     end
 
     it "has a working method #_not_a_method" do
+      skip unless get_method_introspection_data('Regress', 'TestBoxed', '_not_a_method')
       # FIXME: This method has been moved to a function. Should we still expose
       # it as a method?
       instance._not_a_method
@@ -649,6 +653,7 @@ describe Regress do
     end
 
     it "has a working method #instance_method_full" do
+      skip unless get_method_introspection_data('Regress', 'TestObj', 'instance_method_full')
       instance.instance_method_full
       # FIXME: Is this the behavior we want, or do we want to increase the
       # refcount beforehand?
@@ -1879,12 +1884,14 @@ describe Regress do
   end
 
   it "has a working function #test_boxeds_not_a_method" do
+    skip unless get_introspection_data 'Regress', 'test_boxeds_not_a_method'
     boxed = Regress::TestBoxed.new_alternative_constructor1 123
     Regress.test_boxeds_not_a_method boxed
     pass
   end
 
   it "has a working function #test_boxeds_not_a_static" do
+    skip unless get_introspection_data 'Regress', 'test_boxeds_not_a_static'
     Regress.test_boxeds_not_a_static
     pass
   end

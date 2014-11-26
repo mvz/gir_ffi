@@ -56,7 +56,9 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
     let(:length_arg_builder) {
       GirFFI::Builders::CallbackArgumentBuilder.new(var_gen, length_arg_info)
     }
+
     before do
+      skip unless callback_info
       length_arg_builder.array_arg = array_arg_builder
       array_arg_builder.length_arg = length_arg_builder
     end
