@@ -139,4 +139,14 @@ describe GObject do
       end
     end
   end
+
+  describe '::signal_connect_after' do
+    it 'installs a signal handler' do
+      a = 1
+      o = Regress::TestSubObj.new
+      GObject.signal_connect_after(o, 'test') { a = 2 }
+      GObject.signal_emit o, 'test'
+      assert_equal 2, a
+    end
+  end
 end
