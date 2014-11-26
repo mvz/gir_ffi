@@ -3,7 +3,6 @@ GLib.load_class :Error
 module GLib
   # Overrides for GError, used by GLib for handling non-fatal errors.
   class Error
-    # TODO: Auto-convert strings and symbols to quarks
     GIR_FFI_DOMAIN = GLib.quark_from_string('gir_ffi')
 
     def self.from_exception ex
