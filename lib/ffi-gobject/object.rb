@@ -3,7 +3,7 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-    setup_method "new"
+    setup_method 'new'
 
     # TODO: Generate accessor methods from GIR at class definition time
     def method_missing method, *args
@@ -20,8 +20,8 @@ module GObject
       GObject.signal_connect(self, event, data, &block)
     end
 
-    setup_instance_method "get_property"
-    setup_instance_method "set_property"
+    setup_instance_method 'get_property'
+    setup_instance_method 'set_property'
 
     def get_property_extended property_name
       gvalue = get_property property_name

@@ -71,7 +71,7 @@ module GirFFI
 
       def function_call_arguments
         ca = @argument_builder_collection.call_argument_names
-        ca.unshift "self" if @info.method?
+        ca.unshift 'self' if @info.method?
         ca
       end
     end

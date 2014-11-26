@@ -1,7 +1,7 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::FunctionBuilder do
-  it "builds a correct definition of Regress:test_array_fixed_out_objects" do
+  it 'builds a correct definition of Regress:test_array_fixed_out_objects' do
     go = get_introspection_data 'Regress', 'test_array_fixed_out_objects'
     skip unless go
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
@@ -19,7 +19,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds a correct definition for functions having a linked length argument" do
+  it 'builds a correct definition for functions having a linked length argument' do
     go = get_introspection_data 'Regress', 'test_array_gint16_in'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -37,7 +37,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds a correct definition for functions with callbacks" do
+  it 'builds a correct definition for functions with callbacks' do
     go = get_introspection_data 'Regress', 'test_callback_destroy_notify'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -55,7 +55,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds correct definition for constructors" do
+  it 'builds correct definition for constructors' do
     go = get_method_introspection_data 'Regress', 'TestObj', 'new_from_file'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -74,7 +74,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "creates a call to GObject::Value#from for functions that take a GValue" do
+  it 'creates a call to GObject::Value#from for functions that take a GValue' do
     go = get_introspection_data 'GIMarshallingTests', 'gvalue_in'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -89,7 +89,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds correct definition for functions with a nullable input array" do
+  it 'builds correct definition for functions with a nullable input array' do
     go = get_introspection_data 'Regress', 'test_array_int_null_in'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -106,7 +106,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds correct definition for functions with a nullable output array" do
+  it 'builds correct definition for functions with a nullable output array' do
     go = get_introspection_data 'Regress', 'test_array_int_null_out'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -125,7 +125,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds the correct definition for a method with an inout array with size argument" do
+  it 'builds the correct definition for a method with an inout array with size argument' do
     go = get_method_introspection_data 'GIMarshallingTests', 'Object', 'method_array_inout'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -147,7 +147,7 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  it "builds a correct definition for a simple method" do
+  it 'builds a correct definition for a simple method' do
     go = get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
     fbuilder = GirFFI::Builders::FunctionBuilder.new go
     code = fbuilder.generate
@@ -162,13 +162,13 @@ describe GirFFI::Builders::FunctionBuilder do
     assert_equal expected.reset_indentation, code
   end
 
-  describe "#generate" do
+  describe '#generate' do
     let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
     let(:code) { builder.generate }
 
-    describe "for GLib::Variant.get_strv" do
+    describe 'for GLib::Variant.get_strv' do
       let(:function_info) { get_method_introspection_data 'GLib', 'Variant', 'get_strv' }
-      it "builds a correct definition" do
+      it 'builds a correct definition' do
         size_type = ":guint#{FFI.type_size(:size_t) * 8}"
         code.must_equal <<-CODE.reset_indentation
           def get_strv
@@ -181,10 +181,10 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe "for Regress.has_parameter_named_attrs" do
+    describe 'for Regress.has_parameter_named_attrs' do
       let(:function_info) { get_introspection_data 'Regress', 'has_parameter_named_attrs' }
 
-      it "builds a correct definition" do
+      it 'builds a correct definition' do
         skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.has_parameter_named_attrs(foo, attributes)
@@ -197,13 +197,13 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe "for GIMarshallingTests::Object.method_int8_arg_and_out_callee" do
+    describe 'for GIMarshallingTests::Object.method_int8_arg_and_out_callee' do
       let(:function_info) {
         get_method_introspection_data('GIMarshallingTests', 'Object',
                                       'method_int8_arg_and_out_callee')
       }
 
-      it "builds a correct definition" do
+      it 'builds a correct definition' do
         skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def method_int8_arg_and_out_callee(arg)

@@ -66,7 +66,7 @@ module GirFFI
 
       def result_name_list
         @result_name_list ||=
-          @argument_builder_collection.capture_variable_names.join(", ")
+          @argument_builder_collection.capture_variable_names.join(', ')
       end
 
       def capturing_invocation

@@ -31,7 +31,7 @@ module GirFFI
       end
 
       def method_name
-        "marshaller"
+        'marshaller'
       end
 
       def method_arguments

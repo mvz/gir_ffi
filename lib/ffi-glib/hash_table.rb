@@ -56,7 +56,7 @@ module GLib
       when :utf8
         FFI::Function.new(:uint,
                           [:pointer],
-                          find_support_function("g_str_hash"))
+                          find_support_function('g_str_hash'))
       else
         nil
       end
@@ -67,7 +67,7 @@ module GLib
       when :utf8
         FFI::Function.new(:int,
                           [:pointer, :pointer],
-                          find_support_function("g_str_equal"))
+                          find_support_function('g_str_equal'))
       else
         nil
       end

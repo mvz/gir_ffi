@@ -18,7 +18,7 @@ module GObjectIntrospection
     def value
       case type_tag
       when :utf8
-        raw_value.force_encoding("utf-8")
+        raw_value.force_encoding('utf-8')
       when :gboolean
         raw_value != 0
       else

@@ -5,8 +5,8 @@ module GirFFI
       def safe_name
         name.tr('-', '_').gsub(/^./) do |char|
           case char
-          when "_"
-            "Private___"
+          when '_'
+            'Private___'
           else
             char.upcase
           end

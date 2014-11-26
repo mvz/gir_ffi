@@ -3,9 +3,9 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::FieldBuilder do
   let(:instance) { GirFFI::Builders::FieldBuilder.new field_info }
 
-  describe "for a field of type :gint8 with an offset" do
-    let(:field_info) { get_field_introspection_data "Regress", "TestSimpleBoxedA", "some_int8" }
-    it "creates the right getter method" do
+  describe 'for a field of type :gint8 with an offset' do
+    let(:field_info) { get_field_introspection_data 'Regress', 'TestSimpleBoxedA', 'some_int8' }
+    it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_int8
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -18,7 +18,7 @@ describe GirFFI::Builders::FieldBuilder do
       instance.getter_def.must_equal expected
     end
 
-    it "creates the right setter method" do
+    it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def some_int8= value
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -31,9 +31,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe "for a field of type :struct" do
-    let(:field_info) { get_field_introspection_data "Regress", "TestBoxed", "nested_a" }
-    it "creates the right getter method" do
+  describe 'for a field of type :struct' do
+    let(:field_info) { get_field_introspection_data 'Regress', 'TestBoxed', 'nested_a' }
+    it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def nested_a
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -47,9 +47,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe "for a field of type :enum" do
-    let(:field_info) { get_field_introspection_data "Regress", "TestStructA", "some_enum" }
-    it "creates the right getter method" do
+  describe 'for a field of type :enum' do
+    let(:field_info) { get_field_introspection_data 'Regress', 'TestStructA', 'some_enum' }
+    it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_enum
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -63,9 +63,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe "for an inline fixed-size array field" do
-    let(:field_info) { get_field_introspection_data "Regress", "TestStructE", "some_union" }
-    it "creates the right getter method" do
+  describe 'for an inline fixed-size array field' do
+    let(:field_info) { get_field_introspection_data 'Regress', 'TestStructE', 'some_union' }
+    it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_union
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -78,7 +78,7 @@ describe GirFFI::Builders::FieldBuilder do
       instance.getter_def.must_equal expected
     end
 
-    it "creates the right setter method" do
+    it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def some_union= value
           _v1 = @struct.to_ptr + #{field_info.offset}
@@ -92,9 +92,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe "for a field of type :callback" do
-    let(:field_info) { get_field_introspection_data "GObject", "TypeInfo", "class_init" }
-    it "creates the right setter method" do
+  describe 'for a field of type :callback' do
+    let(:field_info) { get_field_introspection_data 'GObject', 'TypeInfo', 'class_init' }
+    it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def class_init= value
           _v1 = @struct.to_ptr + #{field_info.offset}

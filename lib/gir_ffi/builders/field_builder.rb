@@ -86,7 +86,7 @@ module GirFFI
       end
 
       def field_argument_info
-        @field_argument_info ||= FieldArgumentInfo.new "value", field_type
+        @field_argument_info ||= FieldArgumentInfo.new 'value', field_type
       end
 
       def return_value_builder

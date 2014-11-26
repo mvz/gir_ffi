@@ -38,38 +38,38 @@ describe GirFFI::Builders::ObjectBuilder do
     end
   end
 
-  describe "#find_property" do
-    it "finds a property specified on the class itself" do
-      prop = obj_builder.find_property("int")
-      prop.name.must_equal "int"
+  describe '#find_property' do
+    it 'finds a property specified on the class itself' do
+      prop = obj_builder.find_property('int')
+      prop.name.must_equal 'int'
     end
 
-    it "finds a property specified on the parent class" do
-      prop = sub_obj_builder.find_property("int")
-      prop.name.must_equal "int"
+    it 'finds a property specified on the parent class' do
+      prop = sub_obj_builder.find_property('int')
+      prop.name.must_equal 'int'
     end
 
-    it "raises an error if the property is not found" do
+    it 'raises an error if the property is not found' do
       proc {
-        sub_obj_builder.find_property("this-property-does-not-exist")
+        sub_obj_builder.find_property('this-property-does-not-exist')
       }.must_raise RuntimeError
     end
   end
 
-  describe "#function_definition" do
+  describe '#function_definition' do
     let(:method_info) {
       get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
     }
 
-    it "delegates definition to FunctionBuilder" do
+    it 'delegates definition to FunctionBuilder' do
       code = obj_builder.send :function_definition, method_info
       expected = GirFFI::Builders::FunctionBuilder.new(method_info).generate
       code.must_equal expected
     end
   end
 
-  describe "#object_class_struct" do
-    it "returns the class struct type" do
+  describe '#object_class_struct' do
+    it 'returns the class struct type' do
       obj_builder.object_class_struct.must_equal Regress::TestObjClass
     end
   end

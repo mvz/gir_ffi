@@ -1,14 +1,14 @@
 require 'gir_ffi_test_helper'
 
-describe "The generated Secret module" do
-  describe "Secret::Schema" do
-    it "has a working constructor" do
+describe 'The generated Secret module' do
+  describe 'Secret::Schema' do
+    it 'has a working constructor' do
       begin
         GirFFI.setup :Secret
       rescue
-        skip "No GIR data for Secret available"
+        skip 'No GIR data for Secret available'
       end
-      instance = Secret::Schema.new("foo", :none, "bar" => :string)
+      instance = Secret::Schema.new('foo', :none, 'bar' => :string)
       instance.must_be_instance_of Secret::Schema
     end
   end

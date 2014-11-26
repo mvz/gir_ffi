@@ -2,15 +2,15 @@ require 'gir_ffi_test_helper'
 require 'gir_ffi/unintrospectable_type_info'
 
 describe GirFFI::UnintrospectableTypeInfo do
-  describe "#info_type" do
-    it "returns :unintrospectable" do
+  describe '#info_type' do
+    it 'returns :unintrospectable' do
       info = GirFFI::UnintrospectableTypeInfo.new :some_type
       info.info_type.must_equal :unintrospectable
     end
   end
 
-  describe "#parent" do
-    describe "when the GIR knows about the parent gtype" do
+  describe '#parent' do
+    describe 'when the GIR knows about the parent gtype' do
       it "finds the parent's info by gtype" do
         gobject = Object.new
         gir = Object.new
@@ -24,8 +24,8 @@ describe GirFFI::UnintrospectableTypeInfo do
       end
     end
 
-    describe "when the GIR does not know about the parent gtype" do
-      it "creates a new UnintrospectableTypeInfo from the parent gtype" do
+    describe 'when the GIR does not know about the parent gtype' do
+      it 'creates a new UnintrospectableTypeInfo from the parent gtype' do
         gobject = Object.new
         gir = Object.new
 
@@ -39,8 +39,8 @@ describe GirFFI::UnintrospectableTypeInfo do
     end
   end
 
-  describe "#interfaces" do
-    it "finds interface infos by gtype" do
+  describe '#interfaces' do
+    it 'finds interface infos by gtype' do
       gobject = Object.new
       gir = Object.new
 
@@ -53,7 +53,7 @@ describe GirFFI::UnintrospectableTypeInfo do
       info.interfaces.must_equal [:foo_info, :bar_info]
     end
 
-    it "skips interfaces that have no introspection data" do
+    it 'skips interfaces that have no introspection data' do
       gobject = Object.new
       gir = Object.new
 
@@ -67,21 +67,21 @@ describe GirFFI::UnintrospectableTypeInfo do
     end
   end
 
-  describe "#g_type" do
-    it "returns the passed-in gtype" do
+  describe '#g_type' do
+    it 'returns the passed-in gtype' do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
       info.g_type.must_equal :some_type
     end
   end
 
-  describe "#fields" do
-    it "returns an empty array" do
+  describe '#fields' do
+    it 'returns an empty array' do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
       info.fields.must_equal []
     end
   end
 
-  describe "#namespace" do
+  describe '#namespace' do
     it "returns the parent class' namespace" do
       gobject = Object.new
       gir = Object.new
@@ -97,8 +97,8 @@ describe GirFFI::UnintrospectableTypeInfo do
     end
   end
 
-  describe "#safe_name" do
-    it "finds the class name by gtype" do
+  describe '#safe_name' do
+    it 'finds the class name by gtype' do
       gobject = Object.new
 
       mock(gobject).type_name(:some_type) { 'GSomeType' }

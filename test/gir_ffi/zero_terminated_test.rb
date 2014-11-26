@@ -1,21 +1,21 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::ZeroTerminated do
-  describe ".from" do
+  describe '.from' do
     let(:result) { GirFFI::ZeroTerminated.from :int32, [1, 2, 3] }
 
-    it "converts the passed array into a zero-terminated c array" do
+    it 'converts the passed array into a zero-terminated c array' do
       ptr = result.to_ptr
       ptr.read_array_of_int32(4).must_equal [1, 2, 3, 0]
     end
 
-    it "returns a GirFFI::ZeroTerminated object" do
+    it 'returns a GirFFI::ZeroTerminated object' do
       result.must_be_instance_of GirFFI::ZeroTerminated
     end
   end
 
-  describe ".wrap" do
-    it "wraps the given type and pointer" do
+  describe '.wrap' do
+    it 'wraps the given type and pointer' do
       ptr = GirFFI::InPointer.from_array :int32, [1, 2, 3, 0]
       zt = GirFFI::ZeroTerminated.wrap :foo, ptr
       zt.element_type.must_equal :foo
@@ -23,8 +23,8 @@ describe GirFFI::ZeroTerminated do
     end
   end
 
-  describe "#each" do
-    it "yields each element" do
+  describe '#each' do
+    it 'yields each element' do
       zt = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
       arr = []
       zt.each do |int|
@@ -33,14 +33,14 @@ describe GirFFI::ZeroTerminated do
       arr.must_equal [1, 2, 3]
     end
 
-    it "yields zero times for a ZeroTerminated wrapping a null pointer" do
+    it 'yields zero times for a ZeroTerminated wrapping a null pointer' do
       zt = GirFFI::ZeroTerminated.wrap :int32, FFI::Pointer.new(0)
       zt.each do |_str|
         flunk
       end
     end
 
-    it "works for :int8" do
+    it 'works for :int8' do
       zt = GirFFI::ZeroTerminated.from :int8, [1, 2, 3]
       arr = []
       zt.each do |int|
@@ -51,27 +51,27 @@ describe GirFFI::ZeroTerminated do
 
   end
 
-  describe "#==" do
-    it "returns true when comparing to an array with the same elements" do
+  describe '#==' do
+    it 'returns true when comparing to an array with the same elements' do
       zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
 
       (zero_terminated == [1, 2, 3]).must_equal true
     end
 
-    it "returns false when comparing to an array with different elements" do
+    it 'returns false when comparing to an array with different elements' do
       zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
 
       (zero_terminated == [1, 2]).must_equal false
     end
 
-    it "returns true when comparing to a zero-terminated array with the same elements" do
+    it 'returns true when comparing to a zero-terminated array with the same elements' do
       zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
       other = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
 
       (zero_terminated == other).must_equal true
     end
 
-    it "returns false when comparing to a zero-terminated array with different elements" do
+    it 'returns false when comparing to a zero-terminated array with different elements' do
       zero_terminated = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
       other = GirFFI::ZeroTerminated.from :int32, [1, 2]
 
@@ -79,7 +79,7 @@ describe GirFFI::ZeroTerminated do
     end
   end
 
-  it "includes Enumerable" do
+  it 'includes Enumerable' do
     GirFFI::ZeroTerminated.must_include Enumerable
   end
 end

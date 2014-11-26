@@ -109,7 +109,7 @@ module GirFFI
       end
 
       def argument_info
-        @argument_info ||= FieldArgumentInfo.new("value", type_info)
+        @argument_info ||= FieldArgumentInfo.new('value', type_info)
       end
 
       def container_class

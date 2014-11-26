@@ -3,24 +3,24 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::SignalClosureBuilder do
   let(:builder) { GirFFI::Builders::SignalClosureBuilder.new signal_info }
 
-  describe "#build_class" do
+  describe '#build_class' do
     let(:signal_info) {
-      get_signal_introspection_data "Regress", "TestObj", "test"
+      get_signal_introspection_data 'Regress', 'TestObj', 'test'
     }
 
-    it "builds a descendant of RubyClosure" do
+    it 'builds a descendant of RubyClosure' do
       klass = builder.build_class
       klass.ancestors.must_include GObject::RubyClosure
     end
   end
 
-  describe "#marshaller_definition" do
-    describe "for a signal with no arguments or return value" do
+  describe '#marshaller_definition' do
+    describe 'for a signal with no arguments or return value' do
       let(:signal_info) {
-        get_signal_introspection_data "Regress", "TestObj", "test"
+        get_signal_introspection_data 'Regress', 'TestObj', 'test'
       }
 
-      it "returns a valid marshaller converting only the receiver" do
+      it 'returns a valid marshaller converting only the receiver' do
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance = param_values.first.get_value_plain
@@ -33,12 +33,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal with an argument and a return value" do
+    describe 'for a signal with an argument and a return value' do
       let(:signal_info) {
-        get_signal_introspection_data "Regress", "TestObj", "sig-with-int64-prop"
+        get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-int64-prop'
       }
 
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         skip unless signal_info
 
         expected = <<-CODE.reset_indentation
@@ -55,12 +55,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal with an enum argument" do
+    describe 'for a signal with an enum argument' do
       let(:signal_info) {
-        get_signal_introspection_data "Gio", "MountOperation", "reply"
+        get_signal_introspection_data 'Gio', 'MountOperation', 'reply'
       }
 
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, result = param_values.map(&:get_value_plain)
@@ -74,12 +74,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal with a array plus length arguments" do
+    describe 'for a signal with a array plus length arguments' do
       let(:signal_info) {
-        get_signal_introspection_data "Regress", "TestObj", "sig-with-array-len-prop"
+        get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-array-len-prop'
       }
 
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         skip unless signal_info
 
         expected = <<-CODE.reset_indentation
@@ -96,12 +96,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal with a struct argument" do
+    describe 'for a signal with a struct argument' do
       let(:signal_info) {
-        get_signal_introspection_data "Regress", "TestObj", "test-with-static-scope-arg"
+        get_signal_introspection_data 'Regress', 'TestObj', 'test-with-static-scope-arg'
       }
 
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         skip unless signal_info
 
         expected = <<-CODE.reset_indentation
@@ -117,12 +117,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal returning an array of integers" do
+    describe 'for a signal returning an array of integers' do
       let(:signal_info) {
-        get_signal_introspection_data "Regress", "TestObj", "sig-with-intarray-ret"
+        get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-intarray-ret'
       }
 
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         skip unless signal_info
 
         expected = <<-CODE.reset_indentation

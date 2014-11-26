@@ -3,10 +3,10 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::CallbackBuilder do
   let(:builder) { GirFFI::Builders::CallbackBuilder.new callback_info }
 
-  describe "#mapping_method_definition" do
-    describe "for a callback with arguments and return value" do
-      let(:callback_info) { get_introspection_data "Regress", "TestCallbackFull" }
-      it "returns a valid mapping method" do
+  describe '#mapping_method_definition' do
+    describe 'for a callback with arguments and return value' do
+      let(:callback_info) { get_introspection_data 'Regress', 'TestCallbackFull' }
+      it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, foo, bar, path)
           _v1 = foo
@@ -21,9 +21,9 @@ describe GirFFI::Builders::CallbackBuilder do
       end
     end
 
-    describe "for a callback with no arguments or return value" do
-      let(:callback_info) { get_introspection_data "Regress", "TestSimpleCallback" }
-      it "returns a valid mapping method" do
+    describe 'for a callback with no arguments or return value' do
+      let(:callback_info) { get_introspection_data 'Regress', 'TestSimpleCallback' }
+      it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc)
           _proc.call()
@@ -34,9 +34,9 @@ describe GirFFI::Builders::CallbackBuilder do
       end
     end
 
-    describe "for a callback with a closure argument" do
-      let(:callback_info) { get_introspection_data "Regress", "TestCallbackUserData" }
-      it "returns a valid mapping method" do
+    describe 'for a callback with a closure argument' do
+      let(:callback_info) { get_introspection_data 'Regress', 'TestCallbackUserData' }
+      it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, user_data)
           _v1 = GirFFI::ArgHelper::OBJECT_STORE.fetch(user_data)
@@ -49,12 +49,12 @@ describe GirFFI::Builders::CallbackBuilder do
       end
     end
 
-    describe "for a callback with one out argument" do
+    describe 'for a callback with one out argument' do
       let(:callback_info) {
-        get_introspection_data("GIMarshallingTests",
-                                                   "CallbackOneOutParameter")
+        get_introspection_data('GIMarshallingTests',
+                                                   'CallbackOneOutParameter')
       }
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, a)
           _v1 = GirFFI::InOutPointer.new(:gfloat, a)
@@ -67,12 +67,12 @@ describe GirFFI::Builders::CallbackBuilder do
       end
     end
 
-    describe "for a callback with an inout array argument" do
+    describe 'for a callback with an inout array argument' do
       let(:callback_info) {
-        get_introspection_data("Regress",
-                               "TestCallbackArrayInOut")
+        get_introspection_data('Regress',
+                               'TestCallbackArrayInOut')
       }
-      it "returns a valid mapping method" do
+      it 'returns a valid mapping method' do
         skip unless callback_info
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, ints, length)

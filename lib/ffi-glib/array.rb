@@ -77,7 +77,7 @@ module GLib
 
     def check_element_size_match
       unless calculated_element_size == get_element_size
-        warn "WARNING: Element sizes do not match"
+        warn 'WARNING: Element sizes do not match'
       end
     end
 

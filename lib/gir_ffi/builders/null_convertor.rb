@@ -1,10 +1,14 @@
-# Argument convertor that does nothing
-class GirFFI::Builders::NullConvertor
-  def initialize argument_name
-    @argument_name = argument_name
-  end
+module GirFFI
+  module Builders
+    # Argument convertor that does nothing
+    class NullConvertor
+      def initialize argument_name
+        @argument_name = argument_name
+      end
 
-  def conversion
-    @argument_name
+      def conversion
+        @argument_name
+      end
+    end
   end
 end

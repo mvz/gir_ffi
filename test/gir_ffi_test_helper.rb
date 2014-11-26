@@ -10,11 +10,7 @@ class Sequence
   end
 end
 
-class Minitest::Test
-  def cws code
-    code.gsub(/(^\s*|\s*$)/, "")
-  end
-
+module GirFFITestExtensions
   def get_field_introspection_data namespace, klass, name
     get_introspection_data(namespace, klass).find_field name
   end
@@ -102,3 +98,5 @@ class Minitest::Test
     max_for_unsigned_type :ulong
   end
 end
+
+Minitest::Test.send :include, GirFFITestExtensions

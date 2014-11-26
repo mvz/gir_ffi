@@ -35,7 +35,7 @@ module GirFFI
       end
 
       def method_name
-        "call_with_argument_mapping"
+        'call_with_argument_mapping'
       end
 
       def method_arguments

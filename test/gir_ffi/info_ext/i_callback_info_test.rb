@@ -8,8 +8,8 @@ describe GirFFI::InfoExt::ICallbackInfo do
   }
   let(:callback_info) { klass.new }
 
-  describe "#return_ffi_type" do
-    it "returns the callback ffi type of the return type" do
+  describe '#return_ffi_type' do
+    it 'returns the callback ffi type of the return type' do
       stub(return_type_info = Object.new).to_callback_ffitype { :some_type }
       stub(callback_info).return_type { return_type_info }
 

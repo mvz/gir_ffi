@@ -4,7 +4,7 @@ module GObjectIntrospection
   # Module for attaching functions from the girepository library
   module Lib
     extend FFI::Library
-    ffi_lib "girepository-1.0"
+    ffi_lib 'girepository-1.0'
 
     # IRepository
     enum :IRepositoryLoadFlags, [:LAZY, (1 << 0)]
