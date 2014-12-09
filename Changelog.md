@@ -1,9 +1,13 @@
 # Changelog
 
-## Upcoming
+## 0.7.8 / 2014-12-09
 
 * Support constants with a falsy value
 * Support type aliases that resolve to a type that is not introspectable
+* Support callback arguments with direction :inout
+* Provide GObject.signal_connect_after and GObject::Object.signal_connect_after
+* Handle setting GValues (and hence, properties) that have enum values
+* Various refactorings & coding style cleanups
 
 ## 0.7.7 / 2014-10-21
 
