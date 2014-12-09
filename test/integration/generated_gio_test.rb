@@ -74,7 +74,7 @@ describe 'The generated Gio module' do
       GObject.signal_connect @mo, 'reply' do |_mnt, result, _user_data|
         a = result
       end
-      GObject.signal_emit @mo, 'reply', 2
+      GObject.signal_emit @mo, 'reply', :unhandled
       assert_equal :unhandled, a
     end
   end

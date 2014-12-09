@@ -14,7 +14,7 @@ module GObject
       TYPE_BOXED   => [:get_boxed,         :set_boxed],
       TYPE_CHAR    => [:get_char,          :set_char],
       TYPE_DOUBLE  => [:get_double,        :set_double],
-      TYPE_ENUM    => [:get_enum_enhanced, :set_enum],
+      TYPE_ENUM    => [:get_enum_enhanced, :set_enum_enhanced],
       TYPE_FLAGS   => [:get_flags,         :set_flags],
       TYPE_FLOAT   => [:get_float,         :set_float],
       TYPE_GTYPE   => [:get_gtype,         :set_gtype],
@@ -114,6 +114,10 @@ module GObject
     def set_instance_enhanced val
       check_type_compatibility val if val
       set_instance val
+    end
+
+    def set_enum_enhanced val
+      set_enum current_gtype_class[val]
     end
 
     def get_enum_enhanced
