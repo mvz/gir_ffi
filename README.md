@@ -9,10 +9,10 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 ## Status
 
 [![Gem Version](https://badge.fury.io/rb/gir_ffi.png)](http://badge.fury.io/rb/gir_ffi)
-[![Dependency Status](https://gemnasium.com/mvz/ruby-gir-ffi.png)](https://gemnasium.com/mvz/ruby-gir-ffi)
-[![Build Status](https://travis-ci.org/mvz/ruby-gir-ffi.png?branch=master)](https://travis-ci.org/mvz/ruby-gir-ffi)
-[![Code Climate](https://codeclimate.com/github/mvz/ruby-gir-ffi.png)](https://codeclimate.com/github/mvz/ruby-gir-ffi)
-[![Coverage Status](https://coveralls.io/repos/mvz/ruby-gir-ffi/badge.png)](https://coveralls.io/r/mvz/ruby-gir-ffi)
+[![Dependency Status](https://gemnasium.com/mvz/gir_ffi.png)](https://gemnasium.com/mvz/gir_ffi)
+[![Build Status](https://travis-ci.org/mvz/gir_ffi.png?branch=master)](https://travis-ci.org/mvz/gir_ffi)
+[![Code Climate](https://codeclimate.com/github/mvz/gir_ffi.png)](https://codeclimate.com/github/mvz/gir_ffi)
+[![Coverage Status](https://coveralls.io/repos/mvz/gir_ffi/badge.png)](https://coveralls.io/r/mvz/gir_ffi)
 
 ## Features
 
