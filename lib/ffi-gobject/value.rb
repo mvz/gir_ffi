@@ -117,7 +117,8 @@ module GObject
     end
 
     def set_enum_enhanced val
-      set_enum current_gtype_class[val]
+      val = current_gtype_class[val] if val.is_a? Symbol
+      set_enum val
     end
 
     def get_enum_enhanced
