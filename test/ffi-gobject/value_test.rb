@@ -50,6 +50,20 @@ describe GObject::Value do
       gv.get_char.must_equal value
     end
 
+    it 'handles enum values presented as symbols' do
+      value = :value2
+      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv.set_value value
+      gv.get_value.must_equal value
+    end
+
+    it 'handles enum values presented as numbers' do
+      value = :value2
+      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv.set_value Regress::TestEnum[value]
+      gv.get_value.must_equal value
+    end
+
     it 'handles GType values' do
       value = GObject::TYPE_STRING
       gv = GObject::Value.for_g_type GObject::TYPE_GTYPE
