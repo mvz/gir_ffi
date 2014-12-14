@@ -2,7 +2,7 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info) }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, false) }
   let(:for_constructor) { false }
   let(:builder) {
     GirFFI::Builders::ReturnValueBuilder.new(var_gen,
