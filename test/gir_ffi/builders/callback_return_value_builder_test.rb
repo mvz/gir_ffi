@@ -2,8 +2,9 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::CallbackReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_value_info) { GirFFI::ReturnValueInfo.new(type_info, false) }
+  let(:return_value_info) { GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false) }
   let(:type_info) { callback_info.return_type }
+  let(:ownership_transfer) { callback_info.caller_owns }
   let(:builder) {
     GirFFI::Builders::CallbackReturnValueBuilder.new(var_gen,
                                                                    return_value_info)

@@ -2,7 +2,7 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, false) }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, false) }
   let(:for_constructor) { false }
   let(:builder) {
     GirFFI::Builders::ReturnValueBuilder.new(var_gen,
@@ -399,7 +399,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) {
       get_method_introspection_data('Regress', 'TestObj', 'skip_return_val').return_type
     }
-    let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, true) }
+    let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, true) }
 
     it 'has no statements in #post_conversion' do
       builder.post_conversion.must_equal []

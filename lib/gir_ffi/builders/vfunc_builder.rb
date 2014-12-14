@@ -26,7 +26,9 @@ module GirFFI
         arg_infos << ErrorArgumentInfo.new if info.throws?
 
         receiver_info = ReceiverArgumentInfo.new receiver_type_info
-        return_value_info = ReturnValueInfo.new info.return_type, info.skip_return?
+        return_value_info = ReturnValueInfo.new(info.return_type,
+                                                info.caller_owns,
+                                                info.skip_return?)
 
         MappingMethodBuilder.for_vfunc(receiver_info,
                                        arg_infos,

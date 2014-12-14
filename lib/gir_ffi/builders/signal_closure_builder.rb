@@ -20,7 +20,9 @@ module GirFFI
 
         container_type_info = ReceiverTypeInfo.new(container_info)
         receiver_info = ReceiverArgumentInfo.new(container_type_info)
-        return_value_info = ReturnValueInfo.new info.return_type, info.skip_return?
+        return_value_info = ReturnValueInfo.new(info.return_type,
+                                                info.caller_owns,
+                                                info.skip_return?)
 
         MarshallingMethodBuilder.for_signal(receiver_info,
                                             arg_infos,
