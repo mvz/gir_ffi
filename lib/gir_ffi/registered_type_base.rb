@@ -6,6 +6,7 @@ module GirFFI
   module RegisteredTypeBase
     include TypeBase
 
+    # FIXME: Move to #g_type
     def get_gtype
       self::G_TYPE
     end

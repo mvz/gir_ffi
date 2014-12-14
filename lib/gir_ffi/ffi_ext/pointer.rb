@@ -14,6 +14,7 @@ module GirFFI
         null?
       end
 
+      # FIXME: Should probably not be here.
       def to_object
         return nil if self.null?
         gtype = GObject.type_from_instance_pointer self
