@@ -417,12 +417,10 @@ describe GIMarshallingTests do
                                                'vfunc_return_object_transfer_full')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc {|_obj|
-          # FIXME: Make ref not be necessary
-          GIMarshallingTests::Object.new(42).tap { |obj| ref obj }
+          GIMarshallingTests::Object.new 42
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_full
-      # TODO: Check desired result
       result.must_equal [2, false]
     end
 

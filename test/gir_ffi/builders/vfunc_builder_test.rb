@@ -132,6 +132,25 @@ describe GirFFI::Builders::VFuncBuilder do
         result.must_equal expected
       end
     end
+
+    describe 'for a vfunc with a full-transfer return value' do
+      let(:vfunc_info) {
+        get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_object_transfer_full'
+      }
+
+      it 'returns a valid mapping method' do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = _proc.call(_v1)
+          _v3 = GObject::Object.from(_v2.ref).to_ptr
+          return _v3
+        end
+        CODE
+
+        result.must_equal expected
+      end
+    end
   end
 
   describe '#argument_ffi_types' do
