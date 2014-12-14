@@ -54,7 +54,7 @@ module GirFFITestExtensions
   end
 
   def ref object
-    GObject::Lib.g_object_ref object.to_ptr
+    object.ref
   end
 
   def max_for_unsigned_type type
