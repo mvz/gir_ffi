@@ -8,10 +8,9 @@ begin
 rescue LoadError
 end
 
-begin
+if ENV['CI']
   require 'coveralls'
   Coveralls.wear!
-rescue LoadError
 end
 
 require 'minitest/autorun'
