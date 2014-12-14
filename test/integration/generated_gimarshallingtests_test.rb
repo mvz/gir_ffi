@@ -282,16 +282,12 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::Object.new 42
       ref_count(ob).must_equal 1
 
-      # NOTE: To avoid dropping the ref_count to 0.
-      ref ob
-      ref_count(ob).must_equal 2
-
       res = GIMarshallingTests::Object.full_inout ob
 
-      # TODO: Stop refcount from dropping
       ref_count(ob).must_equal 1
+      ref_count(res).must_equal 1
 
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
       res.int.must_equal 0
     end
 

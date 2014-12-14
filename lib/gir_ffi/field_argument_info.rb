@@ -14,6 +14,10 @@ module GirFFI
       :in
     end
 
+    def ownership_transfer
+      :everything
+    end
+
     def skip?
       false
     end
