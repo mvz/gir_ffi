@@ -284,7 +284,7 @@ describe GIMarshallingTests do
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      ref_count(ob).must_equal 1
+      ref_count(ob).must_be :>, 0
       ref_count(res).must_equal 1
 
       res.must_be_instance_of GIMarshallingTests::Object
