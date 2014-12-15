@@ -25,7 +25,9 @@ module GirFFI
       end
 
       def mapping_method_definition
-        return_value_info = ReturnValueInfo.new info.return_type
+        return_value_info = ReturnValueInfo.new(info.return_type,
+                                                info.caller_owns,
+                                                info.skip_return?)
         MappingMethodBuilder.for_callback(info.args,
                                           return_value_info).method_definition
       end

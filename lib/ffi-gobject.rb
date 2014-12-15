@@ -83,7 +83,9 @@ module GObject
 
   # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
   module Lib
-    attach_function :g_object_ref_sink, [:pointer], :void
+    attach_function :g_object_ref_sink, [:pointer], :pointer
+    attach_function :g_object_ref, [:pointer], :pointer
+    attach_function :g_object_unref, [:pointer], :pointer
 
     attach_function :g_array_get_type, [], :size_t
     attach_function :g_byte_array_get_type, [], :size_t

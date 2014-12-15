@@ -45,7 +45,15 @@ module GirFFI
       end
 
       def post_convertor
-        @post_convertor ||= RubyToCConvertor.new(type_info, capture_variable_name)
+        @post_convertor ||= RubyToCConvertor.new(type_info, post_convertor_argument)
+      end
+
+      def post_convertor_argument
+        if arginfo.ownership_transfer == :everything && specialized_type_tag == :object
+          "#{capture_variable_name}.ref"
+        else
+          capture_variable_name
+        end
       end
 
       def void_return_value?

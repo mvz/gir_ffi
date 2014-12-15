@@ -53,6 +53,10 @@ module GirFFITestExtensions
     GObject::Object::Struct.new(object.to_ptr)[:ref_count]
   end
 
+  def ref object
+    object.ref
+  end
+
   def max_for_unsigned_type type
     (1 << (FFI.type_size(type) * 8)) - 1
   end

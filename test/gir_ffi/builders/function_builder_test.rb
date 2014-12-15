@@ -197,7 +197,7 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for GIMarshallingTests::Object.method_int8_arg_and_out_callee' do
+    describe 'for GIMarshallingTests::Object#method_int8_arg_and_out_callee' do
       let(:function_info) {
         get_method_introspection_data('GIMarshallingTests', 'Object',
                                       'method_int8_arg_and_out_callee')
@@ -212,6 +212,25 @@ describe GirFFI::Builders::FunctionBuilder do
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_int8_arg_and_out_callee self, _v1, _v2
             _v3 = GirFFI::InOutPointer.new(:gint8, _v2.to_value).to_value
             return _v3
+          end
+        CODE
+      end
+    end
+
+    describe 'for GIMarshallingTests::Object.full_inout' do
+      let(:function_info) {
+        get_method_introspection_data('GIMarshallingTests', 'Object',
+                                      'full_inout')
+      }
+
+      it 'builds a correct definition' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.full_inout(object)
+            _v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::Object]
+            _v1.set_value GIMarshallingTests::Object.from(object.ref)
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
+            _v2 = GIMarshallingTests::Object.wrap(_v1.to_value)
+            return _v2
           end
         CODE
       end

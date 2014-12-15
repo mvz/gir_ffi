@@ -5,6 +5,23 @@ module GObject
   class Object
     setup_method 'new'
 
+    def self.constructor_wrap ptr
+      super.tap do |obj|
+        ObjectSpace.define_finalizer obj, make_finalizer(ptr, obj.class.name) if obj
+      end
+    end
+
+    def self.make_finalizer ptr, name
+      proc {
+        rc = GObject::Object::Struct.new(ptr)[:ref_count]
+        if rc == 0 || rc > 100
+          warn "not unreffing #{name}:#{ptr} (#{rc})"
+        else
+          GObject::Lib.g_object_unref ptr
+        end
+      }
+    end
+
     # TODO: Generate accessor methods from GIR at class definition time
     def method_missing method, *args
       getter_name = "get_#{method}"

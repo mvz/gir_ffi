@@ -143,11 +143,19 @@ module GirFFI
         if skipped?
           NullConvertor.new('0')
         elsif closure?
-          ClosureToPointerConvertor.new(name)
+          ClosureToPointerConvertor.new(pre_convertor_argument)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
-          RubyToCConvertor.new(@type_info, name)
+          RubyToCConvertor.new(@type_info, pre_convertor_argument)
         else
-          NullConvertor.new(name)
+          NullConvertor.new(pre_convertor_argument)
+        end
+      end
+
+      def pre_convertor_argument
+        if @arginfo.ownership_transfer == :everything && specialized_type_tag == :object
+          "#{name}.ref"
+        else
+          name
         end
       end
     end

@@ -280,12 +280,14 @@ describe GIMarshallingTests do
 
     it 'has a working function #full_inout' do
       ob = GIMarshallingTests::Object.new 42
+      ref_count(ob).must_equal 1
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      # TODO: Deal with the fact that ob is now invalid
+      ref_count(ob).must_be :>, 0
+      ref_count(res).must_equal 1
 
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
       res.int.must_equal 0
     end
 
@@ -389,11 +391,13 @@ describe GIMarshallingTests do
                                                'vfunc_out_object_transfer_full')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|_obj|
-          GIMarshallingTests::Object.new 42
+          # FIXME: Make ref not be necessary
+          GIMarshallingTests::Object.new(42).tap { |obj| ref obj }
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
-      result.must_equal [1, false]
+      # TODO: Check desired result
+      result.must_equal [2, false]
     end
 
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_none' do
@@ -417,7 +421,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_full
-      result.must_equal [1, false]
+      result.must_equal [2, false]
     end
 
     it 'has a working method #get_ref_info_for_vfunc_return_object_transfer_none' do
