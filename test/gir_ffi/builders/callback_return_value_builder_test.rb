@@ -7,7 +7,7 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
   let(:ownership_transfer) { callback_info.caller_owns }
   let(:builder) {
     GirFFI::Builders::CallbackReturnValueBuilder.new(var_gen,
-                                                                   return_value_info)
+                                                     return_value_info)
   }
 
   before do
@@ -30,7 +30,7 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
   describe 'for :void' do
     let(:callback_info) {
       get_introspection_data('GIMarshallingTests',
-                                                 'CallbackMultipleOutParameters')
+                             'CallbackMultipleOutParameters')
     }
 
     it 'has no statements in #post_conversion' do
@@ -46,8 +46,8 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
   describe 'for :enum' do
     let(:callback_info) {
       get_vfunc_introspection_data('GIMarshallingTests',
-                                                       'Object',
-                                                       'vfunc_return_enum')
+                                   'Object',
+                                   'vfunc_return_enum')
     }
 
     it 'converts the result' do
@@ -65,8 +65,8 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
   describe 'for :object with full transfer' do
     let(:callback_info) {
       get_vfunc_introspection_data('GIMarshallingTests',
-                                                       'Object',
-                                                       'vfunc_return_object_transfer_full')
+                                   'Object',
+                                   'vfunc_return_object_transfer_full')
     }
 
     it 'increases the refcount of the result and converts it to a pointer' do

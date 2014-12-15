@@ -22,7 +22,7 @@ describe GirFFI::Builders::ArgumentBuilder do
     describe 'for :zero_terminated' do
       let(:arg_info) {
         get_introspection_data('GIMarshallingTests',
-                                              'array_in_len_zero_terminated').args[0]
+                               'array_in_len_zero_terminated').args[0]
       }
 
       it 'has the correct value for #pre_conversion' do

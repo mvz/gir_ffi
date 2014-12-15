@@ -6,7 +6,7 @@ describe GObject::Object do
   describe '#get_property' do
     it 'is overridden to have arity 1' do
       assert_equal 1,
-        GObject::Object.instance_method('get_property').arity
+                   GObject::Object.instance_method('get_property').arity
     end
   end
 

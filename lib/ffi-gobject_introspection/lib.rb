@@ -12,19 +12,14 @@ module GObjectIntrospection
     attach_function :g_irepository_get_default, [], :pointer
     attach_function :g_irepository_prepend_search_path, [:string], :void
     attach_function :g_irepository_require,
-      [:pointer, :string, :string, :IRepositoryLoadFlags, :pointer],
-      :pointer
+                    [:pointer, :string, :string, :IRepositoryLoadFlags, :pointer],
+                    :pointer
     attach_function :g_irepository_get_n_infos, [:pointer, :string], :int
-    attach_function :g_irepository_get_info,
-      [:pointer, :string, :int], :pointer
-    attach_function :g_irepository_find_by_name,
-      [:pointer, :string, :string], :pointer
-    attach_function :g_irepository_find_by_gtype,
-      [:pointer, :size_t], :pointer
-    attach_function :g_irepository_get_dependencies,
-      [:pointer, :string], :pointer
-    attach_function :g_irepository_get_shared_library,
-      [:pointer, :string], :string
+    attach_function :g_irepository_get_info, [:pointer, :string, :int], :pointer
+    attach_function :g_irepository_find_by_name, [:pointer, :string, :string], :pointer
+    attach_function :g_irepository_find_by_gtype, [:pointer, :size_t], :pointer
+    attach_function :g_irepository_get_dependencies, [:pointer, :string], :pointer
+    attach_function :g_irepository_get_shared_library, [:pointer, :string], :string
 
     # IBaseInfo
     enum :IInfoType, [
@@ -236,26 +231,26 @@ module GObjectIntrospection
       signed_size_t = "int#{FFI.type_size(:size_t) * 8}".to_sym
 
       layout :v_boolean, :int,
-        :v_int8, :int8,
-        :v_uint8, :uint8,
-        :v_int16, :int16,
-        :v_uint16, :uint16,
-        :v_int32, :int32,
-        :v_uint32, :uint32,
-        :v_int64, :int64,
-        :v_uint64, :uint64,
-        :v_float, :float,
-        :v_double, :double,
-        :v_short, :short,
-        :v_ushort, :ushort,
-        :v_int, :int,
-        :v_uint, :uint,
-        :v_long, :long,
-        :v_ulong, :ulong,
-        :v_ssize, signed_size_t,
-        :v_size, :size_t,
-        :v_string, :string,
-        :v_pointer, :pointer
+             :v_int8, :int8,
+             :v_uint8, :uint8,
+             :v_int16, :int16,
+             :v_uint16, :uint16,
+             :v_int32, :int32,
+             :v_uint32, :uint32,
+             :v_int64, :int64,
+             :v_uint64, :uint64,
+             :v_float, :float,
+             :v_double, :double,
+             :v_short, :short,
+             :v_ushort, :ushort,
+             :v_int, :int,
+             :v_uint, :uint,
+             :v_long, :long,
+             :v_ulong, :ulong,
+             :v_ssize, signed_size_t,
+             :v_size, :size_t,
+             :v_string, :string,
+             :v_pointer, :pointer
     end
 
     # IConstInfo
