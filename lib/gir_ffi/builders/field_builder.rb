@@ -7,6 +7,7 @@ module GirFFI
   module Builders
     # Creates field getter and setter code for a given IFieldInfo.
     class FieldBuilder
+      # Builder for field getters
       class GetterBuilder
         def initialize field_builder, return_value_builder
           @field_builder = field_builder
@@ -27,10 +28,20 @@ module GirFFI
 
         def preparation
           [
-            "#{field_ptr} = @struct.to_ptr + #{@field_builder.field_offset}",
-            "#{typed_ptr} = GirFFI::InOutPointer.new(#{@field_builder.field_type_tag}, #{field_ptr})"
+            "#{field_ptr} = @struct.to_ptr + #{field_offset}",
+            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})"
           ]
         end
+
+        def invocation
+          "#{typed_ptr}.to_value"
+        end
+
+        def result
+          [@return_value_builder.return_value_name]
+        end
+
+        private
 
         def field_ptr
           @field_ptr ||= @return_value_builder.new_variable
@@ -40,12 +51,12 @@ module GirFFI
           @typed_ptr ||= @return_value_builder.new_variable
         end
 
-        def invocation
-          "#{typed_ptr}.to_value"
+        def field_offset
+          @field_builder.field_offset
         end
 
-        def result
-          [@return_value_builder.return_value_name]
+        def field_type_tag
+          @field_builder.field_type_tag
         end
       end
 
