@@ -7,6 +7,48 @@ module GirFFI
   module Builders
     # Creates field getter and setter code for a given IFieldInfo.
     class FieldBuilder
+      class GetterBuilder
+        def initialize field_builder, return_value_builder
+          @field_builder = field_builder
+          @return_value_builder = return_value_builder
+        end
+
+        def singleton_method?
+          false
+        end
+
+        def method_name
+          @field_builder.field_name
+        end
+
+        def method_arguments
+          []
+        end
+
+        def preparation
+          [
+            "#{field_ptr} = @struct.to_ptr + #{@field_builder.field_offset}",
+            "#{typed_ptr} = GirFFI::InOutPointer.new(#{@field_builder.field_type_tag}, #{field_ptr})"
+          ]
+        end
+
+        def field_ptr
+          @field_ptr ||= @return_value_builder.new_variable
+        end
+
+        def typed_ptr
+          @typed_ptr ||= @return_value_builder.new_variable
+        end
+
+        def invocation
+          "#{typed_ptr}.to_value"
+        end
+
+        def result
+          [@return_value_builder.return_value_name]
+        end
+      end
+
       attr_reader :info
 
       def initialize field_info
@@ -31,20 +73,9 @@ module GirFFI
       end
 
       def getter_def
-        builder = return_value_builder
-
-        field_ptr = builder.new_variable
-        typed_ptr = builder.new_variable
-
-        <<-CODE.reset_indentation
-        def #{info.name}
-          #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class}, #{field_ptr})
-          #{builder.capture_variable_name} = #{typed_ptr}.to_value
-          #{builder.post_conversion.join("\n")}
-          #{builder.return_value_name}
-        end
-        CODE
+        argument_builders = ArgumentBuilderCollection.new(return_value_builder, [])
+        getter_builder = GetterBuilder.new(self, return_value_builder)
+        MethodTemplate.new(getter_builder, argument_builders).method_definition
       end
 
       def setter_def
@@ -56,18 +87,26 @@ module GirFFI
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag_or_class}, #{field_ptr})
+          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
           #{typed_ptr}.set_value #{builder.call_argument_name}
         end
         CODE
       end
 
-      private
-
-      def field_type_tag_or_class
-        @field_type_tag_or_class ||= info.field_type.tag_or_class.inspect
+      def field_name
+        @field_name ||= info.name
       end
+
+      def field_offset
+        @field_offset ||= info.offset
+      end
+
+      def field_type_tag
+        @field_type_tag ||= info.field_type.tag_or_class.inspect
+      end
+
+      private
 
       def container_class
         @container_class ||= container_module.const_get(container_info.safe_name)
