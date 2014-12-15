@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Dereference GObjects in finalizer
+* Apply more RuboCop rules
+
 ## 0.7.8 / 2014-12-09
 
 * Support constants with a falsy value
