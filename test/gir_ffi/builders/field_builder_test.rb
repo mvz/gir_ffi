@@ -11,7 +11,6 @@ describe GirFFI::Builders::FieldBuilder do
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:gint8, _v1)
           _v3 = _v2.to_value
-          
           _v3
         end
       CODE
@@ -55,7 +54,6 @@ describe GirFFI::Builders::FieldBuilder do
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(Regress::TestEnum, _v1)
           _v3 = _v2.to_value
-          
           _v3
         end
       CODE

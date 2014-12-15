@@ -9,7 +9,7 @@ GirFFI.setup :GIMarshallingTests
 describe GIMarshallingTests do
   let(:derived_klass) {
     Object.const_set("DerivedClass#{Sequence.next}",
-                                         Class.new(GIMarshallingTests::Object))
+                     Class.new(GIMarshallingTests::Object))
   }
 
   def make_derived_instance
@@ -87,12 +87,12 @@ describe GIMarshallingTests do
 
   it 'has the constant CONSTANT_GERROR_DOMAIN' do
     assert_equal 'gi-marshalling-tests-gerror-domain',
-      GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+                 GIMarshallingTests::CONSTANT_GERROR_DOMAIN
   end
 
   it 'has the constant CONSTANT_GERROR_MESSAGE' do
     assert_equal 'gi-marshalling-tests-gerror-message',
-      GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+                 GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it 'has the constant CONSTANT_NUMBER' do
@@ -230,7 +230,7 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::NestedStruct.new }
     it 'has a writable field simple_struct' do
       assert_instance_of GIMarshallingTests::SimpleStruct,
-        instance.simple_struct
+                         instance.simple_struct
       new_struct = GIMarshallingTests::SimpleStruct.new
       new_struct.int8 = 42
       instance.simple_struct = new_struct
@@ -1744,7 +1744,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #garray_utf8_full_out_caller_allocated' do
     skip unless get_introspection_data 'GIMarshallingTests',
-      'garray_utf8_full_out_caller_allocated'
+                                       'garray_utf8_full_out_caller_allocated'
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
     res.must_be :==, %w(0 1 2)
   end

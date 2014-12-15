@@ -58,8 +58,8 @@ describe GirFFI::Builders::PropertyBuilder do
   describe 'for a property of type :strv' do
     let(:property_info) {
       get_property_introspection_data('GIMarshallingTests',
-                                                          'PropertiesObject',
-                                                          'some-strv')
+                                      'PropertiesObject',
+                                      'some-strv')
     }
     before do
       skip unless property_info

@@ -35,7 +35,7 @@ module GirFFI
         info = gir.find_by_name @namespace, classname.to_s
         unless info
           raise NameError,
-            "Class #{classname} not found in namespace #{@namespace}"
+                "Class #{classname} not found in namespace #{@namespace}"
         end
         Builder.build_class info
       end

@@ -21,4 +21,4 @@ module GirFFI
 end
 
 GObjectIntrospection::IRegisteredTypeInfo.send :include,
-  GirFFI::InfoExt::IRegisteredTypeInfo
+                                               GirFFI::InfoExt::IRegisteredTypeInfo

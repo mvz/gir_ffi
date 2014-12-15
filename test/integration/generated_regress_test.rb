@@ -466,7 +466,7 @@ describe Regress do
   describe 'Regress::TestFundamentalObject' do
     it 'does not have GObject::Object as an ancestor' do
       refute_includes Regress::TestFundamentalObject.ancestors,
-        GObject::Object
+                      GObject::Object
     end
 
     it 'cannot be instantiated' do
@@ -726,7 +726,7 @@ describe Regress do
     it 'has a working method #torture_signature_0' do
       y, z, q = instance.torture_signature_0(-21, 'hello', 13)
       assert_equal [-21, 2 * -21, 'hello'.length + 13],
-        [y, z, q]
+                   [y, z, q]
     end
 
     it 'has a working method #torture_signature_1' do
@@ -1045,7 +1045,7 @@ describe Regress do
       a = nil
       GObject.signal_connect(instance, 'sig-with-array-prop') { |_, arr, _| a = arr }
       GObject.signal_emit instance, 'sig-with-array-prop',
-        GLib::Array.from(:uint, [1, 2, 3])
+                          GLib::Array.from(:uint, [1, 2, 3])
       a.to_a.must_equal [1, 2, 3]
     end
 
@@ -2063,7 +2063,7 @@ describe Regress do
     date = r.get_value
     skip unless date.respond_to? :get_year
     assert_equal [1984, :december, 5],
-      [date.get_year, date.get_month, date.get_day]
+                 [date.get_year, date.get_month, date.get_day]
   end
 
   it 'has a working function #test_def_error_quark' do
@@ -2505,8 +2505,8 @@ describe Regress do
   it 'has a working function #test_torture_signature_2' do
     a = 1
     y, z, q = Regress.test_torture_signature_2 244,
-      proc { |u| a = u }, 2, proc { a = 3 },
-      'foofoo', 31
+                                               proc { |u| a = u }, 2, proc { a = 3 },
+                                               'foofoo', 31
     assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
     assert_equal 3, a
   end

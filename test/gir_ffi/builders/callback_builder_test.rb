@@ -52,7 +52,7 @@ describe GirFFI::Builders::CallbackBuilder do
     describe 'for a callback with one out argument' do
       let(:callback_info) {
         get_introspection_data('GIMarshallingTests',
-                                                   'CallbackOneOutParameter')
+                               'CallbackOneOutParameter')
       }
       it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation

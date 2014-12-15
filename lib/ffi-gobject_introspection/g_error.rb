@@ -4,8 +4,8 @@ module GObjectIntrospection
     # GLib's GError struct.
     class Struct < FFI::Struct
       layout :domain, :uint32,
-        :code, :int,
-        :message, :string
+             :code, :int,
+             :message, :string
     end
 
     def initialize ptr

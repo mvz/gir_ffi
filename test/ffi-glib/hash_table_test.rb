@@ -10,7 +10,7 @@ describe GLib::HashTable do
   describe '::from' do
     it 'creates a GHashTable from a Ruby hash' do
       hsh = GLib::HashTable.from [:utf8, :gint32],
-        'foo' => 23, 'bar' => 32
+                                 'foo' => 23, 'bar' => 32
       assert_equal({ 'foo' => 23, 'bar' => 32 }, hsh.to_hash)
     end
 
@@ -51,16 +51,16 @@ describe GLib::HashTable do
       a = {}
       @hash.each { |k, v| a[k] = v }
       a.must_be :==,
-        'foo' => 'bar',
-        'baz' => 'bat',
-        'qux' => 'quux'
+                'foo' => 'bar',
+                'baz' => 'bat',
+                'qux' => 'quux'
     end
 
     it 'has a working #to_hash method' do
       @hash.to_hash.must_be :==,
-        'foo' => 'bar',
-        'baz' => 'bat',
-        'qux' => 'quux'
+                            'foo' => 'bar',
+                            'baz' => 'bat',
+                            'qux' => 'quux'
     end
   end
 end

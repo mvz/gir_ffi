@@ -6,14 +6,14 @@ describe GirFFI::Builders::ReturnValueBuilder do
   let(:for_constructor) { false }
   let(:builder) {
     GirFFI::Builders::ReturnValueBuilder.new(var_gen,
-                                                           return_type_info,
-                                                           for_constructor)
+                                             return_type_info,
+                                             for_constructor)
   }
 
   describe 'for :gint32' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'int_return_min').return_type
+                             'int_return_min').return_type
     }
 
     it 'has no statements in #post_conversion' do
@@ -29,8 +29,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :struct' do
     let(:type_info) {
       get_method_introspection_data('GIMarshallingTests',
-                                                    'BoxedStruct',
-                                                    'returnv').return_type
+                                    'BoxedStruct',
+                                    'returnv').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -47,8 +47,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :union' do
     let(:type_info) {
       get_method_introspection_data('GIMarshallingTests',
-                                                    'Union',
-                                                    'returnv').return_type
+                                    'Union',
+                                    'returnv').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -65,8 +65,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :interface' do
     let(:type_info) {
       get_method_introspection_data('Gio',
-                                                    'File',
-                                                    'new_for_commandline_arg').return_type
+                                    'File',
+                                    'new_for_commandline_arg').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -84,8 +84,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
     describe 'when the method is not a constructor' do
       let(:type_info) {
         get_method_introspection_data('GIMarshallingTests',
-                                                      'Object',
-                                                      'full_return').return_type
+                                      'Object',
+                                      'full_return').return_type
       }
       let(:for_constructor) { false }
 
@@ -103,8 +103,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
     describe 'when the method is a constructor' do
       let(:type_info) {
         get_method_introspection_data('GIMarshallingTests',
-                                                      'Object',
-                                                      'new').return_type
+                                      'Object',
+                                      'new').return_type
       }
       let(:for_constructor) { true }
 
@@ -123,8 +123,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :strv' do
     let(:type_info) {
       get_method_introspection_data('GLib',
-                                                    'KeyFile',
-                                                    'get_locale_string_list').return_type
+                                    'KeyFile',
+                                    'get_locale_string_list').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -141,8 +141,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :zero_terminated' do
     let(:type_info) {
       get_method_introspection_data('GLib',
-                                                    'Variant',
-                                                    'dup_bytestring').return_type
+                                    'Variant',
+                                    'dup_bytestring').return_type
     }
     before do
       skip unless type_info.zero_terminated?
@@ -162,7 +162,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :byte_array' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'bytearray_full_return').return_type
+                             'bytearray_full_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -179,7 +179,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :ptr_array' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'gptrarray_utf8_none_return').return_type
+                             'gptrarray_utf8_none_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -196,7 +196,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :glist' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'glist_int_none_return').return_type
+                             'glist_int_none_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -213,7 +213,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :gslist' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'gslist_int_none_return').return_type
+                             'gslist_int_none_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -230,7 +230,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :ghash' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'ghashtable_int_none_return').return_type
+                             'ghashtable_int_none_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -247,7 +247,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :array' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'garray_int_none_return').return_type
+                             'garray_int_none_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -264,7 +264,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   describe 'for :error' do
     let(:type_info) {
       get_introspection_data('GIMarshallingTests',
-                                             'gerror_return').return_type
+                             'gerror_return').return_type
     }
 
     it 'wraps the result in #post_conversion' do
@@ -282,7 +282,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     describe 'with fixed size' do
       let(:type_info) {
         get_introspection_data('GIMarshallingTests',
-                                               'array_fixed_int_return').return_type
+                               'array_fixed_int_return').return_type
       }
 
       it 'converts the result in #post_conversion' do
@@ -300,8 +300,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
       let(:length_argument) { Object.new }
       let(:type_info) {
         get_method_introspection_data('GIMarshallingTests',
-                                                      'Object',
-                                                      'method_array_return').return_type
+                                      'Object',
+                                      'method_array_return').return_type
       }
 
       before do

@@ -5,7 +5,7 @@ GirFFI.setup :GIMarshallingTests
 describe GirFFI::Builders::UserDefinedBuilder do
   let(:klass) {
     Object.const_set("DerivedClass#{Sequence.next}",
-                                 Class.new(GIMarshallingTests::Object))
+                     Class.new(GIMarshallingTests::Object))
   }
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
   let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
@@ -89,7 +89,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         klass.class_eval { include GIMarshallingTests::Interface }
         GirFFI::UserDefinedTypeInfo.new klass do |info|
           info.install_vfunc_implementation :test_int8_in,
-            proc { |instance, in_| instance.int = in_ }
+                                            proc { |instance, in_| instance.int = in_ }
         end
       end
 
