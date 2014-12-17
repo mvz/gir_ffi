@@ -5,12 +5,12 @@ begin
   SimpleCov.start do
     add_filter '/test/'
   end
-rescue LoadError
-end
 
-if ENV['CI']
-  require 'coveralls'
-  Coveralls.wear!
+  if ENV['CI']
+    require 'coveralls'
+    Coveralls.wear!
+  end
+rescue LoadError
 end
 
 require 'minitest/autorun'
