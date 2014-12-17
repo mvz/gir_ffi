@@ -152,7 +152,7 @@ module GirFFI
       end
 
       def pre_convertor_argument
-        if @arginfo.ownership_transfer == :everything && specialized_type_tag == :object
+        if ownership_transfer == :everything && specialized_type_tag == :object
           "#{name}.ref"
         else
           name
