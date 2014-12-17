@@ -49,7 +49,7 @@ module GirFFI
       end
 
       def post_convertor_argument
-        if arginfo.ownership_transfer == :everything && specialized_type_tag == :object
+        if ownership_transfer == :everything && specialized_type_tag == :object
           "#{capture_variable_name}.ref"
         else
           capture_variable_name

@@ -235,5 +235,20 @@ describe GirFFI::Builders::FunctionBuilder do
         CODE
       end
     end
+
+    describe 'for Regress::TestObj#instance_method_full' do
+      let(:function_info) {
+        get_method_introspection_data('Regress', 'TestObj',
+                                      'instance_method_full')
+      }
+
+      it 'builds a correct definition including self.ref' do
+        code.must_equal <<-CODE.reset_indentation
+          def instance_method_full
+            Regress::Lib.regress_test_obj_instance_method_full self.ref
+          end
+        CODE
+      end
+    end
   end
 end

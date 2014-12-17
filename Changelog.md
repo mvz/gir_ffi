@@ -3,7 +3,9 @@
 ## Unreleased
 
 * Dereference GObjects in finalizer
+* Increase refcount for :object arguments with full ownership transfer
 * Apply more RuboCop rules
+* Increase refcount for receiver arguments with full ownership transfer
 
 ## 0.7.8 / 2014-12-09
 
