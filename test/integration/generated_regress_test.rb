@@ -654,12 +654,8 @@ describe Regress do
 
     it 'has a working method #instance_method_full' do
       skip unless get_method_introspection_data('Regress', 'TestObj', 'instance_method_full')
-      # NOTE: To avoid dropping the ref_count to 0.
-      ref instance
-      ref_count(instance).must_equal 2
+      ref_count(instance).must_equal 1
       instance.instance_method_full
-      # FIXME: Is this the behavior we want, or do we want to increase the
-      # refcount beforehand?
       ref_count(instance).must_equal 1
     end
 
