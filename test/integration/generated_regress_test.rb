@@ -2602,6 +2602,7 @@ describe Regress do
 
   it 'has a working function #test_versioning' do
     skip unless get_introspection_data 'Regress', 'test_versioning'
+    # TODO: Provide versioning info to the end user
     Regress.test_versioning
     pass
   end
