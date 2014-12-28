@@ -1,6 +1,4 @@
 require 'singleton'
-require 'ffi'
-require 'gir_ffi-base'
 
 require 'ffi-gobject_introspection/lib'
 require 'ffi-gobject_introspection/g_error'
@@ -22,8 +20,6 @@ require 'ffi-gobject_introspection/i_union_info'
 require 'ffi-gobject_introspection/i_enum_info'
 require 'ffi-gobject_introspection/i_flags_info'
 require 'ffi-gobject_introspection/i_unresolved_info'
-
-GObject.type_init
 
 module GObjectIntrospection
   # The Gobject Introspection Repository. This class is the point of
