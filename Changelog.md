@@ -3,9 +3,13 @@
 ## Unreleased
 
 * Dereference GObjects in finalizer
-* Increase refcount for :object arguments with full ownership transfer
-* Apply more RuboCop rules
+* Increase refcount for ingoing :object arguments of functions with full
+  ownership transfer
 * Increase refcount for receiver arguments with full ownership transfer
+* Increase refcount for ingoing :object arguments of vfuncs with no ownership
+  transfer
+* Increase refcount for :object return values of vfuncs with full transfer
+* Apply more RuboCop rules
 * Support Ruby 2.2
 
 ## 0.7.8 / 2014-12-09
