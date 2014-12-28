@@ -243,6 +243,7 @@ describe GirFFI::Builders::FunctionBuilder do
       }
 
       it 'builds a correct definition including self.ref' do
+        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
