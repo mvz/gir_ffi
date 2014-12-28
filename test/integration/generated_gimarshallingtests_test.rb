@@ -377,8 +377,6 @@ describe GIMarshallingTests do
       obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|_this, object|
-          # FIXME: Make ref not be necessary
-          object.ref
           obj = object
         }
       end
