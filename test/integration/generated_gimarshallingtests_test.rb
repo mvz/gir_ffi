@@ -198,11 +198,11 @@ describe GIMarshallingTests do
   describe 'GIMarshallingTests::Interface' do
     it 'has a working method #test_int8_in' do
       derived_klass.class_eval { include GIMarshallingTests::Interface }
-      instance = make_derived_instance do |info|
+      derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
       end
-      instance.test_int8_in 8
-      instance.int.must_equal 8
+      derived_instance.test_int8_in 8
+      derived_instance.int.must_equal 8
     end
   end
 
@@ -216,13 +216,13 @@ describe GIMarshallingTests do
     it 'has a working method #test_variant_array_in' do
       skip unless get_introspection_data 'GIMarshallingTests', 'Interface3'
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
-      instance = make_derived_instance do |info|
+      derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :test_variant_array_in, proc {|obj, in_|
           obj.int = in_.to_a.first.get_byte
         }
       end
-      instance.test_variant_array_in [GLib::Variant.new_byte(42)]
-      instance.int.must_equal 42
+      derived_instance.test_variant_array_in [GLib::Variant.new_byte(42)]
+      derived_instance.int.must_equal 42
     end
   end
 
