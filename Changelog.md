@@ -9,6 +9,8 @@
 * Increase refcount for ingoing :object arguments of vfuncs with no ownership
   transfer
 * Increase refcount for :object return values of vfuncs with full transfer
+* Increase refcount for outgoing :object arguments of vfuncs with full ownership
+  transfer
 * Apply more RuboCop rules
 * Support Ruby 2.2
 

@@ -18,6 +18,15 @@ module GirFFI
       def pre_ref_count_increase
         "#{pre_converted_name}.ref"
       end
+
+      # SMELL: Override private method
+      def post_convertor_argument
+        if direction == :out && ownership_transfer == :everything && specialized_type_tag == :object
+          "#{super}.ref"
+        else
+          super
+        end
+      end
     end
   end
 end

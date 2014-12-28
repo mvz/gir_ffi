@@ -390,13 +390,14 @@ describe GIMarshallingTests do
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_full' do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_out_object_transfer_full')
+      obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|_obj|
-          # FIXME: Make ref not be necessary
-          GIMarshallingTests::Object.new(42).tap { |obj| ref obj }
+          obj = GIMarshallingTests::Object.new(42)
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
+      ref_count(obj).must_be :>, 0
       # TODO: Check desired result
       result.must_equal [2, false]
     end
