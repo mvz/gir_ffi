@@ -307,17 +307,16 @@ describe Regress do
   end
 
   describe 'Regress::TestBoxedD' do
+    let(:instance) { Regress::TestBoxedD.new 'foo', 42 }
     before do
       skip unless get_introspection_data 'Regress', 'TestBoxedD'
     end
 
     it 'creates an instance using #new' do
-      instance = Regress::TestBoxedD.new 'foo', 42
       instance.must_be_instance_of Regress::TestBoxedD
     end
 
     it 'has a working method #copy' do
-      instance = Regress::TestBoxedD.new 'foo', 42
       copy = instance.copy
       copy.must_be_instance_of Regress::TestBoxedD
       instance.get_magic.must_equal copy.get_magic
@@ -325,13 +324,11 @@ describe Regress do
     end
 
     it 'has a working method #free' do
-      instance = Regress::TestBoxedD.new 'foo', 42
       instance.free
       pass
     end
 
     it 'has a working method #get_magic' do
-      instance = Regress::TestBoxedD.new 'foo', 42
       instance.get_magic.must_equal 'foo'.length + 42
     end
   end

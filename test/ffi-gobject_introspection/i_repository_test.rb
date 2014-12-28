@@ -1,6 +1,8 @@
 require 'introspection_test_helper'
 
 describe GObjectIntrospection::IRepository do
+  let(:gir) { GObjectIntrospection::IRepository.default }
+
   describe 'an instance' do
     it 'is not created by calling new()' do
       assert_raises NoMethodError do
@@ -9,18 +11,14 @@ describe GObjectIntrospection::IRepository do
     end
 
     it 'is created by calling default()' do
-      gir = GObjectIntrospection::IRepository.default
       assert_kind_of GObjectIntrospection::IRepository, gir
     end
 
     it 'is a singleton' do
-      gir = GObjectIntrospection::IRepository.default
       gir2 = GObjectIntrospection::IRepository.default
       assert_equal gir, gir2
     end
   end
-
-  let(:gir) { GObjectIntrospection::IRepository.default }
 
   describe '#require' do
     it "raises an error if the namespace doesn't exist" do

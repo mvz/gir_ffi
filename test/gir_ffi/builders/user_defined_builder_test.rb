@@ -17,11 +17,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing one property' do
       let(:info) {
-        GirFFI::UserDefinedTypeInfo.new klass do |info|
-          info.install_property GObject.param_spec_int('foo', 'foo bar',
-                                                       'The Foo Bar Property',
-                                                       10, 20, 15,
-                                                       3)
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.install_property GObject.param_spec_int('foo', 'foo bar',
+                                                     'The Foo Bar Property',
+                                                     10, 20, 15,
+                                                     3)
         end
       }
 
@@ -56,8 +56,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing an overridden g_name' do
       let(:info) {
-        GirFFI::UserDefinedTypeInfo.new klass do |info|
-          info.g_name = "OtherName#{Sequence.next}"
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.g_name = "OtherName#{Sequence.next}"
         end
       }
 
@@ -70,8 +70,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing a vfunc' do
       let(:info) {
-        GirFFI::UserDefinedTypeInfo.new klass do |info|
-          info.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
             instance.int = in_
           }
         end
@@ -87,9 +87,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
     describe 'with type info containing a vfunc from an included Interface' do
       let(:info) do
         klass.class_eval { include GIMarshallingTests::Interface }
-        GirFFI::UserDefinedTypeInfo.new klass do |info|
-          info.install_vfunc_implementation :test_int8_in,
-                                            proc { |instance, in_| instance.int = in_ }
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.install_vfunc_implementation :test_int8_in,
+            proc { |instance, in_| instance.int = in_ }
         end
       end
 
