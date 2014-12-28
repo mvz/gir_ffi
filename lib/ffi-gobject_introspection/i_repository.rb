@@ -114,6 +114,10 @@ module GObjectIntrospection
       Lib.g_irepository_get_shared_library @gobj, namespace
     end
 
+    def version namespace
+      Lib.g_irepository_get_version @gobj, namespace
+    end
+
     def self.wrap_ibaseinfo_pointer ptr
       return nil if ptr.null?
       type = Lib.g_base_info_get_type ptr

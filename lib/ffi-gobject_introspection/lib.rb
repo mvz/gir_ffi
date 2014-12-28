@@ -6,6 +6,22 @@ module GObjectIntrospection
     extend FFI::Library
     ffi_lib 'girepository-1.0'
 
+    class VersionGuesser
+      attr_reader :guess
+
+      def initialize base
+        @guess = base
+      end
+
+      def update_guess guessed
+        if guessed < @guess
+          @guess = guessed
+        end
+      end
+    end
+
+    version_guesser = VersionGuesser.new('1.42')
+
     # IRepository
     enum :IRepositoryLoadFlags, [:LAZY, (1 << 0)]
 
@@ -15,10 +31,6 @@ module GObjectIntrospection
                     [:pointer, :string, :string, :IRepositoryLoadFlags, :pointer],
                     :pointer
     attach_function :g_irepository_get_version, [:pointer, :string], :string
-
-    default_ptr = g_irepository_get_default
-    g_irepository_require default_ptr, 'GIRepository', nil, 0, nil
-    ::GObjectIntrospection::VERSION = g_irepository_get_version default_ptr, 'GIRepository'
 
     attach_function :g_irepository_get_n_infos, [:pointer, :string], :int
     attach_function :g_irepository_get_info, [:pointer, :string, :int], :pointer
@@ -79,8 +91,10 @@ module GObjectIntrospection
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
     attach_function :g_callable_info_skip_return, [:pointer], :bool
 
-    if VERSION >= "1.42"
+    begin
       attach_function :g_callable_info_get_instance_ownership_transfer, [:pointer], :ITransfer
+    rescue FFI::NotFoundError
+      version_guesser.update '1.40'
     end
 
     # IArgInfo
@@ -271,5 +285,7 @@ module GObjectIntrospection
     # IPropertyInfo
     #
     attach_function :g_property_info_get_type, [:pointer], :pointer
+
+    ::GObjectIntrospection::VERSION = version_guesser.guess
   end
 end
