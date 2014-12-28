@@ -6,7 +6,7 @@ require 'gir_ffi/builders/method_template'
 
 module GirFFI
   module Builders
-    # Implements the creation mapping method for a callback or signal
+    # Implements the creation mapping method for a signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder

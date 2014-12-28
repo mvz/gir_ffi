@@ -13,6 +13,11 @@ module GirFFI
       :in
     end
 
+    def ownership_transfer
+      # FIXME: Make an informed choice for this.
+      :everything
+    end
+
     def name
       '_instance'
     end

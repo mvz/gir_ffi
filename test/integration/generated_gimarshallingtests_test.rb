@@ -377,13 +377,12 @@ describe GIMarshallingTests do
       obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|_this, object|
-          # FIXME: Make ref not be necessary
-          object.ref
           obj = object
         }
       end
       result = derived_instance.
         get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.get_gtype
+      ref_count(obj).must_be :>, 0
       result.must_equal [2, false]
       obj.must_be_instance_of GIMarshallingTests::Object
     end
