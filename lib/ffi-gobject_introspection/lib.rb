@@ -6,17 +6,20 @@ module GObjectIntrospection
     extend FFI::Library
     ffi_lib 'girepository-1.0'
 
+    # Helper class to support guessing the gobject-introspection version.
+    # Provide several guesses to #provide_guess, and the result in #best_guess
+    # will be the best (i.e., lowest) guess.
     class VersionGuesser
-      attr_reader :guess
-
       def initialize base
         @guess = base
       end
 
-      def update_guess guessed
-        if guessed < @guess
-          @guess = guessed
-        end
+      def provide_guess guessed
+        @guess = guessed if guessed < @guess
+      end
+
+      def best_guess
+        @guess
       end
     end
 
@@ -287,6 +290,6 @@ module GObjectIntrospection
     #
     attach_function :g_property_info_get_type, [:pointer], :pointer
 
-    ::GObjectIntrospection::VERSION = version_guesser.guess
+    ::GObjectIntrospection::VERSION = version_guesser.best_guess
   end
 end
