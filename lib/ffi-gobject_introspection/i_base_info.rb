@@ -5,9 +5,7 @@ module GObjectIntrospection
     def initialize ptr, lib = Lib
       raise ArgumentError, 'ptr must not be null' if ptr.null?
 
-      unless defined?(RUBY_ENGINE) && RUBY_ENGINE == 'rbx'
-        ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
-      end
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
 
       @gobj = ptr
       @lib = lib
