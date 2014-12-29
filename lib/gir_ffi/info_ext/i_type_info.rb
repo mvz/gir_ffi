@@ -39,8 +39,6 @@ module GirFFI
           enumerable_element_type
         when :ghash
           dictionary_element_type
-        else
-          nil
         end
       end
 
