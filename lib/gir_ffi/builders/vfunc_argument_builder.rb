@@ -6,7 +6,7 @@ module GirFFI
     # argument mapper for vfuncs.
     class VFuncArgumentBuilder < CallbackArgumentBuilder
       def pre_conversion
-        if direction == :in && ownership_transfer == :nothing && specialized_type_tag == :object
+        if ingoing_ref_needed
           super + [pre_ref_count_increase]
         else
           super
@@ -15,17 +15,29 @@ module GirFFI
 
       private
 
+      def ingoing_ref_needed
+        direction == :in &&
+          ownership_transfer == :nothing &&
+          specialized_type_tag == :object
+      end
+
       def pre_ref_count_increase
         "#{pre_converted_name}.ref"
       end
 
       # SMELL: Override private method
       def post_convertor_argument
-        if direction == :out && ownership_transfer == :everything && specialized_type_tag == :object
+        if outgoing_ref_needed
           "#{super}.ref"
         else
           super
         end
+      end
+
+      def outgoing_ref_needed
+        direction == :out &&
+          ownership_transfer == :everything &&
+          specialized_type_tag == :object
       end
     end
   end

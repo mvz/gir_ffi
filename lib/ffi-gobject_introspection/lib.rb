@@ -92,9 +92,10 @@ module GObjectIntrospection
     attach_function :g_callable_info_skip_return, [:pointer], :bool
 
     begin
-      attach_function :g_callable_info_get_instance_ownership_transfer, [:pointer], :ITransfer
+      attach_function :g_callable_info_get_instance_ownership_transfer,
+                      [:pointer], :ITransfer
     rescue FFI::NotFoundError
-      version_guesser.update_guess '1.40'
+      version_guesser.provide_guess '1.40'
     end
 
     # IArgInfo
