@@ -48,7 +48,6 @@ describe GirFFI::ZeroTerminated do
       end
       arr.must_equal [1, 2, 3]
     end
-
   end
 
   describe '#==' do

@@ -219,7 +219,6 @@ describe GirFFI::InfoExt::ITypeInfo do
           type_info.tag_or_class.must_equal interface
         end
       end
-
     end
 
     describe 'for a callback' do

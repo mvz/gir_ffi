@@ -57,8 +57,6 @@ module GLib
         FFI::Function.new(:uint,
                           [:pointer],
                           find_support_function('g_str_hash'))
-      else
-        nil
       end
     end
 
@@ -68,8 +66,6 @@ module GLib
         FFI::Function.new(:int,
                           [:pointer, :pointer],
                           find_support_function('g_str_equal'))
-      else
-        nil
       end
     end
 

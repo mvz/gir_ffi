@@ -89,7 +89,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         klass.class_eval { include GIMarshallingTests::Interface }
         GirFFI::UserDefinedTypeInfo.new klass do |it|
           it.install_vfunc_implementation :test_int8_in,
-            proc { |instance, in_| instance.int = in_ }
+                                          proc { |instance, in_| instance.int = in_ }
         end
       end
 

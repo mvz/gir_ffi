@@ -24,8 +24,6 @@ module GirFFI
         value.to_native
       when FFI::Function
         value
-      else
-        nil
       end
     end
 

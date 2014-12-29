@@ -119,7 +119,6 @@ describe GObject::Value do
       gv.set_value value
       gv.get_variant.must_equal value
     end
-
   end
 
   describe '#get_value' do

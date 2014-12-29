@@ -109,7 +109,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe 'for :struct' do
-
       describe 'when not allocated by the caller' do
         let(:arg_info) {
           get_introspection_data('GIMarshallingTests', 'boxed_struct_out').args[0]
@@ -156,7 +155,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe 'for :array' do
-
       describe 'when allocated by the callee' do
         let(:arg_info) {
           get_introspection_data('GIMarshallingTests', 'garray_utf8_none_out').args[0]
@@ -221,7 +219,6 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe 'for :c' do
-
       describe 'with fixed size' do
         let(:arg_info) {
           get_introspection_data('GIMarshallingTests', 'array_fixed_out').args[0]

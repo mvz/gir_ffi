@@ -33,7 +33,7 @@ module GObjectIntrospection
     end
 
     def instance_ownership_transfer
-      if VERSION >= "1.42"
+      if VERSION >= '1.42'
         Lib.g_callable_info_get_instance_ownership_transfer @gobj
       else
         :nothing
