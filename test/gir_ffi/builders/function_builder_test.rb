@@ -1,7 +1,6 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::FunctionBuilder do
-
   describe '#generate' do
     let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
     let(:code) { builder.generate }

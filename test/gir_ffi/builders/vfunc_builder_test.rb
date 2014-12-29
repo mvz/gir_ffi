@@ -189,7 +189,6 @@ describe GirFFI::Builders::VFuncBuilder do
         result.must_equal expected
       end
     end
-
   end
 
   describe '#argument_ffi_types' do
