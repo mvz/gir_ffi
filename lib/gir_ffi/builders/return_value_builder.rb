@@ -33,7 +33,6 @@ module GirFFI
       end
 
       def post_conversion
-        # TODO: Avoid conditional by using NullConvertor
         if has_post_conversion?
           ["#{post_converted_name} = #{post_convertor.conversion}"]
         else
