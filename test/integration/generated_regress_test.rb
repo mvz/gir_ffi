@@ -230,9 +230,8 @@ describe Regress do
     end
 
     it 'has a working method #_not_a_method' do
+      # NOTE: This method is marked as moved, but this is not exposed in the typelib
       skip unless get_method_introspection_data('Regress', 'TestBoxed', '_not_a_method')
-      # FIXME: This method has been moved to a function. Should we still expose
-      # it as a method?
       instance._not_a_method
       pass
     end
