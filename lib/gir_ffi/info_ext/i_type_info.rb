@@ -19,9 +19,14 @@ module GirFFI
         }
       end
 
+      # @deprecated Use #gtype instead. Will be removed in 0.8.0.
       def g_type
+        gtype
+      end
+
+      def gtype
         if tag == :interface
-          return interface.g_type
+          return interface.gtype
         elsif (type = ITypeInfo.flattened_tag_to_gtype_map[flattened_tag])
           return type
         else
@@ -30,7 +35,7 @@ module GirFFI
       end
 
       def make_g_value
-        GObject::Value.for_g_type g_type
+        GObject::Value.for_gtype gtype
       end
 
       def element_type

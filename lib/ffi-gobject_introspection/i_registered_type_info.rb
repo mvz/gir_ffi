@@ -13,5 +13,7 @@ module GObjectIntrospection
     def g_type
       Lib.g_registered_type_info_get_g_type @gobj
     end
+
+    alias gtype g_type
   end
 end
