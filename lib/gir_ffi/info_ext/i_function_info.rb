@@ -10,7 +10,7 @@ module GirFFI
       end
 
       def return_ffi_type
-        return_type.to_ffitype
+        return_type.to_ffi_type
       end
     end
   end

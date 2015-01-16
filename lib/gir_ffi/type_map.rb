@@ -44,9 +44,13 @@ module GirFFI
     end
 
     def self.type_specification_to_ffitype type
+      type_specification_to_ffi_type type
+    end
+
+    def self.type_specification_to_ffi_type type
       case type
       when Module
-        type.to_ffitype
+        type.to_ffi_type
       when Array
         type[0]
       else

@@ -45,7 +45,7 @@ module GirFFI
     private
 
     def element_ffi_type
-      @element_ffi_type ||= GirFFI::TypeMap.type_specification_to_ffitype element_type
+      @element_ffi_type ||= GirFFI::TypeMap.type_specification_to_ffi_type element_type
     end
 
     def element_size

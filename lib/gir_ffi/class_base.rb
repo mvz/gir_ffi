@@ -46,9 +46,14 @@ module GirFFI
       end
     end
 
+    def self.to_ffi_type
+      self::Struct
+    end
+
     class << self
+      # @deprecated Use .to_ffi_type instead. Will be removed in 0.8.0.
       def to_ffitype
-        self::Struct
+        to_ffi_type
       end
 
       def setup_method name

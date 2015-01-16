@@ -66,7 +66,7 @@ module GirFFI
     private
 
     def value_ffi_type
-      @value_ffi_type ||= TypeMap.type_specification_to_ffitype value_type
+      @value_ffi_type ||= TypeMap.type_specification_to_ffi_type value_type
     end
 
     def value_type_size

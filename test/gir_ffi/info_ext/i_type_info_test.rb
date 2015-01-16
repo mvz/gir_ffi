@@ -21,16 +21,16 @@ describe GirFFI::InfoExt::ITypeInfo do
                            'test_ghash_nested_everything_return').return_type
   }
 
-  describe '#to_ffitype' do
+  describe '#to_ffi_type' do
     it 'returns an array with elements subtype and size for type :array' do
       mock(type_info).pointer? { false }
       stub(type_info).tag { :array }
       mock(type_info).array_fixed_size { 2 }
 
-      mock(elmtype_info).to_ffitype { :foo }
+      mock(elmtype_info).to_ffi_type { :foo }
       mock(type_info).param_type(0) { elmtype_info }
 
-      result = type_info.to_ffitype
+      result = type_info.to_ffi_type
       assert_equal [:foo, 2], result
     end
 
@@ -41,10 +41,10 @@ describe GirFFI::InfoExt::ITypeInfo do
         stub(type_info).pointer? { false }
       end
 
-      it "maps a the interface's ffitype" do
-        stub(iface_info).to_ffitype { :foo }
+      it "maps a the interface's ffi_type" do
+        stub(iface_info).to_ffi_type { :foo }
 
-        type_info.to_ffitype.must_equal :foo
+        type_info.to_ffi_type.must_equal :foo
       end
     end
   end
@@ -257,7 +257,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe '#to_callback_ffitype' do
+  describe '#to_callback_ffi_type' do
     describe 'for an :interface argument' do
       before do
         stub(type_info).interface { iface_info }
@@ -268,13 +268,13 @@ describe GirFFI::InfoExt::ITypeInfo do
       it 'correctly maps a :union argument to :pointer' do
         stub(iface_info).info_type { :union }
 
-        type_info.to_callback_ffitype.must_equal :pointer
+        type_info.to_callback_ffi_type.must_equal :pointer
       end
 
       it 'correctly maps a :flags argument to :int32' do
         stub(iface_info).info_type { :flags }
 
-        type_info.to_callback_ffitype.must_equal :int32
+        type_info.to_callback_ffi_type.must_equal :int32
       end
     end
   end

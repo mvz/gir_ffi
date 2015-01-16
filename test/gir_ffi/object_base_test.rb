@@ -10,9 +10,9 @@ describe GirFFI::ObjectBase do
     end
   end
 
-  describe '.to_ffitype' do
+  describe '.to_ffi_type' do
     it 'returns :pointer' do
-      derived_class.to_ffitype.must_equal :pointer
+      derived_class.to_ffi_type.must_equal :pointer
     end
   end
 end

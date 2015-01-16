@@ -102,21 +102,30 @@ module GirFFI
         end
       end
 
+      # @deprecated Use #to_ffi_type instead. Will be removed in 0.8.0.
       def to_ffitype
+        to_ffi_type
+      end
+
+      def to_ffi_type
         return :pointer if pointer?
 
         case tag
         when :interface
-          interface.to_ffitype
+          interface.to_ffi_type
         when :array
-          [subtype_ffitype(0), array_fixed_size]
+          [subtype_ffi_type(0), array_fixed_size]
         else
           TypeMap.map_basic_type tag
         end
       end
 
-      # TODO: Use either ffitype or ffi_type everywhere
+      # @deprecated Use #to_callback_ffi_type instead. Will be removed in 0.8.0.
       def to_callback_ffitype
+        to_callback_ffi_type
+      end
+
+      def to_callback_ffi_type
         return :pointer if pointer?
 
         case tag
@@ -196,8 +205,8 @@ module GirFFI
         subtype_tag_or_class 0
       end
 
-      def subtype_ffitype index
-        subtype = param_type(index).to_ffitype
+      def subtype_ffi_type index
+        subtype = param_type(index).to_ffi_type
         if subtype == :pointer
           # NOTE: Don't use pointer directly to appease JRuby.
           :"uint#{FFI.type_size(:pointer) * 8}"

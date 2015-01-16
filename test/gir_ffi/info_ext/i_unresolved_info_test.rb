@@ -9,9 +9,9 @@ describe GirFFI::InfoExt::IUnresolvedInfo do
 
   let(:unresolved_info) { klass.new }
 
-  describe '#to_ffitype' do
+  describe '#to_ffi_type' do
     it 'returns the most generic type' do
-      unresolved_info.to_ffitype.must_equal :pointer
+      unresolved_info.to_ffi_type.must_equal :pointer
     end
   end
 end
