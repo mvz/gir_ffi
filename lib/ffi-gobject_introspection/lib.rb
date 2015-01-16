@@ -68,6 +68,7 @@ module GObjectIntrospection
 
     attach_function :g_base_info_ref, [:pointer], :void
     attach_function :g_base_info_unref, [:pointer], :void
+    attach_function :g_base_info_get_attribute, [:pointer, :string], :string
     attach_function :g_base_info_get_type, [:pointer], :IInfoType
     attach_function :g_base_info_get_name, [:pointer], :string
     attach_function :g_base_info_get_namespace, [:pointer], :string

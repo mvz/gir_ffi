@@ -106,6 +106,10 @@ module GObjectIntrospection
       Lib.g_base_info_is_deprecated @gobj
     end
 
+    def attribute(name)
+      Lib.g_base_info_get_attribute @gobj, name
+    end
+
     def self.wrap(ptr)
       new ptr unless ptr.null?
     end
