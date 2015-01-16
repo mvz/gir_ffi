@@ -105,12 +105,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
-    it 'does not attempt to register a registered class' do
+    it 'keeps the gtype for an already registered class' do
       gtype = klass.get_gtype
       other_builder = GirFFI::Builders::UserDefinedBuilder.new info
-      other_builder.build_class
-      # FIXME: Does not really test what we want to test: other_builder might lie!
-      other_builder.target_gtype.must_equal gtype
+      other_klass = other_builder.build_class
+      other_klass.get_gtype.must_equal gtype
     end
   end
 end
