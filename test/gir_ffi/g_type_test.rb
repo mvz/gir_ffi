@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 require 'gir_ffi/g_type'
 
 describe GirFFI::GType do
-  let(:gobject_gtype) { GObject::Object.get_gtype }
+  let(:gobject_gtype) { GObject::Object.gtype }
   let(:gobject_type_query) { GObject.type_query gobject_gtype }
 
   describe '#to_i' do

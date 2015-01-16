@@ -78,7 +78,7 @@ module GirFFI
       end
 
       def from_struct_array type, ary
-        ffi_type = TypeMap.type_specification_to_ffitype type
+        ffi_type = TypeMap.type_specification_to_ffi_type type
         type_size = FFI.type_size(ffi_type)
         length = ary.length
 
@@ -101,7 +101,7 @@ module GirFFI
       end
 
       def from_basic_type_array type, ary
-        ffi_type = TypeMap.type_specification_to_ffitype type
+        ffi_type = TypeMap.type_specification_to_ffi_type type
         ary = ary.dup << null_value(ffi_type)
         type_size = FFI.type_size(ffi_type)
         block = AllocationHelper.safe_malloc type_size * ary.length

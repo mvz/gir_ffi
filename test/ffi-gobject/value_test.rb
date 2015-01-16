@@ -52,14 +52,14 @@ describe GObject::Value do
 
     it 'handles enum values presented as symbols' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
       gv.set_value value
       gv.get_value.must_equal value
     end
 
     it 'handles enum values presented as numbers' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
       gv.set_value Regress::TestEnum[value]
       gv.get_value.must_equal value
     end
@@ -143,14 +143,14 @@ describe GObject::Value do
 
     it 'unwraps an enum value' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.get_gtype
+      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
       gv.set_enum Regress::TestEnum[value]
       gv.get_value.must_equal value
     end
 
     it 'unwraps a flags value' do
       value = Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
-      gv = GObject::Value.for_g_type Regress::TestFlags.get_gtype
+      gv = GObject::Value.for_g_type Regress::TestFlags.gtype
       gv.set_flags value
       gv.get_value.must_equal value
     end
@@ -256,7 +256,7 @@ describe GObject::Value do
 
     it 'raises an error when setting an incompatible object type' do
       o = GIMarshallingTests::Object.new 1
-      v = GObject::Value.new.init(GIMarshallingTests::OverridesObject.get_gtype)
+      v = GObject::Value.new.init(GIMarshallingTests::OverridesObject.gtype)
       proc { v.set_value o }.must_raise ArgumentError
     end
 

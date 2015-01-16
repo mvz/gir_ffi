@@ -9,7 +9,12 @@ module GirFFI
       FFI::Type::Struct.new(self::Struct)
     end
 
+    # @deprecated Use #to_ffi_type instead. Will be removed in 0.8.0.
     def self.to_ffitype
+      to_ffi_type
+    end
+
+    def self.to_ffi_type
       self
     end
 

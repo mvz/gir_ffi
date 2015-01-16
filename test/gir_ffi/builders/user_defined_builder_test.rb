@@ -26,7 +26,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       }
 
       it 'registers a type that is bigger than the parent' do
-        gtype = klass.get_gtype
+        gtype = klass.gtype
         q = GObject.type_query gtype
         q.instance_size.must_be :>, GIMarshallingTests::Object::Struct.size
       end
@@ -62,7 +62,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       }
 
       it 'registers a type under the overridden name' do
-        registered_name = GObject.type_name(klass.get_gtype)
+        registered_name = GObject.type_name(klass.gtype)
         registered_name.must_equal info.g_name
         registered_name.wont_equal klass.name
       end
@@ -94,8 +94,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
 
       it 'marks the type as conforming to the included Interface' do
-        iface_gtype = GIMarshallingTests::Interface.get_gtype
-        GObject.type_interfaces(klass.get_gtype).to_a.must_equal [iface_gtype]
+        iface_gtype = GIMarshallingTests::Interface.gtype
+        GObject.type_interfaces(klass.gtype).to_a.must_equal [iface_gtype]
       end
 
       it 'allows the vfunc to be called through its invoker' do
@@ -105,12 +105,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
-    it 'does not attempt to register a registered class' do
-      gtype = klass.get_gtype
+    it 'keeps the gtype for an already registered class' do
+      gtype = klass.gtype
       other_builder = GirFFI::Builders::UserDefinedBuilder.new info
-      other_builder.build_class
-      # FIXME: Does not really test what we want to test: other_builder might lie!
-      other_builder.target_gtype.must_equal gtype
+      other_klass = other_builder.build_class
+      other_klass.gtype.must_equal gtype
     end
   end
 end

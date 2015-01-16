@@ -11,8 +11,8 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
   describe '#argument_ffi_types' do
     before do
-      stub(arg_info1 = Object.new).to_ffitype { :type1 }
-      stub(arg_info2 = Object.new).to_ffitype { :type2 }
+      stub(arg_info1 = Object.new).to_ffi_type { :type1 }
+      stub(arg_info2 = Object.new).to_ffi_type { :type2 }
       stub(function_info).args { [arg_info1, arg_info2] }
     end
 
@@ -63,7 +63,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
   describe '#return_ffi_type' do
     it 'returns the ffi type of the return type' do
-      stub(return_type_info = Object.new).to_ffitype { :some_type }
+      stub(return_type_info = Object.new).to_ffi_type { :some_type }
       stub(function_info).return_type { return_type_info }
 
       function_info.return_ffi_type.must_equal :some_type

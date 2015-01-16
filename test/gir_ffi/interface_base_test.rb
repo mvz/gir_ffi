@@ -10,9 +10,9 @@ describe GirFFI::InterfaceBase do
     end
   end
 
-  describe '.to_ffitype' do
+  describe '.to_ffi_type' do
     it 'returns :pointer' do
-      interface.to_ffitype.must_equal :pointer
+      interface.to_ffi_type.must_equal :pointer
     end
   end
 end

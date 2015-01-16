@@ -29,7 +29,7 @@ module GirFFI
     info = UserDefinedTypeInfo.new(klass, &block)
     Builders::UserDefinedBuilder.new(info).build_class
 
-    klass.get_gtype
+    klass.gtype
   end
 end
 

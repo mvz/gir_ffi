@@ -366,7 +366,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.
-        get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.get_gtype
+        get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.gtype
       result.must_equal [1, false]
       obj.must_be_instance_of GIMarshallingTests::Object
     end
@@ -381,7 +381,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.
-        get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.get_gtype
+        get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
       ref_count(obj).must_be :>, 0
       result.must_equal [2, false]
       obj.must_be_instance_of GIMarshallingTests::Object
@@ -2196,7 +2196,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_in_enum' do
     gv = GObject::Value.new
-    gv.init GIMarshallingTests::GEnum.get_gtype
+    gv.init GIMarshallingTests::GEnum.gtype
     gv.set_enum GIMarshallingTests::GEnum[:value3]
     GIMarshallingTests.gvalue_in_enum gv
     pass
@@ -2211,8 +2211,8 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_in_with_type' do
     gv = GObject::Value.new
-    gv.init GIMarshallingTests::SubSubObject.get_gtype
-    GIMarshallingTests.gvalue_in_with_type gv, GIMarshallingTests::Object.get_gtype
+    gv.init GIMarshallingTests::SubSubObject.gtype
+    GIMarshallingTests.gvalue_in_with_type gv, GIMarshallingTests::Object.gtype
   end
 
   it 'has a working function #gvalue_inout' do

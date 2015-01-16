@@ -6,8 +6,12 @@ module GirFFI
   module RegisteredTypeBase
     include TypeBase
 
-    # FIXME: Move to #g_type
+    # @deprecated Use #gtype. Will be removed in 0.8.0.
     def get_gtype
+      gtype
+    end
+
+    def gtype
       self::G_TYPE
     end
   end

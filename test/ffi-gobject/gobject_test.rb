@@ -49,7 +49,7 @@ describe GObject do
       gtype = object_class.g_type_class.g_type
 
       object_class.must_be_instance_of GObject::ObjectClass
-      gtype.must_equal GIMarshallingTests::OverridesObject.get_gtype
+      gtype.must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end
 

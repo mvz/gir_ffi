@@ -33,13 +33,13 @@ describe GirFFI do
       end
 
       it 'returns a GType for the derived class' do
-        parent_gtype = GIMarshallingTests::OverridesObject.get_gtype
+        parent_gtype = GIMarshallingTests::OverridesObject.gtype
         @gtype.wont_equal parent_gtype
         GObject.type_name(@gtype).must_equal @klass.name
       end
 
-      it 'makes #get_gtype on the registered class return the new GType' do
-        @klass.get_gtype.must_equal @gtype
+      it 'makes #gtype on the registered class return the new GType' do
+        @klass.gtype.must_equal @gtype
       end
 
       it 'registers a type with the same size as the parent' do

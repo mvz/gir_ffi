@@ -225,14 +225,13 @@ describe Regress do
       assert_equal 54, tb.some_int8
     end
 
-    it 'has non-zero positive result for #get_gtype' do
-      assert Regress::TestBoxed.get_gtype > 0
+    it 'has non-zero positive result for #gtype' do
+      assert Regress::TestBoxed.gtype > 0
     end
 
     it 'has a working method #_not_a_method' do
+      # NOTE: This method is marked as moved, but this is not exposed in the typelib
       skip unless get_method_introspection_data('Regress', 'TestBoxed', '_not_a_method')
-      # FIXME: This method has been moved to a function. Should we still expose
-      # it as a method?
       instance._not_a_method
       pass
     end
@@ -518,8 +517,8 @@ describe Regress do
       assert_includes metaclass.ancestors, GirFFI::InterfaceBase
     end
 
-    it 'has non-zero positive result for #get_gtype' do
-      Regress::TestInterface.get_gtype.must_be :>, 0
+    it 'has non-zero positive result for #gtype' do
+      Regress::TestInterface.gtype.must_be :>, 0
     end
   end
 
@@ -572,8 +571,8 @@ describe Regress do
     let(:instance) { Regress::TestObj.new_from_file('foo') }
 
     describe 'its gtype' do
-      it 'can be found through get_gtype and GObject.type_from_instance' do
-        gtype = Regress::TestObj.get_gtype
+      it 'can be found through gtype and GObject.type_from_instance' do
+        gtype = Regress::TestObj.gtype
         r = GObject.type_from_instance instance
         assert_equal gtype, r
       end
@@ -1761,7 +1760,7 @@ describe Regress do
 
   it 'has a working function #test_array_fixed_out_objects' do
     result = Regress.test_array_fixed_out_objects
-    gtype = Regress::TestObj.get_gtype
+    gtype = Regress::TestObj.gtype
 
     result.size.must_equal 2
 

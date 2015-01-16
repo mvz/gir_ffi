@@ -3,7 +3,7 @@ module GirFFI
     # Extensions for GObjectIntrospection::ICallableInfo needed by GirFFI
     module ICallableInfo
       def argument_ffi_types
-        args.map(&:to_ffitype)
+        args.map(&:to_ffi_type)
       end
     end
   end

@@ -31,7 +31,7 @@ describe 'The generated Gio module' do
 
     it 'knows its GType' do
       instance_gtype = GObject.type_from_instance @it
-      @it.class.get_gtype.must_equal instance_gtype
+      @it.class.gtype.must_equal instance_gtype
     end
   end
 

@@ -4,7 +4,7 @@ describe GObject do
   describe '.type_interfaces' do
     it 'works, showing that returning an array of GType works' do
       klass = GObject::TypeModule
-      ifcs = GObject.type_interfaces klass.get_gtype
+      ifcs = GObject.type_interfaces klass.gtype
       assert_equal 1, ifcs.size
     end
   end
