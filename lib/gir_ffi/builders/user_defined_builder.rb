@@ -19,7 +19,7 @@ module GirFFI
       end
 
       def target_gtype
-        @gtype ||= klass.get_gtype
+        @gtype ||= klass.gtype
       end
 
       private
@@ -30,7 +30,7 @@ module GirFFI
                                               gobject_type_info, 0)
         included_interfaces.each do |interface|
           ifinfo = gobject_interface_info interface
-          GObject.type_add_interface_static @gtype, interface.get_gtype, ifinfo
+          GObject.type_add_interface_static @gtype, interface.gtype, ifinfo
         end
       end
 
@@ -39,11 +39,11 @@ module GirFFI
       end
 
       def parent_gtype
-        @parent_gtype ||= GType.new(klass.superclass.get_gtype)
+        @parent_gtype ||= GType.new(klass.superclass.gtype)
       end
 
       def interface_gtypes
-        included_interfaces.map { |interface| GType.new(interface.get_gtype) }
+        included_interfaces.map { |interface| GType.new(interface.gtype) }
       end
 
       def included_interfaces
