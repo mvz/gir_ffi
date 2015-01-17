@@ -13,6 +13,7 @@
   transfer
 * Apply more RuboCop rules
 * Support Ruby 2.2
+* Rename several methods. The old names are deprecated and will be removed in 0.8.0.
 
 ## 0.7.8 / 2014-12-09
 
