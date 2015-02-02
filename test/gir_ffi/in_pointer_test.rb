@@ -16,7 +16,7 @@ describe GirFFI::InPointer do
     it 'handles enum types' do
       e = Module.new do
         extend GirFFI::EnumBase
-        self::Enum = FFI::Enum.new [:foo, :bar, :baz]
+        self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
       end
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
       ptr.read_array_of_int32(3).must_equal [1, 0, 2]
@@ -146,7 +146,7 @@ describe GirFFI::InPointer do
 
     it 'handles enum types' do
       e = Module.new do
-        self::Enum = FFI::Enum.new [:foo, :bar, :baz]
+        self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
         def self.[] val
           self::Enum[val]
         end
