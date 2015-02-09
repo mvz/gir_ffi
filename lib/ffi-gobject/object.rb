@@ -14,7 +14,7 @@ module GObject
     def self.make_finalizer ptr, name
       proc {
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
-        if rc == 0 || rc > 100
+        if rc == 0 
           warn "not unreffing #{name}:#{ptr} (#{rc})"
         else
           GObject::Lib.g_object_unref ptr
