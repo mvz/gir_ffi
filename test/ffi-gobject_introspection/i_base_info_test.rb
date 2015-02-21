@@ -42,7 +42,7 @@ describe GObjectIntrospection::IBaseInfo do
       GC.start
 
       # Yes, the next three lines are needed. https://gist.github.com/4277829
-      stub(ptr2 = Object.new).null? { false }
+      allow(ptr2 = Object.new).to receive(:null?).and_return false
       allow(lib).to receive(:g_base_info_unref).with(ptr2).and_return nil
       described_class.new ptr2, lib
 

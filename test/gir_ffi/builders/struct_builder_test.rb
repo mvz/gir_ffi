@@ -17,9 +17,9 @@ describe GirFFI::Builders::StructBuilder do
       @field = Object.new
 
       @struct = Object.new
-      stub(@struct).namespace { 'Foo' }
-      stub(@struct).safe_name { 'Bar' }
-      stub(@struct).fields { [@field] }
+      allow(@struct).to receive(:namespace).and_return 'Foo'
+      allow(@struct).to receive(:safe_name).and_return 'Bar'
+      allow(@struct).to receive(:fields).and_return [@field]
 
       @builder = GirFFI::Builders::StructBuilder.new @struct
     end
@@ -37,8 +37,8 @@ describe GirFFI::Builders::StructBuilder do
       expect(complexfield = Object.new).to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
       expect(struct = Object.new).to receive(:fields).and_return [simplefield, complexfield]
 
-      stub(struct).safe_name { 'Bar' }
-      stub(struct).namespace { 'Foo' }
+      allow(struct).to receive(:safe_name).and_return 'Bar'
+      allow(struct).to receive(:namespace).and_return 'Foo'
 
       builder = GirFFI::Builders::StructBuilder.new struct
       spec = builder.send :layout_specification
@@ -51,11 +51,11 @@ describe GirFFI::Builders::StructBuilder do
       @gir = GObjectIntrospection::IRepository.default
       @gir.require 'GObject', nil
 
-      stub(info = Object.new).parent { @gir.find_by_name 'GObject', 'Object' }
-      stub(info).fields { [] }
-      stub(info).info_type { :object }
-      stub(info).safe_name { 'Bar' }
-      stub(info).namespace { 'Foo' }
+      allow(info = Object.new).to receive(:parent).and_return @gir.find_by_name 'GObject', 'Object'
+      allow(info).to receive(:fields).and_return []
+      allow(info).to receive(:info_type).and_return :object
+      allow(info).to receive(:safe_name).and_return 'Bar'
+      allow(info).to receive(:namespace).and_return 'Foo'
 
       @classbuilder = GirFFI::Builders::ObjectBuilder.new info
 

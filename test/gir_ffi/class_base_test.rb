@@ -55,14 +55,14 @@ describe GirFFI::ClassBase do
       end
 
       it 'returns false when comparing to an object of a different class and same pointer' do
-        stub(other = Object.new).to_ptr { object.to_ptr }
+        allow(other = Object.new).to receive(:to_ptr).and_return object.to_ptr
 
         object.wont_be :==, other
         other.wont_be :==, object
       end
 
       it 'returns false when comparing to an object of a different class and different pointer' do
-        stub(other = Object.new).to_ptr { FFI::MemoryPointer.new(:int32) }
+        allow(other = Object.new).to receive(:to_ptr).and_return FFI::MemoryPointer.new(:int32)
 
         object.wont_be :==, other
         other.wont_be :==, object

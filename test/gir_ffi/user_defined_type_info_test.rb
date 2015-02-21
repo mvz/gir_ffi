@@ -64,7 +64,7 @@ describe GirFFI::UserDefinedTypeInfo do
     let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
 
     before do
-      stub(klass).name { 'foo' }
+      allow(klass).to receive(:name).and_return 'foo'
     end
 
     it "returns the described class' name by default" do

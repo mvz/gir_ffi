@@ -4,7 +4,7 @@ describe GirFFI::Builders::ModuleBuilder do
   describe '#build_namespaced_class' do
     it 'raises a clear error if the named class does not exist' do
       gir = GObjectIntrospection::IRepository.default
-      stub(gir).require('Foo', nil) {}
+      allow(gir).to receive(:require).with('Foo', nil)
 
       builder = GirFFI::Builders::ModuleBuilder.new 'Foo'
 
