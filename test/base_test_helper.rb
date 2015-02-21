@@ -13,6 +13,7 @@ begin
 rescue LoadError
 end
 
+require 'minitest/rspec_mocks'
 require 'minitest/autorun'
 require 'rr'
 
@@ -82,3 +83,4 @@ module BaseTestExtensions
 end
 
 Minitest::Test.send :include, BaseTestExtensions
+Minitest::Test.send :include, Minitest::RSpecMocks
