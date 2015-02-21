@@ -5,12 +5,12 @@ describe GirFFI::FFIExt::Pointer do
   describe '#to_object' do
     it 'finds the wrapping class by gtype and wraps the pointer in it' do
       ptr = klass.new
-      mock(ptr).null? { false }
+      expect(ptr).to receive(:null?).and_return false
       object_class = Class.new
 
-      mock(GObject).type_from_instance_pointer(ptr) { 0xdeadbeef }
-      mock(GirFFI::Builder).build_by_gtype(0xdeadbeef) { object_class }
-      mock(object_class).direct_wrap(ptr) { 'good-result' }
+      expect(GObject).to receive(:type_from_instance_pointer).with(ptr).and_return 0xdeadbeef
+      expect(GirFFI::Builder).to receive(:build_by_gtype).with(0xdeadbeef).and_return object_class
+      expect(object_class).to receive(:direct_wrap).with(ptr).and_return 'good-result'
 
       ptr.to_object.must_equal 'good-result'
     end

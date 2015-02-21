@@ -25,7 +25,7 @@ describe GirFFI::Builders::StructBuilder do
     end
 
     it 'creates the correct layout specification' do
-      mock(@field).layout_specification { [:bar, :int32, 0] }
+      expect(@field).to receive(:layout_specification).and_return [:bar, :int32, 0]
       spec = @builder.send :layout_specification
       assert_equal [:bar, :int32, 0], spec
     end
@@ -33,9 +33,9 @@ describe GirFFI::Builders::StructBuilder do
 
   describe 'for a struct with a layout with a complex type' do
     it 'does not flatten the complex type specification' do
-      mock(simplefield = Object.new).layout_specification { [:bar, :foo, 0] }
-      mock(complexfield = Object.new).layout_specification { [:baz, [:qux, 2], 0] }
-      mock(struct = Object.new).fields { [simplefield, complexfield] }
+      expect(simplefield = Object.new).to receive(:layout_specification).and_return [:bar, :foo, 0]
+      expect(complexfield = Object.new).to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
+      expect(struct = Object.new).to receive(:fields).and_return [simplefield, complexfield]
 
       stub(struct).safe_name { 'Bar' }
       stub(struct).namespace { 'Foo' }

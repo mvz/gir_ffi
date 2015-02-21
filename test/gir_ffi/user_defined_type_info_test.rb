@@ -15,7 +15,7 @@ describe GirFFI::UserDefinedTypeInfo do
     let(:foo_spec) { Object.new }
 
     it 'adds the passed in property to the list of properties' do
-      mock(foo_spec).get_name { :foo }
+      expect(foo_spec).to receive(:get_name).and_return :foo
 
       info.install_property foo_spec
       info.properties.map(&:name).must_equal [:foo]
@@ -50,8 +50,8 @@ describe GirFFI::UserDefinedTypeInfo do
     }
 
     before do
-      mock(foo_spec).get_name { :foo }
-      mock(bar_spec).get_name { :bar }
+      expect(foo_spec).to receive(:get_name).and_return :foo
+      expect(bar_spec).to receive(:get_name).and_return :bar
     end
 
     it 'yields the new object to the block passed' do

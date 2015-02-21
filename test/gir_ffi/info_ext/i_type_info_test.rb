@@ -23,12 +23,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe '#to_ffi_type' do
     it 'returns an array with elements subtype and size for type :array' do
-      mock(type_info).pointer? { false }
+      expect(type_info).to receive(:pointer?).and_return false
       stub(type_info).tag { :array }
-      mock(type_info).array_fixed_size { 2 }
+      expect(type_info).to receive(:array_fixed_size).and_return 2
 
-      mock(elmtype_info).to_ffi_type { :foo }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(elmtype_info).to receive(:to_ffi_type).and_return :foo
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.to_ffi_type
       assert_equal [:foo, 2], result
@@ -52,10 +52,10 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe '#element_type' do
     it 'returns the element type for lists' do
       stub(elmtype_info).tag { :foo }
-      mock(elmtype_info).pointer? { false }
+      expect(elmtype_info).to receive(:pointer?).and_return false
 
-      mock(type_info).tag { :glist }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(type_info).to receive(:tag).and_return :glist
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.element_type
       result.must_equal :foo
@@ -63,20 +63,20 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     it 'returns the key and value types for ghashes' do
       stub(keytype_info).tag { :foo }
-      mock(keytype_info).pointer? { false }
+      expect(keytype_info).to receive(:pointer?).and_return false
       stub(valtype_info).tag { :bar }
-      mock(valtype_info).pointer? { false }
+      expect(valtype_info).to receive(:pointer?).and_return false
 
-      mock(type_info).tag { :ghash }
-      mock(type_info).param_type(0) { keytype_info }
-      mock(type_info).param_type(1) { valtype_info }
+      expect(type_info).to receive(:tag).and_return :ghash
+      expect(type_info).to receive(:param_type).with(0).and_return keytype_info
+      expect(type_info).to receive(:param_type).with(1).and_return valtype_info
 
       result = type_info.element_type
       result.must_equal [:foo, :bar]
     end
 
     it 'returns nil for other types' do
-      mock(type_info).tag { :foo }
+      expect(type_info).to receive(:tag).and_return :foo
 
       result = type_info.element_type
       result.must_be_nil
@@ -85,8 +85,8 @@ describe GirFFI::InfoExt::ITypeInfo do
     it 'returns [:pointer, :void] if the element type is a pointer with tag :void' do
       stub(elmtype_info).tag_or_class { [:pointer, :void] }
 
-      mock(type_info).tag { :glist }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(type_info).to receive(:tag).and_return :glist
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       assert_equal [:pointer, :void], type_info.element_type
     end
@@ -138,9 +138,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a fixed length c-like array' do
       it 'returns :c' do
-        mock(type_info).tag { :array }
-        mock(type_info).zero_terminated? { false }
-        mock(type_info).array_type { :c }
+        expect(type_info).to receive(:tag).and_return :array
+        expect(type_info).to receive(:zero_terminated?).and_return false
+        expect(type_info).to receive(:array_type).and_return :c
 
         type_info.flattened_tag.must_equal :c
       end
@@ -148,9 +148,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GLib array' do
       it 'returns :c' do
-        mock(type_info).tag { :array }
-        mock(type_info).zero_terminated? { false }
-        mock(type_info).array_type { :array }
+        expect(type_info).to receive(:tag).and_return :array
+        expect(type_info).to receive(:zero_terminated?).and_return false
+        expect(type_info).to receive(:array_type).and_return :array
 
         type_info.flattened_tag.must_equal :array
       end
@@ -161,7 +161,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe 'for a simple type' do
       it "returns the type's tag" do
         stub(type_info).tag { :foo }
-        mock(type_info).pointer? { false }
+        expect(type_info).to receive(:pointer?).and_return false
 
         type_info.tag_or_class.must_equal :foo
       end
@@ -170,7 +170,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe 'for utf8 strings' do
       it 'returns the tag :utf8' do
         stub(type_info).tag { :utf8 }
-        mock(type_info).pointer? { true }
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal :utf8
       end
@@ -179,7 +179,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe 'for filename strings' do
       it 'returns the tag :filename' do
         stub(type_info).tag { :filename }
-        mock(type_info).pointer? { true }
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal :filename
       end
@@ -191,9 +191,9 @@ describe GirFFI::InfoExt::ITypeInfo do
       before do
         stub(type_info).tag { :interface }
         stub(type_info).interface { iface_info }
-        mock(type_info).pointer? { false }
+        expect(type_info).to receive(:pointer?).and_return false
 
-        mock(GirFFI::Builder).build_class(iface_info) { interface }
+        expect(GirFFI::Builder).to receive(:build_class).with(iface_info).and_return interface
       end
 
       describe 'when the interface type is :enum' do
@@ -230,7 +230,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe 'for a pointer to simple type :foo' do
       it 'returns [:pointer, :foo]' do
         stub(type_info).tag { :foo }
-        mock(type_info).pointer? { true }
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal [:pointer, :foo]
       end
