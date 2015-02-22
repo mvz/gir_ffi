@@ -6,7 +6,7 @@ describe GLib::MainLoop do
       main_loop = GLib::MainLoop.new nil, false
 
       a = []
-      GLib.timeout_add(GLib::PRIORITY_DEFAULT, 100,
+      GLib.timeout_add(GLib::PRIORITY_DEFAULT, 150,
                        proc { main_loop.quit },
                        nil, nil)
 
@@ -21,7 +21,7 @@ describe GLib::MainLoop do
 
       slow_thread.join
 
-      a.last.must_equal 'After run'
+      a.must_equal ['Before run', 'During run', 'After run']
     end
   end
 end
