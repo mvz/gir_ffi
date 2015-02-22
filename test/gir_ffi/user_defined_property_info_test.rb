@@ -11,7 +11,7 @@ describe GirFFI::UserDefinedPropertyInfo do
 
   describe '#name' do
     it 'returns the name retrieved from the parameter specification' do
-      mock(param_spec = Object.new).get_name { :property_name }
+      expect(param_spec = Object.new).to receive(:get_name).and_return :property_name
       info = GirFFI::UserDefinedPropertyInfo.new param_spec
       info.name.must_equal :property_name
     end

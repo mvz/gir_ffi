@@ -5,7 +5,7 @@ describe GirFFI::InterfaceBase do
 
   describe '#wrap' do
     it 'delegates conversion to the wrapped pointer' do
-      mock(ptr = Object.new).to_object { 'good-result' }
+      expect(ptr = Object.new).to receive(:to_object).and_return 'good-result'
       interface.wrap(ptr).must_equal 'good-result'
     end
   end

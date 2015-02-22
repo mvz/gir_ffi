@@ -38,21 +38,17 @@ describe GObject::Object do
     subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
 
     it 'delegates to GObject' do
-      mock(GObject).signal_connect(subject, 'some-event', nil)
+      expect(GObject).to receive(:signal_connect).with(subject, 'some-event', nil)
       subject.signal_connect('some-event') do
         nothing
       end
-
-      RR.verify
     end
 
     it 'delegates to GObject if an optional data argument is passed' do
-      mock(GObject).signal_connect(subject, 'some-event', 'data')
+      expect(GObject).to receive(:signal_connect).with(subject, 'some-event', 'data')
       subject.signal_connect('some-event', 'data') do
         nothing
       end
-
-      RR.verify
     end
   end
 
@@ -60,21 +56,17 @@ describe GObject::Object do
     subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
 
     it 'delegates to GObject' do
-      mock(GObject).signal_connect_after(subject, 'some-event', nil)
+      expect(GObject).to receive(:signal_connect_after).with(subject, 'some-event', nil)
       subject.signal_connect_after('some-event') do
         nothing
       end
-
-      RR.verify
     end
 
     it 'delegates to GObject if an optional data argument is passed' do
-      mock(GObject).signal_connect_after(subject, 'some-event', 'data')
+      expect(GObject).to receive(:signal_connect_after).with(subject, 'some-event', 'data')
       subject.signal_connect_after('some-event', 'data') do
         nothing
       end
-
-      RR.verify
     end
   end
 end

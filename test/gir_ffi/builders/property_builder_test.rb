@@ -115,9 +115,9 @@ describe GirFFI::Builders::PropertyBuilder do
     let(:container_info) { Object.new }
 
     before do
-      stub(property_info).container { container_info }
-      stub(property_info).name { 'foo-bar' }
-      stub(container_info).find_instance_method('foo_bar') { true }
+      allow(property_info).to receive(:container).and_return container_info
+      allow(property_info).to receive(:name).and_return 'foo-bar'
+      allow(container_info).to receive(:find_instance_method).with('foo_bar').and_return true
     end
 
     it 'finds methods with underscores for properties with dashes' do

@@ -4,12 +4,12 @@ describe GObjectIntrospection::IBaseInfo do
   let(:described_class) { GObjectIntrospection::IBaseInfo }
   describe '#initialize' do
     it 'raises an error if a null pointer is passed' do
-      mock(ptr = Object.new).null? { true }
+      expect(ptr = Object.new).to receive(:null?).and_return true
       proc { described_class.new ptr }.must_raise ArgumentError
     end
 
     it 'raises no error if a non-null pointer is passed' do
-      mock(ptr = Object.new).null? { false }
+      expect(ptr = Object.new).to receive(:null?).and_return false
       described_class.new ptr
       pass
     end
@@ -35,15 +35,15 @@ describe GObjectIntrospection::IBaseInfo do
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
 
-      mock(ptr = Object.new).null? { false }
-      mock(lib = Object.new).g_base_info_unref(ptr) { nil }
+      expect(ptr = Object.new).to receive(:null?).and_return false
+      expect(lib = Object.new).to receive(:g_base_info_unref).with(ptr).and_return nil
       described_class.new ptr, lib
 
       GC.start
 
       # Yes, the next three lines are needed. https://gist.github.com/4277829
-      stub(ptr2 = Object.new).null? { false }
-      stub(lib).g_base_info_unref(ptr2) { nil }
+      allow(ptr2 = Object.new).to receive(:null?).and_return false
+      allow(lib).to receive(:g_base_info_unref).with(ptr2).and_return nil
       described_class.new ptr2, lib
 
       GC.start

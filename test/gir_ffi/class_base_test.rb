@@ -55,14 +55,14 @@ describe GirFFI::ClassBase do
       end
 
       it 'returns false when comparing to an object of a different class and same pointer' do
-        stub(other = Object.new).to_ptr { object.to_ptr }
+        allow(other = Object.new).to receive(:to_ptr).and_return object.to_ptr
 
         object.wont_be :==, other
         other.wont_be :==, object
       end
 
       it 'returns false when comparing to an object of a different class and different pointer' do
-        stub(other = Object.new).to_ptr { FFI::MemoryPointer.new(:int32) }
+        allow(other = Object.new).to receive(:to_ptr).and_return FFI::MemoryPointer.new(:int32)
 
         object.wont_be :==, other
         other.wont_be :==, object
@@ -72,11 +72,11 @@ describe GirFFI::ClassBase do
 
   describe '.setup_and_call' do
     it 'looks up class methods in all builders' do
-      mock(builder = Object.new).setup_method('foo') { 'foo' }
+      expect(builder = Object.new).to receive(:setup_method).with('foo').and_return 'foo'
       klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      mock(sub_builder = Object.new).setup_method('foo') { nil }
+      expect(sub_builder = Object.new).to receive(:setup_method).with('foo').and_return nil
       sub_klass = Class.new klass do
         def self.foo; end
       end
@@ -86,7 +86,7 @@ describe GirFFI::ClassBase do
     end
 
     it 'calls the method given by the result of .setup_method' do
-      mock(builder = Object.new).setup_method('foo') { 'bar' }
+      expect(builder = Object.new).to receive(:setup_method).with('foo').and_return 'bar'
       klass = Class.new GirFFI::ClassBase do
         def self.bar
           'correct-result'
@@ -104,11 +104,11 @@ describe GirFFI::ClassBase do
 
   describe '#setup_and_call' do
     it 'looks up instance methods in all builders' do
-      mock(builder = Object.new).setup_instance_method('foo') { 'foo' }
+      expect(builder = Object.new).to receive(:setup_instance_method).with('foo').and_return 'foo'
       klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      mock(sub_builder = Object.new).setup_instance_method('foo') { nil }
+      expect(sub_builder = Object.new).to receive(:setup_instance_method).with('foo').and_return nil
       sub_klass = Class.new klass do
         def foo; end
 
@@ -125,7 +125,7 @@ describe GirFFI::ClassBase do
     end
 
     it 'calls the method given by the result of .setup_instance_method' do
-      mock(builder = Object.new).setup_instance_method('foo') { 'bar' }
+      expect(builder = Object.new).to receive(:setup_instance_method).with('foo').and_return 'bar'
       klass = Class.new GirFFI::ClassBase do
         def bar
           'correct-result'

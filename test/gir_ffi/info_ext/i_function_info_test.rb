@@ -11,15 +11,15 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
   describe '#argument_ffi_types' do
     before do
-      stub(arg_info1 = Object.new).to_ffi_type { :type1 }
-      stub(arg_info2 = Object.new).to_ffi_type { :type2 }
-      stub(function_info).args { [arg_info1, arg_info2] }
+      allow(arg_info1 = Object.new).to receive(:to_ffi_type).and_return :type1
+      allow(arg_info2 = Object.new).to receive(:to_ffi_type).and_return :type2
+      allow(function_info).to receive(:args).and_return [arg_info1, arg_info2]
     end
 
     describe 'for a simple function with several arguments' do
       before do
-        stub(function_info).method? { false }
-        stub(function_info).throws? { false }
+        allow(function_info).to receive(:method?).and_return false
+        allow(function_info).to receive(:throws?).and_return false
       end
 
       it 'returns the ffi types of the arguments' do
@@ -29,8 +29,8 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
     describe 'for a throwing function with several arguments' do
       before do
-        stub(function_info).method? { false }
-        stub(function_info).throws? { true }
+        allow(function_info).to receive(:method?).and_return false
+        allow(function_info).to receive(:throws?).and_return true
       end
 
       it 'appends :pointer to represent the error argument' do
@@ -40,8 +40,8 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
     describe 'for a method with several arguments' do
       before do
-        stub(function_info).method? { true }
-        stub(function_info).throws? { false }
+        allow(function_info).to receive(:method?).and_return true
+        allow(function_info).to receive(:throws?).and_return false
       end
 
       it 'prepends :pointer to represent the method reciever' do
@@ -51,8 +51,8 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
     describe 'for a throwing method with several arguments' do
       before do
-        stub(function_info).method? { true }
-        stub(function_info).throws? { true }
+        allow(function_info).to receive(:method?).and_return true
+        allow(function_info).to receive(:throws?).and_return true
       end
 
       it 'adds :pointer for both the reciever and the error argument' do
@@ -63,8 +63,8 @@ describe GirFFI::InfoExt::IFunctionInfo do
 
   describe '#return_ffi_type' do
     it 'returns the ffi type of the return type' do
-      stub(return_type_info = Object.new).to_ffi_type { :some_type }
-      stub(function_info).return_type { return_type_info }
+      allow(return_type_info = Object.new).to receive(:to_ffi_type).and_return :some_type
+      allow(function_info).to receive(:return_type).and_return return_type_info
 
       function_info.return_ffi_type.must_equal :some_type
     end

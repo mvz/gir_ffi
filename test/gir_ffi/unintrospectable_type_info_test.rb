@@ -15,8 +15,8 @@ describe GirFFI::UnintrospectableTypeInfo do
         gobject = Object.new
         gir = Object.new
 
-        mock(gobject).type_parent(:some_type) { :foo }
-        mock(gir).find_by_gtype(:foo) { :foo_info }
+        expect(gobject).to receive(:type_parent).with(:some_type).and_return :foo
+        expect(gir).to receive(:find_by_gtype).with(:foo).and_return :foo_info
 
         info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
@@ -29,8 +29,8 @@ describe GirFFI::UnintrospectableTypeInfo do
         gobject = Object.new
         gir = Object.new
 
-        mock(gobject).type_parent(:some_type) { :foo }
-        mock(gir).find_by_gtype(:foo) { nil }
+        expect(gobject).to receive(:type_parent).with(:some_type).and_return :foo
+        expect(gir).to receive(:find_by_gtype).with(:foo).and_return nil
 
         info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
@@ -44,9 +44,9 @@ describe GirFFI::UnintrospectableTypeInfo do
       gobject = Object.new
       gir = Object.new
 
-      mock(gobject).type_interfaces(:some_type) { [:foo, :bar] }
-      mock(gir).find_by_gtype(:foo) { :foo_info }
-      mock(gir).find_by_gtype(:bar) { :bar_info }
+      expect(gobject).to receive(:type_interfaces).with(:some_type).and_return [:foo, :bar]
+      expect(gir).to receive(:find_by_gtype).with(:foo).and_return :foo_info
+      expect(gir).to receive(:find_by_gtype).with(:bar).and_return :bar_info
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
@@ -57,9 +57,9 @@ describe GirFFI::UnintrospectableTypeInfo do
       gobject = Object.new
       gir = Object.new
 
-      mock(gobject).type_interfaces(:some_type) { [:foo, :bar] }
-      mock(gir).find_by_gtype(:foo) { :foo_info }
-      mock(gir).find_by_gtype(:bar) { nil }
+      expect(gobject).to receive(:type_interfaces).with(:some_type).and_return [:foo, :bar]
+      expect(gir).to receive(:find_by_gtype).with(:foo).and_return :foo_info
+      expect(gir).to receive(:find_by_gtype).with(:bar).and_return nil
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
@@ -87,9 +87,9 @@ describe GirFFI::UnintrospectableTypeInfo do
       gir = Object.new
       parent_info = Object.new
 
-      mock(gobject).type_parent(:some_type) { :foo }
-      mock(gir).find_by_gtype(:foo) { parent_info }
-      mock(parent_info).namespace { 'FooNamespace' }
+      expect(gobject).to receive(:type_parent).with(:some_type).and_return :foo
+      expect(gir).to receive(:find_by_gtype).with(:foo).and_return parent_info
+      expect(parent_info).to receive(:namespace).and_return 'FooNamespace'
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
@@ -101,7 +101,7 @@ describe GirFFI::UnintrospectableTypeInfo do
     it 'finds the class name by gtype' do
       gobject = Object.new
 
-      mock(gobject).type_name(:some_type) { 'GSomeType' }
+      expect(gobject).to receive(:type_name).with(:some_type).and_return 'GSomeType'
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, nil, gobject)
 

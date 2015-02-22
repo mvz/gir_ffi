@@ -10,13 +10,13 @@ describe GirFFI::InfoExt::SafeFunctionName do
 
   describe '#safe_name' do
     it 'keeps lower case names lower case' do
-      mock(info).name { 'foo' }
+      expect(info).to receive(:name).and_return 'foo'
 
       assert_equal 'foo', info.safe_name
     end
 
     it 'returns a non-empty string if name is empty' do
-      mock(info).name { '' }
+      expect(info).to receive(:name).and_return ''
 
       assert_equal '_', info.safe_name
     end

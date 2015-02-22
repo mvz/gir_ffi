@@ -23,12 +23,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe '#to_ffi_type' do
     it 'returns an array with elements subtype and size for type :array' do
-      mock(type_info).pointer? { false }
-      stub(type_info).tag { :array }
-      mock(type_info).array_fixed_size { 2 }
+      expect(type_info).to receive(:pointer?).and_return false
+      allow(type_info).to receive(:tag).and_return :array
+      expect(type_info).to receive(:array_fixed_size).and_return 2
 
-      mock(elmtype_info).to_ffi_type { :foo }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(elmtype_info).to receive(:to_ffi_type).and_return :foo
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.to_ffi_type
       assert_equal [:foo, 2], result
@@ -36,13 +36,13 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for an :interface type' do
       before do
-        stub(type_info).interface { iface_info }
-        stub(type_info).tag { :interface }
-        stub(type_info).pointer? { false }
+        allow(type_info).to receive(:interface).and_return iface_info
+        allow(type_info).to receive(:tag).and_return :interface
+        allow(type_info).to receive(:pointer?).and_return false
       end
 
       it "maps a the interface's ffi_type" do
-        stub(iface_info).to_ffi_type { :foo }
+        allow(iface_info).to receive(:to_ffi_type).and_return :foo
 
         type_info.to_ffi_type.must_equal :foo
       end
@@ -51,42 +51,42 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe '#element_type' do
     it 'returns the element type for lists' do
-      stub(elmtype_info).tag { :foo }
-      mock(elmtype_info).pointer? { false }
+      allow(elmtype_info).to receive(:tag).and_return :foo
+      expect(elmtype_info).to receive(:pointer?).and_return false
 
-      mock(type_info).tag { :glist }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(type_info).to receive(:tag).and_return :glist
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.element_type
       result.must_equal :foo
     end
 
     it 'returns the key and value types for ghashes' do
-      stub(keytype_info).tag { :foo }
-      mock(keytype_info).pointer? { false }
-      stub(valtype_info).tag { :bar }
-      mock(valtype_info).pointer? { false }
+      allow(keytype_info).to receive(:tag).and_return :foo
+      expect(keytype_info).to receive(:pointer?).and_return false
+      allow(valtype_info).to receive(:tag).and_return :bar
+      expect(valtype_info).to receive(:pointer?).and_return false
 
-      mock(type_info).tag { :ghash }
-      mock(type_info).param_type(0) { keytype_info }
-      mock(type_info).param_type(1) { valtype_info }
+      expect(type_info).to receive(:tag).and_return :ghash
+      expect(type_info).to receive(:param_type).with(0).and_return keytype_info
+      expect(type_info).to receive(:param_type).with(1).and_return valtype_info
 
       result = type_info.element_type
       result.must_equal [:foo, :bar]
     end
 
     it 'returns nil for other types' do
-      mock(type_info).tag { :foo }
+      expect(type_info).to receive(:tag).and_return :foo
 
       result = type_info.element_type
       result.must_be_nil
     end
 
     it 'returns [:pointer, :void] if the element type is a pointer with tag :void' do
-      stub(elmtype_info).tag_or_class { [:pointer, :void] }
+      allow(elmtype_info).to receive(:tag_or_class).and_return [:pointer, :void]
 
-      mock(type_info).tag { :glist }
-      mock(type_info).param_type(0) { elmtype_info }
+      expect(type_info).to receive(:tag).and_return :glist
+      expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       assert_equal [:pointer, :void], type_info.element_type
     end
@@ -95,7 +95,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe '#flattened_tag' do
     describe 'for a simple type' do
       it 'returns the type tag' do
-        stub(type_info).tag { :uint32 }
+        allow(type_info).to receive(:tag).and_return :uint32
 
         type_info.flattened_tag.must_equal :uint32
       end
@@ -103,15 +103,15 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a zero-terminated array' do
       before do
-        stub(type_info).tag { :array }
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(type_info).zero_terminated? { true }
+        allow(type_info).to receive(:tag).and_return :array
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(type_info).to receive(:zero_terminated?).and_return true
       end
 
       describe 'of utf8' do
         it 'returns :strv' do
-          stub(elmtype_info).tag { :utf8 }
-          stub(elmtype_info).pointer? { true }
+          allow(elmtype_info).to receive(:tag).and_return :utf8
+          allow(elmtype_info).to receive(:pointer?).and_return true
 
           type_info.flattened_tag.must_equal :strv
         end
@@ -119,8 +119,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'of filename' do
         it 'returns :strv' do
-          stub(elmtype_info).tag { :filename }
-          stub(elmtype_info).pointer? { true }
+          allow(elmtype_info).to receive(:tag).and_return :filename
+          allow(elmtype_info).to receive(:pointer?).and_return true
 
           type_info.flattened_tag.must_equal :strv
         end
@@ -128,8 +128,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'of another type' do
         it 'returns :zero_terminated' do
-          stub(elmtype_info).tag { :foo }
-          stub(elmtype_info).pointer? { false }
+          allow(elmtype_info).to receive(:tag).and_return :foo
+          allow(elmtype_info).to receive(:pointer?).and_return false
 
           type_info.flattened_tag.must_equal :zero_terminated
         end
@@ -138,9 +138,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a fixed length c-like array' do
       it 'returns :c' do
-        mock(type_info).tag { :array }
-        mock(type_info).zero_terminated? { false }
-        mock(type_info).array_type { :c }
+        expect(type_info).to receive(:tag).and_return :array
+        expect(type_info).to receive(:zero_terminated?).and_return false
+        expect(type_info).to receive(:array_type).and_return :c
 
         type_info.flattened_tag.must_equal :c
       end
@@ -148,9 +148,9 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GLib array' do
       it 'returns :c' do
-        mock(type_info).tag { :array }
-        mock(type_info).zero_terminated? { false }
-        mock(type_info).array_type { :array }
+        expect(type_info).to receive(:tag).and_return :array
+        expect(type_info).to receive(:zero_terminated?).and_return false
+        expect(type_info).to receive(:array_type).and_return :array
 
         type_info.flattened_tag.must_equal :array
       end
@@ -160,8 +160,8 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe '#tag_or_class' do
     describe 'for a simple type' do
       it "returns the type's tag" do
-        stub(type_info).tag { :foo }
-        mock(type_info).pointer? { false }
+        allow(type_info).to receive(:tag).and_return :foo
+        expect(type_info).to receive(:pointer?).and_return false
 
         type_info.tag_or_class.must_equal :foo
       end
@@ -169,8 +169,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for utf8 strings' do
       it 'returns the tag :utf8' do
-        stub(type_info).tag { :utf8 }
-        mock(type_info).pointer? { true }
+        allow(type_info).to receive(:tag).and_return :utf8
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal :utf8
       end
@@ -178,8 +178,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for filename strings' do
       it 'returns the tag :filename' do
-        stub(type_info).tag { :filename }
-        mock(type_info).pointer? { true }
+        allow(type_info).to receive(:tag).and_return :filename
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal :filename
       end
@@ -189,16 +189,16 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:interface) { Object.new }
 
       before do
-        stub(type_info).tag { :interface }
-        stub(type_info).interface { iface_info }
-        mock(type_info).pointer? { false }
+        allow(type_info).to receive(:tag).and_return :interface
+        allow(type_info).to receive(:interface).and_return iface_info
+        expect(type_info).to receive(:pointer?).and_return false
 
-        mock(GirFFI::Builder).build_class(iface_info) { interface }
+        expect(GirFFI::Builder).to receive(:build_class).with(iface_info).and_return interface
       end
 
       describe 'when the interface type is :enum' do
         it 'returns the built interface module' do
-          stub(iface_info).info_type { :enum }
+          allow(iface_info).to receive(:info_type).and_return :enum
 
           type_info.tag_or_class.must_equal interface
         end
@@ -206,7 +206,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'when the interface type is :object' do
         it 'returns the built interface class' do
-          stub(iface_info).info_type { :object }
+          allow(iface_info).to receive(:info_type).and_return :object
 
           type_info.tag_or_class.must_equal interface
         end
@@ -214,7 +214,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'when the interface type is :struct' do
         it 'returns the built interface class' do
-          stub(iface_info).info_type { :struct }
+          allow(iface_info).to receive(:info_type).and_return :struct
 
           type_info.tag_or_class.must_equal interface
         end
@@ -229,8 +229,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a pointer to simple type :foo' do
       it 'returns [:pointer, :foo]' do
-        stub(type_info).tag { :foo }
-        mock(type_info).pointer? { true }
+        allow(type_info).to receive(:tag).and_return :foo
+        expect(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal [:pointer, :foo]
       end
@@ -238,8 +238,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a pointer to :void' do
       it 'returns [:pointer, :void]' do
-        stub(type_info).tag { :void }
-        stub(type_info).pointer? { true }
+        allow(type_info).to receive(:tag).and_return :void
+        allow(type_info).to receive(:pointer?).and_return true
 
         type_info.tag_or_class.must_equal [:pointer, :void]
       end
@@ -260,19 +260,19 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe '#to_callback_ffi_type' do
     describe 'for an :interface argument' do
       before do
-        stub(type_info).interface { iface_info }
-        stub(type_info).tag { :interface }
-        stub(type_info).pointer? { false }
+        allow(type_info).to receive(:interface).and_return iface_info
+        allow(type_info).to receive(:tag).and_return :interface
+        allow(type_info).to receive(:pointer?).and_return false
       end
 
       it 'correctly maps a :union argument to :pointer' do
-        stub(iface_info).info_type { :union }
+        allow(iface_info).to receive(:info_type).and_return :union
 
         type_info.to_callback_ffi_type.must_equal :pointer
       end
 
       it 'correctly maps a :flags argument to :int32' do
-        stub(iface_info).info_type { :flags }
+        allow(iface_info).to receive(:info_type).and_return :flags
 
         type_info.to_callback_ffi_type.must_equal :int32
       end
@@ -282,7 +282,7 @@ describe GirFFI::InfoExt::ITypeInfo do
   describe '#extra_conversion_arguments' do
     describe 'for normal types' do
       before do
-        stub(type_info).tag { :foo }
+        allow(type_info).to receive(:tag).and_return :foo
       end
 
       it 'returns an empty array' do
@@ -292,7 +292,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a string' do
       before do
-        stub(type_info).tag { :utf8 }
+        allow(type_info).to receive(:tag).and_return :utf8
       end
 
       it 'returns an array containing :utf8' do
@@ -302,13 +302,13 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a fixed-size array' do
       before do
-        stub(type_info).tag { :array }
-        stub(type_info).zero_terminated? { false }
-        stub(type_info).array_type { :c }
-        stub(type_info).array_fixed_size { 3 }
+        allow(type_info).to receive(:tag).and_return :array
+        allow(type_info).to receive(:zero_terminated?).and_return false
+        allow(type_info).to receive(:array_type).and_return :c
+        allow(type_info).to receive(:array_fixed_size).and_return 3
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -318,11 +318,11 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a zero-terminated array' do
       before do
-        stub(type_info).tag { :array }
-        stub(type_info).zero_terminated? { true }
+        allow(type_info).to receive(:tag).and_return :array
+        allow(type_info).to receive(:zero_terminated?).and_return true
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -332,12 +332,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GArray' do
       before do
-        stub(type_info).tag { :array }
-        stub(type_info).zero_terminated? { false }
-        stub(type_info).array_type { :array }
+        allow(type_info).to receive(:tag).and_return :array
+        allow(type_info).to receive(:zero_terminated?).and_return false
+        allow(type_info).to receive(:array_type).and_return :array
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -347,12 +347,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GHashTable' do
       before do
-        stub(type_info).tag { :ghash }
-        stub(type_info).param_type(0) { keytype_info }
-        stub(type_info).param_type(1) { valtype_info }
+        allow(type_info).to receive(:tag).and_return :ghash
+        allow(type_info).to receive(:param_type).with(0).and_return keytype_info
+        allow(type_info).to receive(:param_type).with(1).and_return valtype_info
 
-        stub(keytype_info).tag_or_class { :foo }
-        stub(valtype_info).tag_or_class { :bar }
+        allow(keytype_info).to receive(:tag_or_class).and_return :foo
+        allow(valtype_info).to receive(:tag_or_class).and_return :bar
       end
 
       it 'returns an array containing the element type pair' do
@@ -362,10 +362,10 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GList' do
       before do
-        stub(type_info).tag { :glist }
+        allow(type_info).to receive(:tag).and_return :glist
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -375,10 +375,10 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GSList' do
       before do
-        stub(type_info).tag { :gslist }
+        allow(type_info).to receive(:tag).and_return :gslist
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -388,12 +388,12 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a GPtrArray' do
       before do
-        stub(type_info).tag { :array }
-        stub(type_info).zero_terminated? { false }
-        stub(type_info).array_type { :ptr_array }
+        allow(type_info).to receive(:tag).and_return :array
+        allow(type_info).to receive(:zero_terminated?).and_return false
+        allow(type_info).to receive(:array_type).and_return :ptr_array
 
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       it 'returns an array containing the element type' do
@@ -403,11 +403,11 @@ describe GirFFI::InfoExt::ITypeInfo do
 
     describe 'for a :callback' do
       before do
-        stub(interface_type_info = Object.new).namespace { 'Bar' }
-        stub(interface_type_info).name { 'Foo' }
+        allow(interface_type_info = Object.new).to receive(:namespace).and_return 'Bar'
+        allow(interface_type_info).to receive(:name).and_return 'Foo'
 
-        stub(type_info).tag { :callback }
-        stub(type_info).interface { interface_type_info }
+        allow(type_info).to receive(:tag).and_return :callback
+        allow(type_info).to receive(:interface).and_return interface_type_info
       end
 
       it 'returns an empty array' do
@@ -418,7 +418,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe '#argument_class_name' do
     before do
-      stub(type_info).tag { tag }
+      allow(type_info).to receive(:tag).and_return tag
     end
 
     describe 'for :gint32' do
@@ -433,9 +433,9 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :interface }
 
       before do
-        stub(type_info).interface { iface_info }
-        stub(iface_info).info_type { interface_type }
-        stub(iface_info).full_type_name { 'Bar::Foo' }
+        allow(type_info).to receive(:interface).and_return iface_info
+        allow(iface_info).to receive(:info_type).and_return interface_type
+        allow(iface_info).to receive(:full_type_name).and_return 'Bar::Foo'
       end
 
       describe 'for :struct' do
@@ -488,13 +488,13 @@ describe GirFFI::InfoExt::ITypeInfo do
     describe 'for arrays' do
       let(:tag) { :array }
       before do
-        stub(type_info).param_type(0) { elmtype_info }
-        stub(elmtype_info).tag_or_class { :foo }
+        allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+        allow(elmtype_info).to receive(:tag_or_class).and_return :foo
       end
 
       describe 'for :zero_terminated' do
         before do
-          stub(type_info).zero_terminated? { true }
+          allow(type_info).to receive(:zero_terminated?).and_return true
         end
 
         it 'equals GirFFI::ZeroTerminated' do
@@ -504,8 +504,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for :byte_array' do
         before do
-          stub(type_info).zero_terminated? { false }
-          stub(type_info).array_type { :byte_array }
+          allow(type_info).to receive(:zero_terminated?).and_return false
+          allow(type_info).to receive(:array_type).and_return :byte_array
         end
 
         it 'equals GLib::ByteArray' do
@@ -515,8 +515,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for :ptr_array' do
         before do
-          stub(type_info).zero_terminated? { false }
-          stub(type_info).array_type { :ptr_array }
+          allow(type_info).to receive(:zero_terminated?).and_return false
+          allow(type_info).to receive(:array_type).and_return :ptr_array
         end
 
         it 'equals GLib::PtrArray' do
@@ -526,8 +526,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for :array' do
         before do
-          stub(type_info).zero_terminated? { false }
-          stub(type_info).array_type { :array }
+          allow(type_info).to receive(:zero_terminated?).and_return false
+          allow(type_info).to receive(:array_type).and_return :array
         end
 
         it 'equals GLib::Array' do
@@ -571,8 +571,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
   describe '#g_type' do
     before do
-      stub(type_info).tag { tag }
-      stub(type_info).pointer? { pointer? }
+      allow(type_info).to receive(:tag).and_return tag
+      allow(type_info).to receive(:pointer?).and_return pointer?
     end
 
     describe 'for :void' do
@@ -644,8 +644,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for pointer to GArray' do
         before do
-          stub(type_info).zero_terminated? { false }
-          stub(type_info).array_type { :array }
+          allow(type_info).to receive(:zero_terminated?).and_return false
+          allow(type_info).to receive(:array_type).and_return :array
         end
 
         it 'equals the GArray type' do
@@ -655,8 +655,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for a C array' do
         before do
-          stub(type_info).zero_terminated? { false }
-          stub(type_info).array_type { :c }
+          allow(type_info).to receive(:zero_terminated?).and_return false
+          allow(type_info).to receive(:array_type).and_return :c
         end
 
         it 'equals the gpointer type' do
@@ -666,14 +666,14 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe 'for a zero-terminated array' do
         before do
-          stub(type_info).param_type(0) { elmtype_info }
-          stub(type_info).zero_terminated? { true }
+          allow(type_info).to receive(:param_type).with(0).and_return elmtype_info
+          allow(type_info).to receive(:zero_terminated?).and_return true
         end
 
         describe 'of utf8' do
           it 'equals the GStrv type' do
-            stub(elmtype_info).tag { :utf8 }
-            stub(elmtype_info).pointer? { true }
+            allow(elmtype_info).to receive(:tag).and_return :utf8
+            allow(elmtype_info).to receive(:pointer?).and_return true
 
             GObject.type_name(type_info.g_type).must_equal 'GStrv'
           end
@@ -681,8 +681,8 @@ describe GirFFI::InfoExt::ITypeInfo do
 
         describe 'of filename' do
           it 'equals the GStrv type' do
-            stub(elmtype_info).tag { :filename }
-            stub(elmtype_info).pointer? { true }
+            allow(elmtype_info).to receive(:tag).and_return :filename
+            allow(elmtype_info).to receive(:pointer?).and_return true
 
             GObject.type_name(type_info.g_type).must_equal 'GStrv'
           end

@@ -240,7 +240,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         let(:length_argument) { Object.new }
         before do
-          stub(length_argument).post_converted_name { 'bar' }
+          allow(length_argument).to receive(:post_converted_name).and_return 'bar'
           builder.length_arg = length_argument
         end
 

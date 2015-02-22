@@ -9,11 +9,11 @@ describe GirFFI::InfoExt::IFieldInfo do
   let(:field_info) { klass.new }
   describe '#layout_specification' do
     it 'returns an array of name, typespec and offset' do
-      mock(type = Object.new).to_ffi_type { :bar }
+      expect(type = Object.new).to receive(:to_ffi_type).and_return :bar
 
-      mock(field_info).name { 'foo' }
-      mock(field_info).field_type { type }
-      mock(field_info).offset { 0 }
+      expect(field_info).to receive(:name).and_return 'foo'
+      expect(field_info).to receive(:field_type).and_return type
+      expect(field_info).to receive(:offset).and_return 0
 
       result = field_info.layout_specification
 
@@ -21,11 +21,11 @@ describe GirFFI::InfoExt::IFieldInfo do
     end
 
     it 'keeps a complex typespec intact' do
-      mock(type = Object.new).to_ffi_type { [:bar, 2] }
+      expect(type = Object.new).to receive(:to_ffi_type).and_return [:bar, 2]
 
-      mock(field_info).name { 'foo' }
-      mock(field_info).field_type { type }
-      mock(field_info).offset { 0 }
+      expect(field_info).to receive(:name).and_return 'foo'
+      expect(field_info).to receive(:field_type).and_return type
+      expect(field_info).to receive(:offset).and_return 0
 
       result = field_info.layout_specification
 

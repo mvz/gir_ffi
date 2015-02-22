@@ -13,8 +13,8 @@ begin
 rescue LoadError
 end
 
+require 'minitest/rspec_mocks'
 require 'minitest/autorun'
-require 'rr'
 
 require 'gir_ffi-base'
 require 'ffi-gobject_introspection'
@@ -82,3 +82,4 @@ module BaseTestExtensions
 end
 
 Minitest::Test.send :include, BaseTestExtensions
+Minitest::Test.send :include, Minitest::RSpecMocks

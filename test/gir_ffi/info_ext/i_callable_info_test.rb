@@ -11,9 +11,9 @@ describe GirFFI::InfoExt::ICallableInfo do
   describe '#argument_ffi_types' do
     describe 'for a simple callable with several arguments' do
       before do
-        stub(arg_info1 = Object.new).to_ffi_type { :type1 }
-        stub(arg_info2 = Object.new).to_ffi_type { :type2 }
-        stub(callable_info).args { [arg_info1, arg_info2] }
+        allow(arg_info1 = Object.new).to receive(:to_ffi_type).and_return :type1
+        allow(arg_info2 = Object.new).to receive(:to_ffi_type).and_return :type2
+        allow(callable_info).to receive(:args).and_return [arg_info1, arg_info2]
       end
 
       it 'returns the ffi types of the arguments' do

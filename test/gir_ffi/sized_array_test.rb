@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 describe GirFFI::SizedArray do
   describe '::wrap' do
     it 'takes a type, size and pointer and returns a GirFFI::SizedArray wrapping them' do
-      mock(ptr = Object.new).null? { false }
+      expect(ptr = Object.new).to receive(:null?).and_return false
       sarr = GirFFI::SizedArray.wrap :gint32, 3, ptr
       assert_instance_of GirFFI::SizedArray, sarr
       assert_equal ptr, sarr.to_ptr
@@ -12,7 +12,7 @@ describe GirFFI::SizedArray do
     end
 
     it 'returns nil if the wrapped pointer is null' do
-      mock(ptr = Object.new).null? { true }
+      expect(ptr = Object.new).to receive(:null?).and_return true
       sarr = GirFFI::SizedArray.wrap :gint32, 3, ptr
       sarr.must_be_nil
     end
