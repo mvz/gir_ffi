@@ -56,7 +56,7 @@ module GObject
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
           init type
-          ObjectSpace.define_finalizer self, make_finalizer(self.to_ptr, self.class.name) 
+          ObjectSpace.define_finalizer self, self.class.make_finalizer(self.to_ptr, self.class.name) 
           return self
         end
       end
