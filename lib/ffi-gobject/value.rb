@@ -3,6 +3,22 @@ GObject.load_class :Value
 module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
+    setup_instance_method 'init'
+
+    def init_with_finalizer type
+      init_without_finalizer(type).tap do
+        ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
+      end
+    end
+
+    alias_method :init_without_finalizer, :init
+    alias_method :init, :init_with_finalizer
+
+    def self.make_finalizer ptr
+      proc {
+        GObject::Lib.g_value_unset ptr
+      }
+    end
 
     # TODO: Give more generic name
     def set_ruby_value val
@@ -46,17 +62,10 @@ module GObject
       String => TYPE_STRING
     }
 
-    def self.make_finalizer ptr
-      proc {
-        GObject::Lib.g_value_unset ptr
-      }
-    end
-
     def init_for_ruby_value val
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
           init type
-          ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
           return self
         end
       end
@@ -113,7 +122,6 @@ module GObject
       return nil if gtype == TYPE_NONE
       new.tap do |it|
         it.init gtype
-        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr)
       end
     end
 
@@ -121,7 +129,6 @@ module GObject
     def self.wrap_instance instance
       new.tap do |it|
         it.init GObject.type_from_instance instance
-        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr)
         it.set_instance instance
       end
     end
