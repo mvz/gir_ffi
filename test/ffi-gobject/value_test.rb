@@ -279,17 +279,16 @@ describe GObject::Value do
       end
 
       value = GObject::Value.from 42
-      value.current_gtype_name.must_equal 'gint'
 
-      ptr = value.to_ptr
-      value = nil
+      # Drop reference to original GObject::Value
+      value = GObject::Value.wrap value.to_ptr
+      value.current_gtype_name.must_equal 'gint'
 
       GC.start
       sleep 1
       GC.start
       GC.start
 
-      value = GObject::Value.wrap ptr
       value.current_gtype_name.wont_equal 'gint'
     end
   end
