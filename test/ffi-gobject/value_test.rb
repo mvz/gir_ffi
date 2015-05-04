@@ -267,4 +267,29 @@ describe GObject::Value do
       v.get_value.to_string.must_equal 'some bytes'
     end
   end
+
+  describe 'upon garbage collection' do
+    before do
+      GirFFI.setup :GIMarshallingTests
+    end
+
+    it 'restores the underlying GValue to its pristine state' do
+      if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
+        skip 'cannot be reliably tested on JRuby and Rubinius'
+      end
+
+      value = GObject::Value.from 42
+
+      # Drop reference to original GObject::Value
+      value = GObject::Value.wrap value.to_ptr
+      value.current_gtype_name.must_equal 'gint'
+
+      GC.start
+      sleep 1
+      GC.start
+      GC.start
+
+      value.current_gtype_name.wont_equal 'gint'
+    end
+  end
 end

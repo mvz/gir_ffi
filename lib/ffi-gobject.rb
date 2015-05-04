@@ -87,6 +87,8 @@ module GObject
     attach_function :g_object_ref, [:pointer], :pointer
     attach_function :g_object_unref, [:pointer], :pointer
 
+    attach_function :g_value_unset, [:pointer], :pointer
+
     attach_function :g_array_get_type, [], :size_t
     attach_function :g_byte_array_get_type, [], :size_t
     attach_function :g_hash_table_get_type, [], :size_t
