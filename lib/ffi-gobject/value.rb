@@ -46,7 +46,7 @@ module GObject
       String => TYPE_STRING
     }
 
-    def self.make_finalizer ptr, name
+    def self.make_finalizer ptr
       proc {
         GObject::Lib.g_value_unset ptr
       }
@@ -56,7 +56,7 @@ module GObject
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
           init type
-          ObjectSpace.define_finalizer self, self.class.make_finalizer(self.to_ptr, self.class.name) 
+          ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
           return self
         end
       end
@@ -111,9 +111,9 @@ module GObject
 
     def self.for_gtype gtype
       return nil if gtype == TYPE_NONE
-      new.tap do |it| 
-        it.init gtype 
-        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr, it.class.name) 
+      new.tap do |it|
+        it.init gtype
+        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr)
       end
     end
 
@@ -121,7 +121,7 @@ module GObject
     def self.wrap_instance instance
       new.tap do |it|
         it.init GObject.type_from_instance instance
-        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr, it.class.name) 
+        ObjectSpace.define_finalizer it, make_finalizer(it.to_ptr)
         it.set_instance instance
       end
     end
