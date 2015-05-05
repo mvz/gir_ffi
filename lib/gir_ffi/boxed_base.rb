@@ -30,5 +30,11 @@ module GirFFI
       size = self::Struct.size
       pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
     end
+
+    def self._allocate
+      obj = _real_new
+      obj.instance_variable_set :@struct, self::Struct.new
+      obj
+    end
   end
 end

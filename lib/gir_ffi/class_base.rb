@@ -82,12 +82,6 @@ module GirFFI
         obj
       end
 
-      def _allocate
-        obj = _real_new
-        obj.instance_variable_set :@struct, self::Struct.new
-        obj
-      end
-
       # Pass-through casting method. This may become a type checking
       # method. It is overridden by GValue to implement wrapping of plain
       # Ruby objects.
