@@ -73,6 +73,7 @@ overrides can be defined. The following gems with overrides
 already exist:
 
 * `gir_ffi-gtk`: overrides for Gtk+ 2 and 3.
+* `gir_ffi-gnome_keyring`: overrides for GnomeKeyring
 * `gir_ffi-cairo`: overrides for Cairo
 * `gir_ffi-pango`: overrides for Pango
 * `gir_ffi-tracker`: overrides for Tracker
