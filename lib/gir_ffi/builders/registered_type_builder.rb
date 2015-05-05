@@ -52,15 +52,6 @@ module GirFFI
         super
       end
 
-      # FIXME: Only used in some of the subclases. Make mixin?
-      def provide_constructor
-        return if info.find_method 'new'
-
-        (class << klass; self; end).class_eval {
-          alias_method :new, :_allocate
-        }
-      end
-
       def parent_info
         nil
       end

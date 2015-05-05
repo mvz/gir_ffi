@@ -1,27 +1,15 @@
-require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/builders/with_layout'
+require 'gir_ffi/builders/boxed_builder'
 require 'gir_ffi/struct_base'
 
 module GirFFI
   module Builders
     # Implements the creation of a class representing a Struct.
-    class StructBuilder < RegisteredTypeBuilder
-      include WithLayout
-
-      private
-
-      def setup_class
-        setup_layout
-        setup_constants
-        stub_methods
-        setup_field_accessors
-        provide_constructor
-      end
-
-      # FIXME: Private method only in subclass
+    class StructBuilder < BoxedBuilder
       def layout_superclass
         FFI::Struct
       end
+
+      private
 
       def superclass
         StructBase
