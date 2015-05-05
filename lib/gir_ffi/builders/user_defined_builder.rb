@@ -166,11 +166,11 @@ module GirFFI
       def layout_specification
         parent_spec = [:parent, superclass::Struct, 0]
         offset = superclass::Struct.size
-        fields_spec = properties.map do |pinfo|
+        fields_spec = properties.flat_map do |pinfo|
           spec = [pinfo.name.to_sym, :int32, offset]
           offset += FFI.type_size(:int32)
           spec
-        end.flatten(1)
+        end
         parent_spec + fields_spec
       end
 

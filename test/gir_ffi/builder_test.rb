@@ -23,7 +23,7 @@ describe GirFFI::Builder do
         with('regress_test_callback_destroy_notify',
              [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
              :int32).
-             and_return true
+        and_return true
 
       GirFFI::Builder.attach_ffi_function(lib, function_info)
     end
@@ -36,7 +36,7 @@ describe GirFFI::Builder do
         with('regress_test_obj_torture_signature_0',
              [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
              :void).
-             and_return true
+        and_return true
 
       GirFFI::Builder.attach_ffi_function(lib, info)
     end

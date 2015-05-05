@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::InterfaceBuilder do
   let(:interface_builder) {
     GirFFI::Builders::InterfaceBuilder.new(
-    get_introspection_data('Regress', 'TestInterface'))
+      get_introspection_data('Regress', 'TestInterface'))
   }
 
   describe '#build_class' do

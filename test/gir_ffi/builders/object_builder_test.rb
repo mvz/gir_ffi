@@ -3,11 +3,11 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::ObjectBuilder do
   let(:obj_builder) {
     GirFFI::Builders::ObjectBuilder.new(
-    get_introspection_data('Regress', 'TestObj'))
+      get_introspection_data('Regress', 'TestObj'))
   }
   let(:sub_obj_builder) {
     GirFFI::Builders::ObjectBuilder.new(
-    get_introspection_data('Regress', 'TestSubObj'))
+      get_introspection_data('Regress', 'TestSubObj'))
   }
 
   describe '#find_signal' do

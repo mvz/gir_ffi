@@ -23,7 +23,7 @@ Style/AndOr:
   EnforcedStyle: conditionals
 
 # Allow multi-line blocks of all sorts
-Style/Blocks:
+Style/BlockDelimiters:
   Enabled: false
 
 # Dot at end of line makes it clearer that the line is not done
