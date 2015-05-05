@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* Unset GValues in finalizer
 * Dereference GObjects in finalizer
 * Increase refcount for ingoing :object arguments of functions with full
   ownership transfer
