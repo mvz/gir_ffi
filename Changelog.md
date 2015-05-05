@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.7.9 / 2015-05-05
 
 * Unset GValues in finalizer
 * Dereference GObjects in finalizer
