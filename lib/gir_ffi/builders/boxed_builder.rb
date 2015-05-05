@@ -16,6 +16,14 @@ module GirFFI
         setup_field_accessors
         provide_constructor
       end
+
+      def provide_constructor
+        return if info.find_method 'new'
+
+        (class << klass; self; end).class_eval {
+          alias_method :new, :_allocate
+        }
+      end
     end
   end
 end
