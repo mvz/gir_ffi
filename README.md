@@ -79,11 +79,14 @@ already exist:
 
 ## Hacking and contributing
 
-If you want to help out, have a look at TODO.md, and check the notes
-in the code (e.g., using `dnote`). Feel free to file bugs or send pull
-requests.
+Please feel free to file bugs or send pull requests!
 
-If you want to send pull requests or patches, please:
+If you just want to help out but don't know where to start, have a look at
+TODO.md, and check the notes in the code (e.g., using `dnote`).
+
+If you want to send pull requests or patches, please try to follow these
+instructions. If you get stuck, make a pull request anyway and I'll try to help
+out.
 
 * Make sure `rake test` runs without reporting any failures. If your code
   breaks existing stuff, it won't get merged in.
@@ -94,9 +97,18 @@ If you want to send pull requests or patches, please:
 * Try not to include changes that are irrelevant to your feature in the
   same commit.
 
+## Contributors
+
+The following people have contributed to GirFFI over the years:
+
+* John Cupitt
+* Marius Hanne
+* Antonio Terceiro
+* Matijs van Zuijlen
+
 ## License
 
-Copyright &copy; 2009&ndash;2014 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2015 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
