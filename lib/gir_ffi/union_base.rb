@@ -1,7 +1,7 @@
-require 'gir_ffi/struct_base'
+require 'gir_ffi/boxed_base'
 
 module GirFFI
   # Base class for generated classes representing GLib unions.
-  class UnionBase < StructBase
+  class UnionBase < BoxedBase
   end
 end
