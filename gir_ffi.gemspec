@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir[ '{lib,test,tasks,examples}/**/*',
                  "*.md",
-                 "*.gemspec",
+                 "Gemfile",
                  "Rakefile",
                  "COPYING.LIB" ] & `git ls-files -z`.split("\0")
 
@@ -33,8 +33,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency('ffi', ["~> 1.8"])
   s.add_runtime_dependency('indentation', ["~> 0.1.1"])
 
-  s.add_development_dependency('minitest', ["~> 5.5.1"])
-  s.add_development_dependency('minitest-rspec_mocks', ["~> 0.2.0"])
+  s.add_development_dependency('minitest', ["~> 5.5"])
+  s.add_development_dependency('minitest-rspec_mocks', ["~> 0.3.0"])
   s.add_development_dependency('rake', ["~> 10.1"])
 
   s.require_paths = ["lib"]
