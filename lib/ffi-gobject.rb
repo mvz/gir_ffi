@@ -1,5 +1,4 @@
-# NOTE: Do not require this file directly. Require 'gir_ffi' instead.
-#
+require 'gir_ffi/core'
 
 GirFFI.setup :GObject
 
