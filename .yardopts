@@ -1,1 +1,6 @@
---private --protected lib/**/*.rb - README.md DESIGN.md TODO.md COPYING.LIB Changelog.md
+--no-private
+--no-protected
+--hide-api private
+-
+*.md
+COPYING.LIB
