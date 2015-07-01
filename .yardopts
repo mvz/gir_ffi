@@ -1,5 +1,3 @@
---no-private
---no-protected
 --hide-api private
 -
 *.md
