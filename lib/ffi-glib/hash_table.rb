@@ -67,7 +67,7 @@ module GLib
       Hash[to_a]
     end
 
-    # Override for HashTable#insert
+    # @override
     def insert key, value
       keyptr = GirFFI::InPointer.from key_type, key
       valptr = GirFFI::InPointer.from value_type, value
