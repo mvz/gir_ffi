@@ -1,4 +1,4 @@
 def init
   super
-  sections.push(:overrides)
+  sections.last.place(:overrides).before(:source)
 end
