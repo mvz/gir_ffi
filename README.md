@@ -13,6 +13,7 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 [![Build Status](https://travis-ci.org/mvz/gir_ffi.png?branch=master)](https://travis-ci.org/mvz/gir_ffi)
 [![Code Climate](https://codeclimate.com/github/mvz/gir_ffi.png)](https://codeclimate.com/github/mvz/gir_ffi)
 [![Coverage Status](https://coveralls.io/repos/mvz/gir_ffi/badge.png)](https://coveralls.io/r/mvz/gir_ffi)
+[![Documentation Status](https://inch-ci.org/github/mvz/gir_ffi.svg?branch=master)](https://inch-ci.org/github/mvz/gir_ffi/branch/master)
 
 ## Features
 
