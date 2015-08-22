@@ -31,7 +31,7 @@ module GLib
       FFI.type_size(ffi_type)
     end
 
-    # Override for Array#append_vals
+    # @override
     def append_vals ary
       bytes = GirFFI::InPointer.from_array element_type, ary
       Lib.g_array_append_vals(self, bytes, ary.length)
