@@ -16,7 +16,7 @@ describe GObject::RubyClosure do
     a = 0
     c = GObject::RubyClosure.new { a = 2 }
     c2 = GObject::RubyClosure.wrap(c.to_ptr)
-    c2.block.call
+    c2.invoke_block
     assert_equal 2, a
   end
 

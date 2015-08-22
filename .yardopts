@@ -1,1 +1,5 @@
---private --protected lib/**/*.rb - README.md DESIGN.md TODO.md COPYING.LIB Changelog.md
+--hide-api private
+--load yard-plugin/setup.rb
+-
+*.md
+COPYING.LIB

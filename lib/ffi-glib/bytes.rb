@@ -7,12 +7,13 @@ module GLib
 
     remove_method :get_data if method_defined? :get_data
 
-    # Override for GBytes#get_data, needed due to mis-identification of the
-    # element-type of the resulting sized array.
+    # @override
     def get_data
       length_ptr = GirFFI::InOutPointer.for :gsize
       data_ptr = Lib.g_bytes_get_data self, length_ptr
       length = length_ptr.to_value
+      # NOTE: Needed due to mis-identification of the element-type of the
+      # resulting sized array for the default binding.
       GirFFI::SizedArray.wrap(:guint8, length, data_ptr)
     end
 

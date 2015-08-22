@@ -89,8 +89,6 @@
 * Handle method setup for methods with unsafe names (i.e., g_iconv())
 * Add override for GLib::IConv.open
 
-# Changelog
-
 ## 0.7.0 / 2014-01-11
 
 * Type handling:

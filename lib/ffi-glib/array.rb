@@ -20,6 +20,18 @@ module GLib
       wrap type, ptr
     end
 
+    # @api private
+    def self.from_enumerable elmtype, it
+      new(elmtype).tap { |arr| arr.append_vals it }
+    end
+
+    # @api private
+    def self.calculated_element_size type
+      ffi_type = GirFFI::TypeMap.type_specification_to_ffi_type(type)
+      FFI.type_size(ffi_type)
+    end
+
+    # @override
     def append_vals ary
       bytes = GirFFI::InPointer.from_array element_type, ary
       Lib.g_array_append_vals(self, bytes, ary.length)
@@ -36,10 +48,6 @@ module GLib
       @struct[:len]
     end
 
-    def data_ptr
-      @struct[:data]
-    end
-
     def get_element_size
       Lib.g_array_get_element_size self
     end
@@ -50,6 +58,7 @@ module GLib
       to_a == other.to_a
     end
 
+    # @api private
     def reset_typespec typespec = nil
       if typespec
         @element_type = typespec
@@ -60,15 +69,10 @@ module GLib
       self
     end
 
-    def self.from_enumerable elmtype, it
-      new(elmtype).tap { |arr| arr.append_vals it }
-    end
-
     private
 
-    def self.calculated_element_size type
-      ffi_type = GirFFI::TypeMap.type_specification_to_ffi_type(type)
-      FFI.type_size(ffi_type)
+    def data_ptr
+      @struct[:data]
     end
 
     def calculated_element_size
