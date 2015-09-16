@@ -46,8 +46,9 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 ## Requirements
 
-GirFFI should work on CRuby 2.0, 2.1 and 2.2, JRuby in 1.9 or 2.0 mode,
-and on Rubinius. If you need support for CRuby 1.9.3, use version 0.7.10.
+GirFFI should work on CRuby 2.0.0, 2.1 and 2.2, JRuby 1.7.x in 1.9 or 2.0 mode,
+JRuby 9.0.0.0, and on Rubinius. If you need support for CRuby 1.9.3, use
+version 0.7.10.
 
 You will also need gobject-introspection installed with some
 introspection data.

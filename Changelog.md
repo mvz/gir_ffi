@@ -2,7 +2,8 @@
 
 ## Unreleased
 
-* Drop support for CRuby 1.9.3
+* Drop official support for CRuby 1.9.3
+* Officially support JRuby 9.0.0.0
 
 ## 0.7.10 / 2015-09-16
 
