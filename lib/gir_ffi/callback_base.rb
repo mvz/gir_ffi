@@ -53,11 +53,6 @@ module GirFFI
       end
     end
 
-    # @deprecated Use .to_ffi_type instead. Will be removed in 0.8.0.
-    def self.to_ffitype
-      self
-    end
-
     def self.to_ffi_type
       self
     end
