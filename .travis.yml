@@ -13,6 +13,8 @@ rvm:
 matrix:
   allow_failures:
     - rvm: jruby-head
+    - rvm: ruby-head
+    - rvm: ruby-head-clang
 install:
   - bundle install --retry=3
 before_install:
