@@ -113,11 +113,6 @@ module GObject
       end
     end
 
-    # @deprecated Use GObject::Value.for_gtype instead. Will be removed in 0.8.0.
-    def self.for_g_type g_type
-      for_gtype g_type
-    end
-
     def self.for_gtype gtype
       return nil if gtype == TYPE_NONE
       new.tap do |it|
