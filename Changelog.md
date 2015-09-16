@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.10 / 2015-09-16
+
+* Allow ffi-gobject and ffi-glib to be required directly
+* Improve documentation
+* Remove arbitrary refcount check from finalizer (by John Cupitt)
+
 ## 0.7.9 / 2015-05-05
 
 * Unset GValues in finalizer
