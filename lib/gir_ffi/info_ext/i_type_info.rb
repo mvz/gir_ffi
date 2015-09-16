@@ -19,11 +19,6 @@ module GirFFI
         }
       end
 
-      # @deprecated Use #gtype instead. Will be removed in 0.8.0.
-      def g_type
-        gtype
-      end
-
       def gtype
         if tag == :interface
           return interface.gtype
