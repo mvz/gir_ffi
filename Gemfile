@@ -4,7 +4,9 @@ source 'https://rubygems.org'
 gemspec
 
 if ENV['CI']
-  gem 'coveralls', type: :development, platform: :mri
+  if ENV['TRAVIS_RUBY_VERSION'] == '2.2'
+    gem 'coveralls', type: :development
+  end
 else
   gem 'simplecov', '~> 0.10.0', type: :development, platform: :mri
   gem 'pry', '~> 0.10.0', type: :development
