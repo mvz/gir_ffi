@@ -51,11 +51,6 @@ module GirFFI
     end
 
     class << self
-      # @deprecated Use .to_ffi_type instead. Will be removed in 0.8.0.
-      def to_ffitype
-        to_ffi_type
-      end
-
       def setup_method name
         gir_ffi_builder.setup_method name
       end

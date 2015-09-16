@@ -569,7 +569,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
   end
 
-  describe '#g_type' do
+  describe '#gtype' do
     before do
       allow(type_info).to receive(:tag).and_return tag
       allow(type_info).to receive(:pointer?).and_return pointer?
@@ -580,7 +580,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the none type' do
-        GObject.type_name(type_info.g_type).must_equal 'void'
+        GObject.type_name(type_info.gtype).must_equal 'void'
       end
     end
 
@@ -589,7 +589,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gboolean type' do
-        GObject.type_name(type_info.g_type).must_equal 'gboolean'
+        GObject.type_name(type_info.gtype).must_equal 'gboolean'
       end
     end
 
@@ -598,7 +598,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gint type' do
-        GObject.type_name(type_info.g_type).must_equal 'gint'
+        GObject.type_name(type_info.gtype).must_equal 'gint'
       end
     end
 
@@ -607,7 +607,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gint64 type' do
-        GObject.type_name(type_info.g_type).must_equal 'gint64'
+        GObject.type_name(type_info.gtype).must_equal 'gint64'
       end
     end
 
@@ -616,7 +616,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the guint64 type' do
-        GObject.type_name(type_info.g_type).must_equal 'guint64'
+        GObject.type_name(type_info.gtype).must_equal 'guint64'
       end
     end
 
@@ -625,7 +625,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the gchararray type' do
-        GObject.type_name(type_info.g_type).must_equal 'gchararray'
+        GObject.type_name(type_info.gtype).must_equal 'gchararray'
       end
     end
 
@@ -634,7 +634,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the GHashTable type' do
-        GObject.type_name(type_info.g_type).must_equal 'GHashTable'
+        GObject.type_name(type_info.gtype).must_equal 'GHashTable'
       end
     end
 
@@ -649,7 +649,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals the GArray type' do
-          GObject.type_name(type_info.g_type).must_equal 'GArray'
+          GObject.type_name(type_info.gtype).must_equal 'GArray'
         end
       end
 
@@ -660,7 +660,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals the gpointer type' do
-          GObject.type_name(type_info.g_type).must_equal 'gpointer'
+          GObject.type_name(type_info.gtype).must_equal 'gpointer'
         end
       end
 
@@ -675,7 +675,7 @@ describe GirFFI::InfoExt::ITypeInfo do
             allow(elmtype_info).to receive(:tag).and_return :utf8
             allow(elmtype_info).to receive(:pointer?).and_return true
 
-            GObject.type_name(type_info.g_type).must_equal 'GStrv'
+            GObject.type_name(type_info.gtype).must_equal 'GStrv'
           end
         end
 
@@ -684,7 +684,7 @@ describe GirFFI::InfoExt::ITypeInfo do
             allow(elmtype_info).to receive(:tag).and_return :filename
             allow(elmtype_info).to receive(:pointer?).and_return true
 
-            GObject.type_name(type_info.g_type).must_equal 'GStrv'
+            GObject.type_name(type_info.gtype).must_equal 'GStrv'
           end
         end
       end

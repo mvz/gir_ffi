@@ -49,7 +49,7 @@ module GirFFI
 
       def argument_ffi_types
         @argument_ffi_types ||= info.argument_ffi_types.
-          unshift(receiver_type_info.to_callback_ffitype)
+          unshift(receiver_type_info.to_callback_ffi_type)
       end
 
       def return_ffi_type

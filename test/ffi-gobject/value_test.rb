@@ -45,77 +45,77 @@ describe GObject::Value do
   describe '#set_value' do
     it 'handles char values' do
       value = 83
-      gv = GObject::Value.for_g_type GObject::TYPE_CHAR
+      gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_value value
       gv.get_char.must_equal value
     end
 
     it 'handles enum values presented as symbols' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
+      gv = GObject::Value.for_gtype Regress::TestEnum.gtype
       gv.set_value value
       gv.get_value.must_equal value
     end
 
     it 'handles enum values presented as numbers' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
+      gv = GObject::Value.for_gtype Regress::TestEnum.gtype
       gv.set_value Regress::TestEnum[value]
       gv.get_value.must_equal value
     end
 
     it 'handles GType values' do
       value = GObject::TYPE_STRING
-      gv = GObject::Value.for_g_type GObject::TYPE_GTYPE
+      gv = GObject::Value.for_gtype GObject::TYPE_GTYPE
       gv.set_value value
       gv.get_gtype.must_equal value
     end
 
     it 'handles int64 values' do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_INT64
+      gv = GObject::Value.for_gtype GObject::TYPE_INT64
       gv.set_value value
       gv.get_int64.must_equal value
     end
 
     it 'handles long values' do
       value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_LONG
+      gv = GObject::Value.for_gtype GObject::TYPE_LONG
       gv.set_value value
       gv.get_long.must_equal value
     end
 
     it 'handles uchar values' do
       value = 83
-      gv = GObject::Value.for_g_type GObject::TYPE_UCHAR
+      gv = GObject::Value.for_gtype GObject::TYPE_UCHAR
       gv.set_value value
       gv.get_uchar.must_equal value
     end
 
     it 'handles uint values' do
       value = 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_UINT
+      gv = GObject::Value.for_gtype GObject::TYPE_UINT
       gv.set_value value
       gv.get_uint.must_equal value
     end
 
     it 'handles uint64 values' do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_UINT64
+      gv = GObject::Value.for_gtype GObject::TYPE_UINT64
       gv.set_value value
       gv.get_uint64.must_equal value
     end
 
     it 'handles ulong values' do
       value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_ULONG
+      gv = GObject::Value.for_gtype GObject::TYPE_ULONG
       gv.set_value value
       gv.get_ulong.must_equal value
     end
 
     it 'handles variant values' do
       value = GLib::Variant.new_string('Foo')
-      gv = GObject::Value.for_g_type GObject::TYPE_VARIANT
+      gv = GObject::Value.for_gtype GObject::TYPE_VARIANT
       gv.set_value value
       gv.get_variant.must_equal value
     end
@@ -136,84 +136,84 @@ describe GObject::Value do
 
     it 'unwraps a char' do
       value = 3
-      gv = GObject::Value.for_g_type GObject::TYPE_CHAR
+      gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_char value
       gv.get_value.must_equal value
     end
 
     it 'unwraps an enum value' do
       value = :value2
-      gv = GObject::Value.for_g_type Regress::TestEnum.gtype
+      gv = GObject::Value.for_gtype Regress::TestEnum.gtype
       gv.set_enum Regress::TestEnum[value]
       gv.get_value.must_equal value
     end
 
     it 'unwraps a flags value' do
       value = Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
-      gv = GObject::Value.for_g_type Regress::TestFlags.gtype
+      gv = GObject::Value.for_gtype Regress::TestFlags.gtype
       gv.set_flags value
       gv.get_value.must_equal value
     end
 
     it 'unwraps a GType' do
       value = GObject::TYPE_STRING
-      gv = GObject::Value.for_g_type GObject::TYPE_GTYPE
+      gv = GObject::Value.for_gtype GObject::TYPE_GTYPE
       gv.set_gtype value
       gv.get_value.must_equal value
     end
 
     it 'unwraps an int64' do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_INT64
+      gv = GObject::Value.for_gtype GObject::TYPE_INT64
       gv.set_int64 value
       gv.get_value.must_equal value
     end
 
     it 'unwraps a long' do
       value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_LONG
+      gv = GObject::Value.for_gtype GObject::TYPE_LONG
       gv.set_long value
       gv.get_value.must_equal value
     end
 
     it 'unwraps an uchar' do
       value = 3
-      gv = GObject::Value.for_g_type GObject::TYPE_UCHAR
+      gv = GObject::Value.for_gtype GObject::TYPE_UCHAR
       gv.set_uchar value
       gv.get_value.must_equal value
     end
 
     it 'unwraps an uint' do
       value = 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_UINT
+      gv = GObject::Value.for_gtype GObject::TYPE_UINT
       gv.set_uint value
       gv.get_value.must_equal value
     end
 
     it 'unwraps an uint64' do
       value = 0x1234_5678_9012_3456
-      gv = GObject::Value.for_g_type GObject::TYPE_UINT64
+      gv = GObject::Value.for_gtype GObject::TYPE_UINT64
       gv.set_uint64 value
       gv.get_value.must_equal value
     end
 
     it 'unwraps a ulong' do
       value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
-      gv = GObject::Value.for_g_type GObject::TYPE_ULONG
+      gv = GObject::Value.for_gtype GObject::TYPE_ULONG
       gv.set_ulong value
       gv.get_value.must_equal value
     end
 
     it 'unwraps a variant' do
       value = GLib::Variant.new_string('Foo')
-      gv = GObject::Value.for_g_type GObject::TYPE_VARIANT
+      gv = GObject::Value.for_gtype GObject::TYPE_VARIANT
       gv.set_variant value
       gv.get_value.must_equal value
     end
 
     it 'works with a ByteArray' do
       ba = GLib::ByteArray.new.append('some bytes')
-      v = GObject::Value.for_g_type GObject::TYPE_BYTE_ARRAY
+      v = GObject::Value.for_gtype GObject::TYPE_BYTE_ARRAY
       v.set_boxed ba
 
       result = v.get_value
@@ -224,7 +224,7 @@ describe GObject::Value do
 
     it 'works with an Array' do
       arr = GLib::Array.from(:uint, [1, 2, 3])
-      v = GObject::Value.for_g_type GObject::TYPE_ARRAY
+      v = GObject::Value.for_gtype GObject::TYPE_ARRAY
       v.set_boxed arr
 
       result = v.get_value

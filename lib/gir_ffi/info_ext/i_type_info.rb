@@ -19,11 +19,6 @@ module GirFFI
         }
       end
 
-      # @deprecated Use #gtype instead. Will be removed in 0.8.0.
-      def g_type
-        gtype
-      end
-
       def gtype
         if tag == :interface
           return interface.gtype
@@ -102,11 +97,6 @@ module GirFFI
         end
       end
 
-      # @deprecated Use #to_ffi_type instead. Will be removed in 0.8.0.
-      def to_ffitype
-        to_ffi_type
-      end
-
       def to_ffi_type
         return :pointer if pointer?
 
@@ -118,11 +108,6 @@ module GirFFI
         else
           TypeMap.map_basic_type tag
         end
-      end
-
-      # @deprecated Use #to_callback_ffi_type instead. Will be removed in 0.8.0.
-      def to_callback_ffitype
-        to_callback_ffi_type
       end
 
       def to_callback_ffi_type

@@ -58,7 +58,7 @@ module GObject
     def get_property_with_override property_name
       pspec = type_class.find_property property_name
 
-      gvalue = GObject::Value.for_g_type pspec.value_type
+      gvalue = GObject::Value.for_gtype pspec.value_type
       get_property_without_override property_name, gvalue
 
       gvalue
@@ -73,7 +73,7 @@ module GObject
 
     def set_property_with_override property_name, value
       pspec = type_class.find_property property_name
-      gvalue = GObject::Value.for_g_type pspec.value_type
+      gvalue = GObject::Value.for_gtype pspec.value_type
       gvalue.set_value value
       set_property_without_override property_name, gvalue
     end
