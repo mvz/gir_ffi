@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Drop official support for CRuby 1.9.3
+* Officially support JRuby 9.0.0.0
+
 ## 0.7.10 / 2015-09-16
 
 * Allow ffi-gobject and ffi-glib to be required directly

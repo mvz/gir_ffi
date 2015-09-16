@@ -1,15 +1,20 @@
 language: ruby
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1
   - 2.2
+  - ruby-head
+  - ruby-head-clang
   - jruby-19mode
+  - jruby-20mode
   - jruby-head
+  - jruby-9.0.0.0
   - rbx-2
 matrix:
   allow_failures:
     - rvm: jruby-head
+    - rvm: ruby-head
+    - rvm: ruby-head-clang
 install:
   - bundle install --retry=3
 before_install:
