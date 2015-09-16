@@ -47,7 +47,7 @@ module GirFFI
       end
 
       def already_set_up
-        klass.respond_to? :get_gtype
+        klass.respond_to? :gtype
       end
 
       def superclass
