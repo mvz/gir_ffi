@@ -59,7 +59,6 @@ module GirFFI
         gir_ffi_builder.setup_instance_method name
       end
 
-      alias_method :_real_new, :new
       undef new
 
       # Wrap the passed pointer in an instance of the current class, or a
@@ -72,7 +71,7 @@ module GirFFI
       # do any casting to subtypes.
       def direct_wrap ptr
         return nil if !ptr || ptr.null?
-        obj = _real_new
+        obj = allocate
         obj.instance_variable_set :@struct, self::Struct.new(ptr)
         obj
       end

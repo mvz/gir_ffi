@@ -92,7 +92,7 @@ describe GirFFI::ClassBase do
           'correct-result'
         end
         def self.new
-          _real_new
+          allocate
         end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
@@ -110,11 +110,11 @@ describe GirFFI::ClassBase do
 
       expect(sub_builder = Object.new).to receive(:setup_instance_method).with('foo').and_return nil
       sub_klass = Class.new klass do
-        def foo; end
+        def foo
+        end
 
-        def initialize; end
         def self.new
-          _real_new
+          allocate
         end
       end
       sub_klass.const_set :GIR_FFI_BUILDER, sub_builder
@@ -131,7 +131,7 @@ describe GirFFI::ClassBase do
           'correct-result'
         end
         def self.new
-          _real_new
+          allocate
         end
       end
       klass.const_set :GIR_FFI_BUILDER, builder

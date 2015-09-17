@@ -20,6 +20,7 @@ module GirFFI
       def provide_constructor
         return if info.find_method 'new'
 
+        # TODO: Provide both new and initialize
         (class << klass; self; end).class_eval {
           alias_method :new, :_allocate
         }
