@@ -5,12 +5,13 @@ require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/method_template'
+require 'gir_ffi/builders/base_method_builder'
 
 module GirFFI
   module Builders
     # Implements the creation of a Ruby function definition out of a GIR
     # IFunctionInfo.
-    class FunctionBuilder
+    class FunctionBuilder < BaseMethodBuilder
       def initialize(info)
         @info = info
         vargen = GirFFI::VariableNameGenerator.new

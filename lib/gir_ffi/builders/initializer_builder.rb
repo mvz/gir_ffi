@@ -6,12 +6,13 @@ require 'gir_ffi/builders/method_template'
 require 'gir_ffi/error_argument_info'
 require 'gir_ffi/return_value_info'
 require 'gir_ffi/variable_name_generator'
+require 'gir_ffi/builders/base_method_builder'
 
 module GirFFI
   module Builders
     # Implements the creation of a Ruby object initializer definition out of a
     # GIR IFunctionInfo.
-    class InitializerBuilder
+    class InitializerBuilder < BaseMethodBuilder
       def initialize(info)
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
