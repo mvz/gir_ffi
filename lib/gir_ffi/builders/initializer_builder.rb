@@ -2,7 +2,7 @@ require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/return_value_info'
 require 'gir_ffi/error_argument_info'
-require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/initializer_return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/method_template'
 
@@ -11,17 +11,6 @@ module GirFFI
     # Implements the creation of a Ruby object initializer definition out of a
     # GIR IFunctionInfo.
     class InitializerBuilder
-      # Implements post-conversion for initializer functions
-      class InitializerReturnValueBuilder < BaseArgumentBuilder
-        def capture_variable_name
-          @capture_variable_name ||= new_variable
-        end
-
-        def post_conversion
-          ["store_pointer(#{capture_variable_name})"]
-        end
-      end
-
       def initialize info
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
