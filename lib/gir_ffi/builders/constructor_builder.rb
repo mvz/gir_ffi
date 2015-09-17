@@ -1,3 +1,6 @@
+require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/method_template'
+
 module GirFFI
   module Builders
     # Implements the creation of a Ruby constructor definition out of a

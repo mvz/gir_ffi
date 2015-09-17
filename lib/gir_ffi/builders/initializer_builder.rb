@@ -1,10 +1,11 @@
-require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/argument_builder'
-require 'gir_ffi/return_value_info'
-require 'gir_ffi/error_argument_info'
-require 'gir_ffi/builders/initializer_return_value_builder'
+require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/error_argument_builder'
+require 'gir_ffi/builders/initializer_return_value_builder'
 require 'gir_ffi/builders/method_template'
+require 'gir_ffi/error_argument_info'
+require 'gir_ffi/return_value_info'
+require 'gir_ffi/variable_name_generator'
 
 module GirFFI
   module Builders
