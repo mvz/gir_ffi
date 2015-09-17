@@ -34,7 +34,7 @@ describe GirFFI::UserDefinedTypeInfo do
 
     it 'stores the passed-in implementation in the implementation object' do
       info.install_vfunc_implementation :foo, implementation
-      impl =  info.vfunc_implementations.first
+      impl = info.vfunc_implementations.first
       impl.implementation.must_equal implementation
     end
   end

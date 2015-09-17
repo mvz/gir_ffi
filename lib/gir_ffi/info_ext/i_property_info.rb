@@ -3,7 +3,7 @@ module GirFFI
     # Extensions for GObjectIntrospection::IPropertyInfo needed by GirFFI
     module IPropertyInfo
       def getter_name
-        name.gsub(/-/, '_')
+        name.tr('-', '_')
       end
 
       def setter_name

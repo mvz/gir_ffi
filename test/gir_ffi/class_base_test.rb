@@ -91,6 +91,7 @@ describe GirFFI::ClassBase do
         def self.bar
           'correct-result'
         end
+
         def self.new
           allocate
         end
@@ -130,6 +131,7 @@ describe GirFFI::ClassBase do
         def bar
           'correct-result'
         end
+
         def self.new
           allocate
         end
