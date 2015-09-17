@@ -69,11 +69,11 @@ module GirFFI
     end
 
     # Wrap the passed pointer in an instance of the current class. Will not
-    # do any casting to subtypes.
+    # do any casting to subtypes or additional processing.
     def self.direct_wrap ptr
       return nil if !ptr || ptr.null?
       obj = allocate
-      obj.__send__ :store_pointer, ptr
+      obj.__send__ :assign_pointer, ptr
       obj
     end
 
@@ -103,6 +103,10 @@ module GirFFI
     private
 
     def store_pointer ptr
+      assign_pointer ptr
+    end
+
+    def assign_pointer ptr
       @struct = self.class::Struct.new(ptr)
     end
   end
