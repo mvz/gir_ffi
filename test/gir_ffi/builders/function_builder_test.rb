@@ -50,36 +50,6 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for constructors' do
-      let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'new' }
-      it 'builds correct definition' do
-        code.must_equal <<-CODE.reset_indentation
-          def self.new(obj)
-            _v1 = Regress::TestObj.from(obj)
-            _v2 = Regress::Lib.regress_test_obj_new _v1
-            _v3 = self.constructor_wrap(_v2)
-            return _v3
-          end
-        CODE
-      end
-    end
-
-    describe 'for constructors with custom name' do
-      let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'new_from_file' }
-      it 'builds correct definition' do
-        code.must_equal <<-CODE.reset_indentation
-          def self.new_from_file(x)
-            _v1 = GirFFI::InPointer.from(:utf8, x)
-            _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
-            _v3 = Regress::Lib.regress_test_obj_new_from_file _v1, _v2
-            GirFFI::ArgHelper.check_error(_v2)
-            _v4 = self.constructor_wrap(_v3)
-            return _v4
-          end
-        CODE
-      end
-    end
-
     describe 'for functions that take a GValue' do
       let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_in' }
       it 'creates a call to GObject::Value#from' do
