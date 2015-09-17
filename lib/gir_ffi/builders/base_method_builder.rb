@@ -5,6 +5,10 @@ module GirFFI
       def vargen
         @vargen ||= GirFFI::VariableNameGenerator.new
       end
+
+      def argument_builders
+        @argument_builders ||= @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
+      end
     end
   end
 end
