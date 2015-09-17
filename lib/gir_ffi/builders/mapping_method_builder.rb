@@ -12,14 +12,14 @@ module GirFFI
     # result from Ruby to C.
     class MappingMethodBuilder
       def self.for_callback(argument_infos, return_value_info)
-        new argument_infos, return_value_info, CallbackArgumentBuilder
+        new nil, argument_infos, return_value_info, CallbackArgumentBuilder
       end
 
       def self.for_vfunc(receiver_info, argument_infos, return_value_info)
         new receiver_info, argument_infos, return_value_info, VFuncArgumentBuilder
       end
 
-      def initialize(receiver_info = nil, argument_infos, return_value_info, builder_class)
+      def initialize(receiver_info, argument_infos, return_value_info, builder_class)
         @argument_builder_class = builder_class
         receiver_builder = make_argument_builder receiver_info if receiver_info
         argument_builders = argument_infos.map { |info| make_argument_builder info }
