@@ -84,24 +84,16 @@ module GirFFI
       val
     end
 
-    #
-    # Wraps a pointer retrieved from a constructor method. Here, it is simply
-    # defined as a wrapper around direct_wrap, but, e.g., InitiallyUnowned
-    # overrides it to sink the floating object.
+    private
+
+    # Stores a pointer created by a constructor function. Derived classes may
+    # perform additional processing. For example, InitiallyUnowned overrides it
+    # to sink the floating object.
     #
     # This method assumes the pointer will always be of the type corresponding
     # to the current class, and never of a subtype.
     #
     # @param ptr Pointer to the object's C structure
-    #
-    # @return An object of the current class wrapping the pointer
-    #
-    def self.constructor_wrap ptr
-      direct_wrap ptr
-    end
-
-    private
-
     def store_pointer ptr
       assign_pointer ptr
     end
