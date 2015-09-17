@@ -68,4 +68,23 @@ describe GObject::Object do
       end
     end
   end
+
+  describe 'upon garbage collection' do
+    it 'lowers the reference count' do
+      if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
+        skip 'cannot be reliably tested on JRuby and Rubinius'
+      end
+
+      object = GObject::Object.new GObject::TYPE_OBJECT, nil
+      ptr = object.to_ptr
+      ref_count(ptr).must_equal 1
+      object = nil
+
+      GC.start
+      GC.start
+      GC.start
+
+      ref_count(ptr).must_equal 0
+    end
+  end
 end

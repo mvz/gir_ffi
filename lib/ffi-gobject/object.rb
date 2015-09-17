@@ -5,16 +5,16 @@ module GObject
   class Object
     setup_method 'new'
 
-    def self.constructor_wrap ptr
-      super.tap do |obj|
-        ObjectSpace.define_finalizer obj, make_finalizer(ptr, obj.class.name) if obj
-      end
+    def store_pointer ptr
+      super
+      klass = self.class
+      ObjectSpace.define_finalizer self, klass.make_finalizer(ptr, klass.name)
     end
 
     def self.make_finalizer ptr, name
       proc {
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
-        if rc == 0 
+        if rc == 0
           warn "not unreffing #{name}:#{ptr} (#{rc})"
         else
           GObject::Lib.g_object_unref ptr
