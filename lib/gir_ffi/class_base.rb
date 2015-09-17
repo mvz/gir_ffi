@@ -73,7 +73,7 @@ module GirFFI
     def self.direct_wrap ptr
       return nil if !ptr || ptr.null?
       obj = allocate
-      obj.instance_variable_set :@struct, self::Struct.new(ptr)
+      obj.__send__ :store_pointer, ptr
       obj
     end
 
@@ -98,6 +98,12 @@ module GirFFI
     #
     def self.constructor_wrap ptr
       direct_wrap ptr
+    end
+
+    private
+
+    def store_pointer ptr
+      @struct = self.class::Struct.new(ptr)
     end
   end
 end
