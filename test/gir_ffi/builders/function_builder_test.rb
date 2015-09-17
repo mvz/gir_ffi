@@ -51,6 +51,20 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe 'for constructors' do
+      let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'new' }
+      it 'builds correct definition' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.new(obj)
+            _v1 = Regress::TestObj.from(obj)
+            _v2 = Regress::Lib.regress_test_obj_new _v1
+            _v3 = self.constructor_wrap(_v2)
+            return _v3
+          end
+        CODE
+      end
+    end
+
+    describe 'for constructors with custom name' do
       let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'new_from_file' }
       it 'builds correct definition' do
         code.must_equal <<-CODE.reset_indentation
