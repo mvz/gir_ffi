@@ -3,11 +3,8 @@ require 'gir_ffi_test_helper'
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, false) }
-  let(:for_constructor) { false }
   let(:builder) {
-    GirFFI::Builders::ReturnValueBuilder.new(var_gen,
-                                             return_type_info,
-                                             for_constructor)
+    GirFFI::Builders::ReturnValueBuilder.new(var_gen, return_type_info)
   }
 
   describe 'for :gint32' do
@@ -81,42 +78,20 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :object' do
-    describe 'when the method is not a constructor' do
-      let(:type_info) {
-        get_method_introspection_data('GIMarshallingTests',
-                                      'Object',
-                                      'full_return').return_type
-      }
-      let(:for_constructor) { false }
+    let(:type_info) {
+      get_method_introspection_data('GIMarshallingTests',
+                                    'Object',
+                                    'full_return').return_type
+    }
 
-      it 'wraps the result in #post_conversion' do
-        builder.capture_variable_name.must_equal '_v1'
-        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
-      end
-
-      it 'returns the wrapped result' do
-        builder.capture_variable_name.must_equal '_v1'
-        builder.return_value_name.must_equal '_v2'
-      end
+    it 'wraps the result in #post_conversion' do
+      builder.capture_variable_name.must_equal '_v1'
+      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
     end
 
-    describe 'when the method is a constructor' do
-      let(:type_info) {
-        get_method_introspection_data('GIMarshallingTests',
-                                      'Object',
-                                      'new').return_type
-      }
-      let(:for_constructor) { true }
-
-      it 'wraps the result in #post_conversion' do
-        builder.capture_variable_name.must_equal '_v1'
-        builder.post_conversion.must_equal ['_v2 = self.constructor_wrap(_v1)']
-      end
-
-      it 'returns the wrapped result' do
-        builder.capture_variable_name.must_equal '_v1'
-        builder.return_value_name.must_equal '_v2'
-      end
+    it 'returns the wrapped result' do
+      builder.capture_variable_name.must_equal '_v1'
+      builder.return_value_name.must_equal '_v2'
     end
   end
 

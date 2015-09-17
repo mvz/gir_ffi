@@ -1,7 +1,6 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
-require 'gir_ffi/builders/constructor_result_convertor'
 
 module GirFFI
   module Builders
@@ -9,7 +8,6 @@ module GirFFI
     class ReturnValueBuilder < BaseArgumentBuilder
       def initialize var_gen, arginfo, constructor_result = false
         super var_gen, arginfo
-        @constructor_result = constructor_result
       end
 
       def relevant?
@@ -42,20 +40,13 @@ module GirFFI
 
       private
 
-      def constructor_result?
-        @constructor_result
-      end
-
       def has_post_conversion?
-        closure? || constructor_result? ||
-          type_info.needs_c_to_ruby_conversion_for_functions?
+        closure? || type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def post_convertor
         @post_convertor ||= if closure?
                               ClosureConvertor.new(capture_variable_name)
-                            elsif constructor_result?
-                              ConstructorResultConvertor.new(capture_variable_name)
                             else
                               CToRubyConvertor.new(type_info,
                                                    capture_variable_name,
