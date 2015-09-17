@@ -33,15 +33,19 @@ describe 'For derived classes' do
   end
 
   describe 'the initializer' do
-    it 'does not have to call super' do
+    it 'works if it calls super' do
       klass = Class.new Regress::TestSubObj do
-        def initialize *_args
+        attr_reader :animal
+        def initialize animal
+          super()
+          @animal = animal
         end
       end
 
-      obj = klass.new
+      obj = klass.new 'dog'
       obj.must_be_instance_of klass
       obj.to_ptr.wont_be_nil
+      obj.animal.must_equal 'dog'
     end
   end
 end

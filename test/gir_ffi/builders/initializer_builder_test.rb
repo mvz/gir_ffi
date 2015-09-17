@@ -1,7 +1,5 @@
 require 'gir_ffi_test_helper'
 
-require 'gir_ffi/builders/initializer_builder'
-
 describe GirFFI::Builders::InitializerBuilder do
   describe '#generate' do
     let(:builder) { GirFFI::Builders::InitializerBuilder.new function_info }

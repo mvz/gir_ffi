@@ -13,6 +13,7 @@ module GirFFI
     class FunctionBuilder
       def initialize info
         @info = info
+        warn "Unexpectedly using FunctionBuilder to build construcor #{info.symbol}" if @info.constructor?
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
         return_value_info = ReturnValueInfo.new(@info.return_type,

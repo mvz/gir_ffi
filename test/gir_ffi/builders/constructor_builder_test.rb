@@ -1,7 +1,5 @@
 require 'gir_ffi_test_helper'
 
-require 'gir_ffi/builders/constructor_builder'
-
 describe GirFFI::Builders::ConstructorBuilder do
   describe '#generate' do
     let(:builder) { GirFFI::Builders::ConstructorBuilder.new function_info }

@@ -1,6 +1,7 @@
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/module_base'
 require 'gir_ffi/builders/function_builder'
+
 require 'indentation'
 
 module GirFFI
