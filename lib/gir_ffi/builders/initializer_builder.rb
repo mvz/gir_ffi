@@ -15,9 +15,6 @@ module GirFFI
     class InitializerBuilder < BaseMethodBuilder
       def initialize(info)
         @info = info
-        return_value_info = ReturnValueInfo.new(@info.return_type,
-                                                @info.caller_owns,
-                                                @info.skip_return?)
         @return_value_builder = InitializerReturnValueBuilder.new(vargen,
                                                                   return_value_info)
         @argument_builder_collection = ArgumentBuilderCollection.new(

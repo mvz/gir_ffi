@@ -9,6 +9,12 @@ module GirFFI
       def argument_builders
         @argument_builders ||= @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
       end
+
+      def return_value_info
+        @return_value_info ||= ReturnValueInfo.new(@info.return_type,
+                                                   @info.caller_owns,
+                                                   @info.skip_return?)
+      end
     end
   end
 end
