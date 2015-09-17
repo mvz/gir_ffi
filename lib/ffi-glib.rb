@@ -48,5 +48,6 @@ module GLib
     attach_function :g_ptr_array_foreach, [:pointer, Func, :pointer], :pointer
 
     attach_function :g_iconv_open, [:pointer, :pointer], :pointer
+    attach_function :g_variant_ref_sink, [:pointer], :pointer
   end
 end
