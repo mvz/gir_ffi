@@ -26,7 +26,7 @@ module GirFFI
         @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
-      def generate
+      def method_definition
         @template.method_definition
       end
 

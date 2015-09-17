@@ -1,9 +1,9 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::FunctionBuilder do
-  describe '#generate' do
+  describe '#method_definition' do
     let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
-    let(:code) { builder.generate }
+    let(:code) { builder.method_definition }
 
     describe 'for Regress:test_array_fixed_out_objects' do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_fixed_out_objects' }

@@ -1,9 +1,9 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::InitializerBuilder do
-  describe '#generate' do
+  describe '#method_definition' do
     let(:builder) { GirFFI::Builders::InitializerBuilder.new function_info }
-    let(:code) { builder.generate }
+    let(:code) { builder.method_definition }
 
     describe 'for constructors with the default name' do
       let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'new' }

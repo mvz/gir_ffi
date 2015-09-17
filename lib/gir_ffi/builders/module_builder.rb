@@ -27,7 +27,7 @@ module GirFFI
         return false unless go
 
         Builder.attach_ffi_function lib, go
-        modul.class_eval FunctionBuilder.new(go).generate
+        modul.class_eval FunctionBuilder.new(go).method_definition
 
         true
       end

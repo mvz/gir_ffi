@@ -89,6 +89,7 @@ module GirFFI
         MethodTemplate.new(getter_builder, argument_builders).method_definition
       end
 
+      # TODO: Use MethodTemplate
       def setter_def
         builder = setter_builder
 

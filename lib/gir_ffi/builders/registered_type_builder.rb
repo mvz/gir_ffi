@@ -42,10 +42,10 @@ module GirFFI
 
       def define_method(method_info)
         if method_info.constructor?
-          build_class.class_eval InitializerBuilder.new(method_info).generate
-          build_class.class_eval ConstructorBuilder.new(method_info).generate
+          build_class.class_eval InitializerBuilder.new(method_info).method_definition
+          build_class.class_eval ConstructorBuilder.new(method_info).method_definition
         else
-          build_class.class_eval FunctionBuilder.new(method_info).generate
+          build_class.class_eval FunctionBuilder.new(method_info).method_definition
         end
       end
 
