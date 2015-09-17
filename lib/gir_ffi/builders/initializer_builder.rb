@@ -15,7 +15,6 @@ module GirFFI
     class InitializerBuilder < BaseMethodBuilder
       def initialize(info)
         @info = info
-        vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
         return_value_info = ReturnValueInfo.new(@info.return_type,
                                                 @info.caller_owns,
