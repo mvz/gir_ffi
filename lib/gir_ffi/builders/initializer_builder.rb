@@ -23,10 +23,6 @@ module GirFFI
         @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
-      def method_definition
-        @template.method_definition
-      end
-
       def singleton_method?
         false
       end

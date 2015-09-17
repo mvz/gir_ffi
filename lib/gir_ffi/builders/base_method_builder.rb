@@ -15,6 +15,10 @@ module GirFFI
                                                    @info.caller_owns,
                                                    @info.skip_return?)
       end
+
+      def method_definition
+        @template.method_definition
+      end
     end
   end
 end
