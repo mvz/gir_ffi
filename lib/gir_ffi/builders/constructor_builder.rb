@@ -26,10 +26,6 @@ module GirFFI
         @info.safe_name
       end
 
-      def initializer_method_name
-        @info.safe_name.sub(/^new/, 'initialize')
-      end
-
       def method_arguments
         ['*args']
       end
@@ -39,11 +35,17 @@ module GirFFI
       end
 
       def invocation
-        "obj.__send__ #{initializer_method_name.to_sym.inspect}, #{method_arguments.join(', ')}"
+        "obj.__send__ #{initializer_name.to_sym.inspect}, #{method_arguments.join(', ')}"
       end
 
       def result
         ['obj']
+      end
+
+      private
+
+      def initializer_name
+        @info.safe_name.sub(/^new/, 'initialize')
       end
     end
   end
