@@ -6,10 +6,6 @@ module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseArgumentBuilder
-      def initialize var_gen, arginfo, constructor_result = false
-        super var_gen, arginfo
-      end
-
       def relevant?
         !void_return_value? && !arginfo.skip?
       end
