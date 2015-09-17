@@ -67,8 +67,10 @@ Style/SingleLineBlockParams:
 Style/TrailingComma:
   Enabled: false
 
-# Accessors are only trivial if they match the ivar name
+# Accessors are only trivial if they match the ivar name. Also, allow accessors
+# with ? in the name.
 Style/TrivialAccessors:
   ExactNameMatch: true
+  AllowPredicates: true
 
 inherit_from: .rubocop_todo.yml

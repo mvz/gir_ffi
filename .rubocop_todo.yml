@@ -33,10 +33,3 @@ Metrics/ModuleLength:
 Style/OptionalArguments:
   Exclude:
     - 'lib/ffi-glib/container_class_methods.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: ExactNameMatch, AllowPredicates, AllowDSLWriters, IgnoreClassMethods, Whitelist.
-Style/TrivialAccessors:
-  Exclude:
-    - 'lib/gir_ffi/return_value_info.rb'
