@@ -67,8 +67,9 @@ module GLib
 
     # Common class methods for List and SList
     module ListClassMethods
+      # TODO: Make this behave more like a real .new method
       def new type
-        _real_new.tap do |it|
+        allocate.tap do |it|
           struct = self::Struct.new(FFI::Pointer.new(0))
           it.instance_variable_set :@struct, struct
           it.instance_variable_set :@element_type, type

@@ -56,18 +56,6 @@ describe GirFFI::Builders::ObjectBuilder do
     end
   end
 
-  describe '#function_definition' do
-    let(:method_info) {
-      get_method_introspection_data 'Regress', 'TestObj', 'instance_method'
-    }
-
-    it 'delegates definition to FunctionBuilder' do
-      code = obj_builder.send :function_definition, method_info
-      expected = GirFFI::Builders::FunctionBuilder.new(method_info).generate
-      code.must_equal expected
-    end
-  end
-
   describe '#object_class_struct' do
     it 'returns the class struct type' do
       obj_builder.object_class_struct.must_equal Regress::TestObjClass

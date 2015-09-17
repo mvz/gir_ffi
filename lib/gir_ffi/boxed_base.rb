@@ -26,8 +26,9 @@ module GirFFI
       pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
     end
 
+    # TODO: Make this behave more like a real .new method
     def self._allocate
-      obj = _real_new
+      obj = allocate
       obj.instance_variable_set :@struct, self::Struct.new
       obj
     end

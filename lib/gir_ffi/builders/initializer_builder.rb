@@ -1,16 +1,17 @@
-require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/argument_builder'
-require 'gir_ffi/return_value_info'
-require 'gir_ffi/error_argument_info'
-require 'gir_ffi/builders/return_value_builder'
+require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/error_argument_builder'
+require 'gir_ffi/builders/initializer_return_value_builder'
 require 'gir_ffi/builders/method_template'
+require 'gir_ffi/error_argument_info'
+require 'gir_ffi/return_value_info'
+require 'gir_ffi/variable_name_generator'
 
 module GirFFI
   module Builders
-    # Implements the creation of a Ruby function definition out of a GIR
-    # IFunctionInfo.
-    class FunctionBuilder
+    # Implements the creation of a Ruby object initializer definition out of a
+    # GIR IFunctionInfo.
+    class InitializerBuilder
       def initialize info
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
@@ -18,8 +19,8 @@ module GirFFI
         return_value_info = ReturnValueInfo.new(@info.return_type,
                                                 @info.caller_owns,
                                                 @info.skip_return?)
-        @return_value_builder = ReturnValueBuilder.new(vargen,
-                                                       return_value_info)
+        @return_value_builder = InitializerReturnValueBuilder.new(vargen,
+                                                                  return_value_info)
         @argument_builder_collection = ArgumentBuilderCollection.new(
           @return_value_builder, @argument_builders,
           error_argument_builder: error_argument(vargen))
@@ -30,8 +31,12 @@ module GirFFI
         @template.method_definition
       end
 
+      def singleton_method?
+        false
+      end
+
       def method_name
-        @info.safe_name
+        @info.safe_name.sub(/^new/, 'initialize')
       end
 
       def method_arguments
@@ -47,15 +52,7 @@ module GirFFI
       end
 
       def result
-        if @argument_builder_collection.has_return_values?
-          ["return #{@argument_builder_collection.return_value_names.join(', ')}"]
-        else
-          []
-        end
-      end
-
-      def singleton_method?
-        !@info.method?
+        []
       end
 
       private
@@ -71,17 +68,7 @@ module GirFFI
       end
 
       def function_call_arguments
-        ca = @argument_builder_collection.call_argument_names
-        ca.unshift receiver_call_argument if @info.method?
-        ca
-      end
-
-      def receiver_call_argument
-        if @info.instance_ownership_transfer == :everything
-          'self.ref'
-        else
-          'self'
-        end
+        @argument_builder_collection.call_argument_names
       end
     end
   end

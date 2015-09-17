@@ -50,55 +50,56 @@ module GirFFI
       self::Struct
     end
 
-    class << self
-      def setup_method name
-        gir_ffi_builder.setup_method name
-      end
-
-      def setup_instance_method name
-        gir_ffi_builder.setup_instance_method name
-      end
-
-      alias_method :_real_new, :new
-      undef new
-
-      # Wrap the passed pointer in an instance of the current class, or a
-      # descendant type if applicable.
-      def wrap ptr
-        direct_wrap ptr
-      end
-
-      # Wrap the passed pointer in an instance of the current class. Will not
-      # do any casting to subtypes.
-      def direct_wrap ptr
-        return nil if !ptr || ptr.null?
-        obj = _real_new
-        obj.instance_variable_set :@struct, self::Struct.new(ptr)
-        obj
-      end
-
-      # Pass-through casting method. This may become a type checking
-      # method. It is overridden by GValue to implement wrapping of plain
-      # Ruby objects.
-      def from val
-        val
-      end
+    def self.setup_method name
+      gir_ffi_builder.setup_method name
     end
 
-    #
-    # Wraps a pointer retrieved from a constructor method. Here, it is simply
-    # defined as a wrapper around direct_wrap, but, e.g., InitiallyUnowned
-    # overrides it to sink the floating object.
+    def self.setup_instance_method name
+      gir_ffi_builder.setup_instance_method name
+    end
+
+    class << self
+      undef new
+    end
+
+    # Wrap the passed pointer in an instance of the current class, or a
+    # descendant type if applicable.
+    def self.wrap ptr
+      direct_wrap ptr
+    end
+
+    # Wrap the passed pointer in an instance of the current class. Will not
+    # do any casting to subtypes or additional processing.
+    def self.direct_wrap ptr
+      return nil if !ptr || ptr.null?
+      obj = allocate
+      obj.__send__ :assign_pointer, ptr
+      obj
+    end
+
+    # Pass-through casting method. This may become a type checking
+    # method. It is overridden by GValue to implement wrapping of plain
+    # Ruby objects.
+    def self.from val
+      val
+    end
+
+    private
+
+    # Stores a pointer created by a constructor function. Derived classes may
+    # perform additional processing. For example, InitiallyUnowned overrides it
+    # to sink the floating object.
     #
     # This method assumes the pointer will always be of the type corresponding
     # to the current class, and never of a subtype.
     #
     # @param ptr Pointer to the object's C structure
-    #
-    # @return An object of the current class wrapping the pointer
-    #
-    def self.constructor_wrap ptr
-      direct_wrap ptr
+    def store_pointer ptr
+      assign_pointer ptr
+    end
+
+    def assign_pointer ptr
+      @struct = self.class::Struct.new(ptr)
     end
   end
 end

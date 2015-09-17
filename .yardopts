@@ -2,4 +2,5 @@
 --load yard-plugin/setup.rb
 -
 *.md
+docs/*.md
 COPYING.LIB

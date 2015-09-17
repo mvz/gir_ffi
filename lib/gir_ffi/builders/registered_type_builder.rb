@@ -1,6 +1,8 @@
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/method_stubber'
-require 'gir_ffi/class_base'
+require 'gir_ffi/builders/function_builder'
+require 'gir_ffi/builders/constructor_builder'
+require 'gir_ffi/builders/initializer_builder'
 
 module GirFFI
   module Builders
@@ -9,13 +11,15 @@ module GirFFI
     # complex, i.e., a struct or a union.
     class RegisteredTypeBuilder < BaseTypeBuilder
       def setup_method method
-        go = info.find_method method
-        attach_and_define_method method, go, meta_class
+        method_info = info.find_method method
+        return unless method_info
+        attach_and_define_method method_info, meta_class
       end
 
       def setup_instance_method method
-        go = info.find_instance_method method
-        attach_and_define_method method, go, build_class
+        method_info = info.find_instance_method method
+        return unless method_info
+        attach_and_define_method method_info, build_class
       end
 
       def target_gtype
@@ -28,17 +32,29 @@ module GirFFI
         (class << build_class; self; end)
       end
 
-      def function_definition go
-        FunctionBuilder.new(go).generate
+      def attach_and_define_method method_info, modul
+        method = method_info.safe_name
+        attach_method method_info
+        remove_old_method method, modul
+        define_method method_info
+        method
       end
 
-      def attach_and_define_method method, go, modul
-        return unless go
-        method = go.safe_name
-        Builder.attach_ffi_function lib, go
+      def define_method method_info
+        if method_info.constructor?
+          build_class.class_eval InitializerBuilder.new(method_info).generate
+          build_class.class_eval ConstructorBuilder.new(method_info).generate
+        else
+          build_class.class_eval FunctionBuilder.new(method_info).generate
+        end
+      end
+
+      def remove_old_method method, modul
         modul.class_eval { remove_method method if method_defined? method }
-        build_class.class_eval function_definition(go)
-        method
+      end
+
+      def attach_method method_info
+        Builder.attach_ffi_function lib, method_info
       end
 
       def stub_methods
