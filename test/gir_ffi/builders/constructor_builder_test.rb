@@ -13,7 +13,7 @@ describe GirFFI::Builders::ConstructorBuilder do
         code.must_equal <<-CODE.reset_indentation
           def self.new(*args)
             obj = allocate
-            obj.initialize(*args)
+            obj.__send__ :initialize, *args
             obj
           end
         CODE
@@ -26,7 +26,7 @@ describe GirFFI::Builders::ConstructorBuilder do
         code.must_equal <<-CODE.reset_indentation
           def self.new_from_file(*args)
             obj = allocate
-            obj.initialize_from_file(*args)
+            obj.__send__ :initialize_from_file, *args
             obj
           end
         CODE

@@ -39,7 +39,7 @@ module GirFFI
       end
 
       def invocation
-        "obj.#{initializer_method_name}(#{method_arguments.join(', ')})"
+        "obj.__send__ #{initializer_method_name.to_sym.inspect}, #{method_arguments.join(', ')}"
       end
 
       def result
