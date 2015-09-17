@@ -50,38 +50,38 @@ module GirFFI
       self::Struct
     end
 
+    def self.setup_method name
+      gir_ffi_builder.setup_method name
+    end
+
+    def self.setup_instance_method name
+      gir_ffi_builder.setup_instance_method name
+    end
+
     class << self
-      def setup_method name
-        gir_ffi_builder.setup_method name
-      end
-
-      def setup_instance_method name
-        gir_ffi_builder.setup_instance_method name
-      end
-
       undef new
+    end
 
-      # Wrap the passed pointer in an instance of the current class, or a
-      # descendant type if applicable.
-      def wrap ptr
-        direct_wrap ptr
-      end
+    # Wrap the passed pointer in an instance of the current class, or a
+    # descendant type if applicable.
+    def self.wrap ptr
+      direct_wrap ptr
+    end
 
-      # Wrap the passed pointer in an instance of the current class. Will not
-      # do any casting to subtypes.
-      def direct_wrap ptr
-        return nil if !ptr || ptr.null?
-        obj = allocate
-        obj.instance_variable_set :@struct, self::Struct.new(ptr)
-        obj
-      end
+    # Wrap the passed pointer in an instance of the current class. Will not
+    # do any casting to subtypes.
+    def self.direct_wrap ptr
+      return nil if !ptr || ptr.null?
+      obj = allocate
+      obj.instance_variable_set :@struct, self::Struct.new(ptr)
+      obj
+    end
 
-      # Pass-through casting method. This may become a type checking
-      # method. It is overridden by GValue to implement wrapping of plain
-      # Ruby objects.
-      def from val
-        val
-      end
+    # Pass-through casting method. This may become a type checking
+    # method. It is overridden by GValue to implement wrapping of plain
+    # Ruby objects.
+    def self.from val
+      val
     end
 
     #
