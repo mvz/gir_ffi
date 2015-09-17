@@ -15,24 +15,24 @@ module GLib
 
     class << self; undef :new; end
 
-    def self.new type
+    def self.new(type)
       ptr = Lib.g_array_new(0, 0, calculated_element_size(type))
       wrap type, ptr
     end
 
     # @api private
-    def self.from_enumerable elmtype, it
+    def self.from_enumerable(elmtype, it)
       new(elmtype).tap { |arr| arr.append_vals it }
     end
 
     # @api private
-    def self.calculated_element_size type
+    def self.calculated_element_size(type)
       ffi_type = GirFFI::TypeMap.type_specification_to_ffi_type(type)
       FFI.type_size(ffi_type)
     end
 
     # @override
-    def append_vals ary
+    def append_vals(ary)
       bytes = GirFFI::InPointer.from_array element_type, ary
       Lib.g_array_append_vals(self, bytes, ary.length)
       self
@@ -54,12 +54,12 @@ module GLib
 
     alias_method :element_size, :get_element_size
 
-    def == other
+    def ==(other)
       to_a == other.to_a
     end
 
     # @api private
-    def reset_typespec typespec = nil
+    def reset_typespec(typespec = nil)
       if typespec
         @element_type = typespec
         check_element_size_match

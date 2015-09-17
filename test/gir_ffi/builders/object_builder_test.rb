@@ -1,14 +1,14 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ObjectBuilder do
-  let(:obj_builder) {
+  let(:obj_builder) do
     GirFFI::Builders::ObjectBuilder.new(
       get_introspection_data('Regress', 'TestObj'))
-  }
-  let(:sub_obj_builder) {
+  end
+  let(:sub_obj_builder) do
     GirFFI::Builders::ObjectBuilder.new(
       get_introspection_data('Regress', 'TestSubObj'))
-  }
+  end
 
   describe '#find_signal' do
     it 'finds the signal "test" for TestObj' do
@@ -50,9 +50,9 @@ describe GirFFI::Builders::ObjectBuilder do
     end
 
     it 'raises an error if the property is not found' do
-      proc {
+      proc do
         sub_obj_builder.find_property('this-property-does-not-exist')
-      }.must_raise RuntimeError
+      end.must_raise RuntimeError
     end
   end
 

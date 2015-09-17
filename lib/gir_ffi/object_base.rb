@@ -3,7 +3,7 @@ module GirFFI
   class ObjectBase < ClassBase
     # Wrap the passed pointer in an instance of its type's corresponding class,
     # generally assumed to be a descendant of the current type.
-    def self.wrap ptr
+    def self.wrap(ptr)
       ptr.to_object
     end
 
@@ -14,7 +14,7 @@ module GirFFI
     #
     # @return [GObjectIntrospection::IPropertyInfo] The property's info
     #
-    def self.find_property name
+    def self.find_property(name)
       gir_ffi_builder.find_property name
     end
 
@@ -25,7 +25,7 @@ module GirFFI
     #
     # @return [GObjectIntrospection::ISignalInfo] The signal's info
     #
-    def self.find_signal name
+    def self.find_signal(name)
       gir_ffi_builder.find_signal name
     end
 
@@ -33,7 +33,7 @@ module GirFFI
       :pointer
     end
 
-    def self.copy_value_to_pointer value, pointer, offset = 0
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
       pointer.put_pointer offset, value.to_ptr
     end
 

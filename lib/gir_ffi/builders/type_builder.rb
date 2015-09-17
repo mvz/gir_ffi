@@ -28,12 +28,12 @@ module GirFFI
         unintrospectable: UnintrospectableBuilder
       }
 
-      def self.build info
+      def self.build(info)
         builder_for(info).build_class
       end
 
       # TODO: Pull up to include :function and :module
-      def self.builder_for info
+      def self.builder_for(info)
         TYPE_MAP[info.info_type].new(info)
       end
     end

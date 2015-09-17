@@ -5,7 +5,7 @@ module GirFFI
   module Builders
     # Implements the creation of GObject subclasses from Ruby.
     class UserDefinedBuilder < ObjectBuilder
-      def initialize info
+      def initialize(info)
         @info = info
       end
 
@@ -62,7 +62,7 @@ module GirFFI
         end
       end
 
-      def gobject_interface_info interface
+      def gobject_interface_info(interface)
         GObject::InterfaceInfo.new.tap do |interface_info|
           interface_info.interface_init = interface_init_proc(interface)
         end
@@ -75,7 +75,7 @@ module GirFFI
         end
       end
 
-      def interface_init_proc interface
+      def interface_init_proc(interface)
         proc do |interface_ptr, _data|
           setup_interface_vfuncs interface, interface_ptr
         end
@@ -93,7 +93,7 @@ module GirFFI
         parent_gtype.class_size + interface_gtypes.map(&:class_size).inject(0, :+)
       end
 
-      def setup_properties object_class_ptr
+      def setup_properties(object_class_ptr)
         object_class = GObject::ObjectClass.wrap object_class_ptr
 
         object_class.get_property = property_getter
@@ -116,7 +116,7 @@ module GirFFI
         end
       end
 
-      def setup_vfuncs object_class_ptr
+      def setup_vfuncs(object_class_ptr)
         super_class_struct =
           superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
 
@@ -125,7 +125,7 @@ module GirFFI
         end
       end
 
-      def setup_interface_vfuncs interface, interface_ptr
+      def setup_interface_vfuncs(interface, interface_ptr)
         interface_builder = interface.gir_ffi_builder
 
         interface_struct = interface_builder.interface_struct::Struct.new(interface_ptr)
@@ -136,7 +136,7 @@ module GirFFI
         end
       end
 
-      def setup_vfunc super_class_struct, impl
+      def setup_vfunc(super_class_struct, impl)
         vfunc_name = impl.name
         vfunc_info = parent_info.find_vfunc vfunc_name.to_s
 
@@ -145,7 +145,7 @@ module GirFFI
         end
       end
 
-      def setup_interface_vfunc interface_info, interface_struct, impl
+      def setup_interface_vfunc(interface_info, interface_struct, impl)
         vfunc_name = impl.name
         vfunc_info = interface_info.find_vfunc vfunc_name.to_s
 
@@ -154,7 +154,7 @@ module GirFFI
         end
       end
 
-      def install_vfunc container_struct, vfunc_name, vfunc_info, implementation
+      def install_vfunc(container_struct, vfunc_name, vfunc_info, implementation)
         vfunc = VFuncBuilder.new(vfunc_info).build_class
         container_struct[vfunc_name] = vfunc.from implementation
       end
@@ -180,7 +180,7 @@ module GirFFI
         end
       end
 
-      def setup_accessors_for_param_info pinfo
+      def setup_accessors_for_param_info(pinfo)
         field_name = pinfo.name
         code = <<-CODE
         def #{field_name}
@@ -194,7 +194,7 @@ module GirFFI
         klass.class_eval code
       end
 
-      def method_introspection_data _method
+      def method_introspection_data(_method)
         nil
       end
 

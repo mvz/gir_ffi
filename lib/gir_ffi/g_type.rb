@@ -2,7 +2,7 @@ module GirFFI
   # Wrapper class providing extended functionality for a GType, which is
   # normally just a kind of integer
   class GType
-    def initialize gtype
+    def initialize(gtype)
       @gtype = gtype
     end
 

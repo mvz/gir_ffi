@@ -1,11 +1,11 @@
 module GLib
   # Extra methods for GLib::Strv. The bulk is defined in `gir_ffi-base/glib/strv.rb`
   class Strv
-    def == other
+    def ==(other)
       to_a == other.to_a
     end
 
-    def self.from it
+    def self.from(it)
       case it
       when nil
         nil
@@ -18,7 +18,7 @@ module GLib
       end
     end
 
-    def self.from_enumerable enum
+    def self.from_enumerable(enum)
       wrap GirFFI::InPointer.from_array :utf8, enum
     end
   end

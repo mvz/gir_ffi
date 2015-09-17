@@ -10,11 +10,11 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder
-      def self.for_signal receiver_info, argument_infos, return_value_info
+      def self.for_signal(receiver_info, argument_infos, return_value_info)
         new receiver_info, argument_infos, return_value_info
       end
 
-      def initialize receiver_info, argument_infos, return_value_info
+      def initialize(receiver_info, argument_infos, return_value_info)
         receiver_builder = make_argument_builder receiver_info
         argument_builders = argument_infos.map { |arg| make_argument_builder arg }
         return_value_builder =
@@ -76,7 +76,7 @@ module GirFFI
         @variable_generator ||= VariableNameGenerator.new
       end
 
-      def make_argument_builder argument_info
+      def make_argument_builder(argument_info)
         ClosureArgumentBuilder.new variable_generator, argument_info
       end
     end

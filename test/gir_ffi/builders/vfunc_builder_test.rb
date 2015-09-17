@@ -11,9 +11,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with only one argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -29,9 +29,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc returning an enum' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_enum'
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -48,9 +48,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with a callback argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_with_callback'
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -67,10 +67,10 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with an out argument allocated by them, the caller' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                      'method_int8_arg_and_out_caller')
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -88,10 +88,10 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with an out argument allocated by us, the callee' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                      'method_int8_arg_and_out_callee')
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -109,10 +109,10 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with an error argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                      'vfunc_meth_with_err')
-      }
+      end
 
       it 'returns a valid mapping method including receiver' do
         expected = <<-CODE.reset_indentation
@@ -134,9 +134,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with a full-transfer return value' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_object_transfer_full'
-      }
+      end
 
       it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
@@ -153,9 +153,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with a transfer-none in argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_in_object_transfer_none'
-      }
+      end
 
       it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
@@ -172,9 +172,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with a full-transfer outgoing argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_out_object_transfer_full'
-      }
+      end
 
       it 'returns a valid mapping method' do
         expected = <<-CODE.reset_indentation
@@ -199,9 +199,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc with only one argument' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
-      }
+      end
 
       it 'returns the correct FFI types including :pointer for the receiver' do
         result.must_equal [:pointer, :int8]
@@ -217,9 +217,9 @@ describe GirFFI::Builders::VFuncBuilder do
     end
 
     describe 'for a vfunc returning an object' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'vfunc_return_object_transfer_full'
-      }
+      end
 
       it 'returns :pointer' do
         result.must_equal :pointer

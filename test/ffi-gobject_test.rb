@@ -122,10 +122,10 @@ describe GObject do
         sb = Regress::TestSimpleBoxedA.new
         sb.some_int = 23
 
-        GObject.signal_connect(o, 'test-with-static-scope-arg', 2) { |_instance, object, user_data|
+        GObject.signal_connect(o, 'test-with-static-scope-arg', 2) do |_instance, object, user_data|
           @a = user_data
           @b = object
-        }
+        end
         GObject.signal_emit o, 'test-with-static-scope-arg', sb
       end
 

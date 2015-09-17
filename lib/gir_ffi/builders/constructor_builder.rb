@@ -7,7 +7,7 @@ module GirFFI
     # Implements the creation of a Ruby constructor definition out of a
     # GIR IFunctionInfo.
     class ConstructorBuilder
-      def initialize info
+      def initialize(info)
         @info = info
         return_value_builder = NullReturnValueBuilder.new
         arg_builders = ArgumentBuilderCollection.new(return_value_builder, [])

@@ -14,31 +14,31 @@ require 'gir_ffi/builders/user_defined_builder'
 
 # Module representing GLib's GObject namespace.
 module GObject
-  def self.type_from_instance_pointer inst_ptr
+  def self.type_from_instance_pointer(inst_ptr)
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
     GirFFI::InOutPointer.new(:GType, klsptr).to_value
   end
 
-  def self.type_from_instance instance
+  def self.type_from_instance(instance)
     type_from_instance_pointer instance.to_ptr
   end
 
-  def self.object_class_from_instance instance
+  def self.object_class_from_instance(instance)
     object_class_from_instance_pointer instance.to_ptr
   end
 
-  def self.object_class_from_instance_pointer inst_ptr
+  def self.object_class_from_instance_pointer(inst_ptr)
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
     ObjectClass.wrap klsptr
   end
 
-  def self.signal_lookup_from_instance signal, object
+  def self.signal_lookup_from_instance(signal, object)
     signal_lookup signal, type_from_instance(object)
   end
 
-  def self.signal_emit object, detailed_signal, *args
+  def self.signal_emit(object, detailed_signal, *args)
     signal, detail = detailed_signal.split('::')
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
@@ -52,9 +52,9 @@ module GObject
     return_gvalue
   end
 
-  def self.signal_connect object, detailed_signal, data = nil, after = false, &block
+  def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
     raise ArgumentError, 'Block needed' unless block_given?
-    signal_name, _ = detailed_signal.split('::')
+    signal_name, = detailed_signal.split('::')
     sig_info = object.class.find_signal signal_name
 
     closure = sig_info.wrap_in_closure { |*args| block.call(*args << data) }
@@ -62,13 +62,13 @@ module GObject
     signal_connect_closure object, detailed_signal, closure, after
   end
 
-  def self.signal_connect_after object, detailed_signal, data = nil, &block
+  def self.signal_connect_after(object, detailed_signal, data = nil, &block)
     signal_connect object, detailed_signal, data, true, &block
   end
 
   # Smells of :reek:LongParameterList: due to the C interface.
   # rubocop:disable Metrics/ParameterLists
-  def self.param_spec_int name, nick, blurb, minimum, maximum, default_value, flags
+  def self.param_spec_int(name, nick, blurb, minimum, maximum, default_value, flags)
     ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
                                default_value, flags)
     ParamSpecInt.wrap(ptr)

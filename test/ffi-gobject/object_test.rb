@@ -15,7 +15,7 @@ describe GObject::Object do
         @x
       end
 
-      def set_x val
+      def set_x(val)
         @x = val
       end
     end

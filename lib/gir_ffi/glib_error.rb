@@ -5,7 +5,7 @@ module GirFFI
     attr_reader :domain_quark
     attr_reader :code
 
-    def initialize g_error
+    def initialize(g_error)
       @domain_quark = g_error.domain
       @code = g_error.code
       super g_error.message

@@ -11,36 +11,36 @@ class Sequence
 end
 
 module GirFFITestExtensions
-  def get_field_introspection_data namespace, klass, name
+  def get_field_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_field name
   end
 
-  def get_method_introspection_data namespace, klass, name
+  def get_method_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_method name
   end
 
-  def get_property_introspection_data namespace, klass, name
+  def get_property_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_property name
   end
 
-  def get_signal_introspection_data namespace, klass, name
+  def get_signal_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_signal name
   end
 
-  def get_vfunc_introspection_data namespace, klass, name
+  def get_vfunc_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_vfunc name
   end
 
   SAVED_MODULES = {}
 
-  def save_module name
+  def save_module(name)
     return unless Object.const_defined? name
     puts "Saving #{name} over existing" if SAVED_MODULES.key? name
     SAVED_MODULES[name] = Object.const_get name
     Object.send(:remove_const, name)
   end
 
-  def restore_module name
+  def restore_module(name)
     if Object.const_defined? name
       Object.send(:remove_const, name)
     end
@@ -49,23 +49,23 @@ module GirFFITestExtensions
     SAVED_MODULES.delete name
   end
 
-  def ref_count object
+  def ref_count(object)
     GObject::Object::Struct.new(object.to_ptr)[:ref_count]
   end
 
-  def ref object
+  def ref(object)
     object.ref
   end
 
-  def max_for_unsigned_type type
+  def max_for_unsigned_type(type)
     (1 << (FFI.type_size(type) * 8)) - 1
   end
 
-  def max_for_type type
+  def max_for_type(type)
     (1 << (FFI.type_size(type) * 8 - 1)) - 1
   end
 
-  def min_for_type type
+  def min_for_type(type)
     ~max_for_type(type)
   end
 

@@ -156,10 +156,10 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe 'for GIMarshallingTests::Object#method_int8_arg_and_out_callee' do
-      let(:function_info) {
+      let(:function_info) do
         get_method_introspection_data('GIMarshallingTests', 'Object',
                                       'method_int8_arg_and_out_callee')
-      }
+      end
 
       it 'builds a correct definition' do
         skip unless function_info
@@ -176,10 +176,10 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe 'for GIMarshallingTests::Object.full_inout' do
-      let(:function_info) {
+      let(:function_info) do
         get_method_introspection_data('GIMarshallingTests', 'Object',
                                       'full_inout')
-      }
+      end
 
       it 'builds a correct definition' do
         code.must_equal <<-CODE.reset_indentation
@@ -195,10 +195,10 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe 'for Regress::TestObj#instance_method_full' do
-      let(:function_info) {
+      let(:function_info) do
         get_method_introspection_data('Regress', 'TestObj',
                                       'instance_method_full')
-      }
+      end
 
       it 'builds a correct definition including self.ref' do
         skip unless function_info

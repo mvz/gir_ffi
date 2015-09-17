@@ -7,7 +7,7 @@ module GLib
       GirFFI::ArgHelper.ptr_to_utf8_length @struct[:data], @struct[:len]
     end
 
-    def append data
+    def append(data)
       bytes = GirFFI::InPointer.from :utf8, data
       len = data.bytesize
       self.class.wrap(Lib.g_byte_array_append to_ptr, bytes, len)

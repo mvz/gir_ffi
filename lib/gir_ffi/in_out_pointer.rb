@@ -6,7 +6,7 @@ module GirFFI
   class InOutPointer < FFI::Pointer
     attr_reader :value_type
 
-    def initialize type, ptr = nil
+    def initialize(type, ptr = nil)
       @value_type = type
 
       ptr ||= AllocationHelper.safe_malloc(value_type_size)
@@ -40,7 +40,7 @@ module GirFFI
       end
     end
 
-    def set_value value
+    def set_value(value)
       case value_ffi_type
       when Module
         value_ffi_type.copy_value_to_pointer(value, self)
@@ -55,11 +55,11 @@ module GirFFI
       set_value nil_value
     end
 
-    def self.for type
+    def self.for(type)
       new(type).tap(&:clear)
     end
 
-    def self.from type, value
+    def self.from(type, value)
       new(type).tap { |ptr| ptr.set_value value }
     end
 

@@ -1,11 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::SafeFunctionName do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::SafeFunctionName
     end
-  }
+  end
   let(:info) { klass.new }
 
   describe '#safe_name' do

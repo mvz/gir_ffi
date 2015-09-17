@@ -11,7 +11,7 @@ module GirFFI
     class ModuleBuilder
       include BuilderHelper
 
-      def initialize namespace, version = nil
+      def initialize(namespace, version = nil)
         @namespace = namespace
         @version = version
         # FIXME: Pass safe namespace as an argument
@@ -22,7 +22,7 @@ module GirFFI
         modul
       end
 
-      def setup_method method
+      def setup_method(method)
         go = function_introspection_data method.to_s
         return false unless go
 
@@ -32,7 +32,7 @@ module GirFFI
         true
       end
 
-      def build_namespaced_class classname
+      def build_namespaced_class(classname)
         info = gir.find_by_name @namespace, classname.to_s
         unless info
           raise NameError,
@@ -55,10 +55,10 @@ module GirFFI
 
       def build_dependencies
         deps = gir.dependencies @namespace
-        deps.each {|dep|
+        deps.each do|dep|
           name, version = dep.split '-'
           Builder.build_module name, version
-        }
+        end
       end
 
       def instantiate_module
@@ -94,7 +94,7 @@ module GirFFI
         @lib ||= get_or_define_module modul, :Lib
       end
 
-      def function_introspection_data function
+      def function_introspection_data(function)
         info = gir.find_by_name @namespace, function.to_s
         return unless info
         info.info_type == :function ? info : nil

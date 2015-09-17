@@ -1,12 +1,12 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IFunctionInfo do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::ICallableInfo
       include GirFFI::InfoExt::IFunctionInfo
     end
-  }
+  end
   let(:function_info) { klass.new }
 
   describe '#argument_ffi_types' do

@@ -10,13 +10,13 @@ module GirFFI
     # of IRegisteredTypeInfo. These are types whose C representation is
     # complex, i.e., a struct or a union.
     class RegisteredTypeBuilder < BaseTypeBuilder
-      def setup_method method
+      def setup_method(method)
         method_info = info.find_method method
         return unless method_info
         attach_and_define_method method_info, meta_class
       end
 
-      def setup_instance_method method
+      def setup_instance_method(method)
         method_info = info.find_instance_method method
         return unless method_info
         attach_and_define_method method_info, build_class
@@ -32,7 +32,7 @@ module GirFFI
         (class << build_class; self; end)
       end
 
-      def attach_and_define_method method_info, modul
+      def attach_and_define_method(method_info, modul)
         method = method_info.safe_name
         attach_method method_info
         remove_old_method method, modul
@@ -40,7 +40,7 @@ module GirFFI
         method
       end
 
-      def define_method method_info
+      def define_method(method_info)
         if method_info.constructor?
           build_class.class_eval InitializerBuilder.new(method_info).generate
           build_class.class_eval ConstructorBuilder.new(method_info).generate
@@ -49,11 +49,11 @@ module GirFFI
         end
       end
 
-      def remove_old_method method, modul
+      def remove_old_method(method, modul)
         modul.class_eval { remove_method method if method_defined? method }
       end
 
-      def attach_method method_info
+      def attach_method(method_info)
         Builder.attach_ffi_function lib, method_info
       end
 

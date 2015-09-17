@@ -8,7 +8,7 @@ module GLib
 
     POINTER_SIZE = FFI.type_size(:pointer)
 
-    def initialize ptr
+    def initialize(ptr)
       @ptr = ptr
     end
 
@@ -24,7 +24,7 @@ module GLib
       end
     end
 
-    def self.wrap ptr
+    def self.wrap(ptr)
       new ptr
     end
 

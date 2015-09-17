@@ -147,7 +147,7 @@ describe GirFFI::InPointer do
     it 'handles enum types' do
       e = Module.new do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
-        def self.[] val
+        def self.[](val)
           self::Enum[val]
         end
       end

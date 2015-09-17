@@ -6,10 +6,10 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
   describe 'for an argument with direction :out' do
     describe 'for :zero_terminated' do
-      let(:vfunc_info) {
+      let(:vfunc_info) do
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                      'vfunc_array_out_parameter')
-      }
+      end
       let(:arg_info) { vfunc_info.args[0] }
 
       before { skip unless vfunc_info }
@@ -44,18 +44,18 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
   end
 
   describe 'for an argument with direction :inout' do
-    let(:callback_info) {
+    let(:callback_info) do
       get_introspection_data('Regress',
                              'TestCallbackArrayInOut')
-    }
+    end
     let(:array_arg_info) { callback_info.args[0] }
-    let(:array_arg_builder) {
+    let(:array_arg_builder) do
       GirFFI::Builders::CallbackArgumentBuilder.new(var_gen, array_arg_info)
-    }
+    end
     let(:length_arg_info) { callback_info.args[1] }
-    let(:length_arg_builder) {
+    let(:length_arg_builder) do
       GirFFI::Builders::CallbackArgumentBuilder.new(var_gen, length_arg_info)
-    }
+    end
 
     before do
       skip unless callback_info

@@ -4,7 +4,7 @@ module GirFFI
     attr_reader :argument_type
     attr_reader :ownership_transfer
 
-    def initialize type, ownership_transfer, skip
+    def initialize(type, ownership_transfer, skip)
       @argument_type = type
       @ownership_transfer = ownership_transfer
       @skip = skip

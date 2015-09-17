@@ -15,7 +15,7 @@ module GLib
     # NOTE: This is very hard to test since it is not possible to get the
     # variant's ref count directely. However, there is an error when running
     # the tests on 32-bit systems.
-    def store_pointer ptr
+    def store_pointer(ptr)
       super
       ::GLib::Lib.g_variant_ref_sink ptr
     end

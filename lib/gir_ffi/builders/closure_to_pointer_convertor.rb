@@ -3,7 +3,7 @@ module GirFFI
     # Builder that generates code to convert closure arguments ('user data')
     # from Ruby to C. Used by argument builders.
     class ClosureToPointerConvertor
-      def initialize argument_name
+      def initialize(argument_name)
         @argument_name = argument_name
       end
 

@@ -2,13 +2,13 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::ClassBase do
   describe 'a simple descendant' do
-    let(:klass) {
+    let(:klass) do
       Class.new(GirFFI::ClassBase) do
         self::Struct = Class.new(FFI::Struct) do
           layout :foo, :int32
         end
       end
-    }
+    end
     let(:object) { klass.wrap FFI::MemoryPointer.new(:int32) }
 
     it 'has #from as a pass-through method' do
@@ -91,6 +91,7 @@ describe GirFFI::ClassBase do
         def self.bar
           'correct-result'
         end
+
         def self.new
           allocate
         end
@@ -130,6 +131,7 @@ describe GirFFI::ClassBase do
         def bar
           'correct-result'
         end
+
         def self.new
           allocate
         end

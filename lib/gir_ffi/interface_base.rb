@@ -5,11 +5,11 @@ module GirFFI
   module InterfaceBase
     include RegisteredTypeBase
 
-    def setup_instance_method name
+    def setup_instance_method(name)
       gir_ffi_builder.setup_instance_method name
     end
 
-    def wrap ptr
+    def wrap(ptr)
       ptr.to_object
     end
 

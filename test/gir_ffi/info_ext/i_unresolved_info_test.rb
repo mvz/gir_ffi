@@ -1,11 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IUnresolvedInfo do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::IUnresolvedInfo
     end
-  }
+  end
 
   let(:unresolved_info) { klass.new }
 

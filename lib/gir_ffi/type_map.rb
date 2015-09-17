@@ -38,16 +38,16 @@ module GirFFI
       void:      :void
     }
 
-    def self.map_basic_type type
+    def self.map_basic_type(type)
       sym = type.to_sym
       TAG_TYPE_MAP[sym] || sym
     end
 
-    def self.type_specification_to_ffitype type
+    def self.type_specification_to_ffitype(type)
       type_specification_to_ffi_type type
     end
 
-    def self.type_specification_to_ffi_type type
+    def self.type_specification_to_ffi_type(type)
       case type
       when Module
         type.to_ffi_type

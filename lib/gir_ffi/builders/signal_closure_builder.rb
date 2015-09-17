@@ -11,7 +11,7 @@ module GirFFI
         klass.class_eval marshaller_definition
       end
 
-      def setup_method _method
+      def setup_method(_method)
         nil
       end
 

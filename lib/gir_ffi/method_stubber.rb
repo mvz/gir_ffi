@@ -2,7 +2,7 @@ module GirFFI
   # Generates method stubs that will replace themselves with the real
   # method upon being called.
   class MethodStubber
-    def initialize method_info
+    def initialize(method_info)
       @info = method_info
     end
 

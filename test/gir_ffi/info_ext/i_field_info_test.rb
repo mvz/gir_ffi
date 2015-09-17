@@ -1,11 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IFieldInfo do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::IFieldInfo
     end
-  }
+  end
   let(:field_info) { klass.new }
   describe '#layout_specification' do
     it 'returns an array of name, typespec and offset' do

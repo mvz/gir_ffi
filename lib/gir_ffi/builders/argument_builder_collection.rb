@@ -6,7 +6,7 @@ module GirFFI
     class ArgumentBuilderCollection
       attr_reader :return_value_builder
 
-      def initialize return_value_builder, argument_builders, options = {}
+      def initialize(return_value_builder, argument_builders, options = {})
         @receiver_builder = options[:receiver_builder]
         @error_argument_builder = options[:error_argument_builder]
         @base_argument_builders = argument_builders

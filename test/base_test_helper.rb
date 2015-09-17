@@ -23,7 +23,7 @@ GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__F
 
 module GObjectIntrospection
   class IRepository
-    def shared_library_with_regress namespace
+    def shared_library_with_regress(namespace)
       case namespace
       when 'Regress'
         return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
@@ -42,41 +42,41 @@ end
 Thread.abort_on_exception = true
 
 module BaseTestExtensions
-  def assert_defines_singleton_method klass, method, msg = nil
+  def assert_defines_singleton_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
-    msg = message(msg) {
+    msg = message(msg) do
       "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}, " \
         "but only found #{mu_pp(methods)}"
-    }
+    end
     assert_includes methods, method, msg
   end
 
-  def refute_defines_singleton_method klass, method, msg = nil
+  def refute_defines_singleton_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
-    msg = message(msg) {
+    msg = message(msg) do
       "Expected #{mu_pp(klass)} not to define singleton method #{mu_pp(method)}"
-    }
+    end
     refute_includes methods, method, msg
   end
 
-  def assert_defines_instance_method klass, method, msg = nil
+  def assert_defines_instance_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.instance_methods(false).map(&:to_sym)
-    msg = message(msg) {
+    msg = message(msg) do
       "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}, " \
         "but only found #{mu_pp(methods)}"
-    }
+    end
     assert_includes methods, method, msg
   end
 
-  def refute_defines_instance_method klass, method, msg = nil
+  def refute_defines_instance_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.instance_methods(false).map(&:to_sym)
-    msg = message(msg) {
+    msg = message(msg) do
       "Expected #{mu_pp(klass)} not to define instance method #{mu_pp(method)}"
-    }
+    end
     refute_includes methods, method, msg
   end
 end

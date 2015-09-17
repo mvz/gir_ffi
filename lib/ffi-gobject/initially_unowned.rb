@@ -6,7 +6,7 @@ module GObject
   class InitiallyUnowned
     # Initializing method used in constructors. For InitiallyUnowned and
     # descendants, this needs to sink the object's floating reference.
-    def store_pointer ptr
+    def store_pointer(ptr)
       super
       ::GObject::Lib.g_object_ref_sink ptr
     end

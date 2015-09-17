@@ -3,7 +3,7 @@ module GirFFI
   # arguments with direction :in. This is used for arguments that are
   # arrays, strings, or interfaces.
   class InPointer < FFI::Pointer
-    def self.from_array type, ary
+    def self.from_array(type, ary)
       return unless ary
       case type
       when :utf8, :filename
@@ -29,7 +29,7 @@ module GirFFI
       end
     end
 
-    def self.from type, val
+    def self.from(type, val)
       return unless val
       case type
       when :utf8, :filename
@@ -46,7 +46,7 @@ module GirFFI
     end
 
     class << self
-      def from_closure_data obj
+      def from_closure_data(obj)
         FFI::Pointer.new(obj.object_id).tap do |ptr|
           ArgHelper::OBJECT_STORE.store(ptr, obj)
         end
@@ -54,19 +54,19 @@ module GirFFI
 
       private
 
-      def from_utf8_array ary
+      def from_utf8_array(ary)
         from_basic_type_array :pointer, ary.map { |str| from_utf8 str }
       end
 
-      def from_boolean_array ary
+      def from_boolean_array(ary)
         from_basic_type_array :int, ary.map { |val| val ? 1 : 0 }
       end
 
-      def from_pointer_array type, ary
+      def from_pointer_array(type, ary)
         from_basic_type_array :pointer, ary.map { |elem| from type, elem }
       end
 
-      def from_gvalue_array type, ary
+      def from_gvalue_array(type, ary)
         ary = ary.map do |it|
           if it.is_a? GObject::Value
             it
@@ -77,7 +77,7 @@ module GirFFI
         from_struct_array type, ary
       end
 
-      def from_struct_array type, ary
+      def from_struct_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type
         type_size = FFI.type_size(ffi_type)
         length = ary.length
@@ -90,17 +90,17 @@ module GirFFI
         new ptr
       end
 
-      def from_enum_array type, ary
+      def from_enum_array(type, ary)
         from_basic_type_array :int32, ary.map { |sym| type.to_native sym, nil }
       end
 
-      def from_utf8 str
+      def from_utf8(str)
         len = str.bytesize
         ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
         new ptr
       end
 
-      def from_basic_type_array type, ary
+      def from_basic_type_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type
         ary = ary.dup << null_value(ffi_type)
         type_size = FFI.type_size(ffi_type)
@@ -109,7 +109,7 @@ module GirFFI
         new block
       end
 
-      def null_value ffi_type
+      def null_value(ffi_type)
         ffi_type == :pointer ? nil : 0
       end
     end

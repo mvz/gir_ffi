@@ -36,7 +36,7 @@ describe 'For derived classes' do
     it 'works if it calls super' do
       klass = Class.new Regress::TestSubObj do
         attr_reader :animal
-        def initialize animal
+        def initialize(animal)
           super()
           @animal = animal
         end

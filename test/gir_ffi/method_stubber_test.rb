@@ -6,9 +6,9 @@ describe GirFFI::MethodStubber do
     let(:result) { stubber.method_stub }
 
     describe 'for a regular method' do
-      let(:method_info) {
+      let(:method_info) do
         get_method_introspection_data('Regress', 'TestObj', 'instance_method')
-      }
+      end
 
       it 'creates a method stub' do
         result.must_equal <<-STUB.reset_indentation
@@ -20,9 +20,9 @@ describe GirFFI::MethodStubber do
     end
 
     describe 'for a static method' do
-      let(:method_info) {
+      let(:method_info) do
         get_method_introspection_data('Regress', 'TestObj', 'static_method')
-      }
+      end
 
       it 'creates a class method stub' do
         result.must_equal <<-STUB.reset_indentation
@@ -34,9 +34,9 @@ describe GirFFI::MethodStubber do
     end
 
     describe 'for a module function' do
-      let(:method_info) {
+      let(:method_info) do
         get_introspection_data('Regress', 'test_int')
-      }
+      end
 
       it 'creates a module method stub' do
         result.must_equal <<-STUB.reset_indentation

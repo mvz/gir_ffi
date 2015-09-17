@@ -4,7 +4,7 @@ module GirFFI
   class UserDataArgumentInfo
     attr_reader :argument_type
 
-    def initialize type
+    def initialize(type)
       @argument_type = type
     end
 

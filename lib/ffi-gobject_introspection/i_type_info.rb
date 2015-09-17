@@ -10,7 +10,7 @@ module GObjectIntrospection
       Lib.g_type_info_get_tag @gobj
     end
 
-    def param_type index
+    def param_type(index)
       ITypeInfo.wrap(Lib.g_type_info_get_param_type @gobj, index)
     end
 

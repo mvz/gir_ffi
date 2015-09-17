@@ -12,13 +12,13 @@ module GirFFI
       FFI::Type::POINTER
     end
 
-    def self.from_native value, _context
+    def self.from_native(value, _context)
       return nil if !value || value.null?
       FFI::Function.new(gir_ffi_builder.return_ffi_type,
                         gir_ffi_builder.argument_ffi_types, value)
     end
 
-    def self.to_native value, _context
+    def self.to_native(value, _context)
       case value
       when CallbackBase
         value.to_native
@@ -27,25 +27,25 @@ module GirFFI
       end
     end
 
-    def self.wrap ptr
+    def self.wrap(ptr)
       from_native ptr, nil
     end
 
     CALLBACKS = []
 
-    def self.store_callback prc
+    def self.store_callback(prc)
       CALLBACKS << prc
     end
 
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
-    def self.from prc
+    def self.from(prc)
       wrap_in_callback_args_mapper(prc).tap do |cb|
         store_callback cb
       end
     end
 
-    def self.wrap_in_callback_args_mapper prc
+    def self.wrap_in_callback_args_mapper(prc)
       return unless prc
 
       new do |*args|
@@ -65,11 +65,11 @@ module GirFFI
                      end
     end
 
-    def self.copy_value_to_pointer value, pointer
+    def self.copy_value_to_pointer(value, pointer)
       pointer.put_pointer 0, to_native(value, nil)
     end
 
-    def self.get_value_from_pointer pointer
+    def self.get_value_from_pointer(pointer)
       from_native pointer.get_pointer(0), nil
     end
   end
