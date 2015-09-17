@@ -1928,10 +1928,8 @@ describe Regress do
 
   it 'has a working function #test_callback_async' do
     a = 1
-    Regress.test_callback_async proc {|b|
-      a = 2
-      b
-    }, 44
+    Regress.test_callback_async(proc { |b| a = 2; b },
+                                44)
     r = Regress.test_callback_thaw_async
     assert_equal 44, r
     assert_equal 2, a
@@ -1939,10 +1937,9 @@ describe Regress do
 
   it 'has a working function #test_callback_destroy_notify' do
     a = 1
-    r1 = Regress.test_callback_destroy_notify proc {|b|
-      a = 2
-      b
-    }, 42, proc { a = 3 }
+    r1 = Regress.test_callback_destroy_notify(proc { |b| a = 2; b },
+                                              42,
+                                              proc { a = 3 })
     assert_equal 2, a
     assert_equal 42, r1
     r2 = Regress.test_callback_thaw_notifications
@@ -2001,10 +1998,7 @@ describe Regress do
 
   it 'has a working function #test_callback_user_data' do
     a = 'old-value'
-    result = Regress.test_callback_user_data proc {|u|
-      a = u
-      5
-    }, 'new-value'
+    result = Regress.test_callback_user_data proc { |u| a = u; 5 }, 'new-value'
     a.must_equal 'new-value'
     result.must_equal 5
   end
@@ -2012,10 +2006,7 @@ describe Regress do
   describe 'the #test_callback_user_data function' do
     it 'handles boolean user_data' do
       a = false
-      Regress.test_callback_user_data proc {|u|
-        a = u
-        5
-      }, true
+      Regress.test_callback_user_data proc { |u| a = u; 5 }, true
       assert_equal true, a
     end
   end

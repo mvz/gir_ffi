@@ -26,7 +26,8 @@ module GObject
     end
 
     # @api private
-    def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+    def self.marshaller(closure, return_value, param_values, _invocation_hint,
+                        _marshal_data)
       # TODO: Improve by registering RubyClosure as a GObject type
       rclosure = wrap(closure.to_ptr)
       param_values ||= []
