@@ -1,29 +1,12 @@
 require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/method_template'
+require 'gir_ffi/builders/null_return_value_builder'
 
 module GirFFI
   module Builders
     # Implements the creation of a Ruby constructor definition out of a
     # GIR IFunctionInfo.
     class ConstructorBuilder
-      # Implements a blank return value matching ReturnValueBuilder's interface.
-      class NullReturnValueBuilder
-        def initialize
-        end
-
-        def array_length_idx
-          -1
-        end
-
-        def capture_variable_name
-          nil
-        end
-
-        def post_conversion
-          []
-        end
-      end
-
       def initialize info
         @info = info
         return_value_builder = NullReturnValueBuilder.new
