@@ -1,9 +1,13 @@
+require 'gir_ffi/variable_name_generator'
+require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/return_value_info'
+
 module GirFFI
   module Builders
     # Base class for method definition builders.
     class BaseMethodBuilder
       def vargen
-        @vargen ||= GirFFI::VariableNameGenerator.new
+        @vargen ||= VariableNameGenerator.new
       end
 
       def argument_builders
