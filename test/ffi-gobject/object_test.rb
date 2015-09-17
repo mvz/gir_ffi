@@ -78,7 +78,9 @@ describe GObject::Object do
       object = GObject::Object.new GObject::TYPE_OBJECT, nil
       ptr = object.to_ptr
       ref_count(ptr).must_equal 1
-      object = nil
+
+      # Lose reference to object to allow garbage collection
+      object = nil # rubocop:disable Lint/UselessAssignment
 
       GC.start
       GC.start
