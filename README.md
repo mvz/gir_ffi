@@ -40,6 +40,8 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
     # Call a function in the namespace
     Gio.dbus_is_name "foo"   # => false
 
+See the [documentation](docs/Documentation.md) for more usage information.
+
 ## Install
 
     gem install gir_ffi
