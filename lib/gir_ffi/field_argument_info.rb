@@ -5,7 +5,7 @@ module GirFFI
   class FieldArgumentInfo
     attr_reader :name, :argument_type
 
-    def initialize name, type
+    def initialize(name, type)
       @name = name
       @argument_type = type
     end

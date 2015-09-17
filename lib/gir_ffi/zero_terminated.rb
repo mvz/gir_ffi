@@ -5,7 +5,7 @@ module GirFFI
 
     attr_reader :element_type
 
-    def initialize elm_t, ptr
+    def initialize(elm_t, ptr)
       @element_type = elm_t
       @ptr = ptr
     end
@@ -14,11 +14,11 @@ module GirFFI
       @ptr
     end
 
-    def self.from type, arg
+    def self.from(type, arg)
       new type, InPointer.from_array(type, arg)
     end
 
-    def self.wrap type, arg
+    def self.wrap(type, arg)
       new type, arg
     end
 
@@ -31,13 +31,13 @@ module GirFFI
       end
     end
 
-    def == other
+    def ==(other)
       to_a == other.to_a
     end
 
     private
 
-    def read_value offset
+    def read_value(offset)
       val = @ptr.send(getter_method, offset)
       val unless val.zero?
     end
@@ -46,7 +46,7 @@ module GirFFI
       @getter_method ||= "get_#{ffi_type}"
     end
 
-    def wrap_value val
+    def wrap_value(val)
       case element_type
       when Array
         element_type.last.wrap val

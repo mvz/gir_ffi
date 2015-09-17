@@ -10,23 +10,23 @@ module GirFFI
   module Builder
     extend BuilderHelper
 
-    def self.build_class info
+    def self.build_class(info)
       Builders::TypeBuilder.build(info)
     end
 
-    def self.build_by_gtype gtype
+    def self.build_by_gtype(gtype)
       info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
       info ||= UnintrospectableTypeInfo.new gtype
 
       build_class info
     end
 
-    def self.build_module namespace, version = nil
+    def self.build_module(namespace, version = nil)
       Builders::ModuleBuilder.new(namespace, version).generate
     end
 
     # TODO: Move elsewhere, perhaps to FunctionBuilder.
-    def self.attach_ffi_function lib, info
+    def self.attach_ffi_function(lib, info)
       sym = info.symbol
       return if lib.method_defined? sym
 

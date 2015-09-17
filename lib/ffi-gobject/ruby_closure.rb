@@ -15,7 +15,7 @@ module GObject
              :block_id, :int64
     end
 
-    def self.new &block
+    def self.new(&block)
       raise ArgumentError unless block_given?
 
       closure = wrap(new_simple(self::Struct.size, nil).to_ptr)
@@ -26,7 +26,7 @@ module GObject
     end
 
     # @api private
-    def self.marshaller closure, return_value, param_values, _invocation_hint, _marshal_data
+    def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
       # TODO: Improve by registering RubyClosure as a GObject type
       rclosure = wrap(closure.to_ptr)
       param_values ||= []
@@ -40,14 +40,14 @@ module GObject
 
     # @api private
     # TODO: Re-structure so block= and invoke_block can become private methods
-    def block= block
+    def block=(block)
       id = block.object_id
       BLOCK_STORE[id] = block
       @struct[:block_id] = id
     end
 
     # @api private
-    def invoke_block *args
+    def invoke_block(*args)
       block.call(*args)
     end
 

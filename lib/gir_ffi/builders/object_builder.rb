@@ -20,12 +20,12 @@ module GirFFI
         end
       end
 
-      def find_signal signal_name
+      def find_signal(signal_name)
         seek_in_ancestor_infos { |info| info.find_signal signal_name } or
           raise "Signal #{signal_name} not found"
       end
 
-      def find_property property_name
+      def find_property(property_name)
         seek_in_ancestor_infos { |info| info.find_property property_name } or
           raise "Property #{property_name} not found"
       end
@@ -99,7 +99,7 @@ module GirFFI
         end
       end
 
-      def define_vfunc_invoker vfunc_name, invoker_name
+      def define_vfunc_invoker(vfunc_name, invoker_name)
         return if vfunc_name == invoker_name
         klass.class_eval "
           def #{vfunc_name} *args, &block

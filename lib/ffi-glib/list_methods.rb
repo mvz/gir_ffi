@@ -6,7 +6,7 @@ module GLib
     include Enumerable
     attr_reader :element_type
 
-    def self.included base
+    def self.included(base)
       # Override default field accessors.
       replace_method base, :next, :tail
       replace_method base, :data, :head
@@ -17,7 +17,7 @@ module GLib
       base.extend ContainerClassMethods
     end
 
-    def self.replace_method base, old, new
+    def self.replace_method(base, old, new)
       base.class_eval do
         remove_method old
         alias_method old, new
@@ -39,12 +39,12 @@ module GLib
       GirFFI::ArgHelper.cast_from_pointer(element_type, @struct[:data])
     end
 
-    def reset_typespec typespec
+    def reset_typespec(typespec)
       @element_type = typespec
       self
     end
 
-    def == other
+    def ==(other)
       to_a == other.to_a
     end
 
@@ -61,14 +61,14 @@ module GLib
       element
     end
 
-    def element_ptr_for data
+    def element_ptr_for(data)
       GirFFI::InPointer.from(element_type, data)
     end
 
     # Common class methods for List and SList
     module ListClassMethods
       # TODO: Make this behave more like a real .new method
-      def new type
+      def new(type)
         allocate.tap do |it|
           struct = self::Struct.new(FFI::Pointer.new(0))
           it.instance_variable_set :@struct, struct

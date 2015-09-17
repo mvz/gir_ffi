@@ -3,7 +3,7 @@ module GirFFI
     # Builder that generates code to convert values from C to Ruby. Used by
     # argument builders.
     class CToRubyConvertor
-      def initialize type_info, argument_name, length_arg
+      def initialize(type_info, argument_name, length_arg)
         @type_info = type_info
         @argument_name = argument_name
         @length_arg = length_arg

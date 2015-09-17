@@ -4,7 +4,7 @@ module GirFFI
   class ReceiverTypeInfo
     include InfoExt::ITypeInfo
 
-    def initialize interface_info
+    def initialize(interface_info)
       @interface_info = interface_info
     end
 

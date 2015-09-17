@@ -7,11 +7,11 @@ module GLib
   class List
     include ListMethods
 
-    def self.from_enumerable type, arr
+    def self.from_enumerable(type, arr)
       arr.reduce(new type) { |lst, val| lst.append val }
     end
 
-    def append data
+    def append(data)
       self.class.wrap(element_type,
                       Lib.g_list_append(self, element_ptr_for(data)))
     end

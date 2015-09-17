@@ -12,7 +12,7 @@ module GirFFI
         Builder.build_class self
       end
 
-      def find_instance_method method
+      def find_instance_method(method)
         info = find_method method
         return info if info && info.method?
       end

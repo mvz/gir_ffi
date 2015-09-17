@@ -22,11 +22,11 @@ module GirFFI
         @is_closure
       end
 
-      def closure= arg
+      def closure=(arg)
         @is_closure = arg
       end
 
-      def initialize var_gen, arginfo
+      def initialize(var_gen, arginfo)
         @var_gen = var_gen
         @arginfo = arginfo
         @length_arg = nil
@@ -64,7 +64,7 @@ module GirFFI
         arginfo.ownership_transfer
       end
 
-      def safe name
+      def safe(name)
         if KEYWORDS.include? name
           "#{name}_"
         else

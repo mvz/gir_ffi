@@ -21,29 +21,29 @@ module GLib
       remove_method :add if method_defined? :add
     end
 
-    def self.new type
+    def self.new(type)
       wrap(type, Lib.g_ptr_array_new)
     end
 
-    def self.from_enumerable type, it
+    def self.from_enumerable(type, it)
       new(type).tap { |arr| arr.add_array it }
     end
 
-    def self.add array, data
+    def self.add(array, data)
       array.add data
     end
 
-    def reset_typespec typespec
+    def reset_typespec(typespec)
       @element_type = typespec
       self
     end
 
-    def add data
+    def add(data)
       ptr = GirFFI::InPointer.from element_type, data
       Lib.g_ptr_array_add self, ptr
     end
 
-    def add_array ary
+    def add_array(ary)
       ary.each { |item| add item }
     end
 
@@ -65,7 +65,7 @@ module GLib
       @struct[:len]
     end
 
-    def == other
+    def ==(other)
       to_a == other.to_a
     end
   end

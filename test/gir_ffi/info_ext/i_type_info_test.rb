@@ -1,11 +1,11 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ITypeInfo do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::ITypeInfo
     end
-  }
+  end
 
   let(:type_info) { klass.new }
   let(:elmtype_info) { klass.new }
@@ -13,13 +13,13 @@ describe GirFFI::InfoExt::ITypeInfo do
   let(:valtype_info) { klass.new }
   let(:iface_info) { Object.new }
 
-  let(:callback_type_info) {
+  let(:callback_type_info) do
     get_introspection_data('Regress', 'test_callback').args[0].argument_type
-  }
-  let(:ghash_type_info) {
+  end
+  let(:ghash_type_info) do
     get_introspection_data('Regress',
                            'test_ghash_nested_everything_return').return_type
-  }
+  end
 
   describe '#to_ffi_type' do
     it 'returns an array with elements subtype and size for type :array' do

@@ -3,12 +3,12 @@ require 'gir_ffi_test_helper'
 GirFFI.setup :Regress
 
 describe GirFFI::InfoExt::ISignalInfo do
-  let(:klass) {
+  let(:klass) do
     Class.new do
       include GirFFI::InfoExt::ICallableInfo
       include GirFFI::InfoExt::ISignalInfo
     end
-  }
+  end
   let(:signal_info) { klass.new }
 
   describe '#arguments_to_gvalues' do

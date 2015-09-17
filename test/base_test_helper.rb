@@ -23,7 +23,7 @@ GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__F
 
 module GObjectIntrospection
   class IRepository
-    def shared_library_with_regress namespace
+    def shared_library_with_regress(namespace)
       case namespace
       when 'Regress'
         return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
@@ -42,7 +42,7 @@ end
 Thread.abort_on_exception = true
 
 module BaseTestExtensions
-  def assert_defines_singleton_method klass, method, msg = nil
+  def assert_defines_singleton_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
     msg = message(msg) {
@@ -52,7 +52,7 @@ module BaseTestExtensions
     assert_includes methods, method, msg
   end
 
-  def refute_defines_singleton_method klass, method, msg = nil
+  def refute_defines_singleton_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
     msg = message(msg) {
@@ -61,7 +61,7 @@ module BaseTestExtensions
     refute_includes methods, method, msg
   end
 
-  def assert_defines_instance_method klass, method, msg = nil
+  def assert_defines_instance_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.instance_methods(false).map(&:to_sym)
     msg = message(msg) {
@@ -71,7 +71,7 @@ module BaseTestExtensions
     assert_includes methods, method, msg
   end
 
-  def refute_defines_instance_method klass, method, msg = nil
+  def refute_defines_instance_method(klass, method, msg = nil)
     method = method.to_sym
     methods = klass.instance_methods(false).map(&:to_sym)
     msg = message(msg) {

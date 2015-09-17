@@ -7,10 +7,10 @@ GirFFI.setup :GIMarshallingTests
 
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
-  let(:derived_klass) {
+  let(:derived_klass) do
     Object.const_set("DerivedClass#{Sequence.next}",
                      Class.new(GIMarshallingTests::Object))
-  }
+  end
 
   def make_derived_instance
     GirFFI.define_type derived_klass do |info|
@@ -1411,9 +1411,9 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_simple_struct_in' do
-    arr = [1, 2, 3].map { |val|
+    arr = [1, 2, 3].map do |val|
       GIMarshallingTests::SimpleStruct.new.tap { |struct| struct.long_ = val }
-    }
+    end
     GIMarshallingTests.array_simple_struct_in arr
   end
 
@@ -1423,25 +1423,25 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_struct_in' do
-    arr = [1, 2, 3].map { |val|
+    arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
-    }
+    end
     GIMarshallingTests.array_struct_in arr
   end
 
   # NOTE: Should be run with valgrind. See gimarhallingtests.c.
   it 'has a working function #array_struct_take_in' do
-    arr = [1, 2, 3].map { |val|
+    arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
-    }
+    end
     GIMarshallingTests.array_struct_take_in arr
   end
 
   it 'has a working function #array_struct_value_in' do
     skip unless get_introspection_data 'GIMarshallingTests', 'array_struct_value_in'
-    arr = [1, 2, 3].map { |val|
+    arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
-    }
+    end
     GIMarshallingTests.array_struct_value_in arr
   end
 

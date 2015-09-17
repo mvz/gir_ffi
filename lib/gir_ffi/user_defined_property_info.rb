@@ -2,7 +2,7 @@ module GirFFI
   # Represents a property of a user defined type, conforming, as needed, to the
   # interface of GObjectIntrospection::IPropertyInfo.
   class UserDefinedPropertyInfo
-    def initialize param_spec
+    def initialize(param_spec)
       @param_spec = param_spec
     end
 

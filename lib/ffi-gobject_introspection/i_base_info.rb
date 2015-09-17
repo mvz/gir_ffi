@@ -2,7 +2,7 @@ module GObjectIntrospection
   # Wraps GIBaseInfo struct, the base \type for all info types.
   # Decendant types will be implemented as needed.
   class IBaseInfo
-    def initialize ptr, lib = Lib
+    def initialize(ptr, lib = Lib)
       raise ArgumentError, 'ptr must not be null' if ptr.null?
 
       ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
@@ -11,7 +11,7 @@ module GObjectIntrospection
       @lib = lib
     end
 
-    def self.make_finalizer lib, ptr
+    def self.make_finalizer(lib, ptr)
       proc { lib.g_base_info_unref ptr }
     end
 
@@ -34,7 +34,7 @@ module GObjectIntrospection
     #   build_array_mehtod :properties, :property
     #   build_array_method :get_methods
     #
-    def self.build_array_method method, single = nil
+    def self.build_array_method(method, single = nil)
       method = method.to_s
       single ||= method.to_s[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
@@ -63,7 +63,7 @@ module GObjectIntrospection
     #   build_finder_method :find_property, :n_properties
     #   build_finder_method :find_method, :get_n_methods, :get_method
     #
-    def self.build_finder_method method, counter = nil, fetcher = nil
+    def self.build_finder_method(method, counter = nil, fetcher = nil)
       method = method.to_s
       single = method.sub(/^find_/, '')
       counter ||= "n_#{single}s"
@@ -105,11 +105,11 @@ module GObjectIntrospection
       Lib.g_base_info_is_deprecated @gobj
     end
 
-    def self.wrap ptr
+    def self.wrap(ptr)
       new ptr unless ptr.null?
     end
 
-    def == other
+    def ==(other)
       other.is_a?(IBaseInfo) && Lib.g_base_info_equal(@gobj, other)
     end
   end

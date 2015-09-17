@@ -6,11 +6,11 @@ module GLib
     extend FFI::DataConverter
     native_type FFI::Type::INT
 
-    def self.from_native value, _context
+    def self.from_native(value, _context)
       value != 0 ? true : false
     end
 
-    def self.to_native value, _context
+    def self.to_native(value, _context)
       value ? 1 : 0
     end
 
@@ -18,11 +18,11 @@ module GLib
       FFI.type_size FFI::Type::INT
     end
 
-    def self.copy_value_to_pointer value, pointer
+    def self.copy_value_to_pointer(value, pointer)
       pointer.put_int 0, to_native(value, nil)
     end
 
-    def self.get_value_from_pointer pointer
+    def self.get_value_from_pointer(pointer)
       from_native pointer.get_int(0), nil
     end
   end

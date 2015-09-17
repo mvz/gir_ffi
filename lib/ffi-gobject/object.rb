@@ -5,25 +5,25 @@ module GObject
   class Object
     setup_method 'new'
 
-    def store_pointer ptr
+    def store_pointer(ptr)
       super
       klass = self.class
       ObjectSpace.define_finalizer self, klass.make_finalizer(ptr, klass.name)
     end
 
-    def self.make_finalizer ptr, name
-      proc {
+    def self.make_finalizer(ptr, name)
+      proc do
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
         if rc == 0
           warn "not unreffing #{name}:#{ptr} (#{rc})"
         else
           GObject::Lib.g_object_unref ptr
         end
-      }
+      end
     end
 
     # TODO: Generate accessor methods from GIR at class definition time
-    def method_missing method, *args
+    def method_missing(method, *args)
       getter_name = "get_#{method}"
       return send(getter_name, *args) if respond_to?(getter_name)
       if method.to_s =~ /(.*)=$/
@@ -33,18 +33,18 @@ module GObject
       super
     end
 
-    def signal_connect event, data = nil, &block
+    def signal_connect(event, data = nil, &block)
       GObject.signal_connect(self, event, data, &block)
     end
 
-    def signal_connect_after event, data = nil, &block
+    def signal_connect_after(event, data = nil, &block)
       GObject.signal_connect_after(self, event, data, &block)
     end
 
     setup_instance_method 'get_property'
     setup_instance_method 'set_property'
 
-    def get_property_extended property_name
+    def get_property_extended(property_name)
       gvalue = get_property property_name
       type_info = get_property_type property_name
       case type_info.tag
@@ -55,7 +55,7 @@ module GObject
       end
     end
 
-    def get_property_with_override property_name
+    def get_property_with_override(property_name)
       pspec = type_class.find_property property_name
 
       gvalue = GObject::Value.for_gtype pspec.value_type
@@ -64,14 +64,14 @@ module GObject
       gvalue
     end
 
-    def set_property_extended property_name, value
+    def set_property_extended(property_name, value)
       type_info = get_property_type property_name
       adjusted_value = adjust_value_to_type(value, type_info)
 
       set_property property_name, adjusted_value
     end
 
-    def set_property_with_override property_name, value
+    def set_property_with_override(property_name, value)
       pspec = type_class.find_property property_name
       gvalue = GObject::Value.for_gtype pspec.value_type
       gvalue.set_value value
@@ -93,13 +93,13 @@ module GObject
 
     private
 
-    def get_property_type property_name
+    def get_property_type(property_name)
       prop = self.class.find_property property_name
       prop.property_type
     end
 
     # TODO: Move to ITypeInfo
-    def adjust_value_to_type val, type_info
+    def adjust_value_to_type(val, type_info)
       case type_info.flattened_tag
       when :ghash
         GLib::HashTable.from type_info.element_type, val

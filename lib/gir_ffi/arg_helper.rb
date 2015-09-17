@@ -13,11 +13,11 @@ module GirFFI
         @store = {}
       end
 
-      def store ptr, obj
+      def store(ptr, obj)
         @store[ptr.address] = obj
       end
 
-      def fetch ptr
+      def fetch(ptr)
         return if ptr.null?
         key = ptr.address
         if @store.key? key
@@ -30,22 +30,22 @@ module GirFFI
 
     OBJECT_STORE = ObjectStore.new
 
-    def self.ptr_to_utf8_length ptr, len
+    def self.ptr_to_utf8_length(ptr, len)
       ptr.null? ? nil : ptr.read_string(len)
     end
 
-    def self.check_error errpp
+    def self.check_error(errpp)
       err = GLib::Error.wrap(errpp.read_pointer)
       raise GLibError, err if err
     end
 
-    def self.check_fixed_array_size size, arr, name
+    def self.check_fixed_array_size(size, arr, name)
       unless arr.size == size
         raise ArgumentError, "#{name} should have size #{size}"
       end
     end
 
-    def self.cast_from_pointer type, it
+    def self.cast_from_pointer(type, it)
       case type
       when :utf8, :filename
         it.to_utf8
@@ -72,7 +72,7 @@ module GirFFI
       end
     end
 
-    def self.cast_uint32_to_int32 val
+    def self.cast_uint32_to_int32(val)
       if val >= 0x80000000
         -(0x100000000 - val)
       else
@@ -80,7 +80,7 @@ module GirFFI
       end
     end
 
-    def self.cast_pointer_to_int32 ptr
+    def self.cast_pointer_to_int32(ptr)
       cast_uint32_to_int32(ptr.address & 0xffffffff)
     end
   end

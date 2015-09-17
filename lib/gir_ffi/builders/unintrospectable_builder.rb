@@ -16,7 +16,7 @@ module GirFFI
         setup_interfaces
       end
 
-      def setup_instance_method _method
+      def setup_instance_method(_method)
         false
       end
 

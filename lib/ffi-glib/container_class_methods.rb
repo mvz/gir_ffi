@@ -2,13 +2,13 @@ module GLib
   # Common methods for container classes: Array, PtrArray, List, SList and
   # HashTable.
   module ContainerClassMethods
-    def wrap typespec, ptr
+    def wrap(typespec, ptr)
       super(ptr).tap do |container|
         container.reset_typespec typespec if container
       end
     end
 
-    def from typespec = :void, it
+    def from(typespec = :void, it)
       case it
       when nil
         nil

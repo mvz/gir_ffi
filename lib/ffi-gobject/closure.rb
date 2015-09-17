@@ -8,7 +8,7 @@ module GObject
     # @override
     #
     # @param [Proc] marshal The marshaller to use for this closure object
-    def set_marshal marshal
+    def set_marshal(marshal)
       callback = GObject::ClosureMarshal.from marshal
       Lib.g_closure_set_marshal self, callback
     end

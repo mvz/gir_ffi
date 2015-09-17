@@ -14,10 +14,10 @@ module GirFFI
       end
 
       def value_spec
-        info.values.map {|vinfo|
+        info.values.map do|vinfo|
           val = GirFFI::ArgHelper.cast_uint32_to_int32(vinfo.value)
           [vinfo.name.to_sym, val]
-        }.flatten
+        end.flatten
       end
 
       def setup_class

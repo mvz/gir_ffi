@@ -11,15 +11,15 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MappingMethodBuilder
-      def self.for_callback argument_infos, return_value_info
+      def self.for_callback(argument_infos, return_value_info)
         new argument_infos, return_value_info, CallbackArgumentBuilder
       end
 
-      def self.for_vfunc receiver_info, argument_infos, return_value_info
+      def self.for_vfunc(receiver_info, argument_infos, return_value_info)
         new receiver_info, argument_infos, return_value_info, VFuncArgumentBuilder
       end
 
-      def initialize receiver_info = nil, argument_infos, return_value_info, builder_class
+      def initialize(receiver_info = nil, argument_infos, return_value_info, builder_class)
         @argument_builder_class = builder_class
         receiver_builder = make_argument_builder receiver_info if receiver_info
         argument_builders = argument_infos.map { |info| make_argument_builder info }
@@ -75,7 +75,7 @@ module GirFFI
         @variable_generator ||= VariableNameGenerator.new
       end
 
-      def make_argument_builder argument_info
+      def make_argument_builder(argument_info)
         @argument_builder_class.new variable_generator, argument_info
       end
     end

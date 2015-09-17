@@ -22,10 +22,6 @@ Style/AccessorMethodName:
 Style/AndOr:
   EnforcedStyle: conditionals
 
-# Allow multi-line blocks of all sorts
-Style/BlockDelimiters:
-  Enabled: false
-
 # Dot at end of line makes it clearer that the line is not done
 Style/DotPosition:
   EnforcedStyle: trailing
@@ -41,10 +37,6 @@ Style/GuardClause:
 # Don't use if or unless as modifier if the line gets too long
 Style/IfUnlessModifier:
   MaxLineLength: 60
-
-# Prefer no parentheses in method definitions
-Style/MethodDefParentheses:
-  EnforcedStyle: require_no_parentheses
 
 # Multi-line assignment should be simply indented. Aligning them makes it even
 # harder to keep a sane line length.

@@ -10,35 +10,35 @@ module GirFFI
       self::Enum.native_type
     end
 
-    def to_native *args
+    def to_native(*args)
       self::Enum.to_native(*args)
     end
 
-    def from_native *args
+    def from_native(*args)
       self::Enum.from_native(*args)
     end
 
-    def [] arg
+    def [](arg)
       self::Enum[arg]
     end
 
-    def wrap arg
+    def wrap(arg)
       self[arg]
     end
 
-    def from arg
+    def from(arg)
       self[arg]
     end
 
-    def copy_value_to_pointer value, pointer
+    def copy_value_to_pointer(value, pointer)
       pointer.put_int32 0, to_native(value, nil)
     end
 
-    def get_value_from_pointer pointer
+    def get_value_from_pointer(pointer)
       from_native pointer.get_int32(0), nil
     end
 
-    def setup_and_call method, arguments, &block
+    def setup_and_call(method, arguments, &block)
       result = setup_method method.to_s
 
       unless result
@@ -52,7 +52,7 @@ module GirFFI
       self
     end
 
-    def setup_method name
+    def setup_method(name)
       gir_ffi_builder.setup_method name
     end
   end

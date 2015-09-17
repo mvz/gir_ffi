@@ -9,9 +9,9 @@ describe GObjectIntrospection::ITypeInfo do
 
     it 'raises an error' do
       skip unless vfunc_info
-      proc {
+      proc do
         type_info.name
-      }.must_raise RuntimeError
+      end.must_raise RuntimeError
     end
   end
 

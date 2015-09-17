@@ -11,7 +11,7 @@ module GirFFI
     # Implements the creation of a Ruby function definition out of a GIR
     # IFunctionInfo.
     class FunctionBuilder
-      def initialize info
+      def initialize(info)
         @info = info
         vargen = GirFFI::VariableNameGenerator.new
         @argument_builders = @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
@@ -64,7 +64,7 @@ module GirFFI
         "#{@info.safe_namespace}::Lib"
       end
 
-      def error_argument vargen
+      def error_argument(vargen)
         if @info.throws?
           ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
         end

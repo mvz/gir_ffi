@@ -1,6 +1,6 @@
 module Minitest
   class StatsReporter < AbstractReporter
-    def initialize _options
+    def initialize(_options)
       @results = []
     end
 
@@ -8,7 +8,7 @@ module Minitest
       @current_time = Time.now
     end
 
-    def record result
+    def record(result)
       @results << result
     end
 
@@ -20,7 +20,7 @@ module Minitest
     end
   end
 
-  def self.plugin_stats_init options
+  def self.plugin_stats_init(options)
     reporter << StatsReporter.new(options)
   end
 end

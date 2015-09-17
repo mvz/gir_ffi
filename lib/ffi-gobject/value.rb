@@ -5,7 +5,7 @@ module GObject
   class Value
     setup_instance_method 'init'
 
-    def init_with_finalizer type
+    def init_with_finalizer(type)
       init_without_finalizer(type).tap do
         ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
       end
@@ -14,14 +14,14 @@ module GObject
     alias_method :init_without_finalizer, :init
     alias_method :init, :init_with_finalizer
 
-    def self.make_finalizer ptr
-      proc {
+    def self.make_finalizer(ptr)
+      proc do
         GObject::Lib.g_value_unset ptr
-      }
+      end
     end
 
     # TODO: Give more generic name
-    def set_ruby_value val
+    def set_ruby_value(val)
       init_for_ruby_value val if current_gtype == 0
       set_value val
     end
@@ -49,7 +49,7 @@ module GObject
       TYPE_VARIANT => [:get_variant,       :set_variant]
     }
 
-    def set_value val
+    def set_value(val)
       send set_method, val
     end
 
@@ -62,7 +62,7 @@ module GObject
       String => TYPE_STRING
     }
 
-    def init_for_ruby_value val
+    def init_for_ruby_value(val)
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
           init type
@@ -98,11 +98,11 @@ module GObject
     end
 
     # TODO: Give more generic name
-    def self.wrap_ruby_value val
+    def self.wrap_ruby_value(val)
       new.tap { |gv| gv.set_ruby_value val }
     end
 
-    def self.from val
+    def self.from(val)
       case val
       when self
         val
@@ -113,7 +113,7 @@ module GObject
       end
     end
 
-    def self.for_gtype gtype
+    def self.for_gtype(gtype)
       return nil if gtype == TYPE_NONE
       new.tap do |it|
         it.init gtype
@@ -121,7 +121,7 @@ module GObject
     end
 
     # TODO: Combine with wrap_ruby_value
-    def self.wrap_instance instance
+    def self.wrap_instance(instance)
       new.tap do |it|
         it.init GObject.type_from_instance instance
         it.set_instance instance
@@ -130,12 +130,12 @@ module GObject
 
     private
 
-    def set_instance_enhanced val
+    def set_instance_enhanced(val)
       check_type_compatibility val if val
       set_instance val
     end
 
-    def set_enum_enhanced val
+    def set_enum_enhanced(val)
       val = current_gtype_class[val] if val.is_a? Symbol
       set_enum val
     end
@@ -148,13 +148,13 @@ module GObject
       GirFFI::Builder.build_by_gtype(current_gtype)
     end
 
-    def check_type_compatibility val
+    def check_type_compatibility(val)
       unless GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
         raise ArgumentError, "#{val.class} is incompatible with #{current_gtype_name}"
       end
     end
 
-    def wrap_boxed boxed
+    def wrap_boxed(boxed)
       case current_gtype
       when TYPE_STRV
         GLib::Strv.wrap boxed

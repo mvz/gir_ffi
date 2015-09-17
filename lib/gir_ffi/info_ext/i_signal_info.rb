@@ -9,12 +9,12 @@ module GirFFI
       #
       # @return [GObject::RubyClosure]  The signal handler closure, ready to be
       #                                 passed as a GClosure to C.
-      def wrap_in_closure &block
+      def wrap_in_closure(&block)
         bldr = Builders::SignalClosureBuilder.new(self)
         bldr.build_class.new(&block)
       end
 
-      def arguments_to_gvalues instance, arguments
+      def arguments_to_gvalues(instance, arguments)
         arg_g_values = args.map { |info| info.argument_type.make_g_value }
         arg_g_values.zip(arguments).each do |g_value, arg|
           g_value.set_value arg

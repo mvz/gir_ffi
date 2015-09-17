@@ -5,7 +5,7 @@ module GirFFI
   class BaseTypeBuilder
     include BuilderHelper
 
-    def initialize info
+    def initialize(info)
       @info = info
       @namespace = @info.namespace
       @classname = @info.safe_name

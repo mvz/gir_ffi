@@ -8,7 +8,7 @@ module GirFFI
   class UserDefinedTypeInfo
     attr_reader :properties, :vfunc_implementations
 
-    def initialize klass
+    def initialize(klass)
       @klass = klass
       @properties = []
       @vfunc_implementations = []
@@ -19,15 +19,15 @@ module GirFFI
       @klass
     end
 
-    def install_property property
+    def install_property(property)
       @properties << UserDefinedPropertyInfo.new(property)
     end
 
-    def install_vfunc_implementation name, implementation
+    def install_vfunc_implementation(name, implementation)
       @vfunc_implementations << VFuncImplementation.new(name, implementation)
     end
 
-    def find_instance_method _method
+    def find_instance_method(_method)
       nil
     end
 

@@ -8,7 +8,7 @@ module GObjectIntrospection
              :message, :string
     end
 
-    def initialize ptr
+    def initialize(ptr)
       @struct = self.class::Struct.new(ptr)
     end
 

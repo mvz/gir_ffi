@@ -42,12 +42,12 @@ describe GirFFI::UserDefinedTypeInfo do
   describe '#initialize' do
     let(:foo_spec) { Object.new }
     let(:bar_spec) { Object.new }
-    let(:info) {
+    let(:info) do
       GirFFI::UserDefinedTypeInfo.new :some_class do |inf|
         inf.install_property foo_spec
         inf.install_property bar_spec
       end
-    }
+    end
 
     before do
       expect(foo_spec).to receive(:get_name).and_return :foo

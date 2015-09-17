@@ -13,7 +13,7 @@ module GLib
       FRAMERATE = 25
       DEFAULT_TIMEOUT = 1000 / FRAMERATE
 
-      def initialize timeout = DEFAULT_TIMEOUT
+      def initialize(timeout = DEFAULT_TIMEOUT)
         @timeout = timeout
       end
 

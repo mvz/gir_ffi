@@ -17,11 +17,11 @@ module GLib
       GirFFI::SizedArray.wrap(:guint8, length, data_ptr)
     end
 
-    def each &block
+    def each(&block)
       data.each(&block)
     end
 
-    def self.from it
+    def self.from(it)
       case it
       when self
         it
@@ -36,7 +36,7 @@ module GLib
       undef new
     end
 
-    def self.new arr
+    def self.new(arr)
       data = GirFFI::SizedArray.from :guint8, arr.size, arr
       wrap Lib.g_bytes_new data.to_ptr, data.size
     end

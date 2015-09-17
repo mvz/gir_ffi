@@ -9,7 +9,7 @@ module GirFFI
     class FieldBuilder
       # Builder for field getters
       class GetterBuilder
-        def initialize field_builder, return_value_builder
+        def initialize(field_builder, return_value_builder)
           @field_builder = field_builder
           @return_value_builder = return_value_builder
         end
@@ -62,7 +62,7 @@ module GirFFI
 
       attr_reader :info
 
-      def initialize field_info
+      def initialize(field_info)
         @info = field_info
       end
 

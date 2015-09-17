@@ -13,15 +13,15 @@ module GirFFI
       self
     end
 
-    def self.to_native value, _context
+    def self.to_native(value, _context)
       value.struct
     end
 
-    def self.get_value_from_pointer pointer
+    def self.get_value_from_pointer(pointer)
       pointer.to_ptr
     end
 
-    def self.copy_value_to_pointer value, pointer, offset = 0
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
       size = self::Struct.size
       pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
     end

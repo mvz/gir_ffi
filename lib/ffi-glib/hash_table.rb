@@ -13,13 +13,13 @@ module GLib
 
     class << self; remove_method :new; end
 
-    def self.new keytype, valtype
+    def self.new(keytype, valtype)
       wrap [keytype, valtype], Lib.g_hash_table_new(
         hash_function_for(keytype), equality_function_for(keytype))
     end
 
     # @api private
-    def self.from_enumerable typespec, hash
+    def self.from_enumerable(typespec, hash)
       ghash = new(*typespec)
       hash.each do |key, val|
         ghash.insert key, val
@@ -28,7 +28,7 @@ module GLib
     end
 
     # @api private
-    def self.hash_function_for keytype
+    def self.hash_function_for(keytype)
       case keytype
       when :utf8
         FFI::Function.new(:uint,
@@ -38,7 +38,7 @@ module GLib
     end
 
     # @api private
-    def self.equality_function_for keytype
+    def self.equality_function_for(keytype)
       case keytype
       when :utf8
         FFI::Function.new(:int,
@@ -48,17 +48,17 @@ module GLib
     end
 
     # @api private
-    def self.find_support_function name
+    def self.find_support_function(name)
       lib = ::GLib::Lib.ffi_libraries.first
       lib.find_function(name)
     end
 
     def each
-      prc = proc {|keyptr, valptr, _userdata|
+      prc = proc do|keyptr, valptr, _userdata|
         key = GirFFI::ArgHelper.cast_from_pointer key_type, keyptr
         val = GirFFI::ArgHelper.cast_from_pointer value_type, valptr
         yield key, val
-      }
+      end
       callback = GLib::HFunc.from prc
       ::GLib::Lib.g_hash_table_foreach to_ptr, callback, nil
     end
@@ -68,14 +68,14 @@ module GLib
     end
 
     # @override
-    def insert key, value
+    def insert(key, value)
       keyptr = GirFFI::InPointer.from key_type, key
       valptr = GirFFI::InPointer.from value_type, value
       ::GLib::Lib.g_hash_table_insert to_ptr, keyptr, valptr
     end
 
     # @api private
-    def reset_typespec typespec
+    def reset_typespec(typespec)
       @key_type, @value_type = *typespec
       self
     end

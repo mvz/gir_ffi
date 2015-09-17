@@ -1764,10 +1764,10 @@ describe Regress do
 
     result.size.must_equal 2
 
-    result.each {|o|
+    result.each do|o|
       assert_instance_of Regress::TestObj, o
       assert_equal gtype, GObject.type_from_instance(o)
-    }
+    end
   end
 
   it 'has a working function #test_array_fixed_size_int_in' do
@@ -1957,11 +1957,11 @@ describe Regress do
     notify_times_called = 0
     b = :not_nil
 
-    callback = proc {|user_data|
+    callback = proc do|user_data|
       callback_times_called += 1
       b = user_data
       callback_times_called * 5
-    }
+    end
 
     notify = proc { notify_times_called += 1 }
 
