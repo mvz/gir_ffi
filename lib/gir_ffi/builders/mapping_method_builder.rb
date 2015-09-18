@@ -10,6 +10,8 @@ module GirFFI
     # Implements the creation mapping method for a callback or vfunc
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
+    #
+    # TODO: Inherit from BaseMethodBuilder
     class MappingMethodBuilder
       def self.for_callback(argument_infos, return_value_info)
         new nil, argument_infos, return_value_info, CallbackArgumentBuilder
