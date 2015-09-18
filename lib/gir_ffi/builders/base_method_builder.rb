@@ -53,6 +53,10 @@ module GirFFI
         "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
       end
 
+      def method_arguments
+        argument_builder_collection.method_argument_names
+      end
+
       private
 
       def lib_name

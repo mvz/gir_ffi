@@ -20,10 +20,6 @@ module GirFFI
         @info.safe_name.sub(/^new/, 'initialize')
       end
 
-      def method_arguments
-        argument_builder_collection.method_argument_names
-      end
-
       def preparation
         []
       end
