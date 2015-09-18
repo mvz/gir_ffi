@@ -1,7 +1,5 @@
 require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/initializer_return_value_builder'
-require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/base_method_builder'
 
 module GirFFI
@@ -15,7 +13,7 @@ module GirFFI
                                                                   return_value_info)
         @argument_builder_collection = ArgumentBuilderCollection.new(
           @return_value_builder, argument_builders,
-          error_argument_builder: error_argument(vargen))
+          error_argument_builder: error_argument)
       end
 
       def singleton_method?
@@ -46,12 +44,6 @@ module GirFFI
 
       def lib_name
         "#{@info.safe_namespace}::Lib"
-      end
-
-      def error_argument(vargen)
-        if @info.throws?
-          ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
-        end
       end
 
       def function_call_arguments
