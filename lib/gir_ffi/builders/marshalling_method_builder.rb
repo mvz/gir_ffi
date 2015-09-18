@@ -9,6 +9,8 @@ module GirFFI
     # Implements the creation mapping method for a signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
+    #
+    # TODO: Inherit from BaseMethodBuilder
     class MarshallingMethodBuilder
       def self.for_signal(receiver_info, argument_infos, return_value_info)
         new receiver_info, argument_infos, return_value_info
