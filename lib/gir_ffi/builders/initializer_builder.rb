@@ -28,10 +28,6 @@ module GirFFI
         []
       end
 
-      def invocation
-        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
-      end
-
       def result
         []
       end

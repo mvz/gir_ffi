@@ -24,10 +24,6 @@ module GirFFI
         []
       end
 
-      def invocation
-        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
-      end
-
       def result
         if argument_builder_collection.has_return_values?
           ["return #{argument_builder_collection.return_value_names.join(', ')}"]

@@ -46,6 +46,12 @@ module GirFFI
             ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
           end
       end
+
+      # Methods used by MethodTemplate
+
+      def invocation
+        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
+      end
     end
   end
 end
