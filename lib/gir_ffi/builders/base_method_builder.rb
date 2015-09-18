@@ -14,6 +14,16 @@ module GirFFI
         @vargen ||= VariableNameGenerator.new
       end
 
+      def method_definition
+        template.method_definition
+      end
+
+      def template
+        @template ||= MethodTemplate.new(self, argument_builder_collection)
+      end
+
+      # Methods used for setting up the builders
+
       def argument_builders
         @argument_builders ||= @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
       end
@@ -22,14 +32,6 @@ module GirFFI
         @return_value_info ||= ReturnValueInfo.new(@info.return_type,
                                                    @info.caller_owns,
                                                    @info.skip_return?)
-      end
-
-      def method_definition
-        template.method_definition
-      end
-
-      def template
-        @template ||= MethodTemplate.new(self, argument_builder_collection)
       end
 
       def argument_builder_collection
