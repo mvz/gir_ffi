@@ -20,10 +20,6 @@ module GirFFI
         @info.safe_name.sub(/^new/, 'initialize')
       end
 
-      def preparation
-        []
-      end
-
       def result
         []
       end

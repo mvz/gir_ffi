@@ -57,6 +57,10 @@ module GirFFI
         argument_builder_collection.method_argument_names
       end
 
+      def preparation
+        []
+      end
+
       private
 
       def lib_name
