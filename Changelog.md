@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.0 / 2015-09-18
 
 * Drop official support for CRuby 1.9.3
 * Officially support JRuby 9.0.0.0
