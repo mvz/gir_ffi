@@ -1,4 +1,5 @@
 require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/method_template'
 require 'gir_ffi/error_argument_info'
@@ -28,7 +29,13 @@ module GirFFI
       end
 
       def template
-        @template ||= MethodTemplate.new(self, @argument_builder_collection)
+        @template ||= MethodTemplate.new(self, argument_builder_collection)
+      end
+
+      def argument_builder_collection
+        @argument_builder_collection ||= ArgumentBuilderCollection.new(
+          @return_value_builder, argument_builders,
+          error_argument_builder: error_argument)
       end
 
       def error_argument

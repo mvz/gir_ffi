@@ -1,4 +1,3 @@
-require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/initializer_return_value_builder'
 require 'gir_ffi/builders/base_method_builder'
 
@@ -11,9 +10,6 @@ module GirFFI
         @info = info
         @return_value_builder = InitializerReturnValueBuilder.new(vargen,
                                                                   return_value_info)
-        @argument_builder_collection = ArgumentBuilderCollection.new(
-          @return_value_builder, argument_builders,
-          error_argument_builder: error_argument)
       end
 
       def singleton_method?
@@ -25,7 +21,7 @@ module GirFFI
       end
 
       def method_arguments
-        @argument_builder_collection.method_argument_names
+        argument_builder_collection.method_argument_names
       end
 
       def preparation
@@ -47,7 +43,7 @@ module GirFFI
       end
 
       def function_call_arguments
-        @argument_builder_collection.call_argument_names
+        argument_builder_collection.call_argument_names
       end
     end
   end

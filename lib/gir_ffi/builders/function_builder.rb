@@ -10,9 +10,6 @@ module GirFFI
         @info = info
         @return_value_builder = ReturnValueBuilder.new(vargen,
                                                        return_value_info)
-        @argument_builder_collection = ArgumentBuilderCollection.new(
-          @return_value_builder, argument_builders,
-          error_argument_builder: error_argument)
       end
 
       def method_name
@@ -20,7 +17,7 @@ module GirFFI
       end
 
       def method_arguments
-        @argument_builder_collection.method_argument_names
+        argument_builder_collection.method_argument_names
       end
 
       def preparation
@@ -32,8 +29,8 @@ module GirFFI
       end
 
       def result
-        if @argument_builder_collection.has_return_values?
-          ["return #{@argument_builder_collection.return_value_names.join(', ')}"]
+        if argument_builder_collection.has_return_values?
+          ["return #{argument_builder_collection.return_value_names.join(', ')}"]
         else
           []
         end
@@ -50,7 +47,7 @@ module GirFFI
       end
 
       def function_call_arguments
-        ca = @argument_builder_collection.call_argument_names
+        ca = argument_builder_collection.call_argument_names
         ca.unshift receiver_call_argument if @info.method?
         ca
       end
