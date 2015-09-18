@@ -36,17 +36,13 @@ module GirFFI
         !@info.method?
       end
 
-      private
-
-      def lib_name
-        "#{@info.safe_namespace}::Lib"
-      end
-
       def function_call_arguments
         ca = argument_builder_collection.call_argument_names
         ca.unshift receiver_call_argument if @info.method?
         ca
       end
+
+      private
 
       def receiver_call_argument
         if @info.instance_ownership_transfer == :everything

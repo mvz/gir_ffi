@@ -52,6 +52,12 @@ module GirFFI
       def invocation
         "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}"
       end
+
+      private
+
+      def lib_name
+        "#{@info.safe_namespace}::Lib"
+      end
     end
   end
 end

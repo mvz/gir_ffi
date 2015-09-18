@@ -32,12 +32,6 @@ module GirFFI
         []
       end
 
-      private
-
-      def lib_name
-        "#{@info.safe_namespace}::Lib"
-      end
-
       def function_call_arguments
         argument_builder_collection.call_argument_names
       end
