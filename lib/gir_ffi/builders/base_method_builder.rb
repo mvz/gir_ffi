@@ -1,6 +1,7 @@
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/return_value_info'
+require 'gir_ffi/builders/method_template'
 
 module GirFFI
   module Builders
@@ -21,7 +22,11 @@ module GirFFI
       end
 
       def method_definition
-        @template.method_definition
+        template.method_definition
+      end
+
+      def template
+        @template ||= MethodTemplate.new(self, @argument_builder_collection)
       end
     end
   end

@@ -1,7 +1,6 @@
 require 'gir_ffi/error_argument_info'
 require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/builders/error_argument_builder'
-require 'gir_ffi/builders/method_template'
 require 'gir_ffi/builders/base_method_builder'
 
 module GirFFI
@@ -16,7 +15,6 @@ module GirFFI
         @argument_builder_collection = ArgumentBuilderCollection.new(
           @return_value_builder, argument_builders,
           error_argument_builder: error_argument(vargen))
-        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_name
