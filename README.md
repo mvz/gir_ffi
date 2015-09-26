@@ -93,8 +93,7 @@ If you want to send pull requests or patches, please try to follow these
 instructions. If you get stuck, make a pull request anyway and I'll try to help
 out.
 
-* Make sure `rake test` runs without reporting any failures. If your code
-  breaks existing stuff, it won't get merged in.
+* Make sure `rake test` runs without reporting any failures.
 * Add tests for your feature. Otherwise, I can't see if it works or if I
   break it later.
 * Make sure latest master merges cleanly with your branch. Things might

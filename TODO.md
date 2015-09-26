@@ -3,12 +3,15 @@
 ## Miscellaneous
 
 * MAKE CONSTRUCTOR_WRAP CHECK TYPES? This would allow GObject::Object.new to
-  work and create the correct subtype.
+  work and create the correct subtype for classes that don't define their own
+  default constructor.
 * Add tests for the other test files in gobject-introspection. Currently, only
   regress.c and gimarshallingtests.c are used, but there are 6 other files
   available.
 * Move GObjectIntrospection to GIRepository, and allow generating its own
   members.
+* Do not remove ClassBase.new. We now remove it and then add it back for the
+  default constructor, which is kind of silly.
 
 ## Memory managment
 
