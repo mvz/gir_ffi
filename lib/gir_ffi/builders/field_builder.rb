@@ -47,8 +47,12 @@ module GirFFI
         private
 
         def return_value_builder
-          @return_value_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
+          @return_value_builder ||= ReturnValueBuilder.new(var_gen,
                                                            field_argument_info)
+        end
+
+        def var_gen
+          @var_gen ||= VariableNameGenerator.new
         end
 
         def template
@@ -59,13 +63,12 @@ module GirFFI
           @argument_builders ||= ArgumentBuilderCollection.new(return_value_builder, [])
         end
 
-
         def field_ptr
-          @field_ptr ||= return_value_builder.new_variable
+          @field_ptr ||= var_gen.new_var
         end
 
         def typed_ptr
-          @typed_ptr ||= return_value_builder.new_variable
+          @typed_ptr ||= var_gen.new_var
         end
 
         def field_offset
