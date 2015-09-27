@@ -1,13 +1,5 @@
 require 'rake/clean'
-require 'bundler/gem_helper'
-
-class MyGemHelper < Bundler::GemHelper
-  def version_tag
-    "version-#{version}"
-  end
-end
-
-MyGemHelper.install_tasks
+require 'bundler/gem_tasks'
 
 load 'tasks/test.rake'
 
