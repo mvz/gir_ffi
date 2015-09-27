@@ -190,5 +190,5 @@ file "test/lib/Makefile" => "test/lib/configure" do
 end
 
 file "test/lib/configure" => ["test/lib/autogen.sh", "test/lib/configure.ac"] do
-  sh %{cd test/lib && NOCONFIGURE=1 ./autogen.sh}
+  sh %{cd test/lib && ./autogen.sh}
 end
