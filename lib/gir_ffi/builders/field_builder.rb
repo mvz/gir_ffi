@@ -9,9 +9,12 @@ module GirFFI
     class FieldBuilder
       # Builder for field getters
       class GetterBuilder
-        def initialize(info, return_value_builder)
+        def initialize(info)
           @info = info
-          @return_value_builder = return_value_builder
+        end
+
+        def method_definition
+          template.method_definition
         end
 
         def singleton_method?
@@ -38,17 +41,31 @@ module GirFFI
         end
 
         def result
-          [@return_value_builder.return_value_name]
+          [return_value_builder.return_value_name]
         end
 
         private
 
+        def return_value_builder
+          @return_value_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
+                                                           field_argument_info)
+        end
+
+        def template
+          @template ||= MethodTemplate.new(self, argument_builders)
+        end
+
+        def argument_builders
+          @argument_builders ||= ArgumentBuilderCollection.new(return_value_builder, [])
+        end
+
+
         def field_ptr
-          @field_ptr ||= @return_value_builder.new_variable
+          @field_ptr ||= return_value_builder.new_variable
         end
 
         def typed_ptr
-          @typed_ptr ||= @return_value_builder.new_variable
+          @typed_ptr ||= return_value_builder.new_variable
         end
 
         def field_offset
@@ -57,6 +74,14 @@ module GirFFI
 
         def field_type_tag
           @field_type_tag ||= @info.field_type.tag_or_class.inspect
+        end
+
+        def field_type
+          @field_type ||= @info.field_type
+        end
+
+        def field_argument_info
+          @field_argument_info ||= FieldArgumentInfo.new 'value', field_type
         end
       end
 
@@ -84,9 +109,8 @@ module GirFFI
       end
 
       def getter_def
-        argument_builders = ArgumentBuilderCollection.new(return_value_builder, [])
-        getter_builder = GetterBuilder.new(info, return_value_builder)
-        MethodTemplate.new(getter_builder, argument_builders).method_definition
+        getter_builder = GetterBuilder.new(info)
+        getter_builder.method_definition
       end
 
       # TODO: Use MethodTemplate
@@ -130,11 +154,6 @@ module GirFFI
 
       def field_argument_info
         @field_argument_info ||= FieldArgumentInfo.new 'value', field_type
-      end
-
-      def return_value_builder
-        @rv_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
-                                               field_argument_info)
       end
 
       def setter_builder
