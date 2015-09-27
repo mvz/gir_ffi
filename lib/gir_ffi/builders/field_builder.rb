@@ -106,19 +106,11 @@ module GirFFI
         CODE
       end
 
-      def field_name
-        @field_name ||= info.name
-      end
-
-      def field_offset
-        @field_offset ||= info.offset
-      end
+      private
 
       def field_type_tag
         @field_type_tag ||= info.field_type.tag_or_class.inspect
       end
-
-      private
 
       def container_class
         @container_class ||= container_module.const_get(container_info.safe_name)
