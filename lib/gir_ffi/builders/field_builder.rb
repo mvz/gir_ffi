@@ -1,5 +1,4 @@
 require 'gir_ffi/builders/argument_builder'
-require 'gir_ffi/builders/return_value_builder'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/field_argument_info'
 
@@ -7,6 +6,116 @@ module GirFFI
   module Builders
     # Creates field getter and setter code for a given IFieldInfo.
     class FieldBuilder
+      class GetterArgumentBuilder < BaseArgumentBuilder
+        def initialize(var_gen, field_argument_info, field_info)
+          super(var_gen, field_argument_info)
+          @field_info = field_info
+        end
+
+        def pre_conversion
+          [
+            "#{field_ptr} = @struct.to_ptr + #{field_offset}",
+            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})",
+            "#{bare_value} = #{typed_ptr}.to_value"
+          ]
+        end
+
+        def post_conversion
+          []
+        end
+
+        def capture_variable_name
+          nil
+        end
+
+        def post_converted_name
+          @post_converted_name ||= if has_post_conversion?
+                                     new_variable
+                                   else
+                                     bare_value
+                                   end
+        end
+
+        def return_value_name
+          post_converted_name
+        end
+
+        def post_conversion
+          if has_post_conversion?
+            ["#{post_converted_name} = #{post_convertor.conversion}"]
+          else
+            []
+          end
+        end
+
+        private
+
+        def field_offset
+          @field_info.offset
+        end
+
+        def field_ptr
+          @field_ptr ||= @var_gen.new_var
+        end
+
+        def typed_ptr
+          @typed_ptr ||= @var_gen.new_var
+        end
+
+        def bare_value
+          @bare_value ||= @var_gen.new_var
+        end
+
+        def field_type_tag
+          @field_type_tag ||= @field_info.field_type.tag_or_class.inspect
+        end
+
+        def field_type
+          @field_type ||= @field_info.field_type
+        end
+
+        def has_post_conversion?
+          type_info.needs_c_to_ruby_conversion_for_functions?
+        end
+
+        def post_convertor
+          @post_convertor ||= CToRubyConvertor.new(type_info,
+                                                   bare_value,
+                                                   nil)
+        end
+      end
+
+      # Class to represent argument info for the argument of a getter method.
+      # Implements the necessary parts of IArgumentInfo's interface.
+      class GetterArgumentInfo
+        attr_reader :name, :argument_type
+
+        def initialize(name, type)
+          @name = name
+          @argument_type = type
+        end
+
+        def closure
+          -1
+        end
+
+        def direction
+          :out
+        end
+
+        def ownership_transfer
+          :everything
+        end
+
+        def caller_allocates?
+          false
+        end
+
+        def skip?
+          false
+        end
+      end
+
       # Builder for field getters
       class GetterBuilder
         def initialize(info)
@@ -30,26 +139,18 @@ module GirFFI
         end
 
         def preparation
-          [
-            "#{field_ptr} = @struct.to_ptr + #{field_offset}",
-            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})"
-          ]
+          []
         end
 
         def invocation
-          "#{typed_ptr}.to_value"
+          nil
         end
 
         def result
-          [return_value_builder.return_value_name]
+          [getter_argument_builder.return_value_name]
         end
 
         private
-
-        def return_value_builder
-          @return_value_builder ||= ReturnValueBuilder.new(var_gen,
-                                                           field_argument_info)
-        end
 
         def var_gen
           @var_gen ||= VariableNameGenerator.new
@@ -60,15 +161,12 @@ module GirFFI
         end
 
         def argument_builders
-          @argument_builders ||= ArgumentBuilderCollection.new(return_value_builder, [])
+          @argument_builders ||= ArgumentBuilderCollection.new(NullReturnValueBuilder.new,
+                                                               [getter_argument_builder])
         end
 
-        def field_ptr
-          @field_ptr ||= var_gen.new_var
-        end
-
-        def typed_ptr
-          @typed_ptr ||= var_gen.new_var
+        def getter_argument_builder
+          @getter_argument_builder ||= GetterArgumentBuilder.new(var_gen, field_argument_info, @info)
         end
 
         def field_offset
@@ -84,7 +182,7 @@ module GirFFI
         end
 
         def field_argument_info
-          @field_argument_info ||= FieldArgumentInfo.new 'value', field_type
+          @field_argument_info ||= GetterArgumentInfo.new 'value', field_type
         end
       end
 
