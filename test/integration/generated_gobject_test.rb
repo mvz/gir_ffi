@@ -61,5 +61,13 @@ describe GObject do
       instance = GObject::SignalQuery.new
       pass
     end
+
+    it 'uses the n_params field for the length of param_types' do
+      gtype = GObject::Object.gtype
+      signals = GObject.signal_list_ids gtype
+      signal_query = GObject.signal_query signals.first
+      signal_query.n_params.must_equal 1
+      signal_query.param_types.size.must_equal 1
+    end
   end
 end
