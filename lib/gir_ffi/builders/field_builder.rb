@@ -19,7 +19,7 @@ module GirFFI
         end
 
         def method_name
-          @method_name ||= @info.name
+          @info.name
         end
 
         def method_arguments
@@ -52,7 +52,7 @@ module GirFFI
         end
 
         def field_offset
-          @field_offset ||= @info.offset
+          @info.offset
         end
 
         def field_type_tag
