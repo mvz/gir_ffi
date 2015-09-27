@@ -55,4 +55,11 @@ describe GObject do
       instance.n_values.must_equal 0
     end
   end
+
+  describe GObject::SignalQuery do
+    it 'works' do
+      instance = GObject::SignalQuery.new
+      pass
+    end
+  end
 end
