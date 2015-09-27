@@ -9,8 +9,8 @@ module GirFFI
     class FieldBuilder
       # Builder for field getters
       class GetterBuilder
-        def initialize(field_builder, return_value_builder)
-          @field_builder = field_builder
+        def initialize(info, return_value_builder)
+          @info = info
           @return_value_builder = return_value_builder
         end
 
@@ -19,7 +19,7 @@ module GirFFI
         end
 
         def method_name
-          @field_builder.field_name
+          @method_name ||= @info.name
         end
 
         def method_arguments
@@ -52,11 +52,11 @@ module GirFFI
         end
 
         def field_offset
-          @field_builder.field_offset
+          @field_offset ||= @info.offset
         end
 
         def field_type_tag
-          @field_builder.field_type_tag
+          @field_type_tag ||= @info.field_type.tag_or_class.inspect
         end
       end
 
@@ -85,7 +85,7 @@ module GirFFI
 
       def getter_def
         argument_builders = ArgumentBuilderCollection.new(return_value_builder, [])
-        getter_builder = GetterBuilder.new(self, return_value_builder)
+        getter_builder = GetterBuilder.new(info, return_value_builder)
         MethodTemplate.new(getter_builder, argument_builders).method_definition
       end
 
