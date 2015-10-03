@@ -81,7 +81,7 @@ module GirFFI
         def post_convertor
           @post_convertor ||= CToRubyConvertor.new(type_info,
                                                    bare_value,
-                                                   nil)
+                                                   length_arg.post_converted_name)
         end
       end
 
@@ -161,12 +161,34 @@ module GirFFI
         end
 
         def argument_builders
-          @argument_builders ||= ArgumentBuilderCollection.new(NullReturnValueBuilder.new,
-                                                               [getter_argument_builder])
+          @argument_builders ||=
+            ArgumentBuilderCollection.new(NullReturnValueBuilder.new,
+                                          [getter_argument_builder, length_argument_builder])
         end
 
         def getter_argument_builder
-          @getter_argument_builder ||= GetterArgumentBuilder.new(var_gen, field_argument_info, @info)
+          @getter_argument_builder ||=
+            GetterArgumentBuilder.new(var_gen, field_argument_info, @info).tap do |builder|
+              builder.length_arg = length_argument_builder
+            end
+        end
+
+        def length_argument_builder
+          @length_argument_builder ||=
+            if array_length_field
+              GetterArgumentBuilder.new(var_gen, length_argument_info, array_length_field)
+            else
+              NullArgumentBuilder.new
+            end
+        end
+
+        def array_length_field
+          @info.related_array_length_field
+        end
+
+        def length_argument_info
+          @length_argument_info ||=
+            GetterArgumentInfo.new 'length', array_length_field.field_type
         end
 
         def field_offset

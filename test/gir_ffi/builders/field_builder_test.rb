@@ -104,4 +104,25 @@ describe GirFFI::Builders::FieldBuilder do
       instance.setter_def.must_equal expected
     end
   end
+
+  describe 'for a field with a related array length field' do
+    let(:field_info) { get_field_introspection_data 'GObject', 'SignalQuery', 'param_types' }
+    let(:n_params_field_info) { get_field_introspection_data 'GObject', 'SignalQuery', 'n_params' }
+
+    it 'creates the right getter method' do
+      expected = <<-CODE.reset_indentation
+        def param_types
+          _v1 = @struct.to_ptr + #{n_params_field_info.offset}
+          _v2 = GirFFI::InOutPointer.new(:guint32, _v1)
+          _v3 = _v2.to_value
+          _v4 = @struct.to_ptr + #{field_info.offset}
+          _v5 = GirFFI::InOutPointer.new([:pointer, :c], _v4)
+          _v6 = _v5.to_value
+          _v7 = GirFFI::SizedArray.wrap(:GType, _v3, _v6)
+          _v7
+        end
+      CODE
+      instance.getter_def.must_equal expected
+    end
+  end
 end

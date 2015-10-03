@@ -31,5 +31,13 @@ module GirFFI
     def capture_variable_name
       nil
     end
+
+    def closure
+      -1
+    end
+
+    def post_converted_name
+      nil
+    end
   end
 end
