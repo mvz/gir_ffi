@@ -58,7 +58,7 @@ describe GObject do
 
   describe GObject::SignalQuery do
     it 'works' do
-      instance = GObject::SignalQuery.new
+      GObject::SignalQuery.new
       pass
     end
 

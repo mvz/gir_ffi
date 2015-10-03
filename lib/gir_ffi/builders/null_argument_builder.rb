@@ -1,7 +1,7 @@
 module GirFFI
   # Argument builder that does nothing. Implements the Null Object pattern.
   class NullArgumentBuilder
-    def initialize *_
+    def initialize(*)
     end
 
     def pre_conversion

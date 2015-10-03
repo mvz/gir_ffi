@@ -6,10 +6,14 @@ module GirFFI
   module Builders
     # Creates field getter and setter code for a given IFieldInfo.
     class FieldBuilder
+      # Convertor for fields for field getters. Used when building getter
+      # methods.
       class GetterArgumentBuilder < BaseArgumentBuilder
-        def initialize(var_gen, field_argument_info, field_info)
+        def initialize(var_gen, field_argument_info, field_info,
+                       length_argument: NullArgumentBuilder.new)
           super(var_gen, field_argument_info)
           @field_info = field_info
+          @length_arg = length_argument
         end
 
         def pre_conversion
@@ -18,10 +22,6 @@ module GirFFI
             "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})",
             "#{bare_value} = #{typed_ptr}.to_value"
           ]
-        end
-
-        def post_conversion
-          []
         end
 
         def capture_variable_name
@@ -162,15 +162,15 @@ module GirFFI
 
         def argument_builders
           @argument_builders ||=
-            ArgumentBuilderCollection.new(NullReturnValueBuilder.new,
-                                          [getter_argument_builder, length_argument_builder])
+            ArgumentBuilderCollection.new(
+              NullReturnValueBuilder.new,
+              [getter_argument_builder, length_argument_builder])
         end
 
         def getter_argument_builder
           @getter_argument_builder ||=
-            GetterArgumentBuilder.new(var_gen, field_argument_info, @info).tap do |builder|
-              builder.length_arg = length_argument_builder
-            end
+            GetterArgumentBuilder.new(var_gen, field_argument_info, @info,
+                                      length_argument: length_argument_builder)
         end
 
         def length_argument_builder
