@@ -57,8 +57,8 @@ module GirFFI
       end
 
       def set_up_argument_relations
-        @base_argument_builders.each do |arg|
-          if (idx = arg.arginfo.closure) >= 0
+        @base_argument_builders.each do |bldr|
+          if (idx = bldr.closure) >= 0
             @base_argument_builders[idx].closure = true
           end
         end
