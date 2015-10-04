@@ -9,11 +9,10 @@ module GirFFI
       # Convertor for fields for field getters. Used when building getter
       # methods.
       class GetterArgumentBuilder < BaseArgumentBuilder
-        def initialize(var_gen, field_argument_info, field_info,
-                       length_argument: NullArgumentBuilder.new)
+        def initialize(var_gen, field_argument_info, field_info, options = {})
           super(var_gen, field_argument_info)
           @field_info = field_info
-          @length_arg = length_argument
+          @length_arg = options.fetch(:length_argument) { NullArgumentBuilder.new }
         end
 
         def pre_conversion
