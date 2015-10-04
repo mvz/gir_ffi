@@ -60,6 +60,10 @@ module GirFFI
         type_info.array_length
       end
 
+      def closure
+        arginfo.closure
+      end
+
       def ownership_transfer
         arginfo.ownership_transfer
       end

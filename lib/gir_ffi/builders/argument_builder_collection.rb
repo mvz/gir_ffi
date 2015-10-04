@@ -57,14 +57,15 @@ module GirFFI
       end
 
       def set_up_argument_relations
-        @base_argument_builders.each do |arg|
-          if (idx = arg.arginfo.closure) >= 0
+        @base_argument_builders.each do |bldr|
+          if (idx = bldr.closure) >= 0
             @base_argument_builders[idx].closure = true
           end
         end
         all_builders.each do |bldr|
           if (idx = bldr.array_length_idx) >= 0
             other = @base_argument_builders[idx]
+            next unless other
 
             bldr.length_arg = other
             other.array_arg = bldr

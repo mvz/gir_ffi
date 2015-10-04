@@ -74,7 +74,7 @@ module GirFFI
       end
 
       def plain_invocation
-        [@builder.invocation]
+        [@builder.invocation].compact
       end
     end
   end

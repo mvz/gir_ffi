@@ -5,6 +5,11 @@ module GirFFI
       def layout_specification
         [name.to_sym, field_type.to_ffi_type, offset]
       end
+
+      def related_array_length_field
+        index = field_type.array_length
+        container.fields[index] if index > -1
+      end
     end
   end
 end
