@@ -11,8 +11,6 @@ module GLib
     attr_reader :key_type
     attr_reader :value_type
 
-    class << self; remove_method :new; end
-
     def self.new(keytype, valtype)
       wrap [keytype, valtype], Lib.g_hash_table_new(
         hash_function_for(keytype), equality_function_for(keytype))
