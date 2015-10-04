@@ -27,6 +27,10 @@ module GirFFI
       other.class == self.class && to_ptr.address == other.to_ptr.address
     end
 
+    def initialize
+      raise NoMethodError
+    end
+
     def self.setup_and_call(method, arguments, &block)
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
@@ -56,10 +60,6 @@ module GirFFI
 
     def self.setup_instance_method(name)
       gir_ffi_builder.setup_instance_method name
-    end
-
-    class << self
-      undef new
     end
 
     # Wrap the passed pointer in an instance of the current class, or a

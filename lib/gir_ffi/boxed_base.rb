@@ -26,12 +26,6 @@ module GirFFI
       pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
     end
 
-    def self.new(*args)
-      obj = allocate
-      obj.__send__ :initialize, *args
-      obj
-    end
-
     def initialize
       @struct = self.class::Struct.new
     end
