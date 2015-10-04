@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Use inherited constructor for boxed types
+
 ## 0.8.1 / 2015-10-04
 
 * Handle struct array fields with related length fields
