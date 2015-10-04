@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1 / 2015-10-04
+
+* Handle struct array fields with related length fields
+* Update test library build process
+
 ## 0.8.0 / 2015-09-18
 
 * Drop official support for CRuby 1.9.3
