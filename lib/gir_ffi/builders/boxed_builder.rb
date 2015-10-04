@@ -14,16 +14,6 @@ module GirFFI
         setup_constants
         stub_methods
         setup_field_accessors
-        provide_constructor
-      end
-
-      def provide_constructor
-        return if info.find_method 'new'
-
-        # TODO: Provide both new and initialize
-        (class << klass; self; end).class_eval do
-          alias_method :new, :_allocate
-        end
       end
     end
   end
