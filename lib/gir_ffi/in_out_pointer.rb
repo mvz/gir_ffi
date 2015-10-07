@@ -52,7 +52,7 @@ module GirFFI
     end
 
     def clear
-      set_value nil_value
+      put_bytes 0, "\x00" * value_type_size, 0, value_type_size
     end
 
     def self.for(type)
@@ -71,10 +71,6 @@ module GirFFI
 
     def value_type_size
       @value_type_size ||= FFI.type_size value_ffi_type
-    end
-
-    def nil_value
-      value_ffi_type == :pointer ? nil : 0
     end
   end
 end
