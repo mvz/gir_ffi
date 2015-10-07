@@ -48,8 +48,6 @@ module GObject
     return_gvalue = sig_info.gvalue_for_return_value
 
     signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
-
-    return_gvalue
   end
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
