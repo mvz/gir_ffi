@@ -74,6 +74,16 @@ describe GirFFI::InOutPointer do
     end
   end
 
+  describe '#set_value' do
+    it 'works setting the value to nil for GObject::Value' do
+      pointer = GirFFI::InOutPointer.from GObject::Value, GObject::Value.from(3)
+      pointer.set_value nil
+      type_size = FFI.type_size GObject::Value
+      expected = "\x00" * type_size
+      pointer.to_value.read_bytes(type_size).must_equal expected
+    end
+  end
+
   describe '#to_value' do
     it 'returns the held value' do
       ptr = GirFFI::InOutPointer.from :gint32, 123
