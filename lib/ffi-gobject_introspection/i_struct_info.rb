@@ -24,7 +24,7 @@ module GObjectIntrospection
 
     ##
     build_array_method :get_methods
-    # There is a function g_object_info_find_method but it causes a core dump.
+    # There is a function g_struct_info_find_method but it causes a core dump.
     build_finder_method :find_method, :get_n_methods, :get_method
 
     def size
