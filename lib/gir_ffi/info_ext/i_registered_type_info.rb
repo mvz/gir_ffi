@@ -16,6 +16,10 @@ module GirFFI
         info = find_method method
         return info if info && info.method?
       end
+
+      def find_method(method)
+        raise 'Must be overridden in subclass'
+      end
     end
   end
 end
