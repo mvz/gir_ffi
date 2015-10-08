@@ -11,9 +11,11 @@ module GLib
     attr_reader :key_type
     attr_reader :value_type
 
-    def self.new(keytype, valtype)
-      wrap [keytype, valtype], Lib.g_hash_table_new(
-        hash_function_for(keytype), equality_function_for(keytype))
+    def initialize(key_type, value_type)
+      @key_type = key_type
+      @value_type = value_type
+      store_pointer Lib.g_hash_table_new(
+        hash_function_for_key_type, equality_function_for_key_type)
     end
 
     # @api private
@@ -23,32 +25,6 @@ module GLib
         ghash.insert key, val
       end
       ghash
-    end
-
-    # @api private
-    def self.hash_function_for(keytype)
-      case keytype
-      when :utf8
-        FFI::Function.new(:uint,
-                          [:pointer],
-                          find_support_function('g_str_hash'))
-      end
-    end
-
-    # @api private
-    def self.equality_function_for(keytype)
-      case keytype
-      when :utf8
-        FFI::Function.new(:int,
-                          [:pointer, :pointer],
-                          find_support_function('g_str_equal'))
-      end
-    end
-
-    # @api private
-    def self.find_support_function(name)
-      lib = ::GLib::Lib.ffi_libraries.first
-      lib.find_function(name)
     end
 
     def each
@@ -77,5 +53,31 @@ module GLib
       @key_type, @value_type = *typespec
       self
     end
+
+    private
+
+    def hash_function_for_key_type
+      case @key_type
+      when :utf8
+        FFI::Function.new(:uint,
+                          [:pointer],
+                          find_support_function('g_str_hash'))
+      end
+    end
+
+    def equality_function_for_key_type
+      case @key_type
+      when :utf8
+        FFI::Function.new(:int,
+                          [:pointer, :pointer],
+                          find_support_function('g_str_equal'))
+      end
+    end
+
+    def find_support_function(name)
+      lib = ::GLib::Lib.ffi_libraries.first
+      lib.find_function(name)
+    end
+
   end
 end
