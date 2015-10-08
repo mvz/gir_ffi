@@ -21,12 +21,6 @@ module GObject
       end
     end
 
-    # TODO: Give more generic name
-    def set_ruby_value(val)
-      init_for_ruby_value val if uninitialized?
-      set_value val
-    end
-
     METHOD_MAP = {
       TYPE_INVALID => [:get_none,          :set_none],
       TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
@@ -84,7 +78,7 @@ module GObject
 
     # TODO: Give more generic name
     def self.wrap_ruby_value(val)
-      new.tap { |gv| gv.set_ruby_value val }
+      new.tap { |gv| gv.__send__ :set_ruby_value, val }
     end
 
     def self.from(val)
@@ -111,6 +105,11 @@ module GObject
     end
 
     private
+
+    def set_ruby_value(val)
+      init_for_ruby_value val if uninitialized?
+      set_value val
+    end
 
     CLASS_TO_GTYPE_MAP = {
       NilClass => TYPE_INVALID,
