@@ -6,6 +6,7 @@ module GObject
     setup_instance_method 'init'
 
     def init_with_finalizer(type)
+      return self if [TYPE_NONE, TYPE_INVALID].include? type
       init_without_finalizer(type).tap do
         ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
       end
@@ -66,10 +67,7 @@ module GObject
 
     def init_for_ruby_value(val)
       CLASS_TO_GTYPE_MAP.each do |klass, type|
-        if val.is_a? klass
-          init type unless type == TYPE_INVALID
-          return self
-        end
+        return init type if val.is_a? klass
       end
       raise "Can't handle #{val.class}"
     end
@@ -116,7 +114,6 @@ module GObject
     end
 
     def self.for_gtype(gtype)
-      return nil if gtype == TYPE_NONE
       new.tap do |it|
         it.init gtype
       end

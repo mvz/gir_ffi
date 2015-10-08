@@ -18,6 +18,23 @@ describe GObject::Value do
     end
   end
 
+  describe '.for_gtype' do
+    it 'handles char' do
+      gv = GObject::Value.for_gtype GObject::TYPE_CHAR
+      gv.current_gtype.must_equal GObject::TYPE_CHAR
+    end
+
+    it 'handles invalid type' do
+      gv = GObject::Value.for_gtype GObject::TYPE_INVALID
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+    end
+
+    it 'handles void type' do
+      gv = GObject::Value.for_gtype GObject::TYPE_NONE
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+    end
+  end
+
   describe '::wrap_ruby_value' do
     it 'wraps a boolean false' do
       gv = GObject::Value.wrap_ruby_value false
