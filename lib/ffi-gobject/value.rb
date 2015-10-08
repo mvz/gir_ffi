@@ -57,21 +57,6 @@ module GObject
 
     alias_method :value=, :set_value
 
-    CLASS_TO_GTYPE_MAP = {
-      NilClass => TYPE_INVALID,
-      TrueClass => TYPE_BOOLEAN,
-      FalseClass => TYPE_BOOLEAN,
-      Integer => TYPE_INT,
-      String => TYPE_STRING
-    }
-
-    def init_for_ruby_value(val)
-      CLASS_TO_GTYPE_MAP.each do |klass, type|
-        return init type if val.is_a? klass
-      end
-      raise "Can't handle #{val.class}"
-    end
-
     def current_gtype
       @struct[:g_type]
     end
@@ -128,6 +113,21 @@ module GObject
     end
 
     private
+
+    CLASS_TO_GTYPE_MAP = {
+      NilClass => TYPE_INVALID,
+      TrueClass => TYPE_BOOLEAN,
+      FalseClass => TYPE_BOOLEAN,
+      Integer => TYPE_INT,
+      String => TYPE_STRING
+    }
+
+    def init_for_ruby_value(val)
+      CLASS_TO_GTYPE_MAP.each do |klass, type|
+        return init type if val.is_a? klass
+      end
+      raise "Can't handle #{val.class}"
+    end
 
     def set_none(_)
     end
