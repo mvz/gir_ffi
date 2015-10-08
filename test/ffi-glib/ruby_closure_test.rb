@@ -38,7 +38,7 @@ describe GObject::RubyClosure do
 
     it "stores the closure's return value in the proper gvalue" do
       c = GObject::RubyClosure.new { 2 }
-      gv = GObject::Value.new
+      gv = GObject::Value.new.init GObject::TYPE_INT
       GObject::RubyClosure.marshaller(c, gv, nil, nil, nil)
       assert_equal 2, gv.get_value
     end

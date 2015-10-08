@@ -6,6 +6,7 @@ module GObject
     setup_instance_method 'init'
 
     def init_with_finalizer(type)
+      return self if [TYPE_NONE, TYPE_INVALID].include? type
       init_without_finalizer(type).tap do
         ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
       end
@@ -20,13 +21,8 @@ module GObject
       end
     end
 
-    # TODO: Give more generic name
-    def set_ruby_value(val)
-      init_for_ruby_value val if current_gtype == 0
-      set_value val
-    end
-
     METHOD_MAP = {
+      TYPE_INVALID => [:get_none,          :set_none],
       TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
       TYPE_BOXED   => [:get_boxed,         :set_boxed],
       TYPE_CHAR    => [:get_char,          :set_char],
@@ -55,23 +51,6 @@ module GObject
 
     alias_method :value=, :set_value
 
-    CLASS_TO_GTYPE_MAP = {
-      TrueClass => TYPE_BOOLEAN,
-      FalseClass => TYPE_BOOLEAN,
-      Integer => TYPE_INT,
-      String => TYPE_STRING
-    }
-
-    def init_for_ruby_value(val)
-      CLASS_TO_GTYPE_MAP.each do |klass, type|
-        if val.is_a? klass
-          init type
-          return self
-        end
-      end
-      raise "Can't handle #{val.class}"
-    end
-
     def current_gtype
       @struct[:g_type]
     end
@@ -99,22 +78,19 @@ module GObject
 
     # TODO: Give more generic name
     def self.wrap_ruby_value(val)
-      new.tap { |gv| gv.set_ruby_value val }
+      new.tap { |gv| gv.__send__ :set_ruby_value, val }
     end
 
     def self.from(val)
       case val
       when self
         val
-      when nil
-        nil
       else
         wrap_ruby_value val
       end
     end
 
     def self.for_gtype(gtype)
-      return nil if gtype == TYPE_NONE
       new.tap do |it|
         it.init gtype
       end
@@ -129,6 +105,36 @@ module GObject
     end
 
     private
+
+    def set_ruby_value(val)
+      init_for_ruby_value val if uninitialized?
+      set_value val
+    end
+
+    CLASS_TO_GTYPE_MAP = {
+      NilClass => TYPE_INVALID,
+      TrueClass => TYPE_BOOLEAN,
+      FalseClass => TYPE_BOOLEAN,
+      Integer => TYPE_INT,
+      String => TYPE_STRING
+    }
+
+    def init_for_ruby_value(val)
+      CLASS_TO_GTYPE_MAP.each do |klass, type|
+        return init type if val.is_a? klass
+      end
+      raise "Can't handle #{val.class}"
+    end
+
+    def set_none(_)
+    end
+
+    def get_none
+    end
+
+    def uninitialized?
+      current_gtype == TYPE_INVALID
+    end
 
     def set_instance_enhanced(val)
       check_type_compatibility val if val

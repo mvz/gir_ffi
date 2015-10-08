@@ -23,7 +23,12 @@ module GirFFI
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
       size = self::Struct.size
-      pointer.put_bytes offset, value.to_ptr.read_bytes(size), 0, size
+      bytes = if value
+                value.to_ptr.read_bytes(size)
+              else
+                "\x00" * size
+              end
+      pointer.put_bytes offset, bytes, 0, size
     end
 
     def initialize

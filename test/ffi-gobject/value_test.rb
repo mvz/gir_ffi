@@ -18,6 +18,23 @@ describe GObject::Value do
     end
   end
 
+  describe '.for_gtype' do
+    it 'handles char' do
+      gv = GObject::Value.for_gtype GObject::TYPE_CHAR
+      gv.current_gtype.must_equal GObject::TYPE_CHAR
+    end
+
+    it 'handles invalid type' do
+      gv = GObject::Value.for_gtype GObject::TYPE_INVALID
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+    end
+
+    it 'handles void type' do
+      gv = GObject::Value.for_gtype GObject::TYPE_NONE
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+    end
+  end
+
   describe '::wrap_ruby_value' do
     it 'wraps a boolean false' do
       gv = GObject::Value.wrap_ruby_value false
@@ -39,6 +56,12 @@ describe GObject::Value do
     it 'wraps a String' do
       gv = GObject::Value.wrap_ruby_value 'Some Random String'
       assert_equal 'Some Random String', gv.get_string
+    end
+
+    it 'wraps nil' do
+      gv = GObject::Value.wrap_ruby_value nil
+      assert_instance_of GObject::Value, gv
+      assert_equal nil, gv.get_value
     end
   end
 
@@ -246,6 +269,12 @@ describe GObject::Value do
       gv2 = GObject::Value.from gv
       gv2.current_gtype_name.must_equal 'gint'
       gv2.get_value.must_equal 21
+    end
+
+    it 'creates a null GValue from a Ruby nil' do
+      gv = GObject::Value.from nil
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+      gv.get_value.must_equal nil
     end
   end
 

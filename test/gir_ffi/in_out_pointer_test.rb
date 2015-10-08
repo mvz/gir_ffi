@@ -57,11 +57,30 @@ describe GirFFI::InOutPointer do
 
   describe '.for' do
     it 'handles :gboolean' do
-      GirFFI::InOutPointer.for :gboolean
+      result = GirFFI::InOutPointer.for :gboolean
+      result.to_value.must_equal false
     end
 
     it 'handles :utf8' do
-      GirFFI::InOutPointer.for :utf8
+      result = GirFFI::InOutPointer.for :utf8
+      result.to_value.must_be :null?
+    end
+
+    it 'handles GObject::Value' do
+      result = GirFFI::InOutPointer.for GObject::Value
+      type_size = FFI.type_size GObject::Value
+      expected = "\x00" * type_size
+      result.to_value.read_bytes(type_size).must_equal expected
+    end
+  end
+
+  describe '#set_value' do
+    it 'works setting the value to nil for GObject::Value' do
+      pointer = GirFFI::InOutPointer.from GObject::Value, GObject::Value.from(3)
+      pointer.set_value nil
+      type_size = FFI.type_size GObject::Value
+      expected = "\x00" * type_size
+      pointer.to_value.read_bytes(type_size).must_equal expected
     end
   end
 
