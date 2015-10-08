@@ -22,7 +22,7 @@ module GObject
 
     # TODO: Give more generic name
     def set_ruby_value(val)
-      init_for_ruby_value val if current_gtype == 0
+      init_for_ruby_value val if uninitialized?
       set_value val
     end
 
@@ -50,12 +50,13 @@ module GObject
     }
 
     def set_value(val)
-      send set_method, val
+      send set_method, val unless uninitialized?
     end
 
     alias_method :value=, :set_value
 
     CLASS_TO_GTYPE_MAP = {
+      NilClass => TYPE_NONE,
       TrueClass => TYPE_BOOLEAN,
       FalseClass => TYPE_BOOLEAN,
       Integer => TYPE_INT,
@@ -65,7 +66,7 @@ module GObject
     def init_for_ruby_value(val)
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
-          init type
+          init type unless type == TYPE_NONE
           return self
         end
       end
@@ -85,6 +86,7 @@ module GObject
     end
 
     def get_value
+      return if uninitialized?
       value = get_value_plain
       if current_fundamental_type == TYPE_BOXED
         wrap_boxed value
@@ -129,6 +131,10 @@ module GObject
     end
 
     private
+
+    def uninitialized?
+      current_gtype == 0
+    end
 
     def set_instance_enhanced(val)
       check_type_compatibility val if val

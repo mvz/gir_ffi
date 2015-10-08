@@ -40,6 +40,12 @@ describe GObject::Value do
       gv = GObject::Value.wrap_ruby_value 'Some Random String'
       assert_equal 'Some Random String', gv.get_string
     end
+
+    it 'wraps nil' do
+      gv = GObject::Value.wrap_ruby_value nil
+      assert_instance_of GObject::Value, gv
+      assert_equal nil, gv.get_value
+    end
   end
 
   describe '#set_value' do
