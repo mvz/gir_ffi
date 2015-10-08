@@ -27,6 +27,7 @@ module GObject
     end
 
     METHOD_MAP = {
+      TYPE_INVALID => [:get_none,          :set_none],
       TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
       TYPE_BOXED   => [:get_boxed,         :set_boxed],
       TYPE_CHAR    => [:get_char,          :set_char],
@@ -50,13 +51,13 @@ module GObject
     }
 
     def set_value(val)
-      send set_method, val unless uninitialized?
+      send set_method, val
     end
 
     alias_method :value=, :set_value
 
     CLASS_TO_GTYPE_MAP = {
-      NilClass => TYPE_NONE,
+      NilClass => TYPE_INVALID,
       TrueClass => TYPE_BOOLEAN,
       FalseClass => TYPE_BOOLEAN,
       Integer => TYPE_INT,
@@ -66,7 +67,7 @@ module GObject
     def init_for_ruby_value(val)
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         if val.is_a? klass
-          init type unless type == TYPE_NONE
+          init type unless type == TYPE_INVALID
           return self
         end
       end
@@ -86,7 +87,6 @@ module GObject
     end
 
     def get_value
-      return if uninitialized?
       value = get_value_plain
       if current_fundamental_type == TYPE_BOXED
         wrap_boxed value
@@ -132,8 +132,14 @@ module GObject
 
     private
 
+    def set_none(_)
+    end
+
+    def get_none
+    end
+
     def uninitialized?
-      current_gtype == 0
+      current_gtype == TYPE_INVALID
     end
 
     def set_instance_enhanced(val)
