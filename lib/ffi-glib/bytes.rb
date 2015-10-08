@@ -32,15 +32,6 @@ module GLib
       end
     end
 
-    class << self
-      undef new
-    end
-
-    def self.new(arr)
-      data = GirFFI::SizedArray.from :guint8, arr.size, arr
-      wrap Lib.g_bytes_new data.to_ptr, data.size
-    end
-
     private
 
     def data
