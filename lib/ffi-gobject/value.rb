@@ -91,8 +91,6 @@ module GObject
       case val
       when self
         val
-      when nil
-        nil
       else
         wrap_ruby_value val
       end

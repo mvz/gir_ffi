@@ -270,6 +270,12 @@ describe GObject::Value do
       gv2.current_gtype_name.must_equal 'gint'
       gv2.get_value.must_equal 21
     end
+
+    it 'creates a null GValue from a Ruby nil' do
+      gv = GObject::Value.from nil
+      gv.current_gtype.must_equal GObject::TYPE_INVALID
+      gv.get_value.must_equal nil
+    end
   end
 
   describe '#set_value' do
