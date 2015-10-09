@@ -92,8 +92,7 @@ describe GirFFI::ClassBase do
           'correct-result'
         end
 
-        def self.new
-          allocate
+        def initialize
         end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
@@ -114,8 +113,7 @@ describe GirFFI::ClassBase do
         def foo
         end
 
-        def self.new
-          allocate
+        def initialize
         end
       end
       sub_klass.const_set :GIR_FFI_BUILDER, sub_builder
@@ -132,8 +130,7 @@ describe GirFFI::ClassBase do
           'correct-result'
         end
 
-        def self.new
-          allocate
+        def initialize
         end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
