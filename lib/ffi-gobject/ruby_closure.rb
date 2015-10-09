@@ -15,14 +15,12 @@ module GObject
              :block_id, :int64
     end
 
-    def self.new(&block)
+    def initialize(&block)
       raise ArgumentError unless block_given?
 
-      closure = wrap(new_simple(self::Struct.size, nil).to_ptr)
-      closure.block = block
-      closure.set_marshal proc { |*args| marshaller(*args) }
-
-      closure
+      initialize_simple(self.class::Struct.size, nil)
+      self.block = block
+      set_marshal proc { |*args| self.class.marshaller(*args) }
     end
 
     # @api private
