@@ -76,4 +76,13 @@ describe GirFFI::UserDefinedTypeInfo do
       info.g_name.must_equal 'bar'
     end
   end
+
+  describe '#find_method' do
+    let(:klass) { Object.new }
+    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+
+    it 'finds no methods' do
+      info.find_method('foo').must_equal nil
+    end
+  end
 end

@@ -20,8 +20,9 @@ module GLib
       remove_method :add if method_defined? :add
     end
 
-    def self.new(type)
-      wrap(type, Lib.g_ptr_array_new)
+    def initialize(type)
+      @element_type = type
+      store_pointer Lib.g_ptr_array_new
     end
 
     def self.from_enumerable(type, it)

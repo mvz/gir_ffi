@@ -1,5 +1,6 @@
 require 'forwardable'
 require 'gir_ffi/registered_type_base'
+require 'gir_ffi/builders/null_class_builder'
 
 module GirFFI
   # Base class for all generated classes and structs. Contains code for dealing
@@ -8,6 +9,8 @@ module GirFFI
     extend RegisteredTypeBase
     extend Forwardable
 
+    GIR_FFI_BUILDER = Builders::NullClassBuilder.new
+
     attr_reader :struct
     def_delegators :@struct, :to_ptr
 
@@ -15,7 +18,7 @@ module GirFFI
       method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)
 
       unless method_name
-        raise "Unable to set up instance method '#{method}' in #{self}"
+        raise NoMethodError, "undefined method `#{method}' for #{self}"
       end
 
       send method_name, *arguments, &block
@@ -35,7 +38,7 @@ module GirFFI
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
       unless method_name
-        raise "Unable to set up method '#{method}' in #{self}"
+        raise NoMethodError, "undefined method `#{method}' for #{self}"
       end
 
       send method_name, *arguments, &block
@@ -48,6 +51,7 @@ module GirFFI
           return result if result
         end
       end
+      nil
     end
 
     def self.to_ffi_type

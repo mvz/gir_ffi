@@ -68,7 +68,7 @@ module GObjectIntrospection
     build_array_method :get_methods
 
     def find_method(name)
-      IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj, name)
+      IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj, name.to_s)
     end
 
     def n_signals
@@ -92,7 +92,7 @@ module GObjectIntrospection
     end
 
     def find_vfunc(name)
-      IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj, name)
+      IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj, name.to_s)
     end
     ##
     build_array_method :vfuncs

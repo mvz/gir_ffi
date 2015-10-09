@@ -3,6 +3,8 @@
 ## Unreleased
 
 * Use inherited constructor for boxed types
+* Replace or remove all custom .new methods
+* Make setup_method and setup_instance_method handle symbol arguments
 
 ## 0.8.1 / 2015-10-04
 

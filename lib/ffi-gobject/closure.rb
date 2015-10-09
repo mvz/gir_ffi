@@ -5,6 +5,8 @@ module GObject
   #
   # To create Closure objects wrapping Ruby code, use {RubyClosure}.
   class Closure
+    setup_method :new_simple
+
     # @override
     #
     # @param [Proc] marshal The marshaller to use for this closure object

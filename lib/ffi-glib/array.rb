@@ -13,11 +13,10 @@ module GLib
 
     attr_reader :element_type
 
-    class << self; undef :new; end
-
-    def self.new(type)
-      ptr = Lib.g_array_new(0, 0, calculated_element_size(type))
-      wrap type, ptr
+    def initialize(type)
+      @element_type = type
+      ptr = Lib.g_array_new(0, 0, calculated_element_size)
+      store_pointer(ptr)
     end
 
     # @api private

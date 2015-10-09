@@ -11,8 +11,6 @@ module GLib
       replace_method base, :next, :tail
       replace_method base, :data, :head
 
-      base.extend ListClassMethods
-
       base.extend ContainerClassMethods
     end
 
@@ -21,6 +19,11 @@ module GLib
         remove_method old
         alias_method old, new
       end
+    end
+
+    def initialize(type)
+      store_pointer(FFI::Pointer.new(0))
+      @element_type = type
     end
 
     def each
@@ -62,18 +65,6 @@ module GLib
 
     def element_ptr_for(data)
       GirFFI::InPointer.from(element_type, data)
-    end
-
-    # Common class methods for List and SList
-    module ListClassMethods
-      # TODO: Make this behave more like a real .new method
-      def new(type)
-        allocate.tap do |it|
-          struct = self::Struct.new(FFI::Pointer.new(0))
-          it.instance_variable_set :@struct, struct
-          it.instance_variable_set :@element_type, type
-        end
-      end
     end
   end
 end
