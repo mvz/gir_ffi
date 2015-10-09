@@ -25,7 +25,7 @@ module GObjectIntrospection
     build_array_method :get_methods
 
     def find_method(name)
-      IFunctionInfo.wrap(Lib.g_union_info_find_method @gobj, name)
+      IFunctionInfo.wrap(Lib.g_union_info_find_method @gobj, name.to_s)
     end
 
     def size

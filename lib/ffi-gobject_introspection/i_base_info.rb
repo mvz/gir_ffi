@@ -70,7 +70,8 @@ module GObjectIntrospection
       fetcher ||= "#{single}"
       class_eval <<-CODE
         def #{method}(name)
-          (0..(#{counter} - 1)).each do |i|
+          name = name.to_s
+          #{counter}.times do |i|
             it = #{fetcher}(i)
             return it if it.name == name
           end
