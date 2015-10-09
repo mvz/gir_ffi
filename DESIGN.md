@@ -64,25 +64,27 @@ cannot bootstrap itself.
 
 ## Object initialization
 
-An attempt at making Thing.new less hacky.
+Each constructor method is implemented in Ruby by a pair of new/initialize
+methods. For example, a constructor `new_from_file` is implemented as a
+combination of the singleton method `new_from_file` and the instance method
+`initialize_from_file`. User-created subclasses override the appropriate
+initializer method and must call super with the appropriate arguments.
 
-Goals:
-
-* No aliasing of Ruby's new. Overriding is possible with super being called.
-* #initialize should behave as expected. We may enforce use of super in Ruby
-  subclasses.
-
-Schematic depiction of what happens (can happen):
+Here is an example of the generated pair of methods:
 
 ```ruby
-class GObject::Object
-  def self.new *args
-    # Stage A
-    super(*other_args)
-    # Stage C
+class Regress::TestObj
+  def self.new_from_file(*args)
+    obj = allocate
+    obj.__send__ :initialize_from_file, *args
+    obj
   end
 
-  def initialize *other_args
-    # Stage B
+  def initialize_from_file(x)
+    _v1 = GirFFI::InPointer.from(:utf8, x)
+    _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+    _v3 = Regress::Lib.regress_test_obj_new_from_file _v1, _v2
+    GirFFI::ArgHelper.check_error(_v2)
+    store_pointer(_v3)
   end
 end
