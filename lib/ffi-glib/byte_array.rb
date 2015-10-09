@@ -12,5 +12,9 @@ module GLib
       len = data.bytesize
       self.class.wrap(Lib.g_byte_array_append to_ptr, bytes, len)
     end
+
+    def initialize
+      store_pointer(Lib.g_byte_array_new)
+    end
   end
 end
