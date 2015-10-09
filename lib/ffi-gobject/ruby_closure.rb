@@ -38,19 +38,19 @@ module GObject
     end
 
     # @api private
-    # TODO: Re-structure so block= and invoke_block can become private methods
-    def block=(block)
-      id = block.object_id
-      BLOCK_STORE[id] = block
-      @struct[:block_id] = id
-    end
-
-    # @api private
+    # TODO: Re-structure so invoke_block can become a private method
     def invoke_block(*args)
       block.call(*args)
     end
 
     private
+
+    # @api private
+    def block=(block)
+      id = block.object_id
+      BLOCK_STORE[id] = block
+      @struct[:block_id] = id
+    end
 
     def block
       BLOCK_STORE[@struct[:block_id]]
