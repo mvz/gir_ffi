@@ -100,6 +100,19 @@ describe GirFFI::ClassBase do
       result = klass.setup_and_call :foo, []
       result.must_equal 'correct-result'
     end
+
+    it 'raises a sensible error if the method is not found' do
+      expect(builder = Object.new).to receive(:setup_method).with('foo').and_return nil
+      klass = Class.new GirFFI::ClassBase do
+        def initialize
+        end
+      end
+      klass.const_set :GIR_FFI_BUILDER, builder
+
+      proc { klass.setup_and_call :foo, [] }.
+        must_raise(NoMethodError).message.
+        must_match(/^undefined method `foo' for/)
+    end
   end
 
   describe '#setup_and_call' do
@@ -139,6 +152,21 @@ describe GirFFI::ClassBase do
 
       result = obj.setup_and_call :foo, []
       result.must_equal 'correct-result'
+    end
+
+    it 'raises a sensible error if the method is not found' do
+      expect(builder = Object.new).to receive(:setup_instance_method).with('foo').and_return nil
+      klass = Class.new GirFFI::ClassBase do
+        def initialize
+        end
+      end
+      klass.const_set :GIR_FFI_BUILDER, builder
+
+      obj = klass.new
+
+      proc { obj.setup_and_call :foo, [] }.
+        must_raise(NoMethodError).message.
+        must_match(/^undefined method `foo' for/)
     end
   end
 end
