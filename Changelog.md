@@ -3,6 +3,16 @@
 ## Unreleased
 
 * Use inherited constructor for boxed types
+* Make InOutPointer work correctly for boxed types
+  * Make .for work with boxed types
+  * Make #set_value work with boxed types
+* Make GObject::Value support nil type:
+  * Make .wrap_ruby_value(nil) work
+  * Make #set_value and #get_value work when the type is TYPE_INVALID
+  * Make .for_gtype work with TYPE_INVALID and TYPE_NONE
+  * Make .from(nil) return a GObject::Value instead of nil
+  * Make #set_ruby_value private
+* Make GObject::Object.signal_emit work with gobject-introspection 1.46
 * Replace or remove all custom .new methods
 * Make setup_method and setup_instance_method handle symbol arguments
 
