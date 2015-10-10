@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.2 / 2015-10-10
 
 * Use inherited constructor for boxed types
 * Make InOutPointer work correctly for boxed types
