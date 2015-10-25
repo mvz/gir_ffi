@@ -65,6 +65,19 @@ It would be good to replace this with something that's easier to use:
   Ruby-GNOME do
 * What about properties?
 
+How about:
+
+    class Derived < Base
+      include SomeGObjectInterface
+
+      register_type 'Derived'
+
+      install_property ...
+      install_vfunc_implementation ...
+    end
+
+This needs issue #63 to be resolved.
+
 ## Persistent Ruby GObject identity
 
 GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
