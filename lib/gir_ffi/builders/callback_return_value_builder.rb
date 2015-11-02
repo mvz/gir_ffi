@@ -41,7 +41,7 @@ module GirFFI
       private
 
       def has_post_conversion?
-        type_info.needs_c_to_ruby_conversion_for_callbacks?
+        relevant? && type_info.needs_ruby_to_c_conversion_for_callbacks?
       end
 
       def post_convertor
