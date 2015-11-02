@@ -163,6 +163,10 @@ module GirFFI
         [:array, :c, :ghash, :struct, :strv].include?(flattened_tag)
       end
 
+      def needs_ruby_to_c_conversion_for_closures?
+        [:array].include?(flattened_tag)
+      end
+
       def extra_conversion_arguments
         case flattened_tag
         when :utf8, :void

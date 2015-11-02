@@ -139,5 +139,27 @@ describe GirFFI::Builders::SignalClosureBuilder do
         builder.marshaller_definition.must_equal expected
       end
     end
+
+    describe 'for a signal returning an string' do
+      let(:signal_info) do
+        get_signal_introspection_data 'Gtk', 'Scale', 'format-value'
+      end
+
+      it 'returns a mapping method that passes the string result to return_value directly' do
+        skip unless signal_info
+
+        expected = <<-CODE.reset_indentation
+        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+          _instance, value = param_values.map(&:get_value_plain)
+          _v1 = _instance
+          _v2 = value
+          _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          return_value.set_value _v3
+        end
+        CODE
+
+        builder.marshaller_definition.must_equal expected
+      end
+    end
   end
 end

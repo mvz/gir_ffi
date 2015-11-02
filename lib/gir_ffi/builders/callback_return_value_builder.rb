@@ -38,11 +38,15 @@ module GirFFI
         end
       end
 
-      private
-
       def has_post_conversion?
-        type_info.needs_c_to_ruby_conversion_for_callbacks?
+        relevant? && needs_ruby_to_c_conversion?
       end
+
+      def needs_ruby_to_c_conversion?
+        type_info.needs_ruby_to_c_conversion_for_callbacks?
+      end
+
+      private
 
       def post_convertor
         @post_convertor ||= RubyToCConvertor.new(type_info, post_convertor_argument)

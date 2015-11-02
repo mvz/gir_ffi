@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Fix handling of signal handler return values
+
 ## 0.8.2 / 2015-10-10
 
 * Use inherited constructor for boxed types

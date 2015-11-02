@@ -1,6 +1,6 @@
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/closure_argument_builder'
-require 'gir_ffi/builders/callback_return_value_builder'
+require 'gir_ffi/builders/closure_return_value_builder'
 require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/method_template'
 
@@ -20,7 +20,7 @@ module GirFFI
         receiver_builder = make_argument_builder receiver_info
         argument_builders = argument_infos.map { |arg| make_argument_builder arg }
         return_value_builder =
-          CallbackReturnValueBuilder.new(variable_generator, return_value_info)
+          ClosureReturnValueBuilder.new(variable_generator, return_value_info)
 
         @argument_builder_collection =
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,

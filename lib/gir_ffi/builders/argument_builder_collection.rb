@@ -36,7 +36,7 @@ module GirFFI
       end
 
       def return_value_name
-        return_value_builder.return_value_name if return_value_builder.relevant?
+        return_value_builder.return_value_name
       end
 
       def return_value_names
