@@ -8,7 +8,7 @@ module GirFFI
 
       def build
         setup_getter
-        setup_setter
+        setup_setter unless @info.construct_only?
       end
 
       def setup_getter
