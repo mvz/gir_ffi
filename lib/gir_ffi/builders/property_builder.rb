@@ -8,7 +8,7 @@ module GirFFI
 
       def build
         setup_getter
-        setup_setter
+        setup_setter if setting_allowed
       end
 
       def setup_getter
@@ -122,6 +122,10 @@ module GirFFI
 
       def container_info
         @container_info ||= @info.container
+      end
+
+      def setting_allowed
+        @info.writeable? && !@info.construct_only?
       end
     end
   end

@@ -289,6 +289,8 @@ module GObjectIntrospection
     # IPropertyInfo
     #
     attach_function :g_property_info_get_type, [:pointer], :pointer
+    # TODO: return type is bitfield
+    attach_function :g_property_info_get_flags, [:pointer], :int
 
     ::GObjectIntrospection::VERSION = version_guesser.best_guess
   end

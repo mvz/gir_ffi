@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Fix handling of signal handler return values
+* Do not create setters for properties that cannot be set
 
 ## 0.8.2 / 2015-10-10
 

@@ -1,5 +1,7 @@
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Regress
+
 describe GObject do
   describe '.type_interfaces' do
     it 'works, showing that returning an array of GType works' do
@@ -70,6 +72,33 @@ describe GObject do
       signal_query = GObject.signal_query signals.first
       signal_query.n_params.must_equal 1
       signal_query.param_types.size.must_equal 1
+    end
+  end
+
+  describe GObject::Binding do
+    it 'is created with GObject::Object#bind_property' do
+      source = Regress::TestObj.constructor
+      target = Regress::TestObj.constructor
+      binding = source.bind_property 'double', target, 'double', :default
+      binding.must_be_kind_of GObject::Binding
+    end
+
+    describe 'an instance' do
+      let(:source) { Regress::TestObj.constructor }
+      let(:target) { Regress::TestObj.constructor }
+      let(:binding) { source.bind_property 'double', target, 'double', :default }
+
+      it 'can read the property "target-property" with #get_property' do
+        binding.get_property('target-property').get_value.must_equal 'double'
+      end
+
+      it 'can read the property "target-property" with #target_property' do
+        binding.target_property.must_equal 'double'
+      end
+
+      it 'cannot write the property "target-property" with #target_property=' do
+        proc { binding.target_property = 'foo' }.must_raise NoMethodError
+      end
     end
   end
 end

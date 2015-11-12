@@ -98,4 +98,20 @@ describe 'The generated Gio module' do
       Gio::SocketSourceFunc.new { |*args| p args }.to_native
     end
   end
+
+  describe 'Gio::SimpleAction' do
+    let(:simple_action) { Gio::SimpleAction.new('test', 'd') }
+
+    it 'can read the property "state-type" with #get_property' do
+      simple_action.get_property('state-type').get_value.must_be_nil
+    end
+
+    it 'can read the property "state-type" with #state_type' do
+      simple_action.state_type.must_be_nil
+    end
+
+    it 'cannot write the property "state-type" with #state_type=' do
+      proc { simple_action.state_type = nil }.must_raise NoMethodError
+    end
+  end
 end
