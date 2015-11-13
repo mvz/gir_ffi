@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.3 / 2015-11-13
 
 * Fix handling of signal handler return values
 * Do not create setters for properties that cannot be set
