@@ -28,40 +28,40 @@ class Listener
     obj_name = attrs['name']
     case name
     when "constant"
-      result.puts "  it \"has the constant #{obj_name}\" do"
+      result.puts "  it 'has the constant #{obj_name}' do"
     when "record", "class", "enumeration", "bitfield", "interface", "union"
-      result.puts "  describe \"#{namespace}::#{obj_name}\" do"
+      result.puts "  describe '#{namespace}::#{obj_name}' do"
       @inside_class = name
     when "constructor"
-      result.puts "    it \"creates an instance using ##{obj_name}\" do"
+      result.puts "    it 'creates an instance using ##{obj_name}' do"
     when "field"
       if @inside_class != 'class'
         if attrs['private'] == "1"
-          result.puts "    it \"has a private field #{obj_name}\" do"
+          result.puts "    it 'has a private field #{obj_name}' do"
         elsif attrs['writable'] == "1"
-          result.puts "    it \"has a writable field #{obj_name}\" do"
+          result.puts "    it 'has a writable field #{obj_name}' do"
         else
-          result.puts "    it \"has a read-only field #{obj_name}\" do"
+          result.puts "    it 'has a read-only field #{obj_name}' do"
         end
       end
     when "function", "method"
       spaces = @inside_class ? "  " : ""
-      result.puts "  #{spaces}it \"has a working #{name} ##{obj_name}\" do"
+      result.puts "  #{spaces}it 'has a working #{name} ##{obj_name}' do"
     when "member"
-      result.puts "    it \"has the member :#{obj_name}\" do"
+      result.puts "    it 'has the member :#{obj_name}' do"
     when "namespace"
       result.puts "describe #{obj_name} do"
     when "property"
       accessor_name = obj_name.gsub(/-/, '_')
       result.puts "    describe \"its '#{obj_name}' property\" do"
-      result.puts "      it \"can be retrieved with #get_property\" do"
+      result.puts "      it 'can be retrieved with #get_property' do"
       result.puts "      end"
-      result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
+      result.puts "      it 'can be retrieved with ##{accessor_name}' do"
       result.puts "      end"
       if attrs['writable'] == '1'
-        result.puts "      it \"can be set with #set_property\" do"
+        result.puts "      it 'can be set with #set_property' do"
         result.puts "      end"
-        result.puts "      it \"can be set with ##{accessor_name}=\" do"
+        result.puts "      it 'can be set with ##{accessor_name}=' do"
         result.puts "      end"
       end
     when "glib:signal"
