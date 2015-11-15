@@ -22,6 +22,7 @@ if test "$GCC" = "yes"; then
 fi
 
 PKG_CHECK_MODULES(GIO, [gio-2.0])
+PKG_CHECK_MODULES(GLIB, [glib-2.0])
 PKG_CHECK_MODULES(CAIRO, [cairo])
 
 GI_DATADIR=$($PKG_CONFIG --variable=gidatadir gobject-introspection-1.0)
