@@ -22,8 +22,8 @@ module GLib
       pointer.put_int 0, to_native(value, nil)
     end
 
-    def self.get_value_from_pointer(pointer)
-      from_native pointer.get_int(0), nil
+    def self.get_value_from_pointer(pointer, offset)
+      from_native pointer.get_int(offset), nil
     end
   end
 end

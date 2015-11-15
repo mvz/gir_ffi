@@ -69,8 +69,8 @@ module GirFFI
       pointer.put_pointer 0, to_native(value, nil)
     end
 
-    def self.get_value_from_pointer(pointer)
-      from_native pointer.get_pointer(0), nil
+    def self.get_value_from_pointer(pointer, offset)
+      from_native pointer.get_pointer(offset), nil
     end
   end
 end

@@ -38,12 +38,23 @@ module GirFFI
     private
 
     def read_value(offset)
-      val = @ptr.send(getter_method, offset)
+      val = fetch_value(offset)
       val unless val.zero?
     end
 
     def getter_method
       @getter_method ||= "get_#{ffi_type}"
+    end
+
+    def fetch_value(offset)
+      case ffi_type
+      when Module
+        ffi_type.get_value_from_pointer(@ptr, offset)
+      when Symbol
+        @ptr.send(getter_method, offset)
+      else
+        raise NotImplementedError
+      end
     end
 
     def wrap_value(val)

@@ -34,8 +34,8 @@ module GirFFI
       pointer.put_int32 0, to_native(value, nil)
     end
 
-    def get_value_from_pointer(pointer)
-      from_native pointer.get_int32(0), nil
+    def get_value_from_pointer(pointer, offset)
+      from_native pointer.get_int32(offset), nil
     end
 
     def setup_and_call(method, arguments, &block)
