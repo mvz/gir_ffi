@@ -1,6 +1,30 @@
+require 'gir_ffi/class_base'
+
 module GirFFI
   # Base class for all generated classes of type :object.
   class ObjectBase < ClassBase
+    extend FFI::DataConverter
+
+    def self.native_type
+      FFI::Type::POINTER
+    end
+
+    def self.to_ffi_type
+      self
+    end
+
+    def self.to_native it, _
+      it.to_ptr
+    end
+
+    def self.get_value_from_pointer(pointer, offset = 0)
+      pointer.get_pointer offset
+    end
+
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
+      pointer.put_pointer offset, value.to_ptr
+    end
+
     # Wrap the passed pointer in an instance of its type's corresponding class,
     # generally assumed to be a descendant of the current type.
     def self.wrap(ptr)
@@ -27,14 +51,6 @@ module GirFFI
     #
     def self.find_signal(name)
       gir_ffi_builder.find_signal name
-    end
-
-    def self.to_ffi_type
-      :pointer
-    end
-
-    def self.copy_value_to_pointer(value, pointer, offset = 0)
-      pointer.put_pointer offset, value.to_ptr
     end
 
     def self.object_class
