@@ -17,8 +17,8 @@ module GirFFI
       value.struct
     end
 
-    def self.get_value_from_pointer(pointer)
-      pointer
+    def self.get_value_from_pointer(pointer, offset)
+      pointer + offset
     end
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)

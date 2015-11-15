@@ -17,7 +17,7 @@ module GirFFI
     def to_value
       case value_ffi_type
       when Module
-        value_ffi_type.get_value_from_pointer(self)
+        value_ffi_type.get_value_from_pointer(self, 0)
       when Symbol
         send("get_#{value_ffi_type}", 0)
       else
