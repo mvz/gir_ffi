@@ -21,15 +21,17 @@ libgimarshallingtests_la_CFLAGS = $(GIO_CFLAGS)
 libgimarshallingtests_la_LDFLAGS = -module -avoid-version
 
 # g-i doesn't ship these as shared libraries anymore; we build them here
-RegressAnnotation-1.0.gir: libannotation.la Makefile
+Annotation-1.0.gir: libannotation.la Makefile
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
-	--namespace=RegressAnnotation --nsversion=1.0 \
+	--namespace=Annotation --nsversion=1.0 \
+	--identifier-prefix=RegressAnnotation \
+	--symbol-prefix=regress_annotation \
 	--warn-all --warn-error \
 	--library=libannotation.la \
 	--libtool="$(top_builddir)/libtool" \
 	--output $@ \
 	$(libannotation_la_SOURCES)
-RegressAnnotation-1.0.typelib: RegressAnnotation-1.0.gir Makefile
+Annotation-1.0.typelib: Annotation-1.0.gir Makefile
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
 Regress-1.0.gir: libregress.la Makefile
@@ -58,4 +60,4 @@ GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir Makefile
 .la.so:
 	test -L $@ || $(LN_S) .libs/$@ $@
 
-all: $(testlib_LTLIBRARIES:.la=.so) RegressAnnotation-1.0.typelib Regress-1.0.typelib GIMarshallingTests-1.0.typelib
+all: $(testlib_LTLIBRARIES:.la=.so) Annotation-1.0.typelib Regress-1.0.typelib GIMarshallingTests-1.0.typelib
