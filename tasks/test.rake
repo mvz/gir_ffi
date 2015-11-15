@@ -171,6 +171,18 @@ namespace :test do
 
   desc "Create stubs for Regress and GIMarshallingTests tests"
   task :stub => :lib do
+    file = File.new 'test/lib/Annotation-1.0.gir'
+    listener = Listener.new
+    listener.result = File.open('tmp/annotation_lines.rb', 'w')
+    listener.namespace = "Annotation"
+    REXML::Document.parse_stream file, listener
+
+    file = File.new 'test/lib/Drawable-1.0.gir'
+    listener = Listener.new
+    listener.result = File.open('tmp/drawable_lines.rb', 'w')
+    listener.namespace = "Drawable"
+    REXML::Document.parse_stream file, listener
+
     file = File.new 'test/lib/Regress-1.0.gir'
     listener = Listener.new
     listener.result = File.open('tmp/regress_lines.rb', 'w')
