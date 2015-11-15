@@ -30,6 +30,24 @@ describe Regress do
     end
   end
 
+  describe 'Regress::AnAnonymousUnion' do
+    let(:instance) { Regress::AnAnonymousUnion.new }
+
+    it 'has a writable field x' do
+      instance.x.must_equal 0
+      instance.x = 42
+      instance.x.must_equal 42
+    end
+
+    it 'has a writable field a' do
+      skip 'Not implemented yet'
+    end
+
+    it 'has a writable field padding' do
+      skip 'Not implemented yet'
+    end
+  end
+
   it 'has the constant BOOL_CONSTANT' do
     skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
@@ -1711,6 +1729,12 @@ describe Regress do
     pass
   end
 
+  it 'has a working function #func_obj_nullable_in' do
+    Regress.func_obj_null_in nil
+    Regress.func_obj_null_in Regress::TestObj.constructor
+    pass
+  end
+
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
     result.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
@@ -1977,6 +2001,12 @@ describe Regress do
     b.must_be_nil
   end
 
+  it 'has a working function #test_callback_return_full' do
+    obj = Regress::TestObj.constructor
+    Regress.test_callback_return_full proc { obj }
+    ref_count(obj).must_equal 1
+  end
+
   it 'has a working function #test_callback_thaw_async' do
     invoked = []
     Regress.test_callback_async proc { invoked << 1; 1 }, nil
@@ -2218,6 +2248,12 @@ describe Regress do
   it 'has a working function #test_glist_everything_return' do
     list = Regress.test_glist_everything_return
     list.must_be :==, %w(1 2 3)
+  end
+
+  it 'has a working function #test_glist_gtype_container_in' do
+    skip 'Not implemented yet'
+    Regress.test_glist_gtype_container_in %w(1 2 3)
+    pass
   end
 
   it 'has a working function #test_glist_nothing_in' do
