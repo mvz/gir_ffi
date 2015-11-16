@@ -27,6 +27,8 @@ module GObjectIntrospection
       case namespace
       when 'Annotation'
         return File.join(File.dirname(__FILE__), 'lib', 'libannotation.so')
+      when 'Drawable'
+        return File.join(File.dirname(__FILE__), 'lib', 'libdrawable.so')
       when 'Regress'
         return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
       when 'GIMarshallingTests'
