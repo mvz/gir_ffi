@@ -3,7 +3,8 @@ AUTOMAKE_OPTIONS = 1.7
 
 # We need to build a shared library, which can be dlopened
 # it does not work with noinst_LTLIBRARIES
-testlib_LTLIBRARIES = libannotation.la libdrawable.la libgimarshallingtests.la libregress.la
+testlib_LTLIBRARIES = libannotation.la libdrawable.la libeverything.la \
+		      libgimarshallingtests.la libregress.la
 
 testlibdir = $(prefix)/unused
 install-testlibLTLIBRARIES: # prevent it from being installed
@@ -15,6 +16,10 @@ libannotation_la_LDFLAGS = -module -avoid-version
 libdrawable_la_SOURCES = $(GI_DATADIR)/tests/drawable.c $(GI_DATADIR)/tests/drawable.h
 libdrawable_la_CFLAGS = $(GLIB_CFLAGS)
 libdrawable_la_LDFLAGS = -module -avoid-version
+
+libeverything_la_SOURCES = $(GI_DATADIR)/tests/everything.c $(GI_DATADIR)/tests/everything.h
+libeverything_la_CFLAGS = $(GLIB_CFLAGS)
+libeverything_la_LDFLAGS = -module -avoid-version
 
 libgimarshallingtests_la_SOURCES = $(GI_DATADIR)/tests/gimarshallingtests.c $(GI_DATADIR)/tests/gimarshallingtests.h
 libgimarshallingtests_la_CFLAGS = $(GIO_CFLAGS)
@@ -51,6 +56,15 @@ Drawable-1.0.gir: libdrawable.la Makefile
 Drawable-1.0.typelib: Drawable-1.0.gir Makefile
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
+Everything-1.0.gir: libeverything.la Makefile
+	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
+	  --namespace=$(@:-1.0.gir=) --nsversion=1.0 \
+	  --warn-all --warn-error \
+	  --library=$< --libtool="$(top_builddir)/libtool" \
+	  --output $@ $(libeverything_la_SOURCES)
+Everything-1.0.typelib: Everything-1.0.gir Makefile
+	$(AM_V_GEN) g-ir-compiler $< -o $@
+
 GIMarshallingTests-1.0.gir: libgimarshallingtests.la Makefile
 	$(AM_V_GEN) g-ir-scanner --include=Gio-2.0 \
 	--namespace=GIMarshallingTests --nsversion=1.0 \
@@ -80,5 +94,6 @@ Regress-1.0.typelib: Regress-1.0.gir Makefile
 all: $(testlib_LTLIBRARIES:.la=.so) \
   Annotation-1.0.typelib \
   Drawable-1.0.typelib \
+  Everything-1.0.typelib \
   GIMarshallingTests-1.0.typelib \
   Regress-1.0.typelib
