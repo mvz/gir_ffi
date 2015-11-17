@@ -7,8 +7,10 @@ describe "The generated GTop module" do
     GirFFI.setup :GTop
   end
 
-  it "has a class Glibtop" do
-    GTop::Glibtop
-    pass
+  describe 'Glibtop' do
+    it 'can be created using Glibtop.init' do
+      instance = GTop::Glibtop.init
+      instance.must_be_kind_of GTop::Glibtop
+    end
   end
 end
