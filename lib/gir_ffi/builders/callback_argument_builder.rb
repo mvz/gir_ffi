@@ -32,7 +32,9 @@ module GirFFI
       end
 
       def capture_variable_name
-        result_name if [:out, :inout].include? direction unless array_arg
+        unless array_arg
+          result_name if [:out, :inout].include? direction
+        end
       end
 
       def pre_conversion
