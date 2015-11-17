@@ -43,9 +43,9 @@ module GirFFI
           gir.find_by_name(@namespace, name.sub(/^./, &:downcase))
         unless info
           raise NameError,
-            "Class #{classname} not found in namespace #{@namespace}"
+                "Class #{classname} not found in namespace #{@namespace}"
         end
-        return info
+        info
       end
 
       private

@@ -13,7 +13,7 @@ module GirFFI
       self
     end
 
-    def self.to_native it, _
+    def self.to_native(it, _)
       it.to_ptr
     end
 
