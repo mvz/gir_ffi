@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = 1.7
 # We need to build a shared library, which can be dlopened
 # it does not work with noinst_LTLIBRARIES
 testlib_LTLIBRARIES = libannotation.la libdrawable.la libeverything.la \
-		      libgimarshallingtests.la libregress.la
+		      libgimarshallingtests.la libregress.la libutility.la
 
 testlibdir = $(prefix)/unused
 install-testlibLTLIBRARIES: # prevent it from being installed
@@ -28,6 +28,11 @@ libgimarshallingtests_la_LDFLAGS = -module -avoid-version
 libregress_la_SOURCES = $(GI_DATADIR)/tests/regress.c $(GI_DATADIR)/tests/regress.h
 libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
 libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS)
+
+libutility_la_SOURCES = $(GI_DATADIR)/tests/utility.c $(GI_DATADIR)/tests/utility.h \
+			$(GI_DATADIR)/tests/gitestmacros.h
+libutility_la_CFLAGS = $(GLIB_CFLAGS)
+libutility_la_LDFLAGS = -module -avoid-version
 
 # g-i doesn't ship these as shared libraries anymore; we build them here
 Annotation-1.0.gir: libannotation.la
@@ -88,6 +93,15 @@ Regress-1.0.gir: libregress.la
 Regress-1.0.typelib: Regress-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
+Utility-1.0.gir: libutility.la
+	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
+	  --namespace=$(@:-1.0.gir=) --nsversion=1.0 \
+	  --warn-all --warn-error \
+	  --library=$< --libtool="$(top_builddir)/libtool" \
+	  --output $@ $(libutility_la_SOURCES)
+Utility-1.0.typelib: Utility-1.0.gir
+	$(AM_V_GEN) g-ir-compiler $< -o $@
+
 .la.so:
 	test -L $@ || $(LN_S) .libs/$@ $@
 
@@ -96,4 +110,5 @@ all: $(testlib_LTLIBRARIES:.la=.so) \
   Drawable-1.0.typelib \
   Everything-1.0.typelib \
   GIMarshallingTests-1.0.typelib \
-  Regress-1.0.typelib
+  Regress-1.0.typelib \
+  Utility-1.0.typelib
