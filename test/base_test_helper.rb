@@ -29,10 +29,10 @@ module GObjectIntrospection
         return File.join(File.dirname(__FILE__), 'lib', 'libannotation.so')
       when 'Drawable'
         return File.join(File.dirname(__FILE__), 'lib', 'libdrawable.so')
-      when 'Regress'
-        return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
       when 'GIMarshallingTests'
         return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
+      when 'Regress'
+        return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
       else
         return shared_library_without_regress namespace
       end

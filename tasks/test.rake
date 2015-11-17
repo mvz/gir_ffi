@@ -183,16 +183,16 @@ namespace :test do
     listener.namespace = "Drawable"
     REXML::Document.parse_stream file, listener
 
-    file = File.new 'test/lib/Regress-1.0.gir'
-    listener = Listener.new
-    listener.result = File.open('tmp/regress_lines.rb', 'w')
-    listener.namespace = "Regress"
-    REXML::Document.parse_stream file, listener
-
     file = File.new 'test/lib/GIMarshallingTests-1.0.gir'
     listener = Listener.new
     listener.result = File.open('tmp/gimarshallingtests_lines.rb', 'w')
     listener.namespace = "GIMarshallingTests"
+    REXML::Document.parse_stream file, listener
+
+    file = File.new 'test/lib/Regress-1.0.gir'
+    listener = Listener.new
+    listener.result = File.open('tmp/regress_lines.rb', 'w')
+    listener.namespace = "Regress"
     REXML::Document.parse_stream file, listener
   end
 end
