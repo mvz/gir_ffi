@@ -145,7 +145,7 @@ namespace :test do
     t.test_files = FileList['test/integration/**/*_test.rb']
   end
 
-  desc 'Build Regress test library and typelib'
+  desc 'Build test libraries and typelibs'
   task :lib => "test/lib/Makefile" do
     sh %{cd test/lib && make}
   end
@@ -169,7 +169,7 @@ namespace :test do
                    :overrides,
                    :integration]
 
-  desc "Create stubs for Regress and GIMarshallingTests tests"
+  desc "Create stubs for integration tests"
   task :stub => :lib do
     file = File.new 'test/lib/Annotation-1.0.gir'
     listener = Listener.new
