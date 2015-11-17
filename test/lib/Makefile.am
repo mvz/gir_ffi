@@ -44,7 +44,7 @@ Annotation-1.0.typelib: Annotation-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
 Drawable-1.0.gir: libdrawable.la
-	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
+	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
 	--namespace=Drawable --nsversion=1.0 \
 	--identifier-prefix=RegressTestInherit \
 	--symbol-prefix=regress_test_inherit \
