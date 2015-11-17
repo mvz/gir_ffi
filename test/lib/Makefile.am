@@ -30,7 +30,7 @@ libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
 libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS)
 
 # g-i doesn't ship these as shared libraries anymore; we build them here
-Annotation-1.0.gir: libannotation.la Makefile
+Annotation-1.0.gir: libannotation.la
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
 	--namespace=Annotation --nsversion=1.0 \
 	--identifier-prefix=RegressAnnotation \
@@ -40,10 +40,10 @@ Annotation-1.0.gir: libannotation.la Makefile
 	--libtool="$(top_builddir)/libtool" \
 	--output $@ \
 	$(libannotation_la_SOURCES)
-Annotation-1.0.typelib: Annotation-1.0.gir Makefile
+Annotation-1.0.typelib: Annotation-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-Drawable-1.0.gir: libdrawable.la Makefile
+Drawable-1.0.gir: libdrawable.la
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
 	--namespace=Drawable --nsversion=1.0 \
 	--identifier-prefix=RegressTestInherit \
@@ -53,19 +53,19 @@ Drawable-1.0.gir: libdrawable.la Makefile
 	--libtool="$(top_builddir)/libtool" \
 	--output $@ \
 	$(libdrawable_la_SOURCES)
-Drawable-1.0.typelib: Drawable-1.0.gir Makefile
+Drawable-1.0.typelib: Drawable-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-Everything-1.0.gir: libeverything.la Makefile
+Everything-1.0.gir: libeverything.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
 	  --namespace=$(@:-1.0.gir=) --nsversion=1.0 \
 	  --warn-all --warn-error \
 	  --library=$< --libtool="$(top_builddir)/libtool" \
 	  --output $@ $(libeverything_la_SOURCES)
-Everything-1.0.typelib: Everything-1.0.gir Makefile
+Everything-1.0.typelib: Everything-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-GIMarshallingTests-1.0.gir: libgimarshallingtests.la Makefile
+GIMarshallingTests-1.0.gir: libgimarshallingtests.la
 	$(AM_V_GEN) g-ir-scanner --include=Gio-2.0 \
 	--namespace=GIMarshallingTests --nsversion=1.0 \
 	--symbol-prefix=gi_marshalling_tests \
@@ -74,10 +74,10 @@ GIMarshallingTests-1.0.gir: libgimarshallingtests.la Makefile
 	--libtool="$(top_builddir)/libtool" \
 	--output $@ \
 	$(libgimarshallingtests_la_SOURCES)
-GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir Makefile
+GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-Regress-1.0.gir: libregress.la Makefile
+Regress-1.0.gir: libregress.la
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
 	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
@@ -85,7 +85,7 @@ Regress-1.0.gir: libregress.la Makefile
 	--libtool="$(top_builddir)/libtool" \
 	--output $@ \
 	$(libregress_la_SOURCES)
-Regress-1.0.typelib: Regress-1.0.gir Makefile
+Regress-1.0.typelib: Regress-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
 .la.so:
