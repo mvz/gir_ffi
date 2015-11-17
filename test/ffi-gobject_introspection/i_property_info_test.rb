@@ -22,8 +22,9 @@ describe GObjectIntrospection::IPropertyInfo do
   end
 
   describe "for GObject::Binding's 'target-property' property" do
-    let(:property_info) {
-      get_property_introspection_data 'GObject', 'Binding', 'target-property' }
+    let(:property_info) do
+      get_property_introspection_data 'GObject', 'Binding', 'target-property'
+    end
 
     it 'returns :utf8 as its type' do
       property_info.property_type.tag.must_equal :utf8

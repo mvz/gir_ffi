@@ -78,6 +78,5 @@ module GLib
       lib = ::GLib::Lib.ffi_libraries.first
       lib.find_function(name)
     end
-
   end
 end

@@ -1,5 +1,6 @@
 module GirFFI
   module Builders
+    # Class builder that does nothing
     class NullClassBuilder
       def setup_method(_)
         nil

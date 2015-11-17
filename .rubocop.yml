@@ -14,6 +14,11 @@ Lint/AssignmentInCondition:
 Metrics/LineLength:
   Max: 92
 
+# In tests, we want to do this to be more clear
+Performance/FixedSize:
+  Exclude:
+    - 'test/**/*.rb'
+
 # Gtk+ has a lot of accessor method starting with get_ or set_
 Style/AccessorMethodName:
   Enabled: false
@@ -67,8 +72,8 @@ Style/SingleLineBlockParams:
 Style/TrailingComma:
   Enabled: false
 
-# Accessors are only trivial if they match the ivar name. Also, allow accessors
-# with ? in the name.
+# Accessors are only trivial if they match the ivar name.
+# Also, allow accessors with ? in the name.
 Style/TrivialAccessors:
   ExactNameMatch: true
   AllowPredicates: true
