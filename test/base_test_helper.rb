@@ -25,10 +25,8 @@ module GObjectIntrospection
   class IRepository
     def shared_library_with_regress(namespace)
       case namespace
-      when 'Regress'
-        return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
-      when 'GIMarshallingTests'
-        return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
+      when 'Everything', 'GIMarshallingTests', 'Regress', 'Utility', 'WarnLib'
+        return File.join(File.dirname(__FILE__), 'lib', "lib#{namespace.downcase}.so")
       else
         return shared_library_without_regress namespace
       end

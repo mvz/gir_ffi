@@ -226,6 +226,19 @@ describe GIMarshallingTests do
     end
   end
 
+  describe 'GIMarshallingTests::InterfaceImpl' do
+    before do
+      skip unless get_introspection_data 'GIMarshallingTests', 'InterfaceImpl'
+    end
+
+    it 'has a working method #get_as_interface' do
+      # TODO: Override GObject::Object.new so gtype argument is not needed
+      obj = GIMarshallingTests::InterfaceImpl.new(GIMarshallingTests::InterfaceImpl.gtype, [])
+      result = obj.get_as_interface
+      result.must_be_kind_of GIMarshallingTests::Interface
+    end
+  end
+
   describe 'GIMarshallingTests::NestedStruct' do
     let(:instance) { GIMarshallingTests::NestedStruct.new }
     it 'has a writable field simple_struct' do
@@ -276,6 +289,11 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::Object.new 42
       assert_instance_of GIMarshallingTests::Object, ob
       assert_equal 42, ob.int
+    end
+
+    it 'fails to create an instance using #new_fail' do
+      skip unless get_method_introspection_data('GIMarshallingTests', 'Object', 'new_fail')
+      proc { GIMarshallingTests::Object.new_fail 42 }.must_raise GirFFI::GLibError
     end
 
     it 'has a working function #full_inout' do

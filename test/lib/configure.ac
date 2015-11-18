@@ -22,10 +22,13 @@ if test "$GCC" = "yes"; then
 fi
 
 PKG_CHECK_MODULES(GIO, [gio-2.0])
+PKG_CHECK_MODULES(GLIB, [glib-2.0])
 PKG_CHECK_MODULES(CAIRO, [cairo])
 
 GI_DATADIR=$($PKG_CONFIG --variable=gidatadir gobject-introspection-1.0)
 AC_SUBST(GI_DATADIR)
+AC_CHECK_FILE($GI_DATADIR/tests/annotation.c, have_annotation=true, have_annotation=false)
+AM_CONDITIONAL(HAVE_EXTRA_TEST_FILES, test x$have_annotation = xtrue)
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
