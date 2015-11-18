@@ -12,6 +12,16 @@ describe Regress do
       end
     end
   end
+  it 'has the constant ANNOTATION_CALCULATED_DEFINE' do
+    Regress::ANNOTATION_CALCULATED_DEFINE.must_equal 100
+  end
+  it 'has the constant ANNOTATION_CALCULATED_LARGE' do
+    skip 'Constant is marked with the wrong type'
+    Regress::ANNOTATION_CALCULATED_LARGE.must_equal 10_000_000_000
+  end
+  it 'has the constant ANNOTATION_CALCULATED_LARGE_DIV' do
+    Regress::ANNOTATION_CALCULATED_LARGE_DIV.must_equal 1_000_000
+  end
   describe 'Regress::ATestError' do
     before do
       skip unless get_introspection_data 'Regress', 'ATestError'
@@ -48,6 +58,186 @@ describe Regress do
     end
   end
 
+  describe 'Regress::AnnotationBitfield' do
+    it 'has the member :foo' do
+      Regress::AnnotationBitfield[:foo].must_equal 1
+    end
+    it 'has the member :bar' do
+      Regress::AnnotationBitfield[:bar].must_equal 2
+    end
+  end
+
+  describe 'Regress::AnnotationFields' do
+    let(:instance) { Regress::AnnotationFields.new }
+
+    it 'has a writable field field1' do
+      instance.field1.must_equal 0
+      instance.field1 = 42
+      instance.field1.must_equal 42
+    end
+
+    it 'has a writable field arr' do
+      instance.arr.must_equal nil
+      instance.arr = [1, 2, 3]
+      # TODO: len should be set automatically
+      instance.len = 3
+      instance.arr.to_a.must_equal [1, 2, 3]
+      instance.len.must_equal 3
+    end
+
+    it 'has a writable field len' do
+      skip 'len should not be set independently'
+    end
+  end
+
+  describe 'Regress::AnnotationObject' do
+    it 'has a working method #allow_none' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #calleeowns' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #calleesowns' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #compute_sum' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #compute_sum_n' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #compute_sum_nz' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #create_object' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #do_not_use' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #extra_annos' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #foreach' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #get_hash' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #get_objects' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #get_strings' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #hidden_self' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #in' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #inout' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #inout2' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #inout3' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #method' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #notrans' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #out' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #parse_args' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #set_data' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #set_data2' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #set_data3' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #string_out' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #use_buffer' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #watch_full' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #with_voidp' do
+      skip 'Needs testing'
+    end
+    describe "its 'function-property' property" do
+      it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
+      end
+      it 'can be retrieved with #function_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #set_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #function_property=' do
+        skip 'Needs testing'
+      end
+    end
+    describe "its 'string-property' property" do
+      it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
+      end
+      it 'can be retrieved with #string_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #set_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #string_property=' do
+        skip 'Needs testing'
+      end
+    end
+    describe "its 'tab-property' property" do
+      it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
+      end
+      it 'can be retrieved with #tab_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #set_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #tab_property=' do
+        skip 'Needs testing'
+      end
+    end
+    it "handles the 'attribute-signal' signal" do
+      skip 'Needs testing'
+    end
+    it "handles the 'doc-empty-arg-parsing' signal" do
+      skip 'Needs testing'
+    end
+    it "handles the 'list-signal' signal" do
+      skip 'Needs testing'
+    end
+    it "handles the 'string-signal' signal" do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::AnnotationStruct' do
+    it 'has a writable field objects' do
+      skip 'Needs testing'
+    end
+  end
   it 'has the constant BOOL_CONSTANT' do
     skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
@@ -57,6 +247,356 @@ describe Regress do
     assert_equal 44.22, Regress::DOUBLE_CONSTANT
   end
 
+  it 'has the constant FOO_DEFINE_SHOULD_BE_EXPOSED' do
+    skip 'Needs testing'
+  end
+  it 'has the constant FOO_PIE_IS_TASTY' do
+    skip 'Needs testing'
+  end
+  it 'has the constant FOO_SUCCESS_INT' do
+    skip 'Needs testing'
+  end
+  describe 'Regress::FooASingle' do
+    it 'has the member :foo_some_single_enum' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooAddressType' do
+    it 'has the member :invalid' do
+      skip 'Needs testing'
+    end
+    it 'has the member :ipv4' do
+      skip 'Needs testing'
+    end
+    it 'has the member :ipv6' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooBRect' do
+    it 'has a writable field x' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field y' do
+      skip 'Needs testing'
+    end
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #add' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooBUnion' do
+    it 'has a writable field type' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field v' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field rect' do
+      skip 'Needs testing'
+    end
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #get_contained_type' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooBoxed' do
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #method' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooBuffer' do
+    it 'has a working method #some_method' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooDBusData' do
+    it 'has a working method #method' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEnumFullname' do
+    it 'has the member :one' do
+      skip 'Needs testing'
+    end
+    it 'has the member :two' do
+      skip 'Needs testing'
+    end
+    it 'has the member :three' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEnumNoType' do
+    it 'has the member :un' do
+      skip 'Needs testing'
+    end
+    it 'has the member :deux' do
+      skip 'Needs testing'
+    end
+    it 'has the member :trois' do
+      skip 'Needs testing'
+    end
+    it 'has the member :neuf' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEnumType' do
+    it 'has the member :alpha' do
+      skip 'Needs testing'
+    end
+    it 'has the member :beta' do
+      skip 'Needs testing'
+    end
+    it 'has the member :delta' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #method' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #returnv' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooError' do
+    it 'has the member :good' do
+      skip 'Needs testing'
+    end
+    it 'has the member :bad' do
+      skip 'Needs testing'
+    end
+    it 'has the member :ugly' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #quark' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEvent' do
+    it 'has a writable field type' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field any' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field expose' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEventAny' do
+    it 'has a writable field send_event' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooEventExpose' do
+    it 'has a writable field send_event' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field count' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooFlagsNoType' do
+    it 'has the member :ett' do
+      skip 'Needs testing'
+    end
+    it 'has the member :tva' do
+      skip 'Needs testing'
+    end
+    it 'has the member :fyra' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooFlagsType' do
+    it 'has the member :first' do
+      skip 'Needs testing'
+    end
+    it 'has the member :second' do
+      skip 'Needs testing'
+    end
+    it 'has the member :third' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooForeignStruct' do
+    it 'has a writable field regress_foo' do
+      skip 'Needs testing'
+    end
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #copy' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooInterface' do
+    it 'has a working function #static_method' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #do_regress_foo' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooObject' do
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+    it 'creates an instance using #new_as_super' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #a_global_method' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #get_default' do
+      skip 'Needs testing'
+    end
+    it 'has a working function #static_meth' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #append_new_stack_layer' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #dup_name' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #external_type' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #get_name' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #handle_glyph' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #is_it_time_yet' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #read' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #various' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #virtual_method' do
+      skip 'Needs testing'
+    end
+    describe "its 'string' property" do
+      it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
+      end
+      it 'can be retrieved with #string' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #set_property' do
+        skip 'Needs testing'
+      end
+      it 'can be set with #string=' do
+        skip 'Needs testing'
+      end
+    end
+    it "handles the 'signal' signal" do
+    end
+  end
+  describe 'Regress::FooOtherObject' do
+  end
+  describe 'Regress::FooRectangle' do
+    it 'has a writable field x' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field y' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field width' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field height' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #add' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooStackLayer' do
+    it 'has the member :desktop' do
+      skip 'Needs testing'
+    end
+    it 'has the member :bottom' do
+      skip 'Needs testing'
+    end
+    it 'has the member :normal' do
+      skip 'Needs testing'
+    end
+    it 'has the member :top' do
+      skip 'Needs testing'
+    end
+    it 'has the member :dock' do
+      skip 'Needs testing'
+    end
+    it 'has the member :fullscreen' do
+      skip 'Needs testing'
+    end
+    it 'has the member :focused_window' do
+      skip 'Needs testing'
+    end
+    it 'has the member :override_redirect' do
+      skip 'Needs testing'
+    end
+    it 'has the member :last' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooStruct' do
+    it 'has a writable field priv' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field member' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooSubInterface' do
+    it 'has a working method #do_bar' do
+      skip 'Needs testing'
+    end
+    it 'has a working method #do_baz' do
+      skip 'Needs testing'
+    end
+    it "handles the 'destroy-event' signal" do
+    end
+  end
+  describe 'Regress::FooSubobject' do
+    it 'creates an instance using #new' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooThingWithArray' do
+    it 'has a writable field x' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field y' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field lines' do
+      skip 'Needs testing'
+    end
+    it 'has a writable field data' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooUnion' do
+    it 'has a writable field regress_foo' do
+      skip 'Needs testing'
+    end
+  end
+  describe 'Regress::FooUtilityStruct' do
+    it 'has a writable field bar' do
+      skip 'Needs testing'
+    end
+  end
   it 'has the constant GI_SCANNER_ELSE' do
     skip unless get_introspection_data 'Regress', 'GI_SCANNER_ELSE'
     Regress::GI_SCANNER_ELSE.must_equal 3
@@ -1717,12 +2257,114 @@ describe Regress do
     result.must_be_instance_of Regress::TestBoxed
   end
 
+  it 'has a working function #annotation_attribute_func' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_custom_destroy' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_get_source_file' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_init' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_invalid_regress_annotation' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_ptr_array' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_return_array' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_return_filename' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_set_source_file' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_space_after_comment_bug631690' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_string_array_length' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_string_zero_terminated' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_string_zero_terminated_out' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_test_parsing_bug630862' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_transfer_floating' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #annotation_versioned' do
+    skip 'Needs testing'
+  end
   it 'has a working function #atest_error_quark' do
     skip unless get_introspection_data 'Regress', 'atest_error_quark'
     result = Regress.atest_error_quark
     GLib.quark_to_string(result).must_equal 'regress-atest-error'
   end
 
+  it 'has a working function #foo_async_ready_callback' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_destroy_notify_callback' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_enum_type_method' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_enum_type_returnv' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_error_quark' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_init' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_interface_static_method' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_method_external_references' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_not_a_constructor_new' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_array' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_const_char_param' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_const_char_retval' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_const_struct_param' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_const_struct_retval' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_string_array' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_string_array_with_g' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_unsigned_qualifier' do
+    skip 'Needs testing'
+  end
+  it 'has a working function #foo_test_unsigned_type' do
+    skip 'Needs testing'
+  end
   it 'has a working function #func_obj_null_in' do
     Regress.func_obj_null_in nil
     Regress.func_obj_null_in Regress::TestObj.constructor
