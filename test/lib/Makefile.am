@@ -3,8 +3,9 @@ AUTOMAKE_OPTIONS = 1.7
 
 # We need to build a shared library, which can be dlopened
 # it does not work with noinst_LTLIBRARIES
-testlib_LTLIBRARIES = libannotation.la libdrawable.la libeverything.la \
-		      libgimarshallingtests.la libregress.la libutility.la
+testlib_LTLIBRARIES = \
+	libannotation.la libdrawable.la libeverything.la \
+	libgimarshallingtests.la libregress.la libutility.la
 
 testlibdir = $(prefix)/unused
 GI_TESTDIR = $(GI_DATADIR)/tests
@@ -68,10 +69,10 @@ Drawable-1.0.typelib: Drawable-1.0.gir
 
 Everything-1.0.gir: libeverything.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
-	  --namespace=$(@:-1.0.gir=) --nsversion=1.0 \
-	  --warn-all --warn-error \
-	  --library=$< --libtool="$(top_builddir)/libtool" \
-	  --output $@ $(libeverything_la_SOURCES)
+	--namespace=$(@:-1.0.gir=) --nsversion=1.0 \
+	--warn-all --warn-error \
+	--library=$< --libtool="$(top_builddir)/libtool" \
+	--output $@ $(libeverything_la_SOURCES)
 Everything-1.0.typelib: Everything-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
@@ -89,7 +90,7 @@ GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir
 
 Regress-1.0.gir: libregress.la Utility-1.0.gir
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
-	  --include-uninstalled=Utility-1.0.gir \
+	--include-uninstalled=Utility-1.0.gir \
 	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
 	--library=libregress.la \
@@ -101,10 +102,10 @@ Regress-1.0.typelib: Regress-1.0.gir
 
 Utility-1.0.gir: libutility.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
-	  --namespace=$(@:-1.0.gir=) --nsversion=1.0 \
-	  --warn-all --warn-error \
-	  --library=$< --libtool="$(top_builddir)/libtool" \
-	  --output $@ $(libutility_la_SOURCES)
+	--namespace=$(@:-1.0.gir=) --nsversion=1.0 \
+	--warn-all --warn-error \
+	--library=$< --libtool="$(top_builddir)/libtool" \
+	--output $@ $(libutility_la_SOURCES)
 Utility-1.0.typelib: Utility-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
