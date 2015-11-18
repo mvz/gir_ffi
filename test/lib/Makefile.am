@@ -7,6 +7,7 @@ testlib_LTLIBRARIES = libannotation.la libdrawable.la libeverything.la \
 		      libgimarshallingtests.la libregress.la libutility.la
 
 testlibdir = $(prefix)/unused
+GI_TESTDIR = $(GI_DATADIR)/tests
 install-testlibLTLIBRARIES: # prevent it from being installed
 
 libannotation_la_SOURCES = $(GI_DATADIR)/tests/annotation.c $(GI_DATADIR)/tests/annotation.h
@@ -25,7 +26,11 @@ libgimarshallingtests_la_SOURCES = $(GI_DATADIR)/tests/gimarshallingtests.c $(GI
 libgimarshallingtests_la_CFLAGS = $(GIO_CFLAGS)
 libgimarshallingtests_la_LDFLAGS = -module -avoid-version
 
-libregress_la_SOURCES = $(GI_DATADIR)/tests/regress.c $(GI_DATADIR)/tests/regress.h
+libregress_la_SOURCES = $(GI_TESTDIR)/regress.c $(GI_TESTDIR)/regress.h \
+			$(GI_TESTDIR)/annotation.c $(GI_TESTDIR)/annotation.h \
+			$(GI_TESTDIR)/foo.c $(GI_TESTDIR)/foo.h \
+			$(GI_TESTDIR)/drawable.c $(GI_TESTDIR)/drawable.h
+
 libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
 libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS)
 
@@ -82,8 +87,9 @@ GIMarshallingTests-1.0.gir: libgimarshallingtests.la
 GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-Regress-1.0.gir: libregress.la
+Regress-1.0.gir: libregress.la Utility-1.0.gir
 	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
+	  --include-uninstalled=Utility-1.0.gir \
 	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
 	--library=libregress.la \
@@ -91,7 +97,7 @@ Regress-1.0.gir: libregress.la
 	--output $@ \
 	$(libregress_la_SOURCES)
 Regress-1.0.typelib: Regress-1.0.gir
-	$(AM_V_GEN) g-ir-compiler $< -o $@
+	$(AM_V_GEN) g-ir-compiler --includedir=. $< -o $@
 
 Utility-1.0.gir: libutility.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
