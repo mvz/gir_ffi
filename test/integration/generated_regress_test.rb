@@ -54,6 +54,10 @@ describe Regress do
   end
 
   describe 'Regress::AnAnonymousUnion' do
+    before do
+      skip unless get_introspection_data 'Regress', 'AnAnonymousUnion'
+    end
+
     let(:instance) { Regress::AnAnonymousUnion.new }
 
     it 'has a writable field x' do
@@ -2695,6 +2699,7 @@ describe Regress do
   end
 
   it 'has a working function #test_callback_return_full' do
+    skip unless get_introspection_data 'Regress', 'test_callback_return_full'
     obj = Regress::TestObj.constructor
     Regress.test_callback_return_full proc { obj }
     ref_count(obj).must_equal 1

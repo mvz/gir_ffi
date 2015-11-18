@@ -227,6 +227,10 @@ describe GIMarshallingTests do
   end
 
   describe 'GIMarshallingTests::InterfaceImpl' do
+    before do
+      skip unless get_introspection_data 'GIMarshallingTests', 'InterfaceImpl'
+    end
+
     it 'has a working method #get_as_interface' do
       # TODO: Override GObject::Object.new so gtype argument is not needed
       obj = GIMarshallingTests::InterfaceImpl.new(GIMarshallingTests::InterfaceImpl.gtype, [])
@@ -288,6 +292,7 @@ describe GIMarshallingTests do
     end
 
     it 'fails to create an instance using #new_fail' do
+      skip unless get_method_introspection_data('GIMarshallingTests', 'Object', 'new_fail')
       proc { GIMarshallingTests::Object.new_fail 42 }.must_raise GirFFI::GLibError
     end
 
