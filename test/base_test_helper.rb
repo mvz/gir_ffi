@@ -25,10 +25,6 @@ module GObjectIntrospection
   class IRepository
     def shared_library_with_regress(namespace)
       case namespace
-      when 'Annotation'
-        return File.join(File.dirname(__FILE__), 'lib', 'libannotation.so')
-      when 'Drawable'
-        return File.join(File.dirname(__FILE__), 'lib', 'libdrawable.so')
       when 'GIMarshallingTests'
         return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
       when 'Regress'
