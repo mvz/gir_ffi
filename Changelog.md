@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* Handle classes with lower-case names
+* Make ObjectBase a DataConverter so FFI handles it natively
+* Use more of gobject-introspection's test libraries for testing
+
 ## 0.8.3 / 2015-11-13
 
 * Fix handling of signal handler return values
@@ -50,7 +56,6 @@
 * Increase refcount for :object return values of vfuncs with full transfer
 * Increase refcount for outgoing :object arguments of vfuncs with full ownership
   transfer
-* Apply more RuboCop rules
 * Support Ruby 2.2
 * Rename several methods. The old names are deprecated and will be removed in 0.8.0.
 
