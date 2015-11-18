@@ -232,8 +232,7 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_as_interface' do
-      # TODO: Override GObject::Object.new so gtype argument is not needed
-      obj = GIMarshallingTests::InterfaceImpl.new(GIMarshallingTests::InterfaceImpl.gtype, [])
+      obj = GIMarshallingTests::InterfaceImpl.new []
       result = obj.get_as_interface
       result.must_be_kind_of GIMarshallingTests::Interface
     end

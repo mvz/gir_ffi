@@ -5,6 +5,13 @@ module GObject
   class Object
     setup_method 'new'
 
+    def initialize_with_automatic_gtype(properties)
+      initialize_without_automatic_gtype(self.class.gtype, properties)
+    end
+
+    alias_method :initialize_without_automatic_gtype, :initialize
+    alias_method :initialize, :initialize_with_automatic_gtype
+
     def store_pointer(ptr)
       super
       klass = self.class

@@ -3,6 +3,12 @@ require 'gir_ffi_test_helper'
 require 'ffi-gobject'
 
 describe GObject::Object do
+  describe '.new' do
+    it 'is overridden to take only one argument' do
+      GObject::Object.new(nil).must_be_instance_of GObject::Object
+    end
+  end
+
   describe '#get_property' do
     it 'is overridden to have arity 1' do
       GObject::Object.instance_method('get_property').arity.must_equal 1
@@ -20,7 +26,7 @@ describe GObject::Object do
       end
     end
 
-    subject { AccessorTest.new GObject::TYPE_OBJECT, nil }
+    subject { AccessorTest.new nil }
 
     it 'reads x by calling get_x' do
       subject.set_x(1)
@@ -34,7 +40,7 @@ describe GObject::Object do
   end
 
   describe '#signal_connect' do
-    subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
+    subject { GObject::Object.new nil }
 
     it 'delegates to GObject' do
       expect(GObject).to receive(:signal_connect).with(subject, 'some-event', nil)
@@ -52,7 +58,7 @@ describe GObject::Object do
   end
 
   describe '#signal_connect_after' do
-    subject { GObject::Object.new GObject::TYPE_OBJECT, nil }
+    subject { GObject::Object.new nil }
 
     it 'delegates to GObject' do
       expect(GObject).to receive(:signal_connect_after).with(subject, 'some-event', nil)
@@ -75,7 +81,7 @@ describe GObject::Object do
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
 
-      object = GObject::Object.new GObject::TYPE_OBJECT, nil
+      object = GObject::Object.new nil
       ptr = object.to_ptr
       ref_count(ptr).must_equal 1
 
