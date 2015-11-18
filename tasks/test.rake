@@ -169,19 +169,21 @@ namespace :test do
                    :overrides,
                    :integration]
 
+  def make_stub_file(libname)
+    file = File.new "test/lib/#{libname}-1.0.gir"
+    listener = Listener.new
+    listener.result = File.open("tmp/#{libname.downcase}_lines.rb", 'w')
+    listener.namespace = libname
+    REXML::Document.parse_stream file, listener
+  end
+
   desc "Create stubs for integration tests"
   task :stub => :lib do
-    file = File.new 'test/lib/GIMarshallingTests-1.0.gir'
-    listener = Listener.new
-    listener.result = File.open('tmp/gimarshallingtests_lines.rb', 'w')
-    listener.namespace = "GIMarshallingTests"
-    REXML::Document.parse_stream file, listener
-
-    file = File.new 'test/lib/Regress-1.0.gir'
-    listener = Listener.new
-    listener.result = File.open('tmp/regress_lines.rb', 'w')
-    listener.namespace = "Regress"
-    REXML::Document.parse_stream file, listener
+    make_stub_file 'Everything'
+    make_stub_file 'GIMarshallingTests'
+    make_stub_file 'Regress'
+    make_stub_file 'Utility'
+    make_stub_file 'WarnLib'
   end
 end
 
