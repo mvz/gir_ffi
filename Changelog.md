@@ -5,6 +5,8 @@
 * Handle classes with lower-case names
 * Make ObjectBase a DataConverter so FFI handles it natively
 * Use more of gobject-introspection's test libraries for testing
+* Simplify constructor overrides: Custom initializers will no longer be
+  overwritten when setting up the corresponding constructor.
 
 ## 0.8.3 / 2015-11-13
 
