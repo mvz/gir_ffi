@@ -33,6 +33,8 @@ module GObjectIntrospection
         return File.join(File.dirname(__FILE__), 'lib', 'libgimarshallingtests.so')
       when 'Regress'
         return File.join(File.dirname(__FILE__), 'lib', 'libregress.so')
+      when 'Utility'
+        return File.join(File.dirname(__FILE__), 'lib', 'libutility.so')
       else
         return shared_library_without_regress namespace
       end
