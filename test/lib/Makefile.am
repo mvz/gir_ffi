@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = 1.7
 # it does not work with noinst_LTLIBRARIES
 testlib_LTLIBRARIES = \
 	libeverything.la \
-	libgimarshallingtests.la libregress.la libutility.la
+	libgimarshallingtests.la libregress.la libutility.la libwarnlib.la
 
 testlibdir = $(prefix)/unused
 GI_TESTDIR = $(GI_DATADIR)/tests
@@ -31,6 +31,11 @@ libutility_la_SOURCES = $(GI_DATADIR)/tests/utility.c $(GI_DATADIR)/tests/utilit
 			$(GI_DATADIR)/tests/gitestmacros.h
 libutility_la_CFLAGS = $(GLIB_CFLAGS)
 libutility_la_LDFLAGS = -module -avoid-version
+
+libwarnlib_la_SOURCES = $(GI_DATADIR)/tests/warnlib.c $(GI_DATADIR)/tests/warnlib.h \
+			$(GI_DATADIR)/tests/gitestmacros.h
+libwarnlib_la_CFLAGS = $(GIO_CFLAGS)
+libwarnlib_la_LDFLAGS = -module -avoid-version
 
 # g-i doesn't ship these as shared libraries anymore; we build them here
 Everything-1.0.gir: libeverything.la
@@ -75,6 +80,16 @@ Utility-1.0.gir: libutility.la
 Utility-1.0.typelib: Utility-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
+WarnLib-1.0.gir: libwarnlib.la
+	$(AM_V_GEN) g-ir-scanner --include=Gio-2.0 \
+	--namespace=$(@:-1.0.gir=) --nsversion=1.0 \
+	--symbol-prefix=warnlib \
+	--warn-all \
+	--library=$< --libtool="$(top_builddir)/libtool" \
+	--output $@ $(libwarnlib_la_SOURCES)
+WarnLib-1.0.typelib: WarnLib-1.0.gir
+	$(AM_V_GEN) g-ir-compiler $< -o $@
+
 .la.so:
 	test -L $@ || $(LN_S) .libs/$@ $@
 
@@ -82,4 +97,5 @@ all: $(testlib_LTLIBRARIES:.la=.so) \
   Everything-1.0.typelib \
   GIMarshallingTests-1.0.typelib \
   Regress-1.0.typelib \
-  Utility-1.0.typelib
+  Utility-1.0.typelib \
+  WarnLib-1.0.typelib
