@@ -68,7 +68,7 @@ GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir
 
 regress_SCANNER_INCLUDES= --include=cairo-1.0 --include=Gio-2.0
 
-Regress-1.0.gir: libregress.la Makefile
+Regress-1.0.gir: libregress.la
 	$(AM_V_GEN) g-ir-scanner $(regress_SCANNER_INCLUDES) \
 	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
