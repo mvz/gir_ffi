@@ -3,6 +3,14 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
 
+class ConcreteDrawable < Regress::TestInheritDrawable
+  def initialize
+    super(self.class.gtype, [])
+  end
+end
+
+GirFFI.define_type ConcreteDrawable
+
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
   describe Regress::Lib do
@@ -1062,6 +1070,33 @@ describe Regress do
 
     it "can access its parent class' fields directly" do
       instance.flags.must_equal 0
+    end
+  end
+
+  describe 'Regress::TestInheritDrawable' do
+    let(:instance) { ConcreteDrawable.new }
+    it 'has a working method #do_foo' do
+      instance.do_foo 42
+      pass
+    end
+
+    it 'has a working method #do_foo_maybe_throw' do
+      instance.do_foo_maybe_throw 42
+      proc { instance.do_foo_maybe_throw 41 }.must_raise GirFFI::GLibError
+    end
+
+    it 'has a working method #get_origin' do
+      instance.get_origin.must_equal [0, 0]
+    end
+
+    it 'has a working method #get_size' do
+      instance.get_size.must_equal [42, 42]
+    end
+  end
+
+  describe 'Regress::TestInheritPixmapObjectClass' do
+    it 'has a writable field parent_class' do
+      skip 'This is a class struct without defined class'
     end
   end
 
