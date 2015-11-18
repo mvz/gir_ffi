@@ -42,7 +42,11 @@ module GirFFI
 
       def define_method(method_info)
         if method_info.constructor?
-          build_class.class_eval InitializerBuilder.new(method_info).method_definition
+          initializer_builder = InitializerBuilder.new(method_info)
+          initializer_name = initializer_builder.method_name.to_sym
+          unless build_class.private_instance_methods(false).include? initializer_name
+            build_class.class_eval initializer_builder.method_definition
+          end
           build_class.class_eval ConstructorBuilder.new(method_info).method_definition
         else
           build_class.class_eval FunctionBuilder.new(method_info).method_definition
