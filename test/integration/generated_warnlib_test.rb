@@ -10,17 +10,38 @@ describe 'The generated WarnLib module' do
   end
 
   describe 'WarnLib::Whatever' do
+    let(:derived_klass) do
+      Object.const_set("DerivedClass#{Sequence.next}", Class.new(GObject::Object))
+    end
+
+    before do
+      @result = nil
+      derived_klass.class_eval { include WarnLib::Whatever }
+      GirFFI.define_type derived_klass do |info|
+        info.install_vfunc_implementation :do_boo, proc { |obj, x, y| @result = "boo#{x}" }
+        info.install_vfunc_implementation :do_moo, proc { |obj, x, y| @result = "moo#{x}" }
+      end
+    end
+
+    let(:instance) { derived_klass.new }
+
     it 'has a working method #do_boo' do
-      skip 'Needs testing'
+      instance.do_boo 42, nil
+      @result.must_equal 'boo42'
     end
+
     it 'has a working method #do_moo' do
-      skip 'Needs testing'
+      instance.do_moo 23, nil
+      @result.must_equal 'moo23'
     end
   end
+
   it 'has a working function #throw_unpaired' do
-    skip 'Needs testing'
+    proc { WarnLib.throw_unpaired }.must_raise GirFFI::GLibError
   end
+
   it 'has a working function #unpaired_error_quark' do
-    skip 'Needs testing'
+    result = WarnLib.unpaired_error_quark
+    GLib.quark_to_string(result).must_equal 'warnlib-unpaired-error'
   end
 end
