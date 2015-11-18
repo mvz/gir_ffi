@@ -19,14 +19,19 @@ libgimarshallingtests_la_SOURCES = $(GI_DATADIR)/tests/gimarshallingtests.c $(GI
 libgimarshallingtests_la_CFLAGS = $(GIO_CFLAGS)
 libgimarshallingtests_la_LDFLAGS = -module -avoid-version
 
-libregress_la_SOURCES = $(GI_TESTDIR)/regress.c $(GI_TESTDIR)/regress.h \
-			$(GI_TESTDIR)/annotation.c $(GI_TESTDIR)/annotation.h \
-			$(GI_TESTDIR)/foo.c $(GI_TESTDIR)/foo.h \
-			$(GI_TESTDIR)/drawable.c $(GI_TESTDIR)/drawable.h
+libregress_la_SOURCES = $(GI_TESTDIR)/regress.c $(GI_TESTDIR)/regress.h
+
+if HAVE_EXTRA_TEST_FILES
+libregress_la_SOURCES += \
+	$(GI_TESTDIR)/annotation.c $(GI_TESTDIR)/annotation.h \
+	$(GI_TESTDIR)/foo.c $(GI_TESTDIR)/foo.h \
+	$(GI_TESTDIR)/drawable.c $(GI_TESTDIR)/drawable.h
+endif
 
 libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
 libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS)
 
+if HAVE_EXTRA_TEST_FILES
 libutility_la_SOURCES = $(GI_DATADIR)/tests/utility.c $(GI_DATADIR)/tests/utility.h \
 			$(GI_DATADIR)/tests/gitestmacros.h
 libutility_la_CFLAGS = $(GLIB_CFLAGS)
@@ -36,8 +41,10 @@ libwarnlib_la_SOURCES = $(GI_DATADIR)/tests/warnlib.c $(GI_DATADIR)/tests/warnli
 			$(GI_DATADIR)/tests/gitestmacros.h
 libwarnlib_la_CFLAGS = $(GIO_CFLAGS)
 libwarnlib_la_LDFLAGS = -module -avoid-version
+endif
 
-# g-i doesn't ship these as shared libraries anymore; we build them here
+GIRS = Everything-1.0.gir GIMarshallingTests-1.0.gir Regress-1.0.gir
+
 Everything-1.0.gir: libeverything.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
 	--namespace=$(@:-1.0.gir=) --nsversion=1.0 \
@@ -59,9 +66,10 @@ GIMarshallingTests-1.0.gir: libgimarshallingtests.la
 GIMarshallingTests-1.0.typelib: GIMarshallingTests-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
-Regress-1.0.gir: libregress.la Utility-1.0.gir
-	$(AM_V_GEN) g-ir-scanner --include=cairo-1.0 --include=Gio-2.0 \
-	--include-uninstalled=Utility-1.0.gir \
+regress_SCANNER_INCLUDES= --include=cairo-1.0 --include=Gio-2.0
+
+Regress-1.0.gir: libregress.la Makefile
+	$(AM_V_GEN) g-ir-scanner $(regress_SCANNER_INCLUDES) \
 	--namespace=Regress --nsversion=1.0 --pkg=cairo-gobject \
 	--warn-all --warn-error \
 	--library=libregress.la \
@@ -70,6 +78,12 @@ Regress-1.0.gir: libregress.la Utility-1.0.gir
 	$(libregress_la_SOURCES)
 Regress-1.0.typelib: Regress-1.0.gir
 	$(AM_V_GEN) g-ir-compiler --includedir=. $< -o $@
+
+if HAVE_EXTRA_TEST_FILES
+
+GIRS += Utility-1.0.gir WarnLib-1.0.gir
+Regress-1.0.gir: Utility-1.0.gir
+regress_SCANNER_INCLUDES += --include-uninstalled=Utility-1.0.gir
 
 Utility-1.0.gir: libutility.la
 	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
@@ -90,12 +104,9 @@ WarnLib-1.0.gir: libwarnlib.la
 WarnLib-1.0.typelib: WarnLib-1.0.gir
 	$(AM_V_GEN) g-ir-compiler $< -o $@
 
+endif
+
 .la.so:
 	test -L $@ || $(LN_S) .libs/$@ $@
 
-all: $(testlib_LTLIBRARIES:.la=.so) \
-  Everything-1.0.typelib \
-  GIMarshallingTests-1.0.typelib \
-  Regress-1.0.typelib \
-  Utility-1.0.typelib \
-  WarnLib-1.0.typelib
+all: $(testlib_LTLIBRARIES:.la=.so) $(GIRS:.gir=.typelib)
