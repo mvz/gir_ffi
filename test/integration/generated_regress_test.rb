@@ -3,13 +3,15 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
 
-class ConcreteDrawable < Regress::TestInheritDrawable
-  def initialize
-    super(self.class.gtype, [])
+if IntrospectionTestExtensions.get_introspection_data 'Regress', 'TestInheritDrawable'
+  class ConcreteDrawable < Regress::TestInheritDrawable
+    def initialize
+      super(self.class.gtype, [])
+    end
   end
-end
 
-GirFFI.define_type ConcreteDrawable
+  GirFFI.define_type ConcreteDrawable
+end
 
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
@@ -21,13 +23,16 @@ describe Regress do
     end
   end
   it 'has the constant ANNOTATION_CALCULATED_DEFINE' do
+    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_DEFINE'
     Regress::ANNOTATION_CALCULATED_DEFINE.must_equal 100
   end
   it 'has the constant ANNOTATION_CALCULATED_LARGE' do
+    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_LARGE'
     skip 'Constant is marked with the wrong type'
     Regress::ANNOTATION_CALCULATED_LARGE.must_equal 10_000_000_000
   end
   it 'has the constant ANNOTATION_CALCULATED_LARGE_DIV' do
+    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_LARGE_DIV'
     Regress::ANNOTATION_CALCULATED_LARGE_DIV.must_equal 1_000_000
   end
   describe 'Regress::ATestError' do
@@ -67,6 +72,9 @@ describe Regress do
   end
 
   describe 'Regress::AnnotationBitfield' do
+    before do
+      skip unless get_introspection_data 'Regress', 'AnnotationBitfield'
+    end
     it 'has the member :foo' do
       Regress::AnnotationBitfield[:foo].must_equal 1
     end
@@ -76,6 +84,10 @@ describe Regress do
   end
 
   describe 'Regress::AnnotationFields' do
+    before do
+      skip unless get_introspection_data 'Regress', 'AnnotationFields'
+    end
+
     let(:instance) { Regress::AnnotationFields.new }
 
     it 'has a writable field field1' do
@@ -1074,6 +1086,10 @@ describe Regress do
   end
 
   describe 'Regress::TestInheritDrawable' do
+    before do
+      skip unless get_introspection_data 'Regress', 'TestInheritDrawable'
+    end
+
     let(:instance) { ConcreteDrawable.new }
     it 'has a working method #do_foo' do
       instance.do_foo 42

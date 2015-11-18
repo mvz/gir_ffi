@@ -1,8 +1,14 @@
 require 'gir_ffi_test_helper'
 
-GirFFI.setup :WarnLib
+describe 'The generated WarnLib module' do
+  before do
+    begin
+      GirFFI.setup :WarnLib
+    rescue
+      skip 'WarnLib GIR not available'
+    end
+  end
 
-describe WarnLib do
   describe 'WarnLib::Whatever' do
     it 'has a working method #do_boo' do
       skip 'Needs testing'
