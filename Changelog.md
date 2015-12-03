@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.4 / 2015-12-03
 
 * Handle classes with lower-case names
 * Make ObjectBase a DataConverter so FFI handles it natively
