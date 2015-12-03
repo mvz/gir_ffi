@@ -120,6 +120,9 @@ module GObject
     }
 
     def init_for_ruby_value(val)
+      if val.class.respond_to? :gtype
+        return init val.class.gtype
+      end
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         return init type if val.is_a? klass
       end
