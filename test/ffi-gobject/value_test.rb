@@ -67,7 +67,7 @@ describe GObject::Value do
 
   describe '#set_value' do
     it 'handles char values' do
-      value = 83
+      value = -83
       gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_value value
       gv.get_char.must_equal value

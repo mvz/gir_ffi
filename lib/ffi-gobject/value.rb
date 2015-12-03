@@ -25,7 +25,7 @@ module GObject
       TYPE_INVALID => [:get_none,          :set_none],
       TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
       TYPE_BOXED   => [:get_boxed,         :set_boxed],
-      TYPE_CHAR    => [:get_char,          :set_char],
+      TYPE_CHAR    => [:get_schar,         :set_schar],
       TYPE_DOUBLE  => [:get_double,        :set_double],
       TYPE_ENUM    => [:get_enum_enhanced, :set_enum_enhanced],
       TYPE_FLAGS   => [:get_flags,         :set_flags],
