@@ -5,6 +5,7 @@
 * Improve GObject::Value
   * Make #wrap_ruby_value work for object classes
   * Use non-deprecated methods for getting and setting char values
+  * Make set_value and get_value work for interface types
 
 ## 0.8.4 / 2015-12-03
 
