@@ -1,6 +1,7 @@
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
+GirFFI.setup :Gio
 
 describe GObject::Value do
   describe '::Struct' do
@@ -152,6 +153,13 @@ describe GObject::Value do
     it 'handles object values' do
       value = GObject::Object.new({})
       gv = GObject::Value.for_gtype GObject::Object.gtype
+      gv.set_value value
+      gv.get_object.must_equal value
+    end
+
+    it 'handles interface values' do
+      value = Gio.file_new_for_path('/')
+      gv = GObject::Value.for_gtype Gio::File.gtype
       gv.set_value value
       gv.get_object.must_equal value
     end

@@ -42,6 +42,7 @@ module GObject
       TYPE_UINT    => [:get_uint,          :set_uint],
       TYPE_UINT64  => [:get_uint64,        :set_uint64],
       TYPE_ULONG   => [:get_ulong,         :set_ulong],
+      TYPE_INTERFACE => [:get_object, :set_instance_enhanced],
       TYPE_VARIANT => [:get_variant,       :set_variant]
     }
 
