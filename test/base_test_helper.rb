@@ -3,6 +3,7 @@ require 'rubygems' if RUBY_PLATFORM == 'java'
 begin
   require 'simplecov'
   SimpleCov.start do
+    track_files 'lib/**/*.rb'
     add_filter '/test/'
   end
 

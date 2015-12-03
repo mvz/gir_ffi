@@ -8,6 +8,6 @@ if ENV['CI']
     gem 'coveralls', type: :development
   end
 else
-  gem 'simplecov', '~> 0.10.0', type: :development, platform: :mri
+  gem 'simplecov', '~> 0.11.0', type: :development, platform: :mri
   gem 'pry', '~> 0.10.0', type: :development
 end
