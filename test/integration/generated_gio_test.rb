@@ -1,11 +1,9 @@
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Gio
+
 # Tests generated methods and functions in the Gio namespace.
 describe 'The generated Gio module' do
-  before do
-    GirFFI.setup :Gio
-  end
-
   describe '#file_new_for_path, a method returning an interface,' do
     it 'returns an object of a more specific class' do
       file = Gio.file_new_for_path('/')
