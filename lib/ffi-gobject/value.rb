@@ -25,7 +25,7 @@ module GObject
       TYPE_INVALID => [:get_none,          :set_none],
       TYPE_BOOLEAN => [:get_boolean,       :set_boolean],
       TYPE_BOXED   => [:get_boxed,         :set_boxed],
-      TYPE_CHAR    => [:get_char,          :set_char],
+      TYPE_CHAR    => [:get_schar,         :set_schar],
       TYPE_DOUBLE  => [:get_double,        :set_double],
       TYPE_ENUM    => [:get_enum_enhanced, :set_enum_enhanced],
       TYPE_FLAGS   => [:get_flags,         :set_flags],
@@ -120,6 +120,9 @@ module GObject
     }
 
     def init_for_ruby_value(val)
+      if val.class.respond_to? :gtype
+        return init val.class.gtype
+      end
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         return init type if val.is_a? klass
       end

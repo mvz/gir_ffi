@@ -63,11 +63,17 @@ describe GObject::Value do
       assert_instance_of GObject::Value, gv
       assert_equal nil, gv.get_value
     end
+
+    it 'wraps object values' do
+      value = GObject::Object.new({})
+      gv = GObject::Value.wrap_ruby_value value
+      gv.get_value.must_equal value
+    end
   end
 
   describe '#set_value' do
     it 'handles char values' do
-      value = 83
+      value = -83
       gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_value value
       gv.get_char.must_equal value
@@ -141,6 +147,13 @@ describe GObject::Value do
       gv = GObject::Value.for_gtype GObject::TYPE_VARIANT
       gv.set_value value
       gv.get_variant.must_equal value
+    end
+
+    it 'handles object values' do
+      value = GObject::Object.new({})
+      gv = GObject::Value.for_gtype GObject::Object.gtype
+      gv.set_value value
+      gv.get_object.must_equal value
     end
   end
 
