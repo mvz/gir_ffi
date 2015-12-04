@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.5 / 2015-12-04
 
 * Improve GObject::Value
   * Make #wrap_ruby_value work for object classes
