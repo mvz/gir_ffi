@@ -1206,11 +1206,13 @@ describe GIMarshallingTests do
 
   describe 'GIMarshallingTests::SubObject' do
     it 'creates an instance using #new' do
-      so = GIMarshallingTests::SubObject.new 42
-      assert_instance_of GIMarshallingTests::SubObject, so
+      so = GIMarshallingTests::SubObject.new
+      so.must_be_instance_of GIMarshallingTests::SubObject
+      GObject.type_name(GObject.type_from_instance so).
+        must_equal 'GIMarshallingTestsSubObject'
     end
 
-    let(:instance) { GIMarshallingTests::SubObject.new 0 }
+    let(:instance) { GIMarshallingTests::SubObject.new }
 
     it 'has a working method #overwritten_method' do
       instance.overwritten_method
@@ -1230,11 +1232,13 @@ describe GIMarshallingTests do
 
   describe 'GIMarshallingTests::SubSubObject' do
     it 'creates an instance using #new' do
-      so = GIMarshallingTests::SubSubObject.new 42
+      so = GIMarshallingTests::SubSubObject.new
       assert_instance_of GIMarshallingTests::SubSubObject, so
+      GObject.type_name(GObject.type_from_instance so).
+        must_equal 'GIMarshallingTestsSubSubObject'
     end
 
-    let(:instance) { GIMarshallingTests::SubSubObject.new 0 }
+    let(:instance) { GIMarshallingTests::SubSubObject.new }
 
     it 'does not have field accessors' do
       assert_raises(NoMethodError) { instance.parent_instance }
