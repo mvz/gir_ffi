@@ -31,7 +31,14 @@ module GirFFI
       end
 
       def preparation
-        ['obj = allocate']
+        if @info.safe_name == 'new'
+          ['obj = allocate']
+        else
+          [
+            "raise NoMethodError unless self == #{@info.container.full_type_name}",
+            'obj = allocate'
+          ]
+        end
       end
 
       def invocation
