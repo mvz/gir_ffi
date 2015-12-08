@@ -111,5 +111,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
       other_klass = other_builder.build_class
       other_klass.gtype.must_equal gtype
     end
+
+    it 'creates a class with a new GType' do
+      klass.gtype.wont_equal GIMarshallingTests::Object.gtype
+    end
+
+    it 'makes the registered class return objects with the correct GType' do
+      obj = klass.new
+      GObject.type_from_instance(obj).must_equal klass.gtype
+    end
   end
 end

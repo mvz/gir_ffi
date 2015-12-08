@@ -11,6 +11,9 @@ module GObject
 
     alias_method :initialize_without_automatic_gtype, :initialize
     alias_method :initialize, :initialize_with_automatic_gtype
+    alias_method :base_initialize, :initialize
+
+    private :base_initialize
 
     def store_pointer(ptr)
       super

@@ -23,6 +23,7 @@ describe GirFFI::Builders::ConstructorBuilder do
       it 'builds a custom constructor' do
         code.must_equal <<-CODE.reset_indentation
           def self.new_from_file(*args)
+            raise NoMethodError unless self == Regress::TestObj
             obj = allocate
             obj.__send__ :initialize_from_file, *args
             obj

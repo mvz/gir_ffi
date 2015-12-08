@@ -2230,6 +2230,10 @@ describe Regress do
       assert_instance_of Regress::TestSubObj, tso
     end
 
+    it "does not create an instance using its parent object's custom constructors" do
+      proc { Regress::TestSubObj.constructor }.must_raise NoMethodError
+    end
+
     let(:instance) { Regress::TestSubObj.new }
 
     it 'has a working method #instance_method' do

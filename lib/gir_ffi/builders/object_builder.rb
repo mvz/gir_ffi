@@ -51,6 +51,7 @@ module GirFFI
         end
         setup_vfunc_invokers
         setup_interfaces
+        provide_initializer
       end
 
       # FIXME: Private method only used in subclass
@@ -104,6 +105,16 @@ module GirFFI
         klass.class_eval "
           def #{vfunc_name} *args, &block
             #{invoker_name}(*args, &block)
+          end
+        "
+      end
+
+      def provide_initializer
+        return if info.find_method 'new'
+
+        klass.class_eval "
+          def initialize(properties = {})
+            base_initialize(properties)
           end
         "
       end
