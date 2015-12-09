@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.8.6 / 2015-12-09
 
 * Change handling of initializers in subclasses
   * Subclasses with their own GType revert to the default GObject constructor
