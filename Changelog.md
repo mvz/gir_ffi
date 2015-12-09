@@ -5,6 +5,7 @@
 * Change handling of initializers in subclasses
   * Subclasses with their own GType revert to the default GObject constructor
   * Subclasses cannot use their parent classes' non-default contructors
+* Find signals in ancestor classes of unintrospectable types
 
 ## 0.8.5 / 2015-12-04
 
