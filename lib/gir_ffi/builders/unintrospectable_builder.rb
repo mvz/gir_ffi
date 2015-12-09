@@ -19,12 +19,6 @@ module GirFFI
       def setup_instance_method(_method)
         false
       end
-
-      private
-
-      def ancestor_infos
-        info.interfaces
-      end
     end
   end
 end

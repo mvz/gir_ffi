@@ -46,6 +46,11 @@ describe GirFFI::Builders::UnintrospectableBuilder do
         end
         assert_match(/^Signal/, msg)
       end
+
+      it 'finds signals in ancestor classes' do
+        signal = @bldr.find_signal 'notify'
+        signal.name.must_equal 'notify'
+      end
     end
   end
 end

@@ -108,4 +108,12 @@ describe GirFFI::UnintrospectableTypeInfo do
       info.safe_name.must_equal 'GSomeType'
     end
   end
+
+  describe '#find_signal' do
+    it 'indicates that no signals can be found' do
+      info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
+      result = info.find_signal 'any'
+      result.must_be_nil
+    end
+  end
 end

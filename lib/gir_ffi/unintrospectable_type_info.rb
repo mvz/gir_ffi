@@ -43,5 +43,9 @@ module GirFFI
     def fields
       []
     end
+
+    def find_signal(_any)
+      nil
+    end
   end
 end
