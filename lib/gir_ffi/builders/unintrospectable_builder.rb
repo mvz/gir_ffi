@@ -23,7 +23,7 @@ module GirFFI
       private
 
       def ancestor_infos
-        info.interfaces
+        info.interfaces + parent_ancestor_infos
       end
     end
   end
