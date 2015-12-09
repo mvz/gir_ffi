@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* Change handling of initializers in subclasses
+  * Subclasses with their own GType revert to the default GObject constructor
+  * Subclasses cannot use their parent classes' non-default contructors
+
 ## 0.8.5 / 2015-12-04
 
 * Improve GObject::Value
