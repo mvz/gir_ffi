@@ -10,11 +10,7 @@ describe "An exception in a callback" do
 
     before do
       object.signal_connect "test" do
-        begin
-          raise CallbackTestException, "Boom"
-        rescue => ex
-          GLib::MainLoop.handle_exception(ex)
-        end
+        raise CallbackTestException, "Boom"
       end
     end
 
