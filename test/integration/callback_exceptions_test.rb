@@ -8,11 +8,18 @@ describe "An exception in a callback" do
   describe "for signals" do
     let(:object) { Regress::TestSubObj.new }
 
+    before do
+      object.signal_connect "test" do
+        begin
+          raise CallbackTestException, "Boom"
+        rescue => ex
+          GLib::MainLoop.handle_exception(ex)
+        end
+      end
+    end
+
     describe "when the signal is emitted synchronously" do
       it "raises an error" do
-        object.signal_connect "test" do
-          raise CallbackTestException, "Boom"
-        end
         lambda { GObject.signal_emit object, "test" }.must_raise CallbackTestException
       end
     end
@@ -20,15 +27,6 @@ describe "An exception in a callback" do
     describe "when the signal is emitted during an event loop" do
       it "causes loop run to be terminated with an exception" do
         main_loop = GLib::MainLoop.new nil, false
-
-        object.signal_connect "test" do
-          begin
-            raise CallbackTestException, "Boom"
-          rescue => ex
-            GLib::MainLoop.store_exception(ex)
-            main_loop.quit
-          end
-        end
 
         emit_func = proc {
           GObject.signal_emit object, "test"
@@ -53,8 +51,7 @@ describe "An exception in a callback" do
           begin
             raise CallbackTestException, "Boom"
           rescue => e
-            GLib::MainLoop.store_exception e
-            main_loop.quit
+            GLib::MainLoop.handle_exception e
           end
           false
         }
