@@ -33,6 +33,8 @@ module GLib
       end
     end
 
+    setup_instance_method :run
+
     def run_with_thread_enabler
       case RUBY_ENGINE
       when 'jruby'
