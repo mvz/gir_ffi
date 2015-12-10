@@ -2,6 +2,8 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
 
+class CallbackTestException < RuntimeError; end
+
 describe "An exception in a callback" do
   describe "for signals" do
     let(:object) { Regress::TestSubObj.new }
@@ -9,9 +11,9 @@ describe "An exception in a callback" do
     describe "when the signal is emitted synchronously" do
       it "raises an error" do
         object.signal_connect "test" do
-          raise "Boom"
+          raise CallbackTestException, "Boom"
         end
-        lambda { GObject.signal_emit object, "test" }.must_raise RuntimeError
+        lambda { GObject.signal_emit object, "test" }.must_raise CallbackTestException
       end
     end
 
@@ -21,7 +23,7 @@ describe "An exception in a callback" do
 
         object.signal_connect "test" do
           begin
-            raise "Boom"
+            raise CallbackTestException, "Boom"
           rescue => ex
             GLib::MainLoop.store_exception(ex)
             main_loop.quit
@@ -37,7 +39,7 @@ describe "An exception in a callback" do
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, proc { main_loop.quit }, nil, nil
         proc do
           main_loop.run
-        end.must_raise RuntimeError
+        end.must_raise CallbackTestException
       end
     end
   end
@@ -49,7 +51,7 @@ describe "An exception in a callback" do
 
         raise_func = FFI::Function.new(:bool, [:pointer]) {
           begin
-            raise "Boom"
+            raise CallbackTestException, "Boom"
           rescue => e
             GLib::MainLoop.store_exception e
             main_loop.quit
@@ -62,7 +64,7 @@ describe "An exception in a callback" do
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, proc { main_loop.quit }, nil, nil
         proc do
           main_loop.run
-        end.must_raise RuntimeError
+        end.must_raise CallbackTestException
       end
     end
   end
