@@ -59,13 +59,8 @@ module GObject
     signal_name, = detailed_signal.split('::')
     sig_info = object.class.find_signal signal_name
 
-    # NOTE: Handle of exceptions could be moved into the closure implementation
     closure = sig_info.wrap_in_closure do |*args|
-      begin
-        block.call(*args << data)
-      rescue => ex
-        GLib::MainLoop.handle_exception(ex)
-      end
+      block.call(*args << data)
     end
 
     signal_connect_closure object, detailed_signal, closure, after
