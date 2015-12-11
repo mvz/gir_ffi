@@ -80,6 +80,13 @@ describe GObject::Value do
       gv.get_schar.must_equal value
     end
 
+    it 'handles unsigned char values' do
+      value = 174
+      gv = GObject::Value.for_gtype GObject::TYPE_UCHAR
+      gv.set_value value
+      gv.get_uchar.must_equal value
+    end
+
     it 'handles enum values presented as symbols' do
       value = :value2
       gv = GObject::Value.for_gtype Regress::TestEnum.gtype
@@ -182,6 +189,13 @@ describe GObject::Value do
       value = -42
       gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_schar value
+      gv.get_value.must_equal value
+    end
+
+    it 'unwraps an unsigned char' do
+      value = 173
+      gv = GObject::Value.for_gtype GObject::TYPE_UCHAR
+      gv.set_uchar value
       gv.get_value.must_equal value
     end
 
