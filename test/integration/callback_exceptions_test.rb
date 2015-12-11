@@ -6,14 +6,11 @@ describe "An exception in a callback" do
   describe "for signals" do
     let(:object) { Regress::TestSubObj.new }
 
-    before do
-      object.signal_connect "test" do
-        raise "Boom"
-      end
-    end
-
     describe "when the signal is emitted synchronously" do
       it "raises an error" do
+        object.signal_connect "test" do
+          raise "Boom"
+        end
         lambda { GObject.signal_emit object, "test" }.must_raise RuntimeError
       end
     end
@@ -22,8 +19,18 @@ describe "An exception in a callback" do
       it "causes loop run to be terminated with an exception" do
         main_loop = GLib::MainLoop.new nil, false
 
+        object.signal_connect "test" do
+          begin
+            raise "Boom"
+          rescue => ex
+            GLib::MainLoop.store_exception(ex)
+            main_loop.quit
+          end
+        end
+
         emit_func = proc {
           GObject.signal_emit object, "test"
+          false
         }
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, emit_func, nil, nil
         # Guard against runaway loop
@@ -41,7 +48,13 @@ describe "An exception in a callback" do
         main_loop = GLib::MainLoop.new nil, false
 
         raise_func = FFI::Function.new(:bool, [:pointer]) {
-          raise "Boom"
+          begin
+            raise "Boom"
+          rescue => e
+            GLib::MainLoop.store_exception e
+            main_loop.quit
+          end
+          false
         }
 
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, raise_func, nil, nil
