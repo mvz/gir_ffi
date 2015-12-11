@@ -33,6 +33,11 @@ module GLib
       end
     end
 
+    EXCEPTIONS = []
+    RUNNING_LOOPS = []
+
+    setup_instance_method :run
+
     def run_with_thread_enabler
       case RUBY_ENGINE
       when 'jruby'
@@ -40,7 +45,22 @@ module GLib
       else # 'ruby' most likely
         ThreadEnabler.instance.setup_idle_handler
       end
-      run_without_thread_enabler
+      RUNNING_LOOPS << self
+      result = run_without_thread_enabler
+      ex = EXCEPTIONS.shift
+      RUNNING_LOOPS.pop
+      raise ex if ex
+      result
+    end
+
+    def self.handle_exception(ex)
+      current_loop = RUNNING_LOOPS.last
+      if current_loop
+        EXCEPTIONS << ex
+        current_loop.quit
+      else
+        raise ex
+      end
     end
 
     alias_method :run_without_thread_enabler, :run

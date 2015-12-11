@@ -59,7 +59,9 @@ module GObject
     signal_name, = detailed_signal.split('::')
     sig_info = object.class.find_signal signal_name
 
-    closure = sig_info.wrap_in_closure { |*args| block.call(*args << data) }
+    closure = sig_info.wrap_in_closure do |*args|
+      block.call(*args << data)
+    end
 
     signal_connect_closure object, detailed_signal, closure, after
   end

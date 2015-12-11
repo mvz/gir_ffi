@@ -40,16 +40,20 @@ module GirFFI
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
     # and the callback is stored to prevent garbage collection.
     def self.from(prc)
-      wrap_in_callback_args_mapper(prc).tap do |cb|
+      wrap_proc(prc).tap do |cb|
         store_callback cb
       end
     end
 
-    def self.wrap_in_callback_args_mapper(prc)
+    def self.wrap_proc(prc)
       return unless prc
 
       new do |*args|
-        call_with_argument_mapping(prc, *args)
+        begin
+          call_with_argument_mapping(prc, *args)
+        rescue => e
+          GLib::MainLoop.handle_exception e
+        end
       end
     end
 
