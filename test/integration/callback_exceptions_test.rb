@@ -44,12 +44,7 @@ describe "An exception in a callback" do
         main_loop = GLib::MainLoop.new nil, false
 
         raise_func = FFI::Function.new(:bool, [:pointer]) {
-          begin
-            raise CallbackTestException, "Boom"
-          rescue => e
-            GLib::MainLoop.handle_exception e
-          end
-          false
+          raise CallbackTestException, "Boom"
         }
 
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, raise_func, nil, nil
