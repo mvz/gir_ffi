@@ -73,11 +73,11 @@ describe GObject::Value do
   end
 
   describe '#set_value' do
-    it 'handles char values' do
+    it 'handles signed char values' do
       value = -83
       gv = GObject::Value.for_gtype GObject::TYPE_CHAR
       gv.set_value value
-      gv.get_char.must_equal value
+      gv.get_schar.must_equal value
     end
 
     it 'handles enum values presented as symbols' do
@@ -178,10 +178,10 @@ describe GObject::Value do
       assert_equal true, result
     end
 
-    it 'unwraps a char' do
-      value = 3
+    it 'unwraps a signed char' do
+      value = -42
       gv = GObject::Value.for_gtype GObject::TYPE_CHAR
-      gv.set_char value
+      gv.set_schar value
       gv.get_value.must_equal value
     end
 
