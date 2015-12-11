@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Propagate exceptions from callbacks during event loops
+
 ## 0.8.6 / 2015-12-09
 
 * Change handling of initializers in subclasses
