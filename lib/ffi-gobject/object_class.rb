@@ -10,5 +10,9 @@ module GObject
     def get_property=(callback)
       @struct[:get_property] = GObject::ObjectGetPropertyFunc.from callback
     end
+
+    def gtype
+      GirFFI::InOutPointer.new(:GType, to_ptr).to_value
+    end
   end
 end
