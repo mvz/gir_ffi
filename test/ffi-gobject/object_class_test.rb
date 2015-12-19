@@ -18,4 +18,33 @@ describe GObject::ObjectClass do
       prop_names.sort.must_equal expected_props.sort
     end
   end
+
+  describe '#gtype' do
+    it 'returns the correct GType' do
+      obj = GIMarshallingTests::OverridesObject.new
+      object_class = GObject.object_class_from_instance obj
+      object_class.gtype.must_equal GIMarshallingTests::OverridesObject.gtype
+    end
+  end
+
+  describe '.for_gtype' do
+    it 'returns the ObjectClass corresponding to the given type' do
+      gtype = GIMarshallingTests::OverridesObject.gtype
+      object_class = GObject::ObjectClass.for_gtype(gtype)
+      object_class.must_be_instance_of GObject::ObjectClass
+      object_class.gtype.must_equal gtype
+    end
+
+    it 'caches its result' do
+      gtype = GIMarshallingTests::OverridesObject.gtype
+      first = GObject::ObjectClass.for_gtype(gtype)
+      second = GObject::ObjectClass.for_gtype(gtype)
+      second.must_be :eql?, first
+    end
+
+    it 'raises an error if gtype is not an object type' do
+      gtype = Regress::TestFundamentalObject.gtype
+      proc { GObject::ObjectClass.for_gtype(gtype) }.must_raise ArgumentError
+    end
+  end
 end

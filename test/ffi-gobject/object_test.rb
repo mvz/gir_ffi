@@ -1,11 +1,25 @@
 require 'gir_ffi_test_helper'
 
 require 'ffi-gobject'
+GirFFI.setup :GIMarshallingTests
 
 describe GObject::Object do
   describe '.new' do
     it 'is overridden to take only one argument' do
-      GObject::Object.new(nil).must_be_instance_of GObject::Object
+      GObject::Object.new({}).must_be_instance_of GObject::Object
+    end
+
+    it 'can be used to create objects with properties' do
+      obj = GIMarshallingTests::SubObject.new(int: 13)
+      obj.int.must_equal 13
+    end
+
+    it 'allows omission of the first argument' do
+      GObject::Object.new.must_be_instance_of GObject::Object
+    end
+
+    it 'raises an error for properties that do not exist' do
+      proc { GObject::Object.new(dog: 'bark') }.must_raise ArgumentError
     end
   end
 
@@ -26,7 +40,7 @@ describe GObject::Object do
       end
     end
 
-    subject { AccessorTest.new nil }
+    subject { AccessorTest.new }
 
     it 'reads x by calling get_x' do
       subject.set_x(1)
@@ -40,7 +54,7 @@ describe GObject::Object do
   end
 
   describe '#signal_connect' do
-    subject { GObject::Object.new nil }
+    subject { GObject::Object.new }
 
     it 'delegates to GObject' do
       expect(GObject).to receive(:signal_connect).with(subject, 'some-event', nil)
@@ -58,7 +72,7 @@ describe GObject::Object do
   end
 
   describe '#signal_connect_after' do
-    subject { GObject::Object.new nil }
+    subject { GObject::Object.new }
 
     it 'delegates to GObject' do
       expect(GObject).to receive(:signal_connect_after).with(subject, 'some-event', nil)
@@ -81,7 +95,7 @@ describe GObject::Object do
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
 
-      object = GObject::Object.new nil
+      object = GObject::Object.new
       ptr = object.to_ptr
       ref_count(ptr).must_equal 1
 
