@@ -8,8 +8,7 @@ module GObject
     def initialize_with_automatic_gtype(properties = {})
       gparameters = properties.map do |name, value|
         name = name.to_s
-        pspec = self.class.type_class.find_property name
-        unless pspec
+        unless property_param_spec(name)
           raise ArgumentError, "Property '#{name}' not found in class #{self.class}"
         end
         GObject::Parameter.new.tap do |gparam|
@@ -77,11 +76,8 @@ module GObject
     end
 
     def get_property_with_override(property_name)
-      pspec = type_class.find_property property_name
-
-      gvalue = GObject::Value.for_gtype pspec.value_type
+      gvalue = gvalue_for_property property_name
       get_property_without_override property_name, gvalue
-
       gvalue
     end
 
@@ -93,14 +89,13 @@ module GObject
     end
 
     def set_property_with_override(property_name, value)
-      pspec = type_class.find_property property_name
-      gvalue = GObject::Value.for_gtype pspec.value_type
+      gvalue = gvalue_for_property(property_name)
       gvalue.set_value value
       set_property_without_override property_name, gvalue
     end
 
     def type_class
-      GObject::ObjectClass.wrap(to_ptr.get_pointer 0)
+      self.class.type_class
     end
 
     def self.type_class
@@ -121,6 +116,19 @@ module GObject
     def get_property_type(property_name)
       prop = self.class.find_property property_name
       prop.property_type
+    end
+
+    def gvalue_for_property(property_name)
+      gtype = property_gtype property_name
+      GObject::Value.for_gtype gtype
+    end
+
+    def property_gtype(property_name)
+      property_param_spec(property_name).value_type
+    end
+
+    def property_param_spec(property_name)
+      type_class.find_property property_name
     end
 
     # TODO: Move to ITypeInfo
