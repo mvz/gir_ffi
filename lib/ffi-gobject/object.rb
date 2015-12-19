@@ -5,8 +5,8 @@ module GObject
   class Object
     setup_method 'new'
 
-    def initialize_with_automatic_gtype(properties)
-      gparameters = (properties || {}).map do |name, value|
+    def initialize_with_automatic_gtype(properties = {})
+      gparameters = properties.map do |name, value|
         GObject::Parameter.new.tap do |gparam|
           gparam.name = name.to_s
           gparam.value = value
