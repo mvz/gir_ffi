@@ -1,11 +1,17 @@
 require 'gir_ffi_test_helper'
 
 require 'ffi-gobject'
+GirFFI.setup :GIMarshallingTests
 
 describe GObject::Object do
   describe '.new' do
     it 'is overridden to take only one argument' do
       GObject::Object.new(nil).must_be_instance_of GObject::Object
+    end
+
+    it 'can be used to create objects with properties' do
+      obj = GIMarshallingTests::SubObject.new(int: 13)
+      obj.int.must_equal 13
     end
   end
 

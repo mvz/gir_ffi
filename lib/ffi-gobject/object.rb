@@ -6,7 +6,13 @@ module GObject
     setup_method 'new'
 
     def initialize_with_automatic_gtype(properties)
-      initialize_without_automatic_gtype(self.class.gtype, properties)
+      gparameters = (properties || {}).map do |name, value|
+        GObject::Parameter.new.tap do |gparam|
+          gparam.name = name.to_s
+          gparam.value = value
+        end
+      end
+      initialize_without_automatic_gtype(self.class.gtype, gparameters)
     end
 
     alias_method :initialize_without_automatic_gtype, :initialize
