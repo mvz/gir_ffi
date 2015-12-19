@@ -34,5 +34,12 @@ describe GObject::ObjectClass do
       object_class.must_be_instance_of GObject::ObjectClass
       object_class.gtype.must_equal gtype
     end
+
+    it 'caches its result' do
+      gtype = GIMarshallingTests::OverridesObject.gtype
+      first = GObject::ObjectClass.for_gtype(gtype)
+      second = GObject::ObjectClass.for_gtype(gtype)
+      second.must_be :eql?, first
+    end
   end
 end

@@ -3,6 +3,8 @@ GObject.load_class :ObjectClass
 module GObject
   # Overrides for GObjectClass, a struct containing GObject's class data
   class ObjectClass
+    CLASS_CACHE = {}
+
     def set_property=(callback)
       @struct[:set_property] = GObject::ObjectSetPropertyFunc.from callback
     end
@@ -16,8 +18,10 @@ module GObject
     end
 
     def self.for_gtype(gtype)
-      type_class = GObject::TypeClass.ref gtype
-      wrap(type_class.to_ptr)
+      CLASS_CACHE[gtype] ||= begin
+                               type_class = GObject::TypeClass.ref gtype
+                               wrap(type_class.to_ptr)
+                             end
     end
   end
 end
