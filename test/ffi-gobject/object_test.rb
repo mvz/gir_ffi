@@ -17,6 +17,10 @@ describe GObject::Object do
     it 'allows omission of the first argument' do
       GObject::Object.new.must_be_instance_of GObject::Object
     end
+
+    it 'raises an error for properties that do not exist' do
+      proc { GObject::Object.new(dog: 'bark') }.must_raise ArgumentError
+    end
   end
 
   describe '#get_property' do

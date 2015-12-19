@@ -7,8 +7,13 @@ module GObject
 
     def initialize_with_automatic_gtype(properties = {})
       gparameters = properties.map do |name, value|
+        name = name.to_s
+        pspec = self.class.type_class.find_property name
+        unless pspec
+          raise ArgumentError, "Property '#{name}' not found in class #{self.class}"
+        end
         GObject::Parameter.new.tap do |gparam|
-          gparam.name = name.to_s
+          gparam.name = name
           gparam.value = value
         end
       end
@@ -96,6 +101,10 @@ module GObject
 
     def type_class
       GObject::ObjectClass.wrap(to_ptr.get_pointer 0)
+    end
+
+    def self.type_class
+      GObject::ObjectClass.for_gtype gtype
     end
 
     alias_method :get_property_without_override, :get_property
