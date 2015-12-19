@@ -3,6 +3,7 @@
 ## Unreleased
 
 * Propagate exceptions from callbacks during event loops
+* Make default object constructor take a hash of properties
 
 ## 0.8.6 / 2015-12-09
 
