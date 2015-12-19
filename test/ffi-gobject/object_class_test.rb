@@ -26,4 +26,13 @@ describe GObject::ObjectClass do
       object_class.gtype.must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end
+
+  describe '.for_gtype' do
+    it 'returns the ObjectClass corresponding to the given type' do
+      gtype = GIMarshallingTests::OverridesObject.gtype
+      object_class = GObject::ObjectClass.for_gtype(gtype)
+      object_class.must_be_instance_of GObject::ObjectClass
+      object_class.gtype.must_equal gtype
+    end
+  end
 end

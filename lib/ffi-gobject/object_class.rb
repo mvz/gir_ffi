@@ -14,5 +14,10 @@ module GObject
     def gtype
       GirFFI::InOutPointer.new(:GType, to_ptr).to_value
     end
+
+    def self.for_gtype(gtype)
+      type_class = GObject::TypeClass.ref gtype
+      wrap(type_class.to_ptr)
+    end
   end
 end
