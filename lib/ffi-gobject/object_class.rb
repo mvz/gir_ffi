@@ -18,6 +18,13 @@ module GObject
     end
 
     def self.for_gtype(gtype)
+      fundamental = GObject.type_fundamental gtype
+      unless fundamental == TYPE_OBJECT
+        name = GObject.type_name fundamental
+        raise ArgumentError,
+          "Expected gtype with fundamental type GObject, got #{name}"
+      end
+
       CLASS_CACHE[gtype] ||= begin
                                type_class = GObject::TypeClass.ref gtype
                                wrap(type_class.to_ptr)

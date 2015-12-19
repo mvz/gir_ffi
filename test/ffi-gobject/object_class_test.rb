@@ -41,5 +41,10 @@ describe GObject::ObjectClass do
       second = GObject::ObjectClass.for_gtype(gtype)
       second.must_be :eql?, first
     end
+
+    it 'raises an error if gtype is not an object type' do
+      gtype = Regress::TestFundamentalObject.gtype
+      proc { GObject::ObjectClass.for_gtype(gtype) }.must_raise ArgumentError
+    end
   end
 end
