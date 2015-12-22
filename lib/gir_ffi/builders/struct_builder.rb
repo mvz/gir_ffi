@@ -11,15 +11,11 @@ module GirFFI
 
       def superclass
         if info.gtype_struct?
-          potential_parent_type = fields.first.field_type
-          if potential_parent_type.tag == :interface
-            potential_parent_type.tag_or_class
-          else
-            StructBase
-          end
-        else
-          StructBase
+          type = fields.first.field_type
+          return type.tag_or_class if type.tag == :interface
         end
+
+        StructBase
       end
     end
   end
