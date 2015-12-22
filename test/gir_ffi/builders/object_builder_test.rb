@@ -60,6 +60,12 @@ describe GirFFI::Builders::ObjectBuilder do
     it 'returns the class struct type' do
       obj_builder.object_class_struct.must_equal Regress::TestObjClass
     end
+
+    it 'returns the parent struct type for classes without their own struct' do
+      binding_info = get_introspection_data 'GObject', 'Binding'
+      builder = GirFFI::Builders::ObjectBuilder.new binding_info
+      builder.object_class_struct.must_equal GObject::ObjectClass
+    end
   end
 
   # TODO: Improve this spec to use less mocking

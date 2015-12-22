@@ -38,6 +38,13 @@ module GirFFI
         @ancestor_infos ||= [info] + info.interfaces + parent_ancestor_infos
       end
 
+      protected
+
+      def object_class_struct_info
+        @object_class_struct_info ||=
+          info.class_struct || parent_builder.object_class_struct_info
+      end
+
       private
 
       def setup_class
@@ -129,10 +136,6 @@ module GirFFI
         info.interfaces.map do |ifinfo|
           GirFFI::Builder.build_class ifinfo
         end
-      end
-
-      def object_class_struct_info
-        @object_class_struct_info ||= info.class_struct
       end
 
       def seek_in_ancestor_infos
