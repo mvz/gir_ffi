@@ -99,7 +99,7 @@ module GObject
     end
 
     def self.type_class
-      GObject::ObjectClass.for_gtype gtype
+      object_class
     end
 
     alias_method :get_property_without_override, :get_property
