@@ -94,14 +94,6 @@ module GObject
       set_property_without_override property_name, gvalue
     end
 
-    def type_class
-      self.class.type_class
-    end
-
-    def self.type_class
-      GObject::ObjectClass.for_gtype gtype
-    end
-
     alias_method :get_property_without_override, :get_property
     alias_method :get_property, :get_property_with_override
 
@@ -128,7 +120,7 @@ module GObject
     end
 
     def property_param_spec(property_name)
-      type_class.find_property property_name
+      object_class.find_property property_name
     end
 
     # TODO: Move to ITypeInfo

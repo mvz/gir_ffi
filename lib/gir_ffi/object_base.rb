@@ -5,6 +5,10 @@ module GirFFI
   class ObjectBase < ClassBase
     extend FFI::DataConverter
 
+    def object_class
+      self.class.object_class
+    end
+
     def self.native_type
       FFI::Type::POINTER
     end
@@ -54,7 +58,11 @@ module GirFFI
     end
 
     def self.object_class
-      gir_ffi_builder.object_class
+      @object_class ||=
+        begin
+          ptr = GObject.type_class_ref(gtype).to_ptr
+          gir_ffi_builder.object_class_struct.wrap ptr
+        end
     end
   end
 end

@@ -121,4 +121,10 @@ describe GirFFI::Builders::UserDefinedBuilder do
       GObject.type_from_instance(obj).must_equal klass.gtype
     end
   end
+
+  describe '#object_class_struct' do
+    it 'returns the parent class struct' do
+      builder.object_class_struct.must_equal GIMarshallingTests::ObjectClass
+    end
+  end
 end

@@ -9,9 +9,12 @@ module GirFFI
         FFI::Struct
       end
 
-      private
-
       def superclass
+        if info.gtype_struct?
+          type = fields.first.field_type
+          return type.tag_or_class if type.tag == :interface
+        end
+
         StructBase
       end
     end

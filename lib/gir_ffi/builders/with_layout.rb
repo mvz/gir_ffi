@@ -4,7 +4,7 @@ module GirFFI
   module Builders
     # Implements the creation of classes representing types with layout,
     # i.e., :union, :struct, :object.
-    # Note: This module depends on methods in RegisteredTypeBuilder.
+    # NOTE: This module depends on methods in RegisteredTypeBuilder.
     module WithLayout
       def layout_specification
         spec = base_layout_specification

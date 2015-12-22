@@ -52,5 +52,11 @@ describe GirFFI::Builders::UnintrospectableBuilder do
         signal.name.must_equal 'notify'
       end
     end
+
+    describe '#object_class_struct' do
+      it 'returns the parent class struct' do
+        @bldr.object_class_struct.must_equal GObject::ObjectClass
+      end
+    end
   end
 end

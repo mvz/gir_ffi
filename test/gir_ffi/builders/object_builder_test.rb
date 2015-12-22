@@ -60,5 +60,30 @@ describe GirFFI::Builders::ObjectBuilder do
     it 'returns the class struct type' do
       obj_builder.object_class_struct.must_equal Regress::TestObjClass
     end
+
+    it 'returns the parent struct type for classes without their own struct' do
+      binding_info = get_introspection_data 'GObject', 'Binding'
+      builder = GirFFI::Builders::ObjectBuilder.new binding_info
+      builder.object_class_struct.must_equal GObject::ObjectClass
+    end
+  end
+
+  # TODO: Improve this spec to use less mocking
+  describe 'for a struct without defined fields' do
+    it 'uses a single field of the parent struct type as the default layout' do
+      @gir = GObjectIntrospection::IRepository.default
+      @gir.require 'GObject', nil
+
+      allow(info = Object.new).to receive(:parent).and_return @gir.find_by_name 'GObject', 'Object'
+      allow(info).to receive(:fields).and_return []
+      allow(info).to receive(:info_type).and_return :object
+      allow(info).to receive(:safe_name).and_return 'Bar'
+      allow(info).to receive(:namespace).and_return 'Foo'
+
+      @classbuilder = GirFFI::Builders::ObjectBuilder.new info
+
+      spec = @classbuilder.send :layout_specification
+      assert_equal [:parent, GObject::Object::Struct, 0], spec
+    end
   end
 end

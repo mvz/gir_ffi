@@ -46,21 +46,17 @@ describe GirFFI::Builders::StructBuilder do
     end
   end
 
-  describe 'for a struct without defined fields' do
-    it 'uses a single field of the parent struct type as the default layout' do
-      @gir = GObjectIntrospection::IRepository.default
-      @gir.require 'GObject', nil
+  describe '#superclass' do
+    it 'returns StructBase for a normal struct' do
+      info = get_introspection_data 'Regress', 'TestStructA'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GirFFI::StructBase
+    end
 
-      allow(info = Object.new).to receive(:parent).and_return @gir.find_by_name 'GObject', 'Object'
-      allow(info).to receive(:fields).and_return []
-      allow(info).to receive(:info_type).and_return :object
-      allow(info).to receive(:safe_name).and_return 'Bar'
-      allow(info).to receive(:namespace).and_return 'Foo'
-
-      @classbuilder = GirFFI::Builders::ObjectBuilder.new info
-
-      spec = @classbuilder.send :layout_specification
-      assert_equal [:parent, GObject::Object::Struct, 0], spec
+    it 'returns the GObject parent class for a type class' do
+      info = get_introspection_data 'Regress', 'AnnotationObjectClass'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GObject::ObjectClass
     end
   end
 end

@@ -35,10 +35,29 @@ module GirFFI
       nil
     end
 
+    def parent_gtype
+      @parent_gtype ||= GType.new(@klass.superclass.gtype)
+    end
+
+    def parent
+      @parent ||= gir.find_by_gtype(parent_gtype.to_i)
+    end
+
+    # TODO: Create custom class that includes the interfaces instead
+    def class_struct
+      parent.class_struct
+    end
+
     attr_writer :g_name
 
     def g_name
       @g_name ||= @klass.name
+    end
+
+    private
+
+    def gir
+      @gir ||= GObjectIntrospection::IRepository.default
     end
   end
 end
