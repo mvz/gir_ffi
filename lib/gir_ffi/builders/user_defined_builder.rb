@@ -35,11 +35,11 @@ module GirFFI
       end
 
       def parent_info
-        @parent_info ||= gir.find_by_gtype(parent_gtype.to_i)
+        @info.parent
       end
 
       def parent_gtype
-        @parent_gtype ||= GType.new(klass.superclass.gtype)
+        @info.parent_gtype
       end
 
       def interface_gtypes
