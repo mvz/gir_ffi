@@ -22,5 +22,11 @@ describe GirFFI::ObjectBase do
     it 'returns an object of the class struct type' do
       Regress::TestObj.object_class.must_be_instance_of Regress::TestObjClass
     end
+
+    it 'caches its result' do
+      first = Regress::TestObj.object_class
+      second = Regress::TestObj.object_class
+      second.must_be :eql?, first
+    end
   end
 end

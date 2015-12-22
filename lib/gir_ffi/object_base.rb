@@ -54,8 +54,11 @@ module GirFFI
     end
 
     def self.object_class
-      ptr = GObject.type_class_ref(gtype).to_ptr
-      gir_ffi_builder.object_class_struct.wrap ptr
+      @object_class ||=
+        begin
+          ptr = GObject.type_class_ref(gtype).to_ptr
+          gir_ffi_builder.object_class_struct.wrap ptr
+        end
     end
   end
 end
