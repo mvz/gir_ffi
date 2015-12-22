@@ -9,10 +9,17 @@ module GirFFI
         FFI::Struct
       end
 
-      private
-
       def superclass
-        StructBase
+        if info.gtype_struct?
+          potential_parent_type = fields.first.field_type
+          if potential_parent_type.tag == :interface
+            potential_parent_type.tag_or_class
+          else
+            StructBase
+          end
+        else
+          StructBase
+        end
       end
     end
   end

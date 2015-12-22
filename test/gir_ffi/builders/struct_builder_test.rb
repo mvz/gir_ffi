@@ -45,4 +45,18 @@ describe GirFFI::Builders::StructBuilder do
       assert_equal [:bar, :foo, 0, :baz, [:qux, 2], 0], spec
     end
   end
+
+  describe '#superclass' do
+    it 'returns StructBase for a normal struct' do
+      info = get_introspection_data 'Regress', 'TestStructA'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GirFFI::StructBase
+    end
+
+    it 'returns the GObject parent class for a type class' do
+      info = get_introspection_data 'Regress', 'AnnotationObjectClass'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GObject::ObjectClass
+    end
+  end
 end
