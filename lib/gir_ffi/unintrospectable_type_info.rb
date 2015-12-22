@@ -47,5 +47,10 @@ module GirFFI
     def find_signal(_any)
       nil
     end
+
+    # TODO: Create custom class that includes the interfaces instead
+    def class_struct
+      parent.class_struct
+    end
   end
 end
