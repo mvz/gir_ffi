@@ -5,6 +5,10 @@ module GirFFI
   class ObjectBase < ClassBase
     extend FFI::DataConverter
 
+    def object_class
+      self.class.object_class
+    end
+
     def self.native_type
       FFI::Type::POINTER
     end
