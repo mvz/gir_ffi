@@ -11,8 +11,13 @@ module GirFFI
 
       def superclass
         if info.gtype_struct?
-          type = fields.first.field_type
-          return type.tag_or_class if type.tag == :interface
+          # HACK: Inheritance chain is not expressed in GObject's code correctly.
+          if info.full_type_name == 'GObject::InitiallyUnownedClass'
+            return GObject::ObjectClass
+          else
+            type = fields.first.field_type
+            return type.tag_or_class if type.tag == :interface
+          end
         end
 
         StructBase

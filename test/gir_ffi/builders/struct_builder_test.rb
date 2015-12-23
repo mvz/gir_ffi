@@ -54,7 +54,13 @@ describe GirFFI::Builders::StructBuilder do
     end
 
     it 'returns the GObject parent class for a type class' do
-      info = get_introspection_data 'Regress', 'AnnotationObjectClass'
+      info = get_introspection_data 'GIMarshallingTests', 'SubSubObjectClass'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GIMarshallingTests::SubObjectClass
+    end
+
+    it 'returns ObjectClass for InitiallyUnownedClass' do
+      info = get_introspection_data 'GObject', 'InitiallyUnownedClass'
       builder = GirFFI::Builders::StructBuilder.new info
       builder.superclass.must_equal GObject::ObjectClass
     end
