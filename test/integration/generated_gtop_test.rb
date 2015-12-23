@@ -4,7 +4,11 @@ require 'gir_ffi_test_helper'
 # contains types with bad names, like 'glibtop_cpu'.
 describe 'The generated GTop module' do
   before do
-    GirFFI.setup :GTop
+    begin
+      GirFFI.setup :GTop
+    rescue
+      skip 'No GIR data for GTop available'
+    end
   end
 
   describe 'Glibtop' do
