@@ -20,3 +20,4 @@ install:
 before_install:
   - sudo apt-get update
   - sudo apt-get install libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
+  - gem update bundler
