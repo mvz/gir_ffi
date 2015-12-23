@@ -4,6 +4,12 @@
 
 * Propagate exceptions from callbacks during event loops
 * Make default object constructor take a hash of properties
+* Fix implementation of ObjectBase.object_class
+* Make object class struct types inherit from their parent structs. This makes
+  parent methods and fields available.
+* Use ObjectBase.object_class instead of old Object#type_class to find
+  properties
+* Remove Object#type_class
 
 ## 0.8.6 / 2015-12-09
 
