@@ -1698,7 +1698,7 @@ describe Regress do
       result = GObject.signal_emit instance, 'sig-with-int64-prop', 0x7fff_ffff_ffff_ffff
 
       a.must_equal 0x7fff_ffff_ffff_ffff
-      result.get_value.must_equal 0x7fff_ffff_ffff_ffff
+      result.must_equal 0x7fff_ffff_ffff_ffff
     end
 
     it "handles the 'sig-with-intarray-ret' signal" do
@@ -1715,8 +1715,7 @@ describe Regress do
 
       a.must_equal 3
 
-      # TODO: Use signal info to convert return value
-      GLib::Array.wrap(:gint32, result.get_value_plain).to_a.must_equal [3, 2, 1]
+      result.to_a.must_equal [3, 2, 1]
     end
 
     it "handles the 'sig-with-obj' signal" do
@@ -1756,7 +1755,7 @@ describe Regress do
       result = GObject.signal_emit instance, 'sig-with-uint64-prop', 0xffff_ffff_ffff_ffff
 
       a.must_equal 0xffff_ffff_ffff_ffff
-      result.get_value.must_equal 0xffff_ffff_ffff_ffff
+      result.must_equal 0xffff_ffff_ffff_ffff
     end
 
     it "handles the 'test' signal" do
