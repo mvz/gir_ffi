@@ -16,6 +16,8 @@ module GLib
         wrap typespec, it
       when self
         it.reset_typespec typespec
+      when GirFFI::BoxedBase
+        wrap typespec, it.to_ptr
       else
         from_enumerable typespec, it
       end
