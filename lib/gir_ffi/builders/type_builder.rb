@@ -18,15 +18,16 @@ module GirFFI
       CACHE = {}
 
       TYPE_MAP = {
-        callback:         CallbackBuilder,
-        constant:         ConstantBuilder,
-        enum:             EnumBuilder,
-        flags:            EnumBuilder,
-        interface:        InterfaceBuilder,
-        object:           ObjectBuilder,
-        struct:           StructBuilder,
-        union:            UnionBuilder,
-        unintrospectable: UnintrospectableBuilder
+        callback:               CallbackBuilder,
+        constant:               ConstantBuilder,
+        enum:                   EnumBuilder,
+        flags:                  EnumBuilder,
+        interface:              InterfaceBuilder,
+        object:                 ObjectBuilder,
+        struct:                 StructBuilder,
+        union:                  UnionBuilder,
+        unintrospectable_boxed: UnintrospectableBoxedBuilder,
+        unintrospectable:       UnintrospectableBuilder
       }
 
       def self.build(info)

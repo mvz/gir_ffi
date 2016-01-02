@@ -17,7 +17,12 @@ module GirFFI
 
     def self.build_by_gtype(gtype)
       info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
-      info ||= UnintrospectableTypeInfo.new gtype
+      info ||= case GObject.type_fundamental gtype
+               when GObject::TYPE_BOXED
+                 UnintrospectableBoxedInfo.new gtype
+               when GObject::TYPE_OBJECT
+                 UnintrospectableTypeInfo.new gtype
+               end
 
       build_class info
     end
