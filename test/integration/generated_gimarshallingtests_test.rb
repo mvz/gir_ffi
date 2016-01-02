@@ -2238,10 +2238,10 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_inout' do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    assert_equal '42', res.get_value
+    assert_equal '42', res
 
     res = GIMarshallingTests.gvalue_inout 42
-    assert_equal '42', res.get_value
+    assert_equal '42', res
   end
 
   it 'has a working function #gvalue_int64_in' do
@@ -2256,12 +2256,12 @@ describe GIMarshallingTests do
   it 'has a working function #gvalue_int64_out' do
     skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_out'
     gv = GIMarshallingTests.gvalue_int64_out
-    gv.get_value.must_equal 0x7fff_ffff_ffff_ffff
+    gv.must_equal 0x7fff_ffff_ffff_ffff
   end
 
   it 'has a working function #gvalue_out' do
     res = GIMarshallingTests.gvalue_out
-    assert_equal 42, res.get_value
+    assert_equal 42, res
   end
 
   it 'has a working function #gvalue_out_caller_allocates' do

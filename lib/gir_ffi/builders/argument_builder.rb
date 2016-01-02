@@ -66,7 +66,12 @@ module GirFFI
       def output_value
         base = "#{call_argument_name}.to_value"
         if needs_out_conversion?
-          CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
+          conversion = CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
+          if @type_info.argument_class_name == 'GObject::Value'
+            "#{conversion}.get_value"
+          else
+            conversion
+          end
         elsif allocated_by_them?
           "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
         else

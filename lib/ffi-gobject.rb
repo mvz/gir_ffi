@@ -51,7 +51,7 @@ module GObject
     # NOTE: Depending on the version of GObjectIntrospection, the result will
     # be stored in result or return_gvalue. This was changed between versions
     # 1.44 and 1.46.
-    (result || return_gvalue).get_value
+    result || return_gvalue.get_value
   end
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
