@@ -50,7 +50,7 @@ module GirFFI
         capture = getter_builder.capture_variable_name
         <<-CODE.reset_indentation
         def #{getter_name}
-          #{capture} = get_property("#{property_name}").get_value
+          #{capture} = get_property("#{property_name}")
           #{getter_builder.post_conversion.join("\n")}
           #{getter_builder.return_value_name}
         end
@@ -60,7 +60,7 @@ module GirFFI
       def simple_getter_def
         <<-CODE.reset_indentation
         def #{getter_name}
-          get_property("#{property_name}").get_value
+          get_property("#{property_name}")
         end
         CODE
       end

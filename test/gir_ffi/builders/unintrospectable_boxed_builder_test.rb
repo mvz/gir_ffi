@@ -3,14 +3,9 @@ require 'gir_ffi_test_helper'
 GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builders::UnintrospectableBoxedBuilder do
-  let(:instance) do
-    GIMarshallingTests::PropertiesObject.new.tap do |it|
-      it.some_boxed_glist = [1, 2, 3]
-    end
-  end
-
-  let(:gvalue) { instance.get_property('some-boxed-glist') }
-  let(:gtype) { gvalue.current_gtype }
+  let(:instance) { GIMarshallingTests::PropertiesObject.new }
+  let(:property) { instance.object_class.find_property 'some-boxed-glist' }
+  let(:gtype) { property.value_type }
   let(:info) { GirFFI::UnintrospectableBoxedInfo.new(gtype) }
   let(:bldr) { GirFFI::Builders::UnintrospectableBoxedBuilder.new(info) }
   let(:klass) { bldr.build_class }

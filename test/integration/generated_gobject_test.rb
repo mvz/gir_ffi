@@ -89,7 +89,7 @@ describe GObject do
       let(:binding) { source.bind_property 'double', target, 'double', :default }
 
       it 'can read the property "target-property" with #get_property' do
-        binding.get_property('target-property').get_value.must_equal 'double'
+        binding.get_property('target-property').must_equal 'double'
       end
 
       it 'can read the property "target-property" with #target_property' do

@@ -3,6 +3,16 @@ module GLib
   # HashTable.
   module ContainerClassMethods
     def wrap(typespec, ptr)
+      # HACK: wrap and from are almost the same!
+      ptr = case ptr
+            when nil
+              nil
+            when FFI::Pointer
+              ptr
+            when GirFFI::BoxedBase
+              ptr.to_ptr
+            end
+
       super(ptr).tap do |container|
         container.reset_typespec typespec if container
       end
