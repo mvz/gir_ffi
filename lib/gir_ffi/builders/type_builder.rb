@@ -1,6 +1,7 @@
 require 'gir_ffi/builders/callback_builder'
 require 'gir_ffi/builders/constant_builder'
 require 'gir_ffi/builders/enum_builder'
+require 'gir_ffi/builders/flags_builder'
 require 'gir_ffi/builders/interface_builder'
 require 'gir_ffi/builders/object_builder'
 require 'gir_ffi/builders/struct_builder'
@@ -21,7 +22,7 @@ module GirFFI
         callback:               CallbackBuilder,
         constant:               ConstantBuilder,
         enum:                   EnumBuilder,
-        flags:                  EnumBuilder,
+        flags:                  FlagsBuilder,
         interface:              InterfaceBuilder,
         object:                 ObjectBuilder,
         struct:                 StructBuilder,

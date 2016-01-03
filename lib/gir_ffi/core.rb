@@ -1,4 +1,5 @@
 require 'ffi'
+require 'ffi/bit_masks'
 
 require 'gir_ffi-base'
 
