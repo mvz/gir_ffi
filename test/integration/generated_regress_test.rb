@@ -2437,9 +2437,7 @@ describe Regress do
 
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
-    result.must_equal(flag1: true,
-                      flag2: false,
-                      flag3: true)
+    result.must_equal(flag1: true, flag3: true)
   end
 
   it 'has a working function #has_parameter_named_attrs' do

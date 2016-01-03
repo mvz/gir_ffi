@@ -148,17 +148,17 @@ describe GIMarshallingTests do
 
     it 'has a working function #inout' do
       result = GIMarshallingTests::Flags.inout value2: true
-      result.must_equal(value1: true, value2: false, value3: false, mask: false, mask2: false)
+      result.must_equal(value1: true)
     end
 
     it 'has a working function #out' do
       result = GIMarshallingTests::Flags.out
-      result.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+      result.must_equal(value2: true)
     end
 
     it 'has a working function #returnv' do
       result = GIMarshallingTests::Flags.returnv
-      result.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+      result.must_equal(value2: true)
     end
   end
 
@@ -1679,17 +1679,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #flags_inout' do
     res = GIMarshallingTests.flags_inout value2: true
-    res.must_equal(value1: true, value2: false, value3: false, mask: false, mask2: false)
+    res.must_equal(value1: true)
   end
 
   it 'has a working function #flags_out' do
     res = GIMarshallingTests.flags_out
-    res.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #flags_returnv' do
     res = GIMarshallingTests.flags_returnv
-    res.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #float_in' do
@@ -2570,17 +2570,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #no_type_flags_inout' do
     res = GIMarshallingTests.no_type_flags_inout value2: true
-    res.must_equal(value1: true, value2: false, value3: false, mask: false, mask2: false)
+    res.must_equal(value1: true)
   end
 
   it 'has a working function #no_type_flags_out' do
     res = GIMarshallingTests.no_type_flags_out
-    res.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #no_type_flags_returnv' do
     res = GIMarshallingTests.no_type_flags_returnv
-    res.must_equal(value1: false, value2: true, value3: false, mask: false, mask2: false)
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #overrides_struct_returnv' do

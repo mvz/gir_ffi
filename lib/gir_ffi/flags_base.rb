@@ -19,7 +19,7 @@ module GirFFI
     end
 
     def from_native(*args)
-      self::BitMask.from_native(*args)
+      self::BitMask.from_native(*args).select { |_k, v| v }
     end
 
     def [](arg)
