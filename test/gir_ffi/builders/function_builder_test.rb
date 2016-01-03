@@ -89,6 +89,20 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'for functions that have a caller-allocated GValue out argument' do
+      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates' }
+      it 'creates a call to #get_value' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.gvalue_out_caller_allocates
+            _v1 = GObject::Value.new
+            GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_out_caller_allocates _v1
+            _v2 = _v1.get_value
+            return _v2
+          end
+        CODE
+      end
+    end
+
     describe 'for functions with a nullable input array' do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_int_null_in' }
       it 'builds correct definition' do

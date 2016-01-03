@@ -587,7 +587,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.vfunc_caller_allocated_out_parameter
-      result.get_value.must_equal 'Hello!'
+      result.must_equal 'Hello!'
     end
 
     it 'has a working method #vfunc_meth_with_error' do
@@ -2267,7 +2267,7 @@ describe GIMarshallingTests do
   it 'has a working function #gvalue_out_caller_allocates' do
     skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates'
     res = GIMarshallingTests.gvalue_out_caller_allocates
-    res.get_value.must_equal 42
+    res.must_equal 42
   end
 
   it 'has a working function #gvalue_return' do
