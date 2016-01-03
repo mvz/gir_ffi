@@ -21,7 +21,7 @@ module GirFFI
       end
 
       def setup_class
-        setup_ffi_enum
+        setup_ffi_type
         klass.extend superclass
         setup_constants
         stub_methods
@@ -32,8 +32,8 @@ module GirFFI
         @klass ||= get_or_define_module namespace_module, @classname
       end
 
-      def setup_ffi_enum
-        @enum = optionally_define_constant klass, :Enum do
+      def setup_ffi_type
+        optionally_define_constant klass, :Enum do
           lib.enum(enum_sym, value_spec)
         end
       end
@@ -51,7 +51,7 @@ module GirFFI
       end
 
       def superclass
-        @superclass ||= EnumBase
+        EnumBase
       end
     end
   end

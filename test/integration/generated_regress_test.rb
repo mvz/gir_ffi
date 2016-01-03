@@ -2437,7 +2437,7 @@ describe Regress do
 
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
-    result.must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+    result.must_equal(flag1: true, flag3: true)
   end
 
   it 'has a working function #has_parameter_named_attrs' do

@@ -139,7 +139,7 @@ describe GIMarshallingTests do
     end
 
     it 'has a working function #in' do
-      GIMarshallingTests::Flags.in :value2
+      GIMarshallingTests::Flags.in value2: true
     end
 
     it 'has a working function #in_zero' do
@@ -147,18 +147,18 @@ describe GIMarshallingTests do
     end
 
     it 'has a working function #inout' do
-      result = GIMarshallingTests::Flags.inout :value2
-      result.must_equal :value1
+      result = GIMarshallingTests::Flags.inout value2: true
+      result.must_equal(value1: true)
     end
 
     it 'has a working function #out' do
       result = GIMarshallingTests::Flags.out
-      result.must_equal :value2
+      result.must_equal(value2: true)
     end
 
     it 'has a working function #returnv' do
       result = GIMarshallingTests::Flags.returnv
-      result.must_equal :value2
+      result.must_equal(value2: true)
     end
   end
 
@@ -1668,7 +1668,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #flags_in' do
-    GIMarshallingTests.flags_in :value2
+    GIMarshallingTests.flags_in value2: true
     pass
   end
 
@@ -1678,18 +1678,18 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #flags_inout' do
-    res = GIMarshallingTests.flags_inout :value2
-    assert_equal :value1, res
+    res = GIMarshallingTests.flags_inout value2: true
+    res.must_equal(value1: true)
   end
 
   it 'has a working function #flags_out' do
     res = GIMarshallingTests.flags_out
-    assert_equal :value2, res
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #flags_returnv' do
     res = GIMarshallingTests.flags_returnv
-    assert_equal :value2, res
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #float_in' do
@@ -2559,7 +2559,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #no_type_flags_in' do
-    GIMarshallingTests.no_type_flags_in :value2
+    GIMarshallingTests.no_type_flags_in value2: true
     pass
   end
 
@@ -2569,18 +2569,18 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #no_type_flags_inout' do
-    res = GIMarshallingTests.no_type_flags_inout :value2
-    assert_equal :value1, res
+    res = GIMarshallingTests.no_type_flags_inout value2: true
+    res.must_equal(value1: true)
   end
 
   it 'has a working function #no_type_flags_out' do
     res = GIMarshallingTests.no_type_flags_out
-    assert_equal :value2, res
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #no_type_flags_returnv' do
     res = GIMarshallingTests.no_type_flags_returnv
-    assert_equal :value2, res
+    res.must_equal(value2: true)
   end
 
   it 'has a working function #overrides_struct_returnv' do
