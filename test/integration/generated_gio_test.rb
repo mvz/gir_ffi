@@ -37,7 +37,7 @@ describe 'The generated Gio module' do
     describe 'an instance' do
       before do
         file = Gio.file_new_for_path('/')
-        @fileinfo = file.query_info '*', { none: true }, nil
+        @fileinfo = file.query_info '*', :none, nil
       end
 
       it 'has a working #get_attribute_type method' do

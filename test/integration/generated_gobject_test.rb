@@ -79,14 +79,14 @@ describe GObject do
     it 'is created with GObject::Object#bind_property' do
       source = Regress::TestObj.constructor
       target = Regress::TestObj.constructor
-      binding = source.bind_property 'double', target, 'double', default: true
+      binding = source.bind_property 'double', target, 'double', :default
       binding.must_be_kind_of GObject::Binding
     end
 
     describe 'an instance' do
       let(:source) { Regress::TestObj.constructor }
       let(:target) { Regress::TestObj.constructor }
-      let(:binding) { source.bind_property 'double', target, 'double', default: true }
+      let(:binding) { source.bind_property 'double', target, 'double', :default }
 
       it 'can read the property "target-property" with #get_property' do
         binding.get_property('target-property').must_equal 'double'

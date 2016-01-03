@@ -10,8 +10,12 @@ module GirFFI
       self::BitMask.native_type
     end
 
-    def to_native(*args)
-      self::BitMask.to_native(*args)
+    def to_native(value, context)
+      case value
+      when Symbol
+        value = { value => true }
+      end
+      self::BitMask.to_native(value, context)
     end
 
     def from_native(*args)
