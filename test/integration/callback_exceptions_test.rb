@@ -16,7 +16,7 @@ describe "An exception in a callback" do
 
     describe "when the signal is emitted synchronously" do
       it "raises an error" do
-        lambda { GObject.signal_emit object, "test" }.must_raise CallbackTestException
+        proc { GObject.signal_emit object, 'test' }.must_raise CallbackTestException
       end
     end
 
