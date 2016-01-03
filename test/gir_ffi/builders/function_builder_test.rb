@@ -91,7 +91,9 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe 'for functions that have a caller-allocated GValue out argument' do
       let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates' }
+
       it 'creates a call to #get_value' do
+        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.gvalue_out_caller_allocates
             _v1 = GObject::Value.new
