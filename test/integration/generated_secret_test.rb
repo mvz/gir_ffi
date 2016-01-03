@@ -8,7 +8,7 @@ describe 'The generated Secret module' do
       rescue
         skip 'No GIR data for Secret available'
       end
-      instance = Secret::Schema.new('foo', :none, 'bar' => :string)
+      instance = Secret::Schema.new('foo', { none: true }, 'bar' => :string)
       instance.must_be_instance_of Secret::Schema
     end
   end
