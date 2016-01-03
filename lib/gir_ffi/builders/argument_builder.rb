@@ -1,6 +1,6 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/closure_to_pointer_convertor'
-require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/ruby_to_c_convertor'
 require 'gir_ffi/builders/null_convertor'
 
@@ -66,12 +66,7 @@ module GirFFI
       def output_value
         base = "#{call_argument_name}.to_value"
         if needs_out_conversion?
-          conversion = CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
-          if @type_info.argument_class_name == 'GObject::Value'
-            "#{conversion}.get_value"
-          else
-            conversion
-          end
+          FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
           "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
         else
