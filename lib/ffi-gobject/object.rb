@@ -65,20 +65,20 @@ module GObject
     setup_instance_method 'set_property'
 
     def get_property_extended(property_name)
-      gvalue = get_property property_name
+      value = get_property(property_name)
       type_info = get_property_type property_name
       case type_info.tag
       when :ghash, :glist
-        adjust_value_to_type gvalue.get_value_plain, type_info
+        adjust_value_to_type value, type_info
       else
-        gvalue.get_value
+        value
       end
     end
 
     def get_property_with_override(property_name)
       gvalue = gvalue_for_property property_name
       get_property_without_override property_name, gvalue
-      gvalue
+      gvalue.get_value
     end
 
     def set_property_extended(property_name, value)

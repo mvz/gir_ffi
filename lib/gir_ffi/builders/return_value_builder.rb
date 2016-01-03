@@ -1,5 +1,5 @@
 require 'gir_ffi/builders/base_argument_builder'
-require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
 
 module GirFFI
@@ -44,9 +44,9 @@ module GirFFI
         @post_convertor ||= if closure?
                               ClosureConvertor.new(capture_variable_name)
                             else
-                              CToRubyConvertor.new(type_info,
-                                                   capture_variable_name,
-                                                   length_argument_name)
+                              FullCToRubyConvertor.new(type_info,
+                                                       capture_variable_name,
+                                                       length_argument_name)
                             end
       end
 

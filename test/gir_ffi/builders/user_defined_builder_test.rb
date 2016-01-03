@@ -44,7 +44,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'makes the property retrievable using #get_property' do
         obj = klass.new
         obj.foo = 13
-        obj.get_property('foo').get_value.must_equal 13
+        obj.get_property('foo').must_equal 13
       end
 
       it 'makes the property settable using #set_property' do

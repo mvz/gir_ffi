@@ -1,6 +1,6 @@
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/closure_to_pointer_convertor'
-require 'gir_ffi/builders/c_to_ruby_convertor'
+require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/ruby_to_c_convertor'
 require 'gir_ffi/builders/null_convertor'
 
@@ -60,13 +60,16 @@ module GirFFI
       private
 
       def has_post_conversion?
-        has_output_value? && !caller_allocated_object?
+        has_output_value? && (!caller_allocated_object? || is_gvalue?)
       end
 
       def output_value
+        if caller_allocated_object? && is_gvalue?
+          return "#{call_argument_name}.get_value"
+        end
         base = "#{call_argument_name}.to_value"
         if needs_out_conversion?
-          CToRubyConvertor.new(@type_info, base, length_argument_name).conversion
+          FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
           "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
         else
@@ -76,6 +79,10 @@ module GirFFI
 
       def needs_out_conversion?
         @type_info.needs_c_to_ruby_conversion_for_functions?
+      end
+
+      def is_gvalue?
+        @type_info.is_gvalue?
       end
 
       # Check if an out argument needs to be allocated by them, the callee. Since

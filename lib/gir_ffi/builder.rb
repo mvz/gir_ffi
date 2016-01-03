@@ -2,6 +2,7 @@ require 'gir_ffi/builders/type_builder'
 require 'gir_ffi/builders/module_builder'
 require 'gir_ffi/builder_helper'
 require 'gir_ffi/unintrospectable_type_info'
+require 'gir_ffi/unintrospectable_boxed_info'
 
 module GirFFI
   # Builds modules and classes based on information found in the
@@ -16,7 +17,12 @@ module GirFFI
 
     def self.build_by_gtype(gtype)
       info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
-      info ||= UnintrospectableTypeInfo.new gtype
+      info ||= case GObject.type_fundamental gtype
+               when GObject::TYPE_BOXED
+                 UnintrospectableBoxedInfo.new gtype
+               when GObject::TYPE_OBJECT
+                 UnintrospectableTypeInfo.new gtype
+               end
 
       build_class info
     end

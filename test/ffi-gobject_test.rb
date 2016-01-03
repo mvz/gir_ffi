@@ -23,7 +23,7 @@ describe GObject do
       callback = FFI::Function.new(:bool, argtypes) { |_a, _b, _c, _d| true }
       ::GObject::Lib.g_signal_connect_data s, 'incoming', callback, nil, nil, 0
       rv = GObject.signal_emit s, 'incoming'
-      assert_equal true, rv.get_value
+      assert_equal true, rv
     end
 
     it 'passes in extra arguments' do
@@ -95,7 +95,7 @@ describe GObject do
       s = Gio::SocketService.new
       GObject.signal_connect(s, 'incoming') { true }
       rv = GObject.signal_emit s, 'incoming'
-      assert_equal true, rv.get_value
+      assert_equal true, rv
     end
 
     it 'requires a block' do

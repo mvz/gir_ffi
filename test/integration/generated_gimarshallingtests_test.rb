@@ -587,7 +587,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.vfunc_caller_allocated_out_parameter
-      result.get_value.must_equal 'Hello!'
+      result.must_equal 'Hello!'
     end
 
     it 'has a working method #vfunc_meth_with_error' do
@@ -696,14 +696,14 @@ describe GIMarshallingTests do
 
     describe "its 'int' property" do
       it 'can be retrieved with #get_property' do
-        assert_equal 42, instance.get_property('int').get_value
+        assert_equal 42, instance.get_property('int')
       end
       it 'can be retrieved with #int' do
         assert_equal 42, instance.int
       end
       it 'can be set with #set_property' do
         instance.set_property('int', 13)
-        assert_equal 13, instance.get_property('int').get_value
+        assert_equal 13, instance.get_property('int')
       end
       it 'can be set with #int=' do
         instance.int = 1
@@ -797,7 +797,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-boolean' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boolean').get_value.must_equal false
+        instance.get_property('some-boolean').must_equal false
       end
 
       it 'can be retrieved with #some_boolean' do
@@ -806,12 +806,12 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property('some-boolean', true)
-        instance.get_property('some-boolean').get_value.must_equal true
+        instance.get_property('some-boolean').must_equal true
       end
 
       it 'can be set with #some_boolean=' do
         instance.some_boolean = true
-        instance.get_property('some-boolean').get_value.must_equal true
+        instance.get_property('some-boolean').must_equal true
       end
     end
 
@@ -823,7 +823,7 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-glist').get_value.must_equal nil
+        instance.get_property('some-boxed-glist').must_equal nil
       end
 
       it 'can be retrieved with #some_boxed_glist' do
@@ -850,7 +850,7 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-struct').get_value.must_equal nil
+        instance.get_property('some-boxed-struct').must_equal nil
       end
 
       it 'can be retrieved with #some_boxed_struct' do
@@ -861,7 +861,7 @@ describe GIMarshallingTests do
         boxed = GIMarshallingTests::BoxedStruct.new
         boxed.long_ = 42
         instance.set_property('some-boxed-struct', boxed)
-        instance.get_property('some-boxed-struct').get_value.long_.must_equal 42
+        instance.get_property('some-boxed-struct').long_.must_equal 42
       end
 
       it 'can be set with #some_boxed_struct=' do
@@ -874,7 +874,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-char' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-char').get_value.must_equal 0
+        instance.get_property('some-char').must_equal 0
       end
 
       it 'can be retrieved with #some_char' do
@@ -883,7 +883,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-char', 42
-        instance.get_property('some-char').get_value.must_equal 42
+        instance.get_property('some-char').must_equal 42
       end
 
       it 'can be set with #some_char=' do
@@ -894,7 +894,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-double' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-double').get_value.must_equal 0.0
+        instance.get_property('some-double').must_equal 0.0
       end
 
       it 'can be retrieved with #some_double' do
@@ -903,7 +903,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property('some-double', 3.14)
-        instance.get_property('some-double').get_value.must_equal 3.14
+        instance.get_property('some-double').must_equal 3.14
       end
 
       it 'can be set with #some_double=' do
@@ -914,7 +914,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-float' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-float').get_value.must_equal 0.0
+        instance.get_property('some-float').must_equal 0.0
       end
 
       it 'can be retrieved with #some_float' do
@@ -923,7 +923,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property('some-float', 3.14)
-        instance.get_property('some-float').get_value.must_be_close_to 3.14
+        instance.get_property('some-float').must_be_close_to 3.14
       end
 
       it 'can be set with #some_float=' do
@@ -934,7 +934,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-int' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-int').get_value.must_equal 0
+        instance.get_property('some-int').must_equal 0
       end
 
       it 'can be retrieved with #some_int' do
@@ -943,7 +943,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-int', 4242
-        instance.get_property('some-int').get_value.must_equal 4242
+        instance.get_property('some-int').must_equal 4242
       end
 
       it 'can be set with #some_int=' do
@@ -954,7 +954,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-int64' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-int64').get_value.must_equal 0
+        instance.get_property('some-int64').must_equal 0
       end
 
       it 'can be retrieved with #some_int64' do
@@ -963,7 +963,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-int64', 42_000_000_000_000
-        instance.get_property('some-int64').get_value.must_equal 42_000_000_000_000
+        instance.get_property('some-int64').must_equal 42_000_000_000_000
       end
 
       it 'can be set with #some_int64=' do
@@ -974,7 +974,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-long' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-long').get_value.must_equal 0
+        instance.get_property('some-long').must_equal 0
       end
 
       it 'can be retrieved with #some_long' do
@@ -983,7 +983,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-long', 4242
-        instance.get_property('some-long').get_value.must_equal 4242
+        instance.get_property('some-long').must_equal 4242
       end
 
       it 'can be set with #some_long=' do
@@ -1000,7 +1000,7 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-object').get_value.must_be_nil
+        instance.get_property('some-object').must_be_nil
       end
 
       it 'can be retrieved with #some_object' do
@@ -1010,7 +1010,7 @@ describe GIMarshallingTests do
       it 'can be set with #set_property' do
         ob = GIMarshallingTests::Object.new 42
         instance.set_property 'some-object', ob
-        instance.get_property('some-object').get_value.must_equal ob
+        instance.get_property('some-object').must_equal ob
       end
 
       it 'can be set with #some_object=' do
@@ -1028,7 +1028,7 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-strv').get_value.must_be :==, []
+        instance.get_property('some-strv').must_be :==, []
       end
 
       it 'can be retrieved with #some_strv' do
@@ -1037,7 +1037,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property_extended' do
         instance.set_property_extended('some-strv', %w(foo bar))
-        instance.get_property('some-strv').get_value.must_be :==, %w(foo bar)
+        instance.get_property('some-strv').must_be :==, %w(foo bar)
       end
 
       it 'can be set with #some_strv=' do
@@ -1048,7 +1048,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-uchar' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uchar').get_value.must_equal 0
+        instance.get_property('some-uchar').must_equal 0
       end
 
       it 'can be retrieved with #some_uchar' do
@@ -1057,7 +1057,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uchar', 42
-        instance.get_property('some-uchar').get_value.must_equal 42
+        instance.get_property('some-uchar').must_equal 42
       end
 
       it 'can be set with #some_uchar=' do
@@ -1068,7 +1068,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-uint' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uint').get_value.must_equal 0
+        instance.get_property('some-uint').must_equal 0
       end
 
       it 'can be retrieved with #some_uint' do
@@ -1077,7 +1077,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uint', 4242
-        instance.get_property('some-uint').get_value.must_equal 4242
+        instance.get_property('some-uint').must_equal 4242
       end
 
       it 'can be set with #some_uint=' do
@@ -1088,7 +1088,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-uint64' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uint64').get_value.must_equal 0
+        instance.get_property('some-uint64').must_equal 0
       end
 
       it 'can be retrieved with #some_uint64' do
@@ -1097,7 +1097,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uint64', 42_000_000_000_000
-        instance.get_property('some-uint64').get_value.must_equal 42_000_000_000_000
+        instance.get_property('some-uint64').must_equal 42_000_000_000_000
       end
 
       it 'can be set with #some_uint64=' do
@@ -1108,7 +1108,7 @@ describe GIMarshallingTests do
 
     describe "its 'some-ulong' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-ulong').get_value.must_equal 0
+        instance.get_property('some-ulong').must_equal 0
       end
 
       it 'can be retrieved with #some_ulong' do
@@ -1117,7 +1117,7 @@ describe GIMarshallingTests do
 
       it 'can be set with #set_property' do
         instance.set_property 'some-ulong', 4242
-        instance.get_property('some-ulong').get_value.must_equal 4242
+        instance.get_property('some-ulong').must_equal 4242
       end
 
       it 'can be set with #some_ulong=' do
@@ -1134,7 +1134,7 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-variant').get_value.must_be_nil
+        instance.get_property('some-variant').must_be_nil
       end
 
       it 'can be retrieved with #some_variant' do
@@ -1144,7 +1144,7 @@ describe GIMarshallingTests do
       it 'can be set with #set_property' do
         value = GLib::Variant.new_string('Foo')
         instance.set_property 'some-variant', value
-        instance.get_property('some-variant').get_value.must_equal value
+        instance.get_property('some-variant').must_equal value
       end
 
       it 'can be set with #some_variant=' do
@@ -2238,10 +2238,10 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_inout' do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    assert_equal '42', res.get_value
+    assert_equal '42', res
 
     res = GIMarshallingTests.gvalue_inout 42
-    assert_equal '42', res.get_value
+    assert_equal '42', res
   end
 
   it 'has a working function #gvalue_int64_in' do
@@ -2256,23 +2256,23 @@ describe GIMarshallingTests do
   it 'has a working function #gvalue_int64_out' do
     skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_out'
     gv = GIMarshallingTests.gvalue_int64_out
-    gv.get_value.must_equal 0x7fff_ffff_ffff_ffff
+    gv.must_equal 0x7fff_ffff_ffff_ffff
   end
 
   it 'has a working function #gvalue_out' do
     res = GIMarshallingTests.gvalue_out
-    assert_equal 42, res.get_value
+    assert_equal 42, res
   end
 
   it 'has a working function #gvalue_out_caller_allocates' do
     skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates'
     res = GIMarshallingTests.gvalue_out_caller_allocates
-    res.get_value.must_equal 42
+    res.must_equal 42
   end
 
   it 'has a working function #gvalue_return' do
     res = GIMarshallingTests.gvalue_return
-    assert_equal 42, res.get_value
+    res.must_equal 42
   end
 
   it 'has a working function #init_function' do

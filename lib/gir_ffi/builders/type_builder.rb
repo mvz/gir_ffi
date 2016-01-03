@@ -5,6 +5,7 @@ require 'gir_ffi/builders/interface_builder'
 require 'gir_ffi/builders/object_builder'
 require 'gir_ffi/builders/struct_builder'
 require 'gir_ffi/builders/signal_closure_builder'
+require 'gir_ffi/builders/unintrospectable_boxed_builder'
 require 'gir_ffi/builders/unintrospectable_builder'
 require 'gir_ffi/builders/union_builder'
 require 'gir_ffi/builders/vfunc_builder'
@@ -17,15 +18,16 @@ module GirFFI
       CACHE = {}
 
       TYPE_MAP = {
-        callback:         CallbackBuilder,
-        constant:         ConstantBuilder,
-        enum:             EnumBuilder,
-        flags:            EnumBuilder,
-        interface:        InterfaceBuilder,
-        object:           ObjectBuilder,
-        struct:           StructBuilder,
-        union:            UnionBuilder,
-        unintrospectable: UnintrospectableBuilder
+        callback:               CallbackBuilder,
+        constant:               ConstantBuilder,
+        enum:                   EnumBuilder,
+        flags:                  EnumBuilder,
+        interface:              InterfaceBuilder,
+        object:                 ObjectBuilder,
+        struct:                 StructBuilder,
+        union:                  UnionBuilder,
+        unintrospectable_boxed: UnintrospectableBoxedBuilder,
+        unintrospectable:       UnintrospectableBuilder
       }
 
       def self.build(info)

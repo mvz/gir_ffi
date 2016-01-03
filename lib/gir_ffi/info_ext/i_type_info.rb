@@ -180,6 +180,12 @@ module GirFFI
         end
       end
 
+      GOBJECT_VALUE_NAME = 'GObject::Value'
+
+      def is_gvalue?
+        argument_class_name == GOBJECT_VALUE_NAME
+      end
+
       private
 
       def subtype_tag_or_class(index)

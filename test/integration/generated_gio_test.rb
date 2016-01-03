@@ -101,7 +101,7 @@ describe 'The generated Gio module' do
     let(:simple_action) { Gio::SimpleAction.new('test', 'd') }
 
     it 'can read the property "state-type" with #get_property' do
-      simple_action.get_property('state-type').get_value.must_be_nil
+      simple_action.get_property('state-type').must_be_nil
     end
 
     it 'can read the property "state-type" with #state_type' do
