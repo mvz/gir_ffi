@@ -62,6 +62,19 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'for functions that return a GValue' do
+      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_return' }
+      it 'creates a call to #get_value' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.gvalue_return
+            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_return 
+            _v2 = GObject::Value.wrap(_v1).get_value
+            return _v2
+          end
+        CODE
+      end
+    end
+
     describe 'for functions that have a GValue out argument' do
       let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out' }
       it 'creates a call to #get_value' do

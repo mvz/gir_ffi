@@ -7,9 +7,9 @@ module GObject
 
     def init_with_finalizer(type)
       return self if [TYPE_NONE, TYPE_INVALID].include? type
-      init_without_finalizer(type).tap do
-        ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
-      end
+      init_without_finalizer(type)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
+      self
     end
 
     alias_method :init_without_finalizer, :init

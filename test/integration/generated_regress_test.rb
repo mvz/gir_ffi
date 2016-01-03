@@ -2773,8 +2773,7 @@ describe Regress do
   end
 
   it 'has a working function #test_date_in_gvalue' do
-    r = Regress.test_date_in_gvalue
-    date = r.get_value
+    date = Regress.test_date_in_gvalue
     skip unless date.respond_to? :get_year
     assert_equal [1984, :december, 5],
                  [date.get_year, date.get_month, date.get_day]
@@ -3178,8 +3177,8 @@ describe Regress do
   end
 
   it 'has a working function #test_strv_in_gvalue' do
-    gv = Regress.test_strv_in_gvalue
-    gv.get_value.must_be :==, %w(one two three)
+    arr = Regress.test_strv_in_gvalue
+    arr.must_be :==, %w(one two three)
   end
 
   it 'has a working function #test_strv_out' do
@@ -3321,7 +3320,7 @@ describe Regress do
 
   it 'has a working function #test_value_return' do
     result = Regress.test_value_return 3423
-    assert_equal 3423, result.get_int
+    result.must_equal 3423
   end
 
   it 'has a working function #test_versioning' do

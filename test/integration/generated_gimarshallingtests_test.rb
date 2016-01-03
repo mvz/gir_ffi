@@ -2272,7 +2272,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_return' do
     res = GIMarshallingTests.gvalue_return
-    assert_equal 42, res.get_value
+    res.must_equal 42
   end
 
   it 'has a working function #init_function' do
