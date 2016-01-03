@@ -67,7 +67,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it 'creates a call to #get_value' do
         code.must_equal <<-CODE.reset_indentation
           def self.gvalue_return
-            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_return 
+            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_return
             _v2 = GObject::Value.wrap(_v1).get_value
             return _v2
           end

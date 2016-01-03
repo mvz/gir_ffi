@@ -7,7 +7,7 @@ module GirFFI
     class FullCToRubyConvertor < CToRubyConvertor
       def conversion
         base = super
-        if @type_info.is_gvalue?
+        if @type_info.gvalue?
           "#{base}.get_value"
         else
           base

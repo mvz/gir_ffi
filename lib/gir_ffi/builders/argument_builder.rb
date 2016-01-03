@@ -60,11 +60,11 @@ module GirFFI
       private
 
       def has_post_conversion?
-        has_output_value? && (!caller_allocated_object? || is_gvalue?)
+        has_output_value? && (!caller_allocated_object? || gvalue?)
       end
 
       def output_value
-        if caller_allocated_object? && is_gvalue?
+        if caller_allocated_object? && gvalue?
           return "#{call_argument_name}.get_value"
         end
         base = "#{call_argument_name}.to_value"
@@ -81,8 +81,8 @@ module GirFFI
         @type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
-      def is_gvalue?
-        @type_info.is_gvalue?
+      def gvalue?
+        @type_info.gvalue?
       end
 
       # Check if an out argument needs to be allocated by them, the callee. Since

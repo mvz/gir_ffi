@@ -182,7 +182,7 @@ module GirFFI
 
       GOBJECT_VALUE_NAME = 'GObject::Value'
 
-      def is_gvalue?
+      def gvalue?
         argument_class_name == GOBJECT_VALUE_NAME
       end
 
