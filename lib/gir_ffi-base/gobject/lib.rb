@@ -1,5 +1,12 @@
 require 'ffi/bit_masks'
 
+# NOTE: Monkey-patch BitMask to work on JRuby.
+class FFI::BitMasks::BitMask
+  def reference_required?
+    false
+  end
+end
+
 module GObject
   # Module for attaching functions from the gobject library
   module Lib
