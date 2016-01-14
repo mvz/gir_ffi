@@ -90,9 +90,13 @@ describe GObject::Object do
   end
 
   describe 'upon garbage collection' do
+    # FIXME: Test this some other way
     it 'lowers the reference count' do
       if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
         skip 'cannot be reliably tested on JRuby and Rubinius'
+      end
+      if RUBY_VERSION >= '2.3.0'
+        skip 'cannot be reliably tested on CRuby >= 2.3'
       end
 
       object = GObject::Object.new
