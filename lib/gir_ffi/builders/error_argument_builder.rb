@@ -10,6 +10,10 @@ module GirFFI
         nil
       end
 
+      def block_argument?
+        false
+      end
+
       def return_value_name
         nil
       end

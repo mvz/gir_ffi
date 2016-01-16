@@ -33,7 +33,21 @@ module GirFFI
       end
 
       def method_argument_names
-        @method_argument_names ||= argument_builders.map(&:method_argument_name).compact
+        @method_argument_names ||=
+          begin
+            base = []
+            block = nil
+            argument_builders.each do |it|
+              name = it.method_argument_name
+              if !block && it.block_argument?
+                block = "&#{name}"
+              else
+                base << name
+              end
+            end
+            base << block if block
+            base.compact
+          end
       end
 
       def return_value_name

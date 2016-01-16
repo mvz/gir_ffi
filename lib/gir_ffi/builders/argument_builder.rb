@@ -12,6 +12,11 @@ module GirFFI
         name if has_input_value? && !array_length_parameter?
       end
 
+      # TODO: Improve this so each method can only have one block argument.
+      def block_argument?
+        specialized_type_tag == :callback
+      end
+
       def post_converted_name
         @post_converted_name ||= if has_post_conversion?
                                    new_variable
