@@ -18,9 +18,8 @@ module GLib
       end
 
       def setup_idle_handler
-        @handler_id ||= GLib.timeout_add(GLib::PRIORITY_DEFAULT,
-                                         @timeout, handler_proc,
-                                         nil, nil)
+        @handler_id ||=
+          GLib.timeout_add(GLib::PRIORITY_DEFAULT, @timeout, nil, nil, &handler_proc)
       end
 
       private

@@ -6,9 +6,9 @@ describe GLib::MainLoop do
       main_loop = GLib::MainLoop.new nil, false
 
       a = []
-      GLib.timeout_add(GLib::PRIORITY_DEFAULT, 150,
-                       proc { main_loop.quit },
-                       nil, nil)
+      GLib.timeout_add GLib::PRIORITY_DEFAULT, 150, nil, nil do
+        main_loop.quit
+      end
 
       slow_thread = Thread.new do
         sleep 0.001
