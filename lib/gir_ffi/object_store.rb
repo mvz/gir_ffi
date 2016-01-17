@@ -6,8 +6,11 @@ module GirFFI
       @store = {}
     end
 
-    def store(ptr, obj)
-      @store[ptr.address] = obj
+    def store(obj)
+      # FIXME: Don't use object_id!
+      key = obj.object_id
+      @store[key] = obj
+      FFI::Pointer.new(key)
     end
 
     def fetch(ptr)
