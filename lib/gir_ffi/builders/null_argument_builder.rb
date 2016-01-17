@@ -32,7 +32,7 @@ module GirFFI
       nil
     end
 
-    def closure
+    def closure_idx
       -1
     end
 

@@ -60,7 +60,7 @@ module GirFFI
         type_info.array_length
       end
 
-      def closure
+      def closure_idx
         arginfo.closure
       end
 
