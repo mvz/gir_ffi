@@ -24,13 +24,14 @@ describe 'An exception in a callback' do
       it 'causes loop run to be terminated with an exception' do
         main_loop = GLib::MainLoop.new nil, false
 
-        emit_func = proc do
+        GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, nil, nil do
           GObject.signal_emit object, 'test'
           false
         end
-        GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, emit_func, nil, nil
         # Guard against runaway loop
-        GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, proc { main_loop.quit }, nil, nil
+        GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, nil, nil do
+          main_loop.quit
+        end
         proc do
           main_loop.run
         end.must_raise CallbackTestException
@@ -43,13 +44,14 @@ describe 'An exception in a callback' do
       it 'causes loop run to be terminated with an exception' do
         main_loop = GLib::MainLoop.new nil, false
 
-        raise_func = FFI::Function.new(:bool, [:pointer]) do
+        GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, nil, nil do
           raise CallbackTestException, 'Boom'
         end
-
-        GLib.timeout_add GLib::PRIORITY_DEFAULT, 1, raise_func, nil, nil
         # Guard against runaway loop
-        GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, proc { main_loop.quit }, nil, nil
+        GLib.timeout_add GLib::PRIORITY_DEFAULT, 500, nil, nil do
+          main_loop.quit
+        end
+
         proc do
           main_loop.run
         end.must_raise CallbackTestException

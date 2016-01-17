@@ -686,7 +686,7 @@ describe GIMarshallingTests do
         }
       end
 
-      derived_instance.vfunc_with_callback proc { |val, user_data| result = val + user_data }, 23
+      derived_instance.vfunc_with_callback(23) { |val, user_data| result = val + user_data }
 
       # The current implementation of the vfunc_with_callback method currently
       # doesn't actually call the virtual function vfunc_with_callback.
@@ -1577,14 +1577,14 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #callback_multiple_out_parameters' do
-    result = GIMarshallingTests.callback_multiple_out_parameters proc { |*_args|
+    result = GIMarshallingTests.callback_multiple_out_parameters do |*_args|
       [12.0, 13.0]
-    }
+    end
     result.must_equal [12.0, 13.0]
   end
 
   it 'has a working function #callback_one_out_parameter' do
-    result = GIMarshallingTests.callback_one_out_parameter proc { 42.0 }
+    result = GIMarshallingTests.callback_one_out_parameter { 42.0 }
     result.must_equal 42.0
   end
 
@@ -1594,31 +1594,31 @@ describe GIMarshallingTests do
 
     callback = proc { |box, callback_data| a = box.long_ + callback_data }
 
-    result = GIMarshallingTests.callback_owned_boxed callback, 42
+    result = GIMarshallingTests.callback_owned_boxed 42, &callback
     result.must_equal 1
     a.must_equal 43
 
-    result = GIMarshallingTests.callback_owned_boxed callback, 42
+    result = GIMarshallingTests.callback_owned_boxed 42, &callback
     result.must_equal 2
     a.must_equal 44
   end
 
   it 'has a working function #callback_return_value_and_multiple_out_parameters' do
-    result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters proc { |*_args|
+    result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters do |*_args|
       [42, -142, 3]
-    }
+    end
     result.must_equal [42, -142, 3]
   end
 
   it 'has a working function #callback_return_value_and_one_out_parameter' do
-    result = GIMarshallingTests.callback_return_value_and_one_out_parameter proc { |*_args|
+    result = GIMarshallingTests.callback_return_value_and_one_out_parameter do |*_args|
       [42, -142]
-    }
+    end
     result.must_equal [42, -142]
   end
 
   it 'has a working function #callback_return_value_only' do
-    result = GIMarshallingTests.callback_return_value_only proc { 42 }
+    result = GIMarshallingTests.callback_return_value_only { 42 }
     result.must_equal 42
   end
 
