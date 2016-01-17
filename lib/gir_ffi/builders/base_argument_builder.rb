@@ -32,6 +32,7 @@ module GirFFI
         @length_arg = nil
         @array_arg = nil
         @is_closure = false
+        @destroy_notifier = false
       end
 
       def name
@@ -62,6 +63,14 @@ module GirFFI
 
       def closure_idx
         arginfo.closure
+      end
+
+      def destroy_idx
+        arginfo.destroy
+      end
+
+      def mark_as_destroy_notifier
+        @destroy_notifier = true
       end
 
       def ownership_transfer

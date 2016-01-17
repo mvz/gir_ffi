@@ -76,6 +76,9 @@ module GirFFI
           if (idx = bldr.closure_idx) >= 0
             @base_argument_builders[idx].closure = true
           end
+          if (idx = bldr.destroy_idx) >= 0
+            @base_argument_builders[idx].mark_as_destroy_notifier
+          end
         end
         all_builders.each do |bldr|
           if (idx = bldr.array_length_idx) >= 0

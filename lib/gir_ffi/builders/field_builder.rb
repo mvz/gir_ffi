@@ -98,6 +98,10 @@ module GirFFI
           -1
         end
 
+        def destroy
+          -1
+        end
+
         def direction
           :out
         end
