@@ -10,6 +10,9 @@
 * Use ObjectBase.object_class instead of old Object#type_class to find
   properties
 * Remove Object#type_class
+* Automatically unpack GValue return values
+* Use a BitMask to handle flag values
+* Handle callback arguments as Ruby block arguments
 
 ## 0.8.6 / 2015-12-09
 
