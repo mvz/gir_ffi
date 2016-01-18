@@ -27,7 +27,7 @@ module GirFFI
       end
 
       def method_arguments
-        ['*args']
+        ['*args', '&block']
       end
 
       def preparation

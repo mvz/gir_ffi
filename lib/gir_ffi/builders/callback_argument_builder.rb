@@ -12,6 +12,10 @@ module GirFFI
         @method_argument_name ||= name || new_variable
       end
 
+      def block_argument?
+        false
+      end
+
       def pre_converted_name
         @pre_converted_name ||= new_variable
       end

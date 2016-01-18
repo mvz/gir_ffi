@@ -36,6 +36,10 @@ module GirFFI
       -1
     end
 
+    def block_argument?
+      false
+    end
+
     def post_converted_name
       nil
     end

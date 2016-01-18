@@ -1149,7 +1149,7 @@ describe Regress do
 
     it 'creates an instance using #new_callback' do
       a = 1
-      o = Regress::TestObj.new_callback proc { a = 2 }, nil, nil
+      o = Regress::TestObj.new_callback(nil, nil) { a = 2 }
       assert_instance_of Regress::TestObj, o
       a.must_equal 2
 
@@ -1177,7 +1177,7 @@ describe Regress do
 
     it 'has a working function #static_method_callback' do
       a = 1
-      Regress::TestObj.static_method_callback proc { a = 2 }
+      Regress::TestObj.static_method_callback { a = 2 }
       assert_equal 2, a
     end
 
@@ -1257,7 +1257,7 @@ describe Regress do
 
     it 'has a working method #instance_method_callback' do
       a = 1
-      instance.instance_method_callback proc { a = 2 }
+      instance.instance_method_callback { a = 2 }
       assert_equal 2, a
     end
 
@@ -2469,13 +2469,11 @@ describe Regress do
     b = nil
     c = 95
 
-    callback = proc do |one, two|
+    result = Regress.test_array_callback do |one, two|
       a = one
       b = two
       c
     end
-
-    result = Regress.test_array_callback callback
 
     result.must_equal 2 * c
     a.to_a.must_equal [-1, 0, 1, 2]
@@ -2538,11 +2536,11 @@ describe Regress do
 
   it 'has a working function #test_array_inout_callback' do
     skip unless get_introspection_data 'Regress', 'test_array_inout_callback'
-    Regress.test_array_inout_callback proc { |ints|
+    Regress.test_array_inout_callback do |ints|
       arr = ints.to_a
       arr.shift
       arr
-    }
+    end
     pass
   end
 
@@ -2579,10 +2577,10 @@ describe Regress do
     main_loop = GLib::MainLoop.new nil, false
 
     a = 1
-    Regress.test_async_ready_callback proc {
+    Regress.test_async_ready_callback do
       main_loop.quit
       a = 2
-    }
+    end
 
     main_loop.run
 
@@ -2646,14 +2644,13 @@ describe Regress do
   end
 
   it 'has a working function #test_callback' do
-    result = Regress.test_callback proc { 5 }
+    result = Regress.test_callback { 5 }
     assert_equal 5, result
   end
 
   it 'has a working function #test_callback_async' do
     a = 1
-    Regress.test_callback_async(proc { |b| a = 2; b },
-                                44)
+    Regress.test_callback_async(44) { |b| a = 2; b }
     r = Regress.test_callback_thaw_async
     assert_equal 44, r
     assert_equal 2, a
@@ -2661,9 +2658,7 @@ describe Regress do
 
   it 'has a working function #test_callback_destroy_notify' do
     a = 1
-    r1 = Regress.test_callback_destroy_notify(proc { |b| a = 2; b },
-                                              42,
-                                              proc { a = 3 })
+    r1 = Regress.test_callback_destroy_notify(42, proc { a = 3 }) { |b| a = 2; b }
     assert_equal 2, a
     assert_equal 42, r1
     r2 = Regress.test_callback_thaw_notifications
@@ -2678,15 +2673,13 @@ describe Regress do
     notify_times_called = 0
     b = :not_nil
 
-    callback = proc do|user_data|
+    notify = proc { notify_times_called += 1 }
+
+    result = Regress.test_callback_destroy_notify_no_user_data notify do|user_data|
       callback_times_called += 1
       b = user_data
       callback_times_called * 5
     end
-
-    notify = proc { notify_times_called += 1 }
-
-    result = Regress.test_callback_destroy_notify_no_user_data callback, notify
 
     callback_times_called.must_equal 1
     notify_times_called.must_equal 0
@@ -2704,15 +2697,15 @@ describe Regress do
   it 'has a working function #test_callback_return_full' do
     skip unless get_introspection_data 'Regress', 'test_callback_return_full'
     obj = Regress::TestObj.constructor
-    Regress.test_callback_return_full proc { obj }
+    Regress.test_callback_return_full { obj }
     ref_count(obj).must_equal 1
   end
 
   it 'has a working function #test_callback_thaw_async' do
     invoked = []
-    Regress.test_callback_async proc { invoked << 1; 1 }, nil
-    Regress.test_callback_async proc { invoked << 2; 2 }, nil
-    Regress.test_callback_async proc { invoked << 3; 3 }, nil
+    Regress.test_callback_async(nil) { invoked << 1; 1 }
+    Regress.test_callback_async(nil) { invoked << 2; 2 }
+    Regress.test_callback_async(nil) { invoked << 3; 3 }
     result = Regress.test_callback_thaw_async
     invoked.must_equal [3, 2, 1]
     result.must_equal 1
@@ -2720,8 +2713,8 @@ describe Regress do
 
   it 'has a working function #test_callback_thaw_notifications' do
     invoked = false
-    Regress.test_callback_destroy_notify proc { 42 }, nil, nil
-    Regress.test_callback_destroy_notify proc { 24 }, nil, proc { invoked = true }
+    Regress.test_callback_destroy_notify(nil, nil) { 42 }
+    Regress.test_callback_destroy_notify(nil, proc { invoked = true }) { 24 }
     result = Regress.test_callback_thaw_notifications
     result.must_equal 66
     invoked.must_equal true
@@ -2729,7 +2722,7 @@ describe Regress do
 
   it 'has a working function #test_callback_user_data' do
     a = 'old-value'
-    result = Regress.test_callback_user_data proc { |u| a = u; 5 }, 'new-value'
+    result = Regress.test_callback_user_data('new-value') { |u| a = u; 5 }
     a.must_equal 'new-value'
     result.must_equal 5
   end
@@ -2737,7 +2730,7 @@ describe Regress do
   describe 'the #test_callback_user_data function' do
     it 'handles boolean user_data' do
       a = false
-      Regress.test_callback_user_data proc { |u| a = u; 5 }, true
+      Regress.test_callback_user_data(true) { |u| a = u; 5 }
       assert_equal true, a
     end
   end
@@ -2828,7 +2821,7 @@ describe Regress do
 
   it 'has a working function #test_gerror_callback' do
     result = nil
-    Regress.test_gerror_callback proc { |err| result = err.message }
+    Regress.test_gerror_callback { |err| result = err.message }
     result.must_equal 'regression test error'
   end
 
@@ -3057,7 +3050,7 @@ describe Regress do
 
   it 'has a working function #test_hash_table_callback' do
     value = nil
-    Regress.test_hash_table_callback({ 'foo' => 42 }, proc { |hash| value = hash })
+    Regress.test_hash_table_callback('foo' => 42) { |hash| value = hash }
     value.to_hash.must_equal('foo' => 42)
   end
 
@@ -3107,10 +3100,10 @@ describe Regress do
 
   it 'has a working function #test_multi_callback' do
     a = 1
-    result = Regress.test_multi_callback proc {
+    result = Regress.test_multi_callback do
       a += 1
       23
-    }
+    end
     assert_equal 2 * 23, result
     assert_equal 3, a
   end
@@ -3131,13 +3124,13 @@ describe Regress do
 
   it 'has a working function #test_null_gerror_callback' do
     value = nil
-    Regress.test_owned_gerror_callback proc { |err| value = err }
+    Regress.test_owned_gerror_callback { |err| value = err }
     value.message.must_equal 'regression test owned error'
   end
 
   it 'has a working function #test_owned_gerror_callback' do
     value = nil
-    Regress.test_owned_gerror_callback proc { |err| value = err }
+    Regress.test_owned_gerror_callback { |err| value = err }
     value.message.must_equal 'regression test owned error'
   end
 
@@ -3153,7 +3146,7 @@ describe Regress do
 
   it 'has a working function #test_simple_callback' do
     a = 0
-    Regress.test_simple_callback proc { a = 1 }
+    Regress.test_simple_callback { a = 1 }
     assert_equal 1, a
   end
 
@@ -3223,9 +3216,9 @@ describe Regress do
 
   it 'has a working function #test_torture_signature_2' do
     a = 1
-    y, z, q = Regress.test_torture_signature_2 244,
-                                               proc { |u| a = u }, 2, proc { a = 3 },
-                                               'foofoo', 31
+    y, z, q = Regress.test_torture_signature_2 244, 2, proc { a = 3 }, 'foofoo', 31 do |u|
+      a = u
+    end
     assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
     assert_equal 3, a
   end
