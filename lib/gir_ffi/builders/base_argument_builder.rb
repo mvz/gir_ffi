@@ -15,17 +15,6 @@ module GirFFI
       attr_reader :arginfo
       attr_accessor :length_arg, :array_arg
 
-      # TODO: closure unfortunately means two things in GLib: a closure
-      # argument (user_data), and the Closure class (a callable object). Make
-      # the distinction more explicit in GirFFI.
-      def closure?
-        @is_closure
-      end
-
-      def closure=(arg)
-        @is_closure = arg
-      end
-
       def initialize(var_gen, arginfo)
         @var_gen = var_gen
         @arginfo = arginfo
@@ -69,8 +58,34 @@ module GirFFI
         arginfo.destroy
       end
 
-      def mark_as_destroy_notifier
-        @destroy_notifier = true
+      # TODO: closure unfortunately means two things in GLib: a closure
+      # argument (user_data), and the Closure class (a callable object). Make
+      # the distinction more explicit in GirFFI.
+      def closure=(arg)
+        @is_closure = arg
+      end
+
+      # TODO: Unify relationship set-up methods and improve naming. We
+      # currently have length_arg=, array_arg=, closure= and
+      # mark_as_destroy_notifier.
+      def mark_as_destroy_notifier(callback)
+        @destroy_notifier = callback
+      end
+
+      def array_length_parameter?
+        @array_arg
+      end
+
+      def closure?
+        @is_closure
+      end
+
+      def destroy_notifier?
+        @destroy_notifier
+      end
+
+      def helper_argument?
+        array_length_parameter? || closure? || destroy_notifier?
       end
 
       def ownership_transfer
