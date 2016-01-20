@@ -1149,7 +1149,7 @@ describe Regress do
 
     it 'creates an instance using #new_callback' do
       a = 1
-      o = Regress::TestObj.new_callback(nil, nil) { a = 2 }
+      o = Regress::TestObj.new_callback(nil) { a = 2 }
       assert_instance_of Regress::TestObj, o
       a.must_equal 2
 
@@ -2650,27 +2650,30 @@ describe Regress do
 
   it 'has a working function #test_callback_async' do
     a = 1
-    Regress.test_callback_async(44) { |b| a = 2; b }
-    r = Regress.test_callback_thaw_async
-    assert_equal 44, r
+    Regress.test_callback_async { |b| a = 2; b }
+    stored_id = Regress.test_callback_thaw_async
     assert_equal 2, a
+    stored_id.wont_be_nil
+    # TODO: See when we can clean up the stored callback for async callbacks.
+    GirFFI::CallbackBase::CALLBACKS[stored_id].wont_be_nil
   end
 
   it 'has a working function #test_callback_destroy_notify' do
     a = 1
-    r1 = Regress.test_callback_destroy_notify(42, proc { a = 3 }) { |b| a = 2; b }
+    r1 = Regress.test_callback_destroy_notify(proc { a = 3 }) { |b| a = 2; b }
     assert_equal 2, a
-    assert_equal 42, r1
+    GirFFI::CallbackBase::CALLBACKS[r1].wont_be_nil
+
     r2 = Regress.test_callback_thaw_notifications
     assert_equal 3, a
-    assert_equal 42, r2
+    assert_equal r1, r2
+    # TODO: Ensure that the key r1 is no longer in the callback store
   end
 
   it 'has a working function #test_callback_destroy_notify_no_user_data' do
     skip unless get_introspection_data 'Regress', 'test_callback_destroy_notify_no_user_data'
 
     callback_times_called = 0
-    notify_times_called = 0
     b = :not_nil
 
     notify = proc { notify_times_called += 1 }
@@ -2703,9 +2706,9 @@ describe Regress do
 
   it 'has a working function #test_callback_thaw_async' do
     invoked = []
-    Regress.test_callback_async(nil) { invoked << 1; 1 }
-    Regress.test_callback_async(nil) { invoked << 2; 2 }
-    Regress.test_callback_async(nil) { invoked << 3; 3 }
+    Regress.test_callback_async { invoked << 1; 1 }
+    Regress.test_callback_async { invoked << 2; 2 }
+    Regress.test_callback_async { invoked << 3; 3 }
     result = Regress.test_callback_thaw_async
     invoked.must_equal [3, 2, 1]
     result.must_equal 1
@@ -2713,26 +2716,19 @@ describe Regress do
 
   it 'has a working function #test_callback_thaw_notifications' do
     invoked = false
-    Regress.test_callback_destroy_notify(nil, nil) { 42 }
-    Regress.test_callback_destroy_notify(nil, proc { invoked = true }) { 24 }
+    Regress.test_callback_destroy_notify(nil) { 42 }
+    Regress.test_callback_destroy_notify(proc { invoked = true }) { 24 }
     result = Regress.test_callback_thaw_notifications
     result.must_equal 66
     invoked.must_equal true
   end
 
   it 'has a working function #test_callback_user_data' do
-    a = 'old-value'
-    result = Regress.test_callback_user_data('new-value') { |u| a = u; 5 }
-    a.must_equal 'new-value'
+    stored_id = nil
+    result = Regress.test_callback_user_data { |u| stored_id = u; 5 }
+    # TODO: Ensure that the key stored_id is no longer in the callback store
+    stored_id.wont_be_nil
     result.must_equal 5
-  end
-
-  describe 'the #test_callback_user_data function' do
-    it 'handles boolean user_data' do
-      a = false
-      Regress.test_callback_user_data(true) { |u| a = u; 5 }
-      assert_equal true, a
-    end
   end
 
   it 'has a working function #test_closure' do
@@ -3216,7 +3212,7 @@ describe Regress do
 
   it 'has a working function #test_torture_signature_2' do
     a = 1
-    y, z, q = Regress.test_torture_signature_2 244, 2, proc { a = 3 }, 'foofoo', 31 do |u|
+    y, z, q = Regress.test_torture_signature_2 244, proc { a = 3 }, 'foofoo', 31 do |u|
       a = u
     end
     assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
