@@ -6,7 +6,7 @@ describe GLib::MainLoop do
       main_loop = GLib::MainLoop.new nil, false
 
       a = []
-      GLib.timeout_add GLib::PRIORITY_DEFAULT, 150, nil, nil do
+      GLib.timeout_add GLib::PRIORITY_DEFAULT, 150, nil do
         main_loop.quit
       end
 
