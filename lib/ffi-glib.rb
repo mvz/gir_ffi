@@ -5,6 +5,7 @@ GirFFI.setup :GLib
 require 'ffi-glib/array'
 require 'ffi-glib/byte_array'
 require 'ffi-glib/bytes'
+require 'ffi-glib/destroy_notify'
 require 'ffi-glib/error'
 require 'ffi-glib/hash_table'
 require 'ffi-glib/iconv'
