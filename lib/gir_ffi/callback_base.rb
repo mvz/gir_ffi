@@ -31,10 +31,14 @@ module GirFFI
       from_native ptr, nil
     end
 
-    CALLBACKS = []
+    CALLBACKS = {}
 
     def self.store_callback(prc)
-      CALLBACKS << prc
+      CALLBACKS[prc.object_id] = prc
+    end
+
+    def self.drop_callback(key)
+      CALLBACKS.delete key
     end
 
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,
