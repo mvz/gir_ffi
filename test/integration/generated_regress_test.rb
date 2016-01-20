@@ -5,9 +5,6 @@ GirFFI.setup :Regress
 
 if IntrospectionTestExtensions.get_introspection_data 'Regress', 'TestInheritDrawable'
   class ConcreteDrawable < Regress::TestInheritDrawable
-    def initialize
-      super(self.class.gtype, [])
-    end
   end
 
   GirFFI.define_type ConcreteDrawable
