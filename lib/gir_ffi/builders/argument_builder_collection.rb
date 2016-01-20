@@ -74,7 +74,7 @@ module GirFFI
       def set_up_argument_relations
         @base_argument_builders.each do |bldr|
           if (idx = bldr.closure_idx) >= 0
-            @base_argument_builders[idx].closure = true
+            @base_argument_builders[idx].closure = bldr
           end
           if (idx = bldr.destroy_idx) >= 0
             @base_argument_builders[idx].mark_as_destroy_notifier

@@ -9,7 +9,7 @@ module GirFFI
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
       def method_argument_name
-        name if has_input_value? && !array_length_parameter?
+        name if has_input_value? && !array_length_parameter? && !closure?
       end
 
       # TODO: Improve this so each method can only have one block argument.
@@ -155,7 +155,7 @@ module GirFFI
         if skipped?
           NullConvertor.new('0')
         elsif closure?
-          ClosureToPointerConvertor.new(pre_convertor_argument)
+          ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
           RubyToCConvertor.new(@type_info, pre_convertor_argument)
         else

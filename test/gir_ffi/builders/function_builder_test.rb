@@ -39,9 +39,9 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_introspection_data 'Regress', 'test_callback_destroy_notify' }
       it 'builds a correct definition' do
         code.must_equal <<-CODE.reset_indentation
-          def self.test_callback_destroy_notify(user_data, notify, &callback)
+          def self.test_callback_destroy_notify(notify, &callback)
             _v1 = Regress::TestCallbackUserData.from(callback)
-            _v2 = GirFFI::InPointer.from_closure_data(user_data)
+            _v2 = GirFFI::InPointer.from_closure_data(_v1.object_id)
             _v3 = GLib::DestroyNotify.from(notify)
             _v4 = Regress::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
             return _v4
