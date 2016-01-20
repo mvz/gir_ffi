@@ -2671,7 +2671,7 @@ describe Regress do
     r2 = Regress.test_callback_thaw_notifications
     a.must_equal 2
     r1.must_equal r2
-    # TODO: Ensure that the key stored_id is no longer in the callback store
+    GirFFI::CallbackBase::CALLBACKS[stored_id].must_be_nil
   end
 
   it 'has a working function #test_callback_destroy_notify_no_user_data' do
