@@ -12,7 +12,8 @@ module GirFFI
         def initialize(var_gen, field_argument_info, field_info, options = {})
           super(var_gen, field_argument_info)
           @field_info = field_info
-          @length_arg = options.fetch(:length_argument) { NullArgumentBuilder.new }
+          @length_arg = NullArgumentBuilder.new
+          @array_length_idx = options.fetch(:array_length_idx) { -1 }
         end
 
         def pre_conversion
@@ -45,6 +46,10 @@ module GirFFI
           else
             []
           end
+        end
+
+        def array_length_idx
+          @array_length_idx
         end
 
         private
@@ -95,6 +100,10 @@ module GirFFI
         end
 
         def closure
+          -1
+        end
+
+        def destroy
           -1
         end
 
@@ -163,22 +172,26 @@ module GirFFI
           @argument_builders ||=
             ArgumentBuilderCollection.new(
               NullReturnValueBuilder.new,
-              [getter_argument_builder, length_argument_builder])
+              base_argument_builders)
+        end
+
+        def base_argument_builders
+          if array_length_field
+            [getter_argument_builder, length_argument_builder]
+          else
+            [getter_argument_builder]
+          end
         end
 
         def getter_argument_builder
           @getter_argument_builder ||=
             GetterArgumentBuilder.new(var_gen, field_argument_info, @info,
-                                      length_argument: length_argument_builder)
+                                      array_length_idx: array_length_field ? 1 : -1)
         end
 
         def length_argument_builder
           @length_argument_builder ||=
-            if array_length_field
-              GetterArgumentBuilder.new(var_gen, length_argument_info, array_length_field)
-            else
-              NullArgumentBuilder.new
-            end
+            GetterArgumentBuilder.new(var_gen, length_argument_info, array_length_field)
         end
 
         def array_length_field

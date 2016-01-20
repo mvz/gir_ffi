@@ -23,6 +23,10 @@ module GirFFI
       -1
     end
 
+    def destroy
+      -1
+    end
+
     def caller_allocates?
       true
     end

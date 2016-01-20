@@ -1,33 +1,12 @@
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
 require 'gir_ffi/glib_error'
+require 'gir_ffi/object_store'
 
 module GirFFI
   # Helper module containing methods used during argument conversion in
   # generated methods.
   module ArgHelper
-    # Helper class for storing objects for later retrieval. Used to store user
-    # data arguments.
-    class ObjectStore
-      def initialize
-        @store = {}
-      end
-
-      def store(ptr, obj)
-        @store[ptr.address] = obj
-      end
-
-      def fetch(ptr)
-        return if ptr.null?
-        key = ptr.address
-        if @store.key? key
-          @store[key]
-        else
-          ptr
-        end
-      end
-    end
-
     OBJECT_STORE = ObjectStore.new
 
     def self.ptr_to_utf8_length(ptr, len)

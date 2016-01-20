@@ -9,7 +9,7 @@ module GirFFI
     # Implements building pre- and post-processing statements for arguments.
     class ArgumentBuilder < BaseArgumentBuilder
       def method_argument_name
-        name if has_input_value? && !array_length_parameter?
+        name if has_input_value? && !helper_argument?
       end
 
       # TODO: Improve this so each method can only have one block argument.
@@ -102,10 +102,6 @@ module GirFFI
         length_arg && length_arg.post_converted_name
       end
 
-      def array_length_parameter?
-        @array_arg
-      end
-
       def needs_size_check?
         specialized_type_tag == :c && type_info.array_fixed_size > -1
       end
@@ -151,11 +147,15 @@ module GirFFI
           @arginfo.caller_allocates?
       end
 
+      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'
+
       def ingoing_convertor
         if skipped?
           NullConvertor.new('0')
+        elsif destroy_notifier?
+          NullConvertor.new(DESTROY_NOTIFIER)
         elsif closure?
-          ClosureToPointerConvertor.new(pre_convertor_argument)
+          ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
           RubyToCConvertor.new(@type_info, pre_convertor_argument)
         else

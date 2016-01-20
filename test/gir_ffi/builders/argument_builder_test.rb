@@ -42,6 +42,10 @@ describe GirFFI::Builders::ArgumentBuilder do
           builder.closure = false
         end
 
+        it 'has the correct value for method_argument_name' do
+          builder.method_argument_name.must_equal arg_info.name
+        end
+
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from(:void, user_data)']
         end
@@ -53,11 +57,17 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       describe 'when it is a closure' do
         before do
-          builder.closure = true
+          callback = Object.new
+          allow(callback).to receive(:call_argument_name).and_return 'foo'
+          builder.closure = callback
+        end
+
+        it 'has the correct value for method_argument_name' do
+          builder.method_argument_name.must_be_nil
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from_closure_data(user_data)']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from_closure_data(foo.object_id)']
         end
 
         it 'has the correct value for #post_conversion' do

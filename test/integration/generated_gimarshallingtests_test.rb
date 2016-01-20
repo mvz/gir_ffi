@@ -686,7 +686,7 @@ describe GIMarshallingTests do
         }
       end
 
-      derived_instance.vfunc_with_callback(23) { |val, user_data| result = val + user_data }
+      derived_instance.vfunc_with_callback { |val, user_data| result = val + user_data }
 
       # The current implementation of the vfunc_with_callback method currently
       # doesn't actually call the virtual function vfunc_with_callback.
@@ -1592,15 +1592,15 @@ describe GIMarshallingTests do
     skip unless get_introspection_data 'GIMarshallingTests', 'callback_owned_boxed'
     a = nil
 
-    callback = proc { |box, callback_data| a = box.long_ + callback_data }
+    callback = proc { |box, _callback_data| a = box.long_ * 2 }
 
-    result = GIMarshallingTests.callback_owned_boxed 42, &callback
+    result = GIMarshallingTests.callback_owned_boxed(&callback)
     result.must_equal 1
-    a.must_equal 43
+    a.must_equal 2
 
-    result = GIMarshallingTests.callback_owned_boxed 42, &callback
+    result = GIMarshallingTests.callback_owned_boxed(&callback)
     result.must_equal 2
-    a.must_equal 44
+    a.must_equal 4
   end
 
   it 'has a working function #callback_return_value_and_multiple_out_parameters' do
