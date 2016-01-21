@@ -13,6 +13,8 @@
 * Automatically unpack GValue return values
 * Use a BitMask to handle flag values
 * Handle callback arguments as Ruby block arguments
+* Use user data and destroy notify arguments to automate callback cleanup. This
+  means you can no longer supply your own user data and notifiers.
 
 ## 0.8.6 / 2015-12-09
 
