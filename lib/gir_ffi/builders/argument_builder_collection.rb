@@ -7,9 +7,10 @@ module GirFFI
     class ArgumentBuilderCollection
       attr_reader :return_value_builder
 
-      def initialize(return_value_builder, argument_builders, options = {})
-        @receiver_builder = options[:receiver_builder]
-        @error_argument_builder = options[:error_argument_builder]
+      def initialize(return_value_builder, argument_builders,
+                     receiver_builder: nil, error_argument_builder: nil)
+        @receiver_builder = receiver_builder
+        @error_argument_builder = error_argument_builder
         @base_argument_builders = argument_builders
         @return_value_builder = return_value_builder
         set_up_argument_relations
