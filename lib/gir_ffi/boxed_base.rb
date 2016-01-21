@@ -13,6 +13,7 @@ module GirFFI
       self
     end
 
+    # NOTE: Needed for JRuby's FFI
     def self.to_native(value, _context)
       value.struct
     end
