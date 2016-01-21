@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.0 / 2016-01-21
 
 * Propagate exceptions from callbacks during event loops
 * Make default object constructor take a hash of properties
