@@ -15,6 +15,8 @@
 * Handle callback arguments as Ruby block arguments
 * Use user data and destroy notify arguments to automate callback cleanup. This
   means you can no longer supply your own user data and notifiers.
+* Support CRuby 2.3 and Rubinius 3.x
+* Drop support for JRuby 1.7 and Rubinius 2.x.
 
 ## 0.8.6 / 2015-12-09
 

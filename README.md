@@ -48,9 +48,8 @@ See the [documentation](docs/Documentation.md) for more usage information.
 
 ## Requirements
 
-GirFFI should work on CRuby 2.0.0, 2.1 and 2.2, JRuby 1.7.x in 1.9 or 2.0 mode,
-JRuby 9.0.0.0, and on Rubinius. If you need support for CRuby 1.9.3, use
-version 0.7.10.
+GirFFI is tested on CRuby 2.0.0, 2.1, 2.2 and 2.3, JRuby 9.0.0.0, and on
+Rubinius 3.
 
 You will also need gobject-introspection installed with some
 introspection data.
