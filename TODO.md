@@ -1,17 +1,12 @@
 # TODO
 
-## Miscellaneous
+## Handle interrupts
 
-* MAKE CONSTRUCTOR_WRAP CHECK TYPES? This would allow GObject::Object.new to
-  work and create the correct subtype for classes that don't define their own
-  default constructor.
-* Add tests for the other test files in gobject-introspection. Currently, only
-  regress.c and gimarshallingtests.c are used, but there are 6 other files
-  available.
-* Move GObjectIntrospection to GIRepository, and allow generating its own
-  members.
-* Do not remove ClassBase.new. We now remove it and then add it back for the
-  default constructor, which is kind of silly.
+Add something like the following by default:
+
+    Signal.trap 'INT' do
+      mainloop.quit
+    end
 
 ## Memory managment
 
@@ -19,7 +14,7 @@ GirFFI does not attempt to free any memory at the moment, or lower the
 reference count of any objects it gets from GObject. This task therefore involves two parts:
 
 - Free non-GObject pointers as needed (at garbage-collection time)
-- Lower reference count of GObjects (at garbage-collection time) (done!)
+- [Done!] Lower reference count of GObjects (at garbage-collection time)
 
 **Use memory_profiler to check memory use (https://github.com/SamSaffron/memory_profiler)**
 
@@ -36,10 +31,6 @@ These in the order they occured to me, and may therefore be fixed in any order.
 
 - Move to a single Pointer class, rather than InPointer, InOutPointer and
   Pointer monkeypatching.
-
-- Move special types like SizedArray to sane namespaces. Types (like
-  GLib::List) that have actual GLib implementations go to the GLib namespace.
-  Other types go to the GirFFI namespace.
 
 ## Derived types
 
@@ -116,6 +107,11 @@ to be put in place for that.
 ## Handle ownership-transfer correctly
 
 For how to handle objects, see https://bugzilla.gnome.org/show_bug.cgi?id=657202#c1
+
+## Miscellaneous
+
+* Move GObjectIntrospection to GIRepository, and allow generating its own
+  members.
 
 ## External dependencies
 
