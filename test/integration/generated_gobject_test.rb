@@ -97,7 +97,7 @@ describe GObject do
       end
 
       it 'cannot write the property "target-property" with #target_property=' do
-        proc { binding.target_property = 'foo' }.must_raise NoMethodError
+        binding.wont_respond_to :target_property=
       end
     end
   end

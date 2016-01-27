@@ -109,7 +109,7 @@ describe 'The generated Gio module' do
     end
 
     it 'cannot write the property "state-type" with #state_type=' do
-      proc { simple_action.state_type = nil }.must_raise NoMethodError
+      simple_action.wont_respond_to :state_type=
     end
   end
 end
