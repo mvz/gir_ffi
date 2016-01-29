@@ -53,11 +53,11 @@ module GObjectIntrospection
     end
 
     def properties
-      @properties ||= n_properties.times.map { |idx| property(idx) }
+      @properties ||= Array.new(n_properties) { |idx| property(idx) }
     end
 
     def find_property(name)
-      name = name.to_s.gsub(/_/, '-')
+      name = name.to_s.tr('_', '-')
       properties.find { |prop| prop.name == name }
     end
 
