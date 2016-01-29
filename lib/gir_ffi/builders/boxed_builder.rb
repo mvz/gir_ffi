@@ -15,6 +15,12 @@ module GirFFI
         stub_methods
         setup_field_accessors
       end
+
+      def setup_field_accessors
+        fields.each do |finfo|
+          FieldBuilder.new(finfo).build
+        end
+      end
     end
   end
 end

@@ -735,8 +735,8 @@ describe GIMarshallingTests do
       instance.wont_respond_to :parent_instance=
     end
 
-    it 'does not have accessors the field long_' do
-      instance.wont_respond_to :long_
+    it 'has a readable field long_' do
+      instance.long_.must_equal 0
       instance.wont_respond_to :long_=
     end
   end
