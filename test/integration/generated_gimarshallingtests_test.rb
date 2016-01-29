@@ -730,11 +730,14 @@ describe GIMarshallingTests do
       result.must_equal 42
     end
 
-    it 'does not have field accessor methods' do
-      assert_raises(NoMethodError) { instance.parent_instance }
-      assert_raises(NoMethodError) { instance.parent_instance = nil }
-      assert_raises(NoMethodError) { instance.long_ }
-      assert_raises(NoMethodError) { instance.long_ = 1 }
+    it 'does not have accessors for its parent instance' do
+      instance.wont_respond_to :parent_instance
+      instance.wont_respond_to :parent_instance=
+    end
+
+    it 'has a readable field long_' do
+      instance.long_.must_equal 0
+      instance.wont_respond_to :long_=
     end
   end
 
@@ -1224,9 +1227,9 @@ describe GIMarshallingTests do
       pass
     end
 
-    it 'does not have field accessors' do
-      assert_raises(NoMethodError) { instance.parent_instance }
-      assert_raises(NoMethodError) { instance.parent_instance = nil }
+    it 'does not have accessors for its parent instance' do
+      instance.wont_respond_to :parent_instance
+      instance.wont_respond_to :parent_instance=
     end
   end
 
@@ -1240,9 +1243,9 @@ describe GIMarshallingTests do
 
     let(:instance) { GIMarshallingTests::SubSubObject.new }
 
-    it 'does not have field accessors' do
-      assert_raises(NoMethodError) { instance.parent_instance }
-      assert_raises(NoMethodError) { instance.parent_instance = nil }
+    it 'does not have accessors for its parent instance' do
+      instance.wont_respond_to :parent_instance
+      instance.wont_respond_to :parent_instance=
     end
   end
 

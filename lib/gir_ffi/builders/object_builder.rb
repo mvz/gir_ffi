@@ -51,11 +51,8 @@ module GirFFI
         setup_layout
         setup_constants
         stub_methods
-        if info.fundamental?
-          setup_field_accessors
-        else
-          setup_property_accessors
-        end
+        setup_field_accessors
+        setup_property_accessors
         setup_vfunc_invokers
         setup_interfaces
         provide_initializer
@@ -89,6 +86,14 @@ module GirFFI
 
       def parent_ancestor_infos
         @parent_ancestor_infos ||= parent_builder.ancestor_infos
+      end
+
+      def setup_field_accessors
+        fields.each do |finfo|
+          next if info.find_property finfo.name
+          next if finfo.name == 'parent_instance'
+          FieldBuilder.new(finfo).build
+        end
       end
 
       def setup_property_accessors

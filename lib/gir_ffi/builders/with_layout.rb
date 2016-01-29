@@ -34,12 +34,6 @@ module GirFFI
         fields.map(&:layout_specification).flatten(1)
       end
 
-      def setup_field_accessors
-        fields.each do |finfo|
-          FieldBuilder.new(finfo).build
-        end
-      end
-
       def klass
         @klass ||= get_or_define_class namespace_module, @classname, superclass
       end

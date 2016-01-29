@@ -1824,8 +1824,8 @@ describe Regress do
 
     it 'has a private field this_is_private' do
       skip 'This field is identified as readable in the typelib'
-      proc { instance.this_is_private }.must_raise NoMethodError
-      proc { instance.this_is_private = 42 }.must_raise NoMethodError
+      instance.wont_respond_to :this_is_private
+      instance.wont_respond_to :this_is_private=
     end
 
     it 'has a writable field this_is_public_after' do
@@ -2243,7 +2243,7 @@ describe Regress do
     end
 
     it 'does not have a field parent_instance' do
-      assert_raises(NoMethodError) { instance.parent_instance }
+      instance.wont_respond_to :parent_instance
     end
   end
 
@@ -3314,10 +3314,8 @@ describe Regress do
   end
 
   it 'raises an appropriate NoMethodError when a function is not found' do
-    begin
-      Regress.this_method_does_not_exist
-    rescue => e
-      e.message.must_match(/^undefined method `this_method_does_not_exist' (for Regress:Module|on Regress \(Module\))$/)
-    end
+    proc { Regress.this_method_does_not_exist }.
+      must_raise(NoMethodError).
+      message.must_match(/^undefined method `this_method_does_not_exist' (for Regress:Module|on Regress \(Module\))$/)
   end
 end
