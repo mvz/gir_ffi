@@ -45,7 +45,7 @@ module GObject
       TYPE_OBJECT    => [:get_object,        :set_instance_enhanced],
       TYPE_GTYPE     => [:get_gtype,         :set_gtype],
       TYPE_VARIANT   => [:get_variant,       :set_variant]
-    }
+    }.freeze
 
     def set_value(val)
       send set_method, val
@@ -119,7 +119,7 @@ module GObject
       FalseClass => TYPE_BOOLEAN,
       Integer => TYPE_INT,
       String => TYPE_STRING
-    }
+    }.freeze
 
     def init_for_ruby_value(val)
       if val.class.respond_to? :gtype

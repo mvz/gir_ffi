@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builder_helper'
 
 module GirFFI
@@ -16,7 +17,7 @@ module GirFFI
           strv:     GObject::TYPE_STRV,
           utf8:     GObject::TYPE_STRING,
           void:     GObject::TYPE_NONE
-        }
+        }.freeze
       end
 
       def gtype
@@ -83,7 +84,7 @@ module GirFFI
         utf8:            'GirFFI::InPointer',
         void:            'GirFFI::InPointer',
         zero_terminated: 'GirFFI::ZeroTerminated'
-      }
+      }.freeze
 
       # TODO: Use class rather than class name
       def argument_class_name
@@ -130,13 +131,13 @@ module GirFFI
       TAGS_NEEDING_RUBY_TO_C_CONVERSION = [
         :array, :c, :callback, :error, :ghash, :glist, :gslist, :object,
         :ptr_array, :struct, :strv, :utf8, :void, :zero_terminated
-      ]
+      ].freeze
 
       TAGS_NEEDING_C_TO_RUBY_CONVERSION = [
         :array, :byte_array, :c, :error, :filename, :ghash, :glist, :gslist,
         :interface, :object, :ptr_array, :struct, :strv, :union, :utf8,
         :zero_terminated
-      ]
+      ].freeze
 
       def needs_ruby_to_c_conversion_for_functions?
         TAGS_NEEDING_RUBY_TO_C_CONVERSION.include?(flattened_tag)
@@ -177,7 +178,7 @@ module GirFFI
         end
       end
 
-      GOBJECT_VALUE_NAME = 'GObject::Value'
+      GOBJECT_VALUE_NAME = 'GObject::Value'.freeze
 
       def gvalue?
         argument_class_name == GOBJECT_VALUE_NAME

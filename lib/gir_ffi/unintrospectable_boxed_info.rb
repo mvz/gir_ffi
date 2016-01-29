@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/info_ext/full_type_name'
 
 module GirFFI
@@ -18,7 +19,7 @@ module GirFFI
       GObject.type_name g_type
     end
 
-    DEFAULT_BOXED_NAMESPACE = 'GLib'
+    DEFAULT_BOXED_NAMESPACE = 'GLib'.freeze
 
     def namespace
       DEFAULT_BOXED_NAMESPACE

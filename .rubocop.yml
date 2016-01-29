@@ -57,10 +57,6 @@ Style/MultilineOperationIndentation:
 Style/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-# FIXME: Re-enable and fix offenses
-Style/MutableConstant:
-  Enabled: false
-
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
