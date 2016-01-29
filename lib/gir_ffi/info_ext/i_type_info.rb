@@ -20,13 +20,10 @@ module GirFFI
       end
 
       def gtype
-        if tag == :interface
-          return interface.gtype
-        elsif (type = ITypeInfo.flattened_tag_to_gtype_map[flattened_tag])
-          return type
-        else
-          raise "Can't find GType for #{flattened_tag} pointer? = #{pointer?}"
-        end
+        return interface.gtype if tag == :interface
+        type = ITypeInfo.flattened_tag_to_gtype_map[flattened_tag]
+        return type if type
+        raise "Can't find GType for #{flattened_tag} pointer? = #{pointer?}"
       end
 
       def make_g_value

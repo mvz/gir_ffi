@@ -1,7 +1,7 @@
 require 'ffi/bit_masks'
 
 # NOTE: Monkey-patch BitMask to work on JRuby.
-class FFI::BitMasks::BitMask
+FFI::BitMasks::BitMask.class_eval do
   def reference_required?
     false
   end

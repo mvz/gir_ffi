@@ -27,7 +27,7 @@ module GObjectIntrospection
     end
 
     def constant_type
-      ITypeInfo.wrap(Lib.g_constant_info_get_type @gobj)
+      ITypeInfo.wrap Lib.g_constant_info_get_type(@gobj)
     end
 
     private

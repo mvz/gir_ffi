@@ -3,7 +3,7 @@ module GObjectIntrospection
   # Represents a property of an IObjectInfo or an IInterfaceInfo.
   class IPropertyInfo < IBaseInfo
     def property_type
-      ITypeInfo.wrap(Lib.g_property_info_get_type @gobj)
+      ITypeInfo.wrap Lib.g_property_info_get_type(@gobj)
     end
 
     def flags

@@ -11,7 +11,7 @@ module GObjectIntrospection
     end
 
     def param_type(index)
-      ITypeInfo.wrap(Lib.g_type_info_get_param_type @gobj, index)
+      ITypeInfo.wrap Lib.g_type_info_get_param_type(@gobj, index)
     end
 
     def interface

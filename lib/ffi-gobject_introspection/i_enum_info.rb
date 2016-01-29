@@ -7,7 +7,7 @@ module GObjectIntrospection
     end
 
     def value(index)
-      IValueInfo.wrap(Lib.g_enum_info_get_value @gobj, index)
+      IValueInfo.wrap Lib.g_enum_info_get_value(@gobj, index)
     end
     ##
     build_array_method :values
@@ -17,7 +17,7 @@ module GObjectIntrospection
     end
 
     def get_method(index)
-      IFunctionInfo.wrap(Lib.g_enum_info_get_method @gobj, index)
+      IFunctionInfo.wrap Lib.g_enum_info_get_method(@gobj, index)
     end
 
     ##

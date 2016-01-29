@@ -53,13 +53,9 @@ module GLib
     end
 
     def self.handle_exception(ex)
-      current_loop = RUNNING_LOOPS.last
-      if current_loop
-        EXCEPTIONS << ex
-        current_loop.quit
-      else
-        raise ex
-      end
+      raise ex unless (current_loop = RUNNING_LOOPS.last)
+      EXCEPTIONS << ex
+      current_loop.quit
     end
 
     alias_method :run_without_thread_enabler, :run

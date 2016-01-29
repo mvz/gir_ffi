@@ -67,7 +67,7 @@ module GObjectIntrospection
       method = method.to_s
       single = method.sub(/^find_/, '')
       counter ||= "n_#{single}s"
-      fetcher ||= "#{single}"
+      fetcher ||= single
       class_eval <<-CODE
         def #{method}(name)
           name = name.to_s

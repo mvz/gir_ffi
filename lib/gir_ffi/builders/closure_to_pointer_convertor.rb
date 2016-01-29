@@ -9,7 +9,13 @@ module GirFFI
       end
 
       def conversion
-        "GirFFI::InPointer.from_closure_data(#{@callback_argument.call_argument_name}.object_id)"
+        "GirFFI::InPointer.from_closure_data(#{callback_argument_name}.object_id)"
+      end
+
+      private
+
+      def callback_argument_name
+        @callback_argument.call_argument_name
       end
     end
   end

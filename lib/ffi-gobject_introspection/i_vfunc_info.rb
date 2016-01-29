@@ -15,11 +15,11 @@ module GObjectIntrospection
     end
 
     def signal
-      ISignalInfo.wrap(Lib.g_vfunc_info_get_signal @gobj)
+      ISignalInfo.wrap Lib.g_vfunc_info_get_signal(@gobj)
     end
 
     def invoker
-      IFunctionInfo.wrap(Lib.g_vfunc_info_get_invoker @gobj)
+      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker(@gobj)
     end
   end
 end
