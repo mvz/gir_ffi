@@ -52,9 +52,14 @@ module GObjectIntrospection
       IPropertyInfo.wrap Lib.g_object_info_get_property(@gobj, index)
     end
 
-    ##
-    build_array_method :properties, :property
-    build_finder_method :find_property, :n_properties
+    def properties
+      @properties ||= n_properties.times.map { |idx| property(idx) }
+    end
+
+    def find_property(name)
+      name = name.to_s.gsub(/_/, '-')
+      properties.find { |prop| prop.name == name }
+    end
 
     def get_n_methods
       Lib.g_object_info_get_n_methods @gobj
