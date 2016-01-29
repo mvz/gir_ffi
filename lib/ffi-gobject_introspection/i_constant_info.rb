@@ -13,7 +13,7 @@ module GObjectIntrospection
       guint64:  :v_uint64,
       gdouble:  :v_double,
       utf8:     :v_string
-    }
+    }.freeze
 
     def value
       case type_tag
@@ -27,7 +27,7 @@ module GObjectIntrospection
     end
 
     def constant_type
-      ITypeInfo.wrap(Lib.g_constant_info_get_type @gobj)
+      ITypeInfo.wrap Lib.g_constant_info_get_type(@gobj)
     end
 
     private

@@ -36,7 +36,7 @@ module GirFFI
       gfloat:    :float,
       gdouble:   :double,
       void:      :void
-    }
+    }.freeze
 
     def self.map_basic_type(type)
       sym = type.to_sym

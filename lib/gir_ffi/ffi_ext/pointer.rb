@@ -16,7 +16,7 @@ module GirFFI
 
       # FIXME: Should probably not be here.
       def to_object
-        return nil if self.null?
+        return nil if null?
         gtype = GObject.type_from_instance_pointer self
         Builder.build_by_gtype(gtype).direct_wrap self
       end

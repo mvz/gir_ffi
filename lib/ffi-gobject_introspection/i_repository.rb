@@ -51,7 +51,7 @@ module GObjectIntrospection
       arg:                      IArgInfo,
       type:                     ITypeInfo,
       unresolved:               IUnresolvedInfo
-    }
+    }.freeze
 
     def initialize
       @gobj = Lib.g_irepository_get_default

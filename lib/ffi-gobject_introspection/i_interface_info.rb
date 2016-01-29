@@ -7,7 +7,7 @@ module GObjectIntrospection
     end
 
     def prerequisite(index)
-      IBaseInfo.wrap(Lib.g_interface_info_get_prerequisite @gobj, index)
+      IBaseInfo.wrap Lib.g_interface_info_get_prerequisite(@gobj, index)
     end
 
     ##
@@ -18,7 +18,7 @@ module GObjectIntrospection
     end
 
     def property(index)
-      IPropertyInfo.wrap(Lib.g_interface_info_get_property @gobj, index)
+      IPropertyInfo.wrap Lib.g_interface_info_get_property(@gobj, index)
     end
 
     ##
@@ -30,14 +30,14 @@ module GObjectIntrospection
     end
 
     def get_method(index)
-      IFunctionInfo.wrap(Lib.g_interface_info_get_method @gobj, index)
+      IFunctionInfo.wrap Lib.g_interface_info_get_method(@gobj, index)
     end
 
     ##
     build_array_method :get_methods
 
     def find_method(name)
-      IFunctionInfo.wrap(Lib.g_interface_info_find_method @gobj, name.to_s)
+      IFunctionInfo.wrap Lib.g_interface_info_find_method(@gobj, name.to_s)
     end
 
     def n_signals
@@ -45,7 +45,7 @@ module GObjectIntrospection
     end
 
     def signal(index)
-      ISignalInfo.wrap(Lib.g_interface_info_get_signal @gobj, index)
+      ISignalInfo.wrap Lib.g_interface_info_get_signal(@gobj, index)
     end
 
     ##
@@ -57,14 +57,14 @@ module GObjectIntrospection
     end
 
     def vfunc(index)
-      IVFuncInfo.wrap(Lib.g_interface_info_get_vfunc @gobj, index)
+      IVFuncInfo.wrap Lib.g_interface_info_get_vfunc(@gobj, index)
     end
 
     ##
     build_array_method :vfuncs
 
     def find_vfunc(name)
-      IVFuncInfo.wrap(Lib.g_interface_info_find_vfunc @gobj, name)
+      IVFuncInfo.wrap Lib.g_interface_info_find_vfunc(@gobj, name)
     end
 
     def n_constants
@@ -72,14 +72,14 @@ module GObjectIntrospection
     end
 
     def constant(index)
-      IConstantInfo.wrap(Lib.g_interface_info_get_constant @gobj, index)
+      IConstantInfo.wrap Lib.g_interface_info_get_constant(@gobj, index)
     end
 
     ##
     build_array_method :constants
 
     def iface_struct
-      IStructInfo.wrap(Lib.g_interface_info_get_iface_struct @gobj)
+      IStructInfo.wrap Lib.g_interface_info_get_iface_struct(@gobj)
     end
   end
 end

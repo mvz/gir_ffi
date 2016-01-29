@@ -23,6 +23,10 @@ Performance/FixedSize:
 Style/AccessorMethodName:
   Enabled: false
 
+# Conform to old RuboCop behavior for now
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
@@ -48,6 +52,11 @@ Style/IfUnlessModifier:
 Style/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+# Multi-line method calls should be simply indented. Aligning them makes it
+# even harder to keep a sane line length.
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
@@ -66,10 +75,6 @@ Style/SignalException:
   EnforcedStyle: only_raise
 
 Style/SingleLineBlockParams:
-  Enabled: false
-
-# Allow semantic choice of trailing comma
-Style/TrailingComma:
   Enabled: false
 
 # Accessors are only trivial if they match the ivar name.

@@ -42,6 +42,10 @@ module GirFFI
       pointer.put_bytes(0, value.to_ptr.read_bytes(size), 0, size)
     end
 
+    def self.wrap(element_type, size, pointer)
+      new element_type, size, pointer unless pointer.null?
+    end
+
     private
 
     def element_ffi_type
@@ -50,10 +54,6 @@ module GirFFI
 
     def element_size
       @element_size ||= FFI.type_size element_ffi_type
-    end
-
-    def self.wrap(element_type, size, pointer)
-      new element_type, size, pointer unless pointer.null?
     end
 
     class << self

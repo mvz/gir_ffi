@@ -1208,7 +1208,7 @@ describe GIMarshallingTests do
     it 'creates an instance using #new' do
       so = GIMarshallingTests::SubObject.new
       so.must_be_instance_of GIMarshallingTests::SubObject
-      GObject.type_name(GObject.type_from_instance so).
+      GObject.type_name_from_instance(so).
         must_equal 'GIMarshallingTestsSubObject'
     end
 
@@ -1234,7 +1234,7 @@ describe GIMarshallingTests do
     it 'creates an instance using #new' do
       so = GIMarshallingTests::SubSubObject.new
       assert_instance_of GIMarshallingTests::SubSubObject, so
-      GObject.type_name(GObject.type_from_instance so).
+      GObject.type_name_from_instance(so).
         must_equal 'GIMarshallingTestsSubSubObject'
     end
 

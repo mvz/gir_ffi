@@ -19,7 +19,7 @@ module GObjectIntrospection
     end
 
     def parent
-      IObjectInfo.wrap(Lib.g_object_info_get_parent @gobj)
+      IObjectInfo.wrap Lib.g_object_info_get_parent(@gobj)
     end
 
     def n_interfaces
@@ -27,7 +27,7 @@ module GObjectIntrospection
     end
 
     def interface(index)
-      IInterfaceInfo.wrap(Lib.g_object_info_get_interface @gobj, index)
+      IInterfaceInfo.wrap Lib.g_object_info_get_interface(@gobj, index)
     end
 
     ##
@@ -38,7 +38,7 @@ module GObjectIntrospection
     end
 
     def field(index)
-      IFieldInfo.wrap(Lib.g_object_info_get_field @gobj, index)
+      IFieldInfo.wrap Lib.g_object_info_get_field(@gobj, index)
     end
 
     ##
@@ -49,7 +49,7 @@ module GObjectIntrospection
     end
 
     def property(index)
-      IPropertyInfo.wrap(Lib.g_object_info_get_property @gobj, index)
+      IPropertyInfo.wrap Lib.g_object_info_get_property(@gobj, index)
     end
 
     ##
@@ -61,14 +61,14 @@ module GObjectIntrospection
     end
 
     def get_method(index)
-      IFunctionInfo.wrap(Lib.g_object_info_get_method @gobj, index)
+      IFunctionInfo.wrap Lib.g_object_info_get_method(@gobj, index)
     end
 
     ##
     build_array_method :get_methods
 
     def find_method(name)
-      IFunctionInfo.wrap(Lib.g_object_info_find_method @gobj, name.to_s)
+      IFunctionInfo.wrap Lib.g_object_info_find_method(@gobj, name.to_s)
     end
 
     def n_signals
@@ -76,7 +76,7 @@ module GObjectIntrospection
     end
 
     def signal(index)
-      ISignalInfo.wrap(Lib.g_object_info_get_signal @gobj, index)
+      ISignalInfo.wrap Lib.g_object_info_get_signal(@gobj, index)
     end
 
     ##
@@ -88,11 +88,11 @@ module GObjectIntrospection
     end
 
     def vfunc(index)
-      IVFuncInfo.wrap(Lib.g_object_info_get_vfunc @gobj, index)
+      IVFuncInfo.wrap Lib.g_object_info_get_vfunc(@gobj, index)
     end
 
     def find_vfunc(name)
-      IVFuncInfo.wrap(Lib.g_object_info_find_vfunc @gobj, name.to_s)
+      IVFuncInfo.wrap Lib.g_object_info_find_vfunc(@gobj, name.to_s)
     end
     ##
     build_array_method :vfuncs
@@ -102,13 +102,13 @@ module GObjectIntrospection
     end
 
     def constant(index)
-      IConstantInfo.wrap(Lib.g_object_info_get_constant @gobj, index)
+      IConstantInfo.wrap Lib.g_object_info_get_constant(@gobj, index)
     end
     ##
     build_array_method :constants
 
     def class_struct
-      IStructInfo.wrap(Lib.g_object_info_get_class_struct @gobj)
+      IStructInfo.wrap Lib.g_object_info_get_class_struct(@gobj)
     end
   end
 end

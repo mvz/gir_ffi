@@ -7,7 +7,7 @@ module GObjectIntrospection
   # IFunctionInfo, ICallbackInfo or IVFuncInfo.
   class ICallableInfo < IBaseInfo
     def return_type
-      ITypeInfo.wrap(Lib.g_callable_info_get_return_type @gobj)
+      ITypeInfo.wrap Lib.g_callable_info_get_return_type(@gobj)
     end
 
     def caller_owns
@@ -23,7 +23,7 @@ module GObjectIntrospection
     end
 
     def arg(index)
-      IArgInfo.wrap(Lib.g_callable_info_get_arg @gobj, index)
+      IArgInfo.wrap Lib.g_callable_info_get_arg(@gobj, index)
     end
     ##
     build_array_method :args

@@ -10,7 +10,7 @@ module GirFFI
         module next nil not or redo rescue retry
         return self super then true undef unless
         until when while yield
-      )
+      ).freeze
 
       attr_reader :arginfo
       attr_accessor :length_arg, :array_arg

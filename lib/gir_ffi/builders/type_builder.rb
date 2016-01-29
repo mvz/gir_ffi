@@ -29,7 +29,7 @@ module GirFFI
         union:                  UnionBuilder,
         unintrospectable_boxed: UnintrospectableBoxedBuilder,
         unintrospectable:       UnintrospectableBuilder
-      }
+      }.freeze
 
       def self.build(info)
         builder_for(info).build_class

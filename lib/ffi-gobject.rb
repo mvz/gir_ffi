@@ -24,6 +24,10 @@ module GObject
     type_from_instance_pointer instance.to_ptr
   end
 
+  def self.type_name_from_instance(instance)
+    type_name type_from_instance instance
+  end
+
   def self.object_class_from_instance(instance)
     object_class_from_instance_pointer instance.to_ptr
   end
