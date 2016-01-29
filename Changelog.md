@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Add field accessors for Object types
+
 ## 0.9.0 / 2016-01-21
 
 * Propagate exceptions from callbacks during event loops
