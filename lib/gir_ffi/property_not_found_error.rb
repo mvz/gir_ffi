@@ -6,7 +6,7 @@ module GirFFI
     def initialize(property_name, klass)
       @property_name = property_name
       @klass = klass
-      super "Property #{property_name} not found in #{klass}"
+      super "Property '#{property_name}' not found in #{klass}"
     end
   end
 end

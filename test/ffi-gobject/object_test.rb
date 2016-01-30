@@ -19,13 +19,41 @@ describe GObject::Object do
     end
 
     it 'raises an error for properties that do not exist' do
-      proc { GObject::Object.new(dog: 'bark') }.must_raise ArgumentError
+      proc { GObject::Object.new(dog: 'bark') }.must_raise GirFFI::PropertyNotFoundError
     end
   end
 
   describe '#get_property' do
     it 'is overridden to have arity 1' do
       GObject::Object.instance_method('get_property').arity.must_equal 1
+    end
+
+    it 'raises an error for a property that does not exist' do
+      instance = GObject::Object.new
+      proc { instance.get_property 'foo-bar' }.must_raise GirFFI::PropertyNotFoundError
+    end
+  end
+
+  describe '#get_property_extended' do
+    it 'raises an error for a property that does not exist' do
+      instance = GObject::Object.new
+      proc { instance.get_property_extended 'foo-bar' }.
+        must_raise GirFFI::PropertyNotFoundError
+    end
+  end
+
+  describe '#set_property' do
+    it 'raises an error for a property that does not exist' do
+      instance = GObject::Object.new
+      proc { instance.set_property 'foo-bar', 123 }.must_raise GirFFI::PropertyNotFoundError
+    end
+  end
+
+  describe '#set_property_extended' do
+    it 'raises an error for a property that does not exist' do
+      instance = GObject::Object.new
+      proc { instance.set_property_extended 'foo-bar', 123 }.
+        must_raise GirFFI::PropertyNotFoundError
     end
   end
 

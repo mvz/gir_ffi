@@ -99,10 +99,6 @@ describe GObject do
       it 'cannot write the property "target-property" with #target_property=' do
         binding.wont_respond_to :target_property=
       end
-
-      it 'raises an error for a property that does not exist' do
-        proc { binding.get_property 'foo-bar' }.must_raise GirFFI::PropertyNotFoundError
-      end
     end
   end
 end

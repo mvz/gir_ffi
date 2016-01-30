@@ -29,8 +29,7 @@ module GirFFI
       end
 
       def find_property(property_name)
-        seek_in_ancestor_infos { |info| info.find_property property_name } or
-          raise "Property #{property_name} not found"
+        seek_in_ancestor_infos { |info| info.find_property property_name }
       end
 
       def object_class_struct
