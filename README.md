@@ -64,8 +64,8 @@ GirFFI is developed on Debian sid, and tested through Travis CI on Ubuntu
 are therefore not officially supported (although they may work).
 
 On Debian and Ubuntu, installing `libgirepository1.0-dev`,
-`gobject-introspection` and `gir1.2-gtop-2.0` should be enough to get
-`rake test` working.
+`gobject-introspection`, `gir1.2-gtop-2.0` and `gir1.2-gstreamer-1.0` should be
+enough to get `rake test` working.
 
 GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
 
