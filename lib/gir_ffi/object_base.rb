@@ -55,7 +55,8 @@ module GirFFI
     # @return [GObjectIntrospection::ISignalInfo] The signal's info
     #
     def self.find_signal(name)
-      gir_ffi_builder.find_signal! name
+      gir_ffi_builder.find_signal name or
+        raise GirFFI::SignalNotFoundError.new(name, self)
     end
 
     def self.object_class

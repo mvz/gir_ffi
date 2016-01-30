@@ -86,9 +86,8 @@ describe GObject do
 
     it 'does not allow connecting an invalid signal' do
       o = Regress::TestSubObj.new
-      assert_raises RuntimeError do
-        GObject.signal_connect(o, 'not-really-a-signal') {}
-      end
+      proc { GObject.signal_connect(o, 'not-really-a-signal') {} }.
+        must_raise GirFFI::SignalNotFoundError
     end
 
     it 'handles return values' do
@@ -100,9 +99,7 @@ describe GObject do
 
     it 'requires a block' do
       o = Regress::TestSubObj.new
-      assert_raises ArgumentError do
-        GObject.signal_connect o, 'test'
-      end
+      proc { GObject.signal_connect o, 'test' }.must_raise ArgumentError
     end
 
     it 'allows specifying signal detail' do
