@@ -1,3 +1,5 @@
+require 'gir_ffi/property_not_found_error'
+
 GObject.load_class :Object
 
 module GObject
@@ -116,7 +118,9 @@ module GObject
     end
 
     def property_gtype(property_name)
-      property_param_spec(property_name).value_type
+      pspec = property_param_spec(property_name) or
+        raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
+      pspec.value_type
     end
 
     def property_param_spec(property_name)
