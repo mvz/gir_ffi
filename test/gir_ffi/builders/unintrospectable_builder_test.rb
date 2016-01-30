@@ -1,15 +1,11 @@
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Gio
+
 describe GirFFI::Builders::UnintrospectableBuilder do
   describe 'building the GLocalFile type' do
     before do
-      # Ensure existence of GLocalFile type
-      GirFFI.setup :Gio
-      unless Gio::Lib.respond_to? :g_file_new_for_path
-        Gio.setup_method 'file_new_for_path'
-      end
-      ptr = GirFFI::InPointer.from :utf8, '/'
-      Gio::Lib.g_file_new_for_path(ptr)
+      Gio.file_new_for_path '/'
 
       @gtype = GObject.type_from_name 'GLocalFile'
       @info = GirFFI::UnintrospectableTypeInfo.new(@gtype)
