@@ -21,8 +21,11 @@ module GirFFI
       end
 
       def find_signal(signal_name)
-        seek_in_ancestor_infos { |info| info.find_signal signal_name } or
-          raise "Signal #{signal_name} not found"
+        seek_in_ancestor_infos { |info| info.find_signal signal_name }
+      end
+
+      def find_signal!(signal_name)
+        find_signal signal_name or raise "Signal #{signal_name} not found"
       end
 
       def find_property(property_name)
