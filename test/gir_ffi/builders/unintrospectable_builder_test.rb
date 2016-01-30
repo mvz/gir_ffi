@@ -1,6 +1,8 @@
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :Gio
+GirFFI.setup :Gst
+Gst.init []
 
 describe GirFFI::Builders::UnintrospectableBuilder do
   describe 'building the GLocalFile type' do
@@ -46,6 +48,20 @@ describe GirFFI::Builders::UnintrospectableBuilder do
     describe '#object_class_struct' do
       it 'returns the parent class struct' do
         @bldr.object_class_struct.must_equal GObject::ObjectClass
+      end
+    end
+  end
+
+  describe 'building the GstFakeSink type' do
+    let(:instance) { Gst::ElementFactory.make('fakesink', 'sink') }
+    let(:klass) { instance.class }
+    let(:builder) { klass.gir_ffi_builder }
+
+    describe 'its #find_signal method' do
+      it 'finds signals that are not defined in the GIR' do
+        signal = builder.find_signal 'handoff'
+        signal.wont_be_nil
+        signal.name.must_equal 'handoff'
       end
     end
   end

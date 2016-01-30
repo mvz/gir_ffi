@@ -1,4 +1,5 @@
 require 'gir_ffi/builders/object_builder'
+require 'gir_ffi/unintrospectable_signal_info'
 
 module GirFFI
   module Builders
@@ -18,6 +19,13 @@ module GirFFI
 
       def setup_instance_method(_method)
         false
+      end
+
+      def find_signal(signal_name)
+        info = super
+        return info if info
+        signal_id = GObject.signal_lookup signal_name, target_gtype
+        return UnintrospectableSignalInfo.new(signal_id) if signal_id > 0
       end
     end
   end
