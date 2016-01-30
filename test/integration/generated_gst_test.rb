@@ -9,10 +9,10 @@ describe 'the generated Gst module' do
     let(:instance) { Gst::ElementFactory.make('fakesink', 'sink') }
 
     it 'allows the handoff signal to be connected and emitted' do
-      skip
       a = nil
       instance.signal_connect('handoff') { a = 10 }
-      instance.signal_emit('handoff')
+      skip
+      GObject.signal_emit(instance, 'handoff')
       a.must_equal 10
     end
   end
