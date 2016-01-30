@@ -1,3 +1,5 @@
+require 'gir_ffi/property_not_found_error'
+
 GObject.load_class :Object
 
 module GObject
@@ -8,9 +10,7 @@ module GObject
     def initialize_with_automatic_gtype(properties = {})
       gparameters = properties.map do |name, value|
         name = name.to_s
-        unless property_param_spec(name)
-          raise ArgumentError, "Property '#{name}' not found in class #{self.class}"
-        end
+        property_param_spec(name)
         GObject::Parameter.new.tap do |gparam|
           gparam.name = name
           gparam.value = value
@@ -106,7 +106,7 @@ module GObject
     private
 
     def get_property_type(property_name)
-      prop = self.class.find_property property_name
+      prop = self.class.find_property(property_name)
       prop.property_type
     end
 
@@ -116,11 +116,13 @@ module GObject
     end
 
     def property_gtype(property_name)
-      property_param_spec(property_name).value_type
+      pspec = property_param_spec(property_name)
+      pspec.value_type
     end
 
     def property_param_spec(property_name)
-      object_class.find_property property_name
+      object_class.find_property property_name or
+        raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
     # TODO: Move to ITypeInfo

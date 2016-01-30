@@ -27,14 +27,8 @@ describe GirFFI::Builders::ObjectBuilder do
       sig.name.must_equal 'changed'
     end
 
-    it "raises an error for a signal that doesn't exist" do
-      msg = nil
-      begin
-        obj_builder.find_signal 'foo'
-      rescue RuntimeError => e
-        msg = e.message
-      end
-      assert_match(/^Signal/, msg)
+    it "returns nil for a signal that doesn't exist" do
+      obj_builder.find_signal('foo').must_be_nil
     end
   end
 
@@ -49,10 +43,8 @@ describe GirFFI::Builders::ObjectBuilder do
       prop.name.must_equal 'int'
     end
 
-    it 'raises an error if the property is not found' do
-      proc do
-        sub_obj_builder.find_property('this-property-does-not-exist')
-      end.must_raise RuntimeError
+    it 'returns nil if the property is not found' do
+      sub_obj_builder.find_property('this-property-does-not-exist').must_be_nil
     end
   end
 
