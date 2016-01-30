@@ -26,7 +26,7 @@ module GLib
 
       def handler_proc
         proc do
-          Thread.pass
+          ::Thread.pass
           true
         end
       end
