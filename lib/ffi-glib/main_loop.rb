@@ -62,3 +62,7 @@ module GLib
     alias_method :run, :run_with_thread_enabler
   end
 end
+
+Signal.trap 'INT' do
+  GLib::MainLoop.handle_exception(Interrupt.new)
+end

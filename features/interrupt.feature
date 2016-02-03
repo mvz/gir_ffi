@@ -6,10 +6,6 @@ Feature: Interrupting a program
       require 'gir_ffi'
 
       loop = GLib::MainLoop.new nil, false
-      Signal.trap 'INT' do
-        GLib::MainLoop::EXCEPTIONS << Interrupt.new
-        loop.quit
-      end
       puts 'doing'
       loop.run
       puts 'done'
