@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-* Add field accessors for Object types
+* Add field accessors for Object types for fields that don't have corresponding
+  properties
+* Improve error handling for signals and properties that are not found
+* Handle signals without GIR data
 
 ## 0.9.0 / 2016-01-21
 

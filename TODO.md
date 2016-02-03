@@ -10,7 +10,7 @@ Add something like the following by default:
 
 ## Memory managment
 
-GirFFI does not attempt to free any memory at the moment, or lower the
+GirFFI does not ~~attempt to free any memory at the moment, or~~ lower the
 reference count of any objects it gets from GObject. This task therefore involves two parts:
 
 - Free non-GObject pointers as needed (at garbage-collection time)
