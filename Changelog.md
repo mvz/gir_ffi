@@ -6,6 +6,7 @@
   properties
 * Improve error handling for signals and properties that are not found
 * Handle signals without GIR data
+* Add interrupt handler to break out of main loops
 
 ## 0.9.0 / 2016-01-21
 
