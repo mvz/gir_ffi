@@ -1,4 +1,5 @@
 require 'rake/testtask'
+require 'cucumber/rake/task'
 
 require 'rexml/document'
 require 'rexml/streamlistener'
@@ -184,6 +185,10 @@ namespace :test do
     make_stub_file 'Regress'
     make_stub_file 'Utility'
     make_stub_file 'WarnLib'
+  end
+
+  Cucumber::Rake::Task.new(:features) do |t|
+    t.cucumber_opts = 'features --format pretty'
   end
 end
 
