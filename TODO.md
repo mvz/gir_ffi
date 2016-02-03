@@ -1,13 +1,5 @@
 # TODO
 
-## Handle interrupts
-
-Add something like the following by default:
-
-    Signal.trap 'INT' do
-      mainloop.quit
-    end
-
 ## Memory managment
 
 GirFFI does not ~~attempt to free any memory at the moment, or~~ lower the
