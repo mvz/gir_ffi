@@ -36,6 +36,15 @@ module GirFFI
         @ancestor_infos ||= [info] + info.interfaces + parent_ancestor_infos
       end
 
+      def eligible_fields
+        info.fields.reject do |finfo|
+          fname = finfo.name
+          fname == 'parent_instance' ||
+            info.find_instance_method("get_#{fname}") ||
+            info.find_property(fname)
+        end
+      end
+
       protected
 
       def object_class_struct_info
@@ -87,9 +96,7 @@ module GirFFI
       end
 
       def setup_field_accessors
-        fields.each do |finfo|
-          next if info.find_property finfo.name
-          next if finfo.name == 'parent_instance'
+        eligible_fields.each do |finfo|
           FieldBuilder.new(finfo).build
         end
       end
@@ -122,6 +129,7 @@ module GirFFI
       def provide_initializer
         return if info.find_method 'new'
 
+        # FIXME: Only valid if the object descends from GObject::Object
         klass.class_eval "
           def initialize(properties = {})
             base_initialize(properties)
