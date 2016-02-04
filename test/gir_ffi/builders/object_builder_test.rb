@@ -78,4 +78,16 @@ describe GirFFI::Builders::ObjectBuilder do
       assert_equal [:parent, GObject::Object::Struct, 0], spec
     end
   end
+
+  describe '#eligible_fields' do
+    let(:param_spec_builder) do
+      GirFFI::Builders::ObjectBuilder.new(
+        get_introspection_data('GObject', 'ParamSpec'))
+    end
+
+    it 'skips fields that have a matching getter method' do
+      result = param_spec_builder.eligible_fields
+      result.map(&:name).wont_include 'name'
+    end
+  end
 end

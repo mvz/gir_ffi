@@ -36,6 +36,12 @@ module GirFFI
         @ancestor_infos ||= [info] + info.interfaces + parent_ancestor_infos
       end
 
+      def eligible_fields
+        info.fields.select { |finfo|
+          !info.find_instance_method("get_#{finfo.name}")
+        }
+      end
+
       protected
 
       def object_class_struct_info
