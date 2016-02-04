@@ -45,6 +45,12 @@ module GirFFI
         end
       end
 
+      def eligible_properties
+        info.properties.reject do |pinfo|
+          info.find_instance_method("get_#{pinfo.name}")
+        end
+      end
+
       protected
 
       def object_class_struct_info
@@ -102,7 +108,7 @@ module GirFFI
       end
 
       def setup_property_accessors
-        info.properties.each do |prop|
+        eligible_properties.each do |prop|
           PropertyBuilder.new(prop).build
         end
       end

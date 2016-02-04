@@ -99,4 +99,21 @@ describe GirFFI::Builders::ObjectBuilder do
       result.map(&:name).wont_include 'parent_instance'
     end
   end
+
+  describe '#eligible_properties' do
+    let(:wi_builder) do
+      GirFFI::Builders::ObjectBuilder.new(
+        get_introspection_data('Regress', 'TestWi8021x'))
+    end
+
+    it 'includes properties that do not have a matching getter method' do
+      result = obj_builder.eligible_properties
+      result.map(&:name).must_include 'double'
+    end
+
+    it 'skips properties that have a matching getter method' do
+      result = wi_builder.eligible_properties
+      result.map(&:name).wont_include 'testbool'
+    end
+  end
 end
