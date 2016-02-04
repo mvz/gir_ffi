@@ -37,9 +37,12 @@ module GirFFI
       end
 
       def eligible_fields
-        info.fields.select { |finfo|
-          !info.find_instance_method("get_#{finfo.name}")
-        }
+        info.fields.reject do |finfo|
+          fname = finfo.name
+          fname == 'parent_instance' ||
+            info.find_instance_method("get_#{fname}") ||
+            info.find_property(fname)
+        end
       end
 
       protected
@@ -94,8 +97,6 @@ module GirFFI
 
       def setup_field_accessors
         eligible_fields.each do |finfo|
-          next if info.find_property finfo.name
-          next if finfo.name == 'parent_instance'
           FieldBuilder.new(finfo).build
         end
       end
