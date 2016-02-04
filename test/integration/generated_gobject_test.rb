@@ -101,4 +101,14 @@ describe GObject do
       end
     end
   end
+
+  describe GObject::ParamSpec do
+    it 'does not have a separate #name field accessor' do
+      pspec = GObject.param_spec_int('foo', 'foo bar',
+                                     'The Foo Bar Property',
+                                     10, 20, 15,
+                                     3)
+      pspec.wont_respond_to :name
+    end
+  end
 end

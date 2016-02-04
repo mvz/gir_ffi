@@ -93,7 +93,7 @@ module GirFFI
       end
 
       def setup_field_accessors
-        fields.each do |finfo|
+        eligible_fields.each do |finfo|
           next if info.find_property finfo.name
           next if finfo.name == 'parent_instance'
           FieldBuilder.new(finfo).build
@@ -128,6 +128,7 @@ module GirFFI
       def provide_initializer
         return if info.find_method 'new'
 
+        # FIXME: Only valid if the object descends from GObject::Object
         klass.class_eval "
           def initialize(properties = {})
             base_initialize(properties)
