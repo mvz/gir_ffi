@@ -3,7 +3,7 @@
 ## Unreleased
 
 * Add field accessors for Object types for fields that don't have corresponding
-  properties
+  properties or getter methods
 * Improve error handling for signals and properties that are not found
 * Handle signals without GIR data
 * Add interrupt handler to break out of main loops
