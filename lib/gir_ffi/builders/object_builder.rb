@@ -108,7 +108,7 @@ module GirFFI
       end
 
       def setup_property_accessors
-        info.properties.each do |prop|
+        eligible_properties.each do |prop|
           PropertyBuilder.new(prop).build
         end
       end
