@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.1 / 2016-02-04
 
 * Add field accessors for Object types for fields that don't have corresponding
   properties or getter methods
