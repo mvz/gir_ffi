@@ -45,6 +45,12 @@ module GirFFI
         end
       end
 
+      def eligible_properties
+        info.properties.reject do |pinfo|
+          info.find_instance_method("get_#{pinfo.name}")
+        end
+      end
+
       protected
 
       def object_class_struct_info
