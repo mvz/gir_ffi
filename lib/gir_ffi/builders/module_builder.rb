@@ -63,7 +63,7 @@ module GirFFI
 
       def build_dependencies
         deps = gir.dependencies @namespace
-        deps.each do|dep|
+        deps.each do |dep|
           name, version = dep.split '-'
           Builder.build_module name, version
         end

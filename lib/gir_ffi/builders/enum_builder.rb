@@ -15,7 +15,7 @@ module GirFFI
       end
 
       def value_spec
-        info.values.map do|vinfo|
+        info.values.map do |vinfo|
           val = GirFFI::ArgHelper.cast_uint32_to_int32(vinfo.value)
           [vinfo.name.to_sym, val]
         end.flatten

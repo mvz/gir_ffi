@@ -57,7 +57,7 @@ module GirFFI
 
       def tag_or_class
         base = case tag
-               when:interface
+               when :interface
                  Builder.build_class interface
                when :ghash
                  [tag, *element_type]

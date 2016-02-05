@@ -2484,7 +2484,7 @@ describe Regress do
 
     result.size.must_equal 2
 
-    result.each do|o|
+    result.each do |o|
       assert_instance_of Regress::TestObj, o
       assert_equal gtype, GObject.type_from_instance(o)
     end

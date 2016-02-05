@@ -29,7 +29,7 @@ module GLib
     end
 
     def each
-      prc = proc do|keyptr, valptr, _userdata|
+      prc = proc do |keyptr, valptr, _userdata|
         key = GirFFI::ArgHelper.cast_from_pointer key_type, keyptr
         val = GirFFI::ArgHelper.cast_from_pointer value_type, valptr
         yield key, val
