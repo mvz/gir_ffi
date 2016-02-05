@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2 / 2016-02-05
+
+* Do not create a property accessor when a corresponding getter method exists
+
 ## 0.9.1 / 2016-02-04
 
 * Add field accessors for Object types for fields that don't have corresponding
