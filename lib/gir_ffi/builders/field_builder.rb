@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/field_argument_info'

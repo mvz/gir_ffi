@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Helper class for storing objects for later retrieval. Used to store user
   # data arguments.

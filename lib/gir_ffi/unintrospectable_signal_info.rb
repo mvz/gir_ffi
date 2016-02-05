@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Represents a signal not found in the GIR, conforming, as needed, to the
   # interface of GObjectIntrospection::ISignalInfo.

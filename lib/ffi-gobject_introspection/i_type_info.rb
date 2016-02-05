@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GObjectIntrospection
   # Wraps a GITypeInfo struct.
   # Represents type information, direction, transfer etc.

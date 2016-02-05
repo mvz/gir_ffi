@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'ffi-glib/container_class_methods'
 
 GLib.load_class :HashTable

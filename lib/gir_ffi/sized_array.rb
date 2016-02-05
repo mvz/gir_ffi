@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Class representing an array with a determined size
   class SizedArray

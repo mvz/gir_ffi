@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GLib
   # Extra methods for GLib::Strv. The bulk is defined in `gir_ffi-base/glib/strv.rb`
   class Strv

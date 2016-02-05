@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GObjectIntrospection
   # Wraps a GIFieldInfo struct.
   # Represents a field of an IStructInfo or an IUnionInfo.

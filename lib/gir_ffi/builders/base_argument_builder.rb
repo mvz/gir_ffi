@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   module Builders
     # Abstract parent class of the argument building classes. These

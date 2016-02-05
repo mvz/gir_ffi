@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GObjectIntrospection
   # Wraps a GIFunctionInfo struct.
   # Represents a function or method.

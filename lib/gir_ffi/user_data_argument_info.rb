@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Class to represent the info for the user data argument of a signal handler.
   # Implements the necessary parts of IArgumentInfo's interface.

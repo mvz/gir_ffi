@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'ffi/bit_masks'
 
 # NOTE: Monkey-patch BitMask to work on JRuby.

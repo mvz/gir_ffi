@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GObjectIntrospection
   # Wraps a GIVFuncInfo struct.
   # Represents a virtual function.

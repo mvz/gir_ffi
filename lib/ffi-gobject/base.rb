@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Preload type contants
 module GObject
   TYPE_INVALID = type_from_name('invalid')

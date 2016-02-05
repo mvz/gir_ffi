@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   module Builders
     # Encapsulates the general structure of generated methods, consisting of a
@@ -17,9 +18,9 @@ module GirFFI
 
       def method_definition
         code = "def #{qualified_method_name}"
-        code << "(#{method_arguments.join(', ')})" if method_arguments.any?
-        method_lines.each { |line| code << "\n  #{line}" }
-        code << "\nend\n"
+        code += "(#{method_arguments.join(', ')})" if method_arguments.any?
+        method_lines.each { |line| code += "\n  #{line}" }
+        code + "\nend\n"
       end
 
       private

@@ -40,6 +40,10 @@ Style/DotPosition:
 Style/FileName:
   Enabled: false
 
+# Comment all the files!
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always
+
 # Require at least two dependent lines before suggesting a guard clause
 Style/GuardClause:
   MinBodyLength: 2

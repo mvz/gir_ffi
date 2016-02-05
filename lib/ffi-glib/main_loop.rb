@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'singleton'
 
 GLib.load_class :MainLoop

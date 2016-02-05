@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'ffi-gobject_introspection/i_base_info'
 
 module GObjectIntrospection

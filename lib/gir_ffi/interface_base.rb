@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/registered_type_base'
 
 module GirFFI

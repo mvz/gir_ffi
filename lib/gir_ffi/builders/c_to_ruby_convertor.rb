@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   module Builders
     # Builder that generates code to convert values from C to Ruby. Used by

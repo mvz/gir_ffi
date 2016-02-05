@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi-base/gobject/lib'
 
 # The part of the GObject namespace that is needed by GObjectIntrospection.

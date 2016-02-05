@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/callback_return_value_builder'
 
 module GirFFI

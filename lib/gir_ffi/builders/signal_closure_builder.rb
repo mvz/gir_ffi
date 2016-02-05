@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/base_type_builder'
 require 'gir_ffi/builders/marshalling_method_builder'
 

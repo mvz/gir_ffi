@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/boxed_builder'
 
 module GirFFI

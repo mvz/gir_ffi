@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi_test_helper'
 
 # Tests how methods are looked up and generated on first use.

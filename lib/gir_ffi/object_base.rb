@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/class_base'
 
 module GirFFI

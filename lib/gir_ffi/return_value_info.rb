@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Represents a return value with the same interface as IArgumentInfo
   class ReturnValueInfo

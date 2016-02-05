@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/type_builder'
 require 'gir_ffi/builders/module_builder'
 require 'gir_ffi/builder_helper'

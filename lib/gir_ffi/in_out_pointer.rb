@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.

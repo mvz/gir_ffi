@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 GLib.load_class :IConv
 
 module GLib

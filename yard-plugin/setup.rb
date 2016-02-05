@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'yard'
 
 # Template helper to modify processing of links in HTML generated from our

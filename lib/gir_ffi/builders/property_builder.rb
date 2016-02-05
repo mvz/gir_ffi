@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   module Builders
     # Creates property getter and setter code for a given IPropertyInfo.

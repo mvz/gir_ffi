@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   module Builders
     # Class builder that does nothing

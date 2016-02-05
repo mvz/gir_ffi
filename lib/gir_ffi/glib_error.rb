@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # Exception class to be raised whenever an error is signaled through
   # GLib::Error.

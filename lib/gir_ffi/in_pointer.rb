@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GirFFI
   # The InPointer class handles conversion from ruby types to pointers for
   # arguments with direction :in. This is used for arguments that are

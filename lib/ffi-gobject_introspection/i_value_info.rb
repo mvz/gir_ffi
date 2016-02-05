@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module GObjectIntrospection
   # Wraps a GIValueInfo struct.
   # Represents one of the enum values of an IEnumInfo.

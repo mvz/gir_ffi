@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'gir_ffi/builders/enum_builder'
 require 'gir_ffi/flags_base'
 
