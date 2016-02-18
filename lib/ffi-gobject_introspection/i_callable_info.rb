@@ -19,6 +19,10 @@ module GObjectIntrospection
       Lib.g_callable_info_may_return_null @gobj
     end
 
+    def can_throw_gerror?
+      Lib.g_callable_info_can_throw_gerror @gobj
+    end
+
     def n_args
       Lib.g_callable_info_get_n_args @gobj
     end
