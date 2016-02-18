@@ -10,7 +10,6 @@ module GirFFI
     # Implements the creation mapping method for a signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
-    #
     class MarshallingMethodBuilder < BaseMethodBuilder
       def self.for_signal(receiver_info, info)
         new receiver_info, info
@@ -19,8 +18,6 @@ module GirFFI
       def initialize(receiver_info, info)
         @info = info
         @receiver_builder = make_argument_builder receiver_info
-
-        @template = MethodTemplate.new(self, argument_builder_collection)
       end
 
       def argument_builder_collection
@@ -38,9 +35,7 @@ module GirFFI
           ClosureReturnValueBuilder.new(variable_generator, return_value_info)
       end
 
-      def method_definition
-        @template.method_definition
-      end
+      ## Methods used by MethodTemplate
 
       def method_name
         'marshaller'
