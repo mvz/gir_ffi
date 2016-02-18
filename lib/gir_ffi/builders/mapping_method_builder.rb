@@ -32,11 +32,14 @@ module GirFFI
         @argument_builder_collection =
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,
                                         receiver_builder: receiver_builder)
-        @template = MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_definition
-        @template.method_definition
+        template.method_definition
+      end
+
+      def template
+        @template ||= MethodTemplate.new(self, @argument_builder_collection)
       end
 
       def method_name
