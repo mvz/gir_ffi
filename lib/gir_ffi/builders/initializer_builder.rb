@@ -9,7 +9,7 @@ module GirFFI
     class InitializerBuilder < BaseMethodBuilder
       def initialize(info)
         @info = info
-        @return_value_builder = InitializerReturnValueBuilder.new(vargen,
+        @return_value_builder = InitializerReturnValueBuilder.new(variable_generator,
                                                                   return_value_info)
       end
 

@@ -12,8 +12,8 @@ module GirFFI
   module Builders
     # Base class for method definition builders.
     class BaseMethodBuilder
-      def vargen
-        @vargen ||= VariableNameGenerator.new
+      def variable_generator
+        @variable_generator ||= VariableNameGenerator.new
       end
 
       def method_definition
@@ -27,7 +27,8 @@ module GirFFI
       # Methods used for setting up the builders
 
       def argument_builders
-        @argument_builders ||= @info.args.map { |arg| ArgumentBuilder.new vargen, arg }
+        @argument_builders ||=
+          @info.args.map { |arg| ArgumentBuilder.new variable_generator, arg }
       end
 
       def return_value_info
@@ -45,7 +46,7 @@ module GirFFI
       def error_argument
         @error_argument ||=
           if @info.throws?
-            ErrorArgumentBuilder.new vargen, ErrorArgumentInfo.new
+            ErrorArgumentBuilder.new variable_generator, ErrorArgumentInfo.new
           else
             NullArgumentBuilder.new
           end
