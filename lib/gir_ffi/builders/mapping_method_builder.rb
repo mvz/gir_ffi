@@ -14,11 +14,15 @@ module GirFFI
     #
     # TODO: Inherit from BaseMethodBuilder
     class MappingMethodBuilder
-      def self.for_callback(argument_infos, return_value_info)
+      def self.for_callback(info, return_value_info)
+        argument_infos = info.args
         new nil, argument_infos, return_value_info, CallbackArgumentBuilder
       end
 
-      def self.for_vfunc(receiver_info, argument_infos, return_value_info)
+      def self.for_vfunc(receiver_info, info, return_value_info)
+        argument_infos = info.args
+        argument_infos << ErrorArgumentInfo.new if info.throws?
+
         new receiver_info, argument_infos, return_value_info, VFuncArgumentBuilder
       end
 
