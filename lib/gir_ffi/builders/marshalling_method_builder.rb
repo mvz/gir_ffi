@@ -18,16 +18,24 @@ module GirFFI
 
       def initialize(receiver_info, info)
         @info = info
-        argument_infos = info.args
-        receiver_builder = make_argument_builder receiver_info
-        argument_builders = argument_infos.map { |arg| make_argument_builder arg }
-        return_value_builder =
-          ClosureReturnValueBuilder.new(variable_generator, return_value_info)
+        @receiver_builder = make_argument_builder receiver_info
 
-        @argument_builder_collection =
+        @template = MethodTemplate.new(self, argument_builder_collection)
+      end
+
+      def argument_builder_collection
+        @argument_builder_collection ||=
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                        receiver_builder: receiver_builder)
-        @template = MethodTemplate.new(self, @argument_builder_collection)
+                                        receiver_builder: @receiver_builder)
+      end
+
+      def argument_builders
+        @info.args.map { |arg| make_argument_builder arg }
+      end
+
+      def return_value_builder
+        @return_value_builder ||=
+          ClosureReturnValueBuilder.new(variable_generator, return_value_info)
       end
 
       def method_definition
