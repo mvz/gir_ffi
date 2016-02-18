@@ -104,6 +104,7 @@ For how to handle objects, see https://bugzilla.gnome.org/show_bug.cgi?id=657202
 
 * Move GObjectIntrospection to GIRepository, and allow generating its own
   members.
+* Do something useful with the versioning info in the GIR
 
 ## External dependencies
 
