@@ -23,18 +23,25 @@ module GirFFI
       end
 
       def initialize(receiver_info, info, return_value_info, builder_class)
-        argument_infos = info.args
-        argument_infos << ErrorArgumentInfo.new if info.can_throw_gerror?
+        @info = info
         @argument_builder_class = builder_class
         @receiver_builder = receiver_info ? make_argument_builder(receiver_info) : nil
-        @argument_builders = argument_infos.map { |it| make_argument_builder it }
         @return_value_builder =
           CallbackReturnValueBuilder.new(variable_generator, return_value_info)
       end
 
+      def argument_builders
+        @argument_builders ||=
+          begin
+            argument_infos = @info.args
+            argument_infos << ErrorArgumentInfo.new if @info.can_throw_gerror?
+            argument_infos.map { |it| make_argument_builder it }
+          end
+      end
+
       def argument_builder_collection
         @argument_builder_collection ||=
-          ArgumentBuilderCollection.new(@return_value_builder, @argument_builders,
+          ArgumentBuilderCollection.new(@return_value_builder, argument_builders,
                                         receiver_builder: @receiver_builder)
       end
 
