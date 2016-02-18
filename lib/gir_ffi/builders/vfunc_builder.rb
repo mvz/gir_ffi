@@ -24,13 +24,8 @@ module GirFFI
 
       def mapping_method_definition
         receiver_info = ReceiverArgumentInfo.new receiver_type_info
-        return_value_info = ReturnValueInfo.new(info.return_type,
-                                                info.caller_owns,
-                                                info.skip_return?)
 
-        MappingMethodBuilder.for_vfunc(receiver_info,
-                                       info,
-                                       return_value_info).method_definition
+        MappingMethodBuilder.for_vfunc(receiver_info, info).method_definition
       end
 
       def receiver_type_info

@@ -14,20 +14,29 @@ module GirFFI
     #
     # TODO: Inherit from BaseMethodBuilder
     class MappingMethodBuilder
-      def self.for_callback(info, return_value_info)
-        new nil, info, return_value_info, CallbackArgumentBuilder
+      def self.for_callback(info)
+        new nil, info, CallbackArgumentBuilder
       end
 
-      def self.for_vfunc(receiver_info, info, return_value_info)
-        new receiver_info, info, return_value_info, VFuncArgumentBuilder
+      def self.for_vfunc(receiver_info, info)
+        new receiver_info, info, VFuncArgumentBuilder
       end
 
-      def initialize(receiver_info, info, return_value_info, builder_class)
+      def initialize(receiver_info, info, builder_class)
         @info = info
         @argument_builder_class = builder_class
         @receiver_builder = receiver_info ? make_argument_builder(receiver_info) : nil
-        @return_value_builder =
+      end
+
+      def return_value_builder
+        @return_value_builder ||=
           CallbackReturnValueBuilder.new(variable_generator, return_value_info)
+      end
+
+      def return_value_info
+        @return_value_info ||= ReturnValueInfo.new(@info.return_type,
+                                                   @info.caller_owns,
+                                                   @info.skip_return?)
       end
 
       def argument_builders
@@ -41,7 +50,7 @@ module GirFFI
 
       def argument_builder_collection
         @argument_builder_collection ||=
-          ArgumentBuilderCollection.new(@return_value_builder, argument_builders,
+          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
                                         receiver_builder: @receiver_builder)
       end
 
