@@ -33,12 +33,6 @@ module GirFFI
           CallbackReturnValueBuilder.new(variable_generator, return_value_info)
       end
 
-      def return_value_info
-        @return_value_info ||= ReturnValueInfo.new(@info.return_type,
-                                                   @info.caller_owns,
-                                                   @info.skip_return?)
-      end
-
       def argument_builders
         @argument_builders ||=
           begin
@@ -54,14 +48,6 @@ module GirFFI
                                         receiver_builder: @receiver_builder)
       end
 
-      def method_definition
-        template.method_definition
-      end
-
-      def template
-        @template ||= MethodTemplate.new(self, argument_builder_collection)
-      end
-
       ## Methods used by MethodTemplate
 
       def method_name
@@ -71,10 +57,6 @@ module GirFFI
       def method_arguments
         @method_arguments ||=
           argument_builder_collection.method_argument_names.dup.unshift('_proc')
-      end
-
-      def preparation
-        []
       end
 
       def invocation
@@ -97,10 +79,6 @@ module GirFFI
 
       def call_argument_list
         argument_builder_collection.call_argument_names.join(', ')
-      end
-
-      def variable_generator
-        @variable_generator ||= VariableNameGenerator.new
       end
 
       def make_argument_builder(argument_info)
