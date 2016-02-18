@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'gir_ffi_test_helper'
+require 'base_test_helper'
 
 describe GLib::Boolean do
   it 'has the same native size as an int' do
