@@ -12,11 +12,13 @@ module GirFFI
     # result from Ruby to C.
     #
     class MarshallingMethodBuilder < BaseMethodBuilder
-      def self.for_signal(receiver_info, argument_infos, return_value_info)
-        new receiver_info, argument_infos, return_value_info
+      def self.for_signal(receiver_info, info)
+        new receiver_info, info
       end
 
-      def initialize(receiver_info, argument_infos, return_value_info)
+      def initialize(receiver_info, info)
+        @info = info
+        argument_infos = info.args
         receiver_builder = make_argument_builder receiver_info
         argument_builders = argument_infos.map { |arg| make_argument_builder arg }
         return_value_builder =
@@ -72,10 +74,6 @@ module GirFFI
 
       def param_names
         @param_names ||= @argument_builder_collection.method_argument_names
-      end
-
-      def variable_generator
-        @variable_generator ||= VariableNameGenerator.new
       end
 
       def make_argument_builder(argument_info)
