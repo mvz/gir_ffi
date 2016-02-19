@@ -22,14 +22,18 @@ module GirFFI
 
       def initialize(receiver_info, info, builder_class)
         super(info, CallbackReturnValueBuilder, argument_builder_class: builder_class)
-        @receiver_builder = receiver_info ? make_argument_builder(receiver_info) : nil
+        @receiver_info = receiver_info
+      end
+
+      def receiver_builder
+        @receiver_builder ||= @receiver_info ? make_argument_builder(@receiver_info) : nil
       end
 
       def argument_builder_collection
         @argument_builder_collection ||=
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,
                                         error_argument_builder: error_argument,
-                                        receiver_builder: @receiver_builder)
+                                        receiver_builder: receiver_builder)
       end
 
       ## Methods used by MethodTemplate
