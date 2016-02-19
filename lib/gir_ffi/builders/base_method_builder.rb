@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/error_argument_builder'
 require 'gir_ffi/builders/method_template'
 require 'gir_ffi/builders/null_argument_builder'
 require 'gir_ffi/error_argument_info'
@@ -46,7 +45,7 @@ module GirFFI
       def error_argument
         @error_argument ||=
           if @info.throws?
-            ErrorArgumentBuilder.new variable_generator, ErrorArgumentInfo.new
+            ArgumentBuilder.new variable_generator, ErrorArgumentInfo.new
           else
             NullArgumentBuilder.new
           end
