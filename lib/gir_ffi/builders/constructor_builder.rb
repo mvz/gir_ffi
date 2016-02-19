@@ -7,6 +7,7 @@ module GirFFI
   module Builders
     # Implements the creation of a Ruby constructor definition out of a
     # GIR IFunctionInfo.
+    # TODO: Derive from BaseMethodBuilder
     class ConstructorBuilder
       def initialize(info)
         @info = info
