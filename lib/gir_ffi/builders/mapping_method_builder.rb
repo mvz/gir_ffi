@@ -21,12 +21,9 @@ module GirFFI
       end
 
       def initialize(receiver_info, info, builder_class)
-        super(info, CallbackReturnValueBuilder, argument_builder_class: builder_class)
-        @receiver_info = receiver_info
-      end
-
-      def receiver_builder
-        @receiver_builder ||= @receiver_info ? make_argument_builder(@receiver_info) : nil
+        super(info, CallbackReturnValueBuilder,
+              receiver_info: receiver_info,
+              argument_builder_class: builder_class)
       end
 
       def argument_builder_collection

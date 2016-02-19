@@ -17,14 +17,14 @@ module GirFFI
 
       def initialize(receiver_info, info)
         super(info, ClosureReturnValueBuilder,
+              receiver_info: receiver_info,
               argument_builder_class: ClosureArgumentBuilder)
-        @receiver_builder = make_argument_builder receiver_info
       end
 
       def argument_builder_collection
         @argument_builder_collection ||=
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                        receiver_builder: @receiver_builder)
+                                        receiver_builder: receiver_builder)
       end
 
       ## Methods used by MethodTemplate

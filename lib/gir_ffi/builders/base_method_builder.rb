@@ -12,10 +12,12 @@ module GirFFI
     # Base class for method definition builders.
     class BaseMethodBuilder
       def initialize(info, return_value_builder_class,
+                     receiver_info: nil,
                      argument_builder_class: ArgumentBuilder)
         @info = info
         @return_value_builder_class = return_value_builder_class
         @argument_builder_class = argument_builder_class
+        @receiver_info = receiver_info
       end
 
       def variable_generator
@@ -46,6 +48,10 @@ module GirFFI
       def return_value_builder
         @return_value_builder = @return_value_builder_class.new(variable_generator,
                                                                 return_value_info)
+      end
+
+      def receiver_builder
+        @receiver_builder ||= @receiver_info ? make_argument_builder(@receiver_info) : nil
       end
 
       def argument_builder_collection
