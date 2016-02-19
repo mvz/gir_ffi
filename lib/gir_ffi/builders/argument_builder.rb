@@ -38,14 +38,14 @@ module GirFFI
 
       def pre_conversion
         pr = []
+        if has_ingoing_component?
+          pr << fixed_array_size_check if needs_size_check?
+          pr << array_length_assignment if array_length_parameter?
+        end
         case direction
         when :in
-          pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if array_length_parameter?
           pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
         when :inout
-          pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if array_length_parameter?
           pr << out_parameter_preparation
           pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
         when :out
@@ -126,7 +126,11 @@ module GirFFI
       end
 
       def has_input_value?
-        (direction == :inout || direction == :in) && !skipped?
+        has_ingoing_component? && !skipped?
+      end
+
+      def has_ingoing_component?
+        (direction == :inout || direction == :in)
       end
 
       def array_length_assignment
