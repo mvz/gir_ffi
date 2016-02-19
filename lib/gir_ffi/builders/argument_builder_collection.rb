@@ -40,15 +40,15 @@ module GirFFI
             base = []
             block = nil
             argument_builders.each do |it|
-              name = it.method_argument_name
               if !block && it.block_argument?
-                block = "&#{name}"
+                block = it
               else
-                base << name
+                base << it
               end
             end
-            base << block if block
-            base.compact
+            args = base.map(&:method_argument_name).compact
+            args << "&#{block.method_argument_name}" if block
+            args
           end
       end
 
