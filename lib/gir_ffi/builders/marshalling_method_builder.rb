@@ -16,6 +16,7 @@ module GirFFI
       end
 
       def initialize(receiver_info, info)
+        super(info, ClosureReturnValueBuilder)
         @info = info
         @receiver_builder = make_argument_builder receiver_info
       end
@@ -28,11 +29,6 @@ module GirFFI
 
       def argument_builders
         @info.args.map { |arg| make_argument_builder arg }
-      end
-
-      def return_value_builder
-        @return_value_builder ||=
-          ClosureReturnValueBuilder.new(variable_generator, return_value_info)
       end
 
       ## Methods used by MethodTemplate

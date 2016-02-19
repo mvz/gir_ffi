@@ -8,9 +8,7 @@ module GirFFI
     # IFunctionInfo.
     class FunctionBuilder < BaseMethodBuilder
       def initialize(info)
-        @info = info
-        @return_value_builder = ReturnValueBuilder.new(variable_generator,
-                                                       return_value_info)
+        super(info, ReturnValueBuilder)
       end
 
       def method_name

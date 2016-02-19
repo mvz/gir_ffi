@@ -8,9 +8,7 @@ module GirFFI
     # GIR IFunctionInfo.
     class InitializerBuilder < BaseMethodBuilder
       def initialize(info)
-        @info = info
-        @return_value_builder = InitializerReturnValueBuilder.new(variable_generator,
-                                                                  return_value_info)
+        super(info, InitializerReturnValueBuilder)
       end
 
       def singleton_method?

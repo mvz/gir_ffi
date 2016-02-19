@@ -11,6 +11,11 @@ module GirFFI
   module Builders
     # Base class for method definition builders.
     class BaseMethodBuilder
+      def initialize(info, return_value_builder_class)
+        @info = info
+        @return_value_builder_class = return_value_builder_class
+      end
+
       def variable_generator
         @variable_generator ||= VariableNameGenerator.new
       end
@@ -36,9 +41,14 @@ module GirFFI
                                                    @info.skip_return?)
       end
 
+      def return_value_builder
+        @return_value_builder = @return_value_builder_class.new(variable_generator,
+                                                                return_value_info)
+      end
+
       def argument_builder_collection
         @argument_builder_collection ||= ArgumentBuilderCollection.new(
-          @return_value_builder, argument_builders,
+          return_value_builder, argument_builders,
           error_argument_builder: error_argument)
       end
 
