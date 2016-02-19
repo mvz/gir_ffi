@@ -14,6 +14,7 @@ module GirFFI
       def initialize(info, return_value_builder_class)
         @info = info
         @return_value_builder_class = return_value_builder_class
+        @argument_builder_class = ArgumentBuilder
       end
 
       def variable_generator
@@ -32,7 +33,7 @@ module GirFFI
 
       def argument_builders
         @argument_builders ||=
-          @info.args.map { |arg| ArgumentBuilder.new variable_generator, arg }
+          @info.args.map { |arg| make_argument_builder arg }
       end
 
       def return_value_info
@@ -55,7 +56,7 @@ module GirFFI
       def error_argument
         @error_argument ||=
           if @info.throws?
-            ArgumentBuilder.new variable_generator, ErrorArgumentInfo.new
+            make_argument_builder ErrorArgumentInfo.new
           else
             NullArgumentBuilder.new
           end
@@ -79,6 +80,10 @@ module GirFFI
 
       def lib_name
         "#{@info.safe_namespace}::Lib"
+      end
+
+      def make_argument_builder(argument_info)
+        @argument_builder_class.new variable_generator, argument_info
       end
     end
   end

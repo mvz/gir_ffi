@@ -17,7 +17,8 @@ module GirFFI
 
       def initialize(receiver_info, info)
         super(info, ClosureReturnValueBuilder)
-        @info = info
+        @argument_builder_class = ClosureArgumentBuilder
+
         @receiver_builder = make_argument_builder receiver_info
       end
 
@@ -73,10 +74,6 @@ module GirFFI
 
       def param_names
         @param_names ||= @argument_builder_collection.method_argument_names
-      end
-
-      def make_argument_builder(argument_info)
-        ClosureArgumentBuilder.new variable_generator, argument_info
       end
     end
   end

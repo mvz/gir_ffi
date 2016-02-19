@@ -73,10 +73,6 @@ module GirFFI
       def call_argument_list
         argument_builder_collection.call_argument_names.join(', ')
       end
-
-      def make_argument_builder(argument_info)
-        @argument_builder_class.new variable_generator, argument_info
-      end
     end
   end
 end
