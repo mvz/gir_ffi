@@ -55,9 +55,10 @@ module GirFFI
       end
 
       def argument_builder_collection
-        @argument_builder_collection ||= ArgumentBuilderCollection.new(
-          return_value_builder, argument_builders,
-          error_argument_builder: error_argument)
+        @argument_builder_collection ||=
+          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
+                                        error_argument_builder: error_argument,
+                                        receiver_builder: receiver_builder)
       end
 
       def error_argument

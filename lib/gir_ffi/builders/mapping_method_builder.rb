@@ -26,13 +26,6 @@ module GirFFI
               argument_builder_class: builder_class)
       end
 
-      def argument_builder_collection
-        @argument_builder_collection ||=
-          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                        error_argument_builder: error_argument,
-                                        receiver_builder: receiver_builder)
-      end
-
       ## Methods used by MethodTemplate
 
       def method_name
