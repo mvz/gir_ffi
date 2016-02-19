@@ -26,18 +26,10 @@ module GirFFI
         @receiver_builder = receiver_info ? make_argument_builder(receiver_info) : nil
       end
 
-      def argument_builders
-        @argument_builders ||=
-          begin
-            argument_infos = @info.args
-            argument_infos << ErrorArgumentInfo.new if @info.can_throw_gerror?
-            argument_infos.map { |it| make_argument_builder it }
-          end
-      end
-
       def argument_builder_collection
         @argument_builder_collection ||=
           ArgumentBuilderCollection.new(return_value_builder, argument_builders,
+                                        error_argument_builder: error_argument,
                                         receiver_builder: @receiver_builder)
       end
 

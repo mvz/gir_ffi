@@ -28,10 +28,6 @@ module GirFFI
                                         receiver_builder: @receiver_builder)
       end
 
-      def argument_builders
-        @info.args.map { |arg| make_argument_builder arg }
-      end
-
       ## Methods used by MethodTemplate
 
       def method_name

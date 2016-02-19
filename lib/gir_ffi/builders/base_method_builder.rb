@@ -55,7 +55,7 @@ module GirFFI
 
       def error_argument
         @error_argument ||=
-          if @info.throws?
+          if @info.can_throw_gerror?
             make_argument_builder ErrorArgumentInfo.new
           else
             NullArgumentBuilder.new
