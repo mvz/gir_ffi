@@ -92,6 +92,7 @@ module GObjectIntrospection
     attach_function :g_callable_info_get_return_type, [:pointer], :pointer
     attach_function :g_callable_info_get_caller_owns, [:pointer], :ITransfer
     attach_function :g_callable_info_may_return_null, [:pointer], :bool
+    attach_function :g_callable_info_can_throw_gerror, [:pointer], :bool
     attach_function :g_callable_info_get_n_args, [:pointer], :int
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
     attach_function :g_callable_info_skip_return, [:pointer], :bool

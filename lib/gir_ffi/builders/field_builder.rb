@@ -125,6 +125,7 @@ module GirFFI
       end
 
       # Builder for field getters
+      # TODO: Derive from BaseMethodBuilder
       class GetterBuilder
         def initialize(info)
           @info = info

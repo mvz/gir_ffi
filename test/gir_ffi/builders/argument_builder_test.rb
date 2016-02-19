@@ -529,4 +529,20 @@ describe GirFFI::Builders::ArgumentBuilder do
       builder.post_conversion.must_equal []
     end
   end
+
+  describe 'for an argument with direction :error' do
+    let(:arg_info) { GirFFI::ErrorArgumentInfo.new }
+
+    it 'has the correct value for #pre_conversion' do
+      builder.pre_conversion.must_equal [
+        '_v1 = FFI::MemoryPointer.new(:pointer).write_pointer nil'
+      ]
+    end
+
+    it 'has the correct value for #post_conversion' do
+      builder.post_conversion.must_equal [
+        'GirFFI::ArgHelper.check_error(_v1)'
+      ]
+    end
+  end
 end

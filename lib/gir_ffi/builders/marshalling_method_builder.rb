@@ -10,28 +10,18 @@ module GirFFI
     # Implements the creation mapping method for a signal
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
-    #
-    # TODO: Inherit from BaseMethodBuilder
-    class MarshallingMethodBuilder
-      def self.for_signal(receiver_info, argument_infos, return_value_info)
-        new receiver_info, argument_infos, return_value_info
+    class MarshallingMethodBuilder < BaseMethodBuilder
+      def self.for_signal(receiver_info, info)
+        new receiver_info, info
       end
 
-      def initialize(receiver_info, argument_infos, return_value_info)
-        receiver_builder = make_argument_builder receiver_info
-        argument_builders = argument_infos.map { |arg| make_argument_builder arg }
-        return_value_builder =
-          ClosureReturnValueBuilder.new(variable_generator, return_value_info)
-
-        @argument_builder_collection =
-          ArgumentBuilderCollection.new(return_value_builder, argument_builders,
-                                        receiver_builder: receiver_builder)
-        @template = MethodTemplate.new(self, @argument_builder_collection)
+      def initialize(receiver_info, info)
+        super(info, ClosureReturnValueBuilder,
+              receiver_info: receiver_info,
+              argument_builder_class: ClosureArgumentBuilder)
       end
 
-      def method_definition
-        @template.method_definition
-      end
+      ## Methods used by MethodTemplate
 
       def method_name
         'marshaller'
@@ -73,14 +63,6 @@ module GirFFI
 
       def param_names
         @param_names ||= @argument_builder_collection.method_argument_names
-      end
-
-      def variable_generator
-        @variable_generator ||= VariableNameGenerator.new
-      end
-
-      def make_argument_builder(argument_info)
-        ClosureArgumentBuilder.new variable_generator, argument_info
       end
     end
   end
