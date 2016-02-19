@@ -50,12 +50,16 @@ module GirFFI
           pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
         when :out
           pr << out_parameter_preparation
+        when :error
+          pr << "#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
         end
         pr
       end
 
       def post_conversion
-        if has_post_conversion?
+        if direction == :error
+          ["GirFFI::ArgHelper.check_error(#{call_argument_name})"]
+        elsif has_post_conversion?
           value = output_value
           ["#{post_converted_name} = #{value}"]
         else
