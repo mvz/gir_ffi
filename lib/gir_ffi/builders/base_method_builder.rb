@@ -11,10 +11,11 @@ module GirFFI
   module Builders
     # Base class for method definition builders.
     class BaseMethodBuilder
-      def initialize(info, return_value_builder_class)
+      def initialize(info, return_value_builder_class,
+                     argument_builder_class: ArgumentBuilder)
         @info = info
         @return_value_builder_class = return_value_builder_class
-        @argument_builder_class = ArgumentBuilder
+        @argument_builder_class = argument_builder_class
       end
 
       def variable_generator

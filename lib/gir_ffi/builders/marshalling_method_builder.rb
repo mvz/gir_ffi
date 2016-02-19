@@ -16,9 +16,8 @@ module GirFFI
       end
 
       def initialize(receiver_info, info)
-        super(info, ClosureReturnValueBuilder)
-        @argument_builder_class = ClosureArgumentBuilder
-
+        super(info, ClosureReturnValueBuilder,
+              argument_builder_class: ClosureArgumentBuilder)
         @receiver_builder = make_argument_builder receiver_info
       end
 
