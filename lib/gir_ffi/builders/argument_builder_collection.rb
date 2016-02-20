@@ -37,26 +37,8 @@ module GirFFI
       def method_argument_names
         @method_argument_names ||=
           begin
-            base = []
-            block = nil
-            argument_builders.each do |it|
-              if !block && it.block_argument?
-                block = it
-              else
-                base << it
-              end
-            end
-            required_found = false
-            args = base.reverse.map do |it|
-              name = it.method_argument_name
-              next unless name
-              if it.allow_none? && !required_found
-                "#{name} = nil"
-              else
-                required_found = true
-                name
-              end
-            end.compact.reverse
+            base, block = split_off_block_argument
+            args = base_argument_names(base)
             args << "&#{block.method_argument_name}" if block
             args
           end
@@ -127,6 +109,33 @@ module GirFFI
       def sorted_base_argument_builders
         @sorted_base_argument_builders ||= @base_argument_builders.
           sort_by.with_index { |arg, i| [arg.array_length_idx, i] }
+      end
+
+      def split_off_block_argument
+        base = []
+        block = nil
+        argument_builders.each do |it|
+          if !block && it.block_argument?
+            block = it
+          else
+            base << it
+          end
+        end
+        return base, block
+      end
+
+      def base_argument_names(arguments)
+        required_found = false
+        arguments.reverse.map do |it|
+          name = it.method_argument_name
+          next unless name
+          if it.allow_none? && !required_found
+            "#{name} = nil"
+          else
+            required_found = true
+            name
+          end
+        end.compact.reverse
       end
     end
   end
