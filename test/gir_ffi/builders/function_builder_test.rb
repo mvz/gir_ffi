@@ -110,7 +110,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_int_null_in' }
       it 'builds correct definition' do
         code.must_equal <<-CODE.reset_indentation
-          def self.test_array_int_null_in(arr)
+          def self.test_array_int_null_in(arr = nil)
             len = arr.nil? ? 0 : arr.length
             _v1 = len
             _v2 = GirFFI::SizedArray.from(:gint32, -1, arr)
@@ -249,6 +249,34 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
+          end
+        CODE
+      end
+    end
+
+    describe 'for functions with an allow-none ingoing parameter' do
+      let(:function_info) { get_introspection_data 'Regress', 'test_utf8_null_in' }
+      it 'builds correct definition with default parameter value' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.test_utf8_null_in(in_ = nil)
+            _v1 = GirFFI::InPointer.from(:utf8, in_)
+            Regress::Lib.regress_test_utf8_null_in _v1
+          end
+        CODE
+      end
+    end
+
+    describe 'for functions where some allow-none cannot be honored' do
+      let(:function_info) { get_method_introspection_data 'GObject', 'Closure', 'invoke' }
+      it 'builds correct definition with default parameter value on the later arguments' do
+        code.must_equal <<-CODE.reset_indentation
+          def invoke(return_value, param_values, invocation_hint = nil)
+            _v1 = GObject::Value.from(return_value)
+            n_param_values = param_values.nil? ? 0 : param_values.length
+            _v2 = n_param_values
+            _v3 = GirFFI::InPointer.from(:void, invocation_hint)
+            _v4 = GirFFI::SizedArray.from(GObject::Value, -1, param_values)
+            GObject::Lib.g_closure_invoke self, _v1, _v2, _v4, _v3
           end
         CODE
       end

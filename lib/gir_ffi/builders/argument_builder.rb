@@ -18,6 +18,10 @@ module GirFFI
         specialized_type_tag == :callback
       end
 
+      def allow_none?
+        arginfo.may_be_null?
+      end
+
       def post_converted_name
         @post_converted_name ||= if has_post_conversion?
                                    new_variable
