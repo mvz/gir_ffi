@@ -20,11 +20,11 @@ module GObjectIntrospection
     end
 
     def readable?
-      flags & 1 != 0
+      flags[:readable]
     end
 
     def writable?
-      flags & 2 != 0
+      flags[:writable]
     end
   end
 end

@@ -187,12 +187,11 @@ module GObjectIntrospection
     attach_function :g_value_info_get_value, [:pointer], :long
 
     # IFieldInfo
-    enum :IFieldInfoFlags, [
-      :readable, (1 << 0),
-      :writable, (1 << 1)
-    ]
-    # TODO: return type is bitfield :IFieldInfoFlags
-    attach_function :g_field_info_get_flags, [:pointer], :int
+    bit_mask :IFieldInfoFlags,
+             readable: (1 << 0),
+             writable: (1 << 1)
+
+    attach_function :g_field_info_get_flags, [:pointer], :IFieldInfoFlags
     attach_function :g_field_info_get_size, [:pointer], :int
     attach_function :g_field_info_get_offset, [:pointer], :int
     attach_function :g_field_info_get_type, [:pointer], :pointer
