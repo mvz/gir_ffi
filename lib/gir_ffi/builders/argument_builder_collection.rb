@@ -47,7 +47,7 @@ module GirFFI
               end
             end
             required_found = false
-            args = base.map do |it|
+            args = base.reverse.map do |it|
               name = it.method_argument_name
               next unless name
               if it.allow_none? && !required_found
@@ -56,7 +56,7 @@ module GirFFI
                 required_found = true
                 name
               end
-            end.compact
+            end.compact.reverse
             args << "&#{block.method_argument_name}" if block
             args
           end
