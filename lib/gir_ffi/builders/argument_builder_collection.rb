@@ -112,16 +112,9 @@ module GirFFI
       end
 
       def split_off_block_argument
-        base = []
-        block = nil
-        argument_builders.each do |it|
-          if !block && it.block_argument?
-            block = it
-          else
-            base << it
-          end
-        end
-        return base, block
+        builders_with_name = argument_builders.select(&:method_argument_name)
+        blocks, base = builders_with_name.partition(&:block_argument?)
+        return base, blocks.first
       end
 
       def base_argument_names(arguments)
