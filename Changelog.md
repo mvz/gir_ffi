@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* Make allow-none arguments optional in Ruby
+* Add Clutter example
+* Clean up mainloop example
+
 ## 0.9.2 / 2016-02-05
 
 * Do not create a property accessor when a corresponding getter method exists
