@@ -42,6 +42,11 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 See the [documentation](docs/Documentation.md) for more usage information.
 
+## Examples
+
+Have a look in the `examples/` directory for some simple examples. More
+examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
+
 ## Install
 
     gem install gir_ffi
@@ -81,6 +86,7 @@ already exist:
 * `gir_ffi-cairo`: overrides for Cairo
 * `gir_ffi-pango`: overrides for Pango
 * `gir_ffi-tracker`: overrides for Tracker
+* `gir_ffi-gst`: overrides for GStreamer
 
 ## Hacking and contributing
 
