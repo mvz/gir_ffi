@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.9.3 / 2016-02-20
 
 * Make allow-none arguments optional in Ruby
 * Add Clutter example
