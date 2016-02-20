@@ -15,6 +15,11 @@ Lint/AssignmentInCondition:
 Metrics/LineLength:
   Max: 92
 
+# Lib modules can be any length
+Metrics/ModuleLength:
+  Exclude:
+    - 'lib/ffi-gobject_introspection/lib.rb'
+
 # In tests, we want to do this to be more clear
 Performance/FixedSize:
   Exclude:
