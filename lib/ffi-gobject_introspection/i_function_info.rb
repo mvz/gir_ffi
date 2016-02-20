@@ -11,29 +11,28 @@ module GObjectIntrospection
       Lib.g_function_info_get_flags @gobj
     end
 
-    # TODO: Use some sort of bitfield
     def method?
-      flags & 1 != 0
+      flags[:is_method]
     end
 
     def constructor?
-      flags & 2 != 0
+      flags[:is_constructor]
     end
 
     def getter?
-      flags & 4 != 0
+      flags[:is_getter]
     end
 
     def setter?
-      flags & 8 != 0
+      flags[:is_setter]
     end
 
     def wraps_vfunc?
-      flags & 16 != 0
+      flags[:wraps_vfunc]
     end
 
     def throws?
-      flags & 32 != 0
+      flags[:throws]
     end
   end
 end

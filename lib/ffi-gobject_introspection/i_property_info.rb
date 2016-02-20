@@ -12,19 +12,19 @@ module GObjectIntrospection
     end
 
     def readable?
-      flags & 1 != 0
+      flags[:readable]
     end
 
     def writeable?
-      flags & 2 != 0
+      flags[:writable]
     end
 
     def construct?
-      flags & 4 != 0
+      flags[:construct]
     end
 
     def construct_only?
-      flags & 8 != 0
+      flags[:construct_only]
     end
   end
 end
