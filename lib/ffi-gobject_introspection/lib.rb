@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 require 'ffi'
+require 'ffi/bit_masks'
 
 module GObjectIntrospection
   # Module for attaching functions from the girepository library
   module Lib
     extend FFI::Library
+    extend FFI::BitMasks
     ffi_lib 'girepository-1.0'
 
     # Helper class to support guessing the gobject-introspection version.
@@ -78,9 +80,16 @@ module GObjectIntrospection
     attach_function :g_base_info_equal, [:pointer, :pointer], :bool
 
     # IFunctionInfo
+    bit_mask :IFunctionInfoFlags,
+             is_method:      (1 << 0),
+             is_constructor: (1 << 1),
+             is_getter:      (1 << 2),
+             is_setter:      (1 << 3),
+             wraps_vfunc:    (1 << 4),
+             throws:         (1 << 5)
+
     attach_function :g_function_info_get_symbol, [:pointer], :string
-    # TODO: return type is bitfield
-    attach_function :g_function_info_get_flags, [:pointer], :int
+    attach_function :g_function_info_get_flags, [:pointer], :IFunctionInfoFlags
 
     # ICallableInfo
     enum :ITransfer, [
