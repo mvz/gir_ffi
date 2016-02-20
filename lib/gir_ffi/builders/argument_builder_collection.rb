@@ -121,7 +121,6 @@ module GirFFI
         required_found = false
         arguments.reverse.map do |it|
           name = it.method_argument_name
-          next unless name
           if it.allow_none? && !required_found
             "#{name} = nil"
           else
