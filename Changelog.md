@@ -5,6 +5,7 @@
 * Make allow-none arguments optional in Ruby
 * Add Clutter example
 * Clean up mainloop example
+* Use bit masks for relevant functions in GObjectIntrospection
 
 ## 0.9.2 / 2016-02-05
 
