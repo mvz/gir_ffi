@@ -300,8 +300,15 @@ module GObjectIntrospection
     # IPropertyInfo
     #
     attach_function :g_property_info_get_type, [:pointer], :pointer
-    # TODO: return type is bitfield
-    attach_function :g_property_info_get_flags, [:pointer], :int
+
+    # NOTE: This type has more values, but these are the ones used
+    bit_mask :ParamFlags,
+             readable:       (1 << 0),
+             writable:       (1 << 1),
+             construct:      (1 << 2),
+             construct_only: (1 << 3)
+
+    attach_function :g_property_info_get_flags, [:pointer], :ParamFlags
 
     ::GObjectIntrospection::VERSION = version_guesser.best_guess
   end
