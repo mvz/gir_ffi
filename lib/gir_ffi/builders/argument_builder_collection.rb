@@ -46,7 +46,17 @@ module GirFFI
                 base << it
               end
             end
-            args = base.map(&:method_argument_name).compact
+            required_found = false
+            args = base.map do |it|
+              name = it.method_argument_name
+              next unless name
+              if it.allow_none? && !required_found
+                "#{name} = nil"
+              else
+                required_found = true
+                name
+              end
+            end.compact
             args << "&#{block.method_argument_name}" if block
             args
           end

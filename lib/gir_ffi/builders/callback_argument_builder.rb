@@ -17,6 +17,10 @@ module GirFFI
         false
       end
 
+      def allow_none?
+        false
+      end
+
       def pre_converted_name
         @pre_converted_name ||= new_variable
       end

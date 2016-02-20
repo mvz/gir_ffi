@@ -110,7 +110,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_int_null_in' }
       it 'builds correct definition' do
         code.must_equal <<-CODE.reset_indentation
-          def self.test_array_int_null_in(arr)
+          def self.test_array_int_null_in(arr = nil)
             len = arr.nil? ? 0 : arr.length
             _v1 = len
             _v2 = GirFFI::SizedArray.from(:gint32, -1, arr)
@@ -249,6 +249,18 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
+          end
+        CODE
+      end
+    end
+
+    describe 'for functions with an allow-none ingoing parameter' do
+      let(:function_info) { get_introspection_data 'Regress', 'test_utf8_null_in' }
+      it 'builds correct definition with default parameter value' do
+        code.must_equal <<-CODE.reset_indentation
+          def self.test_utf8_null_in(in_ = nil)
+            _v1 = GirFFI::InPointer.from(:utf8, in_)
+            Regress::Lib.regress_test_utf8_null_in _v1
           end
         CODE
       end
