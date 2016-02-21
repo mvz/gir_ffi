@@ -201,3 +201,4 @@ file "test/lib/configure" => ["test/lib/autogen.sh", "test/lib/configure.ac"] do
 end
 
 task test: 'test:all'
+task test: 'test:features'
