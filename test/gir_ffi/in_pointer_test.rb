@@ -184,8 +184,8 @@ describe GirFFI::InPointer do
 
   describe '.from_closure_data' do
     describe 'when called with nil' do
-      it 'returns a pointer pointing to nil.object_id' do
-        GirFFI::InPointer.from_closure_data(nil).address.must_equal nil.object_id
+      it 'returns a null pointer' do
+        GirFFI::InPointer.from_closure_data(nil).must_be :null?
       end
     end
 
