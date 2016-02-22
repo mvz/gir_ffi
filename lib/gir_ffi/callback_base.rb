@@ -38,8 +38,8 @@ module GirFFI
       CALLBACKS[prc.object_id] = prc
     end
 
-    def self.drop_callback(key)
-      CALLBACKS.delete key
+    def self.drop_callback(prc)
+      CALLBACKS.delete prc.object_id
     end
 
     # Create Callback from a Proc. Makes sure arguments are properly wrapped,

@@ -2648,22 +2648,23 @@ describe Regress do
 
   it 'has a working function #test_callback_async' do
     a = 1
-    stored_id = nil
-    Regress.test_callback_async { |user_data| stored_id = user_data; a = 2 }
+    stored_proc = nil
+    Regress.test_callback_async { |user_data| stored_proc = user_data; a = 2 }
     result = Regress.test_callback_thaw_async
     a.must_equal 2
-    stored_id.wont_be_nil
+    stored_proc.wont_be_nil
     result.must_equal 2
     # TODO: See when we can clean up the stored callback for async callbacks.
-    GirFFI::CallbackBase::CALLBACKS[stored_id].wont_be_nil
+    GirFFI::CallbackBase::CALLBACKS[stored_proc.object_id].must_equal stored_proc
   end
 
   it 'has a working function #test_callback_destroy_notify' do
     a = 1
-    stored_id = nil
-    r1 = Regress.test_callback_destroy_notify { |user_data| stored_id = user_data; a = 2 }
+    stored_proc = nil
+    r1 = Regress.test_callback_destroy_notify { |user_data| stored_proc = user_data; a = 2 }
     a.must_equal 2
-    GirFFI::CallbackBase::CALLBACKS[stored_id].wont_be_nil
+    stored_id = stored_proc.object_id
+    GirFFI::CallbackBase::CALLBACKS[stored_id].must_equal stored_proc
 
     a = 3
     r2 = Regress.test_callback_thaw_notifications

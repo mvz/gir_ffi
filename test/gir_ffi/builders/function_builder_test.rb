@@ -42,7 +42,7 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def self.test_callback_destroy_notify(&callback)
             _v1 = Regress::TestCallbackUserData.from(callback)
-            _v2 = GirFFI::InPointer.from_closure_data(_v1.object_id)
+            _v2 = GirFFI::InPointer.from_closure_data(_v1)
             _v3 = GLib::DestroyNotify.default
             _v4 = Regress::Lib.regress_test_callback_destroy_notify _v1, _v2, _v3
             return _v4

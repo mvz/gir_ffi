@@ -68,7 +68,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from_closure_data(foo.object_id)']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from_closure_data(foo)']
         end
 
         it 'has the correct value for #post_conversion' do
