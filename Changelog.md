@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.4 / 2016-02-22
+
+* Pass nil user data as null pointer, and store a missing callback as nil. This
+  avoids passing a null callback and a non-null user data value, which causes
+  problems with vte_terminal_spawn_sync() and perhaps other functions.
+
 ## 0.9.3 / 2016-02-20
 
 * Make allow-none arguments optional in Ruby
