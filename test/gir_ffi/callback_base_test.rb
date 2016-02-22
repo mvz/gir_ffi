@@ -14,7 +14,7 @@ describe GirFFI::CallbackBase do
     it 'removes the corresponding proc from CALLBACKS' do
       dummy_proc = 'some-callback'
       GirFFI::CallbackBase.store_callback dummy_proc
-      GirFFI::CallbackBase.drop_callback dummy_proc.object_id
+      GirFFI::CallbackBase.drop_callback dummy_proc
       GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id].must_be_nil
     end
   end
