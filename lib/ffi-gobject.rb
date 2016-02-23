@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi/core'
 
-GirFFI.setup :GObject
+# Do not use GirFFI.setup to avoid check for existing modules
+GirFFI::Builder.build_module 'GObject'
 
 require 'ffi-gobject/base'
 

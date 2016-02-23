@@ -25,6 +25,13 @@ require 'gir_ffi/version'
 module GirFFI
   def self.setup(module_name, version = nil)
     module_name = module_name.to_s
+    safe_name = module_name.gsub(/^./, &:upcase)
+    if Kernel.const_defined? safe_name
+      modul = Kernel.const_get safe_name
+      unless modul.const_defined? :GIR_FFI_BUILDER
+        raise "The module #{safe_name} was already defined elsewhere"
+      end
+    end
     GirFFI::Builder.build_module module_name, version
   end
 
