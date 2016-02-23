@@ -15,4 +15,4 @@ Feature: Conflicting modules
       """
     And I run `ruby conflict.rb`
     Then the output should contain "already defined"
-    And the exit status should be 2
+    And the exit status should be 1

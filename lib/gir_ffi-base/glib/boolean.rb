@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'ffi'
+require 'gir_ffi-base/glib'
 
 module GLib
   # Implementation of gboolean
