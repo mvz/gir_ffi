@@ -14,3 +14,20 @@ Feature: Conflicting modules
     Then the output should contain "already defined"
     And the output should not contain "do not print me"
     And the exit status should be 1
+
+  Scenario: Setting up a module that was defined elsewhere
+    Given a file named "conflict.rb" with:
+      """
+      module Cairo
+      end
+
+      require 'gir_ffi'
+
+      GirFFI.setup :cairo
+
+      puts 'do not print me'
+      """
+    And I run `ruby conflict.rb`
+    Then the output should contain "already defined"
+    And the output should not contain "do not print me"
+    And the exit status should be 1
