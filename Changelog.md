@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Abort if GLib was defined earlier, e.g., through the glib2 gem.
+
 ## 0.9.4 / 2016-02-22
 
 * Pass nil user data as null pointer, and store a missing callback as nil. This
