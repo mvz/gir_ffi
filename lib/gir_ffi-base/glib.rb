@@ -2,4 +2,7 @@
 
 # Ensure GLib is defined by GirFFI itself
 raise 'The module GLib was already defined elsewhere' if Kernel.const_defined? :GLib
-GLib = Module.new
+
+# Module representing GLib's GLib namespace.
+module GLib
+end
