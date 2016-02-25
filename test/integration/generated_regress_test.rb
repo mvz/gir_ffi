@@ -113,42 +113,82 @@ describe Regress do
   end
 
   describe 'Regress::AnnotationObject' do
+    let(:instance) { Regress::AnnotationObject.new }
+
+    it 'has an attribute org.example.Test' do
+      info = get_introspection_data('Regress', 'AnnotationObject')
+      info.attribute('org.example.Test').must_equal 'cows'
+    end
+
     it 'has a working method #allow_none' do
-      skip 'Needs testing'
+      instance.allow_none('hello!').must_be_nil
+      instance.allow_none(nil).must_be_nil
+      instance.allow_none.must_be_nil
     end
+
     it 'has a working method #calleeowns' do
-      skip 'Needs testing'
+      result, object = instance.calleeowns
+      result.must_equal 1
+      object.must_be_nil
     end
+
     it 'has a working method #calleesowns' do
-      skip 'Needs testing'
+      result, toown1, toown2 = instance.calleesowns
+      result.must_equal 1
+      toown1.must_be_nil
+      toown2.must_be_nil
     end
+
     it 'has a working method #compute_sum' do
-      skip 'Needs testing'
+      instance.compute_sum [1, 2, 3]
+      pass
     end
+
     it 'has a working method #compute_sum_n' do
-      skip 'Needs testing'
+      instance.compute_sum_n [1, 2, 3]
+      pass
     end
+
     it 'has a working method #compute_sum_nz' do
-      skip 'Needs testing'
+      instance.compute_sum_nz [1, 2, 3]
+      pass
     end
+
     it 'has a working method #create_object' do
-      skip 'Needs testing'
+      result = instance.create_object
+      result.must_equal instance
     end
+
     it 'has a working method #do_not_use' do
-      skip 'Needs testing'
+      # TODO: Handle deprecation
+      instance.do_not_use.must_be_nil
     end
+
     it 'has a working method #extra_annos' do
-      skip 'Needs testing'
+      info = get_method_introspection_data('Regress', 'AnnotationObject', 'extra_annos')
+      info.attribute('org.foobar').must_equal 'testvalue'
+
+      instance.extra_annos.must_be_nil
     end
+
     it 'has a working method #foreach' do
-      skip 'Needs testing'
+      a = 1
+      instance.foreach { a += 1 }
+      a.must_equal 1
     end
+
     it 'has a working method #get_hash' do
-      skip 'Needs testing'
+      result = instance.get_hash
+      hash = result.to_hash
+      hash['one'].must_equal instance
+      hash['two'].must_equal instance
     end
+
     it 'has a working method #get_objects' do
-      skip 'Needs testing'
+      list = instance.get_objects
+      list.to_a.must_equal [instance]
     end
+
     it 'has a working method #get_strings' do
       skip 'Needs testing'
     end
