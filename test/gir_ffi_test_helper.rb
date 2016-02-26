@@ -30,8 +30,8 @@ module GirFFITestExtensions
     SAVED_MODULES.delete name
   end
 
-  def ref_count(object)
-    GObject::Object::Struct.new(object.to_ptr)[:ref_count]
+  def ref_count(ptr)
+    GObject::Object::Struct.new(ptr)[:ref_count]
   end
 
   def ref(object)
