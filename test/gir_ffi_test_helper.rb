@@ -30,12 +30,8 @@ module GirFFITestExtensions
     SAVED_MODULES.delete name
   end
 
-  def ref_count(object)
-    GObject::Object::Struct.new(object.to_ptr)[:ref_count]
-  end
-
-  def ref(object)
-    object.ref
+  def ref_count(ptr)
+    GObject::Object::Struct.new(ptr)[:ref_count]
   end
 
   def max_for_unsigned_type(type)

@@ -298,12 +298,12 @@ describe GIMarshallingTests do
 
     it 'has a working function #full_inout' do
       ob = GIMarshallingTests::Object.new 42
-      ref_count(ob).must_equal 1
+      ob.ref_count.must_equal 1
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      ref_count(ob).must_be :>, 0
-      ref_count(res).must_equal 1
+      ob.ref_count.must_be :>, 0
+      res.ref_count.must_equal 1
 
       res.must_be_instance_of GIMarshallingTests::Object
       res.int.must_equal 0
@@ -400,7 +400,7 @@ describe GIMarshallingTests do
       end
       result = derived_instance.
         get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
-      ref_count(obj).must_be :>, 0
+      obj.ref_count.must_be :>, 0
       result.must_equal [2, false]
       obj.must_be_instance_of GIMarshallingTests::Object
     end
@@ -415,7 +415,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
-      ref_count(obj).must_be :>, 0
+      obj.ref_count.must_be :>, 0
       # TODO: Check desired result
       result.must_equal [2, false]
     end
