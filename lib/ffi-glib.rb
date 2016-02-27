@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi/core'
 
-# Do not use GirFFI.setup to avoid check for existing modules
-GirFFI::Builder.build_module 'GLib'
+# Bypass check for existing modules
+GirFFI::Builders::ModuleBuilder.new('GLib').generate
 
 require 'ffi-glib/array'
 require 'ffi-glib/byte_array'

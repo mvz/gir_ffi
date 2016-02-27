@@ -29,7 +29,16 @@ module GirFFI
     end
 
     def self.build_module(namespace, version = nil)
-      Builders::ModuleBuilder.new(namespace, version).generate
+      module_name = namespace.gsub(/^./, &:upcase)
+      if Kernel.const_defined? module_name
+        modul = Kernel.const_get module_name
+        unless modul.const_defined? :GIR_FFI_BUILDER
+          raise "The module #{module_name} was already defined elsewhere"
+        end
+      end
+      Builders::ModuleBuilder.new(module_name,
+                                  namespace: namespace,
+                                  version: version).generate
     end
 
     # TODO: Move elsewhere, perhaps to FunctionBuilder.

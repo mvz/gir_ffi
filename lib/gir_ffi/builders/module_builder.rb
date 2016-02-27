@@ -12,11 +12,10 @@ module GirFFI
     class ModuleBuilder
       include BuilderHelper
 
-      def initialize(namespace, version = nil)
+      def initialize(module_name, namespace: module_name, version: nil)
         @namespace = namespace
         @version = version
-        # FIXME: Pass safe namespace as an argument
-        @safe_namespace = @namespace.gsub(/^./, &:upcase)
+        @safe_namespace = module_name
       end
 
       def generate

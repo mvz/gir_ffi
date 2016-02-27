@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi/core'
 
-# Do not use GirFFI.setup to avoid check for existing modules
-GirFFI::Builder.build_module 'GObject'
+# Bypass check for existing modules
+GirFFI::Builders::ModuleBuilder.new('GObject').generate
 
 require 'ffi-gobject/base'
 

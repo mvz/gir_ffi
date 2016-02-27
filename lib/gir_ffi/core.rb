@@ -23,16 +23,9 @@ require 'gir_ffi/version'
 # Main module containing classes and modules needed for generating GLib and
 # GObject bindings.
 module GirFFI
-  def self.setup(module_name, version = nil)
-    module_name = module_name.to_s
-    safe_name = module_name.gsub(/^./, &:upcase)
-    if Kernel.const_defined? safe_name
-      modul = Kernel.const_get safe_name
-      unless modul.const_defined? :GIR_FFI_BUILDER
-        raise "The module #{safe_name} was already defined elsewhere"
-      end
-    end
-    GirFFI::Builder.build_module module_name, version
+  def self.setup(namespace, version = nil)
+    namespace = namespace.to_s
+    GirFFI::Builder.build_module namespace, version
   end
 
   def self.define_type(klass, &block)
