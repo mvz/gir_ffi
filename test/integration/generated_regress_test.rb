@@ -400,151 +400,243 @@ describe Regress do
   end
 
   describe 'Regress::FooBoxed' do
+    let(:instance) { Regress::FooBoxed.new }
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooBoxed
     end
+
     it 'has a working method #method' do
-      skip 'Needs testing'
+      instance.method.must_be_nil
     end
   end
+
   describe 'Regress::FooBuffer' do
+    let(:instance) { Regress::FooBuffer.new }
+
+    it 'creates an instance using #new' do
+      instance.must_be_instance_of Regress::FooBuffer
+    end
+
     it 'has a working method #some_method' do
-      skip 'Needs testing'
+      instance.some_method.must_be_nil
     end
   end
+
   describe 'Regress::FooDBusData' do
+    let(:instance) { Regress::FooDBusData.new }
+
+    it 'creates an instance using #new' do
+      instance.must_be_instance_of Regress::FooDBusData
+    end
+
     it 'has a working method #method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooEnumFullname' do
     it 'has the member :one' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:one].must_equal 1
     end
+
     it 'has the member :two' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:two].must_equal 2
     end
+
     it 'has the member :three' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:three].must_equal 3
     end
   end
+
   describe 'Regress::FooEnumNoType' do
     it 'has the member :un' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:un].must_equal 1
     end
+
     it 'has the member :deux' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:deux].must_equal 2
     end
+
     it 'has the member :trois' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:trois].must_equal 3
     end
+
     it 'has the member :neuf' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:neuf].must_equal 9
     end
   end
+
   describe 'Regress::FooEnumType' do
     it 'has the member :alpha' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:alpha].must_equal 0
     end
+
     it 'has the member :beta' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:beta].must_equal 1
     end
+
     it 'has the member :delta' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:delta].must_equal 2
     end
+
     it 'has a working function #method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working function #returnv' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooError' do
     it 'has the member :good' do
-      skip 'Needs testing'
+      Regress::FooError[:good].must_equal 0
     end
+
     it 'has the member :bad' do
-      skip 'Needs testing'
+      Regress::FooError[:bad].must_equal 1
     end
+
     it 'has the member :ugly' do
-      skip 'Needs testing'
+      Regress::FooError[:ugly].must_equal 2
     end
+
     it 'has a working function #quark' do
-      skip 'Needs testing'
+      quark = Regress::FooError.quark
+      GLib.quark_to_string(quark).must_equal 'regress_foo-error-quark'
     end
   end
+
   describe 'Regress::FooEvent' do
+    let(:instance) { Regress::FooEvent.new }
+
     it 'has a writable field type' do
-      skip 'Needs testing'
+      instance.type.must_equal 0
+      instance.type = 23
+      instance.type.must_equal 23
     end
+
     it 'has a writable field any' do
-      skip 'Needs testing'
+      instance.any.send_event.must_equal 0
+      any = Regress::FooEventAny.new
+      any.send_event = 42
+      instance.any = any
+      instance.any.send_event.must_equal 42
     end
+
     it 'has a writable field expose' do
-      skip 'Needs testing'
+      instance.expose.send_event.must_equal 0
+      instance.expose.count.must_equal 0
+      expose = Regress::FooEventExpose.new
+      expose.send_event = 23
+      expose.count = 14
+      instance.expose = expose
+      instance.expose.send_event.must_equal 23
+      instance.expose.count.must_equal 14
     end
   end
+
   describe 'Regress::FooEventAny' do
+    let(:instance) { Regress::FooEventAny.new }
+
     it 'has a writable field send_event' do
-      skip 'Needs testing'
+      instance.send_event.must_equal 0
+      instance.send_event = 23
+      instance.send_event.must_equal 23
     end
   end
+
   describe 'Regress::FooEventExpose' do
+    let(:instance) { Regress::FooEventExpose.new }
+
     it 'has a writable field send_event' do
-      skip 'Needs testing'
+      instance.send_event.must_equal 0
+      instance.send_event = 23
+      instance.send_event.must_equal 23
     end
+
     it 'has a writable field count' do
-      skip 'Needs testing'
+      instance.count.must_equal 0
+      instance.count = 42
+      instance.count.must_equal 42
     end
   end
+
   describe 'Regress::FooFlagsNoType' do
     it 'has the member :ett' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:ett].must_equal 1
     end
+
     it 'has the member :tva' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:tva].must_equal 2
     end
+
     it 'has the member :fyra' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:fyra].must_equal 4
     end
   end
+
   describe 'Regress::FooFlagsType' do
     it 'has the member :first' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:first].must_equal 1
     end
+
     it 'has the member :second' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:second].must_equal 2
     end
+
     it 'has the member :third' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:third].must_equal 4
     end
   end
+
   describe 'Regress::FooForeignStruct' do
+    let(:instance) { Regress::FooForeignStruct.new }
+
     it 'has a writable field regress_foo' do
-      skip 'Needs testing'
+      instance.regress_foo.must_equal 0
+      instance.regress_foo = 143
+      instance.regress_foo.must_equal 143
     end
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooForeignStruct
     end
+
     it 'has a working method #copy' do
-      skip 'Needs testing'
+      instance.regress_foo = 585
+      result = instance.copy
+      instance.regress_foo = 0
+      result.regress_foo.must_equal 585
     end
   end
+
   describe 'Regress::FooInterface' do
     it 'has a working function #static_method' do
-      skip 'Needs testing'
+      skip 'Not implemented yet'
+      Regress::FooInterface.static_method(42).must_be_nil
     end
+
     it 'has a working method #do_regress_foo' do
-      skip 'Needs testing'
+      instance = Regress::FooObject.new
+      instance.must_be_kind_of Regress::FooInterface
+      instance.do_regress_foo(42).must_be_nil
     end
   end
+
   describe 'Regress::FooObject' do
+    let(:instance) { Regress::FooObject.new }
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooObject
     end
+
     it 'creates an instance using #new_as_super' do
-      skip 'Needs testing'
+      other_instance = Regress::FooObject.new_as_super
+      other_instance.must_be_instance_of Regress::FooObject
     end
+
     it 'has a working function #a_global_method' do
       skip 'Needs testing'
     end
