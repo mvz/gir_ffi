@@ -310,30 +310,37 @@ describe Regress do
   end
 
   it 'has the constant FOO_DEFINE_SHOULD_BE_EXPOSED' do
-    skip 'Needs testing'
+    Regress::FOO_DEFINE_SHOULD_BE_EXPOSED.must_equal 'should be exposed'
   end
+
   it 'has the constant FOO_PIE_IS_TASTY' do
-    skip 'Needs testing'
+    Regress::FOO_PIE_IS_TASTY.must_equal 3.141590
   end
+
   it 'has the constant FOO_SUCCESS_INT' do
-    skip 'Needs testing'
+    Regress::FOO_SUCCESS_INT.must_equal 4408
   end
+
   describe 'Regress::FooASingle' do
     it 'has the member :foo_some_single_enum' do
-      skip 'Needs testing'
+      Regress::FooASingle[:foo_some_single_enum].must_equal 0
     end
   end
+
   describe 'Regress::FooAddressType' do
     it 'has the member :invalid' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:invalid].must_equal 0
     end
+
     it 'has the member :ipv4' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:ipv4].must_equal 1
     end
+
     it 'has the member :ipv6' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:ipv6].must_equal 2
     end
   end
+
   describe 'Regress::FooBRect' do
     it 'has a writable field x' do
       skip 'Needs testing'
