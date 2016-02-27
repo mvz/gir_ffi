@@ -720,61 +720,95 @@ describe Regress do
   end
 
   describe 'Regress::FooOtherObject' do
+    it 'is derived from GObject::Object' do
+      Regress::FooOtherObject.superclass.must_equal GObject::Object
+    end
   end
+
   describe 'Regress::FooRectangle' do
+    let(:instance) { Regress::FooRectangle.new }
+
     it 'has a writable field x' do
-      skip 'Needs testing'
+      instance.x.must_equal 0
+      instance.x = 23
+      instance.x.must_equal 23
     end
+
     it 'has a writable field y' do
-      skip 'Needs testing'
+      instance.y.must_equal 0
+      instance.y = 23
+      instance.y.must_equal 23
     end
+
     it 'has a writable field width' do
-      skip 'Needs testing'
+      instance.width.must_equal 0
+      instance.width = 23
+      instance.width.must_equal 23
     end
+
     it 'has a writable field height' do
-      skip 'Needs testing'
+      instance.height.must_equal 0
+      instance.height = 23
+      instance.height.must_equal 23
     end
+
     it 'has a working method #add' do
       skip 'Needs testing'
     end
   end
+
   describe 'Regress::FooStackLayer' do
     it 'has the member :desktop' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:desktop].must_equal 0
     end
+
     it 'has the member :bottom' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:bottom].must_equal 1
     end
+
     it 'has the member :normal' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:normal].must_equal 2
     end
+
     it 'has the member :top' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:top].must_equal 4
     end
+
     it 'has the member :dock' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:dock].must_equal 4
     end
+
     it 'has the member :fullscreen' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:fullscreen].must_equal 5
     end
+
     it 'has the member :focused_window' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:focused_window].must_equal 6
     end
+
     it 'has the member :override_redirect' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:override_redirect].must_equal 7
     end
+
     it 'has the member :last' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:last].must_equal 8
     end
   end
+
   describe 'Regress::FooStruct' do
+    let(:instance) { Regress::FooStruct.new }
+
     it 'has a writable field priv' do
       skip 'Needs testing'
     end
+
     it 'has a writable field member' do
-      skip 'Needs testing'
+      instance.member.must_equal 0
+      instance.member = 23
+      instance.member.must_equal 23
     end
   end
+
   describe 'Regress::FooSubInterface' do
     it 'has a working method #do_bar' do
       skip 'Needs testing'
@@ -790,30 +824,51 @@ describe Regress do
       skip 'Needs testing'
     end
   end
+
   describe 'Regress::FooThingWithArray' do
+    let(:instance) { Regress::FooThingWithArray.new }
+
     it 'has a writable field x' do
-      skip 'Needs testing'
+      instance.x.must_equal 0
+      instance.x = 23
+      instance.x.must_equal 23
     end
+
     it 'has a writable field y' do
-      skip 'Needs testing'
+      instance.y.must_equal 0
+      instance.y = 23
+      instance.y.must_equal 23
     end
+
     it 'has a writable field lines' do
-      skip 'Needs testing'
+      instance.lines.must_be :==, [0] * 80
+      instance.lines = (1..80).to_a
+      instance.lines.must_be :==, (1..80).to_a
     end
+
     it 'has a writable field data' do
-      skip 'Needs testing'
+      instance.data.must_equal FFI::Pointer::NULL
+      instance.data = FFI::Pointer.new(23)
+      instance.data.must_equal FFI::Pointer.new(23)
     end
   end
+
   describe 'Regress::FooUnion' do
+    let(:instance) { Regress::FooUnion.new }
+
     it 'has a writable field regress_foo' do
-      skip 'Needs testing'
+      instance.regress_foo.must_equal 0
+      instance.regress_foo = 23
+      instance.regress_foo.must_equal 23
     end
   end
+
   describe 'Regress::FooUtilityStruct' do
     it 'has a writable field bar' do
       skip 'Needs testing'
     end
   end
+
   it 'has the constant GI_SCANNER_ELSE' do
     skip unless get_introspection_data 'Regress', 'GI_SCANNER_ELSE'
     Regress::GI_SCANNER_ELSE.must_equal 3
