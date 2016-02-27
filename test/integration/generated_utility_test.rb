@@ -66,8 +66,12 @@ describe Utility do
   end
 
   describe 'Utility::Object' do
+    let(:instance) { Utility::Object.new }
+
     it 'has a working method #watch_dir' do
-      skip 'Needs testing'
+      # This method doesn't actually do anything
+      instance.watch_dir('/') { }
+      pass
     end
   end
 

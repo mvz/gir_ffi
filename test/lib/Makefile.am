@@ -86,7 +86,7 @@ Regress-1.0.gir: Utility-1.0.gir
 regress_SCANNER_INCLUDES += --include-uninstalled=Utility-1.0.gir
 
 Utility-1.0.gir: libutility.la
-	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 \
+	$(AM_V_GEN) g-ir-scanner --include=GLib-2.0 --include=GObject-2.0 \
 	--namespace=$(@:-1.0.gir=) --nsversion=1.0 \
 	--warn-all --warn-error \
 	--library=$< --libtool="$(top_builddir)/libtool" \
