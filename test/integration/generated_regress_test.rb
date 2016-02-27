@@ -640,56 +640,85 @@ describe Regress do
     it 'has a working function #a_global_method' do
       skip 'Needs testing'
     end
+
     it 'has a working function #get_default' do
-      skip 'Needs testing'
+      Regress::FooObject.get_default.must_be_nil
     end
+
     it 'has a working function #static_meth' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #append_new_stack_layer' do
-      skip 'Needs testing'
+      instance.append_new_stack_layer(42).must_be_nil
     end
+
     it 'has a working method #dup_name' do
-      skip 'Needs testing'
+      instance.dup_name.must_equal 'regress_foo'
     end
+
     it 'has a working method #external_type' do
       skip 'Needs testing'
     end
+
     it 'has a working method #get_name' do
-      skip 'Needs testing'
+      instance.get_name.must_equal 'regress_foo'
     end
+
     it 'has a working method #handle_glyph' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #is_it_time_yet' do
-      skip 'Needs testing'
+      instance.is_it_time_yet(Time.now.to_i).must_be_nil
     end
+
     it 'has a working method #read' do
-      skip 'Needs testing'
+      instance.read(12, 13).must_be_nil
     end
+
     it 'has a working method #various' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #virtual_method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     describe "its 'string' property" do
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        instance.get_property('string').must_equal nil
       end
+
       it 'can be retrieved with #string' do
-        skip 'Needs testing'
+        instance.string.must_equal nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property 'string', 'hello 42'
+        # FooObject doesn't actually store stuff
+        instance.string.must_be_nil
+        instance.get_property('string').must_be_nil
       end
+
       it 'can be set with #string=' do
-        skip 'Needs testing'
+        instance.string = 'hello 42'
+        # FooObject doesn't actually store stuff
+        instance.string.must_be_nil
+        instance.get_property('string').must_be_nil
       end
     end
+
     it "handles the 'signal' signal" do
+      instance.signal_connect 'signal' do
+        'hello'
+      end
+
+      result = GObject.signal_emit instance, 'signal'
+      result.must_equal 'hello'
     end
   end
+
   describe 'Regress::FooOtherObject' do
   end
   describe 'Regress::FooRectangle' do
