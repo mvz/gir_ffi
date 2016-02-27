@@ -366,22 +366,39 @@ describe Regress do
   end
 
   describe 'Regress::FooBUnion' do
+    let(:instance) { Regress::FooBUnion.wrap(Regress::FooBUnion::Struct.new.to_ptr) }
+
     it 'has a writable field type' do
-      skip 'Needs testing'
+      instance.type.must_equal 0
+      instance.type = 42
+      instance.type.must_equal 42
     end
+
     it 'has a writable field v' do
-      skip 'Needs testing'
+      instance.v.must_equal 0.0
+      instance.v = 23.42
+      instance.v.must_equal 23.42
     end
+
     it 'has a writable field rect' do
-      skip 'Needs testing'
+      instance.rect.must_be_nil
+      rect = Regress::FooBRect.wrap(Regress::FooBRect::Struct.new.to_ptr)
+      rect.x = 42
+      rect.y = 23
+      instance.rect = rect
+      instance.rect.x.must_equal 42.0
+      instance.rect.y.must_equal 23.0
     end
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #get_contained_type' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooBoxed' do
     it 'creates an instance using #new' do
       skip 'Needs testing'
