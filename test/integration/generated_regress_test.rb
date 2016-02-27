@@ -310,316 +310,505 @@ describe Regress do
   end
 
   it 'has the constant FOO_DEFINE_SHOULD_BE_EXPOSED' do
-    skip 'Needs testing'
+    Regress::FOO_DEFINE_SHOULD_BE_EXPOSED.must_equal 'should be exposed'
   end
+
   it 'has the constant FOO_PIE_IS_TASTY' do
-    skip 'Needs testing'
+    Regress::FOO_PIE_IS_TASTY.must_equal 3.141590
   end
+
   it 'has the constant FOO_SUCCESS_INT' do
-    skip 'Needs testing'
+    Regress::FOO_SUCCESS_INT.must_equal 4408
   end
+
   describe 'Regress::FooASingle' do
     it 'has the member :foo_some_single_enum' do
-      skip 'Needs testing'
+      Regress::FooASingle[:foo_some_single_enum].must_equal 0
     end
   end
+
   describe 'Regress::FooAddressType' do
     it 'has the member :invalid' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:invalid].must_equal 0
     end
+
     it 'has the member :ipv4' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:ipv4].must_equal 1
     end
+
     it 'has the member :ipv6' do
-      skip 'Needs testing'
+      Regress::FooAddressType[:ipv6].must_equal 2
     end
   end
+
   describe 'Regress::FooBRect' do
+    let(:instance) { Regress::FooBRect.wrap(Regress::FooBRect::Struct.new.to_ptr) }
+
     it 'has a writable field x' do
-      skip 'Needs testing'
+      instance.x.must_equal 0.0
+      instance.x = 23.42
+      instance.x.must_equal 23.42
     end
+
     it 'has a writable field y' do
-      skip 'Needs testing'
+      instance.y.must_equal 0.0
+      instance.y = 23.42
+      instance.y.must_equal 23.42
     end
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #add' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooBUnion' do
+    let(:instance) { Regress::FooBUnion.wrap(Regress::FooBUnion::Struct.new.to_ptr) }
+
     it 'has a writable field type' do
-      skip 'Needs testing'
+      instance.type.must_equal 0
+      instance.type = 42
+      instance.type.must_equal 42
     end
+
     it 'has a writable field v' do
-      skip 'Needs testing'
+      instance.v.must_equal 0.0
+      instance.v = 23.42
+      instance.v.must_equal 23.42
     end
+
     it 'has a writable field rect' do
-      skip 'Needs testing'
+      instance.rect.must_be_nil
+      rect = Regress::FooBRect.wrap(Regress::FooBRect::Struct.new.to_ptr)
+      rect.x = 42
+      rect.y = 23
+      instance.rect = rect
+      instance.rect.x.must_equal 42.0
+      instance.rect.y.must_equal 23.0
     end
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #get_contained_type' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooBoxed' do
+    let(:instance) { Regress::FooBoxed.new }
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooBoxed
     end
+
     it 'has a working method #method' do
-      skip 'Needs testing'
+      instance.method.must_be_nil
     end
   end
+
   describe 'Regress::FooBuffer' do
+    let(:instance) { Regress::FooBuffer.new }
+
+    it 'creates an instance using #new' do
+      instance.must_be_instance_of Regress::FooBuffer
+    end
+
     it 'has a working method #some_method' do
-      skip 'Needs testing'
+      instance.some_method.must_be_nil
     end
   end
+
   describe 'Regress::FooDBusData' do
+    let(:instance) { Regress::FooDBusData.new }
+
+    it 'creates an instance using #new' do
+      instance.must_be_instance_of Regress::FooDBusData
+    end
+
     it 'has a working method #method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooEnumFullname' do
     it 'has the member :one' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:one].must_equal 1
     end
+
     it 'has the member :two' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:two].must_equal 2
     end
+
     it 'has the member :three' do
-      skip 'Needs testing'
+      Regress::FooEnumFullname[:three].must_equal 3
     end
   end
+
   describe 'Regress::FooEnumNoType' do
     it 'has the member :un' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:un].must_equal 1
     end
+
     it 'has the member :deux' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:deux].must_equal 2
     end
+
     it 'has the member :trois' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:trois].must_equal 3
     end
+
     it 'has the member :neuf' do
-      skip 'Needs testing'
+      Regress::FooEnumNoType[:neuf].must_equal 9
     end
   end
+
   describe 'Regress::FooEnumType' do
     it 'has the member :alpha' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:alpha].must_equal 0
     end
+
     it 'has the member :beta' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:beta].must_equal 1
     end
+
     it 'has the member :delta' do
-      skip 'Needs testing'
+      Regress::FooEnumType[:delta].must_equal 2
     end
+
     it 'has a working function #method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working function #returnv' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
   end
+
   describe 'Regress::FooError' do
     it 'has the member :good' do
-      skip 'Needs testing'
+      Regress::FooError[:good].must_equal 0
     end
+
     it 'has the member :bad' do
-      skip 'Needs testing'
+      Regress::FooError[:bad].must_equal 1
     end
+
     it 'has the member :ugly' do
-      skip 'Needs testing'
+      Regress::FooError[:ugly].must_equal 2
     end
+
     it 'has a working function #quark' do
-      skip 'Needs testing'
+      quark = Regress::FooError.quark
+      GLib.quark_to_string(quark).must_equal 'regress_foo-error-quark'
     end
   end
+
   describe 'Regress::FooEvent' do
+    let(:instance) { Regress::FooEvent.new }
+
     it 'has a writable field type' do
-      skip 'Needs testing'
+      instance.type.must_equal 0
+      instance.type = 23
+      instance.type.must_equal 23
     end
+
     it 'has a writable field any' do
-      skip 'Needs testing'
+      instance.any.send_event.must_equal 0
+      any = Regress::FooEventAny.new
+      any.send_event = 42
+      instance.any = any
+      instance.any.send_event.must_equal 42
     end
+
     it 'has a writable field expose' do
-      skip 'Needs testing'
+      instance.expose.send_event.must_equal 0
+      instance.expose.count.must_equal 0
+      expose = Regress::FooEventExpose.new
+      expose.send_event = 23
+      expose.count = 14
+      instance.expose = expose
+      instance.expose.send_event.must_equal 23
+      instance.expose.count.must_equal 14
     end
   end
+
   describe 'Regress::FooEventAny' do
+    let(:instance) { Regress::FooEventAny.new }
+
     it 'has a writable field send_event' do
-      skip 'Needs testing'
+      instance.send_event.must_equal 0
+      instance.send_event = 23
+      instance.send_event.must_equal 23
     end
   end
+
   describe 'Regress::FooEventExpose' do
+    let(:instance) { Regress::FooEventExpose.new }
+
     it 'has a writable field send_event' do
-      skip 'Needs testing'
+      instance.send_event.must_equal 0
+      instance.send_event = 23
+      instance.send_event.must_equal 23
     end
+
     it 'has a writable field count' do
-      skip 'Needs testing'
+      instance.count.must_equal 0
+      instance.count = 42
+      instance.count.must_equal 42
     end
   end
+
   describe 'Regress::FooFlagsNoType' do
     it 'has the member :ett' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:ett].must_equal 1
     end
+
     it 'has the member :tva' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:tva].must_equal 2
     end
+
     it 'has the member :fyra' do
-      skip 'Needs testing'
+      Regress::FooFlagsNoType[:fyra].must_equal 4
     end
   end
+
   describe 'Regress::FooFlagsType' do
     it 'has the member :first' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:first].must_equal 1
     end
+
     it 'has the member :second' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:second].must_equal 2
     end
+
     it 'has the member :third' do
-      skip 'Needs testing'
+      Regress::FooFlagsType[:third].must_equal 4
     end
   end
+
   describe 'Regress::FooForeignStruct' do
+    let(:instance) { Regress::FooForeignStruct.new }
+
     it 'has a writable field regress_foo' do
-      skip 'Needs testing'
+      instance.regress_foo.must_equal 0
+      instance.regress_foo = 143
+      instance.regress_foo.must_equal 143
     end
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooForeignStruct
     end
+
     it 'has a working method #copy' do
-      skip 'Needs testing'
+      instance.regress_foo = 585
+      result = instance.copy
+      instance.regress_foo = 0
+      result.regress_foo.must_equal 585
     end
   end
+
   describe 'Regress::FooInterface' do
     it 'has a working function #static_method' do
-      skip 'Needs testing'
+      skip 'Not implemented yet'
+      Regress::FooInterface.static_method(42).must_be_nil
     end
+
     it 'has a working method #do_regress_foo' do
-      skip 'Needs testing'
+      instance = Regress::FooObject.new
+      instance.must_be_kind_of Regress::FooInterface
+      instance.do_regress_foo(42).must_be_nil
     end
   end
+
   describe 'Regress::FooObject' do
+    let(:instance) { Regress::FooObject.new }
+
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      instance.must_be_instance_of Regress::FooObject
     end
+
     it 'creates an instance using #new_as_super' do
-      skip 'Needs testing'
+      other_instance = Regress::FooObject.new_as_super
+      other_instance.must_be_instance_of Regress::FooObject
     end
+
     it 'has a working function #a_global_method' do
       skip 'Needs testing'
     end
+
     it 'has a working function #get_default' do
-      skip 'Needs testing'
+      Regress::FooObject.get_default.must_be_nil
     end
+
     it 'has a working function #static_meth' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #append_new_stack_layer' do
-      skip 'Needs testing'
+      instance.append_new_stack_layer(42).must_be_nil
     end
+
     it 'has a working method #dup_name' do
-      skip 'Needs testing'
+      instance.dup_name.must_equal 'regress_foo'
     end
+
     it 'has a working method #external_type' do
       skip 'Needs testing'
     end
+
     it 'has a working method #get_name' do
-      skip 'Needs testing'
+      instance.get_name.must_equal 'regress_foo'
     end
+
     it 'has a working method #handle_glyph' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #is_it_time_yet' do
-      skip 'Needs testing'
+      instance.is_it_time_yet(Time.now.to_i).must_be_nil
     end
+
     it 'has a working method #read' do
-      skip 'Needs testing'
+      instance.read(12, 13).must_be_nil
     end
+
     it 'has a working method #various' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     it 'has a working method #virtual_method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
+
     describe "its 'string' property" do
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        instance.get_property('string').must_equal nil
       end
+
       it 'can be retrieved with #string' do
-        skip 'Needs testing'
+        instance.string.must_equal nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property 'string', 'hello 42'
+        # FooObject doesn't actually store stuff
+        instance.string.must_be_nil
+        instance.get_property('string').must_be_nil
       end
+
       it 'can be set with #string=' do
-        skip 'Needs testing'
+        instance.string = 'hello 42'
+        # FooObject doesn't actually store stuff
+        instance.string.must_be_nil
+        instance.get_property('string').must_be_nil
       end
     end
+
     it "handles the 'signal' signal" do
+      instance.signal_connect 'signal' do
+        'hello'
+      end
+
+      result = GObject.signal_emit instance, 'signal'
+      result.must_equal 'hello'
     end
   end
+
   describe 'Regress::FooOtherObject' do
+    it 'is derived from GObject::Object' do
+      Regress::FooOtherObject.superclass.must_equal GObject::Object
+    end
   end
+
   describe 'Regress::FooRectangle' do
+    let(:instance) { Regress::FooRectangle.new }
+
     it 'has a writable field x' do
-      skip 'Needs testing'
+      instance.x.must_equal 0
+      instance.x = 23
+      instance.x.must_equal 23
     end
+
     it 'has a writable field y' do
-      skip 'Needs testing'
+      instance.y.must_equal 0
+      instance.y = 23
+      instance.y.must_equal 23
     end
+
     it 'has a writable field width' do
-      skip 'Needs testing'
+      instance.width.must_equal 0
+      instance.width = 23
+      instance.width.must_equal 23
     end
+
     it 'has a writable field height' do
-      skip 'Needs testing'
+      instance.height.must_equal 0
+      instance.height = 23
+      instance.height.must_equal 23
     end
+
     it 'has a working method #add' do
       skip 'Needs testing'
     end
   end
+
   describe 'Regress::FooStackLayer' do
     it 'has the member :desktop' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:desktop].must_equal 0
     end
+
     it 'has the member :bottom' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:bottom].must_equal 1
     end
+
     it 'has the member :normal' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:normal].must_equal 2
     end
+
     it 'has the member :top' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:top].must_equal 4
     end
+
     it 'has the member :dock' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:dock].must_equal 4
     end
+
     it 'has the member :fullscreen' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:fullscreen].must_equal 5
     end
+
     it 'has the member :focused_window' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:focused_window].must_equal 6
     end
+
     it 'has the member :override_redirect' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:override_redirect].must_equal 7
     end
+
     it 'has the member :last' do
-      skip 'Needs testing'
+      Regress::FooStackLayer[:last].must_equal 8
     end
   end
+
   describe 'Regress::FooStruct' do
+    let(:instance) { Regress::FooStruct.new }
+
     it 'has a writable field priv' do
       skip 'Needs testing'
     end
+
     it 'has a writable field member' do
-      skip 'Needs testing'
+      instance.member.must_equal 0
+      instance.member = 23
+      instance.member.must_equal 23
     end
   end
+
   describe 'Regress::FooSubInterface' do
     it 'has a working method #do_bar' do
       skip 'Needs testing'
@@ -635,30 +824,51 @@ describe Regress do
       skip 'Needs testing'
     end
   end
+
   describe 'Regress::FooThingWithArray' do
+    let(:instance) { Regress::FooThingWithArray.new }
+
     it 'has a writable field x' do
-      skip 'Needs testing'
+      instance.x.must_equal 0
+      instance.x = 23
+      instance.x.must_equal 23
     end
+
     it 'has a writable field y' do
-      skip 'Needs testing'
+      instance.y.must_equal 0
+      instance.y = 23
+      instance.y.must_equal 23
     end
+
     it 'has a writable field lines' do
-      skip 'Needs testing'
+      instance.lines.must_be :==, [0] * 80
+      instance.lines = (1..80).to_a
+      instance.lines.must_be :==, (1..80).to_a
     end
+
     it 'has a writable field data' do
-      skip 'Needs testing'
+      instance.data.must_equal FFI::Pointer::NULL
+      instance.data = FFI::Pointer.new(23)
+      instance.data.must_equal FFI::Pointer.new(23)
     end
   end
+
   describe 'Regress::FooUnion' do
+    let(:instance) { Regress::FooUnion.new }
+
     it 'has a writable field regress_foo' do
-      skip 'Needs testing'
+      instance.regress_foo.must_equal 0
+      instance.regress_foo = 23
+      instance.regress_foo.must_equal 23
     end
   end
+
   describe 'Regress::FooUtilityStruct' do
     it 'has a writable field bar' do
       skip 'Needs testing'
     end
   end
+
   it 'has the constant GI_SCANNER_ELSE' do
     skip unless get_introspection_data 'Regress', 'GI_SCANNER_ELSE'
     Regress::GI_SCANNER_ELSE.must_equal 3
