@@ -2666,53 +2666,81 @@ describe Regress do
   end
 
   it 'has a working function #annotation_attribute_func' do
-    skip 'Needs testing'
+    info = get_introspection_data('Regress', 'annotation_attribute_func')
+    param = info.args.last
+    param.attribute('some.annotation').must_equal 'value'
+    param.attribute('another.annotation').must_equal 'blahvalue'
+
+    obj = Regress::AnnotationObject.new
+    Regress.annotation_attribute_func(obj, 'hello').must_equal 42
   end
+
   it 'has a working function #annotation_custom_destroy' do
-    skip 'Needs testing'
+    result = Regress.annotation_custom_destroy { }
+    result.must_be_nil
   end
+
   it 'has a working function #annotation_get_source_file' do
-    skip 'Needs testing'
+    Regress.annotation_get_source_file.must_be_nil
   end
+
   it 'has a working function #annotation_init' do
-    skip 'Needs testing'
+    result = Regress.annotation_init ['foo', 'bar']
+    result.to_a.must_equal ['foo', 'bar']
   end
+
   it 'has a working function #annotation_invalid_regress_annotation' do
-    skip 'Needs testing'
+    Regress.annotation_invalid_regress_annotation(42).must_be_nil
   end
+
   it 'has a working function #annotation_ptr_array' do
-    skip 'Needs testing'
+    # TODO: Automatically convert array elements to correct type
+    val1 = GObject::Value.from 1
+    val2 = GObject::Value.from 'a'
+    Regress.annotation_ptr_array([val1, val2]).must_be_nil
   end
+
   it 'has a working function #annotation_return_array' do
-    skip 'Needs testing'
+    Regress.annotation_return_array.must_be_nil
   end
+
   it 'has a working function #annotation_return_filename' do
-    skip 'Needs testing'
+    Regress.annotation_return_filename.must_equal 'a utf-8 filename'
   end
+
   it 'has a working function #annotation_set_source_file' do
-    skip 'Needs testing'
+    Regress.annotation_set_source_file('a filename').must_be_nil
   end
+
   it 'has a working function #annotation_space_after_comment_bug631690' do
-    skip 'Needs testing'
+    Regress.annotation_space_after_comment_bug631690.must_be_nil
   end
+
   it 'has a working function #annotation_string_array_length' do
-    skip 'Needs testing'
+    Regress.annotation_string_array_length(['foo', 'bar']).must_be_nil
   end
+
   it 'has a working function #annotation_string_zero_terminated' do
-    skip 'Needs testing'
+    Regress.annotation_string_zero_terminated.to_a.must_equal []
   end
+
   it 'has a working function #annotation_string_zero_terminated_out' do
-    skip 'Needs testing'
+    Regress.annotation_string_zero_terminated_out(['foo', 'bar']).to_a.
+      must_equal ['foo', 'bar']
   end
+
   it 'has a working function #annotation_test_parsing_bug630862' do
-    skip 'Needs testing'
+    Regress.annotation_test_parsing_bug630862.must_be_nil
   end
+
   it 'has a working function #annotation_transfer_floating' do
-    skip 'Needs testing'
+    Regress.annotation_transfer_floating.must_be_nil
   end
+
   it 'has a working function #annotation_versioned' do
-    skip 'Needs testing'
+    Regress.annotation_versioned.must_be_nil
   end
+
   it 'has a working function #atest_error_quark' do
     skip unless get_introspection_data 'Regress', 'atest_error_quark'
     result = Regress.atest_error_quark
