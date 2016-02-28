@@ -190,116 +190,217 @@ describe Regress do
     end
 
     it 'has a working method #get_strings' do
-      skip 'Needs testing'
+      list = instance.get_strings
+      list.to_a.must_equal ['bar', 'regress_annotation']
     end
+
     it 'has a working method #hidden_self' do
-      skip 'Needs testing'
+      instance.hidden_self.must_be_nil
     end
+
     it 'has a working method #in' do
-      skip 'Needs testing'
+      # TODO: Automatically convert to pointer argument
+      ptr = FFI::MemoryPointer.new(:int, 1)
+      ptr.put_int 0, 2342
+      instance.in(ptr).must_equal 2342
     end
+
     it 'has a working method #inout' do
-      skip 'Needs testing'
+      instance.inout(2342).must_equal [2343, 2343]
     end
+
     it 'has a working method #inout2' do
-      skip 'Needs testing'
+      instance.inout2(2342).must_equal [2343, 2343]
     end
+
     it 'has a working method #inout3' do
-      skip 'Needs testing'
+      instance.inout3(2342).must_equal [2343, 2342]
     end
+
     it 'has a working method #method' do
-      skip 'Needs testing'
+      instance.method.must_equal 1
     end
+
     it 'has a working method #notrans' do
-      skip 'Needs testing'
+      instance.notrans.must_be_nil
     end
+
     it 'has a working method #out' do
-      skip 'Needs testing'
+      instance.out.must_equal [1, 2]
     end
+
     it 'has a working method #parse_args' do
-      skip 'Needs testing'
+      instance.parse_args(['one', 'two']).to_a.must_equal ['one', 'two']
     end
+
     it 'has a working method #set_data' do
-      skip 'Needs testing'
+      # TODO: Explicitely allow or deny passing a string here.
+      instance.set_data([1, 2, 3]).must_be_nil
     end
+
     it 'has a working method #set_data2' do
-      skip 'Needs testing'
+      instance.set_data2([1, -2, 3]).must_be_nil
     end
+
     it 'has a working method #set_data3' do
-      skip 'Needs testing'
+      instance.set_data3([1, 2, 3]).must_be_nil
     end
+
     it 'has a working method #string_out' do
-      skip 'Needs testing'
+      instance.string_out.must_equal [false, nil]
     end
+
     it 'has a working method #use_buffer' do
-      skip 'Needs testing'
+      skip 'Ingoing pointer argument conversion is not implemented yet'
+      instance.use_buffer(FFI::MemoryPointer.new(:void, 1)).must_be_nil
     end
+
     it 'has a working method #watch_full' do
-      skip 'Needs testing'
+      instance.watch {}
     end
+
     it 'has a working method #with_voidp' do
-      skip 'Needs testing'
+      # NOTE: Anything implementing #to_ptr could be passed in here
+      obj = Regress::AnnotationObject.new
+      instance.with_voidp(obj).must_be_nil
     end
+
     describe "its 'function-property' property" do
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        skip 'Not implemented yet'
+        instance.get_property('function-property').must_be_nil
       end
+
       it 'can be retrieved with #function_property' do
-        skip 'Needs testing'
+        skip 'Not implemented yet'
+        instance.function_property.must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        skip 'Not implemented yet'
+        a = 0
+        instance.set_property('function-property', proc { a = 1 })
+        instance.function_property.call
+        a.must_equal 1
       end
+
       it 'can be set with #function_property=' do
-        skip 'Needs testing'
+        skip 'Not implemented yet'
+        a = 0
+        instance.function_property = proc { a = 1 }
+        instance.get_property('function-property').call
+        a.must_equal 1
       end
     end
+
     describe "its 'string-property' property" do
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        instance.get_property('string-property').must_be_nil
       end
+
       it 'can be retrieved with #string_property' do
-        skip 'Needs testing'
+        instance.string_property.must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('string-property', 'hello 42')
+        # AnnotationObject doesn't actually store stuff
+        instance.string_property.must_be_nil
       end
+
       it 'can be set with #string_property=' do
-        skip 'Needs testing'
+        instance.string_property = 'hello 42'
+        # AnnotationObject doesn't actually store stuff
+        instance.get_property('string-property').must_be_nil
       end
     end
+
     describe "its 'tab-property' property" do
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        instance.get_property('tab-property').must_be_nil
       end
+
       it 'can be retrieved with #tab_property' do
-        skip 'Needs testing'
+        instance.tab_property.must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('tab-property', 'hello 42')
+        # AnnotationObject doesn't actually store stuff
+        instance.tab_property.must_be_nil
       end
+
       it 'can be set with #tab_property=' do
-        skip 'Needs testing'
+        instance.tab_property = 'hello 42'
+        # AnnotationObject doesn't actually store stuff
+        instance.get_property('tab-property').must_be_nil
       end
     end
+
     it "handles the 'attribute-signal' signal" do
-      skip 'Needs testing'
+      signal_info = get_signal_introspection_data('Regress',
+                                                  'AnnotationObject',
+                                                  'attribute-signal')
+      argument_infos = signal_info.args
+      argument_infos.first.attribute('some.annotation.foo1').must_equal 'val1'
+      argument_infos.last.attribute('some.annotation.foo2').must_equal 'val2'
+
+      result = nil
+      instance.signal_connect 'attribute-signal' do |_obj, _arg1, _arg2, _user_data|
+        # This signal uses a null marshaller, so the return value is never passed on.
+        result = 'hello'
+      end
+
+      GObject.signal_emit instance, 'attribute-signal', 'foo', 'bar'
+      result.must_equal 'hello'
     end
+
     it "handles the 'doc-empty-arg-parsing' signal" do
-      skip 'Needs testing'
+      skip 'Not implemented yet'
+      test = nil
+      instance.signal_connect 'doc-empty-arg-parsing' do |_obj, arg1, _user_data|
+        test = arg1
+      end
+
+      result = GObject.signal_emit instance, 'doc-empty-arg-parsing', FFI::Pointer.new(123)
+      result.must_be_nil
+      test.address.must_equal 123
     end
+
     it "handles the 'list-signal' signal" do
-      skip 'Needs testing'
+      skip 'Not implemented yet'
+      result = nil
+      instance.signal_connect 'list-signal' do |_obj, list, _user_data|
+        result = list
+      end
+
+      GObject.signal_emit instance, 'list-signal', ['foo', 'bar']
+      result.to_a.must_equal ['foo', 'bar']
     end
+
     it "handles the 'string-signal' signal" do
-      skip 'Needs testing'
+      result = nil
+      instance.signal_connect 'string-signal' do |_obj, string, _user_data|
+        result = string
+      end
+
+      GObject.signal_emit instance, 'string-signal', 'foo'
+      result.must_equal 'foo'
     end
   end
+
   describe 'Regress::AnnotationStruct' do
+    let(:instance) { Regress::AnnotationStruct.new }
+
     it 'has a writable field objects' do
-      skip 'Needs testing'
+      instance.objects.to_a.must_equal [nil] * 10
+
+      obj = Regress::AnnotationObject.new
+      instance.objects = [nil] * 5 + [obj] + [nil] * 4
+      instance.objects.to_a[5].must_equal obj
     end
   end
+
   it 'has the constant BOOL_CONSTANT' do
     skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
