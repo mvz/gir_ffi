@@ -855,7 +855,9 @@ describe Regress do
     end
 
     it 'has a working method #add' do
-      skip 'Needs testing'
+      skip 'Not implemented yet'
+      other_instance = Regress::FooRectangle.new
+      instance.add other_instance
     end
   end
 
@@ -901,7 +903,10 @@ describe Regress do
     let(:instance) { Regress::FooStruct.new }
 
     it 'has a writable field priv' do
-      skip 'Needs testing'
+      instance.priv.must_be_nil
+      struct = Regress::FooStructPrivate.new
+      instance.priv = struct
+      instance.priv.must_equal struct
     end
 
     it 'has a writable field member' do
@@ -912,18 +917,57 @@ describe Regress do
   end
 
   describe 'Regress::FooSubInterface' do
+    let(:derived_klass) do
+      Object.const_set("DerivedClass#{Sequence.next}",
+                       Class.new(Regress::FooObject))
+    end
+
+    def make_derived_instance
+      derived_klass.include Regress::FooSubInterface
+      GirFFI.define_type derived_klass do |info|
+        yield info if block_given?
+      end
+      derived_klass.new
+    end
+
     it 'has a working method #do_bar' do
-      skip 'Needs testing'
+      result = nil
+      instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :do_bar, proc { |obj| result = obj.get_name }
+      end
+      instance.do_bar
+      result.must_equal 'regress_foo'
     end
+
     it 'has a working method #do_baz' do
-      skip 'Needs testing'
+      a = nil
+      instance = make_derived_instance do |info|
+        # TODO: Do not pass callback again in user_data if destroy notifier is absent
+        info.install_vfunc_implementation :do_baz,
+          proc { |obj, callback, _user_data| callback.call; a = obj.get_name }
+      end
+      b = nil
+      instance.do_baz { b = 'hello' }
+      a.must_equal 'regress_foo'
+      b.must_equal 'hello'
     end
+
     it "handles the 'destroy-event' signal" do
+      skip 'Not implemented yet'
+      a = nil
+      instance = make_derived_instance
+      instance.signal_connect 'destroy-event' do
+        a = 'hello'
+      end
+      GObject.signal_emit instance, 'destroy-event'
+      a.must_equal 'hello'
     end
   end
+
   describe 'Regress::FooSubobject' do
     it 'creates an instance using #new' do
-      skip 'Needs testing'
+      # TODO: Guard against instantiating abstract classes
+      skip 'This function is defined in the header but not implemented'
     end
   end
 
@@ -966,8 +1010,15 @@ describe Regress do
   end
 
   describe 'Regress::FooUtilityStruct' do
+    let(:instance) { Regress::FooUtilityStruct.new }
+
     it 'has a writable field bar' do
-      skip 'Needs testing'
+      struct = Utility::Struct.new
+      struct.field = 23
+
+      instance.bar.field.must_equal 0
+      instance.bar = struct
+      instance.bar.field.must_equal 23
     end
   end
 
@@ -2748,25 +2799,32 @@ describe Regress do
   end
 
   it 'has a working function #foo_async_ready_callback' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_destroy_notify_callback' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_enum_type_method' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_enum_type_returnv' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_error_quark' do
-    skip 'Needs testing'
+    result = Regress.foo_error_quark
+    GLib.quark_to_string(result).must_equal('regress_foo-error-quark')
   end
+
   it 'has a working function #foo_init' do
-    skip 'Needs testing'
+    Regress.foo_init.must_equal 0x1138
   end
+
   it 'has a working function #foo_interface_static_method' do
-    skip 'Needs testing'
+    Regress.foo_interface_static_method(42).must_be_nil
   end
 
   it 'has a working function #foo_method_external_references' do
@@ -2774,35 +2832,45 @@ describe Regress do
   end
 
   it 'has a working function #foo_not_a_constructor_new' do
-    skip 'Needs testing'
+    Regress.foo_not_a_constructor_new.must_be_nil
   end
+
   it 'has a working function #foo_test_array' do
-    skip 'Needs testing'
+    Regress.foo_test_array.must_be_nil
   end
+
   it 'has a working function #foo_test_const_char_param' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_test_const_char_retval' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_test_const_struct_param' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_test_const_struct_retval' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_test_string_array' do
-    skip 'Needs testing'
+    Regress.foo_test_string_array(['foo', 'bar']).must_be_nil
   end
+
   it 'has a working function #foo_test_string_array_with_g' do
-    skip 'Needs testing'
+    Regress.foo_test_string_array_with_g(['foo', 'bar']).must_be_nil
   end
+
   it 'has a working function #foo_test_unsigned_qualifier' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_test_unsigned_type' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #func_obj_null_in' do
     Regress.func_obj_null_in nil
     Regress.func_obj_null_in Regress::TestObj.constructor
