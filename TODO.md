@@ -61,6 +61,9 @@ How about:
 
 This needs issue #63 to be resolved.
 
+NOTE: When adding an interface module to a derived class, its prerequisites
+should be checked.
+
 ## Persistent Ruby GObject identity
 
 GirFFI should make sure that if it gets a pointer to a GObject for which a Ruby
