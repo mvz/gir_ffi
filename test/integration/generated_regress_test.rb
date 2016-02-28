@@ -638,7 +638,7 @@ describe Regress do
     end
 
     it 'has a working function #a_global_method' do
-      skip 'Needs testing'
+      skip 'This function is defined in the header but not implemented'
     end
 
     it 'has a working function #get_default' do
@@ -658,7 +658,8 @@ describe Regress do
     end
 
     it 'has a working method #external_type' do
-      skip 'Needs testing'
+      result = instance.external_type
+      result.must_be_nil
     end
 
     it 'has a working method #get_name' do
@@ -2638,9 +2639,11 @@ describe Regress do
   it 'has a working function #foo_interface_static_method' do
     skip 'Needs testing'
   end
+
   it 'has a working function #foo_method_external_references' do
-    skip 'Needs testing'
+    skip 'This function is defined in the header but not implemented'
   end
+
   it 'has a working function #foo_not_a_constructor_new' do
     skip 'Needs testing'
   end
