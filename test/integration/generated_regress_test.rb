@@ -191,7 +191,7 @@ describe Regress do
 
     it 'has a working method #get_strings' do
       list = instance.get_strings
-      list.to_a.must_equal ['bar', 'regress_annotation']
+      list.to_a.must_equal %w(bar regress_annotation)
     end
 
     it 'has a working method #hidden_self' do
@@ -230,7 +230,7 @@ describe Regress do
     end
 
     it 'has a working method #parse_args' do
-      instance.parse_args(['one', 'two']).to_a.must_equal ['one', 'two']
+      instance.parse_args(%w(one two)).to_a.must_equal %w(one two)
     end
 
     it 'has a working method #set_data' do
@@ -374,8 +374,8 @@ describe Regress do
         result = list
       end
 
-      GObject.signal_emit instance, 'list-signal', ['foo', 'bar']
-      result.to_a.must_equal ['foo', 'bar']
+      GObject.signal_emit instance, 'list-signal', %w(foo bar)
+      result.to_a.must_equal %w(foo bar)
     end
 
     it "handles the 'string-signal' signal" do
@@ -944,7 +944,7 @@ describe Regress do
       instance = make_derived_instance do |info|
         # TODO: Do not pass callback again in user_data if destroy notifier is absent
         info.install_vfunc_implementation :do_baz,
-          proc { |obj, callback, _user_data| callback.call; a = obj.get_name }
+                                          proc { |obj, callback, _user_data| callback.call; a = obj.get_name }
       end
       b = nil
       instance.do_baz { b = 'hello' }
@@ -2727,7 +2727,7 @@ describe Regress do
   end
 
   it 'has a working function #annotation_custom_destroy' do
-    result = Regress.annotation_custom_destroy { }
+    result = Regress.annotation_custom_destroy {}
     result.must_be_nil
   end
 
@@ -2736,8 +2736,8 @@ describe Regress do
   end
 
   it 'has a working function #annotation_init' do
-    result = Regress.annotation_init ['foo', 'bar']
-    result.to_a.must_equal ['foo', 'bar']
+    result = Regress.annotation_init %w(foo bar)
+    result.to_a.must_equal %w(foo bar)
   end
 
   it 'has a working function #annotation_invalid_regress_annotation' do
@@ -2768,7 +2768,7 @@ describe Regress do
   end
 
   it 'has a working function #annotation_string_array_length' do
-    Regress.annotation_string_array_length(['foo', 'bar']).must_be_nil
+    Regress.annotation_string_array_length(%w(foo bar)).must_be_nil
   end
 
   it 'has a working function #annotation_string_zero_terminated' do
@@ -2776,8 +2776,8 @@ describe Regress do
   end
 
   it 'has a working function #annotation_string_zero_terminated_out' do
-    Regress.annotation_string_zero_terminated_out(['foo', 'bar']).to_a.
-      must_equal ['foo', 'bar']
+    Regress.annotation_string_zero_terminated_out(%w(foo bar)).to_a.
+      must_equal %w(foo bar)
   end
 
   it 'has a working function #annotation_test_parsing_bug630862' do
@@ -2856,11 +2856,11 @@ describe Regress do
   end
 
   it 'has a working function #foo_test_string_array' do
-    Regress.foo_test_string_array(['foo', 'bar']).must_be_nil
+    Regress.foo_test_string_array(%w(foo bar)).must_be_nil
   end
 
   it 'has a working function #foo_test_string_array_with_g' do
-    Regress.foo_test_string_array_with_g(['foo', 'bar']).must_be_nil
+    Regress.foo_test_string_array_with_g(%w(foo bar)).must_be_nil
   end
 
   it 'has a working function #foo_test_unsigned_qualifier' do
