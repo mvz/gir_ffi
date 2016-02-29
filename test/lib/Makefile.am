@@ -32,13 +32,11 @@ libregress_la_CFLAGS = $(GIO_CFLAGS) $(CAIRO_CFLAGS)
 libregress_la_LDFLAGS = -module -avoid-version $(GIO_LIBS) $(CAIRO_LIBS)
 
 if HAVE_EXTRA_TEST_FILES
-libutility_la_SOURCES = $(GI_DATADIR)/tests/utility.c $(GI_DATADIR)/tests/utility.h \
-			$(GI_DATADIR)/tests/gitestmacros.h
+libutility_la_SOURCES = $(GI_DATADIR)/tests/utility.c $(GI_DATADIR)/tests/utility.h
 libutility_la_CFLAGS = $(GLIB_CFLAGS)
 libutility_la_LDFLAGS = -module -avoid-version
 
-libwarnlib_la_SOURCES = $(GI_DATADIR)/tests/warnlib.c $(GI_DATADIR)/tests/warnlib.h \
-			$(GI_DATADIR)/tests/gitestmacros.h
+libwarnlib_la_SOURCES = $(GI_DATADIR)/tests/warnlib.c $(GI_DATADIR)/tests/warnlib.h
 libwarnlib_la_CFLAGS = $(GIO_CFLAGS)
 libwarnlib_la_LDFLAGS = -module -avoid-version
 endif
