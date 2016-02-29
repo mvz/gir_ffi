@@ -25,6 +25,7 @@ describe 'the generated Gst module' do
     let(:instance) { Gst::ElementFactory.make('autoaudiosink', 'audiosink') }
 
     it 'correctly fetches the name' do
+      skip 'Audio sink was not created' unless instance
       instance.get_name.must_equal 'audiosink'
       instance.name.must_equal 'audiosink'
     end
