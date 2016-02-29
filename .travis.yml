@@ -22,4 +22,4 @@ before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
   - sudo apt-get install -y gir1.2-gstreamer-1.0
-  - gem update bundler
+  - gem install bundler
