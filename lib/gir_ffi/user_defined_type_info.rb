@@ -53,7 +53,7 @@ module GirFFI
       (@klass.included_modules - @klass.superclass.included_modules).map(&:gir_info)
     end
 
-    def find_signal(signal_name)
+    def find_signal(_signal_name)
       nil
     end
 

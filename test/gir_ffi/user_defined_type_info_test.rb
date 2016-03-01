@@ -100,7 +100,7 @@ describe GirFFI::UserDefinedTypeInfo do
 
   describe '#interfaces' do
     let(:modul) { GIMarshallingTests::Interface }
-    let(:klass) { Class.new  GIMarshallingTests::Object }
+    let(:klass) { Class.new GIMarshallingTests::Object }
     let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
 
     before do
