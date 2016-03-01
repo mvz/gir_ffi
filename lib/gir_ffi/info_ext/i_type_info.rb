@@ -166,7 +166,7 @@ module GirFFI
       end
 
       def needs_ruby_to_c_conversion_for_properties?
-        [:glist, :ghash, :strv].include?(flattened_tag)
+        [:glist, :ghash, :strv, :callback].include?(flattened_tag)
       end
 
       def needs_c_to_ruby_conversion_for_properties?

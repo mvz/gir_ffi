@@ -117,6 +117,7 @@ describe GirFFI::Builders::PropertyBuilder do
   describe 'for a property of a callback type' do
     let(:property_info) {
       get_property_introspection_data('Regress', 'AnnotationObject', 'function-property') }
+
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def function_property
@@ -127,6 +128,17 @@ describe GirFFI::Builders::PropertyBuilder do
       CODE
 
       builder.getter_def.must_equal expected
+    end
+
+    it 'generates the correct setter definition' do
+      expected = <<-CODE.reset_indentation
+      def function_property= value
+        _v1 = Regress::AnnotationCallback.from(value)
+        set_property("function-property", _v1)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
     end
   end
 

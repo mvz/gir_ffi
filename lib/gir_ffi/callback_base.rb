@@ -75,6 +75,10 @@ module GirFFI
                      end
     end
 
+    def to_ptr
+      to_native.to_ptr
+    end
+
     def self.copy_value_to_pointer(value, pointer)
       pointer.put_pointer 0, to_native(value, nil)
     end
