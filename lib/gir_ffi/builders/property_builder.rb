@@ -3,6 +3,55 @@ require 'gir_ffi/builders/property_return_value_builder'
 
 module GirFFI
   module Builders
+    class PropertyGetterBuilder
+      attr_reader :info
+      attr_reader :return_value_builder
+
+      def initialize(info, return_value_builder)
+        @return_value_builder = return_value_builder
+        @info = info
+      end
+
+      def method_definition
+        template.method_definition
+      end
+
+      def template
+        @template ||= MethodTemplate.new(self, argument_builder_collection)
+      end
+
+      def singleton_method?
+        false
+      end
+
+      def method_name
+        info.getter_name
+      end
+
+      def method_arguments
+        []
+      end
+
+      def preparation
+        []
+      end
+
+      def invocation
+        "get_property('#{info.name}')"
+      end
+
+      def result
+        [return_value_builder.return_value_name]
+      end
+
+      private
+
+      def argument_builder_collection
+        @argument_builder_collection ||=
+          ArgumentBuilderCollection.new(return_value_builder, [])
+      end
+    end
+
     # Creates property getter and setter code for a given IPropertyInfo.
     class PropertyBuilder
       def initialize(property_info)
@@ -27,7 +76,7 @@ module GirFFI
       end
 
       def getter_def
-        converting_getter_def
+        PropertyGetterBuilder.new(@info, getter_builder).method_definition
       end
 
       # TODO: Fix argument builders so converting_setter_def can always be used.
@@ -41,18 +90,6 @@ module GirFFI
       end
 
       private
-
-      # TODO: Use a builder like MarshallingMethodBuilder
-      def converting_getter_def
-        capture = getter_builder.capture_variable_name
-        <<-CODE.reset_indentation
-        def #{getter_name}
-          #{capture} = get_property("#{property_name}")
-          #{getter_builder.post_conversion.join("\n")}
-          #{getter_builder.return_value_name}
-        end
-        CODE
-      end
 
       def getter_builder
         @getter_builder ||=
