@@ -3380,6 +3380,7 @@ describe Regress do
   end
 
   it 'has a working function #test_glist_gtype_container_in' do
+    skip unless get_introspection_data 'Regress', 'test_glist_gtype_container_in'
     Regress.test_glist_gtype_container_in [Regress::TestObj.gtype, Regress::TestSubObj.gtype]
     pass
   end
