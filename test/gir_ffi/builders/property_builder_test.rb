@@ -9,7 +9,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def list
-        _v1 = get_property("list")
+        _v1 = get_property('list')
         _v2 = GLib::List.wrap(:utf8, _v1)
         _v2
       end
@@ -35,7 +35,7 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def hash_table
-        _v1 = get_property("hash-table")
+        _v1 = get_property('hash-table')
         _v2 = GLib::HashTable.wrap([:utf8, :gint8], _v1)
         _v2
       end
@@ -69,7 +69,8 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def some_strv
-        get_property("some-strv")
+        _v1 = get_property('some-strv')
+        _v1
       end
       CODE
 
@@ -93,7 +94,8 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def string
-        get_property("string")
+        _v1 = get_property('string')
+        _v1
       end
       CODE
 
@@ -103,7 +105,36 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct setter definition' do
       expected = <<-CODE.reset_indentation
       def string= value
-        set_property("string", value)
+        _v1 = value
+        set_property("string", _v1)
+      end
+      CODE
+
+      builder.setter_def.must_equal expected
+    end
+  end
+
+  describe 'for a property of a callback type' do
+    let(:property_info) {
+      get_property_introspection_data('Regress', 'AnnotationObject', 'function-property') }
+
+    it 'generates the correct getter definition' do
+      expected = <<-CODE.reset_indentation
+      def function_property
+        _v1 = get_property('function-property')
+        _v2 = Regress::AnnotationCallback.wrap(_v1)
+        _v2
+      end
+      CODE
+
+      builder.getter_def.must_equal expected
+    end
+
+    it 'generates the correct setter definition' do
+      expected = <<-CODE.reset_indentation
+      def function_property= value
+        _v1 = Regress::AnnotationCallback.from(value)
+        set_property("function-property", _v1)
       end
       CODE
 

@@ -13,6 +13,7 @@ module GirFFI
       FFI::Type::POINTER
     end
 
+    # TODO: Return instance of this class
     def self.from_native(value, _context)
       return nil if !value || value.null?
       FFI::Function.new(gir_ffi_builder.return_ffi_type,
@@ -72,6 +73,10 @@ module GirFFI
                        FFI::Function.new(builder.return_ffi_type,
                                          builder.argument_ffi_types, self)
                      end
+    end
+
+    def to_ptr
+      to_native.to_ptr
     end
 
     def self.copy_value_to_pointer(value, pointer)

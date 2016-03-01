@@ -68,12 +68,7 @@ module GObject
     def get_property_extended(property_name)
       value = get_property(property_name)
       type_info = get_property_type property_name
-      case type_info.tag
-      when :ghash, :glist
-        adjust_value_to_type value, type_info
-      else
-        value
-      end
+      property_value_post_conversion value, type_info
     end
 
     def get_property_with_override(property_name)
@@ -84,8 +79,7 @@ module GObject
 
     def set_property_extended(property_name, value)
       type_info = get_property_type property_name
-      adjusted_value = adjust_value_to_type(value, type_info)
-
+      adjusted_value = property_value_pre_conversion(value, type_info)
       set_property property_name, adjusted_value
     end
 
@@ -127,7 +121,21 @@ module GObject
     end
 
     # TODO: Move to ITypeInfo
-    def adjust_value_to_type(val, type_info)
+    def property_value_post_conversion(val, type_info)
+      case type_info.flattened_tag
+      when :ghash
+        GLib::HashTable.from type_info.element_type, val
+      when :glist
+        GLib::List.from type_info.element_type, val
+      when :callback
+        GirFFI::Builder.build_class(type_info.interface).wrap val
+      else
+        val
+      end
+    end
+
+    # TODO: Move to ITypeInfo
+    def property_value_pre_conversion(val, type_info)
       case type_info.flattened_tag
       when :ghash
         GLib::HashTable.from type_info.element_type, val
@@ -135,6 +143,8 @@ module GObject
         GLib::List.from type_info.element_type, val
       when :strv
         GLib::Strv.from val
+      when :callback
+        GirFFI::Builder.build_class(type_info.interface).from val
       else
         val
       end

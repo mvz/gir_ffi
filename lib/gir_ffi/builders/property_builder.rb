@@ -1,6 +1,63 @@
 # frozen_string_literal: true
+require 'gir_ffi/builders/method_template'
+require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/property_argument_builder'
+require 'gir_ffi/builders/property_return_value_builder'
+require 'gir_ffi/variable_name_generator'
+require 'gir_ffi/field_argument_info'
+
 module GirFFI
   module Builders
+    # Method builder used for the creation of property getter methods.
+    class PropertyGetterBuilder
+      attr_reader :info
+      attr_reader :return_value_builder
+
+      def initialize(info, return_value_builder)
+        @return_value_builder = return_value_builder
+        @info = info
+      end
+
+      def method_definition
+        template.method_definition
+      end
+
+      def template
+        @template ||= MethodTemplate.new(self, argument_builder_collection)
+      end
+
+      def singleton_method?
+        false
+      end
+
+      def method_name
+        info.getter_name
+      end
+
+      def method_arguments
+        []
+      end
+
+      def preparation
+        []
+      end
+
+      def invocation
+        "get_property('#{info.name}')"
+      end
+
+      def result
+        [return_value_builder.return_value_name]
+      end
+
+      private
+
+      def argument_builder_collection
+        @argument_builder_collection ||=
+          ArgumentBuilderCollection.new(return_value_builder, [])
+      end
+    end
+
     # Creates property getter and setter code for a given IPropertyInfo.
     class PropertyBuilder
       def initialize(property_info)
@@ -24,51 +81,21 @@ module GirFFI
         container_class.class_eval setter_def
       end
 
-      # TODO: Fix argument builders so converting_getter_def can always be used.
       def getter_def
-        case type_info.tag
-        when :glist, :ghash
-          converting_getter_def
-        else
-          simple_getter_def
-        end
+        PropertyGetterBuilder.new(@info, getter_builder).method_definition
       end
 
       # TODO: Fix argument builders so converting_setter_def can always be used.
       def setter_def
-        case type_info.flattened_tag
-        when :glist, :ghash, :strv
           converting_setter_def
-        else
-          simple_setter_def
-        end
       end
 
       private
 
-      # TODO: Use a builder like MarshallingMethodBuilder
-      def converting_getter_def
-        capture = getter_builder.capture_variable_name
-        <<-CODE.reset_indentation
-        def #{getter_name}
-          #{capture} = get_property("#{property_name}")
-          #{getter_builder.post_conversion.join("\n")}
-          #{getter_builder.return_value_name}
-        end
-        CODE
-      end
-
-      def simple_getter_def
-        <<-CODE.reset_indentation
-        def #{getter_name}
-          get_property("#{property_name}")
-        end
-        CODE
-      end
-
       def getter_builder
-        @getter_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
-                                                   argument_info)
+        @getter_builder ||=
+          PropertyReturnValueBuilder.new(VariableNameGenerator.new,
+                                         argument_info)
       end
 
       def converting_setter_def
@@ -89,8 +116,9 @@ module GirFFI
       end
 
       def setter_builder
-        @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
-                                                argument_info)
+        @setter_builder ||=
+          PropertyArgumentBuilder.new(VariableNameGenerator.new,
+                                      argument_info)
       end
 
       def property_name

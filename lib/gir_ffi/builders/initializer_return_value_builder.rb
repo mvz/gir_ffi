@@ -1,14 +1,10 @@
 # frozen_string_literal: true
-require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/base_return_value_builder'
 
 module GirFFI
   module Builders
     # Implements post-conversion for initializer functions
-    class InitializerReturnValueBuilder < BaseArgumentBuilder
-      def capture_variable_name
-        @capture_variable_name ||= new_variable
-      end
-
+    class InitializerReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
         ["store_pointer(#{capture_variable_name})"]
       end

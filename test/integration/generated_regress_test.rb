@@ -266,30 +266,24 @@ describe Regress do
     end
 
     describe "its 'function-property' property" do
-      it 'can be retrieved with #get_property' do
-        skip 'Not implemented yet'
-        instance.get_property('function-property').must_be_nil
+      it 'can be retrieved with #get_property_extended' do
+        instance.get_property_extended('function-property').must_be_nil
       end
 
       it 'can be retrieved with #function_property' do
-        skip 'Not implemented yet'
         instance.function_property.must_be_nil
       end
 
-      it 'can be set with #set_property' do
-        skip 'Not implemented yet'
-        a = 0
-        instance.set_property('function-property', proc { a = 1 })
-        instance.function_property.call
-        a.must_equal 1
+      it 'can be set with #set_property_extended' do
+        instance.set_property_extended('function-property', proc {})
+        # AnnotationObject doesn't actually store stuff
+        instance.function_property.must_be_nil
       end
 
       it 'can be set with #function_property=' do
-        skip 'Not implemented yet'
-        a = 0
-        instance.function_property = proc { a = 1 }
-        instance.get_property('function-property').call
-        a.must_equal 1
+        instance.function_property = proc {}
+        # AnnotationObject doesn't actually store stuff
+        instance.get_property_extended('function-property').must_be_nil
       end
     end
 
