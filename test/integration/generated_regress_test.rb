@@ -923,7 +923,7 @@ describe Regress do
     end
 
     def make_derived_instance
-      derived_klass.include Regress::FooSubInterface
+      derived_klass.send :include, Regress::FooSubInterface
       GirFFI.define_type derived_klass do |info|
         yield info if block_given?
       end

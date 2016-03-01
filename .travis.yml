@@ -1,4 +1,5 @@
-sudo: false
+sudo: required
+dist: trusty
 language: ruby
 rvm:
   - 2.0.0
@@ -9,19 +10,18 @@ rvm:
   - ruby-head-clang
   - jruby-9.0
   - jruby-head
-  - rbx-3.7
+  - rbx-3.18
 matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
     - rvm: ruby-head-clang
-bundler_args: --retry=3
-cache: bundler
-addons:
-  apt:
-    packages:
-      - libgirepository1.0-dev
-      - gobject-introspection
-      - gir1.2-gstreamer-1.0
+install:
+  - bundle install --retry=3
 before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
+  - sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-pango-1.0 gir1.2-secret-1
+  - sudo apt-get install -y gir1.2-gstreamer-1.0
+  - bundle --version || gem install bundler
   - gem update bundler
