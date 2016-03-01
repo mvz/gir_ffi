@@ -49,6 +49,14 @@ module GirFFI
       parent.class_struct
     end
 
+    def interfaces
+      (@klass.included_modules - @klass.superclass.included_modules).map(&:gir_info)
+    end
+
+    def find_signal(_signal_name)
+      nil
+    end
+
     attr_writer :g_name
 
     def g_name

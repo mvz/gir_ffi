@@ -953,7 +953,6 @@ describe Regress do
     end
 
     it "handles the 'destroy-event' signal" do
-      skip 'Not implemented yet'
       a = nil
       instance = make_derived_instance
       instance.signal_connect 'destroy-event' do
