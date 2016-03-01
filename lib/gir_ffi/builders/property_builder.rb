@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'gir_ffi/builders/property_return_value_builder'
+
 module GirFFI
   module Builders
     # Creates property getter and setter code for a given IPropertyInfo.
@@ -24,14 +26,8 @@ module GirFFI
         container_class.class_eval setter_def
       end
 
-      # TODO: Fix argument builders so converting_getter_def can always be used.
       def getter_def
-        case type_info.tag
-        when :glist, :ghash
-          converting_getter_def
-        else
-          simple_getter_def
-        end
+        converting_getter_def
       end
 
       # TODO: Fix argument builders so converting_setter_def can always be used.
@@ -58,17 +54,10 @@ module GirFFI
         CODE
       end
 
-      def simple_getter_def
-        <<-CODE.reset_indentation
-        def #{getter_name}
-          get_property("#{property_name}")
-        end
-        CODE
-      end
-
       def getter_builder
-        @getter_builder ||= ReturnValueBuilder.new(VariableNameGenerator.new,
-                                                   argument_info)
+        @getter_builder ||=
+          PropertyReturnValueBuilder.new(VariableNameGenerator.new,
+                                         argument_info)
       end
 
       def converting_setter_def

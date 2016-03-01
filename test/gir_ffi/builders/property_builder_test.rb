@@ -69,7 +69,9 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def some_strv
-        get_property("some-strv")
+        _v1 = get_property("some-strv")
+        
+        _v1
       end
       CODE
 
@@ -93,7 +95,9 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation
       def string
-        get_property("string")
+        _v1 = get_property("string")
+        
+        _v1
       end
       CODE
 
