@@ -2,6 +2,8 @@
 require 'gir_ffi_test_helper'
 require 'gir_ffi/user_defined_type_info'
 
+GirFFI.setup :GIMarshallingTests
+
 describe GirFFI::UserDefinedTypeInfo do
   describe '#described_class' do
     let(:info) { GirFFI::UserDefinedTypeInfo.new :some_class }
@@ -97,16 +99,16 @@ describe GirFFI::UserDefinedTypeInfo do
   end
 
   describe '#interfaces' do
-    let(:modul) { Module.new }
-    let(:klass) { Class.new }
+    let(:modul) { GIMarshallingTests::Interface }
+    let(:klass) { Class.new  GIMarshallingTests::Object }
     let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
 
     before do
       klass.send :include, modul
     end
 
-    it 'returns include modules' do
-      info.interfaces.must_equal [modul]
+    it 'returns the interface infos for the include modules' do
+      info.interfaces.must_equal [modul.gir_info]
     end
   end
 end
