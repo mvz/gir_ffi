@@ -1,8 +1,13 @@
 # frozen_string_literal: true
+require 'gir_ffi/builders/method_template'
+require 'gir_ffi/builders/argument_builder_collection'
 require 'gir_ffi/builders/property_return_value_builder'
+require 'gir_ffi/variable_name_generator'
+require 'gir_ffi/field_argument_info'
 
 module GirFFI
   module Builders
+    # Method builder used for the creation of property getter methods.
     class PropertyGetterBuilder
       attr_reader :info
       attr_reader :return_value_builder
