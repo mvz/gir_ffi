@@ -7,18 +7,6 @@ module GirFFI
     # Implements building post-processing statements for return values of
     # callbacks.
     class CallbackReturnValueBuilder < BaseReturnValueBuilder
-      def post_converted_name
-        @post_converted_name ||= if has_post_conversion?
-                                   new_variable
-                                 else
-                                   capture_variable_name
-                                 end
-      end
-
-      def return_value_name
-        post_converted_name if has_return_value_name?
-      end
-
       def post_conversion
         if has_post_conversion?
           if type_info.flattened_tag == :object
@@ -51,10 +39,6 @@ module GirFFI
         else
           capture_variable_name
         end
-      end
-
-      def has_return_value_name?
-        relevant? && !array_arg
       end
     end
   end
