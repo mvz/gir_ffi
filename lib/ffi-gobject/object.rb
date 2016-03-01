@@ -144,7 +144,7 @@ module GObject
       when :strv
         GLib::Strv.from val
       when :callback
-        GirFFI::Builder.build_class(type_info.interface).from(val).to_native
+        GirFFI::Builder.build_class(type_info.interface).from val
       else
         val
       end
