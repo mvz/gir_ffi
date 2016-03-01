@@ -35,7 +35,7 @@ module GirFFI
       case type
       when :utf8, :filename
         from_utf8 val
-      when :gint32, :guint32, :gint8
+      when :gint32, :guint32, :gint8, :GType
         new val
       when Class, :void
         val.to_ptr

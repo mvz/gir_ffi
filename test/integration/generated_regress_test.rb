@@ -3386,8 +3386,7 @@ describe Regress do
   end
 
   it 'has a working function #test_glist_gtype_container_in' do
-    skip 'Not implemented yet'
-    Regress.test_glist_gtype_container_in %w(1 2 3)
+    Regress.test_glist_gtype_container_in [Regress::TestObj.gtype, Regress::TestSubObj.gtype]
     pass
   end
 
