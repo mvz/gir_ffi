@@ -143,6 +143,8 @@ module GObject
         GLib::List.from type_info.element_type, val
       when :strv
         GLib::Strv.from val
+      when :callback
+        GirFFI::Builder.build_class(type_info.interface).from(val).to_native
       else
         val
       end

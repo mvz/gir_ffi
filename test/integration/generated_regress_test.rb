@@ -274,12 +274,10 @@ describe Regress do
         instance.function_property.must_be_nil
       end
 
-      it 'can be set with #set_property' do
-        skip 'Not implemented yet'
-        a = 0
-        instance.set_property('function-property', proc { a = 1 })
-        instance.function_property.call
-        a.must_equal 1
+      it 'can be set with #set_property_extended' do
+        instance.set_property_extended('function-property', proc {})
+        # AnnotationObject doesn't actually store stuff
+        instance.function_property.must_be_nil
       end
 
       it 'can be set with #function_property=' do
