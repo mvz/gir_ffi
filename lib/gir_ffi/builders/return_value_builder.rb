@@ -16,10 +16,10 @@ module GirFFI
       end
 
       def has_post_conversion?
-        closure? || needs_ruby_to_c_conversion?
+        closure? || needs_c_to_ruby_conversion?
       end
 
-      def needs_ruby_to_c_conversion?
+      def needs_c_to_ruby_conversion?
         type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
