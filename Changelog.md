@@ -2,7 +2,10 @@
 
 ## Unreleased
 
-* Abort if GLib was defined earlier, e.g., through the glib2 gem.
+* Abort if modules were defined earlier, e.g., through the gems from the ruby-gnome family.
+* Extend integration testing with GObjectIntrospection's test libraries.
+* Find signals on user-defined types.
+* Allow getting and setting of properties with a callback value.
 
 ## 0.9.4 / 2016-02-22
 
