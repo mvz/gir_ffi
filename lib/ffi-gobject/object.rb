@@ -68,9 +68,11 @@ module GObject
     def get_property_extended(property_name)
       value = get_property(property_name)
       type_info = get_property_type property_name
-      case type_info.tag
+      case type_info.flattened_tag
       when :ghash, :glist
         adjust_value_to_type value, type_info
+      when :callback
+        GirFFI::Builder.build_class(type_info.interface).wrap value
       else
         value
       end

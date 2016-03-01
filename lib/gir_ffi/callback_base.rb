@@ -13,6 +13,7 @@ module GirFFI
       FFI::Type::POINTER
     end
 
+    # TODO: Return instance of this class
     def self.from_native(value, _context)
       return nil if !value || value.null?
       FFI::Function.new(gir_ffi_builder.return_ffi_type,

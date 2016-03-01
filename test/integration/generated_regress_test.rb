@@ -266,9 +266,8 @@ describe Regress do
     end
 
     describe "its 'function-property' property" do
-      it 'can be retrieved with #get_property' do
-        skip 'Not implemented yet'
-        instance.get_property('function-property').must_be_nil
+      it 'can be retrieved with #get_property_extended' do
+        instance.get_property_extended('function-property').must_be_nil
       end
 
       it 'can be retrieved with #function_property' do
