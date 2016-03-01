@@ -271,7 +271,6 @@ describe Regress do
       end
 
       it 'can be retrieved with #function_property' do
-        skip 'Not implemented yet'
         instance.function_property.must_be_nil
       end
 

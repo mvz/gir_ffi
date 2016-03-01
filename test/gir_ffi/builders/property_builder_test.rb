@@ -113,6 +113,22 @@ describe GirFFI::Builders::PropertyBuilder do
     end
   end
 
+  describe 'for a property of a callback type' do
+    let(:property_info) {
+      get_property_introspection_data('Regress', 'AnnotationObject', 'function-property') }
+    it 'generates the correct getter definition' do
+      expected = <<-CODE.reset_indentation
+      def function_property
+        _v1 = get_property('function-property')
+        _v2 = Regress::AnnotationCallback.wrap(_v1)
+        _v2
+      end
+      CODE
+
+      builder.getter_def.must_equal expected
+    end
+  end
+
   describe '#container_defines_getter_method?' do
     let(:property_info) { Object.new.tap { |o| o.extend GirFFI::InfoExt::IPropertyInfo } }
     let(:container_info) { Object.new }
