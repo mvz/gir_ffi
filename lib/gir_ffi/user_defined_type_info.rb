@@ -49,6 +49,10 @@ module GirFFI
       parent.class_struct
     end
 
+    def interfaces
+      @klass.included_modules - @klass.superclass.included_modules
+    end
+
     def find_signal(signal_name)
       nil
     end

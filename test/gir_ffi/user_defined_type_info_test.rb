@@ -95,4 +95,18 @@ describe GirFFI::UserDefinedTypeInfo do
       info.find_signal('foo').must_equal nil
     end
   end
+
+  describe '#interfaces' do
+    let(:modul) { Module.new }
+    let(:klass) { Class.new }
+    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+
+    before do
+      klass.send :include, modul
+    end
+
+    it 'returns include modules' do
+      info.interfaces.must_equal [modul]
+    end
+  end
 end
