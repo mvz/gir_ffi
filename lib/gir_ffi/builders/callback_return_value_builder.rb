@@ -1,12 +1,12 @@
 # frozen_string_literal: true
-require 'gir_ffi/builders/return_value_builder'
+require 'gir_ffi/builders/base_return_value_builder'
 require 'gir_ffi/builders/ruby_to_c_convertor'
 
 module GirFFI
   module Builders
     # Implements building post-processing statements for return values of
     # callbacks.
-    class CallbackReturnValueBuilder < BaseArgumentBuilder
+    class CallbackReturnValueBuilder < BaseReturnValueBuilder
       def relevant?
         !void_return_value? && !arginfo.skip?
       end

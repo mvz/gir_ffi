@@ -1,12 +1,12 @@
 # frozen_string_literal: true
-require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/base_return_value_builder'
 require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
 
 module GirFFI
   module Builders
     # Implements building post-processing statements for return values.
-    class ReturnValueBuilder < BaseArgumentBuilder
+    class ReturnValueBuilder < BaseReturnValueBuilder
       def relevant?
         !void_return_value? && !arginfo.skip?
       end
