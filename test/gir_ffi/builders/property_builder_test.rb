@@ -105,7 +105,8 @@ describe GirFFI::Builders::PropertyBuilder do
     it 'generates the correct setter definition' do
       expected = <<-CODE.reset_indentation
       def string= value
-        set_property("string", value)
+        _v1 = value
+        set_property("string", _v1)
       end
       CODE
 

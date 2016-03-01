@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'gir_ffi/builders/method_template'
 require 'gir_ffi/builders/argument_builder_collection'
+require 'gir_ffi/builders/property_argument_builder'
 require 'gir_ffi/builders/property_return_value_builder'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/field_argument_info'
@@ -86,12 +87,7 @@ module GirFFI
 
       # TODO: Fix argument builders so converting_setter_def can always be used.
       def setter_def
-        case type_info.flattened_tag
-        when :glist, :ghash, :strv
           converting_setter_def
-        else
-          simple_setter_def
-        end
       end
 
       private
@@ -120,8 +116,9 @@ module GirFFI
       end
 
       def setter_builder
-        @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
-                                                argument_info)
+        @setter_builder ||=
+          PropertyArgumentBuilder.new(VariableNameGenerator.new,
+                                      argument_info)
       end
 
       def property_name
