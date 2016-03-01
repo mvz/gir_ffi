@@ -86,4 +86,13 @@ describe GirFFI::UserDefinedTypeInfo do
       info.find_method('foo').must_equal nil
     end
   end
+
+  describe '#find_signal' do
+    let(:klass) { Object.new }
+    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+
+    it 'finds no signals' do
+      info.find_signal('foo').must_equal nil
+    end
+  end
 end

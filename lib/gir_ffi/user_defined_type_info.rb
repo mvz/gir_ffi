@@ -49,6 +49,10 @@ module GirFFI
       parent.class_struct
     end
 
+    def find_signal(signal_name)
+      nil
+    end
+
     attr_writer :g_name
 
     def g_name
