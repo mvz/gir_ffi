@@ -350,7 +350,6 @@ describe Regress do
     end
 
     it "handles the 'doc-empty-arg-parsing' signal" do
-      skip 'Not implemented yet'
       test = nil
       instance.signal_connect 'doc-empty-arg-parsing' do |_obj, arg1, _user_data|
         test = arg1

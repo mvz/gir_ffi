@@ -22,6 +22,7 @@ module GirFFI
 
       def gtype
         return interface.gtype if tag == :interface
+        return GObject::TYPE_POINTER if flattened_tag == :void && pointer?
         type = ITypeInfo.flattened_tag_to_gtype_map[flattened_tag]
         return type if type
         raise "Can't find GType for #{flattened_tag} pointer? = #{pointer?}"

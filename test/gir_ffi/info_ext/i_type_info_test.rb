@@ -585,6 +585,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe 'for :void pointer' do
+      let(:tag) { :void }
+      let(:pointer?) { true }
+
+      it 'equals the none type' do
+        GObject.type_name(type_info.gtype).must_equal 'gpointer'
+      end
+    end
+
     describe 'for :gboolean' do
       let(:tag) { :gboolean }
       let(:pointer?) { false }
