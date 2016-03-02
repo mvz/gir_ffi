@@ -65,11 +65,11 @@ describe Regress do
     end
 
     it 'has a writable field a' do
-      skip 'Not implemented yet'
+      skip 'Anonymous union fields are not exposed in the GIR data'
     end
 
     it 'has a writable field padding' do
-      skip 'Not implemented yet'
+      skip 'Anonymous union fields are not exposed in the GIR data'
     end
   end
 
