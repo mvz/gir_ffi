@@ -11,6 +11,7 @@ module GirFFI
           c:        GObject::TYPE_POINTER,
           gboolean: GObject::TYPE_BOOLEAN,
           ghash:    GObject::TYPE_HASH_TABLE,
+          glist:    GObject::TYPE_POINTER,
           gint32:   GObject::TYPE_INT,
           gint64:   GObject::TYPE_INT64,
           guint64:  GObject::TYPE_UINT64,
