@@ -28,7 +28,7 @@ describe Utility do
     end
 
     it 'has a writable field first_nibble' do
-      skip 'Not implemented yet'
+      skip 'This field is not exposed in the GIR'
       instance.value = 0xAB
       instance.first_nibble.must_equal 0xA
       instance.first_nibble = 0x4
@@ -36,7 +36,7 @@ describe Utility do
     end
 
     it 'has a writable field second_nibble' do
-      skip 'Not implemented yet'
+      skip 'This field is not exposed in the GIR'
       instance.value = 0xAB
       instance.second_nibble.must_equal 0xB
       instance.second_nibble = 0x4
@@ -120,21 +120,21 @@ describe Utility do
     end
 
     it 'has a writable field v_pointer' do
-      skip 'Not implemented yet'
+      skip 'This field is not exposed in the GIR'
       instance.v_pointer.must_equal FFI::Pointer::NULL
       instance.v_pointer = FFI::Pointer.new(4321)
       instance.v_pointer.must_equal FFI::Pointer.new(4321)
     end
 
     it 'has a writable field v_real' do
-      skip 'Not implemented yet'
+      skip 'This field is not exposed in the GIR'
       instance.v_real.must_equal 0.0
       instance.v_real = 42.23
       instance.v_real.must_equal 42.23
     end
 
     it 'has a writable field v_integer' do
-      skip 'Not implemented yet'
+      skip 'This field is not exposed in the GIR'
       instance.v_integer.must_equal 0
       instance.v_integer = 42
       instance.v_integer.must_equal 42
