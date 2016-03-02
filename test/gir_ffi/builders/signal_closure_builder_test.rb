@@ -183,6 +183,5 @@ describe GirFFI::Builders::SignalClosureBuilder do
         builder.marshaller_definition.must_equal expected
       end
     end
-
   end
 end
