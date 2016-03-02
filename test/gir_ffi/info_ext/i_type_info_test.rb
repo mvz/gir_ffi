@@ -585,6 +585,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe 'for :void pointer' do
+      let(:tag) { :void }
+      let(:pointer?) { true }
+
+      it 'equals the none type' do
+        GObject.type_name(type_info.gtype).must_equal 'gpointer'
+      end
+    end
+
     describe 'for :gboolean' do
       let(:tag) { :gboolean }
       let(:pointer?) { false }
@@ -636,6 +645,15 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       it 'equals the GHashTable type' do
         GObject.type_name(type_info.gtype).must_equal 'GHashTable'
+      end
+    end
+
+    describe 'for pointer to :glist' do
+      let(:tag) { :glist }
+      let(:pointer?) { true }
+
+      it 'equals the pointer type' do
+        GObject.type_name(type_info.gtype).must_equal 'gpointer'
       end
     end
 

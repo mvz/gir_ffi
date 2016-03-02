@@ -350,7 +350,6 @@ describe Regress do
     end
 
     it "handles the 'doc-empty-arg-parsing' signal" do
-      skip 'Not implemented yet'
       test = nil
       instance.signal_connect 'doc-empty-arg-parsing' do |_obj, arg1, _user_data|
         test = arg1
@@ -362,13 +361,13 @@ describe Regress do
     end
 
     it "handles the 'list-signal' signal" do
-      skip 'Not implemented yet'
       result = nil
       instance.signal_connect 'list-signal' do |_obj, list, _user_data|
         result = list
       end
 
-      GObject.signal_emit instance, 'list-signal', %w(foo bar)
+      # TODO: Automatically convert to GLib::List
+      GObject.signal_emit instance, 'list-signal', GLib::List.from(:utf8, %w(foo bar))
       result.to_a.must_equal %w(foo bar)
     end
 
