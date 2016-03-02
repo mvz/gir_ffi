@@ -13,6 +13,7 @@ rvm:
   - rbx-3.18
 matrix:
   allow_failures:
+    - rvm: jruby-9.0
     - rvm: jruby-head
     - rvm: ruby-head
     - rvm: ruby-head-clang
