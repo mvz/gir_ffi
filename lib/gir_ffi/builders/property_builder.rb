@@ -85,9 +85,8 @@ module GirFFI
         PropertyGetterBuilder.new(@info, getter_builder).method_definition
       end
 
-      # TODO: Fix argument builders so converting_setter_def can always be used.
       def setter_def
-          converting_setter_def
+        converting_setter_def
       end
 
       private
@@ -103,14 +102,6 @@ module GirFFI
         def #{setter_name} value
           #{setter_builder.pre_conversion.join("\n")}
           set_property("#{property_name}", #{setter_builder.call_argument_name})
-        end
-        CODE
-      end
-
-      def simple_setter_def
-        <<-CODE.reset_indentation
-        def #{setter_name} value
-          set_property("#{property_name}", value)
         end
         CODE
       end
