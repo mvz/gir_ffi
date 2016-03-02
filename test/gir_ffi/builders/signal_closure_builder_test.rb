@@ -162,5 +162,27 @@ describe GirFFI::Builders::SignalClosureBuilder do
         builder.marshaller_definition.must_equal expected
       end
     end
+
+    describe 'for a signal with GList argument' do
+      let(:signal_info) do
+        get_signal_introspection_data 'Regress', 'AnnotationObject', 'list-signal'
+      end
+
+      it 'returns a valid mapping method' do
+        skip unless signal_info
+
+        expected = <<-CODE.reset_indentation
+        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+          _instance, list = param_values.map(&:get_value_plain)
+          _v1 = _instance
+          _v2 = GLib::List.wrap(:utf8, list)
+          wrap(closure.to_ptr).invoke_block(_v1, _v2)
+        end
+        CODE
+
+        builder.marshaller_definition.must_equal expected
+      end
+    end
+
   end
 end

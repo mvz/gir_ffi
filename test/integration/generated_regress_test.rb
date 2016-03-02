@@ -361,12 +361,12 @@ describe Regress do
     end
 
     it "handles the 'list-signal' signal" do
-      # TODO: Automatically wrap GLib::List
       result = nil
       instance.signal_connect 'list-signal' do |_obj, list, _user_data|
-        result = GLib::List.wrap(:utf8, list)
+        result = list
       end
 
+      # TODO: Automatically convert to GLib::List
       GObject.signal_emit instance, 'list-signal', GLib::List.from(:utf8, %w(foo bar))
       result.to_a.must_equal %w(foo bar)
     end
