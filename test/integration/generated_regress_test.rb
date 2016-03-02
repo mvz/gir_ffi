@@ -708,7 +708,6 @@ describe Regress do
 
   describe 'Regress::FooInterface' do
     it 'has a working function #static_method' do
-      skip 'Not implemented yet'
       Regress::FooInterface.static_method(42).must_be_nil
     end
 
