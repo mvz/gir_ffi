@@ -35,8 +35,9 @@ module GirFFI
 
     def initialize
       @struct = self.class::Struct.new
-      if self.class.fundamental_type_name == 'GBoxed'
-        ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, self.class.gtype)
+      gtype = self.class.gtype
+      if GObject.type_fundamental(gtype) == GObject::TYPE_BOXED
+        ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
       end
     end
 
@@ -46,10 +47,6 @@ module GirFFI
         ptr.autorelease = false
         GObject.boxed_free gtype, struct.to_ptr
       end
-    end
-
-    def self.fundamental_type_name
-      @fundamental_type_name ||= GObject.type_name GObject.type_fundamental gtype
     end
   end
 end
