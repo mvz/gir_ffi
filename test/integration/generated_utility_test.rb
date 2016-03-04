@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :Utility
+
 describe Utility do
   describe 'Utility::Buffer' do
     let(:instance) { Utility::Buffer.new }
