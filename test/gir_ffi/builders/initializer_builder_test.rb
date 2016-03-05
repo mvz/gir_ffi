@@ -24,7 +24,7 @@ describe GirFFI::Builders::InitializerBuilder do
       it 'builds a custom initializer' do
         code.must_equal <<-CODE.reset_indentation
           def initialize_from_file(x)
-            _v1 = GirFFI::InPointer.from(:utf8, x)
+            _v1 = GirFFI::InPointer.from_utf8(x)
             _v2 = FFI::MemoryPointer.new(:pointer).write_pointer nil
             _v3 = Regress::Lib.regress_test_obj_new_from_file _v1, _v2
             GirFFI::ArgHelper.check_error(_v2)

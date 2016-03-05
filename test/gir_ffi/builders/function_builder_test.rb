@@ -278,7 +278,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it 'builds correct definition with default parameter value' do
         code.must_equal <<-CODE.reset_indentation
           def self.test_utf8_null_in(in_ = nil)
-            _v1 = GirFFI::InPointer.from(:utf8, in_)
+            _v1 = GirFFI::InPointer.from_utf8(in_)
             Regress::Lib.regress_test_utf8_null_in _v1
           end
         CODE

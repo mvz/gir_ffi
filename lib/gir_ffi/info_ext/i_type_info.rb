@@ -95,6 +95,15 @@ module GirFFI
         end
       end
 
+      def ingoing_argument_conversion_method
+        case flattened_tag
+        when :utf8
+          'from_utf8'
+        else
+          'from'
+        end
+      end
+
       def to_ffi_type
         return :pointer if pointer?
 
@@ -175,7 +184,7 @@ module GirFFI
 
       def extra_conversion_arguments
         case flattened_tag
-        when :utf8, :void
+        when :void
           [flattened_tag]
         when :c
           [element_type, array_fixed_size]

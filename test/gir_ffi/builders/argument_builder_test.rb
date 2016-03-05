@@ -420,7 +420,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :utf8',
-                                           '_v1.set_value GirFFI::InPointer.from(:utf8, utf8)']
+                                           '_v1.set_value GirFFI::InPointer.from_utf8(utf8)']
       end
 
       it 'has the correct value for #post_conversion' do

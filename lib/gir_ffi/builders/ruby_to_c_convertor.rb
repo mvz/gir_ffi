@@ -11,7 +11,8 @@ module GirFFI
 
       def conversion
         args = conversion_arguments @argument_name
-        "#{@type_info.argument_class_name}.from(#{args})"
+        method = @type_info.ingoing_argument_conversion_method
+        "#{@type_info.argument_class_name}.#{method}(#{args})"
       end
 
       def conversion_arguments(name)
