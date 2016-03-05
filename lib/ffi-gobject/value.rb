@@ -18,11 +18,13 @@ module GObject
     def self.make_finalizer(struct, gtype)
       proc do
         ptr = struct.to_ptr
-        ptr.autorelease = false
-        unless struct[:g_type] == TYPE_INVALID
-          GObject::Lib.g_value_unset ptr
+        if ptr.autorelease?
+          ptr.autorelease = false
+          unless struct[:g_type] == TYPE_INVALID
+            GObject::Lib.g_value_unset ptr
+          end
+          GObject.boxed_free gtype, ptr
         end
-        GObject.boxed_free gtype, ptr
       end
     end
 
@@ -108,6 +110,12 @@ module GObject
       new.tap do |it|
         it.init GObject.type_from_instance instance
         it.set_instance instance
+      end
+    end
+
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
+      super(value, pointer, offset).tap do |result|
+        value.to_ptr.autorelease = false if value
       end
     end
 
