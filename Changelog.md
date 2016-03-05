@@ -1,11 +1,15 @@
 # Changelog
 
-## Unreleased
+## 0.9.5 / 2016-03-05
 
 * Abort if modules were defined earlier, e.g., through the gems from the ruby-gnome family.
 * Extend integration testing with GObjectIntrospection's test libraries.
 * Find signals on user-defined types.
 * Allow getting and setting of properties with a callback value.
+* Handle pointer-like signal arguments such as GList.
+* Handle static methods on interface modules.
+* Free most self-allocated boxed types using GObject.boxed_free.
+* Correctly assign length arguments for zero-terminated arguments
 
 ## 0.9.4 / 2016-02-22
 
