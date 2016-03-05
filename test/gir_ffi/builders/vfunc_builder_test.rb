@@ -109,6 +109,26 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
+    describe 'for a vfunc with a GObject::Value out argument allocated by them, the caller' do
+      let(:vfunc_info) do
+        get_vfunc_introspection_data('GIMarshallingTests', 'Object',
+                                     'vfunc_caller_allocated_out_parameter')
+      end
+
+      it 'returns a valid mapping method including receiver' do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, _instance, a)
+          _v1 = GIMarshallingTests::Object.wrap(_instance)
+          _v2 = GirFFI::InOutPointer.new(GObject::Value, a)
+          _v3 = _proc.call(_v1)
+          _v2.set_value GObject::Value.from(_v3)
+        end
+        CODE
+
+        result.must_equal expected
+      end
+    end
+
     describe 'for a vfunc with an error argument' do
       let(:vfunc_info) do
         get_vfunc_introspection_data('GIMarshallingTests', 'Object',
