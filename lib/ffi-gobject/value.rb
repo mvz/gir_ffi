@@ -114,7 +114,7 @@ module GObject
     end
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
-      super(value, pointer, offset).tap do |result|
+      super(value, pointer, offset).tap do
         value.to_ptr.autorelease = false if value
       end
     end
