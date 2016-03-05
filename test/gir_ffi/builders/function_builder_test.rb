@@ -36,6 +36,25 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'for methods taking a zero-terminated array with length argument' do
+      let(:function_info) { get_method_introspection_data 'Regress', 'AnnotationObject', 'parse_args' }
+      it 'builds a correct definition' do
+        skip unless function_info
+        code.must_equal <<-CODE.reset_indentation
+          def parse_args(argv)
+            argc = argv.nil? ? 0 : argv.length
+            _v1 = GirFFI::InOutPointer.for :gint32
+            _v1.set_value argc
+            _v2 = GirFFI::InOutPointer.for [:pointer, :strv]
+            _v2.set_value GLib::Strv.from(argv)
+            Regress::Lib.regress_annotation_object_parse_args self, _v1, _v2
+            _v3 = GLib::Strv.wrap(_v2.to_value)
+            return _v3
+          end
+        CODE
+      end
+    end
+
     describe 'for functions with callbacks' do
       let(:function_info) { get_introspection_data 'Regress', 'test_callback_destroy_notify' }
       it 'builds a correct definition' do

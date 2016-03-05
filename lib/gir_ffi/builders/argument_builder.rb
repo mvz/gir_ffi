@@ -120,17 +120,21 @@ module GirFFI
         "GirFFI::ArgHelper.check_fixed_array_size #{size}, #{name}, \"#{name}\""
       end
 
-      def skipped?
+      def skipped_in?
+        @arginfo.skip?
+      end
+
+      def skipped_out?
         @arginfo.skip? ||
           @array_arg && @array_arg.specialized_type_tag == :strv
       end
 
       def has_output_value?
-        (direction == :inout || direction == :out) && !skipped?
+        (direction == :inout || direction == :out) && !skipped_out?
       end
 
       def has_input_value?
-        has_ingoing_component? && !skipped?
+        has_ingoing_component? && !skipped_in?
       end
 
       def has_ingoing_component?
@@ -163,7 +167,7 @@ module GirFFI
       DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'.freeze
 
       def ingoing_convertor
-        if skipped?
+        if skipped_in?
           NullConvertor.new('0')
         elsif destroy_notifier?
           NullConvertor.new(DESTROY_NOTIFIER)
