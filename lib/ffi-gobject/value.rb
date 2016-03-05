@@ -9,16 +9,22 @@ module GObject
     def init_with_finalizer(type)
       return self if [TYPE_NONE, TYPE_INVALID].include? type
       init_without_finalizer(type)
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr)
       self
     end
 
     alias_method :init_without_finalizer, :init
     alias_method :init, :init_with_finalizer
 
-    def self.make_finalizer(ptr)
+    def self.make_finalizer(struct, gtype)
       proc do
-        GObject::Lib.g_value_unset ptr
+        ptr = struct.to_ptr
+        if ptr.autorelease?
+          ptr.autorelease = false
+          unless struct[:g_type] == TYPE_INVALID
+            GObject::Lib.g_value_unset ptr
+          end
+          GObject.boxed_free gtype, ptr
+        end
       end
     end
 
@@ -104,6 +110,12 @@ module GObject
       new.tap do |it|
         it.init GObject.type_from_instance instance
         it.set_instance instance
+      end
+    end
+
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
+      super(value, pointer, offset).tap do |result|
+        value.to_ptr.autorelease = false if value
       end
     end
 
