@@ -85,7 +85,7 @@ module GirFFI
         if needs_out_conversion?
           FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
-          pointer_to_value_method_call "GirFFI::InOutPointer.new(#{sub_type_spec.inspect}, #{base})", sub_type_spec
+          pointer_to_value_method_call base, sub_type_spec
         else
           base
         end
