@@ -115,7 +115,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -132,7 +132,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0))']
         end
       end
 
@@ -161,7 +161,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -176,7 +176,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GLib::Array.wrap(:utf8, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GLib::Array.wrap(:utf8, _v1.get_pointer(0))']
         end
       end
 
@@ -211,7 +211,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -225,7 +225,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Error.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Error.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -240,7 +240,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.get_pointer(0))']
         end
       end
 
@@ -260,7 +260,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1.get_pointer(0))']
         end
       end
     end
@@ -275,7 +275,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::List.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::List.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -289,7 +289,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::SList.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::SList.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -303,7 +303,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::HashTable.wrap([:utf8, :utf8], _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::HashTable.wrap([:utf8, :utf8], _v1.get_pointer(0))']
       end
     end
   end
@@ -354,7 +354,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_int32(0)']
       end
     end
 
@@ -379,7 +379,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_int32(0)']
       end
     end
 
@@ -394,7 +394,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -409,7 +409,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -424,7 +424,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value.to_utf8']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_pointer(0).to_utf8']
       end
     end
 
@@ -443,7 +443,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.get_pointer(0))']
         end
       end
 
@@ -469,7 +469,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v3 = GirFFI::SizedArray.wrap(:gint32, _v2, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v3 = GirFFI::SizedArray.wrap(:gint32, _v2, _v1.get_pointer(0))']
         end
       end
     end

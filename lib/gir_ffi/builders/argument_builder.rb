@@ -81,7 +81,12 @@ module GirFFI
         if caller_allocated_object? && gvalue?
           return "#{call_argument_name}.get_value"
         end
-        base = "#{call_argument_name}.to_value"
+        base = case ffi_type_spec
+               when Module
+                 "#{call_argument_name}.to_value"
+               when Symbol
+                 "#{call_argument_name}.get_#{ffi_type_spec.to_s}(0)"
+               end
         if needs_out_conversion?
           FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
@@ -154,9 +159,17 @@ module GirFFI
                     "#{argument_class_name}.new"
                   end
                 else
-                  "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
+                  "GirFFI::InOutPointer.for #{type_spec.inspect}"
                 end
         "#{call_argument_name} = #{value}"
+      end
+
+      def type_spec
+        type_info.tag_or_class
+      end
+
+      def ffi_type_spec
+        TypeMap.type_specification_to_ffi_type type_spec
       end
 
       def caller_allocated_object?

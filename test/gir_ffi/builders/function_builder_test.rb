@@ -14,7 +14,7 @@ describe GirFFI::Builders::FunctionBuilder do
           def self.test_array_fixed_out_objects
             _v1 = GirFFI::InOutPointer.for [:pointer, :c]
             Regress::Lib.regress_test_array_fixed_out_objects _v1
-            _v2 = GirFFI::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.to_value)
+            _v2 = GirFFI::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.get_pointer(0))
             return _v2
           end
         CODE
@@ -48,7 +48,7 @@ describe GirFFI::Builders::FunctionBuilder do
             _v2 = GirFFI::InOutPointer.for [:pointer, :strv]
             _v2.set_value GLib::Strv.from(argv)
             Regress::Lib.regress_annotation_object_parse_args self, _v1, _v2
-            _v3 = GLib::Strv.wrap(_v2.to_value)
+            _v3 = GLib::Strv.wrap(_v2.get_pointer(0))
             return _v3
           end
         CODE
@@ -102,7 +102,7 @@ describe GirFFI::Builders::FunctionBuilder do
           def self.gvalue_out
             _v1 = GirFFI::InOutPointer.for [:pointer, GObject::Value]
             GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_out _v1
-            _v2 = GObject::Value.wrap(_v1.to_value).get_value
+            _v2 = GObject::Value.wrap(_v1.get_pointer(0)).get_value
             return _v2
           end
         CODE
@@ -147,8 +147,8 @@ describe GirFFI::Builders::FunctionBuilder do
             _v1 = GirFFI::InOutPointer.for :gint32
             _v2 = GirFFI::InOutPointer.for [:pointer, :c]
             Regress::Lib.regress_test_array_int_null_out _v2, _v1
-            _v3 = _v1.to_value
-            _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.to_value)
+            _v3 = _v1.get_int32(0)
+            _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.get_pointer(0))
             return _v4
           end
         CODE
@@ -166,8 +166,8 @@ describe GirFFI::Builders::FunctionBuilder do
             _v2 = GirFFI::InOutPointer.for [:pointer, :c]
             _v2.set_value GirFFI::SizedArray.from(:gint32, -1, ints)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_array_inout self, _v2, _v1
-            _v3 = _v1.to_value
-            _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.to_value)
+            _v3 = _v1.get_int32(0)
+            _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.get_pointer(0))
             return _v4
           end
         CODE
@@ -231,7 +231,7 @@ describe GirFFI::Builders::FunctionBuilder do
             _v1 = arg
             _v2 = GirFFI::InOutPointer.for [:pointer, :gint8]
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_int8_arg_and_out_callee self, _v1, _v2
-            _v3 = GirFFI::InOutPointer.new(:gint8, _v2.to_value).to_value
+            _v3 = GirFFI::InOutPointer.new(:gint8, _v2.get_pointer(0)).to_value
             return _v3
           end
         CODE
@@ -250,7 +250,7 @@ describe GirFFI::Builders::FunctionBuilder do
             _v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::Object]
             _v1.set_value GIMarshallingTests::Object.from(object.ref)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
-            _v2 = GIMarshallingTests::Object.wrap(_v1.to_value)
+            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
             return _v2
           end
         CODE
