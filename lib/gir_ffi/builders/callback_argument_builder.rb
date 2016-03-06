@@ -131,7 +131,7 @@ module GirFFI
       def out_parameter_preparation
         type_spec = type_info.tag_or_class
         value = if allocated_by_us?
-                  "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
+                  "GirFFI::InOutPointer.allocate_new(#{type_spec[1].inspect})" \
                     ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
                 else
                   "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"

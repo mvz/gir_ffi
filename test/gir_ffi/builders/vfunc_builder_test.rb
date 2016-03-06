@@ -99,7 +99,7 @@ describe GirFFI::Builders::VFuncBuilder do
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = arg
-          _v3 = GirFFI::InOutPointer.new(:gint8).tap { |ptr| out.put_pointer 0, ptr }
+          _v3 = GirFFI::InOutPointer.allocate_new(:gint8).tap { |ptr| out.put_pointer 0, ptr }
           _v4 = _proc.call(_v1, _v2)
           _v3.set_value _v4
         end
