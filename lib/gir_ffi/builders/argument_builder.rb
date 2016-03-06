@@ -81,18 +81,30 @@ module GirFFI
         if caller_allocated_object? && gvalue?
           return "#{call_argument_name}.get_value"
         end
-        base = case ffi_type_spec
-               when Module
-                 "#{call_argument_name}.to_value"
-               when Symbol
-                 "#{call_argument_name}.get_#{ffi_type_spec.to_s}(0)"
-               end
+        base = "#{call_argument_name}.#{pointer_to_value_method_call(ffi_type_spec)}"
         if needs_out_conversion?
           FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
-          "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
+          "GirFFI::InOutPointer.new(#{sub_type_spec.inspect}, #{base}).#{pointer_to_value_method_call(ffi_sub_type_spec)}"
         else
           base
+        end
+      end
+
+      def ffi_sub_type_spec
+        TypeMap.type_specification_to_ffi_type sub_type_spec
+      end
+
+      def sub_type_spec
+        type_spec[1]
+      end
+
+      def pointer_to_value_method_call(spec)
+        case spec
+        when Module
+          'to_value'
+        when Symbol
+          "get_#{spec}(0)"
         end
       end
 
