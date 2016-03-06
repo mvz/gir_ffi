@@ -103,7 +103,7 @@ module GirFFI
         ffi_spec = TypeMap.type_specification_to_ffi_type spec
         case ffi_spec
         when Module
-          "#{ptr_exp}.to_value"
+          "#{ffi_spec}.get_value_from_pointer(#{ptr_exp}, 0)"
         when Symbol
           "#{ptr_exp}.get_#{ffi_spec}(0)"
         end

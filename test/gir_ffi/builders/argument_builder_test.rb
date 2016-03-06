@@ -87,7 +87,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::GEnum.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -101,7 +101,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Flags.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -320,7 +320,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Enum.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -335,7 +335,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::NoTypeFlags.get_value_from_pointer(_v1, 0)']
       end
     end
 
