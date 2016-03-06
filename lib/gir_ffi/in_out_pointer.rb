@@ -7,10 +7,8 @@ module GirFFI
   class InOutPointer < FFI::Pointer
     attr_reader :value_type
 
-    def initialize(type, ptr = nil)
+    def initialize(type, ptr)
       @value_type = type
-
-      ptr ||= AllocationHelper.safe_malloc(value_type_size)
       super ptr
     end
 
