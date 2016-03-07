@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/null_argument_builder'
+require 'gir_ffi/builders/pointer_value_convertor'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/field_argument_info'
 
@@ -23,8 +26,8 @@ module GirFFI
         def pre_conversion
           [
             "#{field_ptr} = @struct.to_ptr + #{field_offset}",
-            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})",
-            "#{bare_value} = #{typed_ptr}.to_value"
+            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag.inspect}, #{field_ptr})",
+            "#{bare_value} = #{pointer_to_value_conversion}"
           ]
         end
 
@@ -54,6 +57,10 @@ module GirFFI
 
         private
 
+        def pointer_to_value_conversion
+          PointerValueConvertor.new(field_type_tag).pointer_to_value(typed_ptr)
+        end
+
         def field_offset
           @field_info.offset
         end
@@ -71,7 +78,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @field_info.field_type.tag_or_class.inspect
+          @field_type_tag ||= @field_info.field_type.tag_or_class
         end
 
         def field_type

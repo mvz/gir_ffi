@@ -11,7 +11,7 @@ describe GirFFI::Builders::FieldBuilder do
         def some_int8
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:gint8, _v1)
-          _v3 = _v2.to_value
+          _v3 = _v2.get_int8(0)
           _v3
         end
       CODE
@@ -38,7 +38,7 @@ describe GirFFI::Builders::FieldBuilder do
         def nested_a
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(Regress::TestSimpleBoxedA, _v1)
-          _v3 = _v2.to_value
+          _v3 = Regress::TestSimpleBoxedA.get_value_from_pointer(_v2, 0)
           _v4 = Regress::TestSimpleBoxedA.wrap(_v3)
           _v4
         end
@@ -54,7 +54,7 @@ describe GirFFI::Builders::FieldBuilder do
         def some_enum
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(Regress::TestEnum, _v1)
-          _v3 = _v2.to_value
+          _v3 = Regress::TestEnum.get_value_from_pointer(_v2, 0)
           _v3
         end
       CODE
@@ -69,7 +69,7 @@ describe GirFFI::Builders::FieldBuilder do
         def some_union
           _v1 = @struct.to_ptr + #{field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:c, _v1)
-          _v3 = _v2.to_value
+          _v3 = GirFFI::SizedArray.get_value_from_pointer(_v2, 0)
           _v4 = GirFFI::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v3)
           _v4
         end
@@ -116,10 +116,10 @@ describe GirFFI::Builders::FieldBuilder do
         def param_types
           _v1 = @struct.to_ptr + #{n_params_field_info.offset}
           _v2 = GirFFI::InOutPointer.new(:guint32, _v1)
-          _v3 = _v2.to_value
+          _v3 = _v2.get_uint32(0)
           _v4 = @struct.to_ptr + #{field_info.offset}
           _v5 = GirFFI::InOutPointer.new([:pointer, :c], _v4)
-          _v6 = _v5.to_value
+          _v6 = _v5.get_pointer(0)
           _v7 = GirFFI::SizedArray.wrap(:GType, _v3, _v6)
           _v7
         end
