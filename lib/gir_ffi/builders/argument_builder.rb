@@ -51,7 +51,7 @@ module GirFFI
           pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
         when :inout
           pr << out_parameter_preparation
-          pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
+          pr << ingoing_value_storage
         when :out
           pr << out_parameter_preparation
         when :error
@@ -72,6 +72,15 @@ module GirFFI
       end
 
       private
+
+      def ingoing_value_storage
+        case ffi_type_spec
+        when Module
+          "#{ffi_type_spec}.copy_value_to_pointer(#{ingoing_convertor.conversion}, #{call_argument_name})"
+        when Symbol
+          "#{call_argument_name}.put_#{ffi_type_spec} 0, #{ingoing_convertor.conversion}"
+        end
+      end
 
       def has_post_conversion?
         has_output_value? && (!caller_allocated_object? || gvalue?)

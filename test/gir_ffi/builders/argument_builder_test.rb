@@ -316,7 +316,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::Enum',
-                                           "_v1.set_value #{arg_info.name}"]
+                                           "GIMarshallingTests::Enum.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it 'has the correct value for #post_conversion' do
@@ -331,7 +331,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::NoTypeFlags',
-                                           "_v1.set_value #{arg_info.name}"]
+                                           "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it 'has the correct value for #post_conversion' do
@@ -350,7 +350,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :gint32',
-                                           "_v1.set_value #{arg_info.name}"]
+                                           "_v1.put_int32 0, #{arg_info.name}"]
       end
 
       it 'has the correct value for #post_conversion' do
@@ -375,7 +375,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['n_ints = ints.nil? ? 0 : ints.length',
                                            '_v1 = GirFFI::InOutPointer.for :gint32',
-                                           '_v1.set_value n_ints']
+                                           '_v1.put_int32 0, n_ints']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -390,7 +390,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :strv]',
-                                           '_v1.set_value GLib::Strv.from(g_strv)']
+                                           '_v1.put_pointer 0, GLib::Strv.from(g_strv)']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -405,7 +405,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :ptr_array]',
-                                           '_v1.set_value GLib::PtrArray.from(:utf8, parray_)']
+                                           '_v1.put_pointer 0, GLib::PtrArray.from(:utf8, parray_)']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -420,7 +420,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :utf8',
-                                           '_v1.set_value GirFFI::InPointer.from_utf8(utf8)']
+                                           '_v1.put_pointer 0, GirFFI::InPointer.from_utf8(utf8)']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -438,7 +438,7 @@ describe GirFFI::Builders::ArgumentBuilder do
           builder.pre_conversion.must_equal [
             'GirFFI::ArgHelper.check_fixed_array_size 4, ints, "ints"',
             '_v1 = GirFFI::InOutPointer.for [:pointer, :c]',
-            '_v1.set_value GirFFI::SizedArray.from(:gint32, 4, ints)'
+            '_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, 4, ints)'
           ]
         end
 
@@ -464,7 +464,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
             '_v1 = GirFFI::InOutPointer.for [:pointer, :c]',
-            '_v1.set_value GirFFI::SizedArray.from(:gint32, -1, ints)'
+            '_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, ints)'
           ]
         end
 
@@ -504,7 +504,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
     it 'has the correct value for #pre_conversion' do
       builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :gint32',
-                                         '_v1.set_value 0']
+                                         '_v1.put_int32 0, 0']
     end
 
     it 'has the correct value for #post_conversion' do

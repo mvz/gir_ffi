@@ -44,9 +44,9 @@ describe GirFFI::Builders::FunctionBuilder do
           def parse_args(argv)
             argc = argv.nil? ? 0 : argv.length
             _v1 = GirFFI::InOutPointer.for :gint32
-            _v1.set_value argc
+            _v1.put_int32 0, argc
             _v2 = GirFFI::InOutPointer.for [:pointer, :strv]
-            _v2.set_value GLib::Strv.from(argv)
+            _v2.put_pointer 0, GLib::Strv.from(argv)
             Regress::Lib.regress_annotation_object_parse_args self, _v1, _v2
             _v3 = GLib::Strv.wrap(_v2.get_pointer(0))
             return _v3
@@ -162,9 +162,9 @@ describe GirFFI::Builders::FunctionBuilder do
           def method_array_inout(ints)
             length = ints.nil? ? 0 : ints.length
             _v1 = GirFFI::InOutPointer.for :gint32
-            _v1.set_value length
+            _v1.put_int32 0, length
             _v2 = GirFFI::InOutPointer.for [:pointer, :c]
-            _v2.set_value GirFFI::SizedArray.from(:gint32, -1, ints)
+            _v2.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, ints)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_array_inout self, _v2, _v1
             _v3 = _v1.get_int32(0)
             _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.get_pointer(0))
@@ -248,7 +248,7 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def self.full_inout(object)
             _v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::Object]
-            _v1.set_value GIMarshallingTests::Object.from(object.ref)
+            _v1.put_pointer 0, GIMarshallingTests::Object.from(object.ref)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
             _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
             return _v2
