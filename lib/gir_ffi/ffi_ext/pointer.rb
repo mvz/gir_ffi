@@ -7,10 +7,6 @@ module GirFFI
         self
       end
 
-      def to_value
-        self
-      end
-
       def zero?
         null?
       end
