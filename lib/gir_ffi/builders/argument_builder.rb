@@ -3,6 +3,7 @@ require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/closure_to_pointer_convertor'
 require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/ruby_to_c_convertor'
+require 'gir_ffi/builders/pointer_value_convertor'
 require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
@@ -74,12 +75,8 @@ module GirFFI
       private
 
       def ingoing_value_storage
-        case ffi_type_spec
-        when Module
-          "#{ffi_type_spec}.copy_value_to_pointer(#{ingoing_convertor.conversion}, #{call_argument_name})"
-        when Symbol
-          "#{call_argument_name}.put_#{ffi_type_spec} 0, #{ingoing_convertor.conversion}"
-        end
+        PointerValueConvertor.new(type_spec).
+          value_to_pointer(call_argument_name, ingoing_convertor.conversion)
       end
 
       def has_post_conversion?
@@ -109,13 +106,7 @@ module GirFFI
       end
 
       def pointer_to_value_method_call(ptr_exp, spec)
-        ffi_spec = TypeMap.type_specification_to_ffi_type spec
-        case ffi_spec
-        when Module
-          "#{ffi_spec}.get_value_from_pointer(#{ptr_exp}, 0)"
-        when Symbol
-          "#{ptr_exp}.get_#{ffi_spec}(0)"
-        end
+        PointerValueConvertor.new(spec).pointer_to_value(ptr_exp)
       end
 
       def needs_out_conversion?
