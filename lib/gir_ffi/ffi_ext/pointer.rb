@@ -38,4 +38,6 @@ FFI::Pointer.class_eval do
   when 8
     alias get_size_t get_uint64
   end
+
+  alias get_gtype get_size_t
 end
