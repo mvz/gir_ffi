@@ -97,10 +97,6 @@ module GirFFI
         end
       end
 
-      def ffi_sub_type_spec
-        TypeMap.type_specification_to_ffi_type sub_type_spec
-      end
-
       def sub_type_spec
         type_spec[1]
       end
@@ -179,10 +175,6 @@ module GirFFI
 
       def type_spec
         type_info.tag_or_class
-      end
-
-      def ffi_type_spec
-        TypeMap.type_specification_to_ffi_type type_spec
       end
 
       def caller_allocated_object?
