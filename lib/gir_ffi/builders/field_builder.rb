@@ -266,17 +266,22 @@ module GirFFI
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})
+          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag.inspect}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
-          #{typed_ptr}.set_value #{builder.call_argument_name}
+          #{value_storage(typed_ptr, builder)}
         end
         CODE
       end
 
       private
 
+      def value_storage(typed_ptr, builder)
+        PointerValueConvertor.new(field_type_tag).
+          value_to_pointer(typed_ptr, builder.call_argument_name)
+      end
+
       def field_type_tag
-        @field_type_tag ||= info.field_type.tag_or_class.inspect
+        @field_type_tag ||= info.field_type.tag_or_class
       end
 
       def container_class
