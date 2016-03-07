@@ -56,10 +56,6 @@ module GirFFI
       allocate_new(type).tap(&:clear)
     end
 
-    def self.from(type, value)
-      allocate_new(type).tap { |ptr| ptr.set_value value }
-    end
-
     def self.allocate_new(type)
       ffi_type = TypeMap.type_specification_to_ffi_type type
       type_size = FFI.type_size ffi_type
