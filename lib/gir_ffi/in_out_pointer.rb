@@ -3,7 +3,6 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.
   #
-  # TODO: This has now become a more general extended pointer class and should be renamed.
   class InOutPointer < FFI::Pointer
     attr_reader :value_type
 
@@ -12,7 +11,6 @@ module GirFFI
       super ptr
     end
 
-    # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
       when Module
