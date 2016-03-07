@@ -44,34 +44,23 @@ describe GirFFI::InOutPointer do
     end
   end
 
-  describe '#set_value' do
-    it 'works setting the value to nil for GObject::Value' do
-      pointer = GirFFI::InOutPointer.allocate_new GObject::Value
-      pointer.set_value GObject::Value.from(3)
-      pointer.set_value nil
-      type_size = FFI.type_size GObject::Value
-      expected = "\x00" * type_size
-      pointer.to_value.read_bytes(type_size).must_equal expected
-    end
-  end
-
   describe '#to_value' do
     it 'returns the held value' do
       ptr = GirFFI::InOutPointer.allocate_new :gint32
-      ptr.set_value 123
+      ptr.write_int32 123
       assert_equal 123, ptr.to_value
     end
 
     describe 'for :gboolean values' do
       it 'works when the value is false' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
-        ptr.set_value false
+        ptr.write_int 0
         ptr.to_value.must_equal false
       end
 
       it 'works when the value is true' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
-        ptr.set_value true
+        ptr.write_int 1
         ptr.to_value.must_equal true
       end
     end
@@ -80,7 +69,7 @@ describe GirFFI::InOutPointer do
       it 'returns a pointer to the held string value' do
         str_ptr = GirFFI::InPointer.from :utf8, 'Some value'
         ptr = GirFFI::InOutPointer.allocate_new :utf8
-        ptr.set_value str_ptr
+        ptr.write_pointer str_ptr
         assert_equal 'Some value', ptr.to_value.read_string
       end
     end
@@ -90,7 +79,7 @@ describe GirFFI::InOutPointer do
         val = GObject::EnumValue.new
         val.value = 3
         ptr = GirFFI::InOutPointer.allocate_new GObject::EnumValue
-        ptr.set_value val
+        GObject::EnumValue.copy_value_to_pointer val, ptr
         result = ptr.to_value
         GObject::EnumValue.wrap(result).value.must_equal 3
       end

@@ -37,17 +37,6 @@ module GirFFI
       end
     end
 
-    def set_value(value)
-      case value_ffi_type
-      when Module
-        value_ffi_type.copy_value_to_pointer(value, self)
-      when Symbol
-        send "put_#{value_ffi_type}", 0, value
-      else
-        raise NotImplementedError, value_ffi_type
-      end
-    end
-
     def clear
       put_bytes 0, "\x00" * value_type_size, 0, value_type_size
     end
