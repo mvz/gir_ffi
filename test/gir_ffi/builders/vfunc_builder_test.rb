@@ -80,7 +80,7 @@ describe GirFFI::Builders::VFuncBuilder do
           _v2 = arg
           _v3 = GirFFI::InOutPointer.new(:gint8, out)
           _v4 = _proc.call(_v1, _v2)
-          _v3.set_value _v4
+          _v3.put_int8 0, _v4
         end
         CODE
 
@@ -101,7 +101,7 @@ describe GirFFI::Builders::VFuncBuilder do
           _v2 = arg
           _v3 = GirFFI::InOutPointer.allocate_new(:gint8).tap { |ptr| out.put_pointer 0, ptr }
           _v4 = _proc.call(_v1, _v2)
-          _v3.set_value _v4
+          _v3.put_pointer 0, _v4
         end
         CODE
 
@@ -121,7 +121,7 @@ describe GirFFI::Builders::VFuncBuilder do
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = GirFFI::InOutPointer.new(GObject::Value, a)
           _v3 = _proc.call(_v1)
-          _v2.set_value GObject::Value.from(_v3)
+          GObject::Value.copy_value_to_pointer(GObject::Value.from(_v3), _v2)
         end
         CODE
 
@@ -144,7 +144,7 @@ describe GirFFI::Builders::VFuncBuilder do
           begin
           _v4 = _proc.call(_v1, _v2)
           rescue => _v5
-          _v3.set_value GLib::Error.from(_v5)
+          _v3.put_pointer 0, GLib::Error.from(_v5)
           end
           return _v4
         end
@@ -203,7 +203,7 @@ describe GirFFI::Builders::VFuncBuilder do
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = GirFFI::InOutPointer.new([:pointer, GObject::Object], object)
           _v3 = _proc.call(_v1)
-          _v2.set_value GObject::Object.from(_v3.ref)
+          _v2.put_pointer 0, GObject::Object.from(_v3.ref)
         end
         CODE
 

@@ -63,11 +63,11 @@ module GirFFI
       def post_conversion
         case direction
         when :out, :inout
-          [outgoing_post_conversion]
+          [value_to_pointer_conversion]
         when :error
           [
             "rescue => #{result_name}",
-            outgoing_post_conversion,
+            value_to_pointer_conversion,
             'end'
           ]
         else
@@ -89,8 +89,16 @@ module GirFFI
         end
       end
 
+      def pointer_value_convertor
+        @pointer_value_convertor ||= PointerValueConvertor.new(type_spec)
+      end
+
       def pointer_to_value_conversion
-        PointerValueConvertor.new(type_spec).pointer_to_value(out_parameter_name)
+        pointer_value_convertor.pointer_to_value(out_parameter_name)
+      end
+
+      def value_to_pointer_conversion
+        pointer_value_convertor.value_to_pointer(out_parameter_name, post_convertor.conversion)
       end
 
       def pre_convertor
@@ -111,10 +119,6 @@ module GirFFI
 
       def ingoing_pre_conversion
         "#{pre_converted_name} = #{pre_convertor.conversion}"
-      end
-
-      def outgoing_post_conversion
-        "#{out_parameter_name}.set_value #{post_convertor.conversion}"
       end
 
       def post_convertor
