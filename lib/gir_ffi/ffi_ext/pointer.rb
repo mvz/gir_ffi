@@ -29,5 +29,13 @@ module GirFFI
   end
 end
 
-# TODO: Move use to InPointer and InOutPointer?
 FFI::Pointer.send :include, GirFFI::FFIExt::Pointer
+
+FFI::Pointer.class_eval do
+  case FFI.type_size(:size_t)
+  when 4
+    alias get_size_t get_uint32
+  when 8
+    alias get_size_t get_uint64
+  end
+end
