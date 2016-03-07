@@ -76,7 +76,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       it 'has the correct value for #pre_conversion' do
         array_arg_builder.pre_conversion.
           must_equal ['_v1 = GirFFI::InOutPointer.new([:pointer, :c], ints)',
-                      '_v2 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.to_value)']
+                      '_v2 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.get_pointer(0))']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -98,7 +98,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       it 'has the correct value for #pre_conversion' do
         length_arg_builder.pre_conversion.
           must_equal ['_v1 = GirFFI::InOutPointer.new(:gint32, length)',
-                      '_v2 = _v1.to_value']
+                      '_v2 = _v1.get_int32(0)']
       end
 
       it 'has the correct value for #post_conversion' do

@@ -3,6 +3,7 @@ require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
 require 'gir_ffi/builders/null_convertor'
+require 'gir_ffi/builders/pointer_value_convertor'
 
 module GirFFI
   module Builders
@@ -82,10 +83,14 @@ module GirFFI
 
       def pre_convertor_argument
         if direction == :inout
-          "#{out_parameter_name}.to_value"
+          pointer_to_value_conversion
         else
           method_argument_name
         end
+      end
+
+      def pointer_to_value_conversion
+        PointerValueConvertor.new(type_spec).pointer_to_value(out_parameter_name)
       end
 
       def pre_convertor
@@ -129,7 +134,6 @@ module GirFFI
       end
 
       def out_parameter_preparation
-        type_spec = type_info.tag_or_class
         value = if allocated_by_us?
                   "GirFFI::InOutPointer.allocate_new(#{type_spec[1].inspect})" \
                     ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
@@ -137,6 +141,10 @@ module GirFFI
                   "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
                 end
         "#{out_parameter_name} = #{value}"
+      end
+
+      def type_spec
+        type_info.tag_or_class
       end
 
       # Check if an out argument needs to be allocated by us, the callee. Since

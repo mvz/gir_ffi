@@ -78,9 +78,9 @@ describe GirFFI::Builders::CallbackBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, ints, length)
           _v1 = GirFFI::InOutPointer.new(:gint32, length)
-          _v2 = _v1.to_value
+          _v2 = _v1.get_int32(0)
           _v3 = GirFFI::InOutPointer.new([:pointer, :c], ints)
-          _v4 = GirFFI::SizedArray.wrap(:gint32, _v2, _v3.to_value)
+          _v4 = GirFFI::SizedArray.wrap(:gint32, _v2, _v3.get_pointer(0))
           _v5 = _proc.call(_v4)
           _v1.set_value _v5.length
           _v3.set_value GirFFI::SizedArray.from(:gint32, -1, _v5)
