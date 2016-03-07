@@ -33,18 +33,6 @@ module GirFFI
       nil
     end
 
-    def closure_idx
-      -1
-    end
-
-    def destroy_idx
-      -1
-    end
-
-    def block_argument?
-      false
-    end
-
     def post_converted_name
       nil
     end
