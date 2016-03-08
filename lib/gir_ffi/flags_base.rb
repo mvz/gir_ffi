@@ -35,6 +35,10 @@ module GirFFI
       self[arg]
     end
 
+    def size
+      native_type.size
+    end
+
     def copy_value_to_pointer(value, pointer)
       pointer.put_int32 0, to_native(value, nil)
     end

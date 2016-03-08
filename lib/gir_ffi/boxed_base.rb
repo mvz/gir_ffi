@@ -23,6 +23,10 @@ module GirFFI
       pointer + offset
     end
 
+    def self.size
+      self::Struct.size
+    end
+
     def self.copy_value_to_pointer(value, pointer, offset = 0)
       size = self::Struct.size
       bytes = if value
