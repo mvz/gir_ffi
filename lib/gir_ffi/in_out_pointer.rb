@@ -43,7 +43,7 @@ module GirFFI
 
     def self.for(type)
       ffi_type = TypeMap.type_specification_to_ffi_type type
-      ptr = AllocationHelper.allocate_clear_for_type(ffi_type)
+      ptr = AllocationHelper.allocate_clear(ffi_type)
       new type, ptr
     end
 

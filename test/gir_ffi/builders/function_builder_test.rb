@@ -12,7 +12,7 @@ describe GirFFI::Builders::FunctionBuilder do
         skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.test_array_fixed_out_objects
-            _v1 = GirFFI::InOutPointer.for [:pointer, :c]
+            _v1 = GirFFI::AllocationHelper.allocate_clear :pointer
             Regress::Lib.regress_test_array_fixed_out_objects _v1
             _v2 = GirFFI::SizedArray.wrap([:pointer, Regress::TestObj], 2, _v1.get_pointer(0))
             return _v2
@@ -43,9 +43,9 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def parse_args(argv)
             argc = argv.nil? ? 0 : argv.length
-            _v1 = GirFFI::InOutPointer.for :gint32
+            _v1 = GirFFI::AllocationHelper.allocate_clear :int32
             _v1.put_int32 0, argc
-            _v2 = GirFFI::InOutPointer.for [:pointer, :strv]
+            _v2 = GirFFI::AllocationHelper.allocate_clear :pointer
             _v2.put_pointer 0, GLib::Strv.from(argv)
             Regress::Lib.regress_annotation_object_parse_args self, _v1, _v2
             _v3 = GLib::Strv.wrap(_v2.get_pointer(0))
@@ -100,7 +100,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it 'creates a call to #get_value' do
         code.must_equal <<-CODE.reset_indentation
           def self.gvalue_out
-            _v1 = GirFFI::InOutPointer.for [:pointer, GObject::Value]
+            _v1 = GirFFI::AllocationHelper.allocate_clear :pointer
             GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_out _v1
             _v2 = GObject::Value.wrap(_v1.get_pointer(0)).get_value
             return _v2
@@ -144,8 +144,8 @@ describe GirFFI::Builders::FunctionBuilder do
       it 'builds correct definition' do
         code.must_equal <<-CODE.reset_indentation
           def self.test_array_int_null_out
-            _v1 = GirFFI::InOutPointer.for :gint32
-            _v2 = GirFFI::InOutPointer.for [:pointer, :c]
+            _v1 = GirFFI::AllocationHelper.allocate_clear :int32
+            _v2 = GirFFI::AllocationHelper.allocate_clear :pointer
             Regress::Lib.regress_test_array_int_null_out _v2, _v1
             _v3 = _v1.get_int32(0)
             _v4 = GirFFI::SizedArray.wrap(:gint32, _v3, _v2.get_pointer(0))
@@ -161,9 +161,9 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def method_array_inout(ints)
             length = ints.nil? ? 0 : ints.length
-            _v1 = GirFFI::InOutPointer.for :gint32
+            _v1 = GirFFI::AllocationHelper.allocate_clear :int32
             _v1.put_int32 0, length
-            _v2 = GirFFI::InOutPointer.for [:pointer, :c]
+            _v2 = GirFFI::AllocationHelper.allocate_clear :pointer
             _v2.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, ints)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_array_inout self, _v2, _v1
             _v3 = _v1.get_int32(0)
@@ -190,10 +190,10 @@ describe GirFFI::Builders::FunctionBuilder do
     describe 'for GLib::Variant.get_strv' do
       let(:function_info) { get_method_introspection_data 'GLib', 'Variant', 'get_strv' }
       it 'builds a correct definition' do
-        size_type = ":guint#{FFI.type_size(:size_t) * 8}"
+        size_type = ":uint#{FFI.type_size(:size_t) * 8}"
         code.must_equal <<-CODE.reset_indentation
           def get_strv
-            _v1 = GirFFI::InOutPointer.for #{size_type}
+            _v1 = GirFFI::AllocationHelper.allocate_clear #{size_type}
             _v2 = GLib::Lib.g_variant_get_strv self, _v1
             _v3 = GLib::Strv.wrap(_v2)
             return _v3
@@ -229,7 +229,7 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def method_int8_arg_and_out_callee(arg)
             _v1 = arg
-            _v2 = GirFFI::InOutPointer.for [:pointer, :gint8]
+            _v2 = GirFFI::AllocationHelper.allocate_clear :pointer
             GIMarshallingTests::Lib.gi_marshalling_tests_object_method_int8_arg_and_out_callee self, _v1, _v2
             _v3 = _v2.get_pointer(0).get_int8(0)
             return _v3
@@ -247,7 +247,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it 'builds a correct definition' do
         code.must_equal <<-CODE.reset_indentation
           def self.full_inout(object)
-            _v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::Object]
+            _v1 = GirFFI::AllocationHelper.allocate_clear :pointer
             _v1.put_pointer 0, GIMarshallingTests::Object.from(object.ref)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
             _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))

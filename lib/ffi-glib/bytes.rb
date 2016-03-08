@@ -12,7 +12,7 @@ module GLib
     # NOTE: Needed due to mis-identification of the element-type of the
     # resulting sized array for the default binding.
     def get_data
-      length_ptr = GirFFI::InOutPointer.for :gsize
+      length_ptr = GirFFI::AllocationHelper.allocate_clear :size_t
       data_ptr = Lib.g_bytes_get_data self, length_ptr
       length = length_ptr.get_size_t(0)
       GirFFI::SizedArray.wrap(:guint8, length, data_ptr)
