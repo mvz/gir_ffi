@@ -24,7 +24,6 @@ module GirFFI
 
     def self.allocate_clear(type)
       ptr = FFI::MemoryPointer.new(type)
-      ptr.clear
       ptr.autorelease = false
       ptr
     end
