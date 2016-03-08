@@ -17,7 +17,7 @@ module GirFFI
       ptr
     end
 
-    def self.allocate_for_type(type)
+    def self.allocate(type)
       type_size = FFI.type_size type
       safe_malloc(type_size)
     end
