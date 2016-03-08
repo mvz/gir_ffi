@@ -41,12 +41,6 @@ module GirFFI
       put_bytes 0, "\x00" * value_type_size, 0, value_type_size
     end
 
-    def self.for(type)
-      ffi_type = TypeMap.type_specification_to_ffi_type type
-      ptr = AllocationHelper.allocate_clear(ffi_type)
-      new type, ptr
-    end
-
     def self.allocate_new(type)
       ffi_type = TypeMap.type_specification_to_ffi_type type
       ptr = AllocationHelper.allocate_for_type(ffi_type)

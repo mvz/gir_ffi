@@ -11,39 +11,6 @@ describe GirFFI::InOutPointer do
     end
   end
 
-  describe 'in instance created with .for' do
-    before do
-      @result = GirFFI::InOutPointer.for :gint32
-    end
-
-    it 'holds a pointer to a null value' do
-      assert_equal 0, @result.get_int32(0)
-    end
-
-    it 'is an instance of GirFFI::InOutPointer' do
-      assert_instance_of GirFFI::InOutPointer, @result
-    end
-  end
-
-  describe '.for' do
-    it 'handles :gboolean' do
-      result = GirFFI::InOutPointer.for :gboolean
-      result.to_value.must_equal false
-    end
-
-    it 'handles :utf8' do
-      result = GirFFI::InOutPointer.for :utf8
-      result.to_value.must_be :null?
-    end
-
-    it 'handles GObject::Value' do
-      result = GirFFI::InOutPointer.for GObject::Value
-      type_size = FFI.type_size GObject::Value
-      expected = "\x00" * type_size
-      result.to_value.read_bytes(type_size).must_equal expected
-    end
-  end
-
   describe '#to_value' do
     it 'returns the held value' do
       ptr = GirFFI::InOutPointer.allocate_new :gint32
