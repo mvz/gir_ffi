@@ -42,13 +42,14 @@ module GirFFI
     end
 
     def self.for(type)
-      allocate_new(type).tap(&:clear)
+      ffi_type = TypeMap.type_specification_to_ffi_type type
+      ptr = AllocationHelper.allocate_clear_for_type(ffi_type)
+      new type, ptr
     end
 
     def self.allocate_new(type)
       ffi_type = TypeMap.type_specification_to_ffi_type type
-      type_size = FFI.type_size ffi_type
-      ptr = AllocationHelper.safe_malloc(type_size)
+      ptr = AllocationHelper.allocate_for_type(ffi_type)
       new type, ptr
     end
 

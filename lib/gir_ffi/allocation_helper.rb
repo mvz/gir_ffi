@@ -16,5 +16,18 @@ module GirFFI
       raise NoMemoryError if ptr.null?
       ptr
     end
+
+    def self.allocate_for_type(type)
+      type_size = FFI.type_size type
+      safe_malloc(type_size)
+    end
+
+    def self.allocate_clear_for_type(type)
+      type_size = FFI.type_size type
+      ptr = FFI::MemoryPointer.new(type_size)
+      ptr.clear
+      ptr.autorelease = false
+      ptr
+    end
   end
 end
