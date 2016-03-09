@@ -260,14 +260,12 @@ module GirFFI
         builder = setter_builder
 
         field_ptr = builder.new_variable
-        typed_ptr = builder.new_variable
 
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag.inspect}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
-          #{value_storage(typed_ptr, builder)}
+          #{value_storage(field_ptr, builder)}
         end
         CODE
       end
