@@ -293,7 +293,7 @@ describe GirFFI::Builders::FunctionBuilder do
             _v1 = GObject::Value.from(return_value)
             n_param_values = param_values.nil? ? 0 : param_values.length
             _v2 = n_param_values
-            _v3 = GirFFI::InPointer.from(:void, invocation_hint)
+            _v3 = invocation_hint
             _v4 = GirFFI::SizedArray.from(GObject::Value, -1, param_values)
             GObject::Lib.g_closure_invoke self, _v1, _v2, _v4, _v3
           end

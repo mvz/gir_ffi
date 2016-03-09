@@ -139,7 +139,7 @@ module GirFFI
 
       TAGS_NEEDING_RUBY_TO_C_CONVERSION = [
         :array, :c, :callback, :error, :ghash, :glist, :gslist, :object,
-        :ptr_array, :struct, :strv, :utf8, :void, :zero_terminated
+        :ptr_array, :struct, :strv, :utf8, :zero_terminated
       ].freeze
 
       TAGS_NEEDING_C_TO_RUBY_CONVERSION = [
@@ -184,8 +184,6 @@ module GirFFI
 
       def extra_conversion_arguments
         case flattened_tag
-        when :void
-          [flattened_tag]
         when :c
           [element_type, array_fixed_size]
         when :array, :ghash, :glist, :gslist, :ptr_array, :zero_terminated
