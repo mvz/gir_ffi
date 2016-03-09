@@ -98,7 +98,8 @@ module GirFFI
       end
 
       def value_to_pointer_conversion
-        pointer_value_convertor.value_to_pointer(out_parameter_name, post_convertor.conversion)
+        pointer_value_convertor.value_to_pointer(out_parameter_name,
+                                                 post_convertor.conversion)
       end
 
       def pre_convertor

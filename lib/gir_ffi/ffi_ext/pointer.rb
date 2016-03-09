@@ -30,10 +30,10 @@ FFI::Pointer.send :include, GirFFI::FFIExt::Pointer
 FFI::Pointer.class_eval do
   case FFI.type_size(:size_t)
   when 4
-    alias get_size_t get_uint32
+    alias_method :get_size_t, :get_uint32
   when 8
-    alias get_size_t get_uint64
+    alias_method :get_size_t, :get_uint64
   end
 
-  alias get_gtype get_size_t
+  alias_method :get_gtype, :get_size_t
 end

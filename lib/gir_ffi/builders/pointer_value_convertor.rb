@@ -36,4 +36,3 @@ module GirFFI
     end
   end
 end
-

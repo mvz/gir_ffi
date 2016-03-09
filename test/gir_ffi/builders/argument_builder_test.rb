@@ -330,8 +330,9 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::NoTypeFlags',
-                                           "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
+        builder.pre_conversion.
+          must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::NoTypeFlags',
+                      "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it 'has the correct value for #post_conversion' do
