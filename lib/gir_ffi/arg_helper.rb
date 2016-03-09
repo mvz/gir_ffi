@@ -63,5 +63,9 @@ module GirFFI
     def self.cast_pointer_to_int32(ptr)
       cast_uint32_to_int32(ptr.address & 0xffffffff)
     end
+
+    def self.store(obj)
+      OBJECT_STORE.store(obj)
+    end
   end
 end

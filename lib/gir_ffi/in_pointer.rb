@@ -47,10 +47,6 @@ module GirFFI
     end
 
     class << self
-      def from_closure_data(obj)
-        ArgHelper::OBJECT_STORE.store(obj)
-      end
-
       private
 
       def from_utf8_array(ary)
