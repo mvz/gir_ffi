@@ -78,7 +78,7 @@ describe GirFFI::Builders::VFuncBuilder do
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = arg
-          _v3 = GirFFI::InOutPointer.new(:gint8, out)
+          _v3 = out
           _v4 = _proc.call(_v1, _v2)
           _v3.put_int8 0, _v4
         end
@@ -119,7 +119,7 @@ describe GirFFI::Builders::VFuncBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, a)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = GirFFI::InOutPointer.new(GObject::Value, a)
+          _v2 = a
           _v3 = _proc.call(_v1)
           GObject::Value.copy_value_to_pointer(GObject::Value.from(_v3), _v2)
         end
@@ -140,7 +140,7 @@ describe GirFFI::Builders::VFuncBuilder do
         def self.call_with_argument_mapping(_proc, _instance, x, _error)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = x
-          _v3 = GirFFI::InOutPointer.new([:pointer, :error], _error)
+          _v3 = _error
           begin
           _v4 = _proc.call(_v1, _v2)
           rescue => _v5
@@ -201,7 +201,7 @@ describe GirFFI::Builders::VFuncBuilder do
         expected = <<-CODE.reset_indentation
         def self.call_with_argument_mapping(_proc, _instance, object)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = GirFFI::InOutPointer.new([:pointer, GObject::Object], object)
+          _v2 = object
           _v3 = _proc.call(_v1)
           _v2.put_pointer 0, GObject::Object.from(_v3.ref)
         end

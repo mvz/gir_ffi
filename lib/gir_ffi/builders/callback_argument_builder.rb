@@ -143,7 +143,7 @@ module GirFFI
                   "GirFFI::InOutPointer.allocate_new(#{type_spec[1].inspect})" \
                     ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
                 else
-                  "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
+                  method_argument_name
                 end
         "#{out_parameter_name} = #{value}"
       end

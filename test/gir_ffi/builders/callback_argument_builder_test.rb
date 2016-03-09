@@ -16,7 +16,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       before { skip unless vfunc_info }
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.new([:pointer, :zero_terminated], a)']
+        builder.pre_conversion.must_equal ['_v1 = a']
       end
 
       it 'has the correct value for #post_conversion' do
@@ -30,7 +30,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
     it 'sets up a rescueing block in #pre_conversion' do
       builder.pre_conversion.must_equal [
-        '_v1 = GirFFI::InOutPointer.new([:pointer, :error], _error)',
+        '_v1 = _error',
         'begin'
       ]
     end
@@ -75,7 +75,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         array_arg_builder.pre_conversion.
-          must_equal ['_v1 = GirFFI::InOutPointer.new([:pointer, :c], ints)',
+          must_equal ['_v1 = ints',
                       '_v2 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.get_pointer(0))']
       end
 
@@ -97,7 +97,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         length_arg_builder.pre_conversion.
-          must_equal ['_v1 = GirFFI::InOutPointer.new(:gint32, length)',
+          must_equal ['_v1 = length',
                       '_v2 = _v1.get_int32(0)']
       end
 
