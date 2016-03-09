@@ -34,7 +34,7 @@ describe GirFFI::InOutPointer do
 
     describe 'for :utf8 values' do
       it 'returns a pointer to the held string value' do
-        str_ptr = GirFFI::InPointer.from :utf8, 'Some value'
+        str_ptr = GirFFI::InPointer.from_utf8 'Some value'
         ptr = GirFFI::InOutPointer.allocate_new :utf8
         ptr.write_pointer str_ptr
         assert_equal 'Some value', ptr.to_value.read_string
