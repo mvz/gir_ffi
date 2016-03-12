@@ -4,16 +4,12 @@ GObject.load_class :Value
 module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
-    setup_instance_method 'init'
+    remove_method :init
 
-    def init_with_finalizer(type)
-      return self if [TYPE_NONE, TYPE_INVALID].include? type
-      init_without_finalizer(type)
+    def init(type)
+      Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
       self
     end
-
-    alias_method :init_without_finalizer, :init
-    alias_method :init, :init_with_finalizer
 
     def self.make_finalizer(struct, gtype)
       proc do
