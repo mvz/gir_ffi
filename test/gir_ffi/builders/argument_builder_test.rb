@@ -149,7 +149,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0))']
+          builder.post_conversion.
+            must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0))']
         end
       end
 
@@ -480,6 +481,26 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #post_conversion' do
         builder.post_conversion.must_equal ['_v2 = _v1.get_pointer(0).to_utf8']
+      end
+    end
+
+    describe 'for :struct' do
+      describe 'with full ownership transfer' do
+        let(:arg_info) do
+          get_introspection_data('GIMarshallingTests', 'boxed_struct_inout').args[0]
+        end
+
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal [
+            '_v1 = FFI::MemoryPointer.new :pointer',
+            '_v1.put_pointer 0, GIMarshallingTests::BoxedStruct.from(struct_)'
+          ]
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.
+            must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0).tap { |it| it.autorelease = true })']
+        end
       end
     end
 

@@ -58,6 +58,8 @@ describe GIMarshallingTests do
       bx.long_ = 42
 
       res = GIMarshallingTests::BoxedStruct.inout bx
+      bx.to_ptr.wont_be :autorelease?
+      res.to_ptr.must_be :autorelease?
 
       # TODO: Deal with the fact that bx is now invalid (at least with
       # gobject-introspection 1.40).
@@ -67,11 +69,13 @@ describe GIMarshallingTests do
 
     it 'has a working function #out' do
       res = GIMarshallingTests::BoxedStruct.out
+      res.to_ptr.wont_be :autorelease?
       assert_equal 42, res.long_
     end
 
     it 'has a working function #returnv' do
       res = GIMarshallingTests::BoxedStruct.returnv
+      res.to_ptr.wont_be :autorelease?
       assert_equal 42, res.long_
       res.g_strv.must_be :==, %w(0 1 2)
     end

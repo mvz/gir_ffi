@@ -4,9 +4,9 @@ module GirFFI
     # Builder that generates code to convert values from C to Ruby. Used by
     # argument builders.
     class CToRubyConvertor
-      def initialize(type_info, argument_name, length_arg, ownership_transfer: nil)
+      def initialize(type_info, argument, length_arg, ownership_transfer: nil)
         @type_info = type_info
-        @argument_name = argument_name
+        @argument = argument
         @length_arg = length_arg
         @ownership_transfer = ownership_transfer
       end
@@ -15,9 +15,9 @@ module GirFFI
         case @type_info.flattened_tag
         when :utf8, :filename
           if @ownership_transfer == :everything
-            "#{@argument_name}.tap { |it| it.autorelease = true }.to_utf8"
+            "#{@argument}.tap { |it| it.autorelease = true }.to_utf8"
           else
-            "#{@argument_name}.to_utf8"
+            "#{@argument}.to_utf8"
           end
         when :object
           base = "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
@@ -34,10 +34,17 @@ module GirFFI
       end
 
       def conversion_arguments
-        if @type_info.flattened_tag == :c
-          [@type_info.element_type.inspect, array_size, @argument_name]
+        case @type_info.flattened_tag
+        when :c
+          [@type_info.element_type.inspect, array_size, @argument]
+        when :struct
+          if @ownership_transfer == :everything
+            ["#{@argument}.tap { |it| it.autorelease = true }"]
+          else
+            [@argument]
+          end
         else
-          @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name)
+          @type_info.extra_conversion_arguments.map(&:inspect).push(@argument)
         end
       end
 
