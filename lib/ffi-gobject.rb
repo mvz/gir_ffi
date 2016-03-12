@@ -9,6 +9,7 @@ require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'
 require 'ffi-gobject/object'
 require 'ffi-gobject/object_class'
+require 'ffi-gobject/param_spec'
 require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/signal_not_found_error'
 
@@ -110,6 +111,8 @@ module GObject
     attach_function :g_param_spec_int,
                     [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
                     :pointer
+    attach_function :g_param_spec_ref, [:pointer], :pointer
+    attach_function :g_param_spec_sink, [:pointer], :pointer
   end
 
   TYPE_ARRAY = Lib.g_array_get_type
