@@ -75,14 +75,6 @@ module GObject
     signal_connect object, detailed_signal, data, true, &block
   end
 
-  # Smells of :reek:LongParameterList: due to the C interface.
-  # rubocop:disable Metrics/ParameterLists
-  def self.param_spec_int(name, nick, blurb, minimum, maximum, default_value, flags)
-    ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
-                               default_value, flags)
-    ParamSpecInt.wrap(ptr)
-  end
-
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
@@ -108,9 +100,6 @@ module GObject
     attach_function :g_closure_set_marshal,
                     [:pointer, ClosureMarshal], :void
 
-    attach_function :g_param_spec_int,
-                    [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
-                    :pointer
     attach_function :g_param_spec_ref, [:pointer], :pointer
     attach_function :g_param_spec_sink, [:pointer], :pointer
   end
