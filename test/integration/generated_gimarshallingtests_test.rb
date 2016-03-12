@@ -302,7 +302,7 @@ describe GIMarshallingTests do
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      ob.ref_count.must_be :>, 0
+      ob.ref_count.must_equal 1
       res.ref_count.must_equal 1
 
       res.must_be_instance_of GIMarshallingTests::Object
@@ -311,12 +311,14 @@ describe GIMarshallingTests do
 
     it 'has a working function #full_out' do
       res = GIMarshallingTests::Object.full_out
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 1
     end
 
     it 'has a working function #full_return' do
       res = GIMarshallingTests::Object.full_return
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 1
     end
 
     it 'has a working function #inout_same' do
@@ -325,19 +327,28 @@ describe GIMarshallingTests do
 
     it 'has a working function #none_inout' do
       ob = GIMarshallingTests::Object.new 42
+      ob.ref_count.must_equal 1
+
       res = GIMarshallingTests::Object.none_inout ob
-      assert_instance_of GIMarshallingTests::Object, res
-      ob.wont_equal res
+
+      ob.ref_count.must_equal 1
+      res.ref_count.must_equal 2
+
+      res.must_be_instance_of GIMarshallingTests::Object
+      ob.int.must_equal 42
+      res.int.must_equal 0
     end
 
     it 'has a working function #none_out' do
       res = GIMarshallingTests::Object.none_out
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 2
     end
 
     it 'has a working function #none_return' do
       res = GIMarshallingTests::Object.none_return
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 2
     end
 
     it 'has a working function #static_method' do

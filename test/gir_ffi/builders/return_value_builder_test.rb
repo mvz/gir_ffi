@@ -81,20 +81,41 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :object' do
-    let(:method_info) do
-      get_method_introspection_data('GIMarshallingTests',
-                                    'Object',
-                                    'full_return')
+    describe 'with full ownership transfer' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'Object',
+                                      'full_return')
+      end
+
+      it 'wraps the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
+      end
+
+      it 'returns the wrapped result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
 
-    it 'wraps the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
-    end
+    describe 'with no ownership transfer' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'Object',
+                                      'none_return')
+      end
 
-    it 'returns the wrapped result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'wraps the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.
+          must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }']
+      end
+
+      it 'returns the wrapped result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 
@@ -323,7 +344,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it 'autoreleases and converts the result in #post_conversion' do
         builder.capture_variable_name.must_equal '_v1'
-        builder.post_conversion.must_equal ['_v1.autorelease = true', '_v2 = _v1.to_utf8']
+        builder.post_conversion.
+          must_equal ['_v2 = _v1.tap { |it| it.autorelease = true }.to_utf8']
       end
 
       it 'returns the converted result' do

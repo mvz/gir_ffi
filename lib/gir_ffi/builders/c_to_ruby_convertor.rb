@@ -4,16 +4,24 @@ module GirFFI
     # Builder that generates code to convert values from C to Ruby. Used by
     # argument builders.
     class CToRubyConvertor
-      def initialize(type_info, argument_name, length_arg)
+      def initialize(type_info, argument_name, length_arg, ownership_transfer: nil)
         @type_info = type_info
         @argument_name = argument_name
         @length_arg = length_arg
+        @ownership_transfer = ownership_transfer
       end
 
       def conversion
         case @type_info.flattened_tag
         when :utf8, :filename
-          "#{@argument_name}.to_utf8"
+          if @ownership_transfer == :everything
+            "#{@argument_name}.tap { |it| it.autorelease = true }.to_utf8"
+          else
+            "#{@argument_name}.to_utf8"
+          end
+        when :object
+          base = "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
+          @ownership_transfer == :nothing ? "#{base}.tap { |it| it && it.ref }" : base
         else
           "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
         end

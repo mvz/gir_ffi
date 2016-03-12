@@ -106,16 +106,33 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe 'for :object' do
-      let(:arg_info) do
-        get_method_introspection_data('Regress', 'TestObj', 'null_out').args[0]
+      describe 'with full ownership transfer' do
+        let(:arg_info) do
+          get_method_introspection_data('Regress', 'TestObj', 'null_out').args[0]
+        end
+
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.get_pointer(0))']
+        end
       end
 
-      it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
-      end
+      describe 'with no ownership transfer' do
+        let(:arg_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object', 'none_out').args[0]
+        end
 
-      it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.get_pointer(0))']
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.
+            must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }']
+        end
       end
     end
 
