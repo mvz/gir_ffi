@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Rework generated method code to use less indirection.
+* Remove unused classes and methods
+
 ## 0.9.5 / 2016-03-05
 
 * Abort if modules were defined earlier, e.g., through the gems from the ruby-gnome family.
