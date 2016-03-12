@@ -181,21 +181,4 @@ describe GirFFI::InPointer do
       end
     end
   end
-
-  describe '.from_closure_data' do
-    describe 'when called with nil' do
-      it 'returns a null pointer' do
-        GirFFI::InPointer.from_closure_data(nil).must_be :null?
-      end
-    end
-
-    describe 'when called with a string' do
-      it 'stores the string in GirFFI::ArgHelper::OBJECT_STORE' do
-        str = 'Foo'
-        ptr = GirFFI::InPointer.from_closure_data(str)
-        result = GirFFI::ArgHelper::OBJECT_STORE.fetch(ptr)
-        result.must_equal str
-      end
-    end
-  end
 end

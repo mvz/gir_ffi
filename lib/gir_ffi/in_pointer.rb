@@ -47,10 +47,6 @@ module GirFFI
     end
 
     class << self
-      def from_closure_data(obj)
-        ArgHelper::OBJECT_STORE.store(obj)
-      end
-
       private
 
       def from_utf8_array(ary)
@@ -93,11 +89,16 @@ module GirFFI
         from_basic_type_array :int32, ary.map { |sym| type.to_native sym, nil }
       end
 
+      public
+
       def from_utf8(str)
+        return unless str
         len = str.bytesize
         ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
         new ptr
       end
+
+      private
 
       def from_basic_type_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type

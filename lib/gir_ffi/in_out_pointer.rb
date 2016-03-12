@@ -3,18 +3,14 @@ module GirFFI
   # The InOutPointer class handles conversion between ruby types and
   # pointers for arguments with direction :inout and :out.
   #
-  # TODO: This has now become a more general extended pointer class and should be renamed.
   class InOutPointer < FFI::Pointer
     attr_reader :value_type
 
-    def initialize(type, ptr = nil)
+    def initialize(type, ptr)
       @value_type = type
-
-      ptr ||= AllocationHelper.safe_malloc(value_type_size)
       super ptr
     end
 
-    # TODO: Create type classes that extract values from pointers.
     def to_value
       case value_ffi_type
       when Module
@@ -41,37 +37,16 @@ module GirFFI
       end
     end
 
-    def set_value(value)
-      case value_ffi_type
-      when Module
-        value_ffi_type.copy_value_to_pointer(value, self)
-      when Symbol
-        send "put_#{value_ffi_type}", 0, value
-      else
-        raise NotImplementedError, value_ffi_type
-      end
-    end
-
-    def clear
-      put_bytes 0, "\x00" * value_type_size, 0, value_type_size
-    end
-
-    def self.for(type)
-      new(type).tap(&:clear)
-    end
-
-    def self.from(type, value)
-      new(type).tap { |ptr| ptr.set_value value }
+    def self.allocate_new(type)
+      ffi_type = TypeMap.type_specification_to_ffi_type type
+      ptr = AllocationHelper.allocate(ffi_type)
+      new type, ptr
     end
 
     private
 
     def value_ffi_type
       @value_ffi_type ||= TypeMap.type_specification_to_ffi_type value_type
-    end
-
-    def value_type_size
-      @value_type_size ||= FFI.type_size value_ffi_type
     end
   end
 end

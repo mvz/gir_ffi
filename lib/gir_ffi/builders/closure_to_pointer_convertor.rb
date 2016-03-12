@@ -10,7 +10,7 @@ module GirFFI
       end
 
       def conversion
-        "GirFFI::InPointer.from_closure_data(#{callback_argument_name})"
+        "GirFFI::ArgHelper.store(#{callback_argument_name})"
       end
 
       private

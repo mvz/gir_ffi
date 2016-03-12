@@ -9,7 +9,7 @@ module GLib
     end
 
     def append(data)
-      bytes = GirFFI::InPointer.from :utf8, data
+      bytes = GirFFI::InPointer.from_utf8 data
       len = data.bytesize
       self.class.wrap Lib.g_byte_array_append(to_ptr, bytes, len)
     end

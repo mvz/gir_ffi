@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 require 'gir_ffi/builders/argument_builder'
+require 'gir_ffi/builders/base_argument_builder'
+require 'gir_ffi/builders/null_argument_builder'
+require 'gir_ffi/builders/pointer_value_convertor'
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/field_argument_info'
 
@@ -23,8 +26,7 @@ module GirFFI
         def pre_conversion
           [
             "#{field_ptr} = @struct.to_ptr + #{field_offset}",
-            "#{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})",
-            "#{bare_value} = #{typed_ptr}.to_value"
+            "#{bare_value} = #{pointer_to_value_conversion}"
           ]
         end
 
@@ -54,6 +56,10 @@ module GirFFI
 
         private
 
+        def pointer_to_value_conversion
+          PointerValueConvertor.new(field_type_tag).pointer_to_value(field_ptr)
+        end
+
         def field_offset
           @field_info.offset
         end
@@ -71,7 +77,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @field_info.field_type.tag_or_class.inspect
+          @field_type_tag ||= @field_info.field_type.tag_or_class
         end
 
         def field_type
@@ -254,22 +260,25 @@ module GirFFI
         builder = setter_builder
 
         field_ptr = builder.new_variable
-        typed_ptr = builder.new_variable
 
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr + #{info.offset}
-          #{typed_ptr} = GirFFI::InOutPointer.new(#{field_type_tag}, #{field_ptr})
           #{builder.pre_conversion.join("\n          ")}
-          #{typed_ptr}.set_value #{builder.call_argument_name}
+          #{value_storage(field_ptr, builder)}
         end
         CODE
       end
 
       private
 
+      def value_storage(typed_ptr, builder)
+        PointerValueConvertor.new(field_type_tag).
+          value_to_pointer(typed_ptr, builder.call_argument_name)
+      end
+
       def field_type_tag
-        @field_type_tag ||= info.field_type.tag_or_class.inspect
+        @field_type_tag ||= info.field_type.tag_or_class
       end
 
       def container_class

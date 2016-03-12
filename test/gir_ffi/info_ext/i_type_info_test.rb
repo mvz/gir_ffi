@@ -291,16 +291,6 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
-    describe 'for a string' do
-      before do
-        allow(type_info).to receive(:tag).and_return :utf8
-      end
-
-      it 'returns an array containing :utf8' do
-        type_info.extra_conversion_arguments.must_equal [:utf8]
-      end
-    end
-
     describe 'for a fixed-size array' do
       before do
         allow(type_info).to receive(:tag).and_return :array

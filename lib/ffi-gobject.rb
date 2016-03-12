@@ -19,7 +19,7 @@ module GObject
   def self.type_from_instance_pointer(inst_ptr)
     return nil if inst_ptr.null?
     klsptr = inst_ptr.get_pointer 0
-    GirFFI::InOutPointer.new(:GType, klsptr).to_value
+    klsptr.get_gtype 0
   end
 
   def self.type_from_instance(instance)

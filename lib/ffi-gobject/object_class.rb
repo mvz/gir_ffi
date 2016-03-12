@@ -13,7 +13,7 @@ module GObject
     end
 
     def gtype
-      GirFFI::InOutPointer.new(:GType, to_ptr).to_value
+      to_ptr.get_gtype 0
     end
   end
 end

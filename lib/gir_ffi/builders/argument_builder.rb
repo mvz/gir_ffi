@@ -3,6 +3,7 @@ require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/closure_to_pointer_convertor'
 require 'gir_ffi/builders/full_c_to_ruby_convertor'
 require 'gir_ffi/builders/ruby_to_c_convertor'
+require 'gir_ffi/builders/pointer_value_convertor'
 require 'gir_ffi/builders/null_convertor'
 
 module GirFFI
@@ -51,7 +52,7 @@ module GirFFI
           pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
         when :inout
           pr << out_parameter_preparation
-          pr << "#{call_argument_name}.set_value #{ingoing_convertor.conversion}"
+          pr << ingoing_value_storage
         when :out
           pr << out_parameter_preparation
         when :error
@@ -73,6 +74,11 @@ module GirFFI
 
       private
 
+      def ingoing_value_storage
+        PointerValueConvertor.new(type_spec).
+          value_to_pointer(call_argument_name, ingoing_convertor.conversion)
+      end
+
       def has_post_conversion?
         has_output_value? && (!caller_allocated_object? || gvalue?)
       end
@@ -81,14 +87,22 @@ module GirFFI
         if caller_allocated_object? && gvalue?
           return "#{call_argument_name}.get_value"
         end
-        base = "#{call_argument_name}.to_value"
+        base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
           FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?
-          "GirFFI::InOutPointer.new(#{type_info.tag_or_class[1].inspect}, #{base}).to_value"
+          pointer_to_value_method_call base, sub_type_spec
         else
           base
         end
+      end
+
+      def sub_type_spec
+        type_spec[1]
+      end
+
+      def pointer_to_value_method_call(ptr_exp, spec)
+        PointerValueConvertor.new(spec).pointer_to_value(ptr_exp)
       end
 
       def needs_out_conversion?
@@ -154,9 +168,14 @@ module GirFFI
                     "#{argument_class_name}.new"
                   end
                 else
-                  "GirFFI::InOutPointer.for #{type_info.tag_or_class.inspect}"
+                  ffi_type_spec = TypeMap.type_specification_to_ffi_type type_spec
+                  "GirFFI::AllocationHelper.allocate_clear #{ffi_type_spec.inspect}"
                 end
         "#{call_argument_name} = #{value}"
+      end
+
+      def type_spec
+        type_info.tag_or_class
       end
 
       def caller_allocated_object?

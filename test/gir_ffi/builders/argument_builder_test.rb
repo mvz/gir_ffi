@@ -48,7 +48,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from(:void, user_data)']
+          builder.pre_conversion.must_equal ['_v1 = user_data']
         end
 
         it 'has the correct value for #post_conversion' do
@@ -68,7 +68,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InPointer.from_closure_data(foo)']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::ArgHelper.store(foo)']
         end
 
         it 'has the correct value for #post_conversion' do
@@ -83,11 +83,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       let(:arg_info) { get_introspection_data('GIMarshallingTests', 'genum_out').args[0] }
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::GEnum']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::GEnum']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::GEnum.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -97,11 +97,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::Flags']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::Flags']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Flags.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -111,11 +111,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, Regress::TestObj]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = Regress::TestObj.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -127,12 +127,12 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
-            '_v1 = GirFFI::InOutPointer.for [:pointer, GIMarshallingTests::BoxedStruct]'
+            '_v1 = GirFFI::AllocationHelper.allocate_clear :pointer'
           ]
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0))']
         end
       end
 
@@ -157,11 +157,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :strv]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -172,11 +172,11 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :array]']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GLib::Array.wrap(:utf8, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GLib::Array.wrap(:utf8, _v1.get_pointer(0))']
         end
       end
 
@@ -207,11 +207,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :ptr_array]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -221,11 +221,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :error]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Error.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Error.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -236,11 +236,11 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :c]']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.get_pointer(0))']
         end
       end
 
@@ -256,11 +256,11 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :c]']
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1.get_pointer(0))']
         end
       end
     end
@@ -271,11 +271,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :glist]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::List.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::List.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -285,11 +285,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :gslist]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::SList.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::SList.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -299,11 +299,11 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, [:ghash, :utf8, :utf8]]']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::HashTable.wrap([:utf8, :utf8], _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::HashTable.wrap([:utf8, :utf8], _v1.get_pointer(0))']
       end
     end
   end
@@ -315,12 +315,12 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::Enum',
-                                           "_v1.set_value #{arg_info.name}"]
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::Enum',
+                                           "GIMarshallingTests::Enum.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Enum.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -330,12 +330,13 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for GIMarshallingTests::NoTypeFlags',
-                                           "_v1.set_value #{arg_info.name}"]
+        builder.pre_conversion.
+          must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear GIMarshallingTests::NoTypeFlags',
+                      "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::NoTypeFlags.get_value_from_pointer(_v1, 0)']
       end
     end
 
@@ -349,12 +350,12 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :gint32',
-                                           "_v1.set_value #{arg_info.name}"]
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :int32',
+                                           "_v1.put_int32 0, #{arg_info.name}"]
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_int32(0)']
       end
     end
 
@@ -374,12 +375,12 @@ describe GirFFI::Builders::ArgumentBuilder do
 
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['n_ints = ints.nil? ? 0 : ints.length',
-                                           '_v1 = GirFFI::InOutPointer.for :gint32',
-                                           '_v1.set_value n_ints']
+                                           '_v1 = GirFFI::AllocationHelper.allocate_clear :int32',
+                                           '_v1.put_int32 0, n_ints']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_int32(0)']
       end
     end
 
@@ -389,12 +390,12 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :strv]',
-                                           '_v1.set_value GLib::Strv.from(g_strv)']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer',
+                                           '_v1.put_pointer 0, GLib::Strv.from(g_strv)']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::Strv.wrap(_v1.get_pointer(0))']
       end
     end
 
@@ -404,12 +405,12 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for [:pointer, :ptr_array]',
-                                           '_v1.set_value GLib::PtrArray.from(:utf8, parray_)']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer',
+                                           '_v1.put_pointer 0, GLib::PtrArray.from(:utf8, parray_)']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.to_value)']
+        builder.post_conversion.must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1.get_pointer(0))']
       end
     end
 
@@ -419,12 +420,12 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :utf8',
-                                           '_v1.set_value GirFFI::InPointer.from(:utf8, utf8)']
+        builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :pointer',
+                                           '_v1.put_pointer 0, GirFFI::InPointer.from_utf8(utf8)']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v2 = _v1.to_value.to_utf8']
+        builder.post_conversion.must_equal ['_v2 = _v1.get_pointer(0).to_utf8']
       end
     end
 
@@ -437,13 +438,13 @@ describe GirFFI::Builders::ArgumentBuilder do
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
             'GirFFI::ArgHelper.check_fixed_array_size 4, ints, "ints"',
-            '_v1 = GirFFI::InOutPointer.for [:pointer, :c]',
-            '_v1.set_value GirFFI::SizedArray.from(:gint32, 4, ints)'
+            '_v1 = GirFFI::AllocationHelper.allocate_clear :pointer',
+            '_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, 4, ints)'
           ]
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1.get_pointer(0))']
         end
       end
 
@@ -463,13 +464,13 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
-            '_v1 = GirFFI::InOutPointer.for [:pointer, :c]',
-            '_v1.set_value GirFFI::SizedArray.from(:gint32, -1, ints)'
+            '_v1 = GirFFI::AllocationHelper.allocate_clear :pointer',
+            '_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, ints)'
           ]
         end
 
         it 'has the correct value for #post_conversion' do
-          builder.post_conversion.must_equal ['_v3 = GirFFI::SizedArray.wrap(:gint32, _v2, _v1.to_value)']
+          builder.post_conversion.must_equal ['_v3 = GirFFI::SizedArray.wrap(:gint32, _v2, _v1.get_pointer(0))']
         end
       end
     end
@@ -503,8 +504,8 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :gint32',
-                                         '_v1.set_value 0']
+      builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :int32',
+                                         '_v1.put_int32 0, 0']
     end
 
     it 'has the correct value for #post_conversion' do
@@ -522,7 +523,7 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = GirFFI::InOutPointer.for :gint32']
+      builder.pre_conversion.must_equal ['_v1 = GirFFI::AllocationHelper.allocate_clear :int32']
     end
 
     it 'has the correct value for #post_conversion' do

@@ -3,6 +3,7 @@ require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/c_to_ruby_convertor'
 require 'gir_ffi/builders/closure_convertor'
 require 'gir_ffi/builders/null_convertor'
+require 'gir_ffi/builders/pointer_value_convertor'
 
 module GirFFI
   module Builders
@@ -62,11 +63,11 @@ module GirFFI
       def post_conversion
         case direction
         when :out, :inout
-          [outgoing_post_conversion]
+          [value_to_pointer_conversion]
         when :error
           [
             "rescue => #{result_name}",
-            outgoing_post_conversion,
+            value_to_pointer_conversion,
             'end'
           ]
         else
@@ -82,10 +83,23 @@ module GirFFI
 
       def pre_convertor_argument
         if direction == :inout
-          "#{out_parameter_name}.to_value"
+          pointer_to_value_conversion
         else
           method_argument_name
         end
+      end
+
+      def pointer_value_convertor
+        @pointer_value_convertor ||= PointerValueConvertor.new(type_spec)
+      end
+
+      def pointer_to_value_conversion
+        pointer_value_convertor.pointer_to_value(out_parameter_name)
+      end
+
+      def value_to_pointer_conversion
+        pointer_value_convertor.value_to_pointer(out_parameter_name,
+                                                 post_convertor.conversion)
       end
 
       def pre_convertor
@@ -108,10 +122,6 @@ module GirFFI
         "#{pre_converted_name} = #{pre_convertor.conversion}"
       end
 
-      def outgoing_post_conversion
-        "#{out_parameter_name}.set_value #{post_convertor.conversion}"
-      end
-
       def post_convertor
         @post_convertor ||= if type_info.needs_ruby_to_c_conversion_for_callbacks?
                               RubyToCConvertor.new(type_info, post_convertor_argument)
@@ -129,14 +139,18 @@ module GirFFI
       end
 
       def out_parameter_preparation
-        type_spec = type_info.tag_or_class
         value = if allocated_by_us?
-                  "GirFFI::InOutPointer.new(#{type_spec[1].inspect})" \
+                  ffi_type = TypeMap.type_specification_to_ffi_type type_spec[1]
+                  "GirFFI::AllocationHelper.allocate(#{ffi_type.inspect})" \
                     ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
                 else
-                  "GirFFI::InOutPointer.new(#{type_spec.inspect}, #{method_argument_name})"
+                  method_argument_name
                 end
         "#{out_parameter_name} = #{value}"
+      end
+
+      def type_spec
+        type_info.tag_or_class
       end
 
       # Check if an out argument needs to be allocated by us, the callee. Since

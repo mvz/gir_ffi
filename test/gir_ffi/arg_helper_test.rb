@@ -24,4 +24,21 @@ describe GirFFI::ArgHelper do
       GirFFI::ArgHelper.cast_from_pointer(:guint32, ptr).must_equal(0xffffffff)
     end
   end
+
+  describe '.store' do
+    describe 'when called with nil' do
+      it 'returns a null pointer' do
+        GirFFI::ArgHelper.store(nil).must_be :null?
+      end
+    end
+
+    describe 'when called with a string' do
+      it 'stores the string in GirFFI::ArgHelper::OBJECT_STORE' do
+        str = 'Foo'
+        ptr = GirFFI::ArgHelper.store(str)
+        result = GirFFI::ArgHelper::OBJECT_STORE.fetch(ptr)
+        result.must_equal str
+      end
+    end
+  end
 end

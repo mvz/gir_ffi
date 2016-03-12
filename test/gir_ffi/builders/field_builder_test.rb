@@ -10,9 +10,8 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def some_int8
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(:gint8, _v1)
-          _v3 = _v2.to_value
-          _v3
+          _v2 = _v1.get_int8(0)
+          _v2
         end
       CODE
       instance.getter_def.must_equal expected
@@ -22,9 +21,8 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def some_int8= value
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(:gint8, _v1)
-          _v3 = value
-          _v2.set_value _v3
+          _v2 = value
+          _v1.put_int8 0, _v2
         end
       CODE
       instance.setter_def.must_equal expected
@@ -37,10 +35,9 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def nested_a
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(Regress::TestSimpleBoxedA, _v1)
-          _v3 = _v2.to_value
-          _v4 = Regress::TestSimpleBoxedA.wrap(_v3)
-          _v4
+          _v2 = Regress::TestSimpleBoxedA.get_value_from_pointer(_v1, 0)
+          _v3 = Regress::TestSimpleBoxedA.wrap(_v2)
+          _v3
         end
       CODE
       instance.getter_def.must_equal expected
@@ -53,9 +50,8 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def some_enum
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(Regress::TestEnum, _v1)
-          _v3 = _v2.to_value
-          _v3
+          _v2 = Regress::TestEnum.get_value_from_pointer(_v1, 0)
+          _v2
         end
       CODE
       instance.getter_def.must_equal expected
@@ -68,10 +64,9 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def some_union
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(:c, _v1)
-          _v3 = _v2.to_value
-          _v4 = GirFFI::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v3)
-          _v4
+          _v2 = GirFFI::SizedArray.get_value_from_pointer(_v1, 0)
+          _v3 = GirFFI::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v2)
+          _v3
         end
       CODE
       instance.getter_def.must_equal expected
@@ -81,10 +76,9 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def some_union= value
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(:c, _v1)
           GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
-          _v3 = GirFFI::SizedArray.from(Regress::TestStructE__some_union__union, 2, value)
-          _v2.set_value _v3
+          _v2 = GirFFI::SizedArray.from(Regress::TestStructE__some_union__union, 2, value)
+          GirFFI::SizedArray.copy_value_to_pointer(_v2, _v1)
         end
       CODE
       instance.setter_def.must_equal expected
@@ -97,9 +91,8 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def class_init= value
           _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(GObject::ClassInitFunc, _v1)
-          _v3 = GObject::ClassInitFunc.from(value)
-          _v2.set_value _v3
+          _v2 = GObject::ClassInitFunc.from(value)
+          GObject::ClassInitFunc.copy_value_to_pointer(_v2, _v1)
         end
       CODE
       instance.setter_def.must_equal expected
@@ -115,13 +108,11 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<-CODE.reset_indentation
         def param_types
           _v1 = @struct.to_ptr + #{n_params_field_info.offset}
-          _v2 = GirFFI::InOutPointer.new(:guint32, _v1)
-          _v3 = _v2.to_value
-          _v4 = @struct.to_ptr + #{field_info.offset}
-          _v5 = GirFFI::InOutPointer.new([:pointer, :c], _v4)
-          _v6 = _v5.to_value
-          _v7 = GirFFI::SizedArray.wrap(:GType, _v3, _v6)
-          _v7
+          _v2 = _v1.get_uint32(0)
+          _v3 = @struct.to_ptr + #{field_info.offset}
+          _v4 = _v3.get_pointer(0)
+          _v5 = GirFFI::SizedArray.wrap(:GType, _v2, _v4)
+          _v5
         end
       CODE
       instance.getter_def.must_equal expected
