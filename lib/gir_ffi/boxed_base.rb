@@ -5,17 +5,28 @@ module GirFFI
   # Base class for generated classes representing boxed types.
   class BoxedBase < StructBase
     def initialize
-      super
-      gtype = self.class.gtype
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
+      store_pointer(self.class::Struct.new.to_ptr)
     end
 
-    def self.make_finalizer(struct, gtype)
+    def self.make_finalizer(ptr, gtype)
       proc do
-        ptr = struct.to_ptr
-        ptr.autorelease = false
-        GObject.boxed_free gtype, struct.to_ptr
+        if ptr.autorelease?
+          ptr.autorelease = false
+          GObject.boxed_free gtype, ptr
+        end
       end
+    end
+
+    private
+
+    def store_pointer(ptr)
+      super
+      make_finalizer
+    end
+
+    def make_finalizer
+      gtype = self.class.gtype
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr, gtype)
     end
   end
 end
