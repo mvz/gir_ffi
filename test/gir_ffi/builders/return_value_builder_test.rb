@@ -300,18 +300,36 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :utf8' do
-    let(:method_info) do
-      get_introspection_data('GIMarshallingTests', 'utf8_full_return')
+    describe 'with no transfer' do
+      let(:method_info) do
+        get_introspection_data('GIMarshallingTests', 'utf8_none_return')
+      end
+
+      it 'converts the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = _v1.to_utf8']
+      end
+
+      it 'returns the converted result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
 
-    it 'converts the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = _v1.to_utf8']
-    end
+    describe 'with full transfer' do
+      let(:method_info) do
+        get_introspection_data('GIMarshallingTests', 'utf8_full_return')
+      end
 
-    it 'returns the converted result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'autoreleases and converts the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v1.autorelease = true', '_v2 = _v1.to_utf8']
+      end
+
+      it 'returns the converted result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 

@@ -8,11 +8,14 @@ module GirFFI
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
+        result = []
         if has_post_conversion?
-          ["#{post_converted_name} = #{post_convertor.conversion}"]
-        else
-          []
+          if autoreleaseable?
+            result << "#{capture_variable_name}.autorelease = true"
+          end
+          result << "#{post_converted_name} = #{post_convertor.conversion}"
         end
+        result
       end
 
       def has_post_conversion?
@@ -33,6 +36,10 @@ module GirFFI
                                                        capture_variable_name,
                                                        length_argument_name)
                             end
+      end
+
+      def autoreleaseable?
+        arginfo.ownership_transfer == :everything && type_info.tag == :utf8
       end
 
       def length_argument_name
