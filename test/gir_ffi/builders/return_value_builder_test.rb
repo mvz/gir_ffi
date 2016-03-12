@@ -3,8 +3,9 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, false) }
   let(:type_info) { method_info.return_type }
+  let(:ownership_transfer) { method_info.caller_owns }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false) }
   let(:builder) do
     GirFFI::Builders::ReturnValueBuilder.new(var_gen, return_type_info)
   end
@@ -315,6 +316,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :void pointer' do
+    let(:ownership_transfer) { :nothing }
     let(:callback_info) do
       get_introspection_data('GIMarshallingTests', 'CallbackIntInt')
     end
@@ -353,6 +355,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for a closure argument' do
+    let(:ownership_transfer) { :nothing }
     let(:callback_info) do
       get_introspection_data('Regress', 'TestCallbackUserData')
     end
