@@ -88,6 +88,9 @@ module GirFFI
           return "#{call_argument_name}.get_value"
         end
         base = pointer_to_value_method_call call_argument_name, type_spec
+        if type_spec == :utf8 && @arginfo.ownership_transfer == :everything
+          base = "#{base}.tap { |it| it.autorelease = true }"
+        end
         if needs_out_conversion?
           FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
         elsif allocated_by_them?

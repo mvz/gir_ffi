@@ -306,6 +306,43 @@ describe GirFFI::Builders::ArgumentBuilder do
         builder.post_conversion.must_equal ['_v2 = GLib::HashTable.wrap([:utf8, :utf8], _v1.get_pointer(0))']
       end
     end
+
+    describe 'for :utf8' do
+      describe 'with full ownership transfer' do
+        let(:arg_info) do
+          get_introspection_data('GIMarshallingTests', 'utf8_full_out').args[0]
+        end
+
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.must_equal [
+            '_v2 = _v1.get_pointer(0).tap { |it| it.autorelease = true }.to_utf8',
+          ]
+        end
+
+        it 'has the correct value for #return_value_name' do
+          builder.post_conversion
+          builder.return_value_name.must_equal '_v2'
+        end
+      end
+
+      describe 'with no ownership transfer' do
+        let(:arg_info) do
+          get_introspection_data('GIMarshallingTests', 'utf8_none_out').args[0]
+        end
+
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.must_equal ['_v2 = _v1.get_pointer(0).to_utf8']
+        end
+      end
+    end
   end
 
   describe 'for an argument with direction :inout' do
