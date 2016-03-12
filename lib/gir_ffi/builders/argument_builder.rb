@@ -169,7 +169,7 @@ module GirFFI
                   end
                 else
                   ffi_type_spec = TypeMap.type_specification_to_ffi_type type_spec
-                  "GirFFI::AllocationHelper.allocate_clear #{ffi_type_spec.inspect}"
+                  "FFI::MemoryPointer.new #{ffi_type_spec.inspect}"
                 end
         "#{call_argument_name} = #{value}"
       end
