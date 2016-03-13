@@ -45,6 +45,7 @@ describe GIMarshallingTests do
     it 'creates an instance using #new' do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
+      bx.to_ptr.must_be :autorelease?
     end
 
     it 'has a working method #inv' do
@@ -56,6 +57,7 @@ describe GIMarshallingTests do
     it 'has a working function #inout' do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
+      bx.to_ptr.must_be :autorelease?
 
       # FIXME: Temporary check method
       bx.to_ptr.autorelease = true
@@ -1471,11 +1473,13 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_struct_take_in' do
-    # TODO: This needs to copy values so arr stays valid
     arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     end
+    # NOTE: This copies values so arr's elements stay valid
     GIMarshallingTests.array_struct_take_in arr
+
+    arr.map(&:long_).must_equal [1, 2, 3]
   end
 
   it 'has a working function #array_struct_value_in' do
