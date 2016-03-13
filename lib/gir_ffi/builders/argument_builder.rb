@@ -194,7 +194,8 @@ module GirFFI
         elsif closure?
           ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
-          RubyToCConvertor.new(@type_info, pre_convertor_argument)
+          RubyToCConvertor.new(@type_info, pre_convertor_argument,
+                               ownership_transfer: ownership_transfer)
         else
           NullConvertor.new(pre_convertor_argument)
         end

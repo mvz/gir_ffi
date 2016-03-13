@@ -57,6 +57,9 @@ describe GIMarshallingTests do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
 
+      # Temporary check method
+      bx.to_ptr.autorelease = true
+
       res = GIMarshallingTests::BoxedStruct.inout bx
       bx.to_ptr.wont_be :autorelease?
       res.to_ptr.must_be :autorelease?

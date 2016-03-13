@@ -4,9 +4,10 @@ module GirFFI
     # Builder that generates code to convert values from Ruby to C. Used by
     # argument builders.
     class RubyToCConvertor
-      def initialize(type_info, argument_name)
+      def initialize(type_info, argument_name, ownership_transfer: nil)
         @type_info = type_info
         @argument_name = argument_name
+        @ownership_transfer = ownership_transfer
       end
 
       def conversion
@@ -16,7 +17,16 @@ module GirFFI
       end
 
       def conversion_arguments(name)
-        @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(', ')
+        case @type_info.flattened_tag
+        when :struct
+          if @ownership_transfer == :everything
+            "#{name}.tap { |it| it.to_ptr.autorelease = false }"
+          else
+            name
+          end
+        else
+          @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(', ')
+        end
       end
     end
   end
