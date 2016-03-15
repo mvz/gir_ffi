@@ -238,14 +238,31 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for GIMarshallingTests::Object.full_inout' do
-      let(:function_info) do
-        get_method_introspection_data('GIMarshallingTests', 'Object',
-                                      'full_inout')
+    describe 'object ownership transfer' do
+      describe 'for GIMarshallingTests::Object#full_in' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'full_in')
+        end
+
+        # NOTE: This method is transfer-ownership: none, despite the name.
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def full_in
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_in self
+          end
+          CODE
+        end
       end
 
-      it 'builds a correct definition' do
-        code.must_equal <<-CODE.reset_indentation
+      describe 'for GIMarshallingTests::Object.full_inout' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'full_inout')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
           def self.full_inout(object)
             _v1 = FFI::MemoryPointer.new :pointer
             _v1.put_pointer 0, GIMarshallingTests::Object.from(object.ref)
@@ -253,23 +270,128 @@ describe GirFFI::Builders::FunctionBuilder do
             _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
             return _v2
           end
-        CODE
-      end
-    end
-
-    describe 'for Regress::TestObj#instance_method_full' do
-      let(:function_info) do
-        get_method_introspection_data('Regress', 'TestObj',
-                                      'instance_method_full')
+          CODE
+        end
       end
 
-      it 'builds a correct definition including self.ref' do
-        skip unless function_info
-        code.must_equal <<-CODE.reset_indentation
+      describe 'for GIMarshallingTests::Object.full_out' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'full_out')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.full_out
+            _v1 = FFI::MemoryPointer.new :pointer
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_out _v1
+            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::Object.full_return' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'full_return')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.full_return
+            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_full_return
+            _v2 = GIMarshallingTests::Object.wrap(_v1)
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::Object#none_in' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'none_in')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def none_in
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_in self
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::Object.none_inout' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'none_inout')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.none_inout(object)
+            _v1 = FFI::MemoryPointer.new :pointer
+            _v1.put_pointer 0, GIMarshallingTests::Object.from(object)
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_inout _v1
+            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::Object.none_out' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'none_out')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.none_out
+            _v1 = FFI::MemoryPointer.new :pointer
+            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_out _v1
+            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::Object.none_return' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'Object',
+                                        'none_return')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.none_return
+            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_none_return
+            _v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for Regress::TestObj#instance_method_full' do
+        let(:function_info) do
+          get_method_introspection_data('Regress', 'TestObj',
+                                        'instance_method_full')
+        end
+
+        it 'builds a correct definition including self.ref' do
+          skip unless function_info
+          code.must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
           end
-        CODE
+          CODE
+        end
       end
     end
 
