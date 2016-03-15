@@ -7,7 +7,8 @@ describe GObject::ParamSpec do
     it 'increases the ref count' do
       pspec = GObject.param_spec_boolean('foo', 'foo bar',
                                          'Boolean Foo Bar',
-                                         false, { readable: true, writable: true })
+                                         false,
+                                         readable: true, writable: true)
 
       old = pspec.ref_count
       pspec.ref

@@ -200,8 +200,6 @@ module GObject
         raise("No method map entry for #{current_gtype_name}")
     end
 
-    private
-
     def make_finalizer
       gtype = self.class.gtype
       ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
