@@ -395,6 +395,59 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'struct ownership transfer' do
+      describe 'for GIMarshallingTests::BoxedStruct.inout' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'inout')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.inout(struct_)
+            _v1 = FFI::MemoryPointer.new :pointer
+            _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.from(struct_.tap { |it| it.to_ptr.autorelease = false })
+            GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_inout _v1
+            _v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0).tap { |it| it.autorelease = true })
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::BoxedStruct.out' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'out')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.out
+            _v1 = FFI::MemoryPointer.new :pointer
+            GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_out _v1
+            _v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0))
+            return _v2
+          end
+          CODE
+        end
+      end
+
+      describe 'for GIMarshallingTests::BoxedStruct.returnv' do
+        let(:function_info) do
+          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'returnv')
+        end
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.returnv
+            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_returnv
+            _v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)
+            return _v2
+          end
+          CODE
+        end
+      end
+    end
+
     describe 'for functions with an allow-none ingoing parameter' do
       let(:function_info) { get_introspection_data 'Regress', 'test_utf8_null_in' }
       it 'builds correct definition with default parameter value' do
