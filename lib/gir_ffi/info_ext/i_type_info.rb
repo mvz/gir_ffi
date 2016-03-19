@@ -95,10 +95,21 @@ module GirFFI
         end
       end
 
-      def ingoing_argument_conversion_method
+      def ingoing_argument_conversion_method_transfer_nothing
         case flattened_tag
         when :utf8
           'from_utf8'
+        else
+          'from'
+        end
+      end
+
+      def ingoing_argument_conversion_method_transfer_everything
+        case flattened_tag
+        when :utf8
+          'from_utf8'
+        when :struct
+          'copy_from'
         else
           'from'
         end

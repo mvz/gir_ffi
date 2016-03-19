@@ -61,11 +61,8 @@ describe GIMarshallingTests do
       bx.to_ptr.autorelease = true
 
       res = GIMarshallingTests::BoxedStruct.inout bx
-      bx.to_ptr.wont_be :autorelease?
+      bx.to_ptr.must_be :autorelease?
       res.to_ptr.must_be :autorelease?
-
-      # TODO: Deal with the fact that bx is now invalid (at least with
-      # gobject-introspection 1.40).
 
       assert_equal 0, res.long_
     end

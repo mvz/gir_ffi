@@ -493,7 +493,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
             '_v1 = FFI::MemoryPointer.new :pointer',
-            '_v1.put_pointer 0, GIMarshallingTests::BoxedStruct.from(struct_.tap { |it| it.to_ptr.autorelease = false })'
+            '_v1.put_pointer 0, GIMarshallingTests::BoxedStruct.copy_from(struct_)'
           ]
         end
 

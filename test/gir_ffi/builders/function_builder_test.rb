@@ -405,7 +405,7 @@ describe GirFFI::Builders::FunctionBuilder do
           code.must_equal <<-CODE.reset_indentation
           def self.inout(struct_)
             _v1 = FFI::MemoryPointer.new :pointer
-            _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.from(struct_.tap { |it| it.to_ptr.autorelease = false })
+            _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.copy_from(struct_)
             GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_inout _v1
             _v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0).tap { |it| it.autorelease = true })
             return _v2
