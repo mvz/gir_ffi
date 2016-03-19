@@ -1,14 +1,11 @@
 # frozen_string_literal: true
-require 'gir_ffi/builders/registered_type_builder'
 require 'gir_ffi/builders/with_layout'
 
 module GirFFI
   module Builders
-    # Implements the creation of a class representing boxed types.
-    class BoxedBuilder < RegisteredTypeBuilder
+    # Implements base methods used by struct and union builders
+    module StructLike
       include WithLayout
-
-      private
 
       def setup_class
         setup_layout
@@ -25,3 +22,4 @@ module GirFFI
     end
   end
 end
+
