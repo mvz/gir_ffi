@@ -4,8 +4,6 @@ require 'gir_ffi/core'
 # Bypass check for existing modules
 GirFFI::Builders::ModuleBuilder.new('GObject').generate
 
-require 'ffi-gobject/base'
-
 require 'ffi-gobject/value'
 require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'

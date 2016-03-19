@@ -24,6 +24,10 @@ module GirFFI
           end
         end
 
+        if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
+          return BoxedBase
+        end
+
         StructBase
       end
     end
