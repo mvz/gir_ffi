@@ -1,11 +1,14 @@
 # frozen_string_literal: true
-require 'gir_ffi/builders/boxed_builder'
+require 'gir_ffi/builders/registered_type_builder'
+require 'gir_ffi/builders/struct_like'
 require 'gir_ffi/struct_base'
 
 module GirFFI
   module Builders
     # Implements the creation of a class representing a Struct.
-    class StructBuilder < BoxedBuilder
+    class StructBuilder < RegisteredTypeBuilder
+      include StructLike
+
       def layout_superclass
         FFI::Struct
       end
@@ -19,6 +22,10 @@ module GirFFI
             type = fields.first.field_type
             return type.tag_or_class if type.tag == :interface
           end
+        end
+
+        if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
+          return BoxedBase
         end
 
         StructBase

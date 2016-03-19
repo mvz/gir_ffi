@@ -54,6 +54,12 @@ describe GirFFI::Builders::StructBuilder do
       builder.superclass.must_equal GirFFI::StructBase
     end
 
+    it 'returns BoxedBase for a boxed type' do
+      info = get_introspection_data 'Regress', 'TestSimpleBoxedB'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.superclass.must_equal GirFFI::BoxedBase
+    end
+
     it 'returns the GObject parent class for a type class' do
       info = get_introspection_data 'GIMarshallingTests', 'SubSubObjectClass'
       builder = GirFFI::Builders::StructBuilder.new info
