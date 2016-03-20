@@ -88,7 +88,7 @@ describe GirFFI::Builders::FunctionBuilder do
         code.must_equal <<-CODE.reset_indentation
           def self.gvalue_return
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_return
-            _v2 = GObject::Value.wrap_copy(_v1).get_value
+            _v2 = GObject::Value.wrap(_v1).get_value
             return _v2
           end
         CODE
@@ -102,7 +102,7 @@ describe GirFFI::Builders::FunctionBuilder do
           def self.gvalue_out
             _v1 = FFI::MemoryPointer.new :pointer
             GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_out _v1
-            _v2 = GObject::Value.wrap_copy(_v1.get_pointer(0)).get_value
+            _v2 = GObject::Value.wrap(_v1.get_pointer(0)).get_value
             return _v2
           end
         CODE
