@@ -24,12 +24,13 @@ module GirFFI
 
     # Wrap an owned copy of the struct represented by val
     def self.wrap_copy(val)
-      copy wrap(val)
+      copy(wrap(val)).tap { |it| it && it.to_ptr.autorelease = true }
     end
 
     def self.copy(val)
       return unless val
-      wrap GObject.boxed_copy(gtype, val)
+      ptr = GObject.boxed_copy(gtype, val)
+      wrap(ptr)
     end
 
     private

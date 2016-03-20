@@ -69,13 +69,13 @@ describe GIMarshallingTests do
 
     it 'has a working function #out' do
       res = GIMarshallingTests::BoxedStruct.out
-      res.to_ptr.wont_be :autorelease?
+      res.to_ptr.must_be :autorelease?
       assert_equal 42, res.long_
     end
 
     it 'has a working function #returnv' do
       res = GIMarshallingTests::BoxedStruct.returnv
-      res.to_ptr.wont_be :autorelease?
+      res.to_ptr.must_be :autorelease?
       assert_equal 42, res.long_
       res.g_strv.must_be :==, %w(0 1 2)
     end
@@ -1469,8 +1469,8 @@ describe GIMarshallingTests do
     GIMarshallingTests.array_struct_in arr
   end
 
-  # NOTE: Should be run with valgrind. See gimarhallingtests.c.
   it 'has a working function #array_struct_take_in' do
+    # NOTE: This needs to copy values so arr stays valid
     arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     end
