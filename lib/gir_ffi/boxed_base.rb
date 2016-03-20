@@ -17,7 +17,7 @@ module GirFFI
       end
     end
 
-    # Create a non-autoreleased copy of the struct represented by val
+    # Create an unowned copy of the struct represented by val
     def self.copy_from(val)
       GObject.boxed_copy gtype, from(val)
     end

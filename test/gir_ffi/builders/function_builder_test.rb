@@ -407,7 +407,7 @@ describe GirFFI::Builders::FunctionBuilder do
             _v1 = FFI::MemoryPointer.new :pointer
             _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.copy_from(struct_)
             GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_inout _v1
-            _v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0).tap { |it| it.autorelease = true })
+            _v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))
             return _v2
           end
           CODE

@@ -499,7 +499,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it 'has the correct value for #post_conversion' do
           builder.post_conversion.
-            must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1.get_pointer(0).tap { |it| it.autorelease = true })']
+            must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))']
         end
       end
     end

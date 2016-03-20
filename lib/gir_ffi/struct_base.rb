@@ -10,5 +10,10 @@ module GirFFI
     def initialize
       @struct = self.class::Struct.new
     end
+
+    # Wrap value and take ownership of it
+    def self.wrap_own(val)
+      wrap(val).tap { |it| it && it.to_ptr.autorelease = true }
+    end
   end
 end

@@ -23,11 +23,25 @@ module GirFFI
           base = "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
           @ownership_transfer == :nothing ? "#{base}.tap { |it| it && it.ref }" : base
         else
-          "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
+          "#{@type_info.argument_class_name}.#{conversion_method}(#{conversion_argument_list})"
         end
       end
 
       private
+
+      def conversion_method
+        case @type_info.flattened_tag
+        when :struct
+          case @ownership_transfer
+          when :everything
+            'wrap_own'
+          else
+            'wrap'
+          end
+        else
+          'wrap'
+        end
+      end
 
       def conversion_argument_list
         conversion_arguments.join(', ')
@@ -37,12 +51,6 @@ module GirFFI
         case @type_info.flattened_tag
         when :c
           [@type_info.element_type.inspect, array_size, @argument]
-        when :struct
-          if @ownership_transfer == :everything
-            ["#{@argument}.tap { |it| it.autorelease = true }"]
-          else
-            [@argument]
-          end
         else
           @type_info.extra_conversion_arguments.map(&:inspect).push(@argument)
         end
