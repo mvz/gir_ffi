@@ -35,6 +35,8 @@ module GirFFI
           case @ownership_transfer
           when :everything
             'wrap_own'
+          when :nothing
+            'wrap_copy'
           else
             'wrap'
           end

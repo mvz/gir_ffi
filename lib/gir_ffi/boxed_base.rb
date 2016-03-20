@@ -22,6 +22,10 @@ module GirFFI
       GObject.boxed_copy gtype, from(val)
     end
 
+    # Wrap an owned copy of the struct represented by val
+    def self.wrap_copy(val)
+      wrap(val)
+    end
     private
 
     def store_pointer(ptr)

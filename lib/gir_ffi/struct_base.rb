@@ -15,5 +15,10 @@ module GirFFI
     def self.wrap_own(val)
       wrap(val).tap { |it| it && it.to_ptr.autorelease = true }
     end
+
+    # TODO: Wrap and own a copy of the passed-in value
+    def self.wrap_copy(val)
+      wrap(val)
+    end
   end
 end

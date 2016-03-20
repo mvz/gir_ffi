@@ -27,20 +27,22 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :struct' do
-    let(:method_info) do
-      get_method_introspection_data('GIMarshallingTests',
-                                    'BoxedStruct',
-                                    'returnv')
-    end
+    describe 'with transfer :nothing' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'BoxedStruct',
+                                      'returnv')
+      end
 
-    it 'wraps the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)']
-    end
+      it 'wraps and copies the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)']
+      end
 
-    it 'returns the wrapped result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'returns the copied result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 
