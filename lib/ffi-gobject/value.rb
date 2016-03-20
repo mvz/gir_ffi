@@ -111,8 +111,20 @@ module GObject
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
       super(value, pointer, offset).tap do
+        # FIXME: Check if this is still needed.
         value.to_ptr.autorelease = false if value
       end
+    end
+
+    def self.copy(val)
+      return unless val
+      result = for_gtype(val.current_gtype)
+      Lib.g_value_copy val, result unless val.uninitialized?
+      result
+    end
+
+    def uninitialized?
+      current_gtype == TYPE_INVALID
     end
 
     private
@@ -144,10 +156,6 @@ module GObject
     end
 
     def get_none
-    end
-
-    def uninitialized?
-      current_gtype == TYPE_INVALID
     end
 
     def set_instance_enhanced(val)

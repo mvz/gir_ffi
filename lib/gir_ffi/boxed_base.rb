@@ -19,13 +19,19 @@ module GirFFI
 
     # Create an unowned copy of the struct represented by val
     def self.copy_from(val)
-      GObject.boxed_copy gtype, from(val)
+      copy from(val)
     end
 
     # Wrap an owned copy of the struct represented by val
     def self.wrap_copy(val)
-      wrap(val)
+      copy wrap(val)
     end
+
+    def self.copy(val)
+      return unless val
+      wrap GObject.boxed_copy(gtype, val)
+    end
+
     private
 
     def store_pointer(ptr)

@@ -87,6 +87,7 @@ module GObject
     attach_function :g_object_ref, [:pointer], :pointer
     attach_function :g_object_unref, [:pointer], :pointer
 
+    attach_function :g_value_copy, [:pointer, :pointer], :void
     attach_function :g_value_init, [:pointer, :size_t], :pointer
     attach_function :g_value_unset, [:pointer], :pointer
 
