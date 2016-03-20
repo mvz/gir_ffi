@@ -12,17 +12,29 @@ module GirFFI
 
       def conversion
         args = conversion_arguments @argument_name
-        method = case @ownership_transfer
-                 when :everything
-                   @type_info.ingoing_argument_conversion_method_transfer_everything
-                 else
-                   @type_info.ingoing_argument_conversion_method_transfer_nothing
-                 end
-        "#{@type_info.argument_class_name}.#{method}(#{args})"
+        "#{@type_info.argument_class_name}.#{conversion_method}(#{args})"
       end
 
       def conversion_arguments(name)
         @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(', ')
+      end
+
+      private
+
+      def conversion_method
+        case @type_info.flattened_tag
+        when :utf8
+          'from_utf8'
+        when :struct
+          case @ownership_transfer
+          when :everything
+            'copy_from'
+          else
+            'from'
+          end
+        else
+          'from'
+        end
       end
     end
   end

@@ -81,8 +81,8 @@ module GirFFI
         gslist:          'GLib::SList',
         ptr_array:       'GLib::PtrArray',
         strv:            'GLib::Strv',
-        utf8:            'GirFFI::InPointer',
-        void:            'GirFFI::InPointer',
+        utf8:            'GirFFI::InPointer', # TODO: Create a string-like class
+        void:            'GirFFI::InPointer', # TODO: Create a void-pointer class
         zero_terminated: 'GirFFI::ZeroTerminated'
       }.freeze
 
@@ -92,26 +92,6 @@ module GirFFI
           interface.full_type_name
         else
           TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
-        end
-      end
-
-      def ingoing_argument_conversion_method_transfer_nothing
-        case flattened_tag
-        when :utf8
-          'from_utf8'
-        else
-          'from'
-        end
-      end
-
-      def ingoing_argument_conversion_method_transfer_everything
-        case flattened_tag
-        when :utf8
-          'from_utf8'
-        when :struct
-          'copy_from'
-        else
-          'from'
         end
       end
 
