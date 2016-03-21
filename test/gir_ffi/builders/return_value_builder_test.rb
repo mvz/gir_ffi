@@ -55,7 +55,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it 'wraps the result in #post_conversion' do
       builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Union.wrap(_v1)']
+      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Union.wrap_copy(_v1)']
     end
 
     it 'returns the wrapped result' do

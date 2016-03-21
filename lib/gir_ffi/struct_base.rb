@@ -15,15 +15,5 @@ module GirFFI
     def self.wrap_own(val)
       wrap(val).tap { |it| it && it.to_ptr.autorelease = true }
     end
-
-    # Wrap an owned copy of the struct represented by val
-    def self.wrap_copy(val)
-      copy wrap(val)
-    end
-
-    def self.copy(val)
-      return unless val
-      new.tap { |copy| copy_value_to_pointer(val, copy.to_ptr) }
-    end
   end
 end

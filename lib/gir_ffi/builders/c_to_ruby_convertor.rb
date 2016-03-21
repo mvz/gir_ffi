@@ -31,7 +31,7 @@ module GirFFI
 
       def conversion_method
         case @type_info.flattened_tag
-        when :struct
+        when :struct, :union
           case @ownership_transfer
           when :everything
             'wrap_own'
