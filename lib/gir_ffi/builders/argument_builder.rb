@@ -89,13 +89,17 @@ module GirFFI
         end
         base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
-          FullCToRubyConvertor.new(@type_info, base, length_argument_name,
-                                   ownership_transfer: @arginfo.ownership_transfer).conversion
+          outgoing_convertor(base).conversion
         elsif allocated_by_them?
           pointer_to_value_method_call base, sub_type_spec
         else
           base
         end
+      end
+
+      def outgoing_convertor(base)
+        FullCToRubyConvertor.new(@type_info, base, length_argument_name,
+                                 ownership_transfer: @arginfo.ownership_transfer)
       end
 
       def sub_type_spec

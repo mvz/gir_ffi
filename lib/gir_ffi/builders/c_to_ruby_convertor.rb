@@ -23,7 +23,7 @@ module GirFFI
           base = "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
           @ownership_transfer == :nothing ? "#{base}.tap { |it| it && it.ref }" : base
         else
-          "#{@type_info.argument_class_name}.#{conversion_method}(#{conversion_argument_list})"
+          "#{argument_class}.#{conversion_method}(#{conversion_argument_list})"
         end
       end
 
@@ -64,6 +64,10 @@ module GirFFI
         else
           @type_info.array_fixed_size
         end
+      end
+
+      def argument_class
+        @type_info.argument_class_name
       end
     end
   end

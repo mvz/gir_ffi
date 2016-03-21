@@ -13,7 +13,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it 'has the correct value for #pre_conversion' do
-          builder.pre_conversion.must_equal ['_v1 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)']
+          builder.pre_conversion.
+            must_equal ['_v1 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)']
         end
 
         it 'has the correct value for #post_conversion' do

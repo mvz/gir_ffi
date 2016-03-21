@@ -113,6 +113,5 @@ describe GirFFI::Builders::CallbackBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
-
   end
 end

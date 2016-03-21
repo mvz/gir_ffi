@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 module GirFFI
+  # Base module providing class methods for generated classes representing GLib
+  # structs, unions and boxed types.
   module StructLikeBase
     def native_type
       FFI::Type::Struct.new(self::Struct)
