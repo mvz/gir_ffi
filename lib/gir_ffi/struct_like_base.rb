@@ -32,12 +32,17 @@ module GirFFI
       pointer.put_bytes offset, bytes, 0, size
     end
 
+    # Create an unowned copy of the struct represented by val
+    def copy_from(val)
+      copy(from(val)).tap { |it| it && it.to_ptr.autorelease = false }
+    end
+
     # Wrap an owned copy of the struct represented by val
     def wrap_copy(val)
       copy wrap(val)
     end
 
-    # Create an copy of the struct represented by val
+    # Create a copy of the struct represented by val
     def copy(val)
       return unless val
       new.tap { |copy| copy_value_to_pointer(val, copy.to_ptr) }
