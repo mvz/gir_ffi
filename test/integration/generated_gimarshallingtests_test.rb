@@ -57,7 +57,7 @@ describe GIMarshallingTests do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
 
-      # Temporary check method
+      # FIXME: Temporary check method
       bx.to_ptr.autorelease = true
 
       res = GIMarshallingTests::BoxedStruct.inout bx
@@ -1470,7 +1470,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_struct_take_in' do
-    # NOTE: This needs to copy values so arr stays valid
+    # TODO: This needs to copy values so arr stays valid
     arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     end
