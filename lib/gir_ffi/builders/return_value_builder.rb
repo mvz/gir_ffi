@@ -8,11 +8,11 @@ module GirFFI
     # Implements building post-processing statements for return values.
     class ReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
+        result = []
         if has_post_conversion?
-          ["#{post_converted_name} = #{post_convertor.conversion}"]
-        else
-          []
+          result << "#{post_converted_name} = #{post_convertor.conversion}"
         end
+        result
       end
 
       def has_post_conversion?
@@ -26,13 +26,15 @@ module GirFFI
       private
 
       def post_convertor
-        @post_convertor ||= if closure?
-                              ClosureConvertor.new(capture_variable_name)
-                            else
-                              FullCToRubyConvertor.new(type_info,
-                                                       capture_variable_name,
-                                                       length_argument_name)
-                            end
+        @post_convertor ||=
+          if closure?
+            ClosureConvertor.new(capture_variable_name)
+          else
+            FullCToRubyConvertor.new(type_info,
+                                     capture_variable_name,
+                                     length_argument_name,
+                                     ownership_transfer: arginfo.ownership_transfer)
+          end
       end
 
       def length_argument_name

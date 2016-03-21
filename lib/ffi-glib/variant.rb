@@ -10,18 +10,26 @@ module GLib
       get_string_without_override.first
     end
 
+    alias_method :get_string_without_override, :get_string
+    alias_method :get_string, :get_string_with_override
+
     # Initializing method used in constructors. For Variant, this needs to sink
     # the variant's floating reference.
     #
     # NOTE: This is very hard to test since it is not possible to get the
     # variant's ref count directely. However, there is an error when running
     # the tests on 32-bit systems.
+    # TODO: Move this logic elsewhere
     def store_pointer(ptr)
       super
+
+      # TODO: Ensure ptr is not autorelease
       ::GLib::Lib.g_variant_ref_sink ptr
     end
 
-    alias_method :get_string_without_override, :get_string
-    alias_method :get_string, :get_string_with_override
+    # TODO: Update ref?
+    def self.wrap_copy(val)
+      wrap(val)
+    end
   end
 end

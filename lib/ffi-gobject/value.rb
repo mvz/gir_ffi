@@ -4,16 +4,12 @@ GObject.load_class :Value
 module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
-    setup_instance_method 'init'
+    remove_method :init
 
-    def init_with_finalizer(type)
-      return self if [TYPE_NONE, TYPE_INVALID].include? type
-      init_without_finalizer(type)
+    def init(type)
+      Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
       self
     end
-
-    alias_method :init_without_finalizer, :init
-    alias_method :init, :init_with_finalizer
 
     def self.make_finalizer(struct, gtype)
       proc do
@@ -115,8 +111,20 @@ module GObject
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
       super(value, pointer, offset).tap do
+        # FIXME: Check if this is still needed.
         value.to_ptr.autorelease = false if value
       end
+    end
+
+    def self.copy(val)
+      return unless val
+      result = for_gtype(val.current_gtype)
+      Lib.g_value_copy val, result unless val.uninitialized?
+      result
+    end
+
+    def uninitialized?
+      current_gtype == TYPE_INVALID
     end
 
     private
@@ -148,10 +156,6 @@ module GObject
     end
 
     def get_none
-    end
-
-    def uninitialized?
-      current_gtype == TYPE_INVALID
     end
 
     def set_instance_enhanced(val)
@@ -202,6 +206,11 @@ module GObject
     def method_map_entry
       METHOD_MAP[current_gtype] || METHOD_MAP[current_fundamental_type] ||
         raise("No method map entry for #{current_gtype_name}")
+    end
+
+    def make_finalizer
+      gtype = self.class.gtype
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
     end
   end
 end

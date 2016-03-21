@@ -7,11 +7,10 @@ module GirFFI
     # GValue unpacking. Used by argument builders.
     class FullCToRubyConvertor < CToRubyConvertor
       def conversion
-        base = super
         if @type_info.gvalue?
-          "#{base}.get_value"
+          "GObject::Value.wrap(#{@argument}).get_value"
         else
-          base
+          super
         end
       end
     end

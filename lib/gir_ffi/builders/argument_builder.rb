@@ -89,7 +89,8 @@ module GirFFI
         end
         base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
-          FullCToRubyConvertor.new(@type_info, base, length_argument_name).conversion
+          FullCToRubyConvertor.new(@type_info, base, length_argument_name,
+                                   ownership_transfer: @arginfo.ownership_transfer).conversion
         elsif allocated_by_them?
           pointer_to_value_method_call base, sub_type_spec
         else
@@ -169,7 +170,7 @@ module GirFFI
                   end
                 else
                   ffi_type_spec = TypeMap.type_specification_to_ffi_type type_spec
-                  "GirFFI::AllocationHelper.allocate_clear #{ffi_type_spec.inspect}"
+                  "FFI::MemoryPointer.new #{ffi_type_spec.inspect}"
                 end
         "#{call_argument_name} = #{value}"
       end
@@ -193,7 +194,8 @@ module GirFFI
         elsif closure?
           ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
         elsif @type_info.needs_ruby_to_c_conversion_for_functions?
-          RubyToCConvertor.new(@type_info, pre_convertor_argument)
+          RubyToCConvertor.new(@type_info, pre_convertor_argument,
+                               ownership_transfer: ownership_transfer)
         else
           NullConvertor.new(pre_convertor_argument)
         end

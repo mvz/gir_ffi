@@ -4,32 +4,57 @@ module GirFFI
     # Builder that generates code to convert values from C to Ruby. Used by
     # argument builders.
     class CToRubyConvertor
-      def initialize(type_info, argument_name, length_arg)
+      def initialize(type_info, argument, length_arg, ownership_transfer: nil)
         @type_info = type_info
-        @argument_name = argument_name
+        @argument = argument
         @length_arg = length_arg
+        @ownership_transfer = ownership_transfer
       end
 
       def conversion
         case @type_info.flattened_tag
         when :utf8, :filename
-          "#{@argument_name}.to_utf8"
+          if @ownership_transfer == :everything
+            "#{@argument}.tap { |it| it.autorelease = true }.to_utf8"
+          else
+            "#{@argument}.to_utf8"
+          end
+        when :object
+          base = "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
+          @ownership_transfer == :nothing ? "#{base}.tap { |it| it && it.ref }" : base
         else
-          "#{@type_info.argument_class_name}.wrap(#{conversion_argument_list})"
+          "#{@type_info.argument_class_name}.#{conversion_method}(#{conversion_argument_list})"
         end
       end
 
       private
+
+      def conversion_method
+        case @type_info.flattened_tag
+        when :struct, :union
+          case @ownership_transfer
+          when :everything
+            'wrap_own'
+          when :nothing
+            'wrap_copy'
+          else
+            'wrap'
+          end
+        else
+          'wrap'
+        end
+      end
 
       def conversion_argument_list
         conversion_arguments.join(', ')
       end
 
       def conversion_arguments
-        if @type_info.flattened_tag == :c
-          [@type_info.element_type.inspect, array_size, @argument_name]
+        case @type_info.flattened_tag
+        when :c
+          [@type_info.element_type.inspect, array_size, @argument]
         else
-          @type_info.extra_conversion_arguments.map(&:inspect).push(@argument_name)
+          @type_info.extra_conversion_arguments.map(&:inspect).push(@argument)
         end
       end
 

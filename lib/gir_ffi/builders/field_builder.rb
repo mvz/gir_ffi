@@ -118,7 +118,7 @@ module GirFFI
         end
 
         def ownership_transfer
-          :everything
+          :nothing
         end
 
         def caller_allocates?

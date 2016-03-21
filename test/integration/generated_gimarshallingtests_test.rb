@@ -57,21 +57,25 @@ describe GIMarshallingTests do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
 
-      res = GIMarshallingTests::BoxedStruct.inout bx
+      # FIXME: Temporary check method
+      bx.to_ptr.autorelease = true
 
-      # TODO: Deal with the fact that bx is now invalid (at least with
-      # gobject-introspection 1.40).
+      res = GIMarshallingTests::BoxedStruct.inout bx
+      bx.to_ptr.must_be :autorelease?
+      res.to_ptr.must_be :autorelease?
 
       assert_equal 0, res.long_
     end
 
     it 'has a working function #out' do
       res = GIMarshallingTests::BoxedStruct.out
+      res.to_ptr.must_be :autorelease?
       assert_equal 42, res.long_
     end
 
     it 'has a working function #returnv' do
       res = GIMarshallingTests::BoxedStruct.returnv
+      res.to_ptr.must_be :autorelease?
       assert_equal 42, res.long_
       res.g_strv.must_be :==, %w(0 1 2)
     end
@@ -302,7 +306,7 @@ describe GIMarshallingTests do
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      ob.ref_count.must_be :>, 0
+      ob.ref_count.must_equal 1
       res.ref_count.must_equal 1
 
       res.must_be_instance_of GIMarshallingTests::Object
@@ -311,12 +315,14 @@ describe GIMarshallingTests do
 
     it 'has a working function #full_out' do
       res = GIMarshallingTests::Object.full_out
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 1
     end
 
     it 'has a working function #full_return' do
       res = GIMarshallingTests::Object.full_return
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 1
     end
 
     it 'has a working function #inout_same' do
@@ -325,19 +331,28 @@ describe GIMarshallingTests do
 
     it 'has a working function #none_inout' do
       ob = GIMarshallingTests::Object.new 42
+      ob.ref_count.must_equal 1
+
       res = GIMarshallingTests::Object.none_inout ob
-      assert_instance_of GIMarshallingTests::Object, res
-      ob.wont_equal res
+
+      ob.ref_count.must_equal 1
+      res.ref_count.must_equal 2
+
+      res.must_be_instance_of GIMarshallingTests::Object
+      ob.int.must_equal 42
+      res.int.must_equal 0
     end
 
     it 'has a working function #none_out' do
       res = GIMarshallingTests::Object.none_out
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 2
     end
 
     it 'has a working function #none_return' do
       res = GIMarshallingTests::Object.none_return
-      assert_instance_of GIMarshallingTests::Object, res
+      res.must_be_instance_of GIMarshallingTests::Object
+      res.ref_count.must_equal 2
     end
 
     it 'has a working function #static_method' do
@@ -1454,8 +1469,8 @@ describe GIMarshallingTests do
     GIMarshallingTests.array_struct_in arr
   end
 
-  # NOTE: Should be run with valgrind. See gimarhallingtests.c.
   it 'has a working function #array_struct_take_in' do
+    # TODO: This needs to copy values so arr stays valid
     arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     end

@@ -90,5 +90,29 @@ describe GirFFI::Builders::CallbackBuilder do
         builder.mapping_method_definition.must_equal expected
       end
     end
+
+    describe 'for a callback with a value in argument' do
+      let(:field_info) do
+        get_field_introspection_data('GObject',
+                                     'ObjectClass', 'get_property')
+      end
+      let(:callback_info) do
+        field_info.field_type.interface
+      end
+      it 'returns a valid mapping method' do
+        expected = <<-CODE.reset_indentation
+        def self.call_with_argument_mapping(_proc, object, property_id, value, pspec)
+          _v1 = GObject::Object.wrap(object)
+          _v2 = property_id
+          _v3 = GObject::Value.wrap(value)
+          _v4 = GObject::ParamSpec.wrap(pspec)
+          _proc.call(_v1, _v2, _v3, _v4)
+        end
+        CODE
+
+        builder.mapping_method_definition.must_equal expected
+      end
+    end
+
   end
 end

@@ -3,15 +3,17 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, false) }
+  let(:type_info) { method_info.return_type }
+  let(:ownership_transfer) { method_info.caller_owns }
+  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false) }
   let(:builder) do
     GirFFI::Builders::ReturnValueBuilder.new(var_gen, return_type_info)
   end
 
   describe 'for :gint32' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'int_return_min').return_type
+                             'int_return_min')
     end
 
     it 'has no statements in #post_conversion' do
@@ -25,33 +27,35 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :struct' do
-    let(:type_info) do
-      get_method_introspection_data('GIMarshallingTests',
-                                    'BoxedStruct',
-                                    'returnv').return_type
-    end
+    describe 'with transfer :nothing' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'BoxedStruct',
+                                      'returnv')
+      end
 
-    it 'wraps the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap(_v1)']
-    end
+      it 'wraps and copies the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)']
+      end
 
-    it 'returns the wrapped result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'returns the copied result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 
   describe 'for :union' do
-    let(:type_info) do
+    let(:method_info) do
       get_method_introspection_data('GIMarshallingTests',
                                     'Union',
-                                    'returnv').return_type
+                                    'returnv')
     end
 
     it 'wraps the result in #post_conversion' do
       builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Union.wrap(_v1)']
+      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Union.wrap_copy(_v1)']
     end
 
     it 'returns the wrapped result' do
@@ -61,10 +65,10 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :interface' do
-    let(:type_info) do
+    let(:method_info) do
       get_method_introspection_data('Gio',
                                     'File',
-                                    'new_for_commandline_arg').return_type
+                                    'new_for_commandline_arg')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -79,28 +83,49 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :object' do
-    let(:type_info) do
-      get_method_introspection_data('GIMarshallingTests',
-                                    'Object',
-                                    'full_return').return_type
+    describe 'with full ownership transfer' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'Object',
+                                      'full_return')
+      end
+
+      it 'wraps the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
+      end
+
+      it 'returns the wrapped result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
 
-    it 'wraps the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
-    end
+    describe 'with no ownership transfer' do
+      let(:method_info) do
+        get_method_introspection_data('GIMarshallingTests',
+                                      'Object',
+                                      'none_return')
+      end
 
-    it 'returns the wrapped result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'wraps the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.
+          must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }']
+      end
+
+      it 'returns the wrapped result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 
   describe 'for :strv' do
-    let(:type_info) do
+    let(:method_info) do
       get_method_introspection_data('GLib',
                                     'KeyFile',
-                                    'get_locale_string_list').return_type
+                                    'get_locale_string_list')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -115,10 +140,10 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :zero_terminated' do
-    let(:type_info) do
+    let(:method_info) do
       get_method_introspection_data('GLib',
                                     'Variant',
-                                    'dup_bytestring').return_type
+                                    'dup_bytestring')
     end
     before do
       skip unless type_info.zero_terminated?
@@ -136,9 +161,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :byte_array' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'bytearray_full_return').return_type
+                             'bytearray_full_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -153,9 +178,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :ptr_array' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'gptrarray_utf8_none_return').return_type
+                             'gptrarray_utf8_none_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -170,9 +195,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :glist' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'glist_int_none_return').return_type
+                             'glist_int_none_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -187,9 +212,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :gslist' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'gslist_int_none_return').return_type
+                             'gslist_int_none_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -204,9 +229,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :ghash' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'ghashtable_int_none_return').return_type
+                             'ghashtable_int_none_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -221,9 +246,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :array' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'garray_int_none_return').return_type
+                             'garray_int_none_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -238,9 +263,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :error' do
-    let(:type_info) do
+    let(:method_info) do
       get_introspection_data('GIMarshallingTests',
-                             'gerror_return').return_type
+                             'gerror_return')
     end
 
     it 'wraps the result in #post_conversion' do
@@ -256,9 +281,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
   describe 'for :c' do
     describe 'with fixed size' do
-      let(:type_info) do
+      let(:method_info) do
         get_introspection_data('GIMarshallingTests',
-                               'array_fixed_int_return').return_type
+                               'array_fixed_int_return')
       end
 
       it 'converts the result in #post_conversion' do
@@ -274,10 +299,10 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     describe 'with separate size parameter' do
       let(:length_argument) { Object.new }
-      let(:type_info) do
+      let(:method_info) do
         get_method_introspection_data('GIMarshallingTests',
                                       'Object',
-                                      'method_array_return').return_type
+                                      'method_array_return')
       end
 
       before do
@@ -298,22 +323,42 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :utf8' do
-    let(:type_info) do
-      get_introspection_data('GIMarshallingTests', 'utf8_full_return').return_type
+    describe 'with no transfer' do
+      let(:method_info) do
+        get_introspection_data('GIMarshallingTests', 'utf8_none_return')
+      end
+
+      it 'converts the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.must_equal ['_v2 = _v1.to_utf8']
+      end
+
+      it 'returns the converted result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
 
-    it 'converts the result in #post_conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = _v1.to_utf8']
-    end
+    describe 'with full transfer' do
+      let(:method_info) do
+        get_introspection_data('GIMarshallingTests', 'utf8_full_return')
+      end
 
-    it 'returns the converted result' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      it 'autoreleases and converts the result in #post_conversion' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.post_conversion.
+          must_equal ['_v2 = _v1.tap { |it| it.autorelease = true }.to_utf8']
+      end
+
+      it 'returns the converted result' do
+        builder.capture_variable_name.must_equal '_v1'
+        builder.return_value_name.must_equal '_v2'
+      end
     end
   end
 
   describe 'for :void pointer' do
+    let(:ownership_transfer) { :nothing }
     let(:callback_info) do
       get_introspection_data('GIMarshallingTests', 'CallbackIntInt')
     end
@@ -334,8 +379,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for :void' do
-    let(:type_info) do
-      get_method_introspection_data('Regress', 'TestObj', 'null_out').return_type
+    let(:method_info) do
+      get_method_introspection_data('Regress', 'TestObj', 'null_out')
     end
 
     it 'has no statements in #post_conversion' do
@@ -352,9 +397,11 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for a closure argument' do
-    let(:type_info) do
-      get_introspection_data('Regress', 'TestCallbackUserData').args[0].argument_type
+    let(:ownership_transfer) { :nothing }
+    let(:callback_info) do
+      get_introspection_data('Regress', 'TestCallbackUserData')
     end
+    let(:type_info) { callback_info.args[0].argument_type }
 
     before do
       builder.closure = true
@@ -372,8 +419,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
   end
 
   describe 'for a skipped return value' do
-    let(:type_info) do
-      get_method_introspection_data('Regress', 'TestObj', 'skip_return_val').return_type
+    let(:method_info) do
+      get_method_introspection_data('Regress', 'TestObj', 'skip_return_val')
     end
     let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, true) }
 

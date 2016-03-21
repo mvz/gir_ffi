@@ -26,6 +26,13 @@ module GObject
 
     private :base_initialize
 
+    remove_method :ref
+
+    def ref
+      Lib.g_object_ref self
+      self
+    end
+
     def store_pointer(ptr)
       super
       klass = self.class

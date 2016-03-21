@@ -21,11 +21,5 @@ module GirFFI
       type_size = FFI.type_size type
       safe_malloc(type_size)
     end
-
-    def self.allocate_clear(type)
-      ptr = FFI::MemoryPointer.new(type)
-      ptr.autorelease = false
-      ptr
-    end
   end
 end

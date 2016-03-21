@@ -9,6 +9,7 @@ require 'ffi-gobject/initially_unowned'
 require 'ffi-gobject/closure'
 require 'ffi-gobject/object'
 require 'ffi-gobject/object_class'
+require 'ffi-gobject/param_spec'
 require 'ffi-gobject/ruby_closure'
 require 'gir_ffi/signal_not_found_error'
 
@@ -74,14 +75,6 @@ module GObject
     signal_connect object, detailed_signal, data, true, &block
   end
 
-  # Smells of :reek:LongParameterList: due to the C interface.
-  # rubocop:disable Metrics/ParameterLists
-  def self.param_spec_int(name, nick, blurb, minimum, maximum, default_value, flags)
-    ptr = Lib.g_param_spec_int(name, nick, blurb, minimum, maximum,
-                               default_value, flags)
-    ParamSpecInt.wrap(ptr)
-  end
-
   load_class :Callback
   load_class :ClosureNotify
   load_class :ConnectFlags
@@ -94,6 +87,8 @@ module GObject
     attach_function :g_object_ref, [:pointer], :pointer
     attach_function :g_object_unref, [:pointer], :pointer
 
+    attach_function :g_value_copy, [:pointer, :pointer], :void
+    attach_function :g_value_init, [:pointer, :size_t], :pointer
     attach_function :g_value_unset, [:pointer], :pointer
 
     attach_function :g_array_get_type, [], :size_t
@@ -107,9 +102,8 @@ module GObject
     attach_function :g_closure_set_marshal,
                     [:pointer, ClosureMarshal], :void
 
-    attach_function :g_param_spec_int,
-                    [:string, :string, :string, :int32, :int32, :int32, ParamFlags],
-                    :pointer
+    attach_function :g_param_spec_ref, [:pointer], :pointer
+    attach_function :g_param_spec_sink, [:pointer], :pointer
   end
 
   TYPE_ARRAY = Lib.g_array_get_type
