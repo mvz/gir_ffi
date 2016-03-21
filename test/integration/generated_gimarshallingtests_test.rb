@@ -279,8 +279,9 @@ describe GIMarshallingTests do
     it 'has a writable field pointer' do
       instance.pointer.must_be_nil
       nested = GIMarshallingTests::NestedStruct.new
+      nested.simple_struct.int8 = 23
       instance.pointer = nested
-      instance.pointer.must_equal nested
+      instance.pointer.simple_struct.int8.must_equal 23
     end
   end
 

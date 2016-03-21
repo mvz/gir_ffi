@@ -479,6 +479,7 @@ describe Regress do
       rect = Regress::FooBRect.wrap(Regress::FooBRect::Struct.new.to_ptr)
       rect.x = 42
       rect.y = 23
+      skip 'Cannot copy FooBRect structs'
       instance.rect = rect
       instance.rect.x.must_equal 42.0
       instance.rect.y.must_equal 23.0
@@ -897,8 +898,9 @@ describe Regress do
     it 'has a writable field priv' do
       instance.priv.must_be_nil
       struct = Regress::FooStructPrivate.new
+      struct.struct[:dummy] = 23
       instance.priv = struct
-      instance.priv.must_equal struct
+      instance.priv.struct[:dummy].must_equal 23
     end
 
     it 'has a writable field member' do
@@ -1170,10 +1172,11 @@ describe Regress do
 
     it 'has a writable field priv' do
       instance.priv.wont_be_nil
+      instance.priv.struct[:dummy].must_equal(-17)
       other = Regress::TestBoxed.new
-      instance.priv.wont_equal other.priv
+      other.priv.struct[:dummy] = 23
       instance.priv = other.priv
-      instance.priv.must_equal other.priv
+      instance.priv.struct[:dummy].must_equal 23
     end
 
     it 'creates an instance using #new' do

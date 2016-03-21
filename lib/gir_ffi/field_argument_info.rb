@@ -16,7 +16,7 @@ module GirFFI
     end
 
     def ownership_transfer
-      :nothing
+      :everything
     end
 
     def skip?
