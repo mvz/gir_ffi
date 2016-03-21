@@ -475,5 +475,36 @@ describe GirFFI::Builders::FunctionBuilder do
         CODE
       end
     end
+
+    describe 'ownership transfer for an ingoing array of structs' do
+      describe 'with no ownership transfer of the elements' do
+        let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_struct_in' }
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+            def self.array_struct_in(structs)
+              length = structs.nil? ? 0 : structs.length
+              _v1 = length
+              _v2 = GirFFI::SizedArray.from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)
+              GIMarshallingTests::Lib.gi_marshalling_tests_array_struct_in _v2, _v1
+            end
+          CODE
+        end
+      end
+      describe 'with ownership transfer of the elements' do
+        let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_struct_take_in' }
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+            def self.array_struct_take_in(structs)
+              length = structs.nil? ? 0 : structs.length
+              _v1 = length
+              _v2 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)
+              GIMarshallingTests::Lib.gi_marshalling_tests_array_struct_take_in _v2, _v1
+            end
+          CODE
+        end
+      end
+    end
   end
 end

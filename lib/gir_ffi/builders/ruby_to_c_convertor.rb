@@ -25,7 +25,7 @@ module GirFFI
         case @type_info.flattened_tag
         when :utf8
           'from_utf8'
-        when :struct
+        when :struct, :c
           case @ownership_transfer
           when :everything
             'copy_from'

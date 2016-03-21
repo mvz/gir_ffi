@@ -71,6 +71,21 @@ module GirFFI
         end
       end
 
+      def copy_from(element_type, size, item)
+        return unless item
+
+        enumerable = case item
+                     when FFI::Pointer
+                       wrap(element_type, size, item).to_a
+                     when self
+                       item.to_a
+                     else
+                       item
+                     end
+
+        from_enumerable element_type, size, enumerable
+      end
+
       private
 
       def from_sized_array(size, sized_array)

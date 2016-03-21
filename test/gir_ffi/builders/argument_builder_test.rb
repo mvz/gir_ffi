@@ -6,6 +6,22 @@ describe GirFFI::Builders::ArgumentBuilder do
   let(:builder) { GirFFI::Builders::ArgumentBuilder.new(var_gen, arg_info) }
 
   describe 'for an argument with direction :in' do
+    describe 'for :c' do
+      describe 'with full ownership transfer' do
+        let(:arg_info) do
+          get_introspection_data('GIMarshallingTests', 'array_struct_take_in').args[0]
+        end
+
+        it 'has the correct value for #pre_conversion' do
+          builder.pre_conversion.must_equal ['_v1 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)']
+        end
+
+        it 'has the correct value for #post_conversion' do
+          builder.post_conversion.must_equal []
+        end
+      end
+    end
+
     describe 'for :callback' do
       let(:arg_info) do
         get_introspection_data('Regress', 'test_callback_destroy_notify').args[0]
@@ -540,7 +556,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal [
             '_v1 = FFI::MemoryPointer.new :pointer',
-            '_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, ints)'
+            '_v1.put_pointer 0, GirFFI::SizedArray.copy_from(:gint32, -1, ints)'
           ]
         end
 

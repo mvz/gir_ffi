@@ -3,7 +3,6 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Gio
 GirFFI.setup :Gst
-Gst.init []
 
 describe GirFFI::Builders::UnintrospectableBuilder do
   describe 'building the GLocalFile type' do
@@ -57,6 +56,10 @@ describe GirFFI::Builders::UnintrospectableBuilder do
     let(:instance) { Gst::ElementFactory.make('fakesink', 'sink') }
     let(:klass) { instance.class }
     let(:builder) { klass.gir_ffi_builder }
+
+    before do
+      Gst.init []
+    end
 
     describe 'its #find_signal method' do
       it 'finds signals that are not defined in the GIR' do
