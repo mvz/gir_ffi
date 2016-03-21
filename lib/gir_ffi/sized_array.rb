@@ -82,6 +82,11 @@ module GirFFI
                      else
                        item
                      end
+        case element_type
+        when Array
+          _main_type, sub_type = *element_type
+          enumerable = enumerable.map { |it| sub_type.copy_from it }
+        end
 
         from_enumerable element_type, size, enumerable
       end

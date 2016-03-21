@@ -89,6 +89,21 @@ describe GirFFI::SizedArray do
         assert_equal [3, 2, 1], arr.to_a
         arr.to_ptr.wont_be :autorelease?
       end
+
+      it 'creates unowned copies of struct pointer elements' do
+        struct = GIMarshallingTests::BoxedStruct.new
+        struct.long_ = 2342
+        arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct],
+                                           1,
+                                           [struct])
+        arr.must_be_instance_of GirFFI::SizedArray
+        arr.to_ptr.wont_be :autorelease?
+
+        struct_copy = arr.first
+        struct_copy.long_.must_equal struct.long_
+        struct_copy.to_ptr.wont_equal struct.to_ptr
+        struct_copy.to_ptr.wont_be :autorelease?
+      end
     end
 
     describe 'from a GirFFI::SizedArray' do
