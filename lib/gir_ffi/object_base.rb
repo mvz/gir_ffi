@@ -36,6 +36,10 @@ module GirFFI
       ptr.to_object
     end
 
+    def self.copy_from(val)
+      val.ref
+    end
+
     #
     # Find property info for the named property.
     #

@@ -104,6 +104,18 @@ describe GirFFI::SizedArray do
         struct_copy.to_ptr.wont_equal struct.to_ptr
         struct_copy.to_ptr.wont_be :autorelease?
       end
+
+      it 'increases the ref count of object pointer elements' do
+        obj = GIMarshallingTests::Object.new 42
+        arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::Object],
+                                           1,
+                                           [obj])
+        arr.must_be_instance_of GirFFI::SizedArray
+        arr.to_ptr.wont_be :autorelease?
+
+        arr.first.must_equal obj
+        obj.ref_count.must_equal 2
+      end
     end
 
     describe 'from a GirFFI::SizedArray' do
