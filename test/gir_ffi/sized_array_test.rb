@@ -108,12 +108,12 @@ describe GirFFI::SizedArray do
       it 'increases the ref count of object pointer elements' do
         obj = GIMarshallingTests::Object.new 42
         arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::Object],
-                                           1,
-                                           [obj])
+                                           -1,
+                                           [obj, nil])
         arr.must_be_instance_of GirFFI::SizedArray
         arr.to_ptr.wont_be :autorelease?
 
-        arr.first.must_equal obj
+        arr.to_a.must_equal [obj, nil]
         obj.ref_count.must_equal 2
       end
     end
