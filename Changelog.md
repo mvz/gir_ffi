@@ -1,9 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.10.0.pre1 / 2016-03-22
 
 * Rework generated method code to use less indirection.
 * Remove unused classes and methods
+* Clearly distinguish boxed types from other structs
+* Take ownership transfer into account in generated methods
+* Properly free unions, structs and boxed types owned by gir_ffi
+* Block access to fields that have disguised types
 
 ## 0.9.5 / 2016-03-05
 
