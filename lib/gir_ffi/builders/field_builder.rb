@@ -239,7 +239,9 @@ module GirFFI
       end
 
       def setup_getter
-        container_class.class_eval getter_def unless container_defines_getter_method?
+        return if container_defines_getter_method?
+        return if hidden_struct_type?
+        container_class.class_eval getter_def
       end
 
       def container_defines_getter_method?
@@ -247,7 +249,9 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def if info.writable?
+        return unless info.writable?
+        return if hidden_struct_type?
+        container_class.class_eval setter_def
       end
 
       def getter_def
@@ -278,7 +282,7 @@ module GirFFI
       end
 
       def field_type_tag
-        @field_type_tag ||= info.field_type.tag_or_class
+        @field_type_tag ||= field_type.tag_or_class
       end
 
       def container_class
@@ -304,6 +308,10 @@ module GirFFI
       def setter_builder
         @setter_builder ||= ArgumentBuilder.new(VariableNameGenerator.new,
                                                 field_argument_info)
+      end
+
+      def hidden_struct_type?
+        field_type.flattened_tag == :struct && field_type.interface.size == 0
       end
     end
   end

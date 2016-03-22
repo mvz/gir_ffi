@@ -895,12 +895,9 @@ describe Regress do
   describe 'Regress::FooStruct' do
     let(:instance) { Regress::FooStruct.new }
 
-    it 'has a writable field priv' do
-      instance.priv.must_be_nil
-      struct = Regress::FooStructPrivate.new
-      struct.struct[:dummy] = 23
-      instance.priv = struct
-      instance.priv.struct[:dummy].must_equal 23
+    it 'blocks access to the field priv' do
+      proc { instance.priv = nil }.must_raise NoMethodError
+      proc { instance.priv }.must_raise NoMethodError
     end
 
     it 'has a writable field member' do
@@ -1170,13 +1167,9 @@ describe Regress do
       instance.nested_a.some_int.must_equal 12_345
     end
 
-    it 'has a writable field priv' do
-      instance.priv.wont_be_nil
-      instance.priv.struct[:dummy].must_equal(-17)
-      other = Regress::TestBoxed.new
-      other.priv.struct[:dummy] = 23
-      instance.priv = other.priv
-      instance.priv.struct[:dummy].must_equal 23
+    it 'blocks access to the field priv' do
+      proc { instance.priv = nil }.must_raise NoMethodError
+      proc { instance.priv }.must_raise NoMethodError
     end
 
     it 'creates an instance using #new' do
