@@ -1293,6 +1293,7 @@ describe Regress do
     end
 
     it 'has a working method #free' do
+      skip "#free is used internally and shouldn't be exposed"
       instance.free
       pass
     end

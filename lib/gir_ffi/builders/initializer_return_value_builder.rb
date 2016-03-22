@@ -6,7 +6,11 @@ module GirFFI
     # Implements post-conversion for initializer functions
     class InitializerReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
-        ["store_pointer(#{capture_variable_name})"]
+        result = []
+        if specialized_type_tag == :struct
+          result << "#{capture_variable_name}.autorelease = true"
+        end
+        result << "store_pointer(#{capture_variable_name})"
       end
     end
   end
