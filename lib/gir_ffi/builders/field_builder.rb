@@ -310,6 +310,7 @@ module GirFFI
                                                 field_argument_info)
       end
 
+      # rubocop:disable Style/ZeroLengthPredicate
       def hidden_struct_type?
         field_type.flattened_tag == :struct && field_type.interface.size == 0
       end
