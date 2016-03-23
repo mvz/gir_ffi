@@ -99,6 +99,9 @@ module GObject
     attach_function :g_signal_connect_data,
                     [:pointer, :string, Callback, :pointer, ClosureNotify, ConnectFlags],
                     :ulong
+
+    attach_function :g_closure_ref, [:pointer], :pointer
+    attach_function :g_closure_sink, [:pointer], :pointer
     attach_function :g_closure_set_marshal,
                     [:pointer, ClosureMarshal], :void
 

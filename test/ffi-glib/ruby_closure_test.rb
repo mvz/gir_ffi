@@ -13,6 +13,11 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new {}
       assert_kind_of GObject::Closure, c
     end
+
+    it 'updates the ref_count of the created object' do
+      c = GObject::RubyClosure.new {}
+      c.ref_count.must_equal 1
+    end
   end
 
   describe '.wrap' do
