@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.0 / 2016-03-23
+
+* Ensure ownership of created RubyClosure objects
+
 ## 0.10.0.pre1 / 2016-03-22
 
 * Rework generated method code to use less indirection.
