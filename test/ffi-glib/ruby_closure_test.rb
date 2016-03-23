@@ -2,26 +2,35 @@
 require 'gir_ffi_test_helper'
 
 describe GObject::RubyClosure do
-  it 'has a constructor with a mandatory block argument' do
-    assert_raises ArgumentError do
-      GObject::RubyClosure.new
+  describe '.new' do
+    it 'takes a mandatory block argument' do
+      assert_raises ArgumentError do
+        GObject::RubyClosure.new
+      end
+    end
+
+    it 'returns a kind of Closure' do
+      c = GObject::RubyClosure.new {}
+      assert_kind_of GObject::Closure, c
+    end
+
+    it 'updates the ref_count of the created object' do
+      c = GObject::RubyClosure.new {}
+      c.ref_count.must_equal 1
     end
   end
 
-  it 'is a kind of Closure' do
-    c = GObject::RubyClosure.new {}
-    assert_kind_of GObject::Closure, c
+  describe '.wrap' do
+    it 'returns a fully functional object that can invoke the original block' do
+      a = 0
+      c = GObject::RubyClosure.new { a = 2 }
+      c2 = GObject::RubyClosure.wrap(c.to_ptr)
+      c2.invoke_block
+      assert_equal 2, a
+    end
   end
 
-  it 'is able to retrieve its block from its struct' do
-    a = 0
-    c = GObject::RubyClosure.new { a = 2 }
-    c2 = GObject::RubyClosure.wrap(c.to_ptr)
-    c2.invoke_block
-    assert_equal 2, a
-  end
-
-  describe 'its #marshaller singleton method' do
+  describe '.marshaller' do
     it "invokes its closure argument's block" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
@@ -45,11 +54,13 @@ describe GObject::RubyClosure do
     end
   end
 
-  it 'has GObject::Closure#invoke call its block' do
-    a = 0
-    c = GObject::RubyClosure.new { a = 2 }
-    c2 = GObject::Closure.wrap(c.to_ptr)
-    c2.invoke nil, nil, nil
-    assert_equal 2, a
+  describe '#invoke' do
+    it 'invokes the ruby block' do
+      a = 0
+      c = GObject::RubyClosure.new { a = 2 }
+      c2 = GObject::Closure.wrap(c.to_ptr)
+      c2.invoke nil, nil, nil
+      assert_equal 2, a
+    end
   end
 end

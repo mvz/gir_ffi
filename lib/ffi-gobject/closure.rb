@@ -15,5 +15,12 @@ module GObject
       callback = GObject::ClosureMarshal.from marshal
       Lib.g_closure_set_marshal self, callback
     end
+
+    def store_pointer(ptr)
+      super
+      # NOTE: Call C functions directly to avoid extra argument conversion
+      Lib.g_closure_ref ptr
+      Lib.g_closure_sink ptr
+    end
   end
 end
