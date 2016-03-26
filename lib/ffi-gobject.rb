@@ -107,6 +107,8 @@ module GObject
 
     attach_function :g_param_spec_ref, [:pointer], :pointer
     attach_function :g_param_spec_sink, [:pointer], :pointer
+
+    attach_function :g_type_class_ref, [:size_t], :pointer
   end
 
   TYPE_ARRAY = Lib.g_array_get_type
