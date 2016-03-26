@@ -28,7 +28,7 @@ module GirFFI
       end
 
       def function_call_arguments
-        ca = argument_builder_collection.call_argument_names
+        ca = argument_builder_collection.call_argument_names.dup
         ca.unshift receiver_call_argument if @info.method?
         ca
       end

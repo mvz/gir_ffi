@@ -6,6 +6,16 @@ describe GirFFI::Builders::FunctionBuilder do
     let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
     let(:code) { builder.method_definition }
 
+    describe 'generally' do
+      let(:function_info) { get_method_introspection_data 'GObject', 'Object', 'get_property' }
+
+      it 'returns the same result when called twice' do
+        original = builder.method_definition
+        copy = builder.method_definition
+        copy.must_equal original
+      end
+    end
+
     describe 'for Regress:test_array_fixed_out_objects' do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_fixed_out_objects' }
       it 'builds a correct definition' do
