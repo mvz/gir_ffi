@@ -23,8 +23,8 @@ describe GirFFI::Builders::UnionBuilder do
   end
 
   describe '#layout_superclass' do
-    it 'returns FFI::Union' do
-      builder.layout_superclass.must_equal FFI::Union
+    it 'returns GirFFI::Union' do
+      builder.layout_superclass.must_equal GirFFI::Union
     end
   end
 end

@@ -23,7 +23,7 @@ module GirFFI
       end
 
       def layout_superclass
-        FFI::Struct
+        GirFFI::Struct
       end
     end
   end

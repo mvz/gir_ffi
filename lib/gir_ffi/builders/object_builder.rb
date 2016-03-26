@@ -3,6 +3,7 @@ require 'gir_ffi/builders/registered_type_builder'
 require 'gir_ffi/builders/with_layout'
 require 'gir_ffi/builders/property_builder'
 require 'gir_ffi/object_base'
+require 'gir_ffi/struct'
 
 module GirFFI
   module Builders
@@ -74,7 +75,7 @@ module GirFFI
 
       # FIXME: Private method only used in subclass
       def layout_superclass
-        FFI::Struct
+        GirFFI::Struct
       end
 
       def parent_info

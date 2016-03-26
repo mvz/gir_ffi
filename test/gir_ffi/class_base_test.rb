@@ -5,7 +5,7 @@ describe GirFFI::ClassBase do
   describe 'a simple descendant' do
     let(:klass) do
       Class.new(GirFFI::ClassBase) do
-        self::Struct = Class.new(FFI::Struct) do
+        self::Struct = Class.new(GirFFI::Struct) do
           layout :foo, :int32
         end
       end
