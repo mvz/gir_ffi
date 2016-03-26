@@ -10,12 +10,16 @@ module GirFFI
 
     def self.make_finalizer(struct, gtype)
       proc do
-        ptr = struct.to_ptr
-        if ptr.autorelease?
-          ptr.autorelease = false
-          GObject.boxed_free gtype, ptr
+        if struct.owned?
+          struct.owned = false
+          GObject.boxed_free gtype, struct.to_ptr
         end
       end
+    end
+
+    # Wrap value and take ownership of it
+    def self.wrap_own(val)
+      wrap(val).tap { |it| it && it.struct.owned = true }
     end
 
     # Create an unowned copy of the struct represented by val
@@ -25,7 +29,7 @@ module GirFFI
 
     # Wrap an owned copy of the struct represented by val
     def self.wrap_copy(val)
-      copy(wrap(val)).tap { |it| it && it.to_ptr.autorelease = true }
+      copy(wrap(val)).tap { |it| it && it.struct.owned = true }
     end
 
     def self.copy(val)
