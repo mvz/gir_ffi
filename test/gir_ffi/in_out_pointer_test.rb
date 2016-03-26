@@ -14,20 +14,20 @@ describe GirFFI::InOutPointer do
   describe '#to_value' do
     it 'returns the held value' do
       ptr = GirFFI::InOutPointer.allocate_new :gint32
-      ptr.write_int32 123
+      ptr.put_int32 0, 123
       assert_equal 123, ptr.to_value
     end
 
     describe 'for :gboolean values' do
       it 'works when the value is false' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
-        ptr.write_int 0
+        ptr.put_int 0, 0
         ptr.to_value.must_equal false
       end
 
       it 'works when the value is true' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
-        ptr.write_int 1
+        ptr.put_int 0, 1
         ptr.to_value.must_equal true
       end
     end
@@ -36,7 +36,7 @@ describe GirFFI::InOutPointer do
       it 'returns a pointer to the held string value' do
         str_ptr = GirFFI::InPointer.from_utf8 'Some value'
         ptr = GirFFI::InOutPointer.allocate_new :utf8
-        ptr.write_pointer str_ptr
+        ptr.put_pointer 0, str_ptr
         assert_equal 'Some value', ptr.to_value.read_string
       end
     end
