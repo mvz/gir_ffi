@@ -8,8 +8,9 @@ module GirFFI
       store_pointer(self.class::Struct.new.to_ptr)
     end
 
-    def self.make_finalizer(ptr, gtype)
+    def self.make_finalizer(struct, gtype)
       proc do
+        ptr = struct.to_ptr
         if ptr.autorelease?
           ptr.autorelease = false
           GObject.boxed_free gtype, ptr
@@ -42,7 +43,7 @@ module GirFFI
 
     def make_finalizer
       gtype = self.class.gtype
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr, gtype)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
     end
   end
 end
