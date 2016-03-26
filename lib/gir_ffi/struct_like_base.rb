@@ -36,18 +36,30 @@ module GirFFI
 
     # Create an unowned copy of the struct represented by val
     def copy_from(val)
-      copy(from(val)).tap { |it| it && it.to_ptr.autorelease = false }
+      disown copy from(val)
     end
 
     # Wrap an owned copy of the struct represented by val
     def wrap_copy(val)
-      copy wrap(val)
+      own copy wrap(val)
+    end
+
+    def own(val)
+      val.struct.owned = true if val
+      val
+    end
+
+    def disown(val)
+      val.struct.owned = false if val
+      val
     end
 
     # Create a copy of the struct represented by val
     def copy(val)
       return unless val
-      new.tap { |copy| copy_value_to_pointer(val, copy.to_ptr) }
+      new.tap do |copy|
+        copy_value_to_pointer(val, copy.to_ptr)
+      end
     end
   end
 end
