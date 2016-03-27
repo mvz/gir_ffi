@@ -2744,6 +2744,7 @@ describe Regress do
   end
 
   it 'has a working function #annotation_return_filename' do
+    skip 'This function is wrongly annotated as transfer-ownership: full'
     Regress.annotation_return_filename.must_equal 'a utf-8 filename'
   end
 

@@ -458,6 +458,23 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'string ownership transfer' do
+      describe 'for Regress.test_utf8_out' do
+        let(:function_info) { get_introspection_data 'Regress', 'test_utf8_out' }
+
+        it 'builds a correct definition' do
+          code.must_equal <<-CODE.reset_indentation
+          def self.test_utf8_out
+            _v1 = FFI::MemoryPointer.new :pointer
+            Regress::Lib.regress_test_utf8_out _v1
+            _v2 = GirFFI::AllocationHelper.free_after _v1.get_pointer(0), &:to_utf8
+            return _v2
+          end
+          CODE
+        end
+      end
+    end
+
     describe 'for functions with an allow-none ingoing parameter' do
       let(:function_info) { get_introspection_data 'Regress', 'test_utf8_null_in' }
       it 'builds correct definition with default parameter value' do

@@ -15,7 +15,7 @@ module GirFFI
         case @type_info.flattened_tag
         when :utf8, :filename
           if @ownership_transfer == :everything
-            "#{@argument}.tap { |it| it.autorelease = true }.to_utf8"
+            "GirFFI::AllocationHelper.free_after #{@argument}, &:to_utf8"
           else
             "#{@argument}.to_utf8"
           end

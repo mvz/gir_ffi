@@ -21,5 +21,11 @@ module GirFFI
       type_size = FFI.type_size type
       safe_malloc(type_size)
     end
+
+    def self.free_after(ptr)
+      result = yield ptr
+      LibC.free ptr unless ptr.null?
+      result
+    end
   end
 end
