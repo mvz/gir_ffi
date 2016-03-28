@@ -101,7 +101,7 @@ describe GirFFI::Builders::VFuncBuilder do
           _v2 = arg
           _v3 = GirFFI::AllocationHelper.allocate(:int8).tap { |ptr| out.put_pointer 0, ptr }
           _v4 = _proc.call(_v1, _v2)
-          _v3.put_pointer 0, _v4
+          _v3.put_int8 0, _v4
         end
         CODE
 
