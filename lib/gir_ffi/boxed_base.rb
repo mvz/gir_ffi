@@ -29,6 +29,7 @@ module GirFFI
 
     # Wrap an owned copy of the struct represented by val
     def self.wrap_copy(val)
+      # TODO: Is this needed? We may get away with just copying on transfer away from us.
       copy(wrap(val)).tap { |it| it && it.struct.owned = true }
     end
 
