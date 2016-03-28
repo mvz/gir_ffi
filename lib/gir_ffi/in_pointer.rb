@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 module GirFFI
-  # The InPointer class handles conversion from ruby types to pointers for
+  # The InPointer module handles conversion from ruby types to pointers for
   # arguments with direction :in. This is used for arguments that are
   # arrays, strings, or interfaces.
-  class InPointer < FFI::Pointer
+  module InPointer
     def self.from_array(type, ary)
       return unless ary
       case type
@@ -36,11 +36,11 @@ module GirFFI
       when :utf8, :filename
         from_utf8 val
       when :gint32, :guint32, :gint8, :GType
-        new val
+        FFI::Pointer.new val
       when Class, :void
         val.to_ptr
       when Module
-        new type[val]
+        FFI::Pointer.new type[val]
       else
         raise NotImplementedError, type
       end
@@ -77,12 +77,12 @@ module GirFFI
         type_size = FFI.type_size(ffi_type)
         length = ary.length
 
-        ptr = AllocationHelper.safe_malloc type_size * (length + 1)
+        ptr = FFI::MemoryPointer.new type_size * (length + 1)
+        ptr.autorelease = false
         ary.each_with_index do |item, idx|
           type.copy_value_to_pointer item, ptr, idx * type_size
         end
-        ptr.put_bytes length * type_size, "\0" * type_size, 0, type_size
-        new ptr
+        ptr
       end
 
       def from_enum_array(type, ary)
@@ -93,24 +93,20 @@ module GirFFI
 
       def from_utf8(str)
         return unless str
-        len = str.bytesize
-        ptr = AllocationHelper.safe_malloc(len + 1).write_string(str).put_char(len, 0)
-        new ptr
+        ptr = FFI::MemoryPointer.from_string(str)
+        ptr.autorelease = false
+        ptr
       end
 
       private
 
       def from_basic_type_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type
-        ary = ary.dup << null_value(ffi_type)
         type_size = FFI.type_size(ffi_type)
-        block = AllocationHelper.safe_malloc type_size * ary.length
+        block = FFI::MemoryPointer.new type_size * (ary.length + 1)
+        block.autorelease = false
         block.send "put_array_of_#{ffi_type}", 0, ary
-        new block
-      end
-
-      def null_value(ffi_type)
-        ffi_type == :pointer ? nil : 0
+        block
       end
     end
   end

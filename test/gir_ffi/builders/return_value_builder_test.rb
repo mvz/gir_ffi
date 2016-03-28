@@ -347,7 +347,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
       it 'autoreleases and converts the result in #post_conversion' do
         builder.capture_variable_name.must_equal '_v1'
         builder.post_conversion.
-          must_equal ['_v2 = _v1.tap { |it| it.autorelease = true }.to_utf8']
+          must_equal ['_v2 = GirFFI::AllocationHelper.free_after _v1, &:to_utf8']
       end
 
       it 'returns the converted result' do

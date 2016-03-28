@@ -9,6 +9,8 @@ module GirFFI
 
     def initialize
       @struct = self.class::Struct.new
+      @struct.owned = true
+      @struct.to_ptr.autorelease = false
     end
   end
 end

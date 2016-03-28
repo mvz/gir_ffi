@@ -354,7 +354,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it 'has the correct value for #post_conversion' do
           builder.post_conversion.must_equal [
-            '_v2 = _v1.get_pointer(0).tap { |it| it.autorelease = true }.to_utf8'
+            '_v2 = GirFFI::AllocationHelper.free_after _v1.get_pointer(0), &:to_utf8'
           ]
         end
 

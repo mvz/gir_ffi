@@ -25,7 +25,7 @@ describe GirFFI::InPointer do
 
     it 'handles struct types' do
       e = Class.new(GirFFI::StructBase) do
-        self::Struct = Class.new(FFI::Struct) do
+        self::Struct = Class.new(GirFFI::Struct) do
           layout :foo, :int32, :bar, :int32
         end
       end
@@ -65,8 +65,8 @@ describe GirFFI::InPointer do
       assert_equal 13, @result.get_int(4)
     end
 
-    it 'is an instance of GirFFI::InPointer' do
-      assert_instance_of GirFFI::InPointer, @result
+    it 'is an instance of FFI::MemoryPointer' do
+      @result.must_be_instance_of FFI::MemoryPointer
     end
 
     it 'is zero-terminated' do
@@ -105,8 +105,8 @@ describe GirFFI::InPointer do
       assert_equal 'foo', @result.read_string
     end
 
-    it 'is an instance of GirFFI::InPointer' do
-      assert_instance_of GirFFI::InPointer, @result
+    it 'is an instance of FFI::MemoryPointer' do
+      @result.must_be_instance_of FFI::MemoryPointer
     end
   end
 
@@ -119,8 +119,8 @@ describe GirFFI::InPointer do
       assert_equal 12_345, @result.address
     end
 
-    it 'is an instance of GirFFI::InPointer' do
-      assert_instance_of GirFFI::InPointer, @result
+    it 'is an instance of FFI::Pointer' do
+      @result.must_be_instance_of FFI::Pointer
     end
   end
 

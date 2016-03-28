@@ -8,13 +8,18 @@ module GirFFI
       store_pointer(self.class::Struct.new.to_ptr)
     end
 
-    def self.make_finalizer(ptr, gtype)
+    def self.make_finalizer(struct, gtype)
       proc do
-        if ptr.autorelease?
-          ptr.autorelease = false
-          GObject.boxed_free gtype, ptr
+        if struct.owned?
+          struct.owned = false
+          GObject.boxed_free gtype, struct.to_ptr
         end
       end
+    end
+
+    # Wrap value and take ownership of it
+    def self.wrap_own(val)
+      wrap(val).tap { |it| it && it.struct.owned = true }
     end
 
     # Create an unowned copy of the struct represented by val
@@ -24,7 +29,7 @@ module GirFFI
 
     # Wrap an owned copy of the struct represented by val
     def self.wrap_copy(val)
-      copy(wrap(val)).tap { |it| it && it.to_ptr.autorelease = true }
+      copy(wrap(val)).tap { |it| it && it.struct.owned = true }
     end
 
     def self.copy(val)
@@ -42,7 +47,7 @@ module GirFFI
 
     def make_finalizer
       gtype = self.class.gtype
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(to_ptr, gtype)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
     end
   end
 end

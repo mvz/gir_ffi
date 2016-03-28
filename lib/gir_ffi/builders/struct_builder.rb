@@ -10,7 +10,7 @@ module GirFFI
       include StructLike
 
       def layout_superclass
-        FFI::Struct
+        GirFFI::Struct
       end
 
       def superclass

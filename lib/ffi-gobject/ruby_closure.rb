@@ -11,7 +11,7 @@ module GObject
     # the object_id of the associated block.
     #
     # @api private
-    class Struct < FFI::Struct
+    class Struct < GirFFI::Struct
       layout :parent, Closure::Struct, 0,
              :block_id, :int64
     end

@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 # The gem's dependencies are specified in gir_ffi.gemspec
 gemspec
 
-gem 'rubocop', '~> 0.37.0', type: :development
+gem 'rubocop', '~> 0.38.0', type: :development
 
 if ENV['CI']
   if ENV['TRAVIS_RUBY_VERSION'] == '2.2'

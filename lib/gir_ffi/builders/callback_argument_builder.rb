@@ -90,7 +90,11 @@ module GirFFI
       end
 
       def pointer_value_convertor
-        @pointer_value_convertor ||= PointerValueConvertor.new(type_spec)
+        @pointer_value_convertor ||= if allocated_by_us?
+                                       PointerValueConvertor.new(type_spec[1])
+                                     else
+                                       PointerValueConvertor.new(type_spec)
+                                     end
       end
 
       def pointer_to_value_conversion

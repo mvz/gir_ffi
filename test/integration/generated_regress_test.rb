@@ -2564,7 +2564,7 @@ describe Regress do
 
     it 'has a writable field data1' do
       instance.data1.must_be :null?
-      instance.data1 = GirFFI::AllocationHelper.allocate(:int32).tap { |it| it.write_int(42) }
+      instance.data1 = GirFFI::AllocationHelper.allocate(:int32).tap { |it| it.put_int(0, 42) }
       instance.data1.read_int.must_equal 42
     end
 
@@ -2744,6 +2744,7 @@ describe Regress do
   end
 
   it 'has a working function #annotation_return_filename' do
+    skip 'This function is wrongly annotated as transfer-ownership: full'
     Regress.annotation_return_filename.must_equal 'a utf-8 filename'
   end
 

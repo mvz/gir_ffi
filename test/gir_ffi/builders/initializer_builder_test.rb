@@ -39,12 +39,12 @@ describe GirFFI::Builders::InitializerBuilder do
         get_method_introspection_data 'GIMarshallingTests', 'BoxedStruct', 'new'
       end
 
-      it 'builds an initializer that sets autorelease to true' do
+      it 'builds an initializer that sets owned to true' do
         code.must_equal <<-CODE.reset_indentation
           def initialize
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_new
-            _v1.autorelease = true
             store_pointer(_v1)
+            @struct.owned = true
           end
         CODE
       end

@@ -45,7 +45,7 @@ describe GIMarshallingTests do
     it 'creates an instance using #new' do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
-      bx.to_ptr.must_be :autorelease?
+      bx.struct.must_be :owned?
     end
 
     it 'has a working method #inv' do
@@ -57,27 +57,24 @@ describe GIMarshallingTests do
     it 'has a working function #inout' do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
-      bx.to_ptr.must_be :autorelease?
-
-      # FIXME: Temporary check method
-      bx.to_ptr.autorelease = true
+      bx.struct.must_be :owned?
 
       res = GIMarshallingTests::BoxedStruct.inout bx
-      bx.to_ptr.must_be :autorelease?
-      res.to_ptr.must_be :autorelease?
+      bx.struct.must_be :owned?
+      res.struct.must_be :owned?
 
       assert_equal 0, res.long_
     end
 
     it 'has a working function #out' do
       res = GIMarshallingTests::BoxedStruct.out
-      res.to_ptr.must_be :autorelease?
+      res.struct.must_be :owned?
       assert_equal 42, res.long_
     end
 
     it 'has a working function #returnv' do
       res = GIMarshallingTests::BoxedStruct.returnv
-      res.to_ptr.must_be :autorelease?
+      res.struct.must_be :owned?
       assert_equal 42, res.long_
       res.g_strv.must_be :==, %w(0 1 2)
     end

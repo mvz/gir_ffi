@@ -7,10 +7,11 @@ module GirFFI
     class InitializerReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
         result = []
-        if specialized_type_tag == :struct
-          result << "#{capture_variable_name}.autorelease = true"
-        end
         result << "store_pointer(#{capture_variable_name})"
+        if specialized_type_tag == :struct
+          result << '@struct.owned = true'
+        end
+        result
       end
     end
   end

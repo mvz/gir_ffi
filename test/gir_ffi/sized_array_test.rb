@@ -93,6 +93,8 @@ describe GirFFI::SizedArray do
       it 'creates unowned copies of struct pointer elements' do
         struct = GIMarshallingTests::BoxedStruct.new
         struct.long_ = 2342
+        struct.struct.must_be :owned?
+
         arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct],
                                            1,
                                            [struct])
@@ -102,7 +104,7 @@ describe GirFFI::SizedArray do
         struct_copy = arr.first
         struct_copy.long_.must_equal struct.long_
         struct_copy.to_ptr.wont_equal struct.to_ptr
-        struct_copy.to_ptr.wont_be :autorelease?
+        struct_copy.struct.wont_be :owned?
       end
 
       it 'increases the ref count of object pointer elements' do
