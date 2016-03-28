@@ -25,7 +25,7 @@ module GirFFI
   end
 end
 
-FFI::Pointer.send :include, GirFFI::FFIExt::Pointer
+FFI::Pointer.prepend GirFFI::FFIExt::Pointer
 
 FFI::Pointer.class_eval do
   case FFI.type_size(:size_t)
