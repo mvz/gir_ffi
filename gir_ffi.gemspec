@@ -37,8 +37,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('minitest', ["~> 5.5"])
   s.add_development_dependency('minitest-rspec_mocks', ["~> 0.3.0"])
   s.add_development_dependency('rspec-mocks', ["~> 3.4.1"])
-  s.add_development_dependency('rake', ["~> 10.1"])
-  s.add_development_dependency('aruba', ["~> 0.12.0"])
+  s.add_development_dependency('rake', ["~> 11.1"])
+  s.add_development_dependency('aruba', ["~> 0.14.1"])
 
   s.require_paths = ["lib"]
 end
