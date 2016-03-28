@@ -9,7 +9,7 @@ module GirFFI
         result = []
         result << "store_pointer(#{capture_variable_name})"
         if specialized_type_tag == :struct
-          result << "@struct.owned = true"
+          result << '@struct.owned = true'
         end
         result
       end

@@ -93,7 +93,6 @@ module GirFFI
 
       def from_utf8(str)
         return unless str
-        len = str.bytesize
         ptr = FFI::MemoryPointer.from_string(str)
         ptr.autorelease = false
         ptr
