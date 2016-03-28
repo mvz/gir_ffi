@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Update ffi-bit_masks dependency and remove monkey-patch
+
 ## 0.10.1 / 2016-03-28
 
 * Restore JRuby compatibility.
