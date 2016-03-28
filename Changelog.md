@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.10.1 / 2016-03-28
+
+* Restore JRuby compatibility.
+  - Introduce #owned to flag unions and structs for release at garbage collection time.
+    In JRuby's implementation, FFI::Pointer does not implement #autorelease=
+    and #autorelease?, so this different technique is used to free pointers
+    allocated by GLib. It is in fact doubtful that setting autorelease had any
+    actual effect even on CRuby.
+  - Immediately free string pointers whose ownership is transfered. Again, the
+    #autorelease technique doesn't work on JRuby.
+  - Fix handling of callee-allocated out parameters in vfuncs. The put_pointer
+    method was wrongly called, and JRuby is more picky about what types that
+    method expects, exposing the bug.
+
 ## 0.10.0 / 2016-03-23
 
 * Ensure ownership of created RubyClosure objects
