@@ -488,16 +488,16 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe 'for functions where some allow-none cannot be honored' do
-      let(:function_info) { get_method_introspection_data 'GObject', 'Closure', 'invoke' }
+      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in_out_of_order' }
       it 'builds correct definition with default parameter value on the later arguments' do
         code.must_equal <<-CODE.reset_indentation
-          def invoke(return_value, param_values, invocation_hint = nil)
-            _v1 = GObject::Value.from(return_value)
-            n_param_values = param_values.nil? ? 0 : param_values.length
-            _v2 = n_param_values
-            _v3 = invocation_hint
-            _v4 = GirFFI::SizedArray.from(GObject::Value, -1, param_values)
-            GObject::Lib.g_closure_invoke self, _v1, _v2, _v4, _v3
+          def self.array_in_utf8_two_in_out_of_order(a, ints, b = nil)
+            length = ints.nil? ? 0 : ints.length
+            _v1 = length
+            _v2 = GirFFI::InPointer.from_utf8(a)
+            _v3 = GirFFI::InPointer.from_utf8(b)
+            _v4 = GirFFI::SizedArray.from(:gint32, -1, ints)
+            GIMarshallingTests::Lib.gi_marshalling_tests_array_in_utf8_two_in_out_of_order _v1, _v2, _v4, _v3
           end
         CODE
       end
