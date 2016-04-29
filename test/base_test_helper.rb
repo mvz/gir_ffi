@@ -15,8 +15,8 @@ begin
 rescue LoadError
 end
 
-require 'minitest/rspec_mocks'
 require 'minitest/autorun'
+require 'minitest/rspec_mocks'
 
 require 'gir_ffi-base'
 require 'ffi-gobject_introspection'
