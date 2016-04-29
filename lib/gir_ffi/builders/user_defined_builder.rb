@@ -70,14 +70,16 @@ module GirFFI
       end
 
       def class_init_proc
-        proc do |object_class_ptr, _data|
+        proc do |type_class_or_ptr, _data|
+          object_class_ptr = type_class_or_ptr.to_ptr
           setup_properties object_class_ptr
           setup_vfuncs object_class_ptr
         end
       end
 
       def interface_init_proc(interface)
-        proc do |interface_ptr, _data|
+        proc do |interface_or_ptr, _data|
+          interface_ptr = interface_or_ptr.to_ptr
           setup_interface_vfuncs interface, interface_ptr
         end
       end
