@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 0.10.2 / 2016-04-29
 
 * Update ffi-bit_masks dependency and remove monkey-patch
+* Support gobject-introspection version 1.48
 
 ## 0.10.1 / 2016-03-28
 
