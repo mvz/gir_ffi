@@ -21,6 +21,8 @@ matrix:
 install:
   - bundle install --retry=3
 before_install:
+  # Needed until https://github.com/travis-ci/travis-ci/issues/5477 is fixed
+  - "export JRUBY_OPTS='--client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -Xcext.enabled=false -J-Xss2m -Xcompile.invokedynamic=false'"
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
   - sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-pango-1.0 gir1.2-secret-1
