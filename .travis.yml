@@ -13,11 +13,9 @@ rvm:
   - rbx-3.26
 matrix:
   allow_failures:
-    - rvm: jruby-9.0
     - rvm: jruby-head
     - rvm: ruby-head
     - rvm: ruby-head-clang
-    - rvm: rbx-3.26
 install:
   - bundle install --retry=3
 before_install:
