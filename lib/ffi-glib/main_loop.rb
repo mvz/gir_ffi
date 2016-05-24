@@ -54,7 +54,8 @@ module GLib
     end
 
     def self.handle_exception(ex)
-      raise ex unless (current_loop = RUNNING_LOOPS.last)
+      current_loop = RUNNING_LOOPS.last
+      raise ex unless current_loop
       EXCEPTIONS << ex
       current_loop.quit
     end

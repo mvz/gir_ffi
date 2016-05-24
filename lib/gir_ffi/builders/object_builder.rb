@@ -80,9 +80,8 @@ module GirFFI
 
       def parent_info
         unless defined? @parent_info
-          @parent_info = if (parent = info.parent) && parent != info
-                           parent
-                         end
+          parent = info.parent
+          @parent_info = parent if parent != info
         end
         @parent_info
       end
