@@ -13,6 +13,14 @@ module GirFFI
       def return_ffi_type
         return_type.to_callback_ffi_type
       end
+
+      def invoker_name
+        invoker && invoker.name
+      end
+
+      def has_invoker?
+        invoker
+      end
     end
   end
 end

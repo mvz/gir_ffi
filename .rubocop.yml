@@ -8,10 +8,6 @@ AllCops:
     - gir_ffi.gemspec
   DisplayCopNames: true
 
-# Allow if (foo = get_foo) style
-Lint/AssignmentInCondition:
-  AllowSafeAssignment: true
-
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92

@@ -80,9 +80,8 @@ module GirFFI
 
       def parent_info
         unless defined? @parent_info
-          @parent_info = if (parent = info.parent) && parent != info
-                           parent
-                         end
+          parent = info.parent
+          @parent_info = parent if parent != info
         end
         @parent_info
       end
@@ -119,9 +118,7 @@ module GirFFI
       # TODO: Create object responsible for creating these invokers
       def setup_vfunc_invokers
         info.vfuncs.each do |vfinfo|
-          if (invoker = vfinfo.invoker)
-            define_vfunc_invoker vfinfo.name, invoker.name
-          end
+          define_vfunc_invoker vfinfo.name, vfinfo.invoker_name if vfinfo.has_invoker?
         end
       end
 
