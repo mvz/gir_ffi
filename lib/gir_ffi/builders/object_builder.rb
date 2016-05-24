@@ -118,9 +118,7 @@ module GirFFI
       # TODO: Create object responsible for creating these invokers
       def setup_vfunc_invokers
         info.vfuncs.each do |vfinfo|
-          if (invoker = vfinfo.invoker)
-            define_vfunc_invoker vfinfo.name, invoker.name
-          end
+          define_vfunc_invoker vfinfo.name, vfinfo.invoker_name if vfinfo.has_invoker?
         end
       end
 
