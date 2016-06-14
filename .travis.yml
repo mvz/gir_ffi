@@ -9,7 +9,7 @@ rvm:
   - ruby-head
   - ruby-head-clang
   - jruby-9.0
-  - jruby-9.1
+  - jruby-9.1.2.0
   - jruby-head
   - rbx-3.26
 matrix:
@@ -17,16 +17,16 @@ matrix:
     - rvm: jruby-head
     - rvm: ruby-head
     - rvm: ruby-head-clang
-install:
-  - bundle install --retry=3
+    - rvm: jruby-9.0
+    - rvm: jruby-9.1.2.0
 before_install:
-  # Needed until https://github.com/travis-ci/travis-ci/issues/5477 is fixed
-  - "export JRUBY_OPTS='--client -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-Xss2m -Xcompile.invokedynamic=false'"
+  - gem install bundler
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
   - sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-pango-1.0 gir1.2-secret-1
   - sudo apt-get install -y gir1.2-gstreamer-1.0
-  - gem install bundler
+install:
+  - bundle install --retry=3
 branches:
   only:
     - master
