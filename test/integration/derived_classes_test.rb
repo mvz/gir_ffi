@@ -5,6 +5,8 @@ GirFFI.setup :Regress
 
 # Tests deriving Ruby classes from GObject classes.
 describe 'For derived classes' do
+  cover 'GirFFI'
+
   describe 'setting up methods when first called' do
     before do
       save_module :GIMarshallingTests

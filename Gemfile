@@ -6,6 +6,10 @@ gemspec
 
 gem 'rubocop', '~> 0.40.0', type: :development
 
+gem 'mutant', git: 'https://github.com/mbj/mutant.git',
+              branch: 'feature/minitest-integration',
+              platform: :mri_23
+
 if ENV['CI']
   if ENV['TRAVIS_RUBY_VERSION'] == '2.2'
     gem 'coveralls', type: :development
