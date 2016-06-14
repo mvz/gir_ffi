@@ -83,3 +83,36 @@ end
 
 Minitest::Test.send :include, BaseTestExtensions
 Minitest::Test.send :include, Minitest::RSpecMocks
+
+# Provide methods needed for integration with mutant
+module ForMutant
+  # Mark the current test class as covering the given expression.
+  def cover(expression)
+    @expression = expression
+  end
+
+  # Return the currently set covering expression.
+  def covering
+    defined?(@expression) && @expression
+  end
+
+  # Return the cover expression, but raise an exception if it is not defined.
+  # This is the method used by mutant to fetch the coverage information.
+  def cover_expression
+    fail "Cover expression for #{self} is not specified" unless @expression
+    @expression
+  end
+end
+
+Minitest::Test.send :extend, ForMutant
+
+# Override describe to automatically set cover information
+def describe(desc, *additional_desc, &block)
+  super.tap do |cls|
+    unless cls.covering
+      top_level = cls.describe_stack.first || cls
+      cover_desc = top_level.covering || top_level.desc
+      cls.cover cover_desc.to_s
+    end
+  end
+end

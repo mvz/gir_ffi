@@ -3,6 +3,8 @@ require 'gir_ffi_test_helper'
 
 # Tests generated classes, methods and functions in the GLib namespace.
 describe 'The generated GLib module' do
+  cover 'GLib'
+
   it 'can auto-generate the GLib::IConv class' do
     klass = GLib::IConv
 

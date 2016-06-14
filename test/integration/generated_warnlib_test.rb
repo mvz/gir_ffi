@@ -2,6 +2,8 @@
 require 'gir_ffi_test_helper'
 
 describe 'The generated WarnLib module' do
+  cover 'WarnLib'
+
   before do
     begin
       GirFFI.setup :WarnLib
