@@ -9,6 +9,7 @@ rvm:
   - ruby-head
   - ruby-head-clang
   - jruby-9.0
+  - jruby-9.1
   - jruby-head
   - rbx-3.26
 matrix:
