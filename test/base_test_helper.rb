@@ -99,7 +99,7 @@ module ForMutant
   # Return the cover expression, but raise an exception if it is not defined.
   # This is the method used by mutant to fetch the coverage information.
   def cover_expression
-    fail "Cover expression for #{self} is not specified" unless @expression
+    raise "Cover expression for #{self} is not specified" unless @expression
     @expression
   end
 end
