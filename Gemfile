@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 # The gem's dependencies are specified in gir_ffi.gemspec
 gemspec
 
-gem 'rubocop', '~> 0.40.0', group: :development
+gem 'rubocop', '~> 0.41.0', group: :development
 
 gem 'mutant', git: 'https://github.com/mbj/mutant.git',
               branch: 'feature/minitest-integration',
@@ -16,6 +16,6 @@ if ENV['CI']
     gem 'coveralls', group: :development
   end
 else
-  gem 'simplecov', '~> 0.11.0', group: :development, platform: :mri
+  gem 'simplecov', '~> 0.12.0', group: :development, platform: :mri
   gem 'pry', '~> 0.10.0', group: :development
 end
