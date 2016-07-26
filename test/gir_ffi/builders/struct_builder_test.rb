@@ -11,39 +11,39 @@ describe GirFFI::Builders::StructBuilder do
                                                :some_double, :double, 8,
                                                :some_enum, Regress::TestEnum, 16]
     end
-  end
 
-  describe 'for a struct with a simple layout' do
-    before do
-      @field = Object.new
+    describe 'for a struct with a simple layout' do
+      before do
+        @field = Object.new
 
-      @struct = Object.new
-      allow(@struct).to receive(:namespace).and_return 'Foo'
-      allow(@struct).to receive(:safe_name).and_return 'Bar'
-      allow(@struct).to receive(:fields).and_return [@field]
+        @struct = Object.new
+        allow(@struct).to receive(:namespace).and_return 'Foo'
+        allow(@struct).to receive(:safe_name).and_return 'Bar'
+        allow(@struct).to receive(:fields).and_return [@field]
 
-      @builder = GirFFI::Builders::StructBuilder.new @struct
+        @builder = GirFFI::Builders::StructBuilder.new @struct
+      end
+
+      it 'creates the correct layout specification' do
+        expect(@field).to receive(:layout_specification).and_return [:bar, :int32, 0]
+        spec = @builder.layout_specification
+        assert_equal [:bar, :int32, 0], spec
+      end
     end
 
-    it 'creates the correct layout specification' do
-      expect(@field).to receive(:layout_specification).and_return [:bar, :int32, 0]
-      spec = @builder.send :layout_specification
-      assert_equal [:bar, :int32, 0], spec
-    end
-  end
+    describe 'for a struct with a layout with a complex type' do
+      it 'does not flatten the complex type specification' do
+        expect(simplefield = Object.new).to receive(:layout_specification).and_return [:bar, :foo, 0]
+        expect(complexfield = Object.new).to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
+        expect(struct = Object.new).to receive(:fields).and_return [simplefield, complexfield]
 
-  describe 'for a struct with a layout with a complex type' do
-    it 'does not flatten the complex type specification' do
-      expect(simplefield = Object.new).to receive(:layout_specification).and_return [:bar, :foo, 0]
-      expect(complexfield = Object.new).to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
-      expect(struct = Object.new).to receive(:fields).and_return [simplefield, complexfield]
+        allow(struct).to receive(:safe_name).and_return 'Bar'
+        allow(struct).to receive(:namespace).and_return 'Foo'
 
-      allow(struct).to receive(:safe_name).and_return 'Bar'
-      allow(struct).to receive(:namespace).and_return 'Foo'
-
-      builder = GirFFI::Builders::StructBuilder.new struct
-      spec = builder.send :layout_specification
-      assert_equal [:bar, :foo, 0, :baz, [:qux, 2], 0], spec
+        builder = GirFFI::Builders::StructBuilder.new struct
+        spec = builder.layout_specification
+        assert_equal [:bar, :foo, 0, :baz, [:qux, 2], 0], spec
+      end
     end
   end
 
