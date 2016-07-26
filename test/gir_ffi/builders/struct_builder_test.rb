@@ -72,4 +72,13 @@ describe GirFFI::Builders::StructBuilder do
       builder.superclass.must_equal GObject::ObjectClass
     end
   end
+
+  describe '#setup_class' do
+    it 'stubs the structs methods' do
+      info = get_introspection_data 'Regress', 'TestStructA'
+      builder = GirFFI::Builders::StructBuilder.new info
+      builder.setup_class
+      Regress::TestStructA.instance_methods(false).must_include :clone
+    end
+  end
 end
