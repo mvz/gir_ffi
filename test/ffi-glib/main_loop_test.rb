@@ -42,7 +42,7 @@ describe GLib::MainLoop do
         raise MainLoopTestException
       end
 
-      lambda { main_loop.run }.must_raise MainLoopTestException
+      -> { main_loop.run }.must_raise MainLoopTestException
       a.must_equal 'expected'
 
       # Clean up uncalled timeout
