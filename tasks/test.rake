@@ -203,7 +203,7 @@ namespace :test do
         --use minitest \
         --since master \
         --jobs 4 \
-        "*"
+        "GirFFI*" "GObject*" "GObjectIntrospection*" "GLib*"
     EOS
     system command
   end
@@ -218,4 +218,3 @@ file "test/lib/configure" => ["test/lib/autogen.sh", "test/lib/configure.ac"] do
 end
 
 task test: 'test:all'
-task test: 'test:features'
