@@ -79,11 +79,7 @@ module GirFFI
       end
 
       def parent_info
-        unless defined? @parent_info
-          parent = info.parent
-          @parent_info = parent if parent != info
-        end
-        @parent_info
+        info.parent
       end
 
       def superclass
