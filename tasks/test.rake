@@ -203,7 +203,7 @@ namespace :test do
         --use minitest \
         --since master \
         --jobs 4 \
-        "*"
+        "GirFFI*" "GObject*" "GObjectIntrospection*" "GLib*"
     EOS
     system command
   end
