@@ -216,6 +216,3 @@ end
 file "test/lib/configure" => ["test/lib/autogen.sh", "test/lib/configure.ac"] do
   sh %{cd test/lib && ./autogen.sh}
 end
-
-task test: 'test:all'
-task test: 'test:features'
