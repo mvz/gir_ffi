@@ -201,7 +201,7 @@ namespace :test do
         --include test \
         --fail-fast \
         --use minitest \
-        --since master \
+        --since master^ \
         --jobs 4 \
         "GirFFI*" "GObject*" "GObjectIntrospection*" "GLib*"
     EOS
