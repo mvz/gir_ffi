@@ -199,7 +199,6 @@ namespace :test do
       bundle exec mutant \
         --include lib \
         --include test \
-        --fail-fast \
         --use minitest \
         --since master^ \
         --jobs 4 \
