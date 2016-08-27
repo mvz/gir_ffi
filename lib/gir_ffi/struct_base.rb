@@ -5,7 +5,7 @@ module GirFFI
   # Base class for generated classes representing GLib structs.
   class StructBase < ClassBase
     extend FFI::DataConverter
-    extend GirFFI::StructLikeBase
+    include GirFFI::StructLikeBase
 
     def initialize
       @struct = self.class::Struct.new
