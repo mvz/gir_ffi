@@ -13,7 +13,7 @@ module GObject
     #
     # @param [Proc] marshal The marshaller to use for this closure object
     def set_marshal(marshal)
-      callback = GObject::ClosureMarshal.from marshal
+      callback = ClosureMarshal.from marshal
       Lib.g_closure_set_marshal self, callback
     end
 
@@ -26,20 +26,19 @@ module GObject
     # @param [GObject::Value] return_value The GValue to store the return
     #   value, or nil if no return value is expected.
     # @param [Array] param_values the closure parameters.
-    # @param invocation_hint
-    def invoke(return_value, param_values, invocation_hint = nil)
-      rval = GObject::Value.from(return_value)
+    def invoke(return_value, param_values)
+      rval = Value.from(return_value)
       n_params = param_values.length
-      params = GirFFI::SizedArray.from(GObject::Value, -1, param_values)
-      GObject::Lib.g_closure_invoke self, rval, n_params, params, invocation_hint
+      params = GirFFI::SizedArray.from(Value, -1, param_values)
+      Lib.g_closure_invoke self, rval, n_params, params, nil
       rval.get_value
     end
 
     def store_pointer(ptr)
-      super
       # NOTE: Call C functions directly to avoid extra argument conversion
       Lib.g_closure_ref ptr
       Lib.g_closure_sink ptr
+      super
     end
   end
 end
