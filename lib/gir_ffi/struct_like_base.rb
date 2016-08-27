@@ -47,7 +47,7 @@ module GirFFI
 
       # Wrap an owned copy of the struct represented by val
       def wrap_copy(val)
-        own copy wrap(val)
+        copy wrap(val)
       end
 
       private
