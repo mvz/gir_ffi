@@ -12,11 +12,11 @@ module GLib
     TO_NATIVE = FROM_NATIVE.invert
 
     def self.from_native(value, _context)
-      FROM_NATIVE[value]
+      FROM_NATIVE.fetch(value)
     end
 
     def self.to_native(value, _context)
-      TO_NATIVE[value]
+      TO_NATIVE.fetch(value)
     end
 
     def self.size
