@@ -25,12 +25,11 @@ module GObject
     #
     # @param [GObject::Value] return_value The GValue to store the return
     #   value, or nil if no return value is expected.
-    # @param [Array] param_values the closure parameters, or nil if no
-    #   parameters are needed.
+    # @param [Array] param_values the closure parameters.
     # @param invocation_hint
     def invoke(return_value, param_values, invocation_hint = nil)
       rval = GObject::Value.from(return_value)
-      n_params = param_values.nil? ? 0 : param_values.length
+      n_params = param_values.length
       params = GirFFI::SizedArray.from(GObject::Value, -1, param_values)
       GObject::Lib.g_closure_invoke self, rval, n_params, params, invocation_hint
       rval.get_value

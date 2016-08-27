@@ -1841,7 +1841,7 @@ describe GIMarshallingTests do
   it 'has a working function #gclosure_return' do
     cl = GIMarshallingTests.gclosure_return
     gv = GObject::Value.wrap_ruby_value 0
-    result = cl.invoke gv, nil
+    result = cl.invoke gv, []
     assert_equal 42, gv.get_value
     result.must_equal 42
   end
