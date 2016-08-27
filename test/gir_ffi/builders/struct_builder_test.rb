@@ -74,11 +74,19 @@ describe GirFFI::Builders::StructBuilder do
   end
 
   describe '#setup_class' do
+    before do
+      save_module :Regress
+    end
+
     it 'stubs the structs methods' do
       info = get_introspection_data 'Regress', 'TestStructA'
       builder = GirFFI::Builders::StructBuilder.new info
       builder.setup_class
       Regress::TestStructA.instance_methods(false).must_include :clone
+    end
+
+    after do
+      restore_module :Regress
     end
   end
 end
