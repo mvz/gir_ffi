@@ -16,7 +16,7 @@ module GirFFI
     end
 
     def index(idx)
-      ptr = GirFFI::InOutPointer.new element_type, @pointer + idx * element_size
+      ptr = InOutPointer.new element_type, @pointer + idx * element_size
       ptr.to_ruby_value
     end
 
@@ -27,7 +27,7 @@ module GirFFI
     end
 
     def ==(other)
-      to_a == other.to_a
+      to_a.eql? other.to_a
     end
 
     def size_in_bytes
@@ -40,7 +40,7 @@ module GirFFI
 
     def self.copy_value_to_pointer(value, pointer)
       size = value.size_in_bytes
-      pointer.put_bytes(0, value.to_ptr.read_bytes(size), 0, size)
+      pointer.put_bytes(0, value.to_ptr.read_bytes(size))
     end
 
     def self.wrap(element_type, size, pointer)
@@ -50,7 +50,7 @@ module GirFFI
     private
 
     def element_ffi_type
-      @element_ffi_type ||= GirFFI::TypeMap.type_specification_to_ffi_type element_type
+      @element_ffi_type ||= TypeMap.type_specification_to_ffi_type element_type
     end
 
     def element_size
@@ -101,12 +101,12 @@ module GirFFI
       def from_enumerable(element_type, expected_size, arr)
         size = arr.size
         check_size expected_size, size
-        ptr = GirFFI::InPointer.from_array element_type, arr
+        ptr = InPointer.from_array element_type, arr
         wrap element_type, size, ptr
       end
 
       def check_size(expected_size, size)
-        if expected_size > 0 && size != expected_size
+        if expected_size != -1 && size != expected_size
           raise ArgumentError, "Expected size #{expected_size}, got #{size}"
         end
       end

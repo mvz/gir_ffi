@@ -173,6 +173,40 @@ describe GirFFI::SizedArray do
     end
   end
 
+  describe '#size_in_bytes' do
+    it 'returns the correct value' do
+      sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
+
+      sized.size_in_bytes.must_equal 12
+    end
+  end
+
+  describe '.get_value_from_pointer' do
+    it 'returns just a pointer' do
+      sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
+      ptr = sized.to_ptr
+      GirFFI::SizedArray.get_value_from_pointer(ptr, 0).must_equal ptr
+    end
+
+    it 'offsets correctly' do
+      sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
+      ptr = sized.to_ptr
+      next_ptr = GirFFI::SizedArray.get_value_from_pointer(ptr, 4)
+      tail = GirFFI::SizedArray.from(:int32, 2, next_ptr)
+      tail.must_be :==, [2, 3]
+    end
+  end
+
+  describe '.copy_value_to_pointer' do
+    it 'copies data correctly' do
+      sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
+      target = FFI::MemoryPointer.new sized.size_in_bytes
+      GirFFI::SizedArray.copy_value_to_pointer(sized, target)
+      result = GirFFI::SizedArray.from :int32, 3, target
+      result.must_be :==, [1, 2, 3]
+    end
+  end
+
   it 'includes Enumerable' do
     GirFFI::SizedArray.must_include Enumerable
   end
