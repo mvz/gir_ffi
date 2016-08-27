@@ -109,11 +109,8 @@ Minitest::Test.send :extend, ForMutant
 def cover_expression_for(cls)
   full_stack = cls.describe_stack.dup << cls
   full_stack.reverse_each do |level|
-    if level.covering
-      return level.covering
-    elsif level.desc.is_a? Module
-      return level.desc.to_s
-    end
+    return level.covering if level.covering
+    return level.desc.to_s if level.desc.is_a? Module
   end
   full_stack.first.desc.to_s
 end
@@ -121,8 +118,6 @@ end
 # Override describe to automatically set cover information
 def describe(desc, *additional_desc, &block)
   super.tap do |cls|
-    unless cls.covering
-      cls.cover cover_expression_for(cls)
-    end
+    cls.cover cover_expression_for(cls) unless cls.covering
   end
 end
