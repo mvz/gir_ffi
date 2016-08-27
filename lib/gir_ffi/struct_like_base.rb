@@ -50,6 +50,11 @@ module GirFFI
         copy wrap(val)
       end
 
+      # Wrap value and take ownership of it
+      def wrap_own(val)
+        own wrap(val)
+      end
+
       private
 
       def own(val)

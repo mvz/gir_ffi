@@ -39,4 +39,26 @@ describe GirFFI::StructLikeBase do
       copy.struct.wont_be :owned?
     end
   end
+
+  describe 'wrap_own' do
+    it 'wraps and owns the supplied value for structs' do
+      original = GIMarshallingTests::SimpleStruct.new
+      original.struct.owned = false
+
+      copy = GIMarshallingTests::SimpleStruct.wrap_own(original.to_ptr)
+      copy.to_ptr.must_equal original.to_ptr
+      copy.to_ptr.wont_be :autorelease?
+      copy.struct.must_be :owned?
+    end
+
+    it 'wraps and owns the supplied value for unions' do
+      original = GIMarshallingTests::Union.new
+      original.struct.owned = false
+
+      copy = GIMarshallingTests::Union.wrap_own(original.to_ptr)
+      copy.to_ptr.must_equal original.to_ptr
+      copy.to_ptr.wont_be :autorelease?
+      copy.struct.must_be :owned?
+    end
+  end
 end
