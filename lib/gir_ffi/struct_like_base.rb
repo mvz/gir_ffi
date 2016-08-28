@@ -31,13 +31,8 @@ module GirFFI
       end
 
       def copy_value_to_pointer(value, pointer, offset = 0)
-        size = self::Struct.size
-        bytes = if value
-                  value.to_ptr.read_bytes(size)
-                else
-                  "\x00" * size
-                end
-        pointer.put_bytes offset, bytes, 0, size
+        bytes = value.to_ptr.read_bytes(size)
+        pointer.put_bytes offset, bytes
       end
 
       # Create an unowned copy of the struct represented by val
@@ -47,7 +42,7 @@ module GirFFI
 
       # Wrap an owned copy of the struct represented by val
       def wrap_copy(val)
-        copy wrap(val)
+        copy(val)
       end
 
       # Wrap value and take ownership of it
@@ -63,7 +58,7 @@ module GirFFI
       end
 
       def disown(val)
-        val.struct.owned = false if val
+        val.struct.owned = nil if val
         val
       end
 
