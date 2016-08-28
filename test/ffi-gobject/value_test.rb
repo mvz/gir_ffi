@@ -256,7 +256,7 @@ describe GObject::Value do
       gv.get_value.must_equal value
     end
 
-    it 'unwraps a ulong' do
+    it 'unwraps an ulong' do
       value = FFI.type_size(:long) == 8 ? 0x1234_5678_9012_3456 : 0x1234_5678
       gv = GObject::Value.for_gtype GObject::TYPE_ULONG
       gv.set_ulong value
@@ -290,6 +290,17 @@ describe GObject::Value do
 
       result.must_be_kind_of GLib::Array
       result.reset_typespec(:uint).to_a.must_equal [1, 2, 3]
+    end
+
+    it 'unwraps a Strv' do
+      strv = GLib::Strv.from %w(foo bar)
+      val = GObject::Value.for_gtype GObject::TYPE_STRV
+      val.set_boxed strv
+
+      result = val.get_value
+
+      result.must_be_kind_of GLib::Strv
+      result.to_a.must_equal %w(foo bar)
     end
   end
 
@@ -334,10 +345,6 @@ describe GObject::Value do
   end
 
   describe 'upon garbage collection' do
-    before do
-      GirFFI.setup :GIMarshallingTests
-    end
-
     it 'restores the underlying GValue to its pristine state' do
       if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
         skip 'cannot be reliably tested on JRuby and Rubinius'

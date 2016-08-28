@@ -9,7 +9,7 @@ module GObject
     def initialize
       super
       struct.owned = true
-      struct.to_ptr.autorelease = false
+      to_ptr.autorelease = nil
     end
 
     def init(type)
@@ -22,7 +22,7 @@ module GObject
         if struct.owned?
           ptr = struct.to_ptr
           unless struct[:g_type] == TYPE_INVALID
-            GObject::Lib.g_value_unset ptr
+            Lib.g_value_unset ptr
           end
           GObject.boxed_free gtype, ptr
         end
