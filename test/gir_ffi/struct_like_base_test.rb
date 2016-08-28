@@ -21,6 +21,14 @@ describe GirFFI::StructLikeBase do
       copy.struct.must_be :owned?
     end
 
+    it 'returns a wrapped owned copy of boxed types' do
+      original = GIMarshallingTests::BoxedStruct.new
+      copy = GIMarshallingTests::BoxedStruct.wrap_copy(original.to_ptr)
+      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :autorelease?
+      copy.struct.must_be :owned?
+    end
+
     it 'returns nil when passed nil' do
       GIMarshallingTests::SimpleStruct.wrap_copy(nil).must_be_nil
     end
@@ -55,7 +63,7 @@ describe GirFFI::StructLikeBase do
   end
 
   describe 'wrap_own' do
-    it 'wraps and owns the supplied value for structs' do
+    it 'wraps and owns the supplied pointer for structs' do
       original = GIMarshallingTests::SimpleStruct.new
       original.struct.owned = false
 
@@ -65,7 +73,7 @@ describe GirFFI::StructLikeBase do
       copy.struct.must_be :owned?
     end
 
-    it 'wraps and owns the supplied value for unions' do
+    it 'wraps and owns the supplied pointer for unions' do
       original = GIMarshallingTests::Union.new
       original.struct.owned = false
 
