@@ -115,19 +115,9 @@ module GObject
     end
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
-      super(value, pointer, offset).tap do
-        if value
-          value.struct.owned = false
-          value.to_ptr.autorelease = false
-        end
-      end
-    end
-
-    def self.copy(val)
-      return unless val
-      result = for_gtype(val.current_gtype)
-      Lib.g_value_copy val, result unless val.uninitialized?
-      result
+      target = wrap(pointer + offset)
+      target.init(value.current_gtype)
+      Lib.g_value_copy value, target unless value.uninitialized?
     end
 
     def uninitialized?
