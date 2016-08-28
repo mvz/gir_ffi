@@ -6,6 +6,12 @@ module GObject
   class Value
     remove_method :init
 
+    def initialize
+      super
+      struct.owned = true
+      struct.to_ptr.autorelease = false
+    end
+
     def init(type)
       Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
       self
@@ -13,9 +19,8 @@ module GObject
 
     def self.make_finalizer(struct, gtype)
       proc do
-        ptr = struct.to_ptr
-        if ptr.autorelease?
-          ptr.autorelease = false
+        if struct.owned?
+          ptr = struct.to_ptr
           unless struct[:g_type] == TYPE_INVALID
             GObject::Lib.g_value_unset ptr
           end
@@ -111,8 +116,10 @@ module GObject
 
     def self.copy_value_to_pointer(value, pointer, offset = 0)
       super(value, pointer, offset).tap do
-        # FIXME: Check if this is still needed.
-        value.to_ptr.autorelease = false if value
+        if value
+          value.struct.owned = false
+          value.to_ptr.autorelease = false
+        end
       end
     end
 
