@@ -8,12 +8,15 @@ module GLib
     extend FFI::DataConverter
     native_type FFI::Type::INT
 
+    FROM_NATIVE = { 0 => false, 1 => true }.freeze
+    TO_NATIVE = FROM_NATIVE.invert
+
     def self.from_native(value, _context)
-      value != 0 ? true : false
+      FROM_NATIVE.fetch(value)
     end
 
     def self.to_native(value, _context)
-      value ? 1 : 0
+      TO_NATIVE.fetch(value)
     end
 
     def self.size
