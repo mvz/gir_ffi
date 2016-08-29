@@ -8,7 +8,7 @@ module GObjectIntrospection
     end
 
     def throws?
-      flags & 8 != 0
+      (flags & 8).nonzero?
     end
 
     def offset
