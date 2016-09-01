@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :GIMarshallingTests
 
-describe GirFFI do
+describe GirFFI::Core do
   it 'sets up cairo as Cairo' do
     GirFFI.setup :cairo
     assert Object.const_defined?(:Cairo)

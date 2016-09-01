@@ -20,18 +20,21 @@ require 'gir_ffi/user_defined_type_info'
 require 'gir_ffi/builders/user_defined_builder'
 require 'gir_ffi/version'
 
-# Main module containing classes and modules needed for generating GLib and
-# GObject bindings.
 module GirFFI
-  def self.setup(namespace, version = nil)
-    namespace = namespace.to_s
-    GirFFI::Builder.build_module namespace, version
+  # Core GirFFI interface.
+  module Core
+    def setup(namespace, version = nil)
+      namespace = namespace.to_s
+      GirFFI::Builder.build_module namespace, version
+    end
+
+    def define_type(klass, &block)
+      info = UserDefinedTypeInfo.new(klass, &block)
+      Builders::UserDefinedBuilder.new(info).build_class
+
+      klass.gtype
+    end
   end
 
-  def self.define_type(klass, &block)
-    info = UserDefinedTypeInfo.new(klass, &block)
-    Builders::UserDefinedBuilder.new(info).build_class
-
-    klass.gtype
-  end
+  extend Core
 end
