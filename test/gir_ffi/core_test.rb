@@ -3,7 +3,7 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :GIMarshallingTests
 
-describe GirFFI do
+describe GirFFI::Core do
   it 'sets up cairo as Cairo' do
     GirFFI.setup :cairo
     assert Object.const_defined?(:Cairo)
@@ -23,6 +23,13 @@ describe GirFFI do
     assert Object.const_defined?(:GObject)
     restore_module :Regress
     restore_module :GObject
+  end
+
+  describe '.setup' do
+    it 'passes the desired version down to the module builder' do
+      expect(GirFFI::Builder).to receive(:build_module).with('Regress', '0.1')
+      GirFFI.setup :Regress, '0.1'
+    end
   end
 
   describe '::define_type' do
