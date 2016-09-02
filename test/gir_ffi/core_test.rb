@@ -25,6 +25,13 @@ describe GirFFI::Core do
     restore_module :GObject
   end
 
+  describe '.setup' do
+    it 'passes the desired version down to the module builder' do
+      expect(GirFFI::Builder).to receive(:build_module).with('Regress', '0.1')
+      GirFFI.setup :Regress, '0.1'
+    end
+  end
+
   describe '::define_type' do
     describe 'without a block' do
       before do

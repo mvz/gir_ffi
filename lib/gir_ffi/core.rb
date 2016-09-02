@@ -25,7 +25,7 @@ module GirFFI
   module Core
     def setup(namespace, version = nil)
       namespace = namespace.to_s
-      GirFFI::Builder.build_module namespace, version
+      Builder.build_module namespace, version
     end
 
     def define_type(klass, &block)
