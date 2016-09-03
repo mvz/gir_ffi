@@ -145,7 +145,7 @@ module GirFFI
       def out_parameter_preparation
         value = if allocated_by_us?
                   ffi_type = TypeMap.type_specification_to_ffi_type type_spec[1]
-                  "GirFFI::AllocationHelper.allocate(#{ffi_type.inspect})" \
+                  "FFI::MemoryPointer.new(#{ffi_type.inspect})" \
                     ".tap { |ptr| #{method_argument_name}.put_pointer 0, ptr }"
                 else
                   method_argument_name
