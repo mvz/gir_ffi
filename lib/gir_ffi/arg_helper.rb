@@ -30,8 +30,6 @@ module GirFFI
         type.wrap ptr
       when Array
         cast_from_complex_type_pointer(type, ptr)
-      else
-        raise "Don't know how to cast #{type}"
       end
     end
 
@@ -65,24 +63,15 @@ module GirFFI
     end
 
     def self.cast_from_complex_type_pointer(type, ptr)
-      main_type, subtype = *type
+      main_type, (container_type, *element_type) = *type
       case main_type
       when :pointer
-        case subtype
-        when Array
-          container_type, *element_type = *subtype
-          case container_type
-          when :ghash
-            GLib::HashTable.wrap(element_type, ptr)
-          else
-            raise "Unexpected container type #{container_type}"
-          end
-        else
-          raise "Unexpected subtype #{subtype}"
+        case container_type
+        when :ghash
+          return GLib::HashTable.wrap(element_type, ptr)
         end
-      else
-        raise "Unexpected main type #{main_type}"
       end
+      raise "Don't know how to cast #{type}"
     end
 
     private_class_method :cast_from_complex_type_pointer, :cast_from_simple_type_pointer

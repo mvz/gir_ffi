@@ -74,20 +74,20 @@ describe GirFFI::ArgHelper do
 
       it 'raises on unexpected main type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:utf8, []], ptr) }.must_raise
-        exception.message.must_equal 'Unexpected main type utf8'
+        exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:utf8], ptr) }.must_raise
+        exception.message.must_equal "Don't know how to cast [:utf8]"
       end
 
       it 'raises on unexpected sub type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
         exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:pointer, :utf8], ptr) }.must_raise
-        exception.message.must_equal 'Unexpected subtype utf8'
+        exception.message.must_equal "Don't know how to cast [:pointer, :utf8]"
       end
 
       it 'raises on unexpected container type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
         exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:pointer, [:gint32]], ptr) }.must_raise
-        exception.message.must_equal 'Unexpected container type gint32'
+        exception.message.must_equal "Don't know how to cast [:pointer, [:gint32]]"
       end
     end
   end
