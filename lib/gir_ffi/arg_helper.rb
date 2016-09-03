@@ -10,10 +10,6 @@ module GirFFI
   module ArgHelper
     OBJECT_STORE = ObjectStore.new
 
-    def self.ptr_to_utf8_length(ptr, len)
-      ptr.null? ? nil : ptr.read_string(len)
-    end
-
     def self.check_error(errpp)
       err = GLib::Error.wrap(errpp.read_pointer)
       raise GLibError, err if err
