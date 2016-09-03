@@ -39,7 +39,7 @@ module GirFFI
 
     def self.allocate_new(type)
       ffi_type = TypeMap.type_specification_to_ffi_type type
-      ptr = AllocationHelper.allocate(ffi_type)
+      ptr = FFI::MemoryPointer.new(ffi_type)
       new type, ptr
     end
 

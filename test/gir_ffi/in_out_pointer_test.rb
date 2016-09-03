@@ -4,7 +4,7 @@ require 'gir_ffi_test_helper'
 describe GirFFI::InOutPointer do
   describe '.new' do
     it 'wraps an existing pointer and a type' do
-      ptr = GirFFI::AllocationHelper.safe_malloc(FFI.type_size(:int32))
+      ptr = FFI::MemoryPointer.new(:int32)
       ptr.put_int32 0, 42
       instance = GirFFI::InOutPointer.new :gint32, ptr
       instance.to_value.must_equal 42

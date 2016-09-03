@@ -23,6 +23,23 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
         builder.post_conversion.must_equal ['_v1.put_pointer 0, GirFFI::ZeroTerminated.from(:gfloat, _v2)']
       end
     end
+
+    describe 'when the argument is allocated by us, the callee' do
+      let(:vfunc_info) do
+        get_vfunc_introspection_data('GIMarshallingTests', 'Object',
+                                     'method_int8_arg_and_out_callee')
+      end
+
+      let(:arg_info) { vfunc_info.args[1] }
+
+      it 'has the correct value for #pre_conversion' do
+        builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }']
+      end
+
+      it 'has the correct value for #post_conversion' do
+        builder.post_conversion.must_equal ['_v1.put_int8 0, _v2']
+      end
+    end
   end
 
   describe 'for an argument with direction :error' do
