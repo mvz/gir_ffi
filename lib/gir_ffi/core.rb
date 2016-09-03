@@ -35,6 +35,6 @@ module GirFFI
       klass.gtype
     end
   end
-
-  extend Core
 end
+
+GirFFI.extend GirFFI::Core

@@ -9,20 +9,20 @@ describe GirFFI::AllocationHelper do
 
     it 'frees the passed-in pointer' do
       ptr = double('pointer', null?: false)
-      GirFFI::AllocationHelper.free_after(ptr) { }
+      GirFFI::AllocationHelper.free_after(ptr) {}
       expect(GirFFI::LibC).to have_received(:free).with(ptr)
     end
 
     it 'does not free a passed-in null pointer' do
       ptr = double('pointer', null?: true)
-      GirFFI::AllocationHelper.free_after(ptr) { }
+      GirFFI::AllocationHelper.free_after(ptr) {}
       expect(GirFFI::LibC).not_to have_received(:free)
     end
 
     it 'yields ptr to the block' do
       ptr = double('pointer', null?: false)
       foo = nil
-      GirFFI::AllocationHelper.free_after(ptr) { |it| foo = it  }
+      GirFFI::AllocationHelper.free_after(ptr) { |it| foo = it }
       foo.must_equal ptr
     end
 
