@@ -16,11 +16,12 @@ module GirFFI
     end
 
     def self.check_fixed_array_size(size, arr, name)
-      unless arr.size == size
+      unless arr.size.equal? size
         raise ArgumentError, "#{name} should have size #{size}"
       end
     end
 
+    # NOTE: Only used in List, SList and HashTable classes.
     def self.cast_from_pointer(type, it)
       case type
       when :utf8, :filename
@@ -33,16 +34,23 @@ module GirFFI
         it.address
       when Array
         main_type, subtype = *type
-        raise "Unexpected main type #{main_type}" if main_type != :pointer
-        case subtype
-        when Array
-          container_type, *element_type = *subtype
-          raise "Unexpected container type #{container_type}" if container_type != :ghash
-          GLib::HashTable.wrap(element_type, it)
+        case main_type
+        when :pointer
+          case subtype
+          when Array
+            container_type, *element_type = *subtype
+            case container_type
+            when :ghash
+              GLib::HashTable.wrap(element_type, it)
+            else
+              raise "Unexpected container type #{container_type}"
+            end
+          else
+            raise "Unexpected subtype #{subtype}"
+          end
         else
-          raise "Unexpected subtype #{subtype}"
+          raise "Unexpected main type #{main_type}"
         end
-
       else
         raise "Don't know how to cast #{type}"
       end
