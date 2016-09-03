@@ -5,7 +5,7 @@ module GLib
   # Overrides for GByteArray, GLib's automatically growing array of bytes.
   class ByteArray
     def to_string
-      data.read_string len unless data.null?
+      data.read_string len
     end
 
     def append(data)
