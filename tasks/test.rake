@@ -132,8 +132,7 @@ namespace :test do
   end
 
   define_test_task(:main) do |t|
-    t.test_files = FileList['test/gir_ffi_test.rb',
-                            'test/gir_ffi/**/*_test.rb']
+    t.test_files = FileList['test/gir_ffi/**/*_test.rb']
   end
 
   define_test_task(:overrides) do |t|
