@@ -59,7 +59,7 @@ describe GirFFI::ArgHelper do
     end
 
     it 'handles GHashTable' do
-      hash = GLib::HashTable.from [:utf8, :gint32], { 'foo' => 1, 'bar' => 2 }
+      hash = GLib::HashTable.from [:utf8, :gint32], 'foo' => 1, 'bar' => 2
       ptr = hash.to_ptr
       result = GirFFI::ArgHelper.cast_from_pointer([:pointer, [:ghash, :utf8, :gint32]], ptr)
       result.to_hash.must_equal hash.to_hash
@@ -68,25 +68,25 @@ describe GirFFI::ArgHelper do
     describe 'when passing a broken typespec' do
       it 'raises on unknown symbol' do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = lambda { GirFFI::ArgHelper.cast_from_pointer(:foo, ptr) }.must_raise
+        exception = -> { GirFFI::ArgHelper.cast_from_pointer(:foo, ptr) }.must_raise
         exception.message.must_equal "Don't know how to cast foo"
       end
 
       it 'raises on unexpected main type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:utf8], ptr) }.must_raise
+        exception = -> { GirFFI::ArgHelper.cast_from_pointer([:utf8], ptr) }.must_raise
         exception.message.must_equal "Don't know how to cast [:utf8]"
       end
 
       it 'raises on unexpected sub type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:pointer, :utf8], ptr) }.must_raise
+        exception = -> { GirFFI::ArgHelper.cast_from_pointer([:pointer, :utf8], ptr) }.must_raise
         exception.message.must_equal "Don't know how to cast [:pointer, :utf8]"
       end
 
       it 'raises on unexpected container type for complex type' do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = lambda { GirFFI::ArgHelper.cast_from_pointer([:pointer, [:gint32]], ptr) }.must_raise
+        exception = -> { GirFFI::ArgHelper.cast_from_pointer([:pointer, [:gint32]], ptr) }.must_raise
         exception.message.must_equal "Don't know how to cast [:pointer, [:gint32]]"
       end
     end
@@ -133,7 +133,7 @@ describe GirFFI::ArgHelper do
     it 'raises an exception if there is an error' do
       err = GLib::Error.new
       err_ptr = double('err_ptr', read_pointer: err.to_ptr)
-      lambda { GirFFI::ArgHelper.check_error err_ptr }.must_raise GirFFI::GLibError
+      -> { GirFFI::ArgHelper.check_error err_ptr }.must_raise GirFFI::GLibError
     end
   end
 end
