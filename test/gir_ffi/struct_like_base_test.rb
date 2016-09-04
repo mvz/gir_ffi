@@ -158,7 +158,7 @@ describe GirFFI::StructLikeBase do
 
   it 'adds its class methods to classes that include it' do
     klass = Class.new
-    klass.include GirFFI::StructLikeBase
+    klass.send :include, GirFFI::StructLikeBase
     klass.singleton_class.must_include GirFFI::StructLikeBase::ClassMethods
   end
 end
