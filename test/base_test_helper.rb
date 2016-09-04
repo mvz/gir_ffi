@@ -16,7 +16,7 @@ rescue LoadError
 end
 
 require 'minitest/autorun'
-require 'minitest/rspec_mocks'
+require 'rspec/mocks/minitest_integration'
 
 require 'gir_ffi-base'
 require 'ffi-gobject_introspection'
@@ -82,7 +82,6 @@ module BaseTestExtensions
 end
 
 Minitest::Test.send :include, BaseTestExtensions
-Minitest::Test.send :include, Minitest::RSpecMocks
 
 # Provide methods needed for integration with mutant
 module ForMutant
