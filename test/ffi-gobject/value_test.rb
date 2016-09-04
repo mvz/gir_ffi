@@ -357,6 +357,8 @@ describe GObject::Value do
       value.current_gtype_name.must_equal 'gint'
 
       GC.start
+      # Creating a new object is sometimes needed to trigger enough garbage collection.
+      GObject::Value.new
       sleep 1
       GC.start
       GC.start

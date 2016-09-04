@@ -17,7 +17,7 @@ module GObject
       self
     end
 
-    def self.make_finalizer(struct, gtype)
+    def self.make_finalizer(struct)
       proc do
         if struct.owned?
           ptr = struct.to_ptr

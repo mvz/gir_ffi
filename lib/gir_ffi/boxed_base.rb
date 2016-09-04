@@ -8,31 +8,29 @@ module GirFFI
       store_pointer(nil)
     end
 
-    def self.make_finalizer(struct, gtype)
+    def self.make_finalizer(struct)
       proc do
         if struct.owned?
-          struct.owned = false
+          struct.owned = nil
           GObject.boxed_free gtype, struct.to_ptr
         end
       end
     end
 
     def self.copy(val)
-      return unless val
       ptr = GObject.boxed_copy(gtype, val)
       wrap(ptr)
     end
 
     private
 
-    def store_pointer(ptr)
+    def store_pointer(*)
       super
       make_finalizer
     end
 
     def make_finalizer
-      gtype = self.class.gtype
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(@struct, gtype)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(struct)
     end
   end
 end
