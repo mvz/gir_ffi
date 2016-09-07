@@ -52,6 +52,7 @@ describe GirFFI::Builder do
 
   describe '.attach_ffi_function' do
     let(:lib) { Module.new }
+
     it 'calls attach_function with the correct types for Regress.test_callback_destroy_notify' do
       function_info = get_introspection_data 'Regress', 'test_callback_destroy_notify'
 
@@ -91,6 +92,13 @@ describe GirFFI::Builder do
       expect(lib).to receive(:attach_function).
         with('regress_test_array_gint32_in', [:int32, :pointer], :int32).
         and_return true
+      GirFFI::Builder.attach_ffi_function(lib, info)
+    end
+
+    it 'does not attach the function if it is already defined' do
+      info = get_introspection_data 'Regress', 'test_array_gint32_in'
+      allow(lib).to receive(:method_defined?).and_return true
+      expect(lib).not_to receive(:attach_function)
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
   end
