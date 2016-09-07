@@ -2,6 +2,7 @@
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
+GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builder do
   let(:gir) { GObjectIntrospection::IRepository.default }
@@ -14,8 +15,84 @@ describe GirFFI::Builder do
     end
   end
 
+  describe '.build_module' do
+    it 'refuses to build existing modules defined elsewhere' do
+      result = -> { GirFFI::Builder.build_module('Array') }.must_raise
+      result.message.must_equal 'The module Array was already defined elsewhere'
+    end
+
+    describe 'building a module for the first time' do
+      before do
+        save_module :Regress
+        GirFFI::Builder.build_module 'Regress'
+      end
+
+      it 'creates a Lib module ready to attach functions from the shared library' do
+        gir = GObjectIntrospection::IRepository.default
+        expected = [gir.shared_library('Regress')]
+        assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
+      end
+
+      after do
+        restore_module :Regress
+      end
+    end
+
+    describe 'building a module that already exists' do
+      it 'does not replace the existing module' do
+        oldmodule = Regress
+        GirFFI::Builder.build_module 'Regress'
+        assert_equal oldmodule, Regress
+      end
+
+      it 'does not replace the existing Lib module' do
+        oldmodule = Regress::Lib
+        GirFFI::Builder.build_module 'Regress'
+        assert_equal oldmodule, Regress::Lib
+      end
+    end
+
+    it 'passes the version on to ModuleBuilder' do
+      builder = double(generate: nil)
+      expect(GirFFI::Builders::ModuleBuilder).to receive(:new).
+        with('Foo', namespace: 'Foo', version: '1.0').
+        and_return builder
+
+      GirFFI::Builder.build_module 'Foo', '1.0'
+    end
+  end
+
+  describe '.build_by_gtype' do
+    it 'returns the class types known to the GIR' do
+      result = GirFFI::Builder.build_by_gtype GObject::Object.gtype
+      result.must_equal GObject::Object
+    end
+
+    it 'returns the class for user-defined types' do
+      klass = Class.new GIMarshallingTests::OverridesObject
+      Object.const_set "Derived#{Sequence.next}", klass
+      gtype = GirFFI.define_type klass
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      found_klass.must_equal klass
+    end
+
+    it 'returns a valid class for boxed classes unknown to GIR' do
+      object_class = GIMarshallingTests::PropertiesObject.object_class
+      property = object_class.find_property 'some-boxed-glist'
+      gtype = property.value_type
+
+      gtype.wont_equal GObject::TYPE_NONE
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      found_klass.name.must_be_nil
+      found_klass.ancestors.must_include GirFFI::BoxedBase
+    end
+  end
+
   describe '.attach_ffi_function' do
     let(:lib) { Module.new }
+
     it 'calls attach_function with the correct types for Regress.test_callback_destroy_notify' do
       function_info = get_introspection_data 'Regress', 'test_callback_destroy_notify'
 
@@ -57,7 +134,18 @@ describe GirFFI::Builder do
         and_return true
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
+
+    it 'does not attach the function if it is already defined' do
+      info = get_introspection_data 'Regress', 'test_array_gint32_in'
+      allow(lib).to receive(:method_defined?).and_return true
+      expect(lib).not_to receive(:attach_function)
+      GirFFI::Builder.attach_ffi_function(lib, info)
+    end
   end
+
+  #
+  # NOTE: Legacy tests below.
+  #
 
   describe 'looking at Regress.test_callback_destroy_notify' do
     before do
@@ -196,35 +284,6 @@ describe GirFFI::Builder do
 
     it 'creates a Regress::TestSubObj#to_ptr method' do
       assert Regress::TestSubObj.public_method_defined? :to_ptr
-    end
-
-    after do
-      restore_module :Regress
-    end
-  end
-
-  describe 'building Regress' do
-    before do
-      save_module :Regress
-      GirFFI::Builder.build_module 'Regress'
-    end
-
-    it 'creates a Lib module ready to attach functions from the shared library' do
-      gir = GObjectIntrospection::IRepository.default
-      expected = [gir.shared_library('Regress')]
-      assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
-    end
-
-    it 'does not replace existing module' do
-      oldmodule = Regress
-      GirFFI::Builder.build_module 'Regress'
-      assert_equal oldmodule, Regress
-    end
-
-    it 'does not replace existing Lib module' do
-      oldmodule = Regress::Lib
-      GirFFI::Builder.build_module 'Regress'
-      assert_equal oldmodule, Regress::Lib
     end
 
     after do
