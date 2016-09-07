@@ -20,6 +20,46 @@ describe GirFFI::Builder do
       result = -> { GirFFI::Builder.build_module('Array') }.must_raise
       result.message.must_equal 'The module Array was already defined elsewhere'
     end
+
+    describe 'building a module for the first time' do
+      before do
+        save_module :Regress
+        GirFFI::Builder.build_module 'Regress'
+      end
+
+      it 'creates a Lib module ready to attach functions from the shared library' do
+        gir = GObjectIntrospection::IRepository.default
+        expected = [gir.shared_library('Regress')]
+        assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
+      end
+
+      after do
+        restore_module :Regress
+      end
+    end
+
+    describe 'building a module that already exists' do
+      it 'does not replace the existing module' do
+        oldmodule = Regress
+        GirFFI::Builder.build_module 'Regress'
+        assert_equal oldmodule, Regress
+      end
+
+      it 'does not replace the existing Lib module' do
+        oldmodule = Regress::Lib
+        GirFFI::Builder.build_module 'Regress'
+        assert_equal oldmodule, Regress::Lib
+      end
+    end
+
+    it 'passes the version on to ModuleBuilder' do
+      builder = double(generate: nil)
+      expect(GirFFI::Builders::ModuleBuilder).to receive(:new).
+        with('Foo', namespace: 'Foo', version: '1.0').
+        and_return builder
+
+      GirFFI::Builder.build_module 'Foo', '1.0'
+    end
   end
 
   describe '.build_by_gtype' do
@@ -244,35 +284,6 @@ describe GirFFI::Builder do
 
     it 'creates a Regress::TestSubObj#to_ptr method' do
       assert Regress::TestSubObj.public_method_defined? :to_ptr
-    end
-
-    after do
-      restore_module :Regress
-    end
-  end
-
-  describe 'building Regress' do
-    before do
-      save_module :Regress
-      GirFFI::Builder.build_module 'Regress'
-    end
-
-    it 'creates a Lib module ready to attach functions from the shared library' do
-      gir = GObjectIntrospection::IRepository.default
-      expected = [gir.shared_library('Regress')]
-      assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
-    end
-
-    it 'does not replace existing module' do
-      oldmodule = Regress
-      GirFFI::Builder.build_module 'Regress'
-      assert_equal oldmodule, Regress
-    end
-
-    it 'does not replace existing Lib module' do
-      oldmodule = Regress::Lib
-      GirFFI::Builder.build_module 'Regress'
-      assert_equal oldmodule, Regress::Lib
     end
 
     after do
