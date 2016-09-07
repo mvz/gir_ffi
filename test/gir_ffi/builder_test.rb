@@ -14,6 +14,13 @@ describe GirFFI::Builder do
     end
   end
 
+  describe '.build_module' do
+    it 'refuses to build existing modules defined elsewhere' do
+      result = -> { GirFFI::Builder.build_module('Array') }.must_raise
+      result.message.must_equal 'The module Array was already defined elsewhere'
+    end
+  end
+
   describe '.attach_ffi_function' do
     let(:lib) { Module.new }
     it 'calls attach_function with the correct types for Regress.test_callback_destroy_notify' do
@@ -58,6 +65,10 @@ describe GirFFI::Builder do
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
   end
+
+  #
+  # NOTE: Legacy tests below.
+  #
 
   describe 'looking at Regress.test_callback_destroy_notify' do
     before do
