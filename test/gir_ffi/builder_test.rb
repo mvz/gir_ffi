@@ -2,6 +2,7 @@
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
+GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builder do
   let(:gir) { GObjectIntrospection::IRepository.default }
@@ -18,6 +19,34 @@ describe GirFFI::Builder do
     it 'refuses to build existing modules defined elsewhere' do
       result = -> { GirFFI::Builder.build_module('Array') }.must_raise
       result.message.must_equal 'The module Array was already defined elsewhere'
+    end
+  end
+
+  describe '.build_by_gtype' do
+    it 'returns the class types known to the GIR' do
+      result = GirFFI::Builder.build_by_gtype GObject::Object.gtype
+      result.must_equal GObject::Object
+    end
+
+    it 'returns the class for user-defined types' do
+      klass = Class.new GIMarshallingTests::OverridesObject
+      Object.const_set "Derived#{Sequence.next}", klass
+      gtype = GirFFI.define_type klass
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      found_klass.must_equal klass
+    end
+
+    it 'returns a valid class for boxed classes unknown to GIR' do
+      object_class = GIMarshallingTests::PropertiesObject.object_class
+      property = object_class.find_property 'some-boxed-glist'
+      gtype = property.value_type
+
+      gtype.wont_equal GObject::TYPE_NONE
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      found_klass.name.must_be_nil
+      found_klass.ancestors.must_include GirFFI::BoxedBase
     end
   end
 
