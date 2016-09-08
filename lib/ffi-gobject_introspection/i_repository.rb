@@ -2,6 +2,7 @@
 require 'singleton'
 
 require 'ffi-gobject_introspection/lib'
+require 'ffi-gobject_introspection/strv'
 require 'ffi-gobject_introspection/g_error'
 require 'ffi-gobject_introspection/i_base_info'
 require 'ffi-gobject_introspection/i_callable_info'
@@ -107,7 +108,7 @@ module GObjectIntrospection
 
     def dependencies(namespace)
       strv_p = Lib.g_irepository_get_dependencies(@gobj, namespace)
-      strv = GLib::Strv.new strv_p
+      strv = Strv.new strv_p
       strv.to_a
     end
 

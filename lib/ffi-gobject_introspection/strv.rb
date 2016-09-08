@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'ffi'
-require 'gir_ffi-base/glib'
 
-module GLib
-  # Represents a null-terminated array of strings. GLib uses this
+module GObjectIntrospection
+  # Represents a null-terminated array of strings.
+  # GLib uses this
   # construction, but does not provide any actual functions for this class.
   class Strv
     include Enumerable
