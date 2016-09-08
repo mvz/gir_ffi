@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'ffi'
 
 module GObjectIntrospection
   # Provides access to the g_type_init function.

@@ -82,7 +82,7 @@ describe GirFFI::Builders::StructBuilder do
       info = get_introspection_data 'Regress', 'TestStructA'
       builder = GirFFI::Builders::StructBuilder.new info
       builder.setup_class
-      Regress::TestStructA.instance_methods(false).must_include :clone
+      assert_defines_instance_method Regress::TestStructA, :clone
     end
 
     after do

@@ -3,6 +3,25 @@ require 'base_test_helper'
 
 require 'ffi-gobject_introspection'
 
+GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
+
+module GObjectIntrospection
+  class IRepository
+    def shared_library_with_regress(namespace)
+      case namespace
+      when 'Everything', 'GIMarshallingTests', 'Regress', 'Utility', 'WarnLib'
+        return File.join(File.dirname(__FILE__), 'lib', "lib#{namespace.downcase}.so")
+      else
+        return shared_library_without_regress namespace
+      end
+    end
+
+    # TODO: Use prepend instead of alias method chaining
+    alias_method :shared_library_without_regress, :shared_library
+    alias_method :shared_library, :shared_library_with_regress
+  end
+end
+
 module IntrospectionTestExtensions
   module_function
 
