@@ -5,7 +5,7 @@ raise 'The module GObject was already defined elsewhere' if Kernel.const_defined
 
 require 'gir_ffi-base/gobject/lib'
 
-# The part of the GObject namespace that is needed by GObjectIntrospection.
+# The part of the GObject namespace that is needed by GirFFI.
 #
 # :reek:TooManyConstants: because it needs to hold the type constants.
 module GObject
