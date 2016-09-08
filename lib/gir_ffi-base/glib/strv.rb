@@ -19,9 +19,9 @@ module GLib
     end
 
     def each
-      return if @ptr.null?
-      reset_iterator
-      while (ptr = next_ptr)
+      offset = 0
+      while (ptr = fetch_ptr offset)
+        offset += POINTER_SIZE
         yield ptr.read_string
       end
     end
@@ -32,13 +32,9 @@ module GLib
 
     private
 
-    def reset_iterator
-      @offset = 0
-    end
-
-    def next_ptr
-      ptr = @ptr.get_pointer @offset
-      @offset += POINTER_SIZE
+    def fetch_ptr(offset)
+      return if @ptr.null?
+      ptr = @ptr.get_pointer offset
       ptr unless ptr.null?
     end
   end
