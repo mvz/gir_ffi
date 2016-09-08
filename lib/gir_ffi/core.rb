@@ -2,9 +2,9 @@
 require 'ffi'
 require 'ffi/bit_masks'
 
-require 'gir_ffi-base'
-
 require 'ffi-gobject_introspection'
+
+require 'gir_ffi-base'
 
 require 'gir_ffi/ffi_ext'
 require 'gir_ffi/class_base'

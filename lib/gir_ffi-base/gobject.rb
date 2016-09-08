@@ -9,10 +9,6 @@ require 'gir_ffi-base/gobject/lib'
 #
 # :reek:TooManyConstants: because it needs to hold the type constants.
 module GObject
-  def self.type_init
-    Lib.g_type_init
-  end
-
   def self.type_from_name(name)
     Lib.g_type_from_name name
   end
