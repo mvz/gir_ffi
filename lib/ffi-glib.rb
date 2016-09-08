@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'gir_ffi-base/glib'
 require 'gir_ffi/core'
 
 # Bypass check for existing modules
