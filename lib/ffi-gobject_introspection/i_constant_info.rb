@@ -21,7 +21,7 @@ module GObjectIntrospection
       when :utf8
         raw_value.force_encoding('utf-8')
       when :gboolean
-        raw_value.nonzero?
+        !!raw_value.nonzero?
       else
         raw_value
       end
