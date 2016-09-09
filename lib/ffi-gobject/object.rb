@@ -61,16 +61,6 @@ module GObject
       super
     end
 
-    def respond_to_missing?(method, *)
-      getter_name = "get_#{method}"
-      return true if respond_to?(getter_name)
-      if method.to_s =~ /(.*)=$/
-        setter_name = "set_#{Regexp.last_match[1]}"
-        return true if respond_to?(setter_name)
-      end
-      false
-    end
-
     def signal_connect(event, data = nil, &block)
       GObject.signal_connect(self, event, data, &block)
     end
