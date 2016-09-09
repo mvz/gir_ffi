@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 require 'ffi'
-require 'gir_ffi-base/glib'
 
-module GLib
-  # Implementation of gboolean
+module GirFFI
+  # Class representing a boolean (natively, an int).
   class Boolean
     extend FFI::DataConverter
     native_type FFI::Type::INT

@@ -1,4 +1,8 @@
 # frozen_string_literal: true
+
+# Ensure GLib is defined by GirFFI itself
+raise 'The module GLib was already defined elsewhere' if Kernel.const_defined? :GLib
+
 require 'gir_ffi/core'
 
 # Bypass check for existing modules

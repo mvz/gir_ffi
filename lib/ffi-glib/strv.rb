@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 module GLib
-  # Extra methods for GLib::Strv. The bulk is defined in `gir_ffi-base/glib/strv.rb`
-  class Strv
+  # Represents a null-terminated array of strings. GLib uses this construction,
+  # but does not provide any actual functions for this class.
+  #
+  # The implementation is mainly inherited from GObjectIntrospection::Strv.
+  class Strv < GObjectIntrospection::Strv
     def ==(other)
       to_a == other.to_a
     end

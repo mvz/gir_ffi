@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 require 'base_test_helper'
 
-describe GLib::Strv do
+describe GObjectIntrospection::Strv do
   it 'wraps a pointer' do
-    strv = GLib::Strv.new :some_pointer
+    strv = GObjectIntrospection::Strv.new :some_pointer
     assert_equal :some_pointer, strv.to_ptr
   end
 
   describe '::wrap' do
-    it 'takes a pointer and returns a GLib::Strv wrapping it' do
-      strv = GLib::Strv.wrap :some_pointer
-      assert_instance_of GLib::Strv, strv
+    it 'takes a pointer and returns a GObjectIntrospection::Strv wrapping it' do
+      strv = GObjectIntrospection::Strv.wrap :some_pointer
+      assert_instance_of GObjectIntrospection::Strv, strv
       assert_equal :some_pointer, strv.to_ptr
     end
   end
@@ -23,7 +23,7 @@ describe GLib::Strv do
       block = FFI::MemoryPointer.new(:pointer, ptrs.length)
       block.write_array_of_pointer ptrs
 
-      strv = GLib::Strv.new block
+      strv = GObjectIntrospection::Strv.new block
       arr = []
       strv.each do |str|
         arr << str
@@ -32,7 +32,7 @@ describe GLib::Strv do
     end
 
     it 'yields zero times for a Strv wrapping a null pointer' do
-      strv = GLib::Strv.new FFI::Pointer.new(0)
+      strv = GObjectIntrospection::Strv.new FFI::Pointer.new(0)
       strv.each do |_str|
         flunk
       end
@@ -40,6 +40,6 @@ describe GLib::Strv do
   end
 
   it 'includes Enumerable' do
-    GLib::Strv.must_include Enumerable
+    GObjectIntrospection::Strv.must_include Enumerable
   end
 end

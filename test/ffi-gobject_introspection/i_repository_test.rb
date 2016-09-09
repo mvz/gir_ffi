@@ -58,4 +58,22 @@ describe GObjectIntrospection::IRepository do
       assert_kind_of GObjectIntrospection::IBaseInfo, gir.info('GObject', 0)
     end
   end
+
+  describe '#dependencies' do
+    it 'returns a list of dependencies of the given namespace' do
+      result = gir.dependencies('GObject')
+      result.must_equal ['GLib-2.0']
+    end
+
+    it 'passes its struct pointer to the c function just in case' do
+      ptr = gir.instance_variable_get(:@gobj)
+      allow(GObjectIntrospection::Lib).to receive(:g_irepository_get_dependencies).
+        and_call_original
+
+      gir.dependencies('GObject')
+
+      expect(GObjectIntrospection::Lib).to have_received(:g_irepository_get_dependencies).
+        with(ptr, 'GObject')
+    end
+  end
 end

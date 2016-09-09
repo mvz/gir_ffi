@@ -18,27 +18,6 @@ end
 require 'minitest/autorun'
 require 'rspec/mocks/minitest_integration'
 
-require 'gir_ffi-base'
-require 'ffi-gobject_introspection'
-
-GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), 'lib')
-
-module GObjectIntrospection
-  class IRepository
-    def shared_library_with_regress(namespace)
-      case namespace
-      when 'Everything', 'GIMarshallingTests', 'Regress', 'Utility', 'WarnLib'
-        return File.join(File.dirname(__FILE__), 'lib', "lib#{namespace.downcase}.so")
-      else
-        return shared_library_without_regress namespace
-      end
-    end
-
-    alias_method :shared_library_without_regress, :shared_library
-    alias_method :shared_library, :shared_library_with_regress
-  end
-end
-
 Thread.abort_on_exception = true
 
 module BaseTestExtensions

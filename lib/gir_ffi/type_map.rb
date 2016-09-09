@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'gir_ffi/boolean'
 require 'gir_ffi/sized_array'
 
 module GirFFI
@@ -22,7 +23,7 @@ module GirFFI
       c:         GirFFI::SizedArray,
       utf8:      :pointer,
       GType:     gsize_type,
-      gboolean:  GLib::Boolean,
+      gboolean:  GirFFI::Boolean,
       gunichar:  :uint32,
       gint8:     :int8,
       guint8:    :uint8,
