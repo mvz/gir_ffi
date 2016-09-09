@@ -8,6 +8,10 @@ module GirFFI
       send method, *arguments, &block
     end
 
+    def respond_to_missing?(method, *)
+      gir_ffi_builder.method_available? method
+    end
+
     def const_missing(classname)
       load_class(classname)
     end

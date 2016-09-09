@@ -32,6 +32,10 @@ module GirFFI
         true
       end
 
+      def method_available?(method)
+        !!function_introspection_data(method.to_s)
+      end
+
       def build_namespaced_class(classname)
         info = find_namespaced_class_info(classname)
         Builder.build_class info
