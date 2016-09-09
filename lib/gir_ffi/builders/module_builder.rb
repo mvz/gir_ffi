@@ -33,7 +33,7 @@ module GirFFI
       end
 
       def method_available?(method)
-        !!function_introspection_data(method.to_s)
+        function_introspection_data(method.to_s) and true
       end
 
       def build_namespaced_class(classname)
