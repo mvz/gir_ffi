@@ -61,6 +61,10 @@ module GObject
       super
     end
 
+    def respond_to_missing?(*)
+      false
+    end
+
     def signal_connect(event, data = nil, &block)
       GObject.signal_connect(self, event, data, &block)
     end
