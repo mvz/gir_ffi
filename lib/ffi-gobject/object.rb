@@ -42,7 +42,7 @@ module GObject
     def self.make_finalizer(ptr, name)
       proc do
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
-        if rc == 0
+        if rc.zero?
           warn "not unreffing #{name}:#{ptr} (#{rc})"
         else
           GObject::Lib.g_object_unref ptr
@@ -59,6 +59,10 @@ module GObject
         return send(setter_name, *args) if respond_to?(setter_name)
       end
       super
+    end
+
+    def respond_to_missing?(*)
+      false
     end
 
     def signal_connect(event, data = nil, &block)
@@ -127,7 +131,7 @@ module GObject
         raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
-    # TODO: Move to ITypeInfo
+    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
     def property_value_post_conversion(val, type_info)
       case type_info.flattened_tag
       when :ghash
@@ -141,7 +145,7 @@ module GObject
       end
     end
 
-    # TODO: Move to ITypeInfo
+    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
     def property_value_pre_conversion(val, type_info)
       case type_info.flattened_tag
       when :ghash

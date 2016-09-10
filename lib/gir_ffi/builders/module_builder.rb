@@ -32,6 +32,10 @@ module GirFFI
         true
       end
 
+      def method_available?(method)
+        function_introspection_data(method.to_s) and true
+      end
+
       def build_namespaced_class(classname)
         info = find_namespaced_class_info(classname)
         Builder.build_class info
@@ -109,11 +113,9 @@ module GirFFI
       end
 
       def gir
-        unless defined? @gir
-          @gir = GObjectIntrospection::IRepository.default
-          @gir.require @namespace, @version
+        @gir ||= GObjectIntrospection::IRepository.default.tap do |it|
+          it.require @namespace, @version
         end
-        @gir
       end
     end
   end

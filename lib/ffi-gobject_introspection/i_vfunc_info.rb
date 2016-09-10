@@ -4,23 +4,15 @@ module GObjectIntrospection
   # Represents a virtual function.
   class IVFuncInfo < ICallableInfo
     def flags
-      Lib.g_vfunc_info_get_flags @gobj
+      Lib.g_vfunc_info_get_flags self
     end
 
     def throws?
-      flags & 8 != 0
-    end
-
-    def offset
-      Lib.g_vfunc_info_get_offset @gobj
-    end
-
-    def signal
-      ISignalInfo.wrap Lib.g_vfunc_info_get_signal(@gobj)
+      flags.fetch :throws
     end
 
     def invoker
-      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker(@gobj)
+      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker self
     end
   end
 end

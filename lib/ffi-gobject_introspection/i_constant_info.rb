@@ -21,14 +21,14 @@ module GObjectIntrospection
       when :utf8
         raw_value.force_encoding('utf-8')
       when :gboolean
-        raw_value != 0
+        raw_value.nonzero? ? true : false
       else
         raw_value
       end
     end
 
     def constant_type
-      ITypeInfo.wrap Lib.g_constant_info_get_type(@gobj)
+      ITypeInfo.wrap Lib.g_constant_info_get_type self
     end
 
     private
@@ -39,7 +39,7 @@ module GObjectIntrospection
 
     def raw_value
       value_union = Lib::GIArgument.new
-      Lib.g_constant_info_get_value @gobj, value_union
+      Lib.g_constant_info_get_value self, value_union
       value_union[union_member_key]
     end
 
