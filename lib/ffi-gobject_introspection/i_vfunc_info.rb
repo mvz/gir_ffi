@@ -4,7 +4,7 @@ module GObjectIntrospection
   # Represents a virtual function.
   class IVFuncInfo < ICallableInfo
     def flags
-      Lib.g_vfunc_info_get_flags @gobj
+      Lib.g_vfunc_info_get_flags self
     end
 
     def throws?
@@ -12,7 +12,7 @@ module GObjectIntrospection
     end
 
     def invoker
-      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker @gobj
+      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker self
     end
   end
 end

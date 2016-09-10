@@ -22,6 +22,8 @@ module GirFFI
     end
 
     # NOTE: Only used in List, SList and HashTable classes.
+    # TODO: Stop using basic types and instead cast type to an ITypeInfo
+    # look-alike.
     def self.cast_from_pointer(type, ptr)
       case type
       when Symbol

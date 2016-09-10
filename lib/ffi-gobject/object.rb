@@ -131,7 +131,7 @@ module GObject
         raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
-    # TODO: Move to ITypeInfo
+    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
     def property_value_post_conversion(val, type_info)
       case type_info.flattened_tag
       when :ghash
@@ -145,7 +145,7 @@ module GObject
       end
     end
 
-    # TODO: Move to ITypeInfo
+    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
     def property_value_pre_conversion(val, type_info)
       case type_info.flattened_tag
       when :ghash
