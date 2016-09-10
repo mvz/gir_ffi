@@ -35,11 +35,10 @@ module GObject
 
     def store_pointer(ptr)
       super
-      klass = self.class
-      ObjectSpace.define_finalizer self, klass.make_finalizer(ptr, klass.name)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(ptr)
     end
 
-    def self.make_finalizer(ptr, name)
+    def self.make_finalizer(ptr)
       proc do
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
         if rc.zero?
