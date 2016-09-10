@@ -119,23 +119,19 @@ describe GObject::Object do
   end
 
   describe 'upon garbage collection' do
-    # FIXME: Test this some other way
     it 'lowers the reference count' do
-      if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
+      if jruby? || rubinius?
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
-      if RUBY_VERSION >= '2.3.0'
-        skip 'cannot be reliably tested on CRuby >= 2.3'
-      end
 
-      object = GObject::Object.new
-      ptr = object.to_ptr
+      ptr = GObject::Object.new.to_ptr
       ref_count(ptr).must_equal 1
 
-      # Lose reference to object to allow garbage collection
-      object = nil # rubocop:disable Lint/UselessAssignment
-
       GC.start
+      # Creating a new object is sometimes needed to trigger enough garbage collection.
+      GObject::Object.new
+      sleep 1
+
       GC.start
       GC.start
 
