@@ -35,7 +35,7 @@ describe GirFFI::BoxedBase do
 
   describe 'upon garbage collection' do
     it 'frees and disowns the underlying struct if it is owned' do
-      if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
+      if jruby? || rubinius?
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
 

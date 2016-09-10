@@ -32,7 +32,7 @@ describe GObjectIntrospection::IBaseInfo do
 
   describe 'upon garbage collection' do
     it 'calls g_base_info_unref' do
-      if defined?(RUBY_ENGINE) && %w(jruby rbx).include?(RUBY_ENGINE)
+      if jruby? || rubinius?
         skip 'cannot be reliably tested on JRuby and Rubinius'
       end
 
