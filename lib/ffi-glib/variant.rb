@@ -19,15 +19,13 @@ module GLib
     # NOTE: This is very hard to test since it is not possible to get the
     # variant's ref count directely. However, there is an error when running
     # the tests on 32-bit systems.
-    # TODO: Move this logic elsewhere
+    #
     def store_pointer(ptr)
       super
-
-      # TODO: Ensure ptr is not autorelease
       ::GLib::Lib.g_variant_ref_sink ptr
     end
 
-    # TODO: Update ref?
+    # For variants, wrap_copy does not do any copying.
     def self.wrap_copy(val)
       wrap(val)
     end
