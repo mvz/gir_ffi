@@ -8,19 +8,11 @@ module GObjectIntrospection
     end
 
     def throws?
-      (flags & 8).nonzero?
-    end
-
-    def offset
-      Lib.g_vfunc_info_get_offset @gobj
-    end
-
-    def signal
-      ISignalInfo.wrap Lib.g_vfunc_info_get_signal(@gobj)
+      flags.fetch :throws
     end
 
     def invoker
-      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker(@gobj)
+      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker @gobj
     end
   end
 end
