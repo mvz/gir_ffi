@@ -203,7 +203,8 @@ describe GirFFI::Builders::VFuncBuilder do
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = object
           _v3 = _proc.call(_v1)
-          _v2.put_pointer 0, GObject::Object.from(_v3.ref)
+          _v3.ref
+          _v2.put_pointer 0, GObject::Object.from(_v3)
         end
         CODE
 
