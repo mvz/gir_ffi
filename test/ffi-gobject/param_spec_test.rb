@@ -15,4 +15,8 @@ describe GObject::ParamSpec do
       pspec.ref_count.must_equal old + 1
     end
   end
+
+  it 'cannot be instantiated directly' do
+    proc { GObject::ParamSpec.new }.must_raise NoMethodError
+  end
 end

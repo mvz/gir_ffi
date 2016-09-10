@@ -31,10 +31,6 @@ module GirFFI
       other.class == self.class && to_ptr.address == other.to_ptr.address
     end
 
-    def initialize
-      raise NoMethodError
-    end
-
     def self.setup_and_call(method, arguments, &block)
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
