@@ -45,10 +45,6 @@ module GirFFI
       TAG_TYPE_MAP[sym] || sym
     end
 
-    def self.type_specification_to_ffitype(type)
-      type_specification_to_ffi_type type
-    end
-
     def self.type_specification_to_ffi_type(type)
       case type
       when Module
