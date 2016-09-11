@@ -956,7 +956,6 @@ describe Regress do
 
   describe 'Regress::FooSubobject' do
     it 'creates an instance using #new' do
-      # TODO: Guard against instantiating abstract classes
       skip 'This function is defined in the header but not implemented'
     end
   end
@@ -1440,20 +1439,18 @@ describe Regress do
       proc { Regress::TestFundamentalObject.new }.must_raise NoMethodError
     end
 
-    # NOTE: Instance methods can only be tested on the subclass, since
-    # TestFundamentalObject is an abstract class.
-    let(:instance) { Regress::TestFundamentalSubObject.new 'foo' }
+    let(:derived_instance) { Regress::TestFundamentalSubObject.new 'foo' }
 
     it 'has a working method #ref' do
-      instance.refcount.must_equal 1
-      instance.ref
-      instance.refcount.must_equal 2
+      derived_instance.refcount.must_equal 1
+      derived_instance.ref
+      derived_instance.refcount.must_equal 2
     end
 
     it 'has a working method #unref' do
-      instance.refcount.must_equal 1
-      instance.unref
-      instance.refcount.must_equal 0
+      derived_instance.refcount.must_equal 1
+      derived_instance.unref
+      derived_instance.refcount.must_equal 0
     end
   end
 
@@ -1483,24 +1480,28 @@ describe Regress do
       skip unless get_introspection_data 'Regress', 'TestInheritDrawable'
     end
 
-    let(:instance) { ConcreteDrawable.new }
+    it 'cannot be instantiated' do
+      proc { Regress::TestInheritDrawable.new }.must_raise NoMethodError
+    end
+
+    let(:derived_instance) { ConcreteDrawable.new }
 
     it 'has a working method #do_foo' do
-      instance.do_foo 42
+      derived_instance.do_foo 42
       pass
     end
 
     it 'has a working method #do_foo_maybe_throw' do
-      instance.do_foo_maybe_throw 42
-      proc { instance.do_foo_maybe_throw 41 }.must_raise GirFFI::GLibError
+      derived_instance.do_foo_maybe_throw 42
+      proc { derived_instance.do_foo_maybe_throw 41 }.must_raise GirFFI::GLibError
     end
 
     it 'has a working method #get_origin' do
-      instance.get_origin.must_equal [0, 0]
+      derived_instance.get_origin.must_equal [0, 0]
     end
 
     it 'has a working method #get_size' do
-      instance.get_size.must_equal [42, 42]
+      derived_instance.get_size.must_equal [42, 42]
     end
   end
 
