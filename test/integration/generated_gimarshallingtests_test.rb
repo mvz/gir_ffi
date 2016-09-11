@@ -325,10 +325,6 @@ describe GIMarshallingTests do
       res.ref_count.must_equal 1
     end
 
-    it 'has a working function #inout_same' do
-      skip 'This function is defined in the header but not implemented'
-    end
-
     it 'has a working function #none_inout' do
       ob = GIMarshallingTests::Object.new 42
       ob.ref_count.must_equal 1

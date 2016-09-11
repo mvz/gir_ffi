@@ -99,7 +99,7 @@ describe Regress do
     end
 
     it 'has a writable field arr' do
-      instance.arr.must_equal nil
+      instance.arr.must_be_nil
       instance.arr = [1, 2, 3]
       # TODO: len should be set automatically
       instance.len = 3
@@ -394,6 +394,26 @@ describe Regress do
     end
   end
 
+  describe 'Regress::AnonymousUnionAndStruct' do
+    let(:instance) { Regress::AnonymousUnionAndStruct.new }
+
+    it 'has a writable field x' do
+      instance.x = 42
+      instance.x.must_equal 42
+    end
+
+    it 'has a writable field a' do
+      skip 'Anonymous struct fields are not exposed in the GIR data'
+    end
+
+    it 'has a writable field b' do
+      skip 'Anonymous struct fields are not exposed in the GIR data'
+    end
+
+    it 'has a writable field padding' do
+      skip 'Anonymous union fields are not exposed in the GIR data'
+    end
+  end
   it 'has the constant BOOL_CONSTANT' do
     skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
@@ -782,11 +802,11 @@ describe Regress do
 
     describe "its 'string' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('string').must_equal nil
+        instance.get_property('string').must_be_nil
       end
 
       it 'can be retrieved with #string' do
-        instance.string.must_equal nil
+        instance.string.must_be_nil
       end
 
       it 'can be set with #set_property' do
@@ -895,7 +915,7 @@ describe Regress do
   describe 'Regress::FooStruct' do
     let(:instance) { Regress::FooStruct.new }
 
-    it 'blocks access to the field priv' do
+    it 'blocks access to the hidden struct field priv' do
       proc { instance.priv = nil }.must_raise NoMethodError
       proc { instance.priv }.must_raise NoMethodError
     end
@@ -1166,7 +1186,7 @@ describe Regress do
       instance.nested_a.some_int.must_equal 12_345
     end
 
-    it 'blocks access to the field priv' do
+    it 'blocks access to the hidden struct field priv' do
       proc { instance.priv = nil }.must_raise NoMethodError
       proc { instance.priv }.must_raise NoMethodError
     end
@@ -1598,6 +1618,17 @@ describe Regress do
       instance.do_matrix('bar').must_equal 42
     end
 
+    it 'has a working method #emit_sig_with_array_len_prop' do
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'emit_sig_with_array_len_prop')
+      array = nil
+      instance.signal_connect 'sig-with-array-len-prop' do |_obj, ary|
+        array = ary.to_a
+      end
+      instance.emit_sig_with_array_len_prop
+      array.to_a.must_equal [0, 1, 2, 3, 4]
+    end
+
     it 'has a working method #emit_sig_with_foreign_struct' do
       skip unless get_method_introspection_data('Regress', 'TestObj',
                                                 'emit_sig_with_foreign_struct')
@@ -1657,6 +1688,21 @@ describe Regress do
       instance.ref_count.must_equal 1
       instance.instance_method_full
       instance.ref_count.must_equal 1
+    end
+
+    it 'has a working method #not_nullable_element_typed_gpointer_in' do
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'not_nullable_element_typed_gpointer_in')
+      instance.not_nullable_element_typed_gpointer_in [1, 2, 3]
+      # TODO: Make method raise when passed nil
+    end
+
+    it 'has a working method #not_nullable_typed_gpointer_in' do
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'not_nullable_typed_gpointer_in')
+      obj = Regress::TestObj.new_from_file('bar')
+      instance.not_nullable_typed_gpointer_in obj
+      # TODO: Make method raise when passed nil
     end
 
     it 'has a working method #set_bare' do
@@ -2200,7 +2246,7 @@ describe Regress do
       Regress::TestPrivateEnum[:public_enum_before].must_equal 1
     end
     it 'does not have the member :private' do
-      Regress::TestPrivateEnum[:private].must_equal nil
+      Regress::TestPrivateEnum[:private].must_be_nil
     end
     it 'has the member :public_enum_after' do
       Regress::TestPrivateEnum[:public_enum_after].must_equal 4
@@ -2434,7 +2480,7 @@ describe Regress do
 
     it 'has a writable field obj' do
       o = Regress::TestSubObj.new
-      instance.obj.must_equal nil
+      instance.obj.must_be_nil
       instance.obj = o
       instance.obj.must_equal o
     end
@@ -2457,7 +2503,7 @@ describe Regress do
     end
 
     it 'has a writable field field' do
-      instance.field.must_equal nil
+      instance.field.must_be_nil
       o = Regress::TestSubObj.new
       instance.field = o
       instance.field.must_equal o
@@ -2874,6 +2920,12 @@ describe Regress do
     pass
   end
 
+  it 'has a working function #get_variant' do
+    var = Regress.get_variant
+    var.get_int32.must_equal 42
+    # TODO: Make var not floating
+  end
+
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
     result.must_equal(flag1: true, flag3: true)
@@ -3005,11 +3057,17 @@ describe Regress do
   end
 
   it 'has a working function #test_array_int_null_out' do
-    assert_equal nil, Regress.test_array_int_null_out
+    Regress.test_array_int_null_out.must_be_nil
   end
 
   it 'has a working function #test_array_int_out' do
     Regress.test_array_int_out.must_be :==, [0, 1, 2, 3, 4]
+  end
+
+  it 'has a working function #test_array_struct_out' do
+    skip unless get_introspection_data 'Regress', 'test_array_struct_out'
+    result = Regress.test_array_struct_out
+    result.map(&:some_int).must_equal [22, 33, 44]
   end
 
   it 'has a working function #test_async_ready_callback' do
@@ -3410,7 +3468,7 @@ describe Regress do
 
   it 'has a working function #test_glist_null_out' do
     result = Regress.test_glist_null_out
-    assert_equal nil, result
+    result.must_be_nil
   end
 
   it 'has a working function #test_gslist_container_return' do
@@ -3451,7 +3509,7 @@ describe Regress do
 
   it 'has a working function #test_gslist_null_out' do
     result = Regress.test_gslist_null_out
-    assert_equal nil, result
+    result.must_be_nil
   end
 
   it 'has a working function #test_gtype' do
@@ -3556,6 +3614,13 @@ describe Regress do
     Regress.test_nested_parameter(3).must_be_nil
   end
 
+  it 'has a working function #test_noptr_callback' do
+    skip unless get_introspection_data 'Regress', 'test_noptr_callback'
+    a = 0
+    Regress.test_noptr_callback { a = 1 }
+    a.must_equal 1
+  end
+
   it 'has a working function #test_null_gerror_callback' do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
@@ -3566,6 +3631,18 @@ describe Regress do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
     value.message.must_equal 'regression test owned error'
+  end
+
+  it 'has a working function #test_return_allow_none' do
+    skip unless get_introspection_data 'Regress', 'test_return_allow_none'
+    result = Regress.test_return_allow_none
+    result.must_be_nil
+  end
+
+  it 'has a working function #test_return_nullable' do
+    skip unless get_introspection_data 'Regress', 'test_return_nullable'
+    result = Regress.test_return_nullable
+    result.must_be_nil
   end
 
   it 'has a working function #test_short' do
@@ -3726,7 +3803,7 @@ describe Regress do
   end
 
   it 'has a working function #test_utf8_null_out' do
-    assert_equal nil, Regress.test_utf8_null_out
+    Regress.test_utf8_null_out.must_be_nil
   end
 
   it 'has a working function #test_utf8_out' do

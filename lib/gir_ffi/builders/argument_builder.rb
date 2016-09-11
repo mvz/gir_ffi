@@ -89,7 +89,7 @@ module GirFFI
         base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
           outgoing_convertor(base).conversion
-        elsif allocated_by_them?
+        elsif allocated_by_them? && specialized_type_tag != :void
           pointer_to_value_method_call base, sub_type_spec
         else
           base
@@ -97,7 +97,7 @@ module GirFFI
       end
 
       def outgoing_convertor(base)
-        FullCToRubyConvertor.new(@type_info, base, length_argument_name,
+        FullCToRubyConvertor.new(type_info, base, length_argument_name,
                                  ownership_transfer: @arginfo.ownership_transfer)
       end
 
@@ -110,11 +110,11 @@ module GirFFI
       end
 
       def needs_out_conversion?
-        @type_info.needs_c_to_ruby_conversion_for_functions?
+        type_info.needs_c_to_ruby_conversion_for_functions?
       end
 
       def gvalue?
-        @type_info.gvalue?
+        type_info.gvalue?
       end
 
       # Check if an out argument needs to be allocated by them, the callee. Since
@@ -122,7 +122,7 @@ module GirFFI
       # is a pointer. For example, an out parameter of type gint8* will always
       # be allocated by the caller (that's us).
       def allocated_by_them?
-        !@arginfo.caller_allocates? && @type_info.pointer?
+        !@arginfo.caller_allocates? && type_info.pointer?
       end
 
       def length_argument_name
@@ -196,8 +196,8 @@ module GirFFI
           NullConvertor.new(DESTROY_NOTIFIER)
         elsif closure?
           ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
-        elsif @type_info.needs_ruby_to_c_conversion_for_functions?
-          RubyToCConvertor.new(@type_info, pre_convertor_argument,
+        elsif type_info.needs_ruby_to_c_conversion_for_functions?
+          RubyToCConvertor.new(type_info, pre_convertor_argument,
                                ownership_transfer: ownership_transfer)
         else
           NullConvertor.new(pre_convertor_argument)
