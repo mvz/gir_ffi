@@ -172,8 +172,7 @@ describe Everything do
   end
 
   it 'has a working function #one_outparam_gpointer' do
-    skip 'Not implemented yet'
-    Everything.one_outparam_gpointer.must_equal 0
+    Everything.one_outparam_gpointer.must_be :null?
   end
 
   it 'has a working function #one_outparam_gshort' do

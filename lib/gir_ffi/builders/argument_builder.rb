@@ -89,7 +89,7 @@ module GirFFI
         base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
           outgoing_convertor(base).conversion
-        elsif allocated_by_them?
+        elsif allocated_by_them? && specialized_type_tag != :void
           pointer_to_value_method_call base, sub_type_spec
         else
           base

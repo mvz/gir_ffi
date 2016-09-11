@@ -378,6 +378,20 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
       end
     end
+
+    describe 'for :void' do
+      let(:arg_info) do
+        get_introspection_data('Everything', 'one_outparam_gpointer').args[0]
+      end
+
+      it 'has the correct value for #pre_conversion' do
+        builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
+      end
+
+      it 'has the correct value for #post_conversion' do
+        builder.post_conversion.must_equal ['_v2 = _v1.get_pointer(0)']
+      end
+    end
   end
 
   describe 'for an argument with direction :inout' do
