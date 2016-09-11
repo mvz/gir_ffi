@@ -394,6 +394,26 @@ describe Regress do
     end
   end
 
+  describe 'Regress::AnonymousUnionAndStruct' do
+    let(:instance) { Regress::AnonymousUnionAndStruct.new }
+
+    it 'has a writable field x' do
+      instance.x = 42
+      instance.x.must_equal 42
+    end
+
+    it 'has a writable field a' do
+      skip 'Anonymous struct fields are not exposed in the GIR data'
+    end
+
+    it 'has a writable field b' do
+      skip 'Anonymous struct fields are not exposed in the GIR data'
+    end
+
+    it 'has a writable field padding' do
+      skip 'Anonymous union fields are not exposed in the GIR data'
+    end
+  end
   it 'has the constant BOOL_CONSTANT' do
     skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
