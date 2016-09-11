@@ -4,7 +4,7 @@ require 'gir_ffi/receiver_argument_info'
 
 describe GirFFI::ReceiverArgumentInfo do
   let(:dummy_type) { 'foo' }
-  let(:instance) { GirFFI::ReceiverArgumentInfo.new dummy_type}
+  let(:instance) { GirFFI::ReceiverArgumentInfo.new dummy_type }
 
   describe '#argument_type' do
     it 'returns the argument type' do
