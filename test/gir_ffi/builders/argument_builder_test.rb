@@ -380,8 +380,13 @@ describe GirFFI::Builders::ArgumentBuilder do
     end
 
     describe 'for :void' do
-      let(:arg_info) do
-        get_introspection_data('Everything', 'one_outparam_gpointer').args[0]
+      let(:function_info) do
+        get_introspection_data('Everything', 'one_outparam_gpointer')
+      end
+      let(:arg_info) { function_info.args[0] }
+
+      before do
+        skip unless function_info
       end
 
       it 'has the correct value for #pre_conversion' do

@@ -172,6 +172,7 @@ describe Everything do
   end
 
   it 'has a working function #one_outparam_gpointer' do
+    skip unless get_introspection_data 'Everything', 'one_outparam_gpointer'
     Everything.one_outparam_gpointer.must_be :null?
   end
 
@@ -281,6 +282,7 @@ describe Everything do
   end
 
   it 'has a working function #oneparam_gpointer' do
+    skip unless get_introspection_data 'Everything', 'oneparam_gpointer'
     Everything.oneparam_gpointer(FFI::MemoryPointer.new(:int)).must_be_nil
   end
 
@@ -389,6 +391,7 @@ describe Everything do
   end
 
   it 'has a working function #passthrough_one_gpointer' do
+    skip unless get_introspection_data 'Everything', 'passthrough_one_gpointer'
     ptr = FFI::MemoryPointer.new(:int)
     result = Everything.passthrough_one_gpointer(ptr)
     result.must_equal ptr

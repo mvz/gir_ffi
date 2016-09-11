@@ -397,6 +397,10 @@ describe Regress do
   describe 'Regress::AnonymousUnionAndStruct' do
     let(:instance) { Regress::AnonymousUnionAndStruct.new }
 
+    before do
+      skip unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
+    end
+
     it 'has a writable field x' do
       instance.x = 42
       instance.x.must_equal 42
@@ -2921,6 +2925,7 @@ describe Regress do
   end
 
   it 'has a working function #get_variant' do
+    skip unless get_introspection_data 'Regress', 'get_variant'
     var = Regress.get_variant
     var.get_int32.must_equal 42
     # TODO: Make var not floating
