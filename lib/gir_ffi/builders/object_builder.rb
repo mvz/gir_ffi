@@ -134,11 +134,19 @@ module GirFFI
       def provide_initializer
         return if info.find_method 'new'
 
-        klass.class_eval <<-END
-          def initialize(properties = {})
-            base_initialize(properties)
-          end
-        END
+        if info.abstract?
+          klass.class_eval <<-END
+            def initialize(*)
+              raise NoMethodError
+            end
+          END
+        else
+          klass.class_eval <<-END
+            def initialize(properties = {})
+              base_initialize(properties)
+            end
+          END
+        end
       end
 
       def setup_interfaces

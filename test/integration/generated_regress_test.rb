@@ -1483,29 +1483,28 @@ describe Regress do
       skip unless get_introspection_data 'Regress', 'TestInheritDrawable'
     end
 
-    let(:instance) { ConcreteDrawable.new }
-
     it 'cannot be instantiated' do
-      skip 'Not implemented yet'
       proc { Regress::TestInheritDrawable.new }.must_raise NoMethodError
     end
 
+    let(:derived_instance) { ConcreteDrawable.new }
+
     it 'has a working method #do_foo' do
-      instance.do_foo 42
+      derived_instance.do_foo 42
       pass
     end
 
     it 'has a working method #do_foo_maybe_throw' do
-      instance.do_foo_maybe_throw 42
-      proc { instance.do_foo_maybe_throw 41 }.must_raise GirFFI::GLibError
+      derived_instance.do_foo_maybe_throw 42
+      proc { derived_instance.do_foo_maybe_throw 41 }.must_raise GirFFI::GLibError
     end
 
     it 'has a working method #get_origin' do
-      instance.get_origin.must_equal [0, 0]
+      derived_instance.get_origin.must_equal [0, 0]
     end
 
     it 'has a working method #get_size' do
-      instance.get_size.must_equal [42, 42]
+      derived_instance.get_size.must_equal [42, 42]
     end
   end
 
