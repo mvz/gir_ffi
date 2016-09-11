@@ -99,7 +99,7 @@ describe Regress do
     end
 
     it 'has a writable field arr' do
-      instance.arr.must_equal nil
+      instance.arr.must_be_nil
       instance.arr = [1, 2, 3]
       # TODO: len should be set automatically
       instance.len = 3
@@ -802,11 +802,11 @@ describe Regress do
 
     describe "its 'string' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('string').must_equal nil
+        instance.get_property('string').must_be_nil
       end
 
       it 'can be retrieved with #string' do
-        instance.string.must_equal nil
+        instance.string.must_be_nil
       end
 
       it 'can be set with #set_property' do
@@ -2220,7 +2220,7 @@ describe Regress do
       Regress::TestPrivateEnum[:public_enum_before].must_equal 1
     end
     it 'does not have the member :private' do
-      Regress::TestPrivateEnum[:private].must_equal nil
+      Regress::TestPrivateEnum[:private].must_be_nil
     end
     it 'has the member :public_enum_after' do
       Regress::TestPrivateEnum[:public_enum_after].must_equal 4
@@ -2454,7 +2454,7 @@ describe Regress do
 
     it 'has a writable field obj' do
       o = Regress::TestSubObj.new
-      instance.obj.must_equal nil
+      instance.obj.must_be_nil
       instance.obj = o
       instance.obj.must_equal o
     end
@@ -2477,7 +2477,7 @@ describe Regress do
     end
 
     it 'has a writable field field' do
-      instance.field.must_equal nil
+      instance.field.must_be_nil
       o = Regress::TestSubObj.new
       instance.field = o
       instance.field.must_equal o
@@ -3025,7 +3025,7 @@ describe Regress do
   end
 
   it 'has a working function #test_array_int_null_out' do
-    assert_equal nil, Regress.test_array_int_null_out
+    Regress.test_array_int_null_out.must_be_nil
   end
 
   it 'has a working function #test_array_int_out' do
@@ -3430,7 +3430,7 @@ describe Regress do
 
   it 'has a working function #test_glist_null_out' do
     result = Regress.test_glist_null_out
-    assert_equal nil, result
+    result.must_be_nil
   end
 
   it 'has a working function #test_gslist_container_return' do
@@ -3471,7 +3471,7 @@ describe Regress do
 
   it 'has a working function #test_gslist_null_out' do
     result = Regress.test_gslist_null_out
-    assert_equal nil, result
+    result.must_be_nil
   end
 
   it 'has a working function #test_gtype' do
@@ -3746,7 +3746,7 @@ describe Regress do
   end
 
   it 'has a working function #test_utf8_null_out' do
-    assert_equal nil, Regress.test_utf8_null_out
+    Regress.test_utf8_null_out.must_be_nil
   end
 
   it 'has a working function #test_utf8_out' do
