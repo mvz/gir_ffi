@@ -1485,6 +1485,11 @@ describe Regress do
 
     let(:instance) { ConcreteDrawable.new }
 
+    it 'cannot be instantiated' do
+      skip 'Not implemented yet'
+      proc { Regress::TestInheritDrawable.new }.must_raise NoMethodError
+    end
+
     it 'has a working method #do_foo' do
       instance.do_foo 42
       pass
