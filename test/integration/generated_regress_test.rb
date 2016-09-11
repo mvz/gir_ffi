@@ -1619,7 +1619,14 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_array_len_prop' do
-      # TODO: Implement
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'emit_sig_with_array_len_prop')
+      array = nil
+      instance.signal_connect 'sig-with-array-len-prop' do |_obj, ary|
+        array = ary.to_a
+      end
+      instance.emit_sig_with_array_len_prop
+      array.to_a.must_equal [0, 1, 2, 3, 4]
     end
 
     it 'has a working method #emit_sig_with_foreign_struct' do
@@ -1684,11 +1691,18 @@ describe Regress do
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
-      # TODO: Implement
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'not_nullable_element_typed_gpointer_in')
+      instance.not_nullable_element_typed_gpointer_in [1, 2, 3]
+      # TODO: Make method raise when passed nil
     end
 
     it 'has a working method #not_nullable_typed_gpointer_in' do
-      # TODO: Implement
+      skip unless get_method_introspection_data('Regress', 'TestObj',
+                                                'not_nullable_typed_gpointer_in')
+      obj = Regress::TestObj.new_from_file('bar')
+      instance.not_nullable_typed_gpointer_in obj
+      # TODO: Make method raise when passed nil
     end
 
     it 'has a working method #set_bare' do
@@ -2907,8 +2921,11 @@ describe Regress do
   end
 
   it 'has a working function #get_variant' do
-    # TODO: Implement
+    var = Regress.get_variant
+    var.get_int32.must_equal 42
+    # TODO: Make var not floating
   end
+
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
     result.must_equal(flag1: true, flag3: true)
@@ -3048,7 +3065,9 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_out' do
-    # TODO: Implement
+    skip unless get_introspection_data 'Regress', 'test_array_struct_out'
+    result = Regress.test_array_struct_out
+    result.map(&:some_int).must_equal [22, 33, 44]
   end
 
   it 'has a working function #test_async_ready_callback' do
@@ -3596,7 +3615,10 @@ describe Regress do
   end
 
   it 'has a working function #test_noptr_callback' do
-    # TODO: Implement
+    skip unless get_introspection_data 'Regress', 'test_noptr_callback'
+    a = 0
+    Regress.test_noptr_callback { a = 1 }
+    a.must_equal 1
   end
 
   it 'has a working function #test_null_gerror_callback' do
@@ -3612,11 +3634,15 @@ describe Regress do
   end
 
   it 'has a working function #test_return_allow_none' do
-    # TODO: Implement
+    skip unless get_introspection_data 'Regress', 'test_return_allow_none'
+    result = Regress.test_return_allow_none
+    result.must_be_nil
   end
 
   it 'has a working function #test_return_nullable' do
-    # TODO: Implement
+    skip unless get_introspection_data 'Regress', 'test_return_nullable'
+    result = Regress.test_return_nullable
+    result.must_be_nil
   end
 
   it 'has a working function #test_short' do
