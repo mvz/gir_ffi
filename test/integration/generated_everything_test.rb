@@ -56,6 +56,11 @@ describe Everything do
     Everything.const_return_glong.must_equal 0
   end
 
+  it 'has a working function #const_return_gpointer' do
+    skip unless get_introspection_data 'Everything', 'const_return_gpointer'
+    Everything.const_return_gpointer.must_be :null?
+  end
+
   it 'has a working function #const_return_gshort' do
     Everything.const_return_gshort.must_equal 0
   end
@@ -166,6 +171,11 @@ describe Everything do
     Everything.one_outparam_glong.must_equal 0
   end
 
+  it 'has a working function #one_outparam_gpointer' do
+    skip 'Not implemented yet'
+    Everything.one_outparam_gpointer.must_equal 0
+  end
+
   it 'has a working function #one_outparam_gshort' do
     Everything.one_outparam_gshort.must_equal 0
   end
@@ -271,6 +281,10 @@ describe Everything do
     Everything.oneparam_glong(0).must_be_nil
   end
 
+  it 'has a working function #oneparam_gpointer' do
+    Everything.oneparam_gpointer(FFI::MemoryPointer.new(:int)).must_be_nil
+  end
+
   it 'has a working function #oneparam_gshort' do
     Everything.oneparam_gshort(0).must_be_nil
   end
@@ -373,6 +387,12 @@ describe Everything do
 
   it 'has a working function #passthrough_one_glong' do
     Everything.passthrough_one_glong(42).must_equal 42
+  end
+
+  it 'has a working function #passthrough_one_gpointer' do
+    ptr = FFI::MemoryPointer.new(:int)
+    result = Everything.passthrough_one_gpointer(ptr)
+    result.must_equal ptr
   end
 
   it 'has a working function #passthrough_one_gshort' do
