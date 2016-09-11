@@ -915,7 +915,7 @@ describe Regress do
   describe 'Regress::FooStruct' do
     let(:instance) { Regress::FooStruct.new }
 
-    it 'blocks access to the field priv' do
+    it 'blocks access to the hidden struct field priv' do
       proc { instance.priv = nil }.must_raise NoMethodError
       proc { instance.priv }.must_raise NoMethodError
     end
@@ -1186,7 +1186,7 @@ describe Regress do
       instance.nested_a.some_int.must_equal 12_345
     end
 
-    it 'blocks access to the field priv' do
+    it 'blocks access to the hidden struct field priv' do
       proc { instance.priv = nil }.must_raise NoMethodError
       proc { instance.priv }.must_raise NoMethodError
     end
