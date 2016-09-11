@@ -479,10 +479,14 @@ describe GIMarshallingTests do
       derived_instance.int.must_equal 23
     end
 
-    # TODO: Check if this is fixed
-    # See https://bugzilla.gnome.org/show_bug.cgi?id=727665
     it 'has a working method #int8_out' do
-      skip 'Introspection data is not generated correctly'
+      skip 'Introspection data is not generated correctly' if GObjectIntrospection::VERSION < '1.41.91'
+
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
+      end
+
+      derived_instance.int8_out.must_equal 42
     end
 
     it 'has a working method #method' do
@@ -2610,12 +2614,11 @@ describe GIMarshallingTests do
     res.must_be_instance_of GIMarshallingTests::OverridesStruct
   end
 
-  # TODO: Wait for fixed version of param_spec_in_bool to land in Debian/Ubuntu
-  # See https://bugzilla.gnome.org/show_bug.cgi?id=728409
   it 'has a working function #param_spec_in_bool' do
-    skip 'param_spec_in_bool tests the wrong type'
+    skip 'param_spec_in_bool tests the wrong type' if GObjectIntrospection::VERSION < '1.41.3'
     ps = GObject.param_spec_boolean 'mybool', 'nick', 'blurb', true, :readable
     GIMarshallingTests.param_spec_in_bool ps
+    pass
   end
 
   it 'has a working function #param_spec_out' do

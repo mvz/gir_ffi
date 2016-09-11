@@ -14,7 +14,6 @@ module GirFFI
         name if has_input_value? && !helper_argument?
       end
 
-      # TODO: Improve this so each method can only have one block argument.
       def block_argument?
         specialized_type_tag == :callback
       end

@@ -14,8 +14,8 @@ module GirFFI
       :in
     end
 
+    # Assume we don't need to increase the refcount for the receiver argument.
     def ownership_transfer
-      # FIXME: Make an informed choice for this.
       :everything
     end
 

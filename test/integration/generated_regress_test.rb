@@ -1484,6 +1484,7 @@ describe Regress do
     end
 
     let(:instance) { ConcreteDrawable.new }
+
     it 'has a working method #do_foo' do
       instance.do_foo 42
       pass

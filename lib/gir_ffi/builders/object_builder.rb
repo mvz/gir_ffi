@@ -134,12 +134,11 @@ module GirFFI
       def provide_initializer
         return if info.find_method 'new'
 
-        # FIXME: Only valid if the object descends from GObject::Object
-        klass.class_eval "
+        klass.class_eval <<-END
           def initialize(properties = {})
             base_initialize(properties)
           end
-        "
+        END
       end
 
       def setup_interfaces

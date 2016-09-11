@@ -73,7 +73,7 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
     it 'increases the refcount of the result and converts it to a pointer' do
       # Ensure variable names are generated in order
       builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GObject::Object.from(_v1.ref).to_ptr']
+      builder.post_conversion.must_equal ['_v1.ref', '_v2 = GObject::Object.from(_v1).to_ptr']
     end
 
     it 'returns the result of the conversion' do
