@@ -1618,6 +1618,10 @@ describe Regress do
       instance.do_matrix('bar').must_equal 42
     end
 
+    it 'has a working method #emit_sig_with_array_len_prop' do
+      # TODO: Implement
+    end
+
     it 'has a working method #emit_sig_with_foreign_struct' do
       skip unless get_method_introspection_data('Regress', 'TestObj',
                                                 'emit_sig_with_foreign_struct')
@@ -1677,6 +1681,14 @@ describe Regress do
       instance.ref_count.must_equal 1
       instance.instance_method_full
       instance.ref_count.must_equal 1
+    end
+
+    it 'has a working method #not_nullable_element_typed_gpointer_in' do
+      # TODO: Implement
+    end
+
+    it 'has a working method #not_nullable_typed_gpointer_in' do
+      # TODO: Implement
     end
 
     it 'has a working method #set_bare' do
@@ -2894,6 +2906,9 @@ describe Regress do
     pass
   end
 
+  it 'has a working function #get_variant' do
+    # TODO: Implement
+  end
   it 'has a working function #global_get_flags_out' do
     result = Regress.global_get_flags_out
     result.must_equal(flag1: true, flag3: true)
@@ -3030,6 +3045,10 @@ describe Regress do
 
   it 'has a working function #test_array_int_out' do
     Regress.test_array_int_out.must_be :==, [0, 1, 2, 3, 4]
+  end
+
+  it 'has a working function #test_array_struct_out' do
+    # TODO: Implement
   end
 
   it 'has a working function #test_async_ready_callback' do
@@ -3576,6 +3595,10 @@ describe Regress do
     Regress.test_nested_parameter(3).must_be_nil
   end
 
+  it 'has a working function #test_noptr_callback' do
+    # TODO: Implement
+  end
+
   it 'has a working function #test_null_gerror_callback' do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
@@ -3586,6 +3609,14 @@ describe Regress do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
     value.message.must_equal 'regression test owned error'
+  end
+
+  it 'has a working function #test_return_allow_none' do
+    # TODO: Implement
+  end
+
+  it 'has a working function #test_return_nullable' do
+    # TODO: Implement
   end
 
   it 'has a working function #test_short' do
