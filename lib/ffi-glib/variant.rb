@@ -21,8 +21,8 @@ module GLib
     # the tests on 32-bit systems.
     #
     def store_pointer(ptr)
+      Lib.g_variant_ref_sink ptr
       super
-      ::GLib::Lib.g_variant_ref_sink ptr
     end
 
     # For variants, wrap_copy does not do any copying.
