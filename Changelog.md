@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+* Internal test and code improvements. Some internal APIs have been removed or
+  changed.
+* Make Strv#each thread-safe.
+* Drop support for CRuby 2.0.
+* Move type_init and base Strv implementation into GObjectIntrospection, making
+  it stand-alone.
+* Move GLib::Boolean to GirFFI::Boolean.
+* Guard against instantiating abstract classes using the default constructor.
+
 ## 0.10.2 / 2016-04-29
 
 * Update ffi-bit_masks dependency and remove monkey-patch
