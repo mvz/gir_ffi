@@ -9,25 +9,6 @@ module GObjectIntrospection
     extend FFI::BitMasks
     ffi_lib 'girepository-1.0'
 
-    # Helper class to support guessing the gobject-introspection version.
-    # Provide several guesses to #provide_guess, and the result in #best_guess
-    # will be the best (i.e., lowest) guess.
-    class VersionGuesser
-      def initialize(base)
-        @guess = base
-      end
-
-      def provide_guess(guessed)
-        @guess = guessed if guessed < @guess
-      end
-
-      def best_guess
-        @guess
-      end
-    end
-
-    version_guesser = VersionGuesser.new('1.42')
-
     # IRepository
     enum :IRepositoryLoadFlags, [:LAZY, (1 << 0)]
 
@@ -102,16 +83,11 @@ module GObjectIntrospection
     attach_function :g_callable_info_get_caller_owns, [:pointer], :ITransfer
     attach_function :g_callable_info_may_return_null, [:pointer], :bool
     attach_function :g_callable_info_can_throw_gerror, [:pointer], :bool
+    attach_function :g_callable_info_get_instance_ownership_transfer,
+                    [:pointer], :ITransfer
     attach_function :g_callable_info_get_n_args, [:pointer], :int
     attach_function :g_callable_info_get_arg, [:pointer, :int], :pointer
     attach_function :g_callable_info_skip_return, [:pointer], :bool
-
-    begin
-      attach_function :g_callable_info_get_instance_ownership_transfer,
-                      [:pointer], :ITransfer
-    rescue FFI::NotFoundError
-      version_guesser.provide_guess '1.40'
-    end
 
     # IArgInfo
     enum :IDirection, [
@@ -312,7 +288,5 @@ module GObjectIntrospection
              construct_only: (1 << 3)
 
     attach_function :g_property_info_get_flags, [:pointer], :ParamFlags
-
-    ::GObjectIntrospection::VERSION = version_guesser.best_guess
   end
 end
