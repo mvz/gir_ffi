@@ -16,6 +16,17 @@ describe GObject::ParamSpec do
     end
   end
 
+  describe '#accessor_name' do
+    it 'returns a safe ruby method name' do
+      pspec = GObject.param_spec_boolean('foo-bar', 'foo bar',
+                                         'Boolean Foo Bar',
+                                         false,
+                                         readable: true, writable: true)
+
+      pspec.accessor_name.must_equal 'foo_bar'
+    end
+  end
+
   it 'cannot be instantiated directly' do
     proc { GObject::ParamSpec.new }.must_raise NoMethodError
   end

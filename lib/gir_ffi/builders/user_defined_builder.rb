@@ -109,15 +109,13 @@ module GirFFI
 
       def property_getter
         proc do |object, _property_id, value, pspec|
-          accessor_name = pspec.get_name.tr('-', '_')
-          value.set_value object.send(accessor_name)
+          value.set_value object.send(pspec.accessor_name)
         end
       end
 
       def property_setter
         proc do |object, _property_id, value, pspec|
-          accessor_name = pspec.get_name.tr('-', '_')
-          object.send("#{accessor_name}=", value.get_value)
+          object.send("#{pspec.accessor_name}=", value.get_value)
         end
       end
 
@@ -172,7 +170,7 @@ module GirFFI
         parent_spec = [:parent, superclass::Struct, 0]
         offset = superclass::Struct.size
         fields_spec = properties.flat_map do |pinfo|
-          field_name = pinfo.name.tr('-', '_').to_sym
+          field_name = pinfo.param_spec.accessor_name.to_sym
           spec = [field_name, :int32, offset]
           offset += FFI.type_size(:int32)
           spec
@@ -187,7 +185,7 @@ module GirFFI
       end
 
       def setup_accessors_for_param_info(pinfo)
-        field_name = pinfo.name.tr('-', '_')
+        field_name = pinfo.param_spec.accessor_name.to_sym
         code = <<-CODE
         def #{field_name}
           @struct[:#{field_name}]
