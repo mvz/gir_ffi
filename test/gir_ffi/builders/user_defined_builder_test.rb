@@ -53,6 +53,18 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.set_property('foo-bar', 20)
         obj.foo_bar.must_equal 20
       end
+
+      it 'keeps parent properties accessible through its accessors' do
+        obj = klass.new
+        obj.int = 24
+        obj.int.must_equal 24
+      end
+
+      it 'keeps parent properties accessible through get_property and set_property' do
+        obj = klass.new
+        obj.set_property('int', 24)
+        obj.get_property('int').must_equal 24
+      end
     end
 
     describe 'with type info containing an overridden g_name' do
