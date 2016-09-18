@@ -8,5 +8,9 @@ module GObject
       Lib.g_param_spec_ref self
       self
     end
+
+    def accessor_name
+      get_name.tr('-', '_')
+    end
   end
 end

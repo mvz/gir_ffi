@@ -21,7 +21,7 @@ describe GirFFI::UserDefinedTypeInfo do
       expect(foo_spec).to receive(:get_name).and_return :foo
 
       info.install_property foo_spec
-      info.properties.map(&:name).must_equal [:foo]
+      info.properties.map(&:get_name).must_equal [:foo]
     end
   end
 
@@ -58,7 +58,7 @@ describe GirFFI::UserDefinedTypeInfo do
     end
 
     it 'yields the new object to the block passed' do
-      info.properties.map(&:name).must_equal [:foo, :bar]
+      info.properties.map(&:get_name).must_equal [:foo, :bar]
     end
   end
 

@@ -10,6 +10,7 @@
   it stand-alone.
 * Move GLib::Boolean to GirFFI::Boolean.
 * Guard against instantiating abstract classes using the default constructor.
+* Handle user-defined properties containing dashes
 
 ## 0.10.2 / 2016-04-29
 

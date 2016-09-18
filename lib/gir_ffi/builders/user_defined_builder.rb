@@ -103,19 +103,19 @@ module GirFFI
         object_class.set_property = property_setter
 
         properties.each_with_index do |property, index|
-          object_class.install_property index + 1, property.param_spec
+          object_class.install_property index + 1, property
         end
       end
 
       def property_getter
         proc do |object, _property_id, value, pspec|
-          value.set_value object.send(pspec.get_name)
+          value.set_value object.send(pspec.accessor_name)
         end
       end
 
       def property_setter
         proc do |object, _property_id, value, pspec|
-          object.send("#{pspec.get_name}=", value.get_value)
+          object.send("#{pspec.accessor_name}=", value.get_value)
         end
       end
 
@@ -169,8 +169,9 @@ module GirFFI
       def layout_specification
         parent_spec = [:parent, superclass::Struct, 0]
         offset = superclass::Struct.size
-        fields_spec = properties.flat_map do |pinfo|
-          spec = [pinfo.name.to_sym, :int32, offset]
+        fields_spec = properties.flat_map do |param_spec|
+          field_name = param_spec.accessor_name.to_sym
+          spec = [field_name, :int32, offset]
           offset += FFI.type_size(:int32)
           spec
         end
@@ -178,13 +179,13 @@ module GirFFI
       end
 
       def setup_property_accessors
-        properties.each do |pinfo|
-          setup_accessors_for_param_info pinfo
+        properties.each do |param_spec|
+          setup_accessors_for_param_spec param_spec
         end
       end
 
-      def setup_accessors_for_param_info(pinfo)
-        field_name = pinfo.name
+      def setup_accessors_for_param_spec(param_spec)
+        field_name = param_spec.accessor_name
         code = <<-CODE
         def #{field_name}
           @struct[:#{field_name}]

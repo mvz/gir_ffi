@@ -19,7 +19,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
     describe 'with type info containing one property' do
       let(:info) do
         GirFFI::UserDefinedTypeInfo.new klass do |it|
-          it.install_property GObject.param_spec_int('foo', 'foo bar',
+          it.install_property GObject.param_spec_int('foo-bar', 'foo bar',
                                                      'The Foo Bar Property',
                                                      10, 20, 15,
                                                      3)
@@ -32,26 +32,38 @@ describe GirFFI::Builders::UserDefinedBuilder do
         q.instance_size.must_be :>, GIMarshallingTests::Object::Struct.size
       end
 
-      it 'gives the types Struct the fields :parent and :foo' do
-        klass::Struct.members.must_equal [:parent, :foo]
+      it "gives the type's Struct fields for the parent and the property" do
+        klass::Struct.members.must_equal [:parent, :foo_bar]
       end
 
       it 'creates accessor functions for the property' do
         obj = klass.new
-        obj.foo = 13
-        obj.foo.must_equal 13
+        obj.foo_bar = 13
+        obj.foo_bar.must_equal 13
       end
 
       it 'makes the property retrievable using #get_property' do
         obj = klass.new
-        obj.foo = 13
-        obj.get_property('foo').must_equal 13
+        obj.foo_bar = 13
+        obj.get_property('foo-bar').must_equal 13
       end
 
       it 'makes the property settable using #set_property' do
         obj = klass.new
-        obj.set_property('foo', 20)
-        obj.foo.must_equal 20
+        obj.set_property('foo-bar', 20)
+        obj.foo_bar.must_equal 20
+      end
+
+      it 'keeps parent properties accessible through its accessors' do
+        obj = klass.new
+        obj.int = 24
+        obj.int.must_equal 24
+      end
+
+      it 'keeps parent properties accessible through get_property and set_property' do
+        obj = klass.new
+        obj.set_property('int', 24)
+        obj.get_property('int').must_equal 24
       end
     end
 
