@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-require 'gir_ffi/user_defined_property_info'
 require 'gir_ffi/vfunc_implementation'
 
 module GirFFI
@@ -21,7 +20,7 @@ module GirFFI
     end
 
     def install_property(property)
-      @properties << UserDefinedPropertyInfo.new(property)
+      @properties << property
     end
 
     def install_vfunc_implementation(name, implementation)
