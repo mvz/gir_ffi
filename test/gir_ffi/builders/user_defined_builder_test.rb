@@ -16,13 +16,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
       builder.build_class
     end
 
-    describe 'with type info containing one property' do
+    describe 'with type info containing one integer property' do
       let(:info) do
         GirFFI::UserDefinedTypeInfo.new klass do |it|
           it.install_property GObject.param_spec_int('foo-bar', 'foo bar',
                                                      'The Foo Bar Property',
                                                      10, 20, 15,
-                                                     3)
+                                                     readwrite: true)
         end
       end
 
@@ -64,6 +64,32 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj = klass.new
         obj.set_property('int', 24)
         obj.get_property('int').must_equal 24
+      end
+    end
+
+    describe 'with type info containing properties of several different types' do
+      let(:info) do
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.install_property GObject.param_spec_string('string-prop', 'string property',
+                                                        'The String Property',
+                                                        'this is the default value',
+                                                        readwrite: true)
+          it.install_property GObject.param_spec_int('int-prop', 'integer property',
+                                                     'The Integer Property',
+                                                     10, 20, 15,
+                                                     readwrite: true)
+        end
+      end
+
+      it 'registers a type of the proper size' do
+        expected_size = klass::Struct.size
+        gtype = klass.gtype
+        q = GObject.type_query gtype
+        q.instance_size.must_equal expected_size
+      end
+
+      it "gives the type's Struct fields for the parent and the properties" do
+        klass::Struct.members.must_equal [:parent, :string_prop, :int_prop]
       end
     end
 

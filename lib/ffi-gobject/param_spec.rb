@@ -12,5 +12,14 @@ module GObject
     def accessor_name
       get_name.tr('-', '_')
     end
+
+    def ffi_type
+      case value_type
+      when TYPE_INT
+        :int
+      when TYPE_STRING
+        :pointer
+      end
+    end
   end
 end

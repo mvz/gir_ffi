@@ -11,8 +11,8 @@ module GirFFI
       end
 
       def setup_class
-        register_type
         setup_layout
+        register_type
         setup_constants
         setup_property_accessors
         setup_constructor
@@ -85,11 +85,7 @@ module GirFFI
       end
 
       def instance_size
-        size = parent_gtype.instance_size
-        properties.each do
-          size += FFI.type_size(:int32)
-        end
-        size
+        struct_class.size
       end
 
       def class_size
@@ -167,13 +163,11 @@ module GirFFI
       end
 
       def layout_specification
-        parent_spec = [:parent, superclass::Struct, 0]
-        offset = superclass::Struct.size
+        parent_spec = [:parent, superclass::Struct]
         fields_spec = properties.flat_map do |param_spec|
           field_name = param_spec.accessor_name.to_sym
-          spec = [field_name, :int32, offset]
-          offset += FFI.type_size(:int32)
-          spec
+          ffi_type = param_spec.ffi_type
+          [field_name, ffi_type]
         end
         parent_spec + fields_spec
       end
