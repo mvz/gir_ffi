@@ -2,6 +2,7 @@
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :GIMarshallingTests
+GirFFI.setup :Regress
 
 describe GirFFI::Builders::UserDefinedBuilder do
   let(:klass) do
@@ -90,6 +91,34 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       it "gives the type's Struct fields for the parent and the properties" do
         klass::Struct.members.must_equal [:parent, :string_prop, :int_prop]
+      end
+    end
+
+    describe 'when deriving from a class with hidden struct size' do
+      let(:parent_class) { Regress::TestInheritDrawable }
+      let(:parent_size) do
+        GObject.type_query(parent_class.gtype).instance_size
+      end
+      let(:klass) do
+        Object.const_set("DerivedClass#{Sequence.next}", Class.new(parent_class))
+      end
+      let(:info) do
+        GirFFI::UserDefinedTypeInfo.new klass do |it|
+          it.install_property GObject.param_spec_int('int-prop', 'integer property',
+                                                     'Integer Property',
+                                                     10, 20, 15,
+                                                     readwrite: true)
+        end
+      end
+
+      it 'registers a type that is bigger than the parent' do
+        klass_size = GObject.type_query(klass.gtype).instance_size
+        klass_size.must_be :>, parent_size
+      end
+
+      it 'leaves enough space in derived struct layout' do
+        struct_size = klass::Struct.size
+        struct_size.must_be :>, parent_size
       end
     end
 

@@ -85,7 +85,13 @@ module GirFFI
       end
 
       def instance_size
-        struct_class.size
+        size = parent_gtype.instance_size
+        alignment = struct_class.alignment
+        properties.each do |prop|
+          type_size = FFI.type_size(prop.ffi_type)
+          size += [type_size, alignment].max
+        end
+        size
       end
 
       def class_size
@@ -163,11 +169,17 @@ module GirFFI
       end
 
       def layout_specification
-        parent_spec = [:parent, superclass::Struct]
+        parent_spec = [:parent, superclass::Struct, 0]
+        offset = parent_gtype.instance_size
+
+        alignment = superclass::Struct.alignment
         fields_spec = properties.flat_map do |param_spec|
           field_name = param_spec.accessor_name.to_sym
           ffi_type = param_spec.ffi_type
-          [field_name, ffi_type]
+          type_size = FFI.type_size(ffi_type)
+          spec = [field_name, ffi_type, offset]
+          offset += [type_size, alignment].max
+          spec
         end
         parent_spec + fields_spec
       end
