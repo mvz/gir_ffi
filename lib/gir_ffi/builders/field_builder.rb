@@ -229,8 +229,9 @@ module GirFFI
 
       attr_reader :info
 
-      def initialize(field_info)
+      def initialize(field_info, container_class)
         @info = field_info
+        @container_class = container_class
       end
 
       def build
@@ -285,13 +286,7 @@ module GirFFI
         @field_type_tag ||= field_type.tag_or_class
       end
 
-      def container_class
-        @container_class ||= container_module.const_get(container_info.safe_name)
-      end
-
-      def container_module
-        @container_module ||= Object.const_get(container_info.safe_namespace)
-      end
+      attr_reader :container_class
 
       def container_info
         @container_info ||= info.container
