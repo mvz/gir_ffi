@@ -184,24 +184,61 @@ module GirFFI
         parent_spec + fields_spec
       end
 
-      def setup_property_accessors
-        properties.each do |param_spec|
-          setup_accessors_for_param_spec param_spec
+      class UserDefinedPropertyFieldInfo
+        class FieldTypeInfo
+          include InfoExt::ITypeInfo
+
+          def initialize(param_spec)
+            @param_spec = param_spec
+          end
+
+          def tag
+            @param_spec.type_tag
+          end
+
+          def pointer?
+            @param_spec.pointer_type?
+          end
+        end
+
+        def initialize(param_spec, container, offset)
+          @param_spec = param_spec
+          @container = container
+          @offset = offset
+        end
+
+        attr_reader :container, :offset
+
+        def name
+          @param_spec.accessor_name
+        end
+
+        def field_type
+          @field_type ||= FieldTypeInfo.new @param_spec
+        end
+
+        def safe_namespace
+          @container.safe_namespace
+        end
+
+        def related_array_length_field
+          nil
+        end
+
+        def writable?
+          @param_spec.flags[:writable]
         end
       end
 
-      def setup_accessors_for_param_spec(param_spec)
-        field_name = param_spec.accessor_name
-        code = <<-CODE
-        def #{field_name}
-          @struct[:#{field_name}]
+      def setup_property_accessors
+        offset = parent_gtype.instance_size
+        alignment = struct_class.alignment
+        properties.each do |param_spec|
+          field_info = UserDefinedPropertyFieldInfo.new(param_spec, info, offset)
+          type_size = FFI.type_size(param_spec.ffi_type)
+          offset += [type_size, alignment].max
+          FieldBuilder.new(field_info, klass).build
         end
-        def #{field_name}= val
-          @struct[:#{field_name}] = val
-        end
-        CODE
-
-        klass.class_eval code
       end
 
       def method_introspection_data(_method)

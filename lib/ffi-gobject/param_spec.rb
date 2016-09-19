@@ -13,6 +13,24 @@ module GObject
       get_name.tr('-', '_')
     end
 
+    def pointer_type?
+      case value_type
+      when TYPE_INT
+        false
+      when TYPE_STRING
+        true
+      end
+    end
+
+    def type_tag
+      case value_type
+      when TYPE_INT
+        :gint
+      when TYPE_STRING
+        :utf8
+      end
+    end
+
     def ffi_type
       case value_type
       when TYPE_INT

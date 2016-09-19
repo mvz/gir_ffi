@@ -92,6 +92,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it "gives the type's Struct fields for the parent and the properties" do
         klass::Struct.members.must_equal [:parent, :string_prop, :int_prop]
       end
+
+      it 'creates accessor functions for the string property' do
+        obj = klass.new
+        obj.string_prop = 'hello!'
+        obj.string_prop.must_equal 'hello!'
+      end
     end
 
     describe 'when deriving from a class with hidden struct size' do
