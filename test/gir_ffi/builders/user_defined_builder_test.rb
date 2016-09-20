@@ -93,8 +93,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
         q.instance_size.must_equal expected_size
       end
 
-      it "gives the type's Struct fields for the parent and the properties" do
-        klass::Struct.members.must_equal [:parent, :string_prop, :int_prop, :long_prop]
+      it "gives the type's Struct fields for the parent and the properties with the correct offsets" do
+        offsets = klass::Struct.offsets
+        alignment = klass::Struct.alignment
+        alignment.must_equal 8  # TODO: Fix tests for platforms where this fails.
+        offsets.must_equal [[:parent, 0], [:string_prop, 32], [:int_prop, 40], [:long_prop, 48]]
       end
 
       it 'creates accessor functions for the string property' do

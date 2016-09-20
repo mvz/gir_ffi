@@ -169,12 +169,12 @@ module GirFFI
       end
 
       def layout_specification
-        parent_spec = [:parent, superclass::Struct, 0]
+        parent_spec = [:parent, superclass::Struct]
         offset = parent_gtype.instance_size
 
         alignment = superclass::Struct.alignment
         fields_spec = properties.flat_map do |param_spec|
-          field_name = param_spec.accessor_name.to_sym
+          field_name = param_spec.accessor_name
           ffi_type = param_spec.ffi_type
           type_size = FFI.type_size(ffi_type)
           spec = [field_name, ffi_type, offset]
