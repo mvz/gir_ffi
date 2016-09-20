@@ -217,10 +217,6 @@ module GirFFI
           @field_type ||= FieldTypeInfo.new @param_spec
         end
 
-        def safe_namespace
-          @container.safe_namespace
-        end
-
         def related_array_length_field
           nil
         end
