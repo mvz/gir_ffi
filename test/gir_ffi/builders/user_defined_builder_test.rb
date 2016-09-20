@@ -98,6 +98,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.string_prop = 'hello!'
         obj.string_prop.must_equal 'hello!'
       end
+
+      it 'creates accessor functions for the integer property' do
+        obj = klass.new
+        obj.int_prop = 13
+        obj.int_prop.must_equal 13
+      end
     end
 
     describe 'when deriving from a class with hidden struct size' do
