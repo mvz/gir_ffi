@@ -22,15 +22,14 @@ module GObject
       end
     end
 
+    G_TYPE_MAP = {
+      TYPE_INT => :gint,
+      TYPE_STRING => :utf8,
+      TYPE_LONG => :glong
+    }.freeze
+
     def type_tag
-      case value_type
-      when TYPE_INT
-        :gint
-      when TYPE_STRING
-        :utf8
-      when TYPE_LONG
-        :glong
-      end
+      G_TYPE_MAP.fetch(value_type)
     end
 
     def ffi_type
