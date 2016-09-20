@@ -79,6 +79,10 @@ describe GirFFI::Builders::UserDefinedBuilder do
                                                      'The Integer Property',
                                                      10, 20, 15,
                                                      readwrite: true)
+          it.install_property GObject.param_spec_long('long-prop', 'long property',
+                                                      'The Long Property',
+                                                      10.0, 50.0, 42.0,
+                                                      readwrite: true)
         end
       end
 
@@ -90,7 +94,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
 
       it "gives the type's Struct fields for the parent and the properties" do
-        klass::Struct.members.must_equal [:parent, :string_prop, :int_prop]
+        klass::Struct.members.must_equal [:parent, :string_prop, :int_prop, :long_prop]
       end
 
       it 'creates accessor functions for the string property' do

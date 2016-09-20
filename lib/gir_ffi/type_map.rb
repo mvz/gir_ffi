@@ -34,6 +34,7 @@ module GirFFI
       guint32:   :uint32,
       gint64:    :int64,
       guint64:   :uint64,
+      glong:     :long,
       gsize:     gsize_type,
       gfloat:    :float,
       gdouble:   :double,

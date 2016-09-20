@@ -28,16 +28,13 @@ module GObject
         :gint
       when TYPE_STRING
         :utf8
+      when TYPE_LONG
+        :glong
       end
     end
 
     def ffi_type
-      case value_type
-      when TYPE_INT
-        :int
-      when TYPE_STRING
-        :pointer
-      end
+      GirFFI::TypeMap.map_basic_type(type_tag)
     end
   end
 end
