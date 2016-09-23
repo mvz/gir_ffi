@@ -105,7 +105,7 @@ module GirFFI
         object_class.set_property = property_setter
 
         properties.each_with_index do |property, index|
-          object_class.install_property index + 1, property
+          object_class.install_property index + 1, property.param_spec
         end
       end
 
@@ -173,9 +173,9 @@ module GirFFI
         offset = parent_gtype.instance_size
 
         alignment = superclass::Struct.alignment
-        fields_spec = properties.flat_map do |param_spec|
-          field_name = param_spec.accessor_name
-          ffi_type = param_spec.ffi_type
+        fields_spec = properties.flat_map do |param_info|
+          field_name = param_info.accessor_name
+          ffi_type = param_info.ffi_type
           type_size = FFI.type_size(ffi_type)
           spec = [field_name, ffi_type, offset]
           offset += [type_size, alignment].max
@@ -229,9 +229,9 @@ module GirFFI
       def setup_property_accessors
         offset = parent_gtype.instance_size
         alignment = struct_class.alignment
-        properties.each do |param_spec|
-          field_info = UserDefinedPropertyFieldInfo.new(param_spec, info, offset)
-          type_size = FFI.type_size(param_spec.ffi_type)
+        properties.each do |param_info|
+          field_info = UserDefinedPropertyFieldInfo.new(param_info, info, offset)
+          type_size = FFI.type_size(param_info.ffi_type)
           offset += [type_size, alignment].max
           FieldBuilder.new(field_info, klass).build
         end
