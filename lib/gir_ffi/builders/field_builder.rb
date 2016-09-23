@@ -306,7 +306,7 @@ module GirFFI
       end
 
       def hidden_struct_type?
-        field_type.flattened_tag == :struct && field_type.interface.size.zero?
+        field_type.hidden_struct_type?
       end
     end
   end
