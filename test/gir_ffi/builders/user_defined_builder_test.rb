@@ -113,6 +113,37 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with a boxed property' do
+      let(:boxed_gtype) { GIMarshallingTests::BoxedStruct.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_property GObject.param_spec_boxed('boxed-prop', 'boxed property',
+                                                       'The Boxed Property',
+                                                       boxed_gtype,
+                                                       readwrite: true)
+        end
+      end
+
+      it 'registers a type of the proper size' do
+        expected_size = klass::Struct.size
+        gtype = klass.gtype
+        q = GObject.type_query gtype
+        q.instance_size.must_equal expected_size
+      end
+
+      it "gives the type's Struct fields for the parent and the property" do
+        klass::Struct.members.must_equal [:parent, :boxed_prop]
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        boxed = GIMarshallingTests::BoxedStruct.new
+        boxed.long_ = 423
+        obj.boxed_prop = boxed
+        obj.boxed_prop.long_.must_equal 423
+      end
+    end
+
     describe 'when deriving from a class with hidden struct size' do
       let(:parent_class) { Regress::TestInheritDrawable }
       let(:parent_size) do

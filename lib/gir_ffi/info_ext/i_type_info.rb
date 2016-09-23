@@ -96,11 +96,12 @@ module GirFFI
 
       # TODO: Use class rather than class name
       def argument_class_name
-        if tag == :interface
-          interface.full_type_name
-        else
+        interface_class_name ||
           TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
-        end
+      end
+
+      def interface_class_name
+        interface.full_type_name if tag == :interface
       end
 
       def to_ffi_type

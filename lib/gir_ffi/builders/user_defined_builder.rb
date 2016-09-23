@@ -202,6 +202,22 @@ module GirFFI
           def pointer?
             @property_info.pointer_type?
           end
+
+          def interface_type
+            :struct if tag == :interface
+          end
+
+          def hidden_struct_type?
+            false
+          end
+
+          def interface_class
+            Builder.build_by_gtype @property_info.value_type if tag == :interface
+          end
+
+          def interface_class_name
+            interface_class.name if tag == :interface
+          end
         end
 
         def initialize(property_info, container, offset)

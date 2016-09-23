@@ -29,7 +29,7 @@ module GirFFI
       case value_type
       when GObject::TYPE_INT
         false
-      when GObject::TYPE_STRING
+      else
         true
       end
     end
@@ -37,11 +37,13 @@ module GirFFI
     G_TYPE_MAP = {
       GObject::TYPE_INT => :gint,
       GObject::TYPE_STRING => :utf8,
-      GObject::TYPE_LONG => :glong
+      GObject::TYPE_LONG => :glong,
+      GObject::TYPE_BOXED => :interface
     }.freeze
 
     def type_tag
-      G_TYPE_MAP.fetch(value_type)
+      fundamental_type = GObject.type_fundamental value_type
+      G_TYPE_MAP.fetch(fundamental_type)
     end
 
     def ffi_type
