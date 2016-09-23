@@ -55,7 +55,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.foo_bar.must_equal 20
       end
 
-      it 'keeps parent properties accessible through its accessors' do
+      it 'keeps parent properties accessible through their accessors' do
         obj = klass.new
         obj.int = 24
         obj.int.must_equal 24
