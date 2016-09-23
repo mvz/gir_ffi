@@ -28,6 +28,7 @@ module GirFFI
     # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
     G_TYPE_POINTER_MAP = {
       GObject::TYPE_BOOLEAN => false,
+      GObject::TYPE_CHAR => false,
       GObject::TYPE_INT => false,
       GObject::TYPE_LONG => false
     }.freeze
@@ -39,6 +40,7 @@ module GirFFI
     # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
     G_TYPE_TAG_MAP = {
       GObject::TYPE_BOOLEAN => :gboolean,
+      GObject::TYPE_CHAR => :gint8,
       GObject::TYPE_INT => :gint,
       GObject::TYPE_STRING => :utf8,
       GObject::TYPE_LONG => :glong,

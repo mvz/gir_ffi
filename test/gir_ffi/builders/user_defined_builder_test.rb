@@ -193,6 +193,24 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with a char property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_property GObject.param_spec_char('the-prop', 'the property',
+                                                      'The Property',
+                                                      10, 100, 15,
+                                                      readwrite: true)
+        end
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        obj.the_prop = 13
+        obj.the_prop.must_equal 13
+      end
+    end
+
     describe 'when deriving from a class with hidden struct size' do
       let(:parent_class) { Regress::TestInheritDrawable }
       let(:parent_size) do
