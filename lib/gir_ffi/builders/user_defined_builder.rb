@@ -184,6 +184,9 @@ module GirFFI
         parent_spec + fields_spec
       end
 
+      # TODO: Move this to its own file.
+      # TODO: See if this or FieldTypeInfo can be merged with with
+      # UserDefinedPropertyInfo.
       class UserDefinedPropertyFieldInfo
         class FieldTypeInfo
           include InfoExt::ITypeInfo
