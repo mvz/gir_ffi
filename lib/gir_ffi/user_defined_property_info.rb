@@ -29,28 +29,36 @@ module GirFFI
     G_TYPE_POINTER_MAP = {
       GObject::TYPE_BOOLEAN => false,
       GObject::TYPE_CHAR => false,
+      GObject::TYPE_DOUBLE => false,
       GObject::TYPE_INT => false,
-      GObject::TYPE_LONG => false
+      GObject::TYPE_LONG => false,
+      GObject::TYPE_STRING => true,
+      GObject::TYPE_BOXED => true,
+      GObject::TYPE_OBJECT => true
     }.freeze
 
     def pointer_type?
-      G_TYPE_POINTER_MAP.fetch(value_type, true)
+      G_TYPE_POINTER_MAP.fetch(fundamental_value_type)
     end
 
     # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
     G_TYPE_TAG_MAP = {
       GObject::TYPE_BOOLEAN => :gboolean,
       GObject::TYPE_CHAR => :gint8,
+      GObject::TYPE_DOUBLE => :gdouble,
       GObject::TYPE_INT => :gint,
-      GObject::TYPE_STRING => :utf8,
       GObject::TYPE_LONG => :glong,
+      GObject::TYPE_STRING => :utf8,
       GObject::TYPE_BOXED => :interface,
       GObject::TYPE_OBJECT => :interface
     }.freeze
 
     def type_tag
-      fundamental_type = GObject.type_fundamental value_type
-      G_TYPE_TAG_MAP.fetch(fundamental_type)
+      G_TYPE_TAG_MAP.fetch(fundamental_value_type)
+    end
+
+    def fundamental_value_type
+      @fundamental_value_type ||= GObject.type_fundamental value_type
     end
 
     def ffi_type
