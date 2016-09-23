@@ -4,8 +4,7 @@ require 'gir_ffi/vfunc_implementation'
 module GirFFI
   # Represents a user defined type, conforming, as needed, to the interface of
   # GObjectIntrospection::IObjectInfo.
-  # TODO: Rename to UserDefinedObjectInfo
-  class UserDefinedTypeInfo
+  class UserDefinedObjectInfo
     attr_reader :properties, :vfunc_implementations
 
     def initialize(klass)

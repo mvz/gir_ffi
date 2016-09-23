@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 require 'gir_ffi_test_helper'
-require 'gir_ffi/user_defined_type_info'
+require 'gir_ffi/user_defined_object_info'
 
 GirFFI.setup :GIMarshallingTests
 
-describe GirFFI::UserDefinedTypeInfo do
+describe GirFFI::UserDefinedObjectInfo do
   describe '#described_class' do
-    let(:info) { GirFFI::UserDefinedTypeInfo.new :some_class }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new :some_class }
 
     it 'returns the class passed to #initialize' do
       info.described_class.must_equal :some_class
@@ -14,7 +14,7 @@ describe GirFFI::UserDefinedTypeInfo do
   end
 
   describe '#install_property' do
-    let(:info) { GirFFI::UserDefinedTypeInfo.new :some_class }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new :some_class }
     let(:foo_spec) { Object.new }
 
     it 'adds the passed in property to the list of properties' do
@@ -26,7 +26,7 @@ describe GirFFI::UserDefinedTypeInfo do
   end
 
   describe '#install_vfunc_implementation' do
-    let(:info) { GirFFI::UserDefinedTypeInfo.new :some_class }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new :some_class }
     let(:implementation) { Object.new }
 
     it 'adds to the list of vfunc implementations' do
@@ -46,7 +46,7 @@ describe GirFFI::UserDefinedTypeInfo do
     let(:foo_spec) { Object.new }
     let(:bar_spec) { Object.new }
     let(:info) do
-      GirFFI::UserDefinedTypeInfo.new :some_class do |inf|
+      GirFFI::UserDefinedObjectInfo.new :some_class do |inf|
         inf.install_property foo_spec
         inf.install_property bar_spec
       end
@@ -64,7 +64,7 @@ describe GirFFI::UserDefinedTypeInfo do
 
   describe '#g_name' do
     let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     before do
       allow(klass).to receive(:name).and_return 'foo'
@@ -82,7 +82,7 @@ describe GirFFI::UserDefinedTypeInfo do
 
   describe '#find_method' do
     let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     it 'finds no methods' do
       info.find_method('foo').must_equal nil
@@ -91,7 +91,7 @@ describe GirFFI::UserDefinedTypeInfo do
 
   describe '#find_signal' do
     let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     it 'finds no signals' do
       info.find_signal('foo').must_equal nil
@@ -101,7 +101,7 @@ describe GirFFI::UserDefinedTypeInfo do
   describe '#interfaces' do
     let(:modul) { GIMarshallingTests::Interface }
     let(:klass) { Class.new GIMarshallingTests::Object }
-    let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     before do
       klass.send :include, modul

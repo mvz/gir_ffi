@@ -10,7 +10,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
                      Class.new(GIMarshallingTests::Object))
   end
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
-  let(:info) { GirFFI::UserDefinedTypeInfo.new klass }
+  let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
   describe '#build_class' do
     before do
@@ -19,7 +19,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing one integer property' do
       let(:info) do
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_int('foo-bar', 'foo bar',
                                                      'The Foo Bar Property',
                                                      10, 20, 15,
@@ -70,7 +70,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing properties of several different types' do
       let(:info) do
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_string('string-prop', 'string property',
                                                         'The String Property',
                                                         'this is the default value',
@@ -122,7 +122,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         Object.const_set("DerivedClass#{Sequence.next}", Class.new(parent_class))
       end
       let(:info) do
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_int('int-prop', 'integer property',
                                                      'Integer Property',
                                                      10, 20, 15,
@@ -143,7 +143,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing an overridden g_name' do
       let(:info) do
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.g_name = "OtherName#{Sequence.next}"
         end
       end
@@ -157,7 +157,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe 'with type info containing a vfunc' do
       let(:info) do
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_vfunc_implementation :method_int8_in, proc { |instance, in_|
             instance.int = in_
           }
@@ -174,7 +174,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
     describe 'with type info containing a vfunc from an included Interface' do
       let(:info) do
         klass.class_eval { include GIMarshallingTests::Interface }
-        GirFFI::UserDefinedTypeInfo.new klass do |it|
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_vfunc_implementation :test_int8_in,
                                           proc { |instance, in_| instance.int = in_ }
         end
