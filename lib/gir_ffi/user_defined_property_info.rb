@@ -38,7 +38,8 @@ module GirFFI
       GObject::TYPE_INT => :gint,
       GObject::TYPE_STRING => :utf8,
       GObject::TYPE_LONG => :glong,
-      GObject::TYPE_BOXED => :interface
+      GObject::TYPE_BOXED => :interface,
+      GObject::TYPE_OBJECT => :interface
     }.freeze
 
     def type_tag

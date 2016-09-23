@@ -144,6 +144,37 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with an object property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_property GObject.param_spec_object('object-prop', 'object property',
+                                                        'The Object Property',
+                                                        object_gtype,
+                                                        readwrite: true)
+        end
+      end
+
+      it 'registers a type of the proper size' do
+        expected_size = klass::Struct.size
+        gtype = klass.gtype
+        q = GObject.type_query gtype
+        q.instance_size.must_equal expected_size
+      end
+
+      it "gives the type's Struct fields for the parent and the property" do
+        klass::Struct.members.must_equal [:parent, :object_prop]
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        object = GIMarshallingTests::Object.new 42
+        object.int = 423
+        obj.object_prop = object
+        obj.object_prop.int.must_equal 423
+      end
+    end
+
     describe 'when deriving from a class with hidden struct size' do
       let(:parent_class) { Regress::TestInheritDrawable }
       let(:parent_size) do
