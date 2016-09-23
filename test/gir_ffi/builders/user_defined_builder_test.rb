@@ -175,6 +175,24 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with a boolean property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_property GObject.param_spec_boolean('the-prop', 'the property',
+                                                        'The Property',
+                                                        true,
+                                                        readwrite: true)
+        end
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        obj.the_prop = true
+        obj.the_prop.must_equal true
+      end
+    end
+
     describe 'when deriving from a class with hidden struct size' do
       let(:parent_class) { Regress::TestInheritDrawable }
       let(:parent_size) do
