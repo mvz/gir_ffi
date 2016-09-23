@@ -17,20 +17,35 @@ module GirFFI
       @param_spec.accessor_name
     end
 
-    def ffi_type
-      @param_spec.ffi_type
+    def writable?
+      @param_spec.flags[:writable]
     end
 
-    def type_tag
-      @param_spec.type_tag
+    def value_type
+      @param_spec.value_type
     end
 
     def pointer_type?
-      @param_spec.pointer_type?
+      case value_type
+      when GObject::TYPE_INT
+        false
+      when GObject::TYPE_STRING
+        true
+      end
     end
 
-    def flags
-      @param_spec.flags
+    G_TYPE_MAP = {
+      GObject::TYPE_INT => :gint,
+      GObject::TYPE_STRING => :utf8,
+      GObject::TYPE_LONG => :glong
+    }.freeze
+
+    def type_tag
+      G_TYPE_MAP.fetch(value_type)
+    end
+
+    def ffi_type
+      GirFFI::TypeMap.map_basic_type(type_tag)
     end
   end
 end

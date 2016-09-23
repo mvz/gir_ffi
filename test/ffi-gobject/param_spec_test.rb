@@ -24,18 +24,6 @@ describe GObject::ParamSpec do
     end
   end
 
-  describe '#type_tag' do
-    it 'returns the mapped type symbol' do
-      pspec.type_tag.must_equal :gint
-    end
-  end
-
-  describe '#ffi_type' do
-    it 'returns the ffi type corresponding to the type tag' do
-      pspec.ffi_type.must_equal :int
-    end
-  end
-
   it 'cannot be instantiated directly' do
     proc { GObject::ParamSpec.new }.must_raise NoMethodError
   end

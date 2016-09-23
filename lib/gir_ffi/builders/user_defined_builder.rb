@@ -188,21 +188,21 @@ module GirFFI
         class FieldTypeInfo
           include InfoExt::ITypeInfo
 
-          def initialize(param_spec)
-            @param_spec = param_spec
+          def initialize(property_info)
+            @property_info = property_info
           end
 
           def tag
-            @param_spec.type_tag
+            @property_info.type_tag
           end
 
           def pointer?
-            @param_spec.pointer_type?
+            @property_info.pointer_type?
           end
         end
 
-        def initialize(param_spec, container, offset)
-          @param_spec = param_spec
+        def initialize(property_info, container, offset)
+          @property_info = property_info
           @container = container
           @offset = offset
         end
@@ -210,11 +210,11 @@ module GirFFI
         attr_reader :container, :offset
 
         def name
-          @param_spec.accessor_name
+          @property_info.accessor_name
         end
 
         def field_type
-          @field_type ||= FieldTypeInfo.new @param_spec
+          @field_type ||= FieldTypeInfo.new @property_info
         end
 
         def related_array_length_field
@@ -222,7 +222,7 @@ module GirFFI
         end
 
         def writable?
-          @param_spec.flags[:writable]
+          @property_info.writable?
         end
       end
 
