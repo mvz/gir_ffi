@@ -97,4 +97,8 @@ Style/TrivialAccessors:
   ExactNameMatch: true
   AllowPredicates: true
 
+# This cop is broken
+Style/VariableNumber:
+  Enabled: false
+
 inherit_from: .rubocop_todo.yml
