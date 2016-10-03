@@ -221,7 +221,7 @@ describe GIMarshallingTests do
       skip unless get_introspection_data 'GIMarshallingTests', 'Interface3'
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :test_variant_array_in, proc {|obj, in_|
+        info.install_vfunc_implementation :test_variant_array_in, proc { |obj, in_|
           obj.int = in_.to_a.first.get_byte
         }
       end
@@ -390,7 +390,7 @@ describe GIMarshallingTests do
                                                'vfunc_in_object_transfer_full')
       obj = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc {|_this, object|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc { |_this, object|
           obj = object
         }
       end
@@ -405,7 +405,7 @@ describe GIMarshallingTests do
                                                'vfunc_in_object_transfer_none')
       obj = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc {|_this, object|
+        info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc { |_this, object|
           obj = object
         }
       end
@@ -421,7 +421,7 @@ describe GIMarshallingTests do
                                                'vfunc_out_object_transfer_full')
       obj = nil
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc { |_obj|
           obj = GIMarshallingTests::Object.new(42)
         }
       end
@@ -435,7 +435,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_out_object_transfer_none')
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -447,7 +447,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_return_object_transfer_full')
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -459,7 +459,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_return_object_transfer_none')
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -583,7 +583,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_array_out_parameter')
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_array_out_parameter, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_array_out_parameter, proc { |_obj|
           [1.1, 2.2, 3.3]
         }
       end
@@ -599,7 +599,7 @@ describe GIMarshallingTests do
       skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
                                                'vfunc_caller_allocated_out_parameter')
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc {|_obj|
+        info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc { |_obj|
           'Hello!'
         }
       end
@@ -609,7 +609,7 @@ describe GIMarshallingTests do
 
     it 'has a working method #vfunc_meth_with_error' do
       derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_meth_with_err, proc {|_object, x|
+        info.install_vfunc_implementation :vfunc_meth_with_err, proc { |_object, x|
           raise 'This is not the answer!' unless x == 42
           true
         }
