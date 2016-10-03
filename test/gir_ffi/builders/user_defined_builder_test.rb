@@ -84,7 +84,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
     describe 'with type info containing a vfunc' do
       let(:info) do
         GirFFI::UserDefinedTypeInfo.new klass do |it|
-          it.install_vfunc_implementation :method_int8_in, proc {|instance, in_|
+          it.install_vfunc_implementation :method_int8_in, proc { |instance, in_|
             instance.int = in_
           }
         end
