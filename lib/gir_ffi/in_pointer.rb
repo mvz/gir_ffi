@@ -103,10 +103,10 @@ module GirFFI
       def from_basic_type_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type
         type_size = FFI.type_size(ffi_type)
-        block = FFI::MemoryPointer.new type_size * (ary.length + 1)
-        block.autorelease = false
-        block.send "put_array_of_#{ffi_type}", 0, ary
-        block
+        FFI::MemoryPointer.new(type_size * (ary.length + 1)).tap do |block|
+          block.autorelease = false
+          block.send "put_array_of_#{ffi_type}", 0, ary
+        end
       end
     end
   end
