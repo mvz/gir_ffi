@@ -34,6 +34,7 @@ module GirFFI
       GObject::TYPE_INT => false,
       GObject::TYPE_UINT => false,
       GObject::TYPE_LONG => false,
+      GObject::TYPE_ULONG => false,
       GObject::TYPE_STRING => true,
       GObject::TYPE_BOXED => true,
       GObject::TYPE_OBJECT => true
@@ -52,6 +53,7 @@ module GirFFI
       GObject::TYPE_INT => :gint,
       GObject::TYPE_UINT => :guint,
       GObject::TYPE_LONG => :glong,
+      GObject::TYPE_ULONG => :gulong,
       GObject::TYPE_STRING => :utf8,
       GObject::TYPE_BOXED => :interface,
       GObject::TYPE_OBJECT => :interface
