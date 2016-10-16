@@ -279,7 +279,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = klass.new
         obj.the_prop = -423_432
-        obj.the_prop.must_equal -423_432
+        obj.the_prop.must_equal(-423_432)
       end
     end
 
@@ -334,6 +334,25 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj = klass.new
         obj.the_prop = 42.23
         obj.the_prop.must_equal 42.23
+      end
+    end
+
+    describe 'with an enum property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          prop = GObject.param_spec_enum('the-prop', 'the property',
+                                                      'The Property',
+                                                      GIMarshallingTests::GEnum.gtype, 0,
+                                                      readwrite: true)
+          it.install_property prop
+        end
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        obj.the_prop = :value2
+        obj.the_prop.must_equal :value2
       end
     end
 

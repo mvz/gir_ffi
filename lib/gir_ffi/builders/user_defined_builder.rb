@@ -204,7 +204,7 @@ module GirFFI
           end
 
           def interface_type
-            :struct if tag == :interface
+            @property_info.interface_type_tag if tag == :interface
           end
 
           def hidden_struct_type?

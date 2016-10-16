@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 module GirFFI
-  # Represents a property of a user defined type, conforming, as needed, to the
-  # interface of GObjectIntrospection::IPropertyInfo.
+  # Represents a property of a user defined type.
   class UserDefinedPropertyInfo
     def initialize(param_spec)
       @param_spec = param_spec
@@ -38,6 +37,7 @@ module GirFFI
       GObject::TYPE_ULONG => false,
       GObject::TYPE_INT64 => false,
       GObject::TYPE_UINT64 => false,
+      GObject::TYPE_ENUM => false,
       GObject::TYPE_STRING => true,
       GObject::TYPE_BOXED => true,
       GObject::TYPE_OBJECT => true
@@ -60,6 +60,7 @@ module GirFFI
       GObject::TYPE_ULONG => :gulong,
       GObject::TYPE_INT64 => :gint64,
       GObject::TYPE_UINT64 => :guint64,
+      GObject::TYPE_ENUM => :interface,
       GObject::TYPE_STRING => :utf8,
       GObject::TYPE_BOXED => :interface,
       GObject::TYPE_OBJECT => :interface
@@ -67,6 +68,16 @@ module GirFFI
 
     def type_tag
       G_TYPE_TAG_MAP.fetch(fundamental_value_type)
+    end
+
+    G_TYPE_INTERFACE_TAG_MAP = {
+      GObject::TYPE_ENUM => :enum,
+      GObject::TYPE_BOXED => :struct,
+      GObject::TYPE_OBJECT => :object
+    }.freeze
+
+    def interface_type_tag
+      G_TYPE_INTERFACE_TAG_MAP.fetch(fundamental_value_type)
     end
 
     def fundamental_value_type
