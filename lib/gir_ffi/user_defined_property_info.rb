@@ -38,6 +38,7 @@ module GirFFI
       GObject::TYPE_INT64 => false,
       GObject::TYPE_UINT64 => false,
       GObject::TYPE_ENUM => false,
+      GObject::TYPE_FLAGS => false,
       GObject::TYPE_STRING => true,
       GObject::TYPE_BOXED => true,
       GObject::TYPE_OBJECT => true
@@ -61,6 +62,7 @@ module GirFFI
       GObject::TYPE_INT64 => :gint64,
       GObject::TYPE_UINT64 => :guint64,
       GObject::TYPE_ENUM => :interface,
+      GObject::TYPE_FLAGS => :interface,
       GObject::TYPE_STRING => :utf8,
       GObject::TYPE_BOXED => :interface,
       GObject::TYPE_OBJECT => :interface
@@ -72,6 +74,7 @@ module GirFFI
 
     G_TYPE_INTERFACE_TAG_MAP = {
       GObject::TYPE_ENUM => :enum,
+      GObject::TYPE_FLAGS => :flags,
       GObject::TYPE_BOXED => :struct,
       GObject::TYPE_OBJECT => :object
     }.freeze

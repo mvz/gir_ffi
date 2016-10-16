@@ -356,6 +356,25 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with a flags property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          prop = GObject.param_spec_flags('the-prop', 'the property',
+                                          'The Property',
+                                          GIMarshallingTests::Flags.gtype, 0,
+                                          readwrite: true)
+          it.install_property prop
+        end
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        obj.the_prop = { value2: true }
+        obj.the_prop.must_equal value2: true
+      end
+    end
+
     describe 'when deriving from a class with hidden struct size' do
       let(:parent_class) { Regress::TestInheritDrawable }
       let(:parent_size) do
