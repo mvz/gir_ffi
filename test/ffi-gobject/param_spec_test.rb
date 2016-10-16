@@ -3,13 +3,15 @@ require 'gir_ffi_test_helper'
 
 require 'ffi-gobject'
 describe GObject::ParamSpec do
+  let(:pspec) do
+    GObject.param_spec_int('foo-bar', 'foo bar',
+                           'Foo Bar',
+                           1, 3, 2,
+                           readable: true, writable: true)
+  end
+
   describe '#ref' do
     it 'increases the ref count' do
-      pspec = GObject.param_spec_boolean('foo', 'foo bar',
-                                         'Boolean Foo Bar',
-                                         false,
-                                         readable: true, writable: true)
-
       old = pspec.ref_count
       pspec.ref
       pspec.ref_count.must_equal old + 1
@@ -18,11 +20,6 @@ describe GObject::ParamSpec do
 
   describe '#accessor_name' do
     it 'returns a safe ruby method name' do
-      pspec = GObject.param_spec_boolean('foo-bar', 'foo bar',
-                                         'Boolean Foo Bar',
-                                         false,
-                                         readable: true, writable: true)
-
       pspec.accessor_name.must_equal 'foo_bar'
     end
   end

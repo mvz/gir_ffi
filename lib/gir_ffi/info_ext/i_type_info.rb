@@ -55,10 +55,14 @@ module GirFFI
         tag == :interface && interface.info_type
       end
 
+      def hidden_struct_type?
+        flattened_tag == :struct && interface.size.zero?
+      end
+
       def tag_or_class
         base = case tag
                when :interface
-                 Builder.build_class interface
+                 interface_class
                when :ghash
                  [tag, *element_type]
                else
@@ -69,6 +73,10 @@ module GirFFI
         else
           base
         end
+      end
+
+      def interface_class
+        Builder.build_class interface if tag == :interface
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {
@@ -88,11 +96,12 @@ module GirFFI
 
       # TODO: Use class rather than class name
       def argument_class_name
-        if tag == :interface
-          interface.full_type_name
-        else
+        interface_class_name ||
           TAG_TO_WRAPPER_CLASS_MAP[flattened_tag]
-        end
+      end
+
+      def interface_class_name
+        interface.full_type_name if tag == :interface
       end
 
       def to_ffi_type

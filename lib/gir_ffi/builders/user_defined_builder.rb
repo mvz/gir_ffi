@@ -11,8 +11,8 @@ module GirFFI
       end
 
       def setup_class
-        register_type
         setup_layout
+        register_type
         setup_constants
         setup_property_accessors
         setup_constructor
@@ -86,8 +86,10 @@ module GirFFI
 
       def instance_size
         size = parent_gtype.instance_size
-        properties.each do
-          size += FFI.type_size(:int32)
+        alignment = struct_class.alignment
+        properties.each do |prop|
+          type_size = FFI.type_size(prop.ffi_type)
+          size += [type_size, alignment].max
         end
         size
       end
@@ -103,7 +105,7 @@ module GirFFI
         object_class.set_property = property_setter
 
         properties.each_with_index do |property, index|
-          object_class.install_property index + 1, property
+          object_class.install_property index + 1, property.param_spec
         end
       end
 
@@ -167,35 +169,92 @@ module GirFFI
       end
 
       def layout_specification
-        parent_spec = [:parent, superclass::Struct, 0]
-        offset = superclass::Struct.size
-        fields_spec = properties.flat_map do |param_spec|
-          field_name = param_spec.accessor_name.to_sym
-          spec = [field_name, :int32, offset]
-          offset += FFI.type_size(:int32)
+        parent_spec = [:parent, superclass::Struct]
+        offset = parent_gtype.instance_size
+
+        alignment = superclass::Struct.alignment
+        fields_spec = properties.flat_map do |param_info|
+          field_name = param_info.accessor_name
+          ffi_type = param_info.ffi_type
+          type_size = FFI.type_size(ffi_type)
+          spec = [field_name, ffi_type, offset]
+          offset += [type_size, alignment].max
           spec
         end
         parent_spec + fields_spec
       end
 
-      def setup_property_accessors
-        properties.each do |param_spec|
-          setup_accessors_for_param_spec param_spec
+      # TODO: Move this to its own file.
+      # TODO: See if this or FieldTypeInfo can be merged with with
+      # UserDefinedPropertyInfo.
+      class UserDefinedPropertyFieldInfo
+        # Field info for user-defined property
+        class FieldTypeInfo
+          include InfoExt::ITypeInfo
+
+          def initialize(property_info)
+            @property_info = property_info
+          end
+
+          def tag
+            @property_info.type_tag
+          end
+
+          def pointer?
+            @property_info.pointer_type?
+          end
+
+          def interface_type
+            @property_info.interface_type_tag if tag == :interface
+          end
+
+          def hidden_struct_type?
+            false
+          end
+
+          def interface_class
+            Builder.build_by_gtype @property_info.value_type if tag == :interface
+          end
+
+          def interface_class_name
+            interface_class.name if tag == :interface
+          end
+        end
+
+        def initialize(property_info, container, offset)
+          @property_info = property_info
+          @container = container
+          @offset = offset
+        end
+
+        attr_reader :container, :offset
+
+        def name
+          @property_info.accessor_name
+        end
+
+        def field_type
+          @field_type ||= FieldTypeInfo.new @property_info
+        end
+
+        def related_array_length_field
+          nil
+        end
+
+        def writable?
+          @property_info.writable?
         end
       end
 
-      def setup_accessors_for_param_spec(param_spec)
-        field_name = param_spec.accessor_name
-        code = <<-CODE
-        def #{field_name}
-          @struct[:#{field_name}]
+      def setup_property_accessors
+        offset = parent_gtype.instance_size
+        alignment = struct_class.alignment
+        properties.each do |param_info|
+          field_info = UserDefinedPropertyFieldInfo.new(param_info, info, offset)
+          type_size = FFI.type_size(param_info.ffi_type)
+          offset += [type_size, alignment].max
+          FieldBuilder.new(field_info, klass).build
         end
-        def #{field_name}= val
-          @struct[:#{field_name}] = val
-        end
-        CODE
-
-        klass.class_eval code
       end
 
       def method_introspection_data(_method)

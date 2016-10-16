@@ -16,7 +16,7 @@ require 'gir_ffi/sized_array'
 require 'gir_ffi/zero_terminated'
 require 'gir_ffi/arg_helper'
 require 'gir_ffi/builder'
-require 'gir_ffi/user_defined_type_info'
+require 'gir_ffi/user_defined_object_info'
 require 'gir_ffi/builders/user_defined_builder'
 require 'gir_ffi/version'
 
@@ -29,7 +29,7 @@ module GirFFI
     end
 
     def define_type(klass, &block)
-      info = UserDefinedTypeInfo.new(klass, &block)
+      info = UserDefinedObjectInfo.new(klass, &block)
       Builders::UserDefinedBuilder.new(info).build_class
 
       klass.gtype

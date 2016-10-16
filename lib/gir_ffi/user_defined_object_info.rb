@@ -1,11 +1,11 @@
 # frozen_string_literal: true
+require 'gir_ffi/user_defined_property_info'
 require 'gir_ffi/vfunc_implementation'
 
 module GirFFI
   # Represents a user defined type, conforming, as needed, to the interface of
   # GObjectIntrospection::IObjectInfo.
-  # TODO: Rename to UserDefinedObjectInfo
-  class UserDefinedTypeInfo
+  class UserDefinedObjectInfo
     attr_reader :properties, :vfunc_implementations
 
     def initialize(klass)
@@ -20,7 +20,7 @@ module GirFFI
     end
 
     def install_property(property)
-      @properties << property
+      @properties << UserDefinedPropertyInfo.new(property)
     end
 
     def install_vfunc_implementation(name, implementation)

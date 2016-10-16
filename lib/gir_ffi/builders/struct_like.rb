@@ -16,7 +16,7 @@ module GirFFI
 
       def setup_field_accessors
         fields.each do |finfo|
-          FieldBuilder.new(finfo).build
+          FieldBuilder.new(finfo, klass).build
         end
       end
     end
