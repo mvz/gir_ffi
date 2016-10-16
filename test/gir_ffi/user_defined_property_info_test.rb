@@ -34,5 +34,4 @@ describe GirFFI::UserDefinedPropertyInfo do
       info.type_tag.must_equal :gint
     end
   end
-
 end

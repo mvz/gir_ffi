@@ -96,7 +96,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it "gives the type's Struct fields for the parent and the properties with the correct offsets" do
         offsets = klass::Struct.offsets
         alignment = klass::Struct.alignment
-        alignment.must_equal 8  # TODO: Fix tests for platforms where this fails.
+        alignment.must_equal 8 # TODO: Fix tests for platforms where this fails.
         offsets.must_equal [[:parent, 0], [:string_prop, 32], [:int_prop, 40], [:long_prop, 48]]
       end
 
@@ -180,9 +180,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
       let(:info) do
         GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_boolean('the-prop', 'the property',
-                                                        'The Property',
-                                                        true,
-                                                        readwrite: true)
+                                                         'The Property',
+                                                         true,
+                                                         readwrite: true)
         end
       end
 
@@ -216,9 +216,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
       let(:info) do
         GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_uchar('the-prop', 'the property',
-                                                      'The Property',
-                                                      10, 100, 15,
-                                                      readwrite: true)
+                                                       'The Property',
+                                                       10, 100, 15,
+                                                       readwrite: true)
         end
       end
 
@@ -252,9 +252,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
       let(:info) do
         GirFFI::UserDefinedObjectInfo.new klass do |it|
           it.install_property GObject.param_spec_ulong('the-prop', 'the property',
-                                                      'The Property',
-                                                      10, 100, 15,
-                                                      readwrite: true)
+                                                       'The Property',
+                                                       10, 100, 15,
+                                                       readwrite: true)
         end
       end
 
@@ -342,9 +342,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
       let(:info) do
         GirFFI::UserDefinedObjectInfo.new klass do |it|
           prop = GObject.param_spec_enum('the-prop', 'the property',
-                                                      'The Property',
-                                                      GIMarshallingTests::GEnum.gtype, 0,
-                                                      readwrite: true)
+                                         'The Property',
+                                         GIMarshallingTests::GEnum.gtype, 0,
+                                         readwrite: true)
           it.install_property prop
         end
       end

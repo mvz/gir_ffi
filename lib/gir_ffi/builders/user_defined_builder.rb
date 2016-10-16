@@ -188,6 +188,7 @@ module GirFFI
       # TODO: See if this or FieldTypeInfo can be merged with with
       # UserDefinedPropertyInfo.
       class UserDefinedPropertyFieldInfo
+        # Field info for user-defined property
         class FieldTypeInfo
           include InfoExt::ITypeInfo
 
