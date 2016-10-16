@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.11.0 / 2016-10-16
 
 * Internal test and code improvements. Some internal APIs have been removed or
   changed.
