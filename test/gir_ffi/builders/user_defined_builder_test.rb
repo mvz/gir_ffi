@@ -229,6 +229,24 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
+    describe 'with a uint property' do
+      let(:object_gtype) { GIMarshallingTests::Object.gtype }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_property GObject.param_spec_uint('the-prop', 'the property',
+                                                      'The Property',
+                                                      10, 100, 15,
+                                                      readwrite: true)
+        end
+      end
+
+      it 'creates accessor functions for the property' do
+        obj = klass.new
+        obj.the_prop = 423
+        obj.the_prop.must_equal 423
+      end
+    end
+
     describe 'with a double property' do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
       let(:info) do

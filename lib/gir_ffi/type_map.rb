@@ -29,6 +29,7 @@ module GirFFI
       gint16:    :int16,
       guint16:   :uint16,
       gint:      :int,
+      guint:     :uint,
       gint32:    :int32,
       guint32:   :uint32,
       gint64:    :int64,
