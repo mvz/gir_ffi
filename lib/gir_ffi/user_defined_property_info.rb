@@ -29,6 +29,7 @@ module GirFFI
     G_TYPE_POINTER_MAP = {
       GObject::TYPE_BOOLEAN => false,
       GObject::TYPE_CHAR => false,
+      GObject::TYPE_UCHAR => false,
       GObject::TYPE_DOUBLE => false,
       GObject::TYPE_INT => false,
       GObject::TYPE_LONG => false,
@@ -45,6 +46,7 @@ module GirFFI
     G_TYPE_TAG_MAP = {
       GObject::TYPE_BOOLEAN => :gboolean,
       GObject::TYPE_CHAR => :gint8,
+      GObject::TYPE_UCHAR => :guint8,
       GObject::TYPE_DOUBLE => :gdouble,
       GObject::TYPE_INT => :gint,
       GObject::TYPE_LONG => :glong,
