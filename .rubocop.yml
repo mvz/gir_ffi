@@ -12,6 +12,11 @@ AllCops:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
+# Test describe blocks can be any size
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
 # Require lines to fit in pull requests.
 Metrics/LineLength:
   Max: 92
