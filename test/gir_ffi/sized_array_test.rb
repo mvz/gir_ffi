@@ -185,7 +185,8 @@ describe GirFFI::SizedArray do
     it 'returns just a pointer' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
       ptr = sized.to_ptr
-      GirFFI::SizedArray.get_value_from_pointer(ptr, 0).must_equal ptr
+      result = GirFFI::SizedArray.get_value_from_pointer(ptr, 0)
+      result.must_be :==, ptr
     end
 
     it 'offsets correctly' do

@@ -122,7 +122,8 @@ describe GirFFI::StructLikeBase do
     it 'returns just a pointer' do
       object = klass.new
       ptr = object.to_ptr
-      klass.get_value_from_pointer(ptr, 0).must_equal ptr
+      result = klass.get_value_from_pointer(ptr, 0)
+      result.must_be :==, ptr
     end
 
     it 'uses offset correctly' do

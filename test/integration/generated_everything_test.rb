@@ -394,7 +394,7 @@ describe Everything do
     skip unless get_introspection_data 'Everything', 'passthrough_one_gpointer'
     ptr = FFI::MemoryPointer.new(:int)
     result = Everything.passthrough_one_gpointer(ptr)
-    result.must_equal ptr
+    result.must_be :==, ptr
   end
 
   it 'has a working function #passthrough_one_gshort' do
