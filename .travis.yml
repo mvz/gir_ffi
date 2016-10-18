@@ -5,20 +5,10 @@ rvm:
   - 2.1.8
   - 2.2.4
   - 2.3.0
-  - ruby-head
-  - ruby-head-clang
-  - jruby-9.0
-  - jruby-9.1.2.0
   - jruby-head
-  - rbx-3.58
 matrix:
   allow_failures:
-    - rvm: ruby-head
-    - rvm: ruby-head-clang
-    - rvm: jruby-9.0
-    - rvm: jruby-9.1.2.0
     - rvm: jruby-head
-    - rvm: rbx-3.58
 before_install:
   - gem install bundler
   - sudo apt-get -qq update
