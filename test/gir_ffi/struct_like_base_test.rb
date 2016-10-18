@@ -8,7 +8,7 @@ describe GirFFI::StructLikeBase do
     it 'returns a wrapped owned copy of structs' do
       original = GIMarshallingTests::SimpleStruct.new
       copy = GIMarshallingTests::SimpleStruct.wrap_copy(original.to_ptr)
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.must_be :owned?
     end
@@ -16,7 +16,7 @@ describe GirFFI::StructLikeBase do
     it 'returns a wrapped owned copy of unions' do
       original = GIMarshallingTests::Union.new
       copy = GIMarshallingTests::Union.wrap_copy(original.to_ptr)
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.must_be :owned?
     end
@@ -24,7 +24,7 @@ describe GirFFI::StructLikeBase do
     it 'returns a wrapped owned copy of boxed types' do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_copy(original.to_ptr)
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.must_be :owned?
     end
@@ -40,7 +40,7 @@ describe GirFFI::StructLikeBase do
       original.long_ = 42
       copy = GIMarshallingTests::Union.copy_from(original)
       copy.long_.must_equal 42
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.wont_be :owned?
     end
@@ -48,7 +48,7 @@ describe GirFFI::StructLikeBase do
     it 'returns an unowned copy of structs' do
       original = GIMarshallingTests::SimpleStruct.new
       copy = GIMarshallingTests::SimpleStruct.copy_from(original)
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.wont_be :owned?
     end

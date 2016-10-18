@@ -33,7 +33,7 @@ describe GirFFI::InPointer do
       struct[:foo] = 42
       struct[:bar] = 24
       ptr = GirFFI::InPointer.from_array e, [struct]
-      ptr.wont_equal struct.to_ptr
+      ptr.wont_be :==, struct.to_ptr
       new_struct = e::Struct.new ptr
       new_struct[:foo].must_equal 42
       new_struct[:bar].must_equal 24

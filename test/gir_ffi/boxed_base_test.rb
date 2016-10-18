@@ -17,7 +17,7 @@ describe GirFFI::BoxedBase do
     it 'returns a copy with owned false' do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.copy_from(original)
-      copy.to_ptr.wont_equal original.to_ptr
+      copy.to_ptr.wont_be :==, original.to_ptr
       copy.to_ptr.wont_be :autorelease?
       copy.struct.wont_be :owned?
     end
