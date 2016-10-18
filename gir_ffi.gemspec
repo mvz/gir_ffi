@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rspec-mocks', ["~> 3.5.0"])
   s.add_development_dependency('rake', ["~> 11.1"])
   s.add_development_dependency('aruba', ["~> 0.14.1"])
+  s.add_development_dependency('rubocop', ['~> 0.44.1'])
 
   s.require_paths = ["lib"]
 end

@@ -4,8 +4,6 @@ source 'https://rubygems.org'
 # The gem's dependencies are specified in gir_ffi.gemspec
 gemspec
 
-gem 'rubocop', '~> 0.44.1', group: :development
-
 gem 'mutant', git: 'https://github.com/mbj/mutant.git',
               branch: 'feature/minitest-integration',
               platform: :mri_23,
