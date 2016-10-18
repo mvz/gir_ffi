@@ -17,8 +17,9 @@ describe GirFFI::BoxedBase do
     it 'returns a copy with owned false' do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.copy_from(original)
-      copy.to_ptr.wont_equal original.to_ptr
-      copy.to_ptr.wont_be :autorelease?
+      ptr = copy.to_ptr
+      ptr.wont_be :==, original.to_ptr
+      ptr.wont_be :autorelease? if ptr.respond_to? :autorelease?
       copy.struct.wont_be :owned?
     end
   end
@@ -27,8 +28,9 @@ describe GirFFI::BoxedBase do
     it 'wraps and owns the supplied pointer' do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_own(original.to_ptr)
-      copy.to_ptr.must_equal original.to_ptr
-      copy.to_ptr.wont_be :autorelease?
+      ptr = copy.to_ptr
+      ptr.must_equal original.to_ptr
+      ptr.wont_be :autorelease? if ptr.respond_to? :autorelease?
       copy.struct.must_be :owned?
     end
   end

@@ -174,7 +174,7 @@ module GirFFI
 
         alignment = superclass::Struct.alignment
         fields_spec = properties.flat_map do |param_info|
-          field_name = param_info.accessor_name
+          field_name = param_info.accessor_name.to_sym
           ffi_type = param_info.ffi_type
           type_size = FFI.type_size(ffi_type)
           spec = [field_name, ffi_type, offset]
