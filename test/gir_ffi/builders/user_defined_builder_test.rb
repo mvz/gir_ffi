@@ -23,7 +23,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_int('foo-bar', 'foo bar',
                                                      'The Foo Bar Property',
                                                      10, 20, 15,
-                                                     readwrite: true)
+                                                     readable: true, writable: true)
         end
       end
 
@@ -74,15 +74,15 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_string('string-prop', 'string property',
                                                         'The String Property',
                                                         'this is the default value',
-                                                        readwrite: true)
+                                                        readable: true, writable: true)
           it.install_property GObject.param_spec_int('int-prop', 'integer property',
                                                      'The Integer Property',
                                                      10, 20, 15,
-                                                     readwrite: true)
+                                                     readable: true, writable: true)
           it.install_property GObject.param_spec_long('long-prop', 'long property',
                                                       'The Long Property',
                                                       10.0, 50.0, 42.0,
-                                                      readwrite: true)
+                                                      readable: true, writable: true)
         end
       end
 
@@ -120,7 +120,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_boxed('boxed-prop', 'boxed property',
                                                        'The Boxed Property',
                                                        boxed_gtype,
-                                                       readwrite: true)
+                                                       readable: true, writable: true)
         end
       end
 
@@ -151,7 +151,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_object('object-prop', 'object property',
                                                         'The Object Property',
                                                         object_gtype,
-                                                        readwrite: true)
+                                                        readable: true, writable: true)
         end
       end
 
@@ -182,7 +182,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_boolean('the-prop', 'the property',
                                                          'The Property',
                                                          true,
-                                                         readwrite: true)
+                                                         readable: true, writable: true)
         end
       end
 
@@ -200,7 +200,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_char('the-prop', 'the property',
                                                       'The Property',
                                                       -20, 100, 15,
-                                                      readwrite: true)
+                                                      readable: true, writable: true)
         end
       end
 
@@ -218,7 +218,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_uchar('the-prop', 'the property',
                                                        'The Property',
                                                        10, 100, 15,
-                                                       readwrite: true)
+                                                       readable: true, writable: true)
         end
       end
 
@@ -236,7 +236,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_uint('the-prop', 'the property',
                                                       'The Property',
                                                       10, 100, 15,
-                                                      readwrite: true)
+                                                      readable: true, writable: true)
         end
       end
 
@@ -254,7 +254,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_ulong('the-prop', 'the property',
                                                        'The Property',
                                                        10, 100, 15,
-                                                       readwrite: true)
+                                                       readable: true, writable: true)
         end
       end
 
@@ -272,7 +272,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_int64('the-prop', 'the property',
                                                        'The Property',
                                                        10, 100, 15,
-                                                       readwrite: true)
+                                                       readable: true, writable: true)
         end
       end
 
@@ -290,7 +290,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_uint64('the-prop', 'the property',
                                                         'The Property',
                                                         10, 100, 15,
-                                                        readwrite: true)
+                                                        readable: true, writable: true)
         end
       end
 
@@ -308,7 +308,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_float('the-prop', 'the property',
                                                        'The Property',
                                                        10.0, 100.0, 15.0,
-                                                       readwrite: true)
+                                                       readable: true, writable: true)
         end
       end
 
@@ -326,7 +326,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_double('the-prop', 'the property',
                                                         'The Property',
                                                         10.0, 100.0, 15.0,
-                                                        readwrite: true)
+                                                        readable: true, writable: true)
         end
       end
 
@@ -344,7 +344,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           prop = GObject.param_spec_enum('the-prop', 'the property',
                                          'The Property',
                                          GIMarshallingTests::GEnum.gtype, 0,
-                                         readwrite: true)
+                                         readable: true, writable: true)
           it.install_property prop
         end
       end
@@ -363,7 +363,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           prop = GObject.param_spec_flags('the-prop', 'the property',
                                           'The Property',
                                           GIMarshallingTests::Flags.gtype, 0,
-                                          readwrite: true)
+                                          readable: true, writable: true)
           it.install_property prop
         end
       end
@@ -388,7 +388,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
           it.install_property GObject.param_spec_int('int-prop', 'integer property',
                                                      'Integer Property',
                                                      10, 20, 15,
-                                                     readwrite: true)
+                                                     readable: true, writable: true)
         end
       end
 
