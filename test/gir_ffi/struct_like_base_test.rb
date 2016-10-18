@@ -24,8 +24,9 @@ describe GirFFI::StructLikeBase do
     it 'returns a wrapped owned copy of boxed types' do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_copy(original.to_ptr)
-      copy.to_ptr.wont_be :==, original.to_ptr
-      copy.to_ptr.wont_be :autorelease?
+      ptr = copy.to_ptr
+      ptr.wont_be :==, original.to_ptr
+      ptr.wont_be :autorelease? if ptr.respond_to? :autorelease
       copy.struct.must_be :owned?
     end
 
