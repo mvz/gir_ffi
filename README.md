@@ -53,8 +53,7 @@ examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
 
 ## Requirements
 
-GirFFI is tested on CRuby 2.1, 2.2 and 2.3, JRuby 9.0 and 9.1, and on
-Rubinius 3.
+GirFFI is tested on CRuby 2.1, 2.2 and 2.3, JRuby 9.1, and on Rubinius 3.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -70,10 +69,9 @@ On Debian and Ubuntu, installing `libgirepository1.0-1` and `gir1.2-glib-2.0`
 should be enough to use GirFFI in your application.
 
 To run the tests, you should additionally install `libgirepository1.0-dev`,
-`libcairo2-dev`, `gobject-introspection`, `gir1.2-gtop-2.0`, `gir1.2-pango-1.0`,
-`gir1.2-secret-1` and `gir1.2-gstreamer-1.0`. This should be enough to get
-`rake test` working.
-
+`libcairo2-dev`, `gobject-introspection`, `gir1.2-gtop-2.0`, `gir1.2-gtk-3.0`,
+`gir1.2-pango-1.0`, `gir1.2-secret-1` and `gir1.2-gstreamer-1.0`. This should
+be enough to get `rake test` working.
 
 GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
 
