@@ -5,8 +5,6 @@ GirFFI.setup :Gio
 
 # Tests generated methods and functions in the Gio namespace.
 describe 'The generated Gio module' do
-  cover 'Gio'
-
   describe 'File#new_for_path, a method returning an interface,' do
     it 'returns an object of a more specific class' do
       file = Gio::File.new_for_path('/')

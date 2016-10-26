@@ -4,11 +4,6 @@ source 'https://rubygems.org'
 # The gem's dependencies are specified in gir_ffi.gemspec
 gemspec
 
-gem 'mutant', git: 'https://github.com/mbj/mutant.git',
-              branch: 'feature/minitest-integration',
-              platform: :mri_23,
-              group: :local_development
-
 if ENV['CI']
   if ENV['TRAVIS_RUBY_VERSION'] == '2.2'
     gem 'coveralls', group: :development

@@ -2,8 +2,6 @@
 require 'gir_ffi_test_helper'
 
 describe 'The generated Secret module' do
-  cover 'Secret'
-
   describe 'Secret::Schema' do
     it 'has a working constructor' do
       begin

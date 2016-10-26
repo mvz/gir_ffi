@@ -189,22 +189,6 @@ namespace :test do
   Cucumber::Rake::Task.new(:features) do |t|
     t.cucumber_opts = 'features --format pretty'
   end
-
-  desc 'Run mutant'
-
-  task mutant: :lib do
-    command = <<-EOS
-      RUBY_THREAD_VM_STACK_SIZE=64000 \
-      bundle exec mutant \
-        --include lib \
-        --include test \
-        --use minitest \
-        --since master \
-        --jobs 4 \
-        "GirFFI*" "GObject*" "GObjectIntrospection*" "GLib*"
-    EOS
-    system command
-  end
 end
 
 file "test/lib/Makefile" => "test/lib/configure" do

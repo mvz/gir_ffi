@@ -3,8 +3,6 @@ require 'gir_ffi_test_helper'
 
 # Tests how methods are looked up and generated on first use.
 describe 'Looking up methods' do
-  cover 'GirFFI'
-
   before do
     save_module :Regress
     GirFFI.setup :Regress

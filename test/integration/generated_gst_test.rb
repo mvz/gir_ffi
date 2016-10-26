@@ -6,8 +6,6 @@ Gst.init []
 
 # Tests behavior of objects in the generated Gio namespace.
 describe 'the generated Gst module' do
-  cover 'Gst'
-
   describe 'Gst::FakeSink' do
     let(:instance) { Gst::ElementFactory.make('fakesink', 'sink') }
 

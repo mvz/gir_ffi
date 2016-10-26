@@ -6,8 +6,6 @@ GirFFI.setup :Regress
 class CallbackTestException < RuntimeError; end
 
 describe 'An exception in a callback' do
-  cover 'GLib::MainLoop'
-
   describe 'for signals' do
     let(:object) { Regress::TestSubObj.new }
 
