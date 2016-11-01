@@ -39,10 +39,7 @@ module GLib
     setup_instance_method :run
 
     def run_with_thread_enabler
-      case RUBY_ENGINE
-      when 'jruby'
-      when 'rbx'
-      else # 'ruby' most likely
+      if RUBY_ENGINE == 'ruby'
         ThreadEnabler.instance.setup_idle_handler
       end
       RUNNING_LOOPS << self
