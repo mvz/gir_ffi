@@ -179,6 +179,21 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.object_prop = nil
         obj.object_prop.must_be_nil
       end
+
+      it 'handles reference counting correctly when using the accessor' do
+        obj = klass.new
+        object = GIMarshallingTests::Object.new 42
+        obj.object_prop = object
+        object.ref_count.must_equal 2
+      end
+
+      it 'handles reference counting correctly when using the set_property method' do
+        obj = klass.new
+        object = GIMarshallingTests::Object.new 42
+        object.ref_count.must_equal 1
+        obj.set_property('object_prop', object)
+        object.ref_count.must_equal 4 # Due to extra Value#set_value + Value#get_value
+      end
     end
 
     describe 'with a boolean property' do
