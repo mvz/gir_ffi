@@ -275,7 +275,7 @@ describe GirFFI::Builders::FunctionBuilder do
           code.must_equal <<-CODE.reset_indentation
           def self.full_inout(object)
             _v1 = FFI::MemoryPointer.new :pointer
-            _v1.put_pointer 0, GIMarshallingTests::Object.from(object.ref)
+            _v1.put_pointer 0, GIMarshallingTests::Object.from(object && object.ref)
             GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
             _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
             return _v2

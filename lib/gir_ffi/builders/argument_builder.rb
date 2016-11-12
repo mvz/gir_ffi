@@ -206,7 +206,7 @@ module GirFFI
 
       def pre_convertor_argument
         if ownership_transfer == :everything && specialized_type_tag == :object
-          "#{name}.ref"
+          "#{name} && #{name}.ref"
         else
           name
         end

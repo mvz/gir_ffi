@@ -173,6 +173,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj.object_prop = object
         obj.object_prop.int.must_equal 423
       end
+
+      it 'allows clearing the property throught the setter method' do
+        obj = klass.new
+        obj.object_prop = nil
+        obj.object_prop.must_be_nil
+      end
     end
 
     describe 'with a boolean property' do
