@@ -149,11 +149,9 @@ module GObject
       raise "Can't handle #{val.class}"
     end
 
-    def set_none(_)
-    end
+    def set_none(_); end
 
-    def get_none
-    end
+    def get_none; end
 
     def set_instance_enhanced(val)
       check_type_compatibility val if val
