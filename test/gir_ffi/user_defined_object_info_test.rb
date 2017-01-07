@@ -85,7 +85,7 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     it 'finds no methods' do
-      info.find_method('foo').must_equal nil
+      info.find_method('foo').must_be_nil
     end
   end
 
@@ -94,7 +94,7 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
 
     it 'finds no signals' do
-      info.find_signal('foo').must_equal nil
+      info.find_signal('foo').must_be_nil
     end
   end
 

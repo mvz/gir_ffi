@@ -843,11 +843,11 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-glist').must_equal nil
+        instance.get_property('some-boxed-glist').must_be_nil
       end
 
       it 'can be retrieved with #some_boxed_glist' do
-        instance.some_boxed_glist.must_equal nil
+        instance.some_boxed_glist.must_be_nil
       end
 
       it 'can be set with #set_property_extended' do
@@ -870,11 +870,11 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-struct').must_equal nil
+        instance.get_property('some-boxed-struct').must_be_nil
       end
 
       it 'can be retrieved with #some_boxed_struct' do
-        instance.some_boxed_struct.must_equal nil
+        instance.some_boxed_struct.must_be_nil
       end
 
       it 'can be set with #set_property' do
@@ -1536,49 +1536,49 @@ describe GIMarshallingTests do
 
   it 'has a working function #boolean_inout_false_true' do
     res = GIMarshallingTests.boolean_inout_false_true false
-    assert_equal true, res
+    res.must_equal true
   end
 
   it 'has a working function #boolean_inout_true_false' do
     res = GIMarshallingTests.boolean_inout_true_false true
-    assert_equal false, res
+    res.must_equal false
   end
 
   it 'has a working function #boolean_out_false' do
     res = GIMarshallingTests.boolean_out_false
-    assert_equal false, res
+    res.must_equal false
   end
 
   it 'has a working function #boolean_out_true' do
     res = GIMarshallingTests.boolean_out_true
-    assert_equal true, res
+    res.must_equal true
   end
 
   it 'has a working function #boolean_return_false' do
     res = GIMarshallingTests.boolean_return_false
-    assert_equal false, res
+    res.must_equal false
   end
 
   it 'has a working function #boolean_return_true' do
     res = GIMarshallingTests.boolean_return_true
-    assert_equal true, res
+    res.must_equal true
   end
 
   it 'has a working function #boxed_struct_inout' do
     bx = GIMarshallingTests::BoxedStruct.new
     bx.long_ = 42
     res = GIMarshallingTests.boxed_struct_inout bx
-    assert_equal 0, res.long_
+    res.long_.must_equal 0
   end
 
   it 'has a working function #boxed_struct_out' do
     res = GIMarshallingTests.boxed_struct_out
-    assert_equal 42, res.long_
+    res.long_.must_equal 42
   end
 
   it 'has a working function #boxed_struct_returnv' do
     res = GIMarshallingTests.boxed_struct_returnv
-    assert_equal 42, res.long_
+    res.long_.must_equal 42
     res.g_strv.must_be :==, %w(0 1 2)
   end
 
@@ -1656,12 +1656,12 @@ describe GIMarshallingTests do
 
   it 'has a working function #double_out' do
     ret = GIMarshallingTests.double_out
-    assert_equal Float::MAX, ret
+    ret.must_equal Float::MAX
   end
 
   it 'has a working function #double_return' do
     ret = GIMarshallingTests.double_return
-    assert_equal Float::MAX, ret
+    ret.must_equal Float::MAX
   end
 
   it 'has a working function #enum_in' do
@@ -1671,22 +1671,22 @@ describe GIMarshallingTests do
 
   it 'has a working function #enum_inout' do
     e = GIMarshallingTests.enum_inout :value3
-    assert_equal :value1, e
+    e.must_equal :value1
   end
 
   it 'has a working function #enum_out' do
     e = GIMarshallingTests.enum_out
-    assert_equal :value3, e
+    e.must_equal :value3
   end
 
   it 'has a working function #enum_returnv' do
     e = GIMarshallingTests.enum_returnv
-    assert_equal :value3, e
+    e.must_equal :value3
   end
 
   it 'has a working function #filename_list_return' do
     fl = GIMarshallingTests.filename_list_return
-    assert_equal nil, fl
+    fl.must_be_nil
   end
 
   it 'has a working function #flags_in' do
@@ -1843,7 +1843,7 @@ describe GIMarshallingTests do
     cl = GIMarshallingTests.gclosure_return
     gv = GObject::Value.wrap_ruby_value 0
     result = cl.invoke gv, []
-    assert_equal 42, gv.get_value
+    gv.get_value.must_equal 42
     result.must_equal 42
   end
 
@@ -1854,17 +1854,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #genum_inout' do
     res = GIMarshallingTests.genum_inout :value3
-    assert_equal :value1, res
+    res.must_equal :value1
   end
 
   it 'has a working function #genum_out' do
     res = GIMarshallingTests.genum_out
-    assert_equal :value3, res
+    res.must_equal :value3
   end
 
   it 'has a working function #genum_returnv' do
     res = GIMarshallingTests.genum_returnv
-    assert_equal :value3, res
+    res.must_equal :value3
   end
 
   it 'has a working function #gerror' do
@@ -2261,10 +2261,10 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_inout' do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    assert_equal '42', res
+    res.must_equal '42'
 
     res = GIMarshallingTests.gvalue_inout 42
-    assert_equal '42', res
+    res.must_equal '42'
   end
 
   it 'has a working function #gvalue_int64_in' do
@@ -2284,7 +2284,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_out' do
     res = GIMarshallingTests.gvalue_out
-    assert_equal 42, res
+    res.must_equal 42
   end
 
   it 'has a working function #gvalue_out_caller_allocates' do

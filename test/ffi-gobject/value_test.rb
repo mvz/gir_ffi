@@ -41,29 +41,29 @@ describe GObject::Value do
     it 'wraps a boolean false' do
       gv = GObject::Value.wrap_ruby_value false
       assert_instance_of GObject::Value, gv
-      assert_equal false, gv.get_boolean
+      gv.get_boolean.must_equal false
     end
 
     it 'wraps a boolean true' do
       gv = GObject::Value.wrap_ruby_value true
       assert_instance_of GObject::Value, gv
-      assert_equal true, gv.get_boolean
+      gv.get_boolean.must_equal true
     end
 
     it 'wraps an Integer' do
       gv = GObject::Value.wrap_ruby_value 42
-      assert_equal 42, gv.get_int
+      gv.get_int.must_equal 42
     end
 
     it 'wraps a String' do
       gv = GObject::Value.wrap_ruby_value 'Some Random String'
-      assert_equal 'Some Random String', gv.get_string
+      gv.get_string.must_equal 'Some Random String'
     end
 
     it 'wraps nil' do
       gv = GObject::Value.wrap_ruby_value nil
       assert_instance_of GObject::Value, gv
-      assert_equal nil, gv.get_value
+      gv.get_value.must_be_nil
     end
 
     it 'wraps object values' do
@@ -179,13 +179,13 @@ describe GObject::Value do
     it 'unwraps a boolean false' do
       gv = GObject::Value.wrap_ruby_value false
       result = gv.get_value
-      assert_equal false, result
+      result.must_equal false
     end
 
     it 'unwraps a boolean true' do
       gv = GObject::Value.wrap_ruby_value true
       result = gv.get_value
-      assert_equal true, result
+      result.must_equal true
     end
 
     it 'unwraps a signed char' do
@@ -323,7 +323,7 @@ describe GObject::Value do
     it 'creates a null GValue from a Ruby nil' do
       gv = GObject::Value.from nil
       gv.current_gtype.must_equal GObject::TYPE_INVALID
-      gv.get_value.must_equal nil
+      gv.get_value.must_be_nil
     end
   end
 

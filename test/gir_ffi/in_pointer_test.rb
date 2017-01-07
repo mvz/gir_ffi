@@ -164,7 +164,7 @@ describe GirFFI::InPointer do
       end
 
       it 'returns nil when passed nil' do
-        GirFFI::InPointer.from(:void, nil).must_equal nil
+        GirFFI::InPointer.from(:void, nil).must_be_nil
       end
     end
 
