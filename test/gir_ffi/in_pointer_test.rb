@@ -147,10 +147,8 @@ describe GirFFI::InPointer do
 
     it 'handles enum types' do
       e = Module.new do
+        extend GirFFI::EnumBase
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
-        def self.[](val)
-          self::Enum[val]
-        end
       end
       ptr = GirFFI::InPointer.from e, :bar
       ptr.address.must_equal 1

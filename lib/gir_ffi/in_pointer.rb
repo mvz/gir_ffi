@@ -37,10 +37,10 @@ module GirFFI
         from_utf8 val
       when :gint32, :guint32, :gint8, :GType
         FFI::Pointer.new val
-      when Class, :void
-        val.to_ptr
-      when Module
+      when GirFFI::EnumLikeBase
         FFI::Pointer.new type[val]
+      when Module, :void
+        val.to_ptr
       else
         raise NotImplementedError, type
       end
