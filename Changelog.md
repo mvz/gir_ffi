@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1 / 2017-01-07
+
+* Fix build on JRuby
+* Allow clearing properties that take a GObject value
+* Handle GLists requiring an Interface type
+
 ## 0.11.0 / 2016-10-16
 
 * Internal test and code improvements. Some internal APIs have been removed or
