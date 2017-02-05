@@ -2,15 +2,18 @@ sudo: required
 dist: trusty
 language: ruby
 rvm:
-  - 2.1.8
-  - 2.2.4
-  - 2.3.0
-  - jruby-9.1.5.0
+  - 2.1
+  - 2.2
+  - 2.3
+  - 2.4
+  - jruby-9.1.7.0
   - jruby-head
+  - rubinius-3
 matrix:
   allow_failures:
-    - rvm: jruby-9.1.5.0
+    - rvm: jruby-9.1.7.0
     - rvm: jruby-head
+    - rvm: rubinius-3
 before_install:
   - gem install bundler
   - sudo apt-get -qq update
