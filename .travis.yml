@@ -8,11 +8,13 @@ rvm:
   - 2.4
   - jruby-9.1.7.0
   - jruby-head
+  - ruby-head
   - rubinius-3
 matrix:
   allow_failures:
     - rvm: jruby-9.1.7.0
     - rvm: jruby-head
+    - rvm: ruby-head
     - rvm: rubinius-3
 before_install:
   - gem install bundler
