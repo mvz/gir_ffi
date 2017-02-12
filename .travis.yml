@@ -19,6 +19,7 @@ matrix:
 before_install:
   - rvm use @global
   - gem uninstall bundler -x
+  - rvm use @default
   - gem install bundler --version=1.13.7
   - bundler --version
   - sudo apt-get -qq update
