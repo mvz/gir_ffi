@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'ffi/bit_masks'
 
 module GObject

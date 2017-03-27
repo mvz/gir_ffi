@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/builders/callback_builder'
 require 'gir_ffi/builders/constant_builder'
 require 'gir_ffi/builders/enum_builder'

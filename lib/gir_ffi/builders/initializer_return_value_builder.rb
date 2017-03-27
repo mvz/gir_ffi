@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/builders/base_return_value_builder'
 
 module GirFFI

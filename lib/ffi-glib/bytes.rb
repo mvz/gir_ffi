@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 GLib.load_class :Bytes
 
 module GLib

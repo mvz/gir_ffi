@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/builders/base_return_value_builder'
 require 'gir_ffi/builders/ruby_to_c_convertor'
 

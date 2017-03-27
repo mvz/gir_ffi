@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Class to represent the info for the receiver argument of a callback or
   # signal handler. Implements the necessary parts of IArgumentInfo's

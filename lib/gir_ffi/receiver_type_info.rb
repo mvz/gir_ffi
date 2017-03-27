@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Represents the type of the receiver of a signal or vfunc, conforming, as
   # needed, to the interface of GObjectIntrospection::ITypeInfo

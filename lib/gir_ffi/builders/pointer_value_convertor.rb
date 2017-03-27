@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module Builders
     # Encapsulates knowledge about how to store values in pointers, and how to

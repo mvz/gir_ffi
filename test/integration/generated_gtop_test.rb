@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi_test_helper'
 
 # Tests generated methods and functions in the GTop namespace. This namespace

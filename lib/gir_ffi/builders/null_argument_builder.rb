@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Argument builder that does nothing. Implements the Null Object pattern.
   class NullArgumentBuilder

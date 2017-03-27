@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module FFIExt
     # Extensions to FFI::Pointer

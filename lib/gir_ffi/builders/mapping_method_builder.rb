@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/callback_argument_builder'
 require 'gir_ffi/builders/vfunc_argument_builder'

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'forwardable'
 require 'gir_ffi/registered_type_base'
 require 'gir_ffi/builders/null_class_builder'

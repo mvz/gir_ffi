@@ -8,6 +8,10 @@ AllCops:
     - gir_ffi.gemspec
   DisplayCopNames: true
 
+# This cop gives bad advice
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
@@ -94,6 +98,10 @@ Style/SignalException:
   EnforcedStyle: only_raise
 
 Style/SingleLineBlockParams:
+  Enabled: false
+
+# I like to have symbols always look like symbols
+Style/SymbolArray:
   Enabled: false
 
 # Accessors are only trivial if they match the ivar name.

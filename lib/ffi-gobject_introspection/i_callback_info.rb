@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GObjectIntrospection
   # Wraps a GICallbackInfo struct. Has no methods in addition to the ones
   # inherited from ICallableInfo.

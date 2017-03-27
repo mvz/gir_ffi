@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::IFunctionInfo needed by GirFFI

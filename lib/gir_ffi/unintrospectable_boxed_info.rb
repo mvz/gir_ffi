@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/info_ext/full_type_name'
 
 module GirFFI

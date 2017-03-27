@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GLib
   # Common methods for GLib::Array and GLib::PtrArray
   module ArrayMethods

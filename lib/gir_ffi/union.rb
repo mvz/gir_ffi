@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/ownable'
 
 module GirFFI

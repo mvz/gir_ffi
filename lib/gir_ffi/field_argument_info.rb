@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Class to represent argument info for the argument of a setter method.
   # Implements the necessary parts of IArgumentInfo's interface.

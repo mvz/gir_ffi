@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/variable_name_generator'
 require 'gir_ffi/builders/closure_argument_builder'
 require 'gir_ffi/builders/closure_return_value_builder'
