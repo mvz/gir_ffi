@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/error_type_info'
 
 module GirFFI

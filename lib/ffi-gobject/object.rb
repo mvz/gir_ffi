@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/property_not_found_error'
 
 GObject.load_class :Object

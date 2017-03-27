@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 GObject.load_class :InitiallyUnowned
 
 module GObject

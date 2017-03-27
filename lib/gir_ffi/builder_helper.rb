@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Set of helper methods used in the builders.
   module BuilderHelper

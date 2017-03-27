@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/boolean'
 require 'gir_ffi/sized_array'
 

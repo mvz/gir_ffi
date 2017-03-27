@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi_test_helper'
 
 # Tests behavior of objects in the generated GtkSource namespace.

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Minitest
   class StatsReporter < AbstractReporter
     def initialize(_options)

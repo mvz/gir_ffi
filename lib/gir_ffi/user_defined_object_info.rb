@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/user_defined_property_info'
 require 'gir_ffi/vfunc_implementation'
 

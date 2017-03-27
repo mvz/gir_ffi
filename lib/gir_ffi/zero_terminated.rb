@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Represents a null-terminated array.
   class ZeroTerminated

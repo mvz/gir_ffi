@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GObjectIntrospection
   # Wraps a GIUnionInfo struct.
   # Represents a union.

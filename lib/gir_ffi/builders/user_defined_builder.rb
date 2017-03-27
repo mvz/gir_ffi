@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/builders/object_builder'
 require 'gir_ffi/g_type'
 

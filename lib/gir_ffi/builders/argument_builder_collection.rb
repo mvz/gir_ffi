@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module Builders
     # Class representing the argument and return value builders for a method,

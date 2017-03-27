@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/allocation_helper'
 require 'gir_ffi/builder'
 require 'gir_ffi/glib_error'

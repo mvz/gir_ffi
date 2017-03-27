@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module Builders
     # Encapsulates the general structure of generated methods, consisting of a

@@ -1,5 +1,6 @@
 # coding: utf-8
 # frozen_string_literal: true
+
 require 'gir_ffi_test_helper'
 
 GirFFI.setup :PangoFT2

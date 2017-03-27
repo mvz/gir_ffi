@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Base module for all generated GLib types.
   module TypeBase

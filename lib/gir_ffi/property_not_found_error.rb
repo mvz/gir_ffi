@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Exception class to be raised when a property is not found.
   class PropertyNotFoundError < RuntimeError

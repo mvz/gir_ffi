@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module Builders
     # Argument convertor that does nothing

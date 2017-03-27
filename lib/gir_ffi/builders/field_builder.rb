@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'gir_ffi/builders/argument_builder'
 require 'gir_ffi/builders/base_argument_builder'
 require 'gir_ffi/builders/null_argument_builder'

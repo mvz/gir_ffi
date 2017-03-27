@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GLib
   # Common methods for container classes: Array, PtrArray, List, SList and
   # HashTable.

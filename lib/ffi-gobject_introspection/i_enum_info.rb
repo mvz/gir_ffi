@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GObjectIntrospection
   # Wraps a GIEnumInfo struct if it represents an enum.
   # If it represents a flag, an IFlagsInfo object is used instead.

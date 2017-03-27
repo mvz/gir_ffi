@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'base_test_helper'
 
 describe GObjectIntrospection::Strv do

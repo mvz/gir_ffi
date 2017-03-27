@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Generates a sequence of unique variable names used in generating
   # function definitions.

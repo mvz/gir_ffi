@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Base module providing class methods for generated classes representing GLib
   # structs, unions and boxed types.

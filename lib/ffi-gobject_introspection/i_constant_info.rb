@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GObjectIntrospection
   # Wraps a GIConstantInfo struct; represents a constant.
   class IConstantInfo < IBaseInfo

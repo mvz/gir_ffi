@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   # Base module for modules representing GLib namespaces.
   module ModuleBase

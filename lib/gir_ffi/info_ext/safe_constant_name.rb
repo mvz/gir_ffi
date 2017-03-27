@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module GirFFI
   module InfoExt
     # Extension module provinding a #safe_name method suitable for types.
