@@ -8,6 +8,10 @@ AllCops:
     - gir_ffi.gemspec
   DisplayCopNames: true
 
+# This cop gives bad advice
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
