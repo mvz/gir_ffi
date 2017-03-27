@@ -96,6 +96,10 @@ Style/SignalException:
 Style/SingleLineBlockParams:
   Enabled: false
 
+# I like to have symbols always look like symbols
+Style/SymbolArray:
+  Enabled: false
+
 # Accessors are only trivial if they match the ivar name.
 # Also, allow accessors with ? in the name.
 Style/TrivialAccessors:
