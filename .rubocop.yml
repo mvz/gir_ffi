@@ -84,6 +84,11 @@ Style/MultilineMethodCallIndentation:
 Style/Next:
   Enabled: false
 
+# Use older RuboCop default
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': ()
+
 # TODO: See about has_ and have_
 Style/PredicateName:
   NamePrefixBlacklist:
