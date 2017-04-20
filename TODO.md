@@ -42,6 +42,22 @@ not very nice:
       }
     end
 
+or
+
+    class Derived < Base
+      def some_vfunc
+        #implementation goes here
+      end
+    end
+
+    GirFFI.define_type Derived do |info|
+      info.install_property GObject.param_spec_int("foo", "foo bar",
+                                                   "The Foo Bar Property",
+                                                   10, 20, 15, 3)
+      info.install_vfunc_implementation :some_vfunc
+    end
+
+
 It would be good to replace this with something that's easier to use:
 * Perhaps auto-register types, like Gtk# does
 * Perhaps automagically find vfunc implementations, like PyGObject and

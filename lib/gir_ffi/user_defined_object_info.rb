@@ -24,7 +24,10 @@ module GirFFI
       @properties << UserDefinedPropertyInfo.new(property)
     end
 
-    def install_vfunc_implementation(name, implementation)
+    def install_vfunc_implementation(name, implementation = nil)
+      unless implementation
+        implementation = ->(obj, *args) { obj.public_send name, *args }
+      end
       @vfunc_implementations << VFuncImplementation.new(name, implementation)
     end
 
