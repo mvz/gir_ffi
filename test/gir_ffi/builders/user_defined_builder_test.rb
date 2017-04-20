@@ -6,9 +6,9 @@ GirFFI.setup :GIMarshallingTests
 GirFFI.setup :Regress
 
 describe GirFFI::Builders::UserDefinedBuilder do
+  let(:base_klass) { GIMarshallingTests::Object }
   let(:klass) do
-    Object.const_set("DerivedClass#{Sequence.next}",
-                     Class.new(GIMarshallingTests::Object))
+    Object.const_set("DerivedClass#{Sequence.next}", Class.new(base_klass))
   end
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
   let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
@@ -452,6 +452,28 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj = klass.new
         obj.method_int8_in 12
         obj.int.must_equal 12
+      end
+    end
+
+    describe 'when using a default vfunc implementation' do
+      let(:base_klass) { Regress::TestObj }
+      let(:info) do
+        GirFFI::UserDefinedObjectInfo.new klass do |it|
+          it.install_vfunc_implementation :matrix
+        end
+      end
+
+      before do
+        klass.class_eval do
+          def matrix(_arg)
+            44
+          end
+        end
+      end
+
+      it 'allows the vfunc to be called through its invoker' do
+        obj = klass.new
+        obj.do_matrix('bar').must_equal 44
       end
     end
 
