@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.1 / 2017-04-20
+
+* Allow vfunc implementation using a regular method
+
 ## 0.11.1 / 2017-01-07
 
 * Fix build on JRuby
