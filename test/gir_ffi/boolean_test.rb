@@ -25,6 +25,14 @@ describe GirFFI::Boolean do
     it 'converts true to 1' do
       GirFFI::Boolean.to_native(true, 'whatever').must_equal 1
     end
+
+    it 'converts nil to 0' do
+      GirFFI::Boolean.to_native(nil, 'whatever').must_equal 0
+    end
+
+    it 'converts truthy value to 1' do
+      GirFFI::Boolean.to_native('i am truth!', 'whatever').must_equal 1
+    end
   end
 
   describe '.size' do

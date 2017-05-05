@@ -16,7 +16,7 @@ module GirFFI
     end
 
     def self.to_native(value, _context)
-      TO_NATIVE.fetch(value)
+      TO_NATIVE.fetch(value ? true : false)
     end
 
     def self.size
