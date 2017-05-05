@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.11.1 / 2017-04-20
+## 0.11.3 / 2017-05-05
+
+* Allow conversion to native Boolean from any Ruby value
+
+## 0.11.2 / 2017-04-20
 
 * Allow vfunc implementation using a regular method
 
