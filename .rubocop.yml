@@ -102,6 +102,7 @@ Style/RedundantReturn:
 Style/SignalException:
   EnforcedStyle: only_raise
 
+# Allow meaningful names for single-line reduce etc.
 Style/SingleLineBlockParams:
   Enabled: false
 
