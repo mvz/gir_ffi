@@ -108,7 +108,7 @@ Style/SingleLineBlockParams:
 
 # I like to have symbols always look like symbols
 Style/SymbolArray:
-  Enabled: false
+  EnforcedStyle: brackets
 
 # Accessors are only trivial if they match the ivar name.
 # Also, allow accessors with ? in the name.
