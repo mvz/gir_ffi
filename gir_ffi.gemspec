@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.email = ["matijs@matijs.net"]
   s.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
 
-  s.license = 'LGPL-2.1'
+  s.license = 'LGPL-2.1+'
 
   s.description = <<-DESC
     GirFFI creates bindings for GObject-based libraries at runtime based on introspection
