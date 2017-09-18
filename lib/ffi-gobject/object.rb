@@ -8,17 +8,34 @@ module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
     setup_method 'new'
+    if !GLib.check_version(2, 54, 0)
+      setup_method 'newv'
 
-    def initialize_with_automatic_gtype(properties = {})
-      gparameters = properties.map do |name, value|
-        name = name.to_s
-        property_param_spec(name)
-        GObject::Parameter.new.tap do |gparam|
-          gparam.name = name
-          gparam.value = value
+      def initialize_with_automatic_gtype(properties = {})
+        names = []
+        values = []
+        properties.each do |name, value|
+          name = name.to_s
+          gvalue = gvalue_for_property(name)
+          gvalue.set_value value
+
+          names << name
+          values << gvalue
         end
+        initialize_without_automatic_gtype(self.class.gtype, names, values)
       end
-      initialize_without_automatic_gtype(self.class.gtype, gparameters)
+    else
+      def initialize_with_automatic_gtype(properties = {})
+        gparameters = properties.map do |name, value|
+          name = name.to_s
+          property_param_spec(name)
+          GObject::Parameter.new.tap do |gparam|
+            gparam.name = name
+            gparam.value = value
+          end
+        end
+        initialize_without_automatic_gtype(self.class.gtype, gparameters)
+      end
     end
 
     alias_method :initialize_without_automatic_gtype, :initialize
