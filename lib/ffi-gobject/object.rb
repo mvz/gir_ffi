@@ -8,6 +8,7 @@ module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
     setup_method 'new'
+    setup_method 'newv'
 
     def initialize_with_automatic_gtype(properties = {})
       gparameters = properties.map do |name, value|
