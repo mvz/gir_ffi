@@ -2827,7 +2827,15 @@ describe Regress do
   end
 
   it 'has a working function #annotation_transfer_floating' do
-    Regress.annotation_transfer_floating.must_be_nil
+    Regress.setup_method :annotation_transfer_floating
+    method = Regress.method :annotation_transfer_floating
+    # NOTE: The arity of this method was changed in GObjectIntrospection 1.53.2
+    if method.arity == 1
+      object = GObject::Object.new
+      Regress.annotation_transfer_floating(object).must_be_nil
+    else
+      Regress.annotation_transfer_floating.must_be_nil
+    end
   end
 
   it 'has a working function #annotation_versioned' do
