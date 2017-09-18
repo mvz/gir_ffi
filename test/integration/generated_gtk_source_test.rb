@@ -7,7 +7,7 @@ describe 'The generated GtkSource module' do
   before do
     begin
       GirFFI.setup :GtkSource
-    rescue
+    rescue RuntimeError
       skip 'GtkSource GIR not available'
     end
   end

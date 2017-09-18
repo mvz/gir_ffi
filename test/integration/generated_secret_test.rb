@@ -7,7 +7,7 @@ describe 'The generated Secret module' do
     it 'has a working constructor' do
       begin
         GirFFI.setup :Secret
-      rescue
+      rescue RuntimeError
         skip 'No GIR data for Secret available'
       end
       instance = Secret::Schema.new('foo', :none, 'bar' => :string)

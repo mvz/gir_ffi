@@ -58,7 +58,7 @@ module GirFFI
       new do |*args|
         begin
           call_with_argument_mapping(prc, *args)
-        rescue => e
+        rescue StandardError => e
           GLib::MainLoop.handle_exception e
         end
       end
