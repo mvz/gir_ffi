@@ -132,17 +132,17 @@ module GirFFI
         return if info.find_method 'new'
 
         if info.abstract?
-          klass.class_eval <<-END
+          klass.class_eval <<-RUBY
             def initialize(*)
               raise NoMethodError
             end
-          END
+          RUBY
         else
-          klass.class_eval <<-END
+          klass.class_eval <<-RUBY
             def initialize(properties = {})
               base_initialize(properties)
             end
-          END
+          RUBY
         end
       end
 

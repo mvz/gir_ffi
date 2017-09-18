@@ -8,6 +8,23 @@ AllCops:
     - gir_ffi.gemspec
   DisplayCopNames: true
 
+# Dot at end of line makes it clearer that the line is not done
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+# Multi-line assignment should be simply indented. Aligning them makes it even
+# harder to keep a sane line length.
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: same_line
+
+# Multi-line method calls should be simply indented. Aligning them makes it
+# even harder to keep a sane line length.
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 # This cop gives bad advice
 Lint/AmbiguousBlockAssociation:
   Enabled: false
@@ -30,14 +47,27 @@ Metrics/ModuleLength:
   Exclude:
     - 'lib/ffi-gobject_introspection/lib.rb'
 
+# Gtk+ has a lot of accessor method starting with get_ or set_
+Naming/AccessorMethodName:
+  Enabled: false
+
+# FIXME: GirFFI uses a ffi-something naming scheme.
+Naming/FileName:
+  Enabled: false
+
+# TODO: See about has_ and have_
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+# This cop is broken
+Naming/VariableNumber:
+  Enabled: false
+
 # In tests, we want to do this to be more clear
 Performance/FixedSize:
   Exclude:
     - 'test/**/*.rb'
-
-# Gtk+ has a lot of accessor method starting with get_ or set_
-Style/AccessorMethodName:
-  Enabled: false
 
 # Conform to old RuboCop behavior for now
 Style/Alias:
@@ -46,14 +76,6 @@ Style/Alias:
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
-
-# Dot at end of line makes it clearer that the line is not done
-Style/DotPosition:
-  EnforcedStyle: trailing
-
-# FIXME: GirFFI uses a ffi-something naming scheme.
-Style/FileName:
-  Enabled: false
 
 # Comment all the files!
 Style/FrozenStringLiteralComment:
@@ -67,19 +89,6 @@ Style/GuardClause:
 Style/IfUnlessModifier:
   MaxLineLength: 60
 
-# Multi-line assignment should be simply indented. Aligning them makes it even
-# harder to keep a sane line length.
-Style/MultilineOperationIndentation:
-  EnforcedStyle: indented
-
-Style/MultilineMethodCallBraceLayout:
-  EnforcedStyle: same_line
-
-# Multi-line method calls should be simply indented. Aligning them makes it
-# even harder to keep a sane line length.
-Style/MultilineMethodCallIndentation:
-  EnforcedStyle: indented
-
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
@@ -88,11 +97,6 @@ Style/Next:
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%w': ()
-
-# TODO: See about has_ and have_
-Style/PredicateName:
-  NamePrefixBlacklist:
-    - is_
 
 # Allow explicit return with multiple return values
 Style/RedundantReturn:
@@ -115,9 +119,5 @@ Style/SymbolArray:
 Style/TrivialAccessors:
   ExactNameMatch: true
   AllowPredicates: true
-
-# This cop is broken
-Style/VariableNumber:
-  Enabled: false
 
 inherit_from: .rubocop_todo.yml

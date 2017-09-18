@@ -8,7 +8,7 @@ describe 'The generated GTop module' do
   before do
     begin
       GirFFI.setup :GTop
-    rescue
+    rescue RuntimeError
       skip 'No GIR data for GTop available'
     end
   end

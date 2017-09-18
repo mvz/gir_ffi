@@ -6,7 +6,7 @@ describe 'The generated WarnLib module' do
   before do
     begin
       GirFFI.setup :WarnLib
-    rescue
+    rescue RuntimeError
       skip 'WarnLib GIR not available'
     end
   end

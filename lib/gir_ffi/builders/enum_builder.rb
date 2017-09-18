@@ -41,11 +41,11 @@ module GirFFI
       end
 
       def setup_inspect
-        klass.instance_eval <<-EOS
+        klass.instance_eval <<-RUBY
           def self.inspect
             "#{@namespace}::#{@classname}"
           end
-        EOS
+        RUBY
       end
 
       def already_set_up
