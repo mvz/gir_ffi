@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.4 / 2017-09-19
+
+* Support glib 2.54 and gobject-introspection 1.54
+
 ## 0.11.3 / 2017-05-05
 
 * Allow conversion to native Boolean from any Ruby value
