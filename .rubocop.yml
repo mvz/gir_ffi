@@ -51,7 +51,7 @@ Metrics/ModuleLength:
 Naming/AccessorMethodName:
   Enabled: false
 
-# FIXME: GirFFI uses a ffi-something naming scheme.
+# GirFFI uses a ffi-something naming scheme.
 Naming/FileName:
   Enabled: false
 
