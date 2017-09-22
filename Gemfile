@@ -10,6 +10,6 @@ if ENV['CI']
     gem 'coveralls', group: :development
   end
 else
-  gem 'pry', '~> 0.10.4', group: :local_development
+  gem 'pry', '~> 0.11.0', group: :local_development
   gem 'simplecov', '~> 0.15.0', group: :local_development, platform: :mri
 end
