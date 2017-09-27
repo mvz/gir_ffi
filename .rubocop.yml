@@ -4,9 +4,6 @@ AllCops:
     - 'tasks/**/*.rake'
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - Rakefile
-    - gir_ffi.gemspec
-  DisplayCopNames: true
 
 # Dot at end of line makes it clearer that the line is not done
 Layout/DotPosition:
@@ -33,10 +30,10 @@ Lint/AmbiguousBlockAssociation:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
-# Test describe blocks can be any size
 Metrics/BlockLength:
   Exclude:
-    - 'test/**/*'
+    - 'test/**/*' # Test describe blocks can be any size
+    - 'gir_ffi.gemspec' # Gem spec blocks can be any size
 
 # Require lines to fit in pull requests.
 Metrics/LineLength:
@@ -59,10 +56,6 @@ Naming/FileName:
 Naming/PredicateName:
   NamePrefixBlacklist:
     - is_
-
-# This cop is broken
-Naming/VariableNumber:
-  Enabled: false
 
 # In tests, we want to do this to be more clear
 Performance/FixedSize:
