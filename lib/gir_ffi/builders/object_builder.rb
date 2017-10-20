@@ -121,11 +121,11 @@ module GirFFI
 
       def define_vfunc_invoker(vfunc_name, invoker_name)
         return if vfunc_name == invoker_name
-        klass.class_eval "
+        klass.class_eval <<-DEF
           def #{vfunc_name} *args, &block
             #{invoker_name}(*args, &block)
           end
-        "
+        DEF
       end
 
       def provide_initializer
