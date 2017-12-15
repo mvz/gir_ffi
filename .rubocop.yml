@@ -79,10 +79,6 @@ Style/FrozenStringLiteralComment:
 Style/GuardClause:
   MinBodyLength: 2
 
-# Don't use if or unless as modifier if the line gets too long
-Style/IfUnlessModifier:
-  MaxLineLength: 60
-
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:
   Enabled: false
