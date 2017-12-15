@@ -23,6 +23,10 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
+# Force consistent spacing independent of block contents
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyleForEmptyBraces: space
+
 # This cop gives bad advice
 Lint/AmbiguousBlockAssociation:
   Enabled: false
