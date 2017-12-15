@@ -17,9 +17,7 @@ module GirFFI
     end
 
     def self.check_fixed_array_size(size, arr, name)
-      unless arr.size.equal? size
-        raise ArgumentError, "#{name} should have size #{size}"
-      end
+      raise ArgumentError, "#{name} should have size #{size}" unless arr.size.equal? size
     end
 
     # NOTE: Only used in List, SList and HashTable classes.

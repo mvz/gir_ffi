@@ -84,9 +84,7 @@ module GirFFI
       end
 
       def output_value
-        if caller_allocated_object? && gvalue?
-          return "#{call_argument_name}.get_value"
-        end
+        return "#{call_argument_name}.get_value" if caller_allocated_object? && gvalue?
         base = pointer_to_value_method_call call_argument_name, type_spec
         if needs_out_conversion?
           outgoing_convertor(base).conversion

@@ -41,7 +41,7 @@ module GirFFI
       end
 
       def setup_inspect
-        klass.instance_eval <<-RUBY
+        klass.instance_eval <<-RUBY, __FILE__, __LINE__ + 1
           def self.inspect
             "#{@namespace}::#{@classname}"
           end

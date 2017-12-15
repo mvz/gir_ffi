@@ -31,9 +31,7 @@ module GirFFI
     def setup_and_call(method, arguments, &block)
       result = setup_method method.to_s
 
-      unless result
-        raise "Unable to set up method #{method} in #{self}"
-      end
+      raise "Unable to set up method #{method} in #{self}" unless result
 
       send method, *arguments, &block
     end

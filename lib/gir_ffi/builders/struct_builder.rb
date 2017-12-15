@@ -23,9 +23,7 @@ module GirFFI
           return type.tag_or_class if type.tag == :interface
         end
 
-        if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
-          return BoxedBase
-        end
+        return BoxedBase if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
 
         StructBase
       end

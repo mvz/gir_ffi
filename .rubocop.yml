@@ -23,6 +23,10 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
+# Force consistent spacing independent of block contents
+Layout/SpaceBeforeBlockBraces:
+  EnforcedStyleForEmptyBraces: space
+
 # This cop gives bad advice
 Lint/AmbiguousBlockAssociation:
   Enabled: false
@@ -78,10 +82,6 @@ Style/FrozenStringLiteralComment:
 # Require at least two dependent lines before suggesting a guard clause
 Style/GuardClause:
   MinBodyLength: 2
-
-# Don't use if or unless as modifier if the line gets too long
-Style/IfUnlessModifier:
-  MaxLineLength: 60
 
 # Sometimes an if statement just looks better than next with a guard clause
 Style/Next:

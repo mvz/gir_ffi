@@ -19,9 +19,7 @@ module GirFFI
     def setup_and_call(method, arguments, &block)
       method_name = self.class.try_in_ancestors(:setup_instance_method, method.to_s)
 
-      unless method_name
-        raise NoMethodError, "undefined method `#{method}' for #{self}"
-      end
+      raise NoMethodError, "undefined method `#{method}' for #{self}" unless method_name
 
       send method_name, *arguments, &block
     end
@@ -35,9 +33,7 @@ module GirFFI
     def self.setup_and_call(method, arguments, &block)
       method_name = try_in_ancestors(:setup_method, method.to_s)
 
-      unless method_name
-        raise NoMethodError, "undefined method `#{method}' for #{self}"
-      end
+      raise NoMethodError, "undefined method `#{method}' for #{self}" unless method_name
 
       send method_name, *arguments, &block
     end
