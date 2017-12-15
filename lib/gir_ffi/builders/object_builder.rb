@@ -121,7 +121,7 @@ module GirFFI
 
       def define_vfunc_invoker(vfunc_name, invoker_name)
         return if vfunc_name == invoker_name
-        klass.class_eval <<-DEF
+        klass.class_eval <<-DEF, __FILE__, __LINE__ + 1
           def #{vfunc_name} *args, &block
             #{invoker_name}(*args, &block)
           end
@@ -132,13 +132,13 @@ module GirFFI
         return if info.find_method 'new'
 
         if info.abstract?
-          klass.class_eval <<-RUBY
+          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(*)
               raise NoMethodError
             end
           RUBY
         else
-          klass.class_eval <<-RUBY
+          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
             def initialize(properties = {})
               base_initialize(properties)
             end
