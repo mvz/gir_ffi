@@ -9,9 +9,7 @@ module GirFFI
       def post_conversion
         result = []
         result << "store_pointer(#{capture_variable_name})"
-        if specialized_type_tag == :struct
-          result << '@struct.owned = true'
-        end
+        result << '@struct.owned = true' if specialized_type_tag == :struct
         result
       end
     end

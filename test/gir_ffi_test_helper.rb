@@ -23,9 +23,7 @@ module GirFFITestExtensions
   end
 
   def restore_module(name)
-    if Object.const_defined? name
-      Object.send(:remove_const, name)
-    end
+    Object.send(:remove_const, name) if Object.const_defined? name
     return unless SAVED_MODULES.key? name
     Object.const_set name, SAVED_MODULES[name]
     SAVED_MODULES.delete name

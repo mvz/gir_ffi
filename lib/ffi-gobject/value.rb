@@ -22,9 +22,7 @@ module GObject
       proc do
         if struct.owned?
           ptr = struct.to_ptr
-          unless struct[:g_type] == TYPE_INVALID
-            Lib.g_value_unset ptr
-          end
+          Lib.g_value_unset ptr unless struct[:g_type] == TYPE_INVALID
           GObject.boxed_free gtype, ptr
         end
       end
@@ -141,9 +139,7 @@ module GObject
     }.freeze
 
     def init_for_ruby_value(val)
-      if val.class.respond_to? :gtype
-        return init val.class.gtype
-      end
+      return init val.class.gtype if val.class.respond_to? :gtype
       CLASS_TO_GTYPE_MAP.each do |klass, type|
         return init type if val.is_a? klass
       end

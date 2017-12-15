@@ -33,9 +33,7 @@ describe GObjectIntrospection::IBaseInfo do
 
   describe 'upon garbage collection' do
     it 'calls g_base_info_unref' do
-      if jruby? || rubinius?
-        skip 'cannot be reliably tested on JRuby and Rubinius'
-      end
+      skip 'cannot be reliably tested on JRuby and Rubinius' if jruby? || rubinius?
 
       expect(ptr = Object.new).to receive(:null?).and_return false
       expect(lib = Object.new).to receive(:g_base_info_unref).with(ptr).and_return nil
