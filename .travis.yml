@@ -8,12 +8,10 @@ rvm:
   - jruby-9.1.13.0
   - jruby-head
   - ruby-head
-  - rubinius-3
 matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
-    - rvm: rubinius-3
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
