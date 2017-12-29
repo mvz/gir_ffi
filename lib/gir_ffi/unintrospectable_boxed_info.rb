@@ -20,7 +20,7 @@ module GirFFI
       GObject.type_name g_type
     end
 
-    DEFAULT_BOXED_NAMESPACE = 'GLib'.freeze
+    DEFAULT_BOXED_NAMESPACE = 'GLib'
 
     def namespace
       DEFAULT_BOXED_NAMESPACE
