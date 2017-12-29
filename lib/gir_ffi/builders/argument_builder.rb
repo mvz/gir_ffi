@@ -125,7 +125,7 @@ module GirFFI
       end
 
       def length_argument_name
-        length_arg && length_arg.post_converted_name
+        length_arg&.post_converted_name
       end
 
       def needs_size_check?
