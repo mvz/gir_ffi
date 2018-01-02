@@ -16,13 +16,11 @@ rvm:
   - jruby-9.1.15.0
   - jruby-head
   - ruby-head
-  - rubinius-3
 
 matrix:
   allow_failures:
     - rvm: jruby-head
     - rvm: ruby-head
-    - rvm: rubinius-3
 
 bundler_args: --without local_development
 
