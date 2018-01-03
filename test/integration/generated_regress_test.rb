@@ -1219,7 +1219,7 @@ describe Regress do
     end
 
     it 'has non-zero positive result for #gtype' do
-      assert Regress::TestBoxed.gtype > 0
+      Regress::TestBoxed.gtype.must_be :positive?
     end
 
     it 'has a working method #_not_a_method' do

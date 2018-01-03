@@ -117,7 +117,7 @@ describe GirFFI::Builders::FieldBuilder do
     let(:n_params_field_info) { get_field_introspection_data 'GObject', 'SignalQuery', 'n_params' }
 
     it 'creates the right getter method' do
-      skip if field_info.field_type.array_length < 0
+      skip if field_info.field_type.array_length.negative?
       expected = <<-CODE.reset_indentation
         def param_types
           _v1 = @struct.to_ptr + #{n_params_field_info.offset}
