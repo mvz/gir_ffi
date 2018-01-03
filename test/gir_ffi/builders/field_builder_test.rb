@@ -3,8 +3,8 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::Builders::FieldBuilder do
-  let(:klass) { 'dummy' }
-  let(:instance) { GirFFI::Builders::FieldBuilder.new field_info, klass }
+  let(:target_class) { 'dummy' }
+  let(:instance) { GirFFI::Builders::FieldBuilder.new field_info, target_class }
 
   describe 'for a field of type :gint8 with an offset' do
     let(:field_info) { get_field_introspection_data 'Regress', 'TestSimpleBoxedA', 'some_int8' }

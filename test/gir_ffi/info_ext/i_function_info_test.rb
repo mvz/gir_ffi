@@ -3,13 +3,13 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IFunctionInfo do
-  let(:klass) do
+  let(:info_class) do
     Class.new do
       include GirFFI::InfoExt::ICallableInfo
       include GirFFI::InfoExt::IFunctionInfo
     end
   end
-  let(:function_info) { klass.new }
+  let(:function_info) { info_class.new }
 
   describe '#argument_ffi_types' do
     before do

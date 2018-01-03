@@ -4,23 +4,23 @@ require 'gir_ffi_test_helper'
 
 describe GirFFI::ClassBase do
   describe 'a simple descendant' do
-    let(:klass) do
+    let(:object_class) do
       Class.new(GirFFI::ClassBase) do
         self::Struct = Class.new(GirFFI::Struct) do
           layout :foo, :int32
         end
       end
     end
-    let(:object) { klass.wrap FFI::MemoryPointer.new(:int32) }
+    let(:object) { object_class.wrap FFI::MemoryPointer.new(:int32) }
 
     it 'has #from as a pass-through method' do
-      result = klass.from :foo
+      result = object_class.from :foo
       result.must_equal :foo
     end
 
     describe '#==' do
       it 'returns true when comparing to an object of the same class and pointer' do
-        other = klass.wrap object.to_ptr
+        other = object_class.wrap object.to_ptr
 
         object.must_be :==, other
         other.must_be :==, object
@@ -28,14 +28,14 @@ describe GirFFI::ClassBase do
 
       it 'returns true when comparing to an object of the same class and a pointer with the same address' do
         ptr = FFI::Pointer.new object.to_ptr
-        other = klass.wrap ptr
+        other = object_class.wrap ptr
 
         object.must_be :==, other
         other.must_be :==, object
       end
 
       it 'returns false when comparing to an object of a sub/superclass and the same pointer' do
-        subclass = Class.new(klass)
+        subclass = Class.new(object_class)
         other = subclass.wrap object.to_ptr
 
         object.wont_be :==, other
@@ -43,7 +43,7 @@ describe GirFFI::ClassBase do
       end
 
       it 'returns false when comparing to an object of the same class and different pointer' do
-        other = klass.wrap FFI::MemoryPointer.new(:int32)
+        other = object_class.wrap FFI::MemoryPointer.new(:int32)
 
         object.wont_be :==, other
         other.wont_be :==, object

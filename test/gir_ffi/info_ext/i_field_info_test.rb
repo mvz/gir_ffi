@@ -3,12 +3,12 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::IFieldInfo do
-  let(:klass) do
+  let(:info_class) do
     Class.new do
       include GirFFI::InfoExt::IFieldInfo
     end
   end
-  let(:field_info) { klass.new }
+  let(:field_info) { info_class.new }
   describe '#layout_specification' do
     it 'returns an array of name, typespec and offset' do
       expect(type = Object.new).to receive(:to_ffi_type).and_return :bar

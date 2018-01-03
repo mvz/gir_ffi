@@ -3,12 +3,12 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ICallbackInfo do
-  let(:klass) do
+  let(:callback_class) do
     Class.new do
       include GirFFI::InfoExt::ICallbackInfo
     end
   end
-  let(:callback_info) { klass.new }
+  let(:callback_info) { callback_class.new }
 
   describe '#return_ffi_type' do
     it 'returns the callback ffi type of the return type' do

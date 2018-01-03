@@ -10,7 +10,7 @@ describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   let(:gtype) { property.value_type }
   let(:info) { GirFFI::UnintrospectableBoxedInfo.new(gtype) }
   let(:bldr) { GirFFI::Builders::UnintrospectableBoxedBuilder.new(info) }
-  let(:klass) { bldr.build_class }
+  let(:boxed_class) { bldr.build_class }
 
   before do
     skip unless get_property_introspection_data('GIMarshallingTests',
@@ -19,17 +19,17 @@ describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   end
 
   it 'builds a class' do
-    klass.must_be_instance_of Class
+    boxed_class.must_be_instance_of Class
   end
 
   it 'builds a class derived from GirFFI::BoxedBase' do
-    klass.ancestors.must_include GirFFI::BoxedBase
+    boxed_class.ancestors.must_include GirFFI::BoxedBase
   end
 
   it 'returns the same class when built again' do
     other_bldr = GirFFI::Builders::UnintrospectableBoxedBuilder.new(info)
-    other_klass = other_bldr.build_class
+    other_class = other_bldr.build_class
 
-    other_klass.must_equal klass
+    other_class.must_equal boxed_class
   end
 end

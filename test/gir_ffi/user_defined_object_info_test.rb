@@ -70,11 +70,11 @@ describe GirFFI::UserDefinedObjectInfo do
   end
 
   describe '#g_name' do
-    let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
+    let(:user_class) { Object.new }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     before do
-      allow(klass).to receive(:name).and_return 'foo'
+      allow(user_class).to receive(:name).and_return 'foo'
     end
 
     it "returns the described class' name by default" do
@@ -88,8 +88,8 @@ describe GirFFI::UserDefinedObjectInfo do
   end
 
   describe '#find_method' do
-    let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
+    let(:user_class) { Object.new }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     it 'finds no methods' do
       info.find_method('foo').must_be_nil
@@ -97,8 +97,8 @@ describe GirFFI::UserDefinedObjectInfo do
   end
 
   describe '#find_signal' do
-    let(:klass) { Object.new }
-    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
+    let(:user_class) { Object.new }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     it 'finds no signals' do
       info.find_signal('foo').must_be_nil
@@ -107,11 +107,11 @@ describe GirFFI::UserDefinedObjectInfo do
 
   describe '#interfaces' do
     let(:modul) { GIMarshallingTests::Interface }
-    let(:klass) { Class.new GIMarshallingTests::Object }
-    let(:info) { GirFFI::UserDefinedObjectInfo.new klass }
+    let(:user_class) { Class.new GIMarshallingTests::Object }
+    let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     before do
-      klass.send :include, modul
+      user_class.send :include, modul
     end
 
     it 'returns the interface infos for the include modules' do

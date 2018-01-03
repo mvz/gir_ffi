@@ -5,13 +5,13 @@ require 'gir_ffi_test_helper'
 GirFFI.setup :Regress
 
 describe GirFFI::InfoExt::ISignalInfo do
-  let(:klass) do
+  let(:signal_class) do
     Class.new do
       include GirFFI::InfoExt::ICallableInfo
       include GirFFI::InfoExt::ISignalInfo
     end
   end
-  let(:signal_info) { klass.new }
+  let(:signal_info) { signal_class.new }
 
   describe '#arguments_to_gvalues' do
     let(:object) { Regress::TestSubObj.new }

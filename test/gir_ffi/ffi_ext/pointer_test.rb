@@ -3,10 +3,10 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::FFIExt::Pointer do
-  let(:klass) { Class.new { include GirFFI::FFIExt::Pointer } }
+  let(:pointer_class) { Class.new { include GirFFI::FFIExt::Pointer } }
   describe '#to_object' do
     it 'finds the wrapping class by gtype and wraps the pointer in it' do
-      ptr = klass.new
+      ptr = pointer_class.new
       expect(ptr).to receive(:null?).and_return false
       object_class = Class.new
 

@@ -3,16 +3,16 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ITypeInfo do
-  let(:klass) do
+  let(:info_class) do
     Class.new do
       include GirFFI::InfoExt::ITypeInfo
     end
   end
 
-  let(:type_info) { klass.new }
-  let(:elmtype_info) { klass.new }
-  let(:keytype_info) { klass.new }
-  let(:valtype_info) { klass.new }
+  let(:type_info) { info_class.new }
+  let(:elmtype_info) { info_class.new }
+  let(:keytype_info) { info_class.new }
+  let(:valtype_info) { info_class.new }
   let(:iface_info) { Object.new }
 
   let(:callback_type_info) do

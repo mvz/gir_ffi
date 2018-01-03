@@ -112,56 +112,56 @@ describe GirFFI::StructLikeBase do
 
   describe '.to_ffi_type' do
     it 'returns the class itself' do
-      klass = GIMarshallingTests::SimpleStruct
-      ffi_type = klass.to_ffi_type
-      ffi_type.must_equal klass
+      struct_class = GIMarshallingTests::SimpleStruct
+      ffi_type = struct_class.to_ffi_type
+      ffi_type.must_equal struct_class
     end
   end
 
   describe '.get_value_from_pointer' do
-    let(:klass) { GIMarshallingTests::SimpleStruct }
+    let(:struct_class) { GIMarshallingTests::SimpleStruct }
 
     it 'returns just a pointer' do
-      object = klass.new
+      object = struct_class.new
       ptr = object.to_ptr
-      result = klass.get_value_from_pointer(ptr, 0)
+      result = struct_class.get_value_from_pointer(ptr, 0)
       result.must_be :==, ptr
     end
 
     it 'uses offset correctly' do
-      struct1 = klass.new.tap { |it| it.long_ = 42 }
-      struct2 = klass.new.tap { |it| it.long_ = 24 }
-      array_ptr = GirFFI::InPointer.from_array(klass, [struct1, struct2])
-      ptr = klass.get_value_from_pointer(array_ptr, klass.size)
-      result = klass.wrap(ptr)
+      struct1 = struct_class.new.tap { |it| it.long_ = 42 }
+      struct2 = struct_class.new.tap { |it| it.long_ = 24 }
+      array_ptr = GirFFI::InPointer.from_array(struct_class, [struct1, struct2])
+      ptr = struct_class.get_value_from_pointer(array_ptr, struct_class.size)
+      result = struct_class.wrap(ptr)
       result.long_.must_equal 24
     end
   end
 
   describe '.copy_value_to_pointer' do
-    let(:klass) { GIMarshallingTests::SimpleStruct }
-    let(:struct) { klass.new }
+    let(:struct_class) { GIMarshallingTests::SimpleStruct }
+    let(:struct) { struct_class.new }
 
     it 'copies data correctly' do
       struct.long_ = 42
-      target = FFI::MemoryPointer.new klass.size
-      klass.copy_value_to_pointer(struct, target)
-      result = klass.wrap(target)
+      target = FFI::MemoryPointer.new struct_class.size
+      struct_class.copy_value_to_pointer(struct, target)
+      result = struct_class.wrap(target)
       result.long_.must_equal 42
     end
 
     it 'uses offset correctly' do
       struct.long_ = 42
-      target = FFI::MemoryPointer.new klass.size + 10
-      klass.copy_value_to_pointer(struct, target, 10)
-      result = klass.wrap(target + 10)
+      target = FFI::MemoryPointer.new struct_class.size + 10
+      struct_class.copy_value_to_pointer(struct, target, 10)
+      result = struct_class.wrap(target + 10)
       result.long_.must_equal 42
     end
   end
 
   it 'adds its class methods to classes that include it' do
-    klass = Class.new
-    klass.send :include, GirFFI::StructLikeBase
-    klass.singleton_class.must_include GirFFI::StructLikeBase::ClassMethods
+    struct_class = Class.new
+    struct_class.send :include, GirFFI::StructLikeBase
+    struct_class.singleton_class.must_include GirFFI::StructLikeBase::ClassMethods
   end
 end

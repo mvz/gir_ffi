@@ -3,12 +3,12 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::ICallableInfo do
-  let(:klass) do
+  let(:info_class) do
     Class.new do
       include GirFFI::InfoExt::ICallableInfo
     end
   end
-  let(:callable_info) { klass.new }
+  let(:callable_info) { info_class.new }
 
   describe '#argument_ffi_types' do
     describe 'for a simple callable with several arguments' do

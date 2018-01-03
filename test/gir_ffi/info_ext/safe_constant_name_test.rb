@@ -3,12 +3,12 @@
 require 'gir_ffi_test_helper'
 
 describe GirFFI::InfoExt::SafeConstantName do
-  let(:klass) do
+  let(:info_class) do
     Class.new do
       include GirFFI::InfoExt::SafeConstantName
     end
   end
-  let(:info) { klass.new }
+  let(:info) { info_class.new }
 
   describe '#safe_name' do
     it 'makes names starting with an underscore safe' do

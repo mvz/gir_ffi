@@ -55,8 +55,8 @@ describe GirFFI::Builders::UnintrospectableBuilder do
 
   describe 'building the GstFakeSink type' do
     let(:instance) { Gst::ElementFactory.make('fakesink', 'sink') }
-    let(:klass) { instance.class }
-    let(:builder) { klass.gir_ffi_builder }
+    let(:sink_class) { instance.class }
+    let(:builder) { sink_class.gir_ffi_builder }
 
     before do
       Gst.init []
