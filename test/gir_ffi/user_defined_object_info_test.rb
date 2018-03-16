@@ -45,7 +45,7 @@ describe GirFFI::UserDefinedObjectInfo do
     it 'provides a default implementation' do
       info.install_vfunc_implementation :foo
       impl = info.vfunc_implementations.first
-      impl.implementation.must_be_instance_of Proc
+      impl.implementation.class.must_equal Proc
     end
   end
 
