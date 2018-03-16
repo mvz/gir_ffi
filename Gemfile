@@ -8,5 +8,5 @@ gemspec
 if ENV['CI']
   gem 'coveralls', group: :development if ENV['TRAVIS_RUBY_VERSION'] == '2.4'
 else
-  gem 'simplecov', '~> 0.15.0', group: :local_development, platform: :mri
+  gem 'simplecov', '~> 0.16.1', group: :local_development, platform: :mri
 end
