@@ -18,7 +18,7 @@ describe GirFFI::Builder do
 
   describe '.build_module' do
     it 'refuses to build existing modules defined elsewhere' do
-      result = -> { GirFFI::Builder.build_module('Array') }.must_raise
+      result = -> { GirFFI::Builder.build_module('Array') }.must_raise RuntimeError
       result.message.must_equal 'The module Array was already defined elsewhere'
     end
 

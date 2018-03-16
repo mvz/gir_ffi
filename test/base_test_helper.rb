@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rubygems' if RUBY_PLATFORM == 'java'
-
 begin
   require 'simplecov'
   SimpleCov.start do
