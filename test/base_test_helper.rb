@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-begin
-  require 'simplecov'
-  SimpleCov.start do
-    track_files 'lib/**/*.rb'
-    add_filter '/test/'
-  end
+require 'simplecov'
+SimpleCov.start do
+  track_files 'lib/**/*.rb'
+  add_filter '/test/'
+end
 
-  if ENV['CI']
+if ENV['CI']
+  begin
     require 'coveralls'
     Coveralls.wear!
+  rescue LoadError
   end
-rescue LoadError
 end
 
 require 'minitest/autorun'
