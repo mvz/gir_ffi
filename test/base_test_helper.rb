@@ -11,6 +11,7 @@ if ENV['CI']
     require 'coveralls'
     Coveralls.wear!
   rescue LoadError
+    nil
   end
 end
 
