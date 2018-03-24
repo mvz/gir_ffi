@@ -50,9 +50,10 @@ describe GirFFI::MethodStubber do
     end
 
     describe 'for a method with an empty name' do
-      let(:method_info) { get_method_introspection_data('GLib', 'IConv', '') }
+      let(:method_info) { get_method_introspection_data('Regress', 'TestObj', 'instance_method') }
 
       it 'creates a method stub with a safe name that sets up the unsafe method' do
+        allow(method_info).to receive(:name).and_return ''
         result.must_equal <<-STUB.reset_indentation
           def _ *args, &block
             setup_and_call "", args, &block
