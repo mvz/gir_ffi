@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.0 / 2018-03-024
+
+* Drop support for GLib::IConv, which is no longer introspectable in glib 2.56.
+* Drop support for Ruby 2.1 and 2.2
+* Add support for Ruby 2.5
+
 ## 0.11.4 / 2017-09-19
 
 * Support glib 2.54 and gobject-introspection 1.54
