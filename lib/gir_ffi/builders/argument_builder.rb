@@ -186,7 +186,7 @@ module GirFFI
           @arginfo.caller_allocates?
       end
 
-      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'
+      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'.freeze
 
       def ingoing_convertor
         if skipped_in?
