@@ -194,7 +194,7 @@ module GirFFI
         end
       end
 
-      GOBJECT_VALUE_NAME = 'GObject::Value'
+      GOBJECT_VALUE_NAME = 'GObject::Value'.freeze
 
       def gvalue?
         argument_class_name == GOBJECT_VALUE_NAME

@@ -16,7 +16,7 @@ module GirFFI
       end
 
       def invoker_name
-        invoker&.name
+        invoker && invoker.name
       end
 
       def has_invoker?

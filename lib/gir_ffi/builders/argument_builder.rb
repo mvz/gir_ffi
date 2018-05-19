@@ -125,7 +125,7 @@ module GirFFI
       end
 
       def length_argument_name
-        length_arg&.post_converted_name
+        length_arg && length_arg.post_converted_name
       end
 
       def needs_size_check?
@@ -186,7 +186,7 @@ module GirFFI
           @arginfo.caller_allocates?
       end
 
-      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'
+      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'.freeze
 
       def ingoing_convertor
         if skipped_in?
