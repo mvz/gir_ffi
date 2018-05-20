@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.12.0 / 2018-03-024
+## 0.12.1 / 2018-05-20
+
+* Restore support for Ruby 2.1 and 2.2
+
+## 0.12.0 / 2018-03-24
 
 * Drop support for GLib::IConv, which is no longer introspectable in glib 2.56.
 * Drop support for Ruby 2.1 and 2.2
