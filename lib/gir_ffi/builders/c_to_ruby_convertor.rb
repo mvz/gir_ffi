@@ -60,11 +60,7 @@ module GirFFI
       end
 
       def array_size
-        if @length_arg
-          @length_arg
-        else
-          @type_info.array_fixed_size
-        end
+        @length_arg || @type_info.array_fixed_size
       end
 
       def argument_class
