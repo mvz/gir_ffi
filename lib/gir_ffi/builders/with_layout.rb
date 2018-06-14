@@ -41,7 +41,7 @@ module GirFFI
       end
 
       def struct_class
-        @structklass ||= get_or_define_class klass, :Struct, layout_superclass
+        @struct_class ||= get_or_define_class klass, :Struct, layout_superclass
       end
     end
   end
