@@ -146,7 +146,7 @@ module GObject
       raise "Can't handle #{val.class}"
     end
 
-    def set_none(_); end
+    def set_none(_val); end
 
     def get_none; end
 

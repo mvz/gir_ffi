@@ -19,8 +19,8 @@ module GirFFI
       self
     end
 
-    def self.to_native(it, _)
-      it.to_ptr
+    def self.to_native(obj, _context)
+      obj.to_ptr
     end
 
     def self.get_value_from_pointer(pointer, offset = 0)

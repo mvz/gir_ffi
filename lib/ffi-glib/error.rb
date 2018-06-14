@@ -7,12 +7,12 @@ module GLib
   class Error
     GIR_FFI_DOMAIN = GLib.quark_from_string('gir_ffi')
 
-    def self.from_exception(ex)
-      new_literal GIR_FFI_DOMAIN, 0, ex.message
+    def self.from_exception(exception)
+      new_literal GIR_FFI_DOMAIN, 0, exception.message
     end
 
-    def self.from(it)
-      from_exception it
+    def self.from(obj)
+      from_exception obj
     end
   end
 end

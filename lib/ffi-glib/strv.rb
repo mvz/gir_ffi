@@ -10,16 +10,16 @@ module GLib
       to_a == other.to_a
     end
 
-    def self.from(it)
-      case it
+    def self.from(obj)
+      case obj
       when nil
         nil
       when FFI::Pointer
-        wrap it
+        wrap obj
       when self
-        it
+        obj
       else
-        from_enumerable it
+        from_enumerable obj
       end
     end
 

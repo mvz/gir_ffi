@@ -43,16 +43,16 @@ module GLib
       ThreadEnabler.instance.setup_idle_handler if RUBY_ENGINE == 'ruby'
       RUNNING_LOOPS << self
       result = run_without_thread_enabler
-      ex = EXCEPTIONS.shift
+      exception = EXCEPTIONS.shift
       RUNNING_LOOPS.pop
-      raise ex if ex
+      raise exception if exception
       result
     end
 
-    def self.handle_exception(ex)
+    def self.handle_exception(exception)
       current_loop = RUNNING_LOOPS.last
-      raise ex unless current_loop
-      EXCEPTIONS << ex
+      raise exception unless current_loop
+      EXCEPTIONS << exception
       current_loop.quit
     end
 

@@ -23,14 +23,14 @@ module GLib
       data.each(&block)
     end
 
-    def self.from(it)
-      case it
+    def self.from(obj)
+      case obj
       when self
-        it
+        obj
       when FFI::Pointer
-        wrap it
+        wrap obj
       else
-        new it
+        new obj
       end
     end
 
