@@ -4,11 +4,11 @@ module GirFFI
   module Builders
     # Class builder that does nothing
     class NullClassBuilder
-      def setup_method(_)
+      def setup_method(_method)
         nil
       end
 
-      def setup_instance_method(_)
+      def setup_instance_method(_method)
         nil
       end
     end

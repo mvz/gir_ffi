@@ -22,8 +22,8 @@ module GLib
     end
 
     # @api private
-    def self.from_enumerable(elmtype, it)
-      new(elmtype).tap { |arr| arr.append_vals it }
+    def self.from_enumerable(elmtype, arr)
+      new(elmtype).tap { |it| it.append_vals arr }
     end
 
     # @api private

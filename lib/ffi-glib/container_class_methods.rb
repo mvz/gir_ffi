@@ -22,18 +22,18 @@ module GLib
       end
     end
 
-    def from(typespec = :void, it)
-      case it
+    def from(typespec = :void, obj)
+      case obj
       when nil
         nil
       when FFI::Pointer
-        wrap typespec, it
+        wrap typespec, obj
       when self
-        it.reset_typespec typespec
+        obj.reset_typespec typespec
       when GirFFI::BoxedBase
-        wrap typespec, it.to_ptr
+        wrap typespec, obj.to_ptr
       else
-        from_enumerable typespec, it
+        from_enumerable typespec, obj
       end
     end
   end

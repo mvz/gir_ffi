@@ -27,8 +27,8 @@ module GLib
       store_pointer Lib.g_ptr_array_new
     end
 
-    def self.from_enumerable(type, it)
-      new(type).tap { |arr| arr.add_array it }
+    def self.from_enumerable(type, arr)
+      new(type).tap { |it| it.add_array arr }
     end
 
     def self.add(array, data)
