@@ -4,7 +4,7 @@ AllCops:
     - 'tasks/**/*.rake'
     - 'tmp/**/*'
     - 'vendor/**/*'
-  TargetRubyVersion: 2.1
+  TargetRubyVersion: 2.2
 
 # Dot at end of line makes it clearer that the line is not done
 Layout/DotPosition:
