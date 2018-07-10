@@ -38,9 +38,9 @@ module GObject
       end
     end
 
-    alias_method :initialize_without_automatic_gtype, :initialize
-    alias_method :initialize, :initialize_with_automatic_gtype
-    alias_method :base_initialize, :initialize
+    alias initialize_without_automatic_gtype initialize
+    alias initialize initialize_with_automatic_gtype
+    alias base_initialize initialize
 
     private :base_initialize
 
@@ -117,14 +117,14 @@ module GObject
       set_property_without_override property_name, gvalue
     end
 
-    alias_method :get_property_without_override, :get_property
-    alias_method :get_property, :get_property_with_override
+    alias get_property_without_override get_property
+    alias get_property get_property_with_override
 
-    alias_method :set_property_without_override, :set_property
-    alias_method :set_property, :set_property_with_override
+    alias set_property_without_override set_property
+    alias set_property set_property_with_override
 
     setup_instance_method 'is_floating'
-    alias_method :floating?, :is_floating
+    alias floating? is_floating
 
     private
 

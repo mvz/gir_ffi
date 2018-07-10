@@ -53,7 +53,7 @@ module GLib
       Lib.g_array_get_element_size self
     end
 
-    alias_method :element_size, :get_element_size
+    alias element_size get_element_size
 
     def ==(other)
       to_a == other.to_a

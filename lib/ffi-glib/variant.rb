@@ -11,8 +11,8 @@ module GLib
       get_string_without_override.first
     end
 
-    alias_method :get_string_without_override, :get_string
-    alias_method :get_string, :get_string_with_override
+    alias get_string_without_override get_string
+    alias get_string get_string_with_override
 
     # Initializing method used in constructors. For Variant, this needs to sink
     # the variant's floating reference.
