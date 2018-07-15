@@ -1,9 +1,7 @@
 AllCops:
   Exclude:
     - 'examples/*'
-    - 'tasks/**/*.rake'
     - 'tmp/**/*'
-    - 'vendor/**/*'
   TargetRubyVersion: 2.2
 
 # Dot at end of line makes it clearer that the line is not done
@@ -38,54 +36,23 @@ Lint/AssignmentInCondition:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*' # Test describe blocks can be any size
-    - 'gir_ffi.gemspec' # Gem spec blocks can be any size
+    - '*.gemspec' # Gem spec blocks can be any size
 
-# Require lines to fit in pull requests.
+# Be lenient with line length
 Metrics/LineLength:
-  Max: 92
+  Max: 95
 
-# Lib modules can be any length
-Metrics/ModuleLength:
-  Exclude:
-    - 'lib/ffi-gobject_introspection/lib.rb'
-
-# Gtk+ has a lot of accessor method starting with get_ or set_
+# GObject has a lot of accessor method starting with get_ or set_
 Naming/AccessorMethodName:
   Enabled: false
 
-# GirFFI uses a ffi-something naming scheme.
+# GirFFI uses a gir_ffi-something naming scheme.
 Naming/FileName:
   Enabled: false
-
-# TODO: See about has_ and have_
-Naming/PredicateName:
-  NamePrefixBlacklist:
-    - is_
-
-# In tests, we want to do this to be more clear
-Performance/FixedSize:
-  Exclude:
-    - 'test/**/*.rb'
-
-# Conform to old RuboCop behavior for now
-Style/Alias:
-  EnforcedStyle: prefer_alias_method
 
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
-
-# Comment all the files!
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: always
-
-# Require at least two dependent lines before suggesting a guard clause
-Style/GuardClause:
-  MinBodyLength: 2
-
-# Sometimes an if statement just looks better than next with a guard clause
-Style/Next:
-  Enabled: false
 
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
@@ -96,17 +63,21 @@ Style/PercentLiteralDelimiters:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
-# Always use raise to raise exceptions
-Style/SignalException:
-  EnforcedStyle: only_raise
-
-# Allow meaningful names for single-line reduce etc.
-Style/SingleLineBlockParams:
-  Enabled: false
-
-# I like to have symbols always look like symbols
+# Prefer symbols to look like symbols
 Style/SymbolArray:
   EnforcedStyle: brackets
+
+# Project-specific configuration goes here.
+
+# TODO: See about has_ and have_
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+
+# In tests, we want to do this to be more clear
+Performance/FixedSize:
+  Exclude:
+    - 'test/**/*.rb'
 
 # Accessors are only trivial if they match the ivar name.
 # Also, allow accessors with ? in the name.

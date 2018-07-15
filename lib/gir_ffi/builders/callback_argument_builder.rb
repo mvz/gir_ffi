@@ -37,15 +37,11 @@ module GirFFI
       end
 
       def call_argument_name
-        if [:in, :inout].include? direction
-          pre_converted_name unless array_arg
-        end
+        pre_converted_name if [:in, :inout].include?(direction) && !array_arg
       end
 
       def capture_variable_name
-        unless array_arg
-          result_name if [:out, :inout].include? direction
-        end
+        result_name if [:out, :inout].include?(direction) && !array_arg
       end
 
       def pre_conversion

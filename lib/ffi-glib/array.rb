@@ -53,7 +53,7 @@ module GLib
       Lib.g_array_get_element_size self
     end
 
-    alias_method :element_size, :get_element_size
+    alias element_size get_element_size
 
     def ==(other)
       to_a == other.to_a
@@ -81,9 +81,9 @@ module GLib
     end
 
     def check_element_size_match
-      unless calculated_element_size == get_element_size
-        warn 'WARNING: Element sizes do not match'
-      end
+      return if calculated_element_size == get_element_size
+
+      warn 'WARNING: Element sizes do not match'
     end
 
     def guess_element_type
