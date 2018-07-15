@@ -58,10 +58,6 @@ Style/AndOr:
 Style/GuardClause:
   MinBodyLength: 2
 
-# Sometimes an if statement just looks better than next with a guard clause
-Style/Next:
-  Enabled: false
-
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:

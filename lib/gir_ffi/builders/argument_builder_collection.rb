@@ -76,13 +76,13 @@ module GirFFI
           end
         end
         all_builders.each do |bldr|
-          if (idx = bldr.array_length_idx) >= 0
-            other = @base_argument_builders[idx]
-            next unless other
+          idx = bldr.array_length_idx
+          next unless idx >= 0
+          other = @base_argument_builders[idx]
+          next unless other
 
-            bldr.length_arg = other
-            other.array_arg = bldr
-          end
+          bldr.length_arg = other
+          other.array_arg = bldr
         end
       end
 
