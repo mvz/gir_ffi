@@ -63,14 +63,6 @@ Style/PercentLiteralDelimiters:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
-# Always use raise to raise exceptions
-Style/SignalException:
-  EnforcedStyle: only_raise
-
-# Allow meaningful names for single-line reduce etc.
-Style/SingleLineBlockParams:
-  Enabled: false
-
 # Prefer symbols to look like symbols
 Style/SymbolArray:
   EnforcedStyle: brackets
