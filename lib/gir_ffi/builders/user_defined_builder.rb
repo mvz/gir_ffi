@@ -127,7 +127,7 @@ module GirFFI
           superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
 
         info.vfunc_implementations.each do |impl|
-          setup_vfunc super_class_struct, impl
+          setup_vfunc parent_info, super_class_struct, impl
         end
       end
 
@@ -138,26 +138,16 @@ module GirFFI
         interface_info = interface_builder.info
 
         info.vfunc_implementations.each do |impl|
-          setup_interface_vfunc interface_info, interface_struct, impl
+          setup_vfunc interface_info, interface_struct, impl
         end
       end
 
-      def setup_vfunc(super_class_struct, impl)
+      def setup_vfunc(ancestor_info, ancestor_struct, impl)
         vfunc_name = impl.name
-        vfunc_info = parent_info.find_vfunc vfunc_name.to_s
+        vfunc_info = ancestor_info.find_vfunc vfunc_name.to_s
+        return unless vfunc_info
 
-        if vfunc_info
-          install_vfunc super_class_struct, vfunc_name, vfunc_info, impl.implementation
-        end
-      end
-
-      def setup_interface_vfunc(interface_info, interface_struct, impl)
-        vfunc_name = impl.name
-        vfunc_info = interface_info.find_vfunc vfunc_name.to_s
-
-        if vfunc_info
-          install_vfunc interface_struct, vfunc_name, vfunc_info, impl.implementation
-        end
+        install_vfunc ancestor_struct, vfunc_name, vfunc_info, impl.implementation
       end
 
       def install_vfunc(container_struct, vfunc_name, vfunc_info, implementation)

@@ -54,10 +54,6 @@ Naming/FileName:
 Style/AndOr:
   EnforcedStyle: conditionals
 
-# Require at least two dependent lines before suggesting a guard clause
-Style/GuardClause:
-  MinBodyLength: 2
-
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:

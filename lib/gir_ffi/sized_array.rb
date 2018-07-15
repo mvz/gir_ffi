@@ -107,9 +107,10 @@ module GirFFI
       end
 
       def check_size(expected_size, size)
-        if expected_size != -1 && size != expected_size
-          raise ArgumentError, "Expected size #{expected_size}, got #{size}"
-        end
+        return if expected_size == -1
+        return if size == expected_size
+
+        raise ArgumentError, "Expected size #{expected_size}, got #{size}"
       end
     end
   end

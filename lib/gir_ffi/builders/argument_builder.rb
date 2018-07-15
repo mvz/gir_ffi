@@ -32,9 +32,7 @@ module GirFFI
       end
 
       def return_value_name
-        if has_output_value?
-          post_converted_name unless array_length_parameter?
-        end
+        post_converted_name if has_output_value? && !array_length_parameter?
       end
 
       def capture_variable_name
