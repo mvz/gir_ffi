@@ -11,6 +11,8 @@ module GObject
     if !GLib.check_version(2, 54, 0)
       setup_method 'newv'
 
+      # Starting with GLib 2.54.0, use g_object_new_with_properties, which
+      # takes an array of names and an array of values.
       def initialize_with_automatic_gtype(properties = {})
         names = []
         values = []
@@ -25,6 +27,7 @@ module GObject
         initialize_without_automatic_gtype(self.class.gtype, names, values)
       end
     else
+      # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
       def initialize_with_automatic_gtype(properties = {})
         gparameters = properties.map do |name, value|
           name = name.to_s
