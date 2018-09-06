@@ -9,8 +9,6 @@ module GObject
   class Object
     setup_method 'new'
     if !GLib.check_version(2, 54, 0)
-      setup_method 'newv'
-
       # Starting with GLib 2.54.0, use g_object_new_with_properties, which
       # takes an array of names and an array of values.
       def initialize_with_automatic_gtype(properties = {})

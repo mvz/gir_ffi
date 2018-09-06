@@ -255,7 +255,7 @@ module GirFFI
       def setup_constructor
         code = <<-CODE
         def initialize
-          ptr = GObject::Lib.g_object_newv #{@gtype}, 0, nil
+          ptr = GObject::Lib.g_object_new #{@gtype}, nil
           store_pointer(ptr)
         end
         CODE
