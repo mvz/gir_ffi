@@ -2826,7 +2826,7 @@ describe Regress do
   end
 
   it 'has a working function #annotation_transfer_floating' do
-    Regress.setup_method :annotation_transfer_floating
+    Regress.setup_method! :annotation_transfer_floating
     method = Regress.method :annotation_transfer_floating
     # NOTE: The arity of this method was changed in GObjectIntrospection 1.53.2
     if method.arity == 1

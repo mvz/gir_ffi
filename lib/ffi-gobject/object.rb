@@ -7,11 +7,20 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-    setup_method 'new'
     if !GLib.check_version(2, 54, 0)
-      setup_method 'newv'
+      GObject::Lib.attach_function(:g_object_new_with_properties,
+                                   [:size_t, :uint32, :pointer, :pointer],
+                                   :pointer)
 
-      def initialize_with_automatic_gtype(properties = {})
+      def self.new(*args, &block)
+        obj = allocate
+        obj.__send__ :initialize, *args, &block
+        obj
+      end
+
+      # Starting with GLib 2.54.0, use g_object_new_with_properties, which
+      # takes an array of names and an array of values.
+      def initialize(properties = {})
         names = []
         values = []
         properties.each do |name, value|
@@ -22,9 +31,21 @@ module GObject
           names << name
           values << gvalue
         end
-        initialize_without_automatic_gtype(self.class.gtype, names, values)
+
+        n_properties = names.length
+        names_arr = GirFFI::SizedArray.from(:utf8, -1, names)
+        values_arr = GirFFI::SizedArray.from(GObject::Value, -1, values)
+
+        ptr = GObject::Lib.g_object_new_with_properties(self.class.gtype,
+                                                        n_properties,
+                                                        names_arr,
+                                                        values_arr)
+        store_pointer ptr
       end
     else
+      setup_method! 'new'
+
+      # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
       def initialize_with_automatic_gtype(properties = {})
         gparameters = properties.map do |name, value|
           name = name.to_s
@@ -36,10 +57,11 @@ module GObject
         end
         initialize_without_automatic_gtype(self.class.gtype, gparameters)
       end
+
+      alias initialize_without_automatic_gtype initialize
+      alias initialize initialize_with_automatic_gtype
     end
 
-    alias initialize_without_automatic_gtype initialize
-    alias initialize initialize_with_automatic_gtype
     alias base_initialize initialize
 
     private :base_initialize
