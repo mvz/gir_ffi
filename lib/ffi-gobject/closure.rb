@@ -7,8 +7,8 @@ module GObject
   #
   # To create Closure objects wrapping Ruby code, use {RubyClosure}.
   class Closure
-    setup_method :new_simple
-    setup_instance_method :invoke
+    setup_method! :new_simple
+    setup_instance_method! :invoke
 
     # @override
     #

@@ -158,7 +158,7 @@ describe GirFFI::Builder do
     end
 
     it 'defines ffi callback types :Callback and :ClosureNotify' do
-      Regress.setup_method 'test_callback_destroy_notify'
+      Regress.setup_method! 'test_callback_destroy_notify'
       tcud = Regress::Lib.find_type :TestCallbackUserData
       dn = GLib::Lib.find_type :DestroyNotify
 

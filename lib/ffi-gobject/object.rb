@@ -7,7 +7,6 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-    setup_method 'new'
     if !GLib.check_version(2, 54, 0)
       # Starting with GLib 2.54.0, use g_object_new_with_properties, which
       # takes an array of names and an array of values.
@@ -25,6 +24,8 @@ module GObject
         initialize_without_automatic_gtype(self.class.gtype, names, values)
       end
     else
+      setup_method! 'new'
+
       # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
       def initialize_with_automatic_gtype(properties = {})
         gparameters = properties.map do |name, value|

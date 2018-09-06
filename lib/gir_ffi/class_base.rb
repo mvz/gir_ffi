@@ -60,6 +60,14 @@ module GirFFI
       gir_ffi_builder.setup_instance_method name
     end
 
+    def self.setup_method!(name)
+      setup_method name or raise "Unknown method #{name}"
+    end
+
+    def self.setup_instance_method!(name)
+      setup_instance_method name or raise "Unknown method #{name}"
+    end
+
     # Wrap the passed pointer in an instance of the current class, or a
     # descendant type if applicable.
     def self.wrap(ptr)
