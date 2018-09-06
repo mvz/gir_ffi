@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Drop support for Ruby 2.1
+* Support GLib 2.58
+
 ## 0.12.1 / 2018-05-20
 
 * Restore support for Ruby 2.1 and 2.2
