@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require 'gir_ffi/method_setup'
+
 module GirFFI
   # Base module for modules representing GLib namespaces.
   module ModuleBase
+    include MethodSetup
+
     def method_missing(method, *arguments, &block)
       result = setup_method method.to_s
       return super unless result
@@ -23,14 +27,6 @@ module GirFFI
 
     def gir_ffi_builder
       self::GIR_FFI_BUILDER
-    end
-
-    def setup_method(name)
-      gir_ffi_builder.setup_method name
-    end
-
-    def setup_method!(name)
-      setup_method name or raise "Unknown method #{name}"
     end
   end
 end

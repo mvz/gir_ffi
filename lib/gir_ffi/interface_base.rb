@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'gir_ffi/registered_type_base'
+require 'gir_ffi/method_setup'
 
 module GirFFI
   # Base module for modules representing GLib interfaces.
   module InterfaceBase
     include RegisteredTypeBase
+    include MethodSetup
 
     def setup_and_call(method, arguments, &block)
       method_name = setup_method method.to_s
@@ -15,10 +17,6 @@ module GirFFI
 
     def setup_instance_method(name)
       gir_ffi_builder.setup_instance_method name
-    end
-
-    def setup_method(name)
-      gir_ffi_builder.setup_method name
     end
 
     def wrap(ptr)
