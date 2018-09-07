@@ -4,6 +4,8 @@
 
 * Drop support for Ruby 2.1
 * Support GLib 2.58
+* Add `setup_method!` and `setup_instance_method!`, that raise an error when
+  the given method is not found.
 
 ## 0.12.1 / 2018-05-20
 
