@@ -4,6 +4,7 @@ require 'forwardable'
 require 'gir_ffi/registered_type_base'
 require 'gir_ffi/builders/null_class_builder'
 require 'gir_ffi/method_setup'
+require 'gir_ffi/instance_method_setup'
 
 module GirFFI
   # Base class for all generated classes and structs. Contains code for dealing
@@ -12,6 +13,7 @@ module GirFFI
     extend RegisteredTypeBase
     extend Forwardable
     extend MethodSetup
+    extend InstanceMethodSetup
 
     GIR_FFI_BUILDER = Builders::NullClassBuilder.new
 
@@ -52,14 +54,6 @@ module GirFFI
 
     def self.to_ffi_type
       self::Struct
-    end
-
-    def self.setup_instance_method(name)
-      gir_ffi_builder.setup_instance_method name
-    end
-
-    def self.setup_instance_method!(name)
-      setup_instance_method name or raise "Unknown method #{name}"
     end
 
     # Wrap the passed pointer in an instance of the current class, or a
