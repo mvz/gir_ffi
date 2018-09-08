@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require 'gir_ffi/registered_type_base'
+require 'gir_ffi/method_setup'
 
 module GirFFI
   # Base module for enums and flags.
   module EnumLikeBase
     include FFI::DataConverter
     include RegisteredTypeBase
+    include MethodSetup
 
     def wrap(arg)
       self[arg]
@@ -38,10 +40,6 @@ module GirFFI
 
     def to_ffi_type
       self
-    end
-
-    def setup_method(name)
-      gir_ffi_builder.setup_method name
     end
   end
 end

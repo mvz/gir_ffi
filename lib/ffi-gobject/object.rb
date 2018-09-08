@@ -112,8 +112,8 @@ module GObject
       GObject.signal_connect_after(self, event, data, &block)
     end
 
-    setup_instance_method 'get_property'
-    setup_instance_method 'set_property'
+    setup_instance_method! 'get_property'
+    setup_instance_method! 'set_property'
 
     def get_property_extended(property_name)
       value = get_property(property_name)
@@ -145,7 +145,7 @@ module GObject
     alias set_property_without_override set_property
     alias set_property set_property_with_override
 
-    setup_instance_method 'is_floating'
+    setup_instance_method! 'is_floating'
     alias floating? is_floating
 
     private
