@@ -15,12 +15,14 @@ module GirFFI
       def setup_method(method)
         method_info = info.find_method method
         return unless method_info
+
         attach_and_define_method method_info, meta_class
       end
 
       def setup_instance_method(method)
         method_info = info.find_instance_method method
         return unless method_info
+
         attach_and_define_method method_info, build_class
       end
 

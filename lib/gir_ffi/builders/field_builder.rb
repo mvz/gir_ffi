@@ -243,6 +243,7 @@ module GirFFI
       def setup_getter
         return if container_defines_getter_method?
         return if hidden_struct_type?
+
         container_class.class_eval getter_def
       end
 
@@ -253,6 +254,7 @@ module GirFFI
       def setup_setter
         return unless info.writable?
         return if hidden_struct_type?
+
         container_class.class_eval setter_def
       end
 

@@ -46,12 +46,14 @@ module GLib
       exception = EXCEPTIONS.shift
       RUNNING_LOOPS.pop
       raise exception if exception
+
       result
     end
 
     def self.handle_exception(exception)
       current_loop = RUNNING_LOOPS.last
       raise exception unless current_loop
+
       EXCEPTIONS << exception
       current_loop.quit
     end

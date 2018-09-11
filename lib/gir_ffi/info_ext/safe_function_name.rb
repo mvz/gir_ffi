@@ -7,6 +7,7 @@ module GirFFI
       def safe_name
         name = self.name
         return '_' if name.empty?
+
         name
       end
     end

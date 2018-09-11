@@ -17,6 +17,7 @@ module GirFFITestExtensions
 
   def save_module(name)
     return unless Object.const_defined? name
+
     puts "Saving #{name} over existing" if SAVED_MODULES.key? name
     SAVED_MODULES[name] = Object.const_get name
     Object.send(:remove_const, name)
@@ -25,6 +26,7 @@ module GirFFITestExtensions
   def restore_module(name)
     Object.send(:remove_const, name) if Object.const_defined? name
     return unless SAVED_MODULES.key? name
+
     Object.const_set name, SAVED_MODULES[name]
     SAVED_MODULES.delete name
   end

@@ -19,6 +19,7 @@ module GirFFI
           # HACK: Inheritance chain is not expressed in GObject's code correctly.
           type_name = info.full_type_name
           return GObject::ObjectClass if type_name == 'GObject::InitiallyUnownedClass'
+
           type = fields.first.field_type
           return type.tag_or_class if type.tag == :interface
         end

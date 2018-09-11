@@ -10,6 +10,7 @@ module GirFFI
     def method_missing(method, *arguments, &block)
       result = setup_method method.to_s
       return super unless result
+
       send method, *arguments, &block
     end
 

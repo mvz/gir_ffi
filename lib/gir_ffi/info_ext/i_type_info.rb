@@ -25,6 +25,7 @@ module GirFFI
 
       def gtype
         return interface.gtype if tag == :interface
+
         ITypeInfo.flattened_tag_to_gtype_map.fetch [flattened_tag, pointer?]
       end
 

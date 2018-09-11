@@ -17,6 +17,7 @@ module GirFFI
     # TODO: Return instance of this class
     def self.from_native(value, _context)
       return nil if !value || value.null?
+
       FFI::Function.new(gir_ffi_builder.return_ffi_type,
                         gir_ffi_builder.argument_ffi_types, value)
     end

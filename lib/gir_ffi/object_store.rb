@@ -10,6 +10,7 @@ module GirFFI
 
     def store(obj)
       return FFI::Pointer::NULL if obj.nil?
+
       # FIXME: Don't use object_id!
       key = obj.object_id
       @store[key] = obj
@@ -18,6 +19,7 @@ module GirFFI
 
     def fetch(ptr)
       return if ptr.null?
+
       key = ptr.address
       if @store.key? key
         @store[key]

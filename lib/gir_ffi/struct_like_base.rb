@@ -39,12 +39,14 @@ module GirFFI
       # Create an unowned copy of the struct represented by val
       def copy_from(val)
         return unless val
+
         disown copy from(val)
       end
 
       # Wrap an owned copy of the struct represented by val
       def wrap_copy(val)
         return unless val
+
         own copy(val)
       end
 
@@ -52,6 +54,7 @@ module GirFFI
       def wrap_own(val)
         return unless val
         return if val.null?
+
         own wrap(val)
       end
 

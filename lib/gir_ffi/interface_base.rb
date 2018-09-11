@@ -14,6 +14,7 @@ module GirFFI
     def setup_and_call(method, arguments, &block)
       method_name = setup_method method.to_s
       raise NoMethodError, "undefined method `#{method}' for #{self}" unless method_name
+
       send method_name, *arguments, &block
     end
 

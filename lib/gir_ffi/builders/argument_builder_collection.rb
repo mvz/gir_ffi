@@ -78,6 +78,7 @@ module GirFFI
         all_builders.each do |bldr|
           idx = bldr.array_length_idx
           next unless idx >= 0
+
           other = @base_argument_builders[idx]
           next unless other
 

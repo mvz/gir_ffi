@@ -6,11 +6,13 @@ module GirFFI
     module IArgInfo
       def to_ffi_type
         return :pointer if direction != :in
+
         argument_type.to_ffi_type
       end
 
       def to_callback_ffi_type
         return :pointer if direction != :in
+
         argument_type.to_callback_ffi_type
       end
     end

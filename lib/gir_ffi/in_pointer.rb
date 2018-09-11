@@ -7,6 +7,7 @@ module GirFFI
   module InPointer
     def self.from_array(type, ary)
       return unless ary
+
       case type
       when :utf8, :filename
         from_utf8_array ary
@@ -25,6 +26,7 @@ module GirFFI
       when Array
         main_type, sub_type = *type
         raise "Unexpected main type #{main_type}" if main_type != :pointer
+
         from_pointer_array sub_type, ary
       else
         raise NotImplementedError, type
@@ -33,6 +35,7 @@ module GirFFI
 
     def self.from(type, val)
       return unless val
+
       case type
       when :utf8, :filename
         from_utf8 val
@@ -94,6 +97,7 @@ module GirFFI
 
       def from_utf8(str)
         return unless str
+
         ptr = FFI::MemoryPointer.from_string(str)
         ptr.autorelease = false
         ptr

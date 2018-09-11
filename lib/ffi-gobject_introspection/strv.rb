@@ -35,6 +35,7 @@ module GObjectIntrospection
 
     def fetch_ptr(offset)
       return if @ptr.null?
+
       ptr = @ptr.get_pointer offset
       ptr unless ptr.null?
     end

@@ -59,6 +59,7 @@ module GObjectIntrospection
 
     def find_by_gtype(gtype)
       raise ArgumentError, "Type #{gtype} is not a valid type" if gtype.zero?
+
       wrap_info Lib.g_irepository_find_by_gtype(@gobj, gtype)
     end
 
@@ -78,6 +79,7 @@ module GObjectIntrospection
 
     def self.wrap_ibaseinfo_pointer(ptr)
       return nil if ptr.null?
+
       type = Lib.g_base_info_get_type ptr
       klass = TYPEMAP[type]
       klass.wrap ptr

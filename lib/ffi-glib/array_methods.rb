@@ -8,6 +8,7 @@ module GLib
       unless (0...length).cover? idx
         raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
       end
+
       ptr = GirFFI::InOutPointer.new element_type, data_ptr + idx * element_size
       ptr.to_ruby_value
     end

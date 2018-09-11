@@ -60,6 +60,7 @@ module GLib
 
     def next_element
       return unless @current
+
       element = @current.head
       @current = @current.tail
       element

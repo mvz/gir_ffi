@@ -110,6 +110,7 @@ class Listener
     return true if attrs['disguised'] == '1'
     return true if attrs['introspectable'] == '0'
     return true if attrs['glib:is-gtype-struct-for']
+
     false
   end
 end

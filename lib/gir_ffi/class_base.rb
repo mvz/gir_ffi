@@ -66,6 +66,7 @@ module GirFFI
     # do any casting to subtypes or additional processing.
     def self.direct_wrap(ptr)
       return nil if !ptr || ptr.null?
+
       obj = allocate
       obj.__send__ :assign_pointer, ptr
       obj

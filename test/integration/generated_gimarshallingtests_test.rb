@@ -611,6 +611,7 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_meth_with_err, proc { |_object, x|
           raise 'This is not the answer!' unless x == 42
+
           true
         }
       end

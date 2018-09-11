@@ -18,6 +18,7 @@ require 'gir_ffi/signal_not_found_error'
 module GObject
   def self.type_from_instance_pointer(inst_ptr)
     return nil if inst_ptr.null?
+
     klsptr = inst_ptr.get_pointer 0
     klsptr.get_gtype 0
   end
@@ -36,6 +37,7 @@ module GObject
 
   def self.object_class_from_instance_pointer(inst_ptr)
     return nil if inst_ptr.null?
+
     klsptr = inst_ptr.get_pointer 0
     ObjectClass.wrap klsptr
   end
@@ -62,6 +64,7 @@ module GObject
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
     raise ArgumentError, 'Block needed' unless block_given?
+
     signal_name, = detailed_signal.split('::')
     sig_info = object.class.find_signal signal_name
 
