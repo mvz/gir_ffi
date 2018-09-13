@@ -71,7 +71,7 @@ module GirFFI
         setup_property_accessors
         setup_vfunc_invokers
         setup_interfaces
-        provide_initializer
+        setup_initializer
       end
 
       # FIXME: Private method only used in subclass
@@ -129,7 +129,7 @@ module GirFFI
         DEF
       end
 
-      def provide_initializer
+      def setup_initializer
         return if info.find_method 'new'
 
         if info.abstract?

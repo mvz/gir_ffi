@@ -58,6 +58,10 @@ module GirFFI
       nil
     end
 
+    def abstract?
+      false
+    end
+
     attr_writer :g_name
 
     def g_name
