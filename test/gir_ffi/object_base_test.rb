@@ -44,4 +44,21 @@ describe GirFFI::ObjectBase do
       derived_class.included_interfaces.must_equal [GIMarshallingTests::Interface]
     end
   end
+
+  describe '#registered_ancestors' do
+    let(:base_class) { GIMarshallingTests::Object }
+    let(:derived_class) { Class.new(base_class) }
+
+    before do
+      derived_class.class_eval { include GIMarshallingTests::Interface }
+    end
+
+    it 'finds the ancestor classes and included interface' do
+      derived_class.registered_ancestors.
+        must_equal [derived_class,
+                    GIMarshallingTests::Interface,
+                    GIMarshallingTests::Object,
+                    GObject::Object]
+    end
+  end
 end

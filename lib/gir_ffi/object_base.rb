@@ -76,5 +76,9 @@ module GirFFI
     def self.included_interfaces
       included_modules.select { |it| it.singleton_class.include? InterfaceBase }
     end
+
+    def self.registered_ancestors
+      ancestors.select { |it| it < GirFFI::ObjectBase || it.singleton_class.include?(InterfaceBase) }
+    end
   end
 end
