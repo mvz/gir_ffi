@@ -14,8 +14,8 @@ describe 'The generated GTop module' do
   end
 
   describe 'Glibtop' do
-    it 'is a valid struct class' do
-      GTop::Glibtop.ancestors.must_include GirFFI::StructBase
+    it 'is a valid boxed class' do
+      GTop::Glibtop.superclass.must_equal GirFFI::BoxedBase
     end
 
     it 'can be created using Glibtop.init' do

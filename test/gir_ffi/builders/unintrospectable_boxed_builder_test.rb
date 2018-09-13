@@ -23,7 +23,7 @@ describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   end
 
   it 'builds a class derived from GirFFI::BoxedBase' do
-    boxed_class.ancestors.must_include GirFFI::BoxedBase
+    boxed_class.superclass.must_equal GirFFI::BoxedBase
   end
 
   it 'returns the same class when built again' do

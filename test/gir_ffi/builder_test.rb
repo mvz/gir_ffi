@@ -87,7 +87,7 @@ describe GirFFI::Builder do
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
       found_klass.name.must_be_nil
-      found_klass.ancestors.must_include GirFFI::BoxedBase
+      found_klass.superclass.must_equal GirFFI::BoxedBase
     end
   end
 
@@ -275,12 +275,10 @@ describe GirFFI::Builder do
     end
 
     it 'sets up the inheritance chain' do
-      ancestors = Regress::TestSubObj.ancestors
-      assert_equal [
-        Regress::TestSubObj,
-        Regress::TestObj,
-        GObject::Object
-      ], ancestors[0..2]
+      Regress::TestSubObj.registered_ancestors.
+        must_equal [Regress::TestSubObj,
+                    Regress::TestObj,
+                    GObject::Object]
     end
 
     it 'creates a Regress::TestSubObj#to_ptr method' do
