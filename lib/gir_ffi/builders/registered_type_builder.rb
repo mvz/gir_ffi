@@ -51,9 +51,11 @@ module GirFFI
           unless build_class.private_instance_methods(false).include? initializer_name
             build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
           end
-          build_class.class_eval ConstructorBuilder.new(method_info).method_definition, __FILE__, __LINE__
+          build_class.class_eval(ConstructorBuilder.new(method_info).method_definition,
+                                 __FILE__, __LINE__ - 1)
         else
-          build_class.class_eval FunctionBuilder.new(method_info).method_definition, __FILE__, __LINE__
+          build_class.class_eval(FunctionBuilder.new(method_info).method_definition,
+                                 __FILE__, __LINE__ - 1)
         end
       end
 
