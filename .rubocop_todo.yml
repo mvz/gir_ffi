@@ -15,12 +15,6 @@ Lint/EmptyWhen:
 Metrics/AbcSize:
   Max: 57
 
-# Offense count: 1
-# Configuration parameters: CountComments, ExcludedMethods.
-# ExcludedMethods: refine
-Metrics/BlockLength:
-  Max: 61
-
 # Offense count: 7
 # Configuration parameters: CountComments.
 Metrics/ClassLength:

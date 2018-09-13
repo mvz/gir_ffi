@@ -35,6 +35,7 @@ Lint/AssignmentInCondition:
 
 Metrics/BlockLength:
   Exclude:
+    - 'tasks/test.rake' # Rake namespaces can be any size
     - 'test/**/*' # Test describe blocks can be any size
     - '*.gemspec' # Gem spec blocks can be any size
 
