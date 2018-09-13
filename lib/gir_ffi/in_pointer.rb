@@ -50,6 +50,14 @@ module GirFFI
       end
     end
 
+    def self.from_utf8(str)
+      return unless str
+
+      ptr = FFI::MemoryPointer.from_string(str)
+      ptr.autorelease = false
+      ptr
+    end
+
     class << self
       private
 
@@ -92,18 +100,6 @@ module GirFFI
       def from_enum_array(type, ary)
         from_basic_type_array :int32, ary.map { |sym| type.to_native sym, nil }
       end
-
-      public
-
-      def from_utf8(str)
-        return unless str
-
-        ptr = FFI::MemoryPointer.from_string(str)
-        ptr.autorelease = false
-        ptr
-      end
-
-      private
 
       def from_basic_type_array(type, ary)
         ffi_type = TypeMap.type_specification_to_ffi_type type
