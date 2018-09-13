@@ -72,5 +72,9 @@ module GirFFI
           gir_ffi_builder.object_class_struct.wrap ptr
         end
     end
+
+    def self.included_interfaces
+      included_modules.select { |it| it.singleton_class.include? InterfaceBase }
+    end
   end
 end

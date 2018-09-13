@@ -165,17 +165,4 @@ describe GirFFI::ClassBase do
         must_match(/^undefined method `foo' for/)
     end
   end
-
-  describe '#included_interfaces' do
-    let(:base_class) { GIMarshallingTests::Object }
-    let(:derived_class) { Class.new(base_class) }
-
-    before do
-      derived_class.class_eval { include GIMarshallingTests::Interface }
-    end
-
-    it 'finds the included interface' do
-      derived_class.included_interfaces.must_equal [GIMarshallingTests::Interface]
-    end
-  end
 end
