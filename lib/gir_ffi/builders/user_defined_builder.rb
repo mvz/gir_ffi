@@ -176,11 +176,9 @@ module GirFFI
       end
 
       # TODO: Move this to its own file.
-      # TODO: See if this or FieldTypeInfo can be merged with with
-      # UserDefinedPropertyInfo.
-      class UserDefinedPropertyFieldInfo
+      class UserDefinedFieldInfo
         # Field info for user-defined property
-        class FieldTypeInfo
+        class UserDefinedTypeInfo
           include InfoExt::ITypeInfo
 
           def initialize(property_info)
@@ -225,7 +223,7 @@ module GirFFI
         end
 
         def field_type
-          @field_type ||= FieldTypeInfo.new @property_info
+          @field_type ||= UserDefinedTypeInfo.new @property_info
         end
 
         def related_array_length_field
@@ -250,7 +248,7 @@ module GirFFI
             offset = parent_gtype.instance_size
             alignment = struct_class.alignment
             properties.map do |param_info|
-              field_info = UserDefinedPropertyFieldInfo.new(param_info, info, offset)
+              field_info = UserDefinedFieldInfo.new(param_info, info, offset)
               type_size = FFI.type_size(param_info.ffi_type)
               offset += [type_size, alignment].max
               field_info
