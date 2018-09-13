@@ -9,20 +9,10 @@ module GirFFI
       return unless ary
 
       case type
-      when :utf8, :filename
-        from_utf8_array ary
-      when :gboolean
-        from_boolean_array ary
       when Symbol
-        from_basic_type_array type, ary
-      when Class
-        if type == GObject::Value
-          from_gvalue_array type, ary
-        else
-          from_struct_array type, ary
-        end
+        from_simple_type_array type, ary
       when Module
-        from_enum_array type, ary
+        from_module_type_array type, ary
       when Array
         main_type, sub_type = *type
         raise "Unexpected main type #{main_type}" if main_type != :pointer
@@ -60,6 +50,29 @@ module GirFFI
 
     class << self
       private
+
+      def from_simple_type_array(type, ary)
+        case type
+        when :utf8, :filename
+          from_utf8_array ary
+        when :gboolean
+          from_boolean_array ary
+        else
+          from_basic_type_array type, ary
+        end
+      end
+
+      def from_module_type_array(type, ary)
+        if type == GObject::Value
+          from_gvalue_array type, ary
+        elsif type < GirFFI::ClassBase
+          from_struct_array type, ary
+        elsif type.singleton_class.include? GirFFI::EnumBase
+          from_enum_array type, ary
+        else
+          raise NotImplementedError, type
+        end
+      end
 
       def from_utf8_array(ary)
         from_basic_type_array :pointer, ary.map { |str| from_utf8 str }
