@@ -238,14 +238,24 @@ module GirFFI
       end
 
       def setup_property_accessors
-        offset = parent_gtype.instance_size
-        alignment = struct_class.alignment
-        properties.each do |param_info|
-          field_info = UserDefinedPropertyFieldInfo.new(param_info, info, offset)
-          type_size = FFI.type_size(param_info.ffi_type)
-          offset += [type_size, alignment].max
+        property_fields.each do |field_info|
           FieldBuilder.new(field_info, klass).build
         end
+      end
+
+
+      def property_fields
+        @property_fields ||=
+          begin
+            offset = parent_gtype.instance_size
+            alignment = struct_class.alignment
+            properties.map do |param_info|
+              field_info = UserDefinedPropertyFieldInfo.new(param_info, info, offset)
+              type_size = FFI.type_size(param_info.ffi_type)
+              offset += [type_size, alignment].max
+              field_info
+            end
+          end
       end
 
       def method_introspection_data(_method)
