@@ -75,13 +75,13 @@ module GirFFI
       end
 
       def from_module_type_array(type, ary)
-        if type == GObject::Value
-          from_gvalue_array type, ary
-        elsif type < GirFFI::ClassBase ||
-              type.singleton_class < GirFFI::InterfaceBase
-          from_struct_array type, ary
-        elsif type.singleton_class < GirFFI::EnumBase
+        return from_gvalue_array(type, ary) if type == GObject::Value
+
+        case type
+        when GirFFI::EnumLikeBase
           from_enum_array type, ary
+        when GirFFI::RegisteredTypeBase
+          from_struct_array type, ary
         else
           raise NotImplementedError, type
         end
