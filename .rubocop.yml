@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'examples/*'
+    - 'tasks/test.rake'
     - 'tmp/**/*'
   TargetRubyVersion: 2.2
 
@@ -35,7 +36,6 @@ Lint/AssignmentInCondition:
 
 Metrics/BlockLength:
   Exclude:
-    - 'tasks/test.rake' # Rake namespaces can be any size
     - 'test/**/*' # Test describe blocks can be any size
     - '*.gemspec' # Gem spec blocks can be any size
 
