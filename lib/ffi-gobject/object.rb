@@ -100,44 +100,6 @@ module GObject
 
     setup_instance_method! "get_property"
     setup_instance_method! "set_property"
-
-    # @deprecated
-    def get_property_extended(property_name)
-      get_property(property_name)
-    end
-
-    def get_property_with_override(property_name)
-      gvalue = gvalue_for_property property_name
-      get_property_without_override property_name, gvalue
-      value = gvalue.get_value
-
-      type_info = get_property_type property_name
-      value = property_value_post_conversion(value, type_info) if type_info
-
-      value
-    end
-
-    # @deprecated
-    def set_property_extended(property_name, value)
-      set_property property_name, value
-    end
-
-    def set_property_with_override(property_name, value)
-      type_info = get_property_type property_name
-      value = property_value_pre_conversion(value, type_info) if type_info
-
-      gvalue = gvalue_for_property(property_name)
-      gvalue.set_value value
-
-      set_property_without_override property_name, gvalue
-    end
-
-    alias get_property_without_override get_property
-    alias get_property get_property_with_override
-
-    alias set_property_without_override set_property
-    alias set_property set_property_with_override
-
     setup_instance_method! "is_floating"
     alias floating? is_floating
 
@@ -155,10 +117,6 @@ module GObject
       end.transpose
     end
 
-    def get_property_type(property_name)
-      self.class.find_property(property_name)&.property_type
-    end
-
     def gvalue_for_property(property_name)
       gtype = property_gtype property_name
       GObject::Value.for_gtype gtype
@@ -173,36 +131,77 @@ module GObject
         raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
-    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
-    def property_value_post_conversion(val, type_info)
-      case type_info.flattened_tag
-      when :ghash
-        GLib::HashTable.from type_info.element_type, val
-      when :glist
-        GLib::List.from type_info.element_type, val
-      when :callback
-        GirFFI::Builder.build_class(type_info.interface).wrap val
-      else
-        val
+    module PropertyOverrides
+      # @deprecated
+      def get_property_extended(property_name)
+        get_property(property_name)
+      end
+
+      def get_property(property_name)
+        gvalue = gvalue_for_property property_name
+        super property_name, gvalue
+        value = gvalue.get_value
+
+        type_info = get_property_type property_name
+        value = property_value_post_conversion(value, type_info) if type_info
+
+        value
+      end
+
+      # @deprecated
+      def set_property_extended(property_name, value)
+        set_property property_name, value
+      end
+
+      def set_property(property_name, value)
+        type_info = get_property_type property_name
+        value = property_value_pre_conversion(value, type_info) if type_info
+
+        gvalue = gvalue_for_property(property_name)
+        gvalue.set_value value
+
+        super property_name, gvalue
+      end
+
+      private
+
+      def get_property_type(property_name)
+        self.class.find_property(property_name)&.property_type
+      end
+
+      # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
+      def property_value_post_conversion(val, type_info)
+        case type_info.flattened_tag
+        when :ghash
+          GLib::HashTable.from type_info.element_type, val
+        when :glist
+          GLib::List.from type_info.element_type, val
+        when :callback
+          GirFFI::Builder.build_class(type_info.interface).wrap val
+        else
+          val
+        end
+      end
+
+      # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
+      def property_value_pre_conversion(val, type_info)
+        case type_info.flattened_tag
+        when :ghash
+          GLib::HashTable.from type_info.element_type, val
+        when :glist
+          GLib::List.from type_info.element_type, val
+        when :strv
+          GLib::Strv.from val
+        when :byte_array
+          GLib::ByteArray.from val
+        when :callback
+          GirFFI::Builder.build_class(type_info.interface).from val
+        else
+          val
+        end
       end
     end
 
-    # TODO: Move to ITypeInfo and unify with ArgHelper.cast_from_pointer
-    def property_value_pre_conversion(val, type_info)
-      case type_info.flattened_tag
-      when :ghash
-        GLib::HashTable.from type_info.element_type, val
-      when :glist
-        GLib::List.from type_info.element_type, val
-      when :strv
-        GLib::Strv.from val
-      when :byte_array
-        GLib::ByteArray.from val
-      when :callback
-        GirFFI::Builder.build_class(type_info.interface).from val
-      else
-        val
-      end
-    end
+    prepend PropertyOverrides
   end
 end
