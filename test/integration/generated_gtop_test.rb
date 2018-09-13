@@ -14,8 +14,10 @@ describe 'The generated GTop module' do
   end
 
   describe 'Glibtop' do
-    it 'is a valid boxed class' do
-      GTop::Glibtop.superclass.must_equal GirFFI::BoxedBase
+    it 'is a valid struct class' do
+      # Superclass is either BoxedBase or StructBase, depending on library
+      # versions. This means StructBase is always one of the ancestors.
+      assert GTop::Glibtop < GirFFI::StructBase
     end
 
     it 'can be created using Glibtop.init' do
