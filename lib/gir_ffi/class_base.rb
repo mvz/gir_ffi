@@ -79,6 +79,10 @@ module GirFFI
       val
     end
 
+    def self.included_interfaces
+      included_modules.select { |it| it.singleton_class.include? InterfaceBase }
+    end
+
     private
 
     # Stores a pointer created by a constructor function. Derived classes may
