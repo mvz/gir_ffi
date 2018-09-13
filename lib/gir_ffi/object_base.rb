@@ -78,7 +78,9 @@ module GirFFI
     end
 
     def self.registered_ancestors
-      ancestors.select { |it| it < GirFFI::ObjectBase || it.singleton_class.include?(InterfaceBase) }
+      ancestors.select do |it|
+        it < GirFFI::ObjectBase || it.singleton_class.include?(InterfaceBase)
+      end
     end
   end
 end
