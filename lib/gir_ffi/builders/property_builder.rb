@@ -71,7 +71,9 @@ module GirFFI
       end
 
       def setup_getter
-        container_class.class_eval getter_def unless container_defines_getter_method?
+        unless container_defines_getter_method?
+          container_class.class_eval getter_def, __FILE__, __LINE__
+        end
       end
 
       def container_defines_getter_method?
@@ -79,7 +81,7 @@ module GirFFI
       end
 
       def setup_setter
-        container_class.class_eval setter_def
+        container_class.class_eval setter_def, __FILE__, __LINE__
       end
 
       def getter_def

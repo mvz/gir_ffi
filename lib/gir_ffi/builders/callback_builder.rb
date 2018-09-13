@@ -13,7 +13,7 @@ module GirFFI
       def setup_class
         setup_callback
         setup_constants
-        klass.class_eval mapping_method_definition
+        klass.class_eval mapping_method_definition, __FILE__, __LINE__
       end
 
       def setup_callback

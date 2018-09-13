@@ -10,7 +10,7 @@ module GirFFI
     class SignalClosureBuilder < BaseTypeBuilder
       def setup_class
         setup_constants
-        klass.class_eval marshaller_definition
+        klass.class_eval marshaller_definition, __FILE__, __LINE__
       end
 
       def setup_method(_method)

@@ -49,16 +49,18 @@ module GirFFI
           initializer_builder = InitializerBuilder.new(method_info)
           initializer_name = initializer_builder.method_name.to_sym
           unless build_class.private_instance_methods(false).include? initializer_name
-            build_class.class_eval initializer_builder.method_definition
+            build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
           end
-          build_class.class_eval ConstructorBuilder.new(method_info).method_definition
+          build_class.class_eval ConstructorBuilder.new(method_info).method_definition, __FILE__, __LINE__
         else
-          build_class.class_eval FunctionBuilder.new(method_info).method_definition
+          build_class.class_eval FunctionBuilder.new(method_info).method_definition, __FILE__, __LINE__
         end
       end
 
       def remove_old_method(method, modul)
-        modul.class_eval { remove_method method if method_defined? method }
+        modul.class_eval do
+          remove_method method if method_defined? method
+        end
       end
 
       def attach_method(method_info)
@@ -67,7 +69,7 @@ module GirFFI
 
       def stub_methods
         info.get_methods.each do |minfo|
-          klass.class_eval MethodStubber.new(minfo).method_stub
+          klass.class_eval MethodStubber.new(minfo).method_stub, __FILE__, __LINE__
         end
       end
 
