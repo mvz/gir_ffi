@@ -131,7 +131,8 @@ module GObject
         raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
-    module PropertyOverrides
+    # Overrides for GObject, GObject's generic base class.
+    module Overrides
       # @deprecated
       def get_property_extended(property_name)
         get_property(property_name)
@@ -202,6 +203,6 @@ module GObject
       end
     end
 
-    prepend PropertyOverrides
+    prepend Overrides
   end
 end

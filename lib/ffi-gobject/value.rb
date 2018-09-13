@@ -207,6 +207,7 @@ module GObject
         raise("No method map entry for '#{current_gtype_name}'")
     end
 
+    # Overrides for existing Value methods
     module Overrides
       def init(type)
         Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
