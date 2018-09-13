@@ -12,15 +12,15 @@ module GObject
                                    [:size_t, :uint32, :pointer, :pointer],
                                    :pointer)
 
-      def self.new(*args, &block)
+      def self.new_with_properties(*args, &block)
         obj = allocate
-        obj.__send__ :initialize, *args, &block
+        obj.__send__ :initialize_with_properties, *args, &block
         obj
       end
 
       # Starting with GLib 2.54.0, use g_object_new_with_properties, which
       # takes an array of names and an array of values.
-      def initialize(properties = {})
+      def initialize_with_properties(properties = {})
         names = []
         values = []
         properties.each do |name, value|
@@ -41,6 +41,16 @@ module GObject
                                                         names_arr,
                                                         values_arr)
         store_pointer ptr
+      end
+
+      alias old_initialze initialize
+      alias initialize initialize_with_properties
+      remove_method :old_initialze
+
+      def self.new(*args, &block)
+        obj = allocate
+        obj.__send__ :initialize, *args, &block
+        obj
       end
     else
       setup_method! 'new'

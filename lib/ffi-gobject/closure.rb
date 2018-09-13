@@ -9,6 +9,7 @@ module GObject
   class Closure
     setup_method! :new_simple
     setup_instance_method! :invoke
+    remove_method :invoke
 
     # @override
     #

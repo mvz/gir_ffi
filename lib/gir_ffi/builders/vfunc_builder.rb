@@ -16,7 +16,7 @@ module GirFFI
     class VFuncBuilder < BaseTypeBuilder
       def setup_class
         setup_constants
-        klass.class_eval mapping_method_definition
+        klass.class_eval mapping_method_definition, __FILE__, __LINE__
       end
 
       def klass

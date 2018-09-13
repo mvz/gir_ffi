@@ -244,7 +244,7 @@ module GirFFI
         return if container_defines_getter_method?
         return if hidden_struct_type?
 
-        container_class.class_eval getter_def
+        container_class.class_eval getter_def, __FILE__, __LINE__
       end
 
       def container_defines_getter_method?
@@ -255,7 +255,7 @@ module GirFFI
         return unless info.writable?
         return if hidden_struct_type?
 
-        container_class.class_eval setter_def
+        container_class.class_eval setter_def, __FILE__, __LINE__
       end
 
       def getter_def

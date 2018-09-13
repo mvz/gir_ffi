@@ -3745,6 +3745,7 @@ describe Regress do
       a = u
     end
     assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
+    a.must_be_instance_of Regress::TestCallbackUserData
   end
 
   it 'has a working function #test_uint' do

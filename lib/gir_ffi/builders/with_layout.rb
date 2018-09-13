@@ -21,7 +21,9 @@ module GirFFI
 
       def setup_layout
         spec = layout_specification
-        struct_class.class_eval { layout(*spec) }
+        struct_class.class_eval do
+          layout(*spec)
+        end
       end
 
       def dummy_layout_specification

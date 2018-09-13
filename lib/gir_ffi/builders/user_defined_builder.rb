@@ -253,13 +253,12 @@ module GirFFI
       end
 
       def setup_constructor
-        code = <<-CODE
-        def initialize
-          ptr = GObject::Lib.g_object_new #{@gtype}, nil
-          store_pointer(ptr)
-        end
+        klass.class_eval <<-CODE, __FILE__, __LINE__ + 1
+          def initialize
+            ptr = GObject::Lib.g_object_new #{@gtype}, nil
+            store_pointer(ptr)
+          end
         CODE
-        klass.class_eval code
       end
     end
   end
