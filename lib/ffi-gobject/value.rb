@@ -5,17 +5,12 @@ GObject.load_class :Value
 module GObject
   # Overrides for GValue, GObject's generic value container structure.
   class Value
-    remove_method :init
+    setup_instance_method! :init
 
     def initialize
       super
       struct.owned = true
       to_ptr.autorelease = nil
-    end
-
-    def init(type)
-      Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
-      self
     end
 
     def self.make_finalizer(struct)
@@ -211,5 +206,14 @@ module GObject
       METHOD_MAP[current_gtype] || METHOD_MAP[current_fundamental_type] ||
         raise("No method map entry for '#{current_gtype_name}'")
     end
+
+    module Overrides
+      def init(type)
+        Lib.g_value_init self, type unless [TYPE_NONE, TYPE_INVALID].include? type
+        self
+      end
+    end
+
+    prepend Overrides
   end
 end
