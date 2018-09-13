@@ -49,7 +49,7 @@ module GirFFI
       end
 
       def included_interfaces
-        klass.included_modules - Object.included_modules
+        klass.included_interfaces
       end
 
       def klass

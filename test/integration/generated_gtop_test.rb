@@ -15,7 +15,9 @@ describe 'The generated GTop module' do
 
   describe 'Glibtop' do
     it 'is a valid struct class' do
-      GTop::Glibtop.ancestors.must_include GirFFI::StructBase
+      # Superclass is either BoxedBase or StructBase, depending on library
+      # versions. This means StructBase is always one of the ancestors.
+      assert GTop::Glibtop < GirFFI::StructBase
     end
 
     it 'can be created using Glibtop.init' do

@@ -9,8 +9,10 @@ describe 'The generated Gio module' do
   describe 'File#new_for_path, a method returning an interface,' do
     it 'returns an object of a more specific class' do
       file = Gio::File.new_for_path('/')
+      file.class.registered_ancestors.must_equal [file.class, Gio::File, GObject::Object]
+
       refute_instance_of Gio::File, file
-      assert_includes file.class.ancestors, Gio::File
+      assert_includes file.class.registered_ancestors, Gio::File
     end
   end
 
@@ -20,9 +22,7 @@ describe 'The generated Gio module' do
     end
 
     it 'is able to set up a method in a class that is not the first ancestor' do
-      anc = @it.class.ancestors
-      assert_equal [Gio::File, GObject::Object], anc[1, 2]
-
+      refute_defines_instance_method @it.class, :get_qdata
       refute_defines_instance_method Gio::File, :get_qdata
       assert_defines_instance_method GObject::Object, :get_qdata
 
@@ -82,8 +82,7 @@ describe 'The generated Gio module' do
   describe 'the CharsetConverter class' do
     it 'includes two interfaces' do
       klass = Gio::CharsetConverter
-      assert_includes klass.ancestors, Gio::Converter
-      assert_includes klass.ancestors, Gio::Initable
+      klass.included_interfaces.must_equal [Gio::Initable, Gio::Converter]
     end
 
     it 'allows an instance to find the #reset method' do

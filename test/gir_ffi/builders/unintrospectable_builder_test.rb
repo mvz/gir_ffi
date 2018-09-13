@@ -21,11 +21,11 @@ describe GirFFI::Builders::UnintrospectableBuilder do
     end
 
     it 'builds a class derived from GObject::Object' do
-      assert_includes @klass.ancestors, GObject::Object
+      assert_includes @klass.registered_ancestors, GObject::Object
     end
 
     it 'builds a class derived from Gio::File' do
-      assert_includes @klass.ancestors, Gio::File
+      assert_includes @klass.registered_ancestors, Gio::File
     end
 
     it 'returns the same class when built again' do

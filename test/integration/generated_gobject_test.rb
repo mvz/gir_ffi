@@ -48,7 +48,7 @@ describe GObject do
   describe GObject::TypeModule do
     it 'has the GObject::TypePlugin module as an ancestor' do
       klass = GObject::TypeModule
-      assert_includes klass.ancestors, GObject::TypePlugin
+      assert_includes klass.registered_ancestors, GObject::TypePlugin
     end
   end
 

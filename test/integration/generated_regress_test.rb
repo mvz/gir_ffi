@@ -1455,8 +1455,7 @@ describe Regress do
 
   describe 'Regress::TestFundamentalObject' do
     it 'does not have GObject::Object as an ancestor' do
-      refute_includes Regress::TestFundamentalObject.ancestors,
-                      GObject::Object
+      refute(Regress::TestFundamentalObject < GObject::Object)
     end
 
     it 'cannot be instantiated' do
@@ -1541,8 +1540,7 @@ describe Regress do
     end
 
     it 'extends InterfaceBase' do
-      metaclass = class << Regress::TestInterface; self; end
-      assert_includes metaclass.ancestors, GirFFI::InterfaceBase
+      Regress::TestInterface.singleton_class.must_include GirFFI::InterfaceBase
     end
 
     it 'has non-zero positive result for #gtype' do
