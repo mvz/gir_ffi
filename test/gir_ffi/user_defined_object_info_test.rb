@@ -19,10 +19,8 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:foo_spec) { Object.new }
 
     it 'adds the passed in property to the list of properties' do
-      expect(foo_spec).to receive(:get_name).and_return :foo
-
       info.install_property foo_spec
-      info.properties.map(&:name).must_equal [:foo]
+      info.properties.must_equal [foo_spec]
     end
   end
 
@@ -60,12 +58,12 @@ describe GirFFI::UserDefinedObjectInfo do
     end
 
     before do
-      expect(foo_spec).to receive(:get_name).and_return :foo
-      expect(bar_spec).to receive(:get_name).and_return :bar
+      allow(foo_spec).to receive(:get_name).and_return :foo
+      allow(bar_spec).to receive(:get_name).and_return :bar
     end
 
     it 'yields the new object to the block passed' do
-      info.properties.map(&:name).must_equal [:foo, :bar]
+      info.properties.map(&:get_name).must_equal [:foo, :bar]
     end
   end
 

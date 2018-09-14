@@ -156,7 +156,7 @@ module GirFFI
       end
 
       def properties
-        info.properties
+        @properties ||= info.properties.map { |it| UserDefinedPropertyInfo.new(it) }
       end
 
       def layout_specification
@@ -175,9 +175,10 @@ module GirFFI
         parent_spec + fields_spec
       end
 
-      # TODO: Move this to its own file.
+      # TODO: Merge with UserDefinedPropertyInfo
+      # Field info for user-defined property
       class UserDefinedFieldInfo
-        # Field info for user-defined property
+        # Type info for user-defined property
         class UserDefinedTypeInfo
           include InfoExt::ITypeInfo
 

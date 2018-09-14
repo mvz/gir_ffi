@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module GirFFI
-  # Represents a property of a user defined type.
+  # Represents a property of a user defined type. Wraps a GParamSpec with
+  # useful helper methods for building property accessors etc.
   class UserDefinedPropertyInfo
     def initialize(param_spec)
       @param_spec = param_spec

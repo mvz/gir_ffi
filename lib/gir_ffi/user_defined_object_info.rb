@@ -20,8 +20,8 @@ module GirFFI
       @klass
     end
 
-    def install_property(property)
-      @properties << UserDefinedPropertyInfo.new(property)
+    def install_property(param_spec)
+      @properties << param_spec
     end
 
     def install_vfunc_implementation(name, implementation = nil)
