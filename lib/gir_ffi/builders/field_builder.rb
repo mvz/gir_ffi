@@ -97,7 +97,7 @@ module GirFFI
       end
 
       # Class to represent argument info for the argument of a getter method.
-      # Implements the necessary parts of IArgumentInfo's interface.
+      # Implements the necessary parts of IArgInfo's interface.
       class GetterArgumentInfo
         attr_reader :name, :argument_type
 

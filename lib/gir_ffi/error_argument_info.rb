@@ -3,7 +3,7 @@
 require 'gir_ffi/error_type_info'
 
 module GirFFI
-  # Represents an error argument with the same interface as IArgumentInfo
+  # Represents an error argument with the same interface as IArgInfo
   class ErrorArgumentInfo
     def direction
       :error

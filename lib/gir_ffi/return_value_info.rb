@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module GirFFI
-  # Represents a return value with the same interface as IArgumentInfo
+  # Represents a return value with the same interface as IArgInfo
   class ReturnValueInfo
     attr_reader :argument_type
     attr_reader :ownership_transfer
