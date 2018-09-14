@@ -78,7 +78,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @field_info.field_type.tag_or_class
+          @field_type_tag ||= field_type.tag_or_class
         end
 
         def field_type
@@ -216,7 +216,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @info.field_type.tag_or_class.inspect
+          @field_type_tag ||= field_type.tag_or_class.inspect
         end
 
         def field_type
