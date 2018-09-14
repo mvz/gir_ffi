@@ -42,7 +42,12 @@ module GirFFI
 
     def read_value(offset)
       val = fetch_value(offset)
-      val unless val.zero?
+      case val
+      when Symbol
+        val unless ffi_type.to_native(val, nil).zero?
+      else
+        val unless val.zero?
+      end
     end
 
     def getter_method

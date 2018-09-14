@@ -14,6 +14,20 @@ describe GirFFI::ZeroTerminated do
     it 'returns a GirFFI::ZeroTerminated object' do
       result.must_be_instance_of GirFFI::ZeroTerminated
     end
+
+    it 'works for Regress::TestEnum from numbers' do
+      GirFFI.setup :Regress
+      enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [1, -1, 48]
+      ptr = enum_arr.to_ptr
+      ptr.read_array_of_int32(4).must_equal [1, -1, 48, 0]
+    end
+
+    it 'works for Regress::TestEnum from symbols' do
+      GirFFI.setup :Regress
+      enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [:value2, :value3, :value4]
+      ptr = enum_arr.to_ptr
+      ptr.read_array_of_int32(4).must_equal [1, -1, 48, 0]
+    end
   end
 
   describe '.wrap' do
@@ -82,5 +96,13 @@ describe GirFFI::ZeroTerminated do
 
   it 'includes Enumerable' do
     GirFFI::ZeroTerminated.must_include Enumerable
+  end
+
+  describe '#to_a' do
+    it 'works for Regress::TestEnum' do
+      GirFFI.setup :Regress
+      enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [1, 48, -1]
+      enum_arr.to_a.must_equal [:value2, :value4, :value3]
+    end
   end
 end
