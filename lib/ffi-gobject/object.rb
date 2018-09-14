@@ -21,25 +21,16 @@ module GObject
       # Starting with GLib 2.54.0, use g_object_new_with_properties, which
       # takes an array of names and an array of values.
       def initialize_with_properties(properties = {})
-        names = []
-        values = []
-        properties.each do |name, value|
-          name = name.to_s
-          gvalue = gvalue_for_property(name)
-          gvalue.set_value value
-
-          names << name
-          values << gvalue
-        end
+        names, gvalues = names_and_gvalues_for_properties(properties)
 
         n_properties = names.length
         names_arr = GirFFI::SizedArray.from(:utf8, -1, names)
-        values_arr = GirFFI::SizedArray.from(GObject::Value, -1, values)
+        gvalues_arr = GirFFI::SizedArray.from(GObject::Value, -1, gvalues)
 
         ptr = GObject::Lib.g_object_new_with_properties(self.class.gtype,
                                                         n_properties,
                                                         names_arr,
-                                                        values_arr)
+                                                        gvalues_arr)
         store_pointer ptr
       end
 
@@ -160,6 +151,18 @@ module GObject
     alias floating? is_floating
 
     private
+
+    def names_and_gvalues_for_properties(properties)
+      return [], [] unless properties.any?
+
+      properties.map do |name, value|
+        name = name.to_s
+        gvalue = gvalue_for_property(name)
+        gvalue.set_value value
+
+        [name, gvalue]
+      end.transpose
+    end
 
     def get_property_type(property_name)
       prop = self.class.find_property(property_name)

@@ -16,14 +16,16 @@ module GirFFI
         method_info = info.find_method method
         return unless method_info
 
-        attach_and_define_method method_info, meta_class
+        remove_old_method method_info, meta_class
+        attach_and_define_method method_info
       end
 
       def setup_instance_method(method)
         method_info = info.find_instance_method method
         return unless method_info
 
-        attach_and_define_method method_info, build_class
+        remove_old_method method_info, build_class
+        attach_and_define_method method_info
       end
 
       def target_gtype
@@ -36,30 +38,33 @@ module GirFFI
         (class << build_class; self; end)
       end
 
-      def attach_and_define_method(method_info, modul)
-        method = method_info.safe_name
+      def attach_and_define_method(method_info)
         attach_method method_info
-        remove_old_method method, modul
-        define_method method_info
-        method
+        if method_info.constructor?
+          define_construction_methods method_info
+        else
+          define_method method_info
+        end
+        method_info.safe_name
       end
 
       def define_method(method_info)
-        if method_info.constructor?
-          initializer_builder = InitializerBuilder.new(method_info)
-          initializer_name = initializer_builder.method_name.to_sym
-          unless build_class.private_instance_methods(false).include? initializer_name
-            build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
-          end
-          build_class.class_eval(ConstructorBuilder.new(method_info).method_definition,
-                                 __FILE__, __LINE__ - 1)
-        else
-          build_class.class_eval(FunctionBuilder.new(method_info).method_definition,
-                                 __FILE__, __LINE__ - 1)
-        end
+        build_class.class_eval(FunctionBuilder.new(method_info).method_definition,
+                               __FILE__, __LINE__ - 1)
       end
 
-      def remove_old_method(method, modul)
+      def define_construction_methods(method_info)
+        initializer_builder = InitializerBuilder.new(method_info)
+        initializer_name = initializer_builder.method_name.to_sym
+        unless build_class.private_instance_methods(false).include? initializer_name
+          build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
+        end
+        build_class.class_eval(ConstructorBuilder.new(method_info).method_definition,
+                               __FILE__, __LINE__ - 1)
+      end
+
+      def remove_old_method(method_info, modul)
+        method = method_info.safe_name
         modul.class_eval do
           remove_method method if method_defined? method
         end

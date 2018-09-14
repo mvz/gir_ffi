@@ -40,23 +40,16 @@ module GirFFI
       end
 
       def pre_conversion
-        pr = []
-        if has_ingoing_component?
-          pr << fixed_array_size_check if needs_size_check?
-          pr << array_length_assignment if array_length_parameter?
-        end
         case direction
         when :in
-          pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
+          pre_conversion_in
         when :inout
-          pr << out_parameter_preparation
-          pr << ingoing_value_storage
+          pre_conversion_inout
         when :out
-          pr << out_parameter_preparation
+          pre_conversion_out
         when :error
-          pr << "#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil"
+          pre_conversion_error
         end
-        pr
       end
 
       def post_conversion
@@ -71,6 +64,31 @@ module GirFFI
       end
 
       private
+
+      def pre_conversion_in
+        pr = []
+        pr << fixed_array_size_check if needs_size_check?
+        pr << array_length_assignment if array_length_parameter?
+        pr << "#{call_argument_name} = #{ingoing_convertor.conversion}"
+        pr
+      end
+
+      def pre_conversion_inout
+        pr = []
+        pr << fixed_array_size_check if needs_size_check?
+        pr << array_length_assignment if array_length_parameter?
+        pr << out_parameter_preparation
+        pr << ingoing_value_storage
+        pr
+      end
+
+      def pre_conversion_out
+        [out_parameter_preparation]
+      end
+
+      def pre_conversion_error
+        ["#{call_argument_name} = FFI::MemoryPointer.new(:pointer).write_pointer nil"]
+      end
 
       def ingoing_value_storage
         PointerValueConvertor.new(type_spec).

@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'examples/*'
+    - 'tasks/test.rake'
     - 'tmp/**/*'
   TargetRubyVersion: 2.2
 
