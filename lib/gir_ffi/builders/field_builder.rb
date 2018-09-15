@@ -78,7 +78,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @field_info.field_type.tag_or_class
+          @field_type_tag ||= field_type.tag_or_class
         end
 
         def field_type
@@ -97,7 +97,7 @@ module GirFFI
       end
 
       # Class to represent argument info for the argument of a getter method.
-      # Implements the necessary parts of IArgumentInfo's interface.
+      # Implements the necessary parts of IArgInfo's interface.
       class GetterArgumentInfo
         attr_reader :name, :argument_type
 
@@ -216,7 +216,7 @@ module GirFFI
         end
 
         def field_type_tag
-          @field_type_tag ||= @info.field_type.tag_or_class.inspect
+          @field_type_tag ||= field_type.tag_or_class.inspect
         end
 
         def field_type

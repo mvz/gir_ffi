@@ -10,7 +10,8 @@ describe GirFFI::UserDefinedPropertyInfo do
                            1, 3, 2,
                            readable: true, writable: true)
   end
-  let(:info) { GirFFI::UserDefinedPropertyInfo.new pspec }
+  let(:container) { Object.new }
+  let(:info) { GirFFI::UserDefinedPropertyInfo.new pspec, container, 24 }
 
   describe '#param_spec' do
     it 'returns the passed in parameter specification' do
@@ -19,8 +20,8 @@ describe GirFFI::UserDefinedPropertyInfo do
   end
 
   describe '#name' do
-    it 'returns the name retrieved from the parameter specification' do
-      info.name.must_equal 'foo-bar'
+    it 'returns the accessor name from the parameter specification' do
+      info.name.must_equal 'foo_bar'
     end
   end
 
@@ -30,9 +31,9 @@ describe GirFFI::UserDefinedPropertyInfo do
     end
   end
 
-  describe '#type_tag' do
+  describe '#field_type.tag' do
     it 'returns the mapped type symbol' do
-      info.type_tag.must_equal :gint
+      info.field_type.tag.must_equal :gint
     end
   end
 end
