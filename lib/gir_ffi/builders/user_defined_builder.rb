@@ -86,10 +86,13 @@ module GirFFI
       end
 
       def instance_size
-        size = parent_gtype.instance_size
-        properties.each do |prop|
-          type_size = FFI.type_size(prop.ffi_type)
+        if property_fields.any?
+          last_property = property_fields.last
+          size = last_property.offset
+          type_size = FFI.type_size(last_property.ffi_type)
           size += [type_size, field_alignment].max
+        else
+          size = parent_gtype.instance_size
         end
         size
       end
@@ -104,7 +107,7 @@ module GirFFI
         object_class.get_property = property_getter
         object_class.set_property = property_setter
 
-        properties.each_with_index do |property, index|
+        property_fields.each_with_index do |property, index|
           object_class.install_property index + 1, property.param_spec
         end
       end
@@ -160,16 +163,11 @@ module GirFFI
 
       def layout_specification
         parent_spec = [:parent, superclass::Struct]
-        offset = parent_gtype.instance_size
 
-        fields_spec = properties.flat_map do |param_info|
-          field_name = param_info.accessor_name.to_sym
-          ffi_type = param_info.ffi_type
-          type_size = FFI.type_size(ffi_type)
-          spec = [field_name, ffi_type, offset]
-          offset += [type_size, field_alignment].max
-          spec
+        fields_spec = property_fields.flat_map do |property_info|
+          [property_info.field_symbol, property_info.ffi_type, property_info.offset]
         end
+
         parent_spec + fields_spec
       end
 
@@ -236,6 +234,18 @@ module GirFFI
         def writable?
           @property_info.writable?
         end
+
+        def ffi_type
+          @property_info.ffi_type
+        end
+
+        def field_symbol
+          @property_info.accessor_name.to_sym
+        end
+
+        def param_spec
+          @property_info.param_spec
+        end
       end
 
       def setup_property_accessors
@@ -243,7 +253,6 @@ module GirFFI
           FieldBuilder.new(field_info, klass).build
         end
       end
-
 
       def property_fields
         @property_fields ||=
