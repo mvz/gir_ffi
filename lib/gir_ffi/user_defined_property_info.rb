@@ -33,7 +33,7 @@ module GirFFI
       }.freeze
 
       def tag
-        G_TYPE_TAG_MAP.fetch(fundamental_value_type)
+        @tag ||= G_TYPE_TAG_MAP.fetch(fundamental_value_type)
       end
 
       # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
@@ -68,7 +68,7 @@ module GirFFI
       }.freeze
 
       def interface_type
-        G_TYPE_INTERFACE_TAG_MAP.fetch(fundamental_value_type) if tag == :interface
+        G_TYPE_INTERFACE_TAG_MAP.fetch(fundamental_value_type) if interface?
       end
 
       def hidden_struct_type?
@@ -76,11 +76,11 @@ module GirFFI
       end
 
       def interface_class
-        Builder.build_by_gtype @param_spec.value_type if tag == :interface
+        @interface_class ||= Builder.build_by_gtype @param_spec.value_type if interface?
       end
 
       def interface_class_name
-        interface_class.name if tag == :interface
+        interface_class.name if interface?
       end
 
       def ffi_type
@@ -95,6 +95,10 @@ module GirFFI
 
       def fundamental_value_type
         @fundamental_value_type ||= GObject.type_fundamental value_type
+      end
+
+      def interface?
+        tag == :interface
       end
     end
 
