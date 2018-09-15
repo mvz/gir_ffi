@@ -133,18 +133,26 @@ module GirFFI
         return if info.find_method 'new'
 
         if info.abstract?
-          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(*)
-              raise NoMethodError
-            end
-          RUBY
+          define_abstract_initializer
         else
-          klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
-            def initialize(properties = {})
-              base_initialize(properties)
-            end
-          RUBY
+          define_default_initializer
         end
+      end
+
+      def define_abstract_initializer
+        klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def initialize(*)
+            raise NoMethodError
+          end
+        RUBY
+      end
+
+      def define_default_initializer
+        klass.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+          def initialize(properties = {})
+            base_initialize(properties)
+          end
+        RUBY
       end
 
       def setup_interfaces
