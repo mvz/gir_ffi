@@ -87,10 +87,9 @@ module GirFFI
 
       def instance_size
         size = parent_gtype.instance_size
-        alignment = struct_class.alignment
         properties.each do |prop|
           type_size = FFI.type_size(prop.ffi_type)
-          size += [type_size, alignment].max
+          size += [type_size, field_alignment].max
         end
         size
       end
@@ -163,16 +162,19 @@ module GirFFI
         parent_spec = [:parent, superclass::Struct]
         offset = parent_gtype.instance_size
 
-        alignment = superclass::Struct.alignment
         fields_spec = properties.flat_map do |param_info|
           field_name = param_info.accessor_name.to_sym
           ffi_type = param_info.ffi_type
           type_size = FFI.type_size(ffi_type)
           spec = [field_name, ffi_type, offset]
-          offset += [type_size, alignment].max
+          offset += [type_size, field_alignment].max
           spec
         end
         parent_spec + fields_spec
+      end
+
+      def field_alignment
+        @field_alignment ||= superclass::Struct.alignment
       end
 
       # TODO: Merge with UserDefinedPropertyInfo
@@ -247,11 +249,10 @@ module GirFFI
         @property_fields ||=
           begin
             offset = parent_gtype.instance_size
-            alignment = struct_class.alignment
             properties.map do |param_info|
               field_info = UserDefinedFieldInfo.new(param_info, info, offset)
               type_size = FFI.type_size(param_info.ffi_type)
-              offset += [type_size, alignment].max
+              offset += [type_size, field_alignment].max
               field_info
             end
           end
