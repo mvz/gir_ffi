@@ -158,7 +158,7 @@ module GirFFI
       end
 
       def properties
-        @properties ||= info.properties.map { |it| UserDefinedPropertyInfo.new(it) }
+        @properties ||= info.properties
       end
 
       def layout_specification
@@ -175,79 +175,6 @@ module GirFFI
         @field_alignment ||= superclass::Struct.alignment
       end
 
-      # TODO: Merge with UserDefinedPropertyInfo
-      # Field info for user-defined property
-      class UserDefinedFieldInfo
-        # Type info for user-defined property
-        class UserDefinedTypeInfo
-          include InfoExt::ITypeInfo
-
-          def initialize(property_info)
-            @property_info = property_info
-          end
-
-          def tag
-            @property_info.type_tag
-          end
-
-          def pointer?
-            @property_info.pointer_type?
-          end
-
-          def interface_type
-            @property_info.interface_type_tag if tag == :interface
-          end
-
-          def hidden_struct_type?
-            false
-          end
-
-          def interface_class
-            Builder.build_by_gtype @property_info.value_type if tag == :interface
-          end
-
-          def interface_class_name
-            interface_class.name if tag == :interface
-          end
-        end
-
-        def initialize(property_info, container, offset)
-          @property_info = property_info
-          @container = container
-          @offset = offset
-        end
-
-        attr_reader :container, :offset
-
-        def name
-          @property_info.accessor_name
-        end
-
-        def field_type
-          @field_type ||= UserDefinedTypeInfo.new @property_info
-        end
-
-        def related_array_length_field
-          nil
-        end
-
-        def writable?
-          @property_info.writable?
-        end
-
-        def ffi_type
-          @property_info.ffi_type
-        end
-
-        def field_symbol
-          @property_info.accessor_name.to_sym
-        end
-
-        def param_spec
-          @property_info.param_spec
-        end
-      end
-
       def setup_property_accessors
         property_fields.each do |field_info|
           FieldBuilder.new(field_info, klass).build
@@ -258,9 +185,9 @@ module GirFFI
         @property_fields ||=
           begin
             offset = parent_gtype.instance_size
-            properties.map do |param_info|
-              field_info = UserDefinedFieldInfo.new(param_info, info, offset)
-              type_size = FFI.type_size(param_info.ffi_type)
+            properties.map do |param_spec|
+              field_info = UserDefinedPropertyInfo.new(param_spec, info, offset)
+              type_size = FFI.type_size(field_info.ffi_type)
               offset += [type_size, field_alignment].max
               field_info
             end
