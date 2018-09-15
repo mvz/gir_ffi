@@ -16,7 +16,7 @@ module GirFFI
         register_type
         setup_constants
         setup_property_accessors
-        setup_constructor
+        setup_initializer
         TypeBuilder::CACHE[@gtype] = klass
       end
 
@@ -250,15 +250,6 @@ module GirFFI
 
       def method_introspection_data(_method)
         nil
-      end
-
-      def setup_constructor
-        klass.class_eval <<-CODE, __FILE__, __LINE__ + 1
-          def initialize
-            ptr = GObject::Lib.g_object_new #{@gtype}, nil
-            store_pointer(ptr)
-          end
-        CODE
       end
     end
   end
