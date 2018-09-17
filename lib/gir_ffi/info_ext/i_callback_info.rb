@@ -8,6 +8,10 @@ module GirFFI
         Builder.build_class(self)
       end
 
+      def to_callback_ffi_type
+        :pointer
+      end
+
       def argument_ffi_types
         args.map(&:to_callback_ffi_type)
       end

@@ -56,6 +56,10 @@ module GirFFI
       self::Struct
     end
 
+    def self.to_callback_ffi_type
+      :pointer
+    end
+
     # Wrap the passed pointer in an instance of the current class, or a
     # descendant type if applicable.
     def self.wrap(ptr)

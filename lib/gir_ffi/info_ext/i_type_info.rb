@@ -105,13 +105,7 @@ module GirFFI
 
         case tag
         when :interface
-          # TODO: Move this logic into interface
-          case interface.info_type
-          when :enum, :flags
-            :int32
-          else
-            :pointer
-          end
+          interface.to_callback_ffi_type
         when :gboolean
           # TODO: Move this logic into TypeMap
           :bool

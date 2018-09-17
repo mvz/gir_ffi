@@ -10,6 +10,10 @@ module GirFFI
         to_type.to_ffi_type
       end
 
+      def to_callback_ffi_type
+        to_type.to_callback_ffi_type
+      end
+
       def to_type
         Builder.build_class self
       end
