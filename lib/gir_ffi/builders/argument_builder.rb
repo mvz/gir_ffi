@@ -211,7 +211,7 @@ module GirFFI
         elsif destroy_notifier?
           NullConvertor.new(DESTROY_NOTIFIER)
         elsif user_data?
-          ClosureToPointerConvertor.new(pre_convertor_argument, @related_callback_builder)
+          ClosureToPointerConvertor.new(callback_argument_name)
         elsif needs_ruby_to_c_conversion?
           RubyToCConvertor.new(type_info, pre_convertor_argument,
                                ownership_transfer: ownership_transfer)
@@ -230,6 +230,10 @@ module GirFFI
 
       def needs_ruby_to_c_conversion?
         type_info.needs_ruby_to_c_conversion_for_functions?
+      end
+
+      def callback_argument_name
+        @related_callback_builder.call_argument_name
       end
     end
   end
