@@ -67,21 +67,33 @@ module GirFFI
       end
 
       def set_up_argument_relations
+        set_up_closure_relations
+        set_up_destroy_notifier_relations
+        set_up_length_argument_relations
+      end
+
+      def set_up_closure_relations
         @base_argument_builders.each do |bldr|
           if (idx = bldr.closure_idx) >= 0
             @base_argument_builders[idx].closure = bldr
           end
+        end
+      end
+
+      def set_up_destroy_notifier_relations
+        @base_argument_builders.each do |bldr|
           if (idx = bldr.destroy_idx) >= 0
             @base_argument_builders[idx].mark_as_destroy_notifier bldr
           end
         end
+      end
+
+      def set_up_length_argument_relations
         all_builders.each do |bldr|
           idx = bldr.array_length_idx
-          next unless idx >= 0
+          next if idx < 0
 
           other = @base_argument_builders[idx]
-          next unless other
-
           bldr.length_arg = other
           other.array_arg = bldr
         end

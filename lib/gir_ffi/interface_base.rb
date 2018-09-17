@@ -25,5 +25,9 @@ module GirFFI
     def to_ffi_type
       :pointer
     end
+
+    def to_callback_ffi_type
+      :pointer
+    end
   end
 end

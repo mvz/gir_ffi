@@ -72,24 +72,17 @@ module GirFFI
         end
       end
 
-      def copy_from(element_type, size, item)
-        return unless item
+      def copy_from(element_type, size, enumerable)
+        return unless enumerable
 
-        enumerable = case item
-                     when FFI::Pointer
-                       wrap(element_type, size, item).to_a
-                     when self
-                       item.to_a
-                     else
-                       item
-                     end
+        arr = enumerable.to_a
         case element_type
         when Array
           _main_type, sub_type = *element_type
-          enumerable = enumerable.map { |it| sub_type.copy_from it }
+          arr = arr.map { |it| sub_type.copy_from it }
         end
 
-        from_enumerable element_type, size, enumerable
+        from_enumerable element_type, size, arr
       end
 
       private

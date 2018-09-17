@@ -15,18 +15,16 @@ module GirFFI
       end
 
       def superclass
-        if info.gtype_struct?
-          # HACK: Inheritance chain is not expressed in GObject's code correctly.
-          type_name = info.full_type_name
-          return GObject::ObjectClass if type_name == 'GObject::InitiallyUnownedClass'
-
-          type = fields.first.field_type
-          return type.tag_or_class if type.tag == :interface
-        end
-
+        # HACK: Inheritance chain is not expressed in GObject's code correctly.
+        return GObject::ObjectClass if info.full_type_name == 'GObject::InitiallyUnownedClass'
+        return parent_field_type.tag_or_class if info.gtype_struct?
         return BoxedBase if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
 
         StructBase
+      end
+
+      def parent_field_type
+        fields.first.field_type
       end
     end
   end

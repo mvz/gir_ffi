@@ -135,15 +135,6 @@ describe GirFFI::SizedArray do
       arr = GirFFI::SizedArray.copy_from :gint32, 0, nil
       arr.must_be_nil
     end
-
-    it 'creates an unowned copy of its argument if given a pointer' do
-      arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
-      arr2 = GirFFI::SizedArray.copy_from :gint32, 3, arr.to_ptr
-      assert_instance_of GirFFI::SizedArray, arr2
-      arr2.to_ptr.wont_be :==, arr.to_ptr
-      arr2.to_ptr.wont_be :autorelease?
-      arr2.to_a.must_equal [3, 2, 1]
-    end
   end
 
   describe '#==' do

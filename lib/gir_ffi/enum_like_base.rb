@@ -41,5 +41,9 @@ module GirFFI
     def to_ffi_type
       self
     end
+
+    def to_callback_ffi_type
+      :int32
+    end
   end
 end

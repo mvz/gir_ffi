@@ -267,16 +267,10 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:pointer?).and_return false
       end
 
-      it 'correctly maps a :union argument to :pointer' do
-        allow(iface_info).to receive(:info_type).and_return :union
+      it 'delegates to interface info' do
+        allow(iface_info).to receive(:to_callback_ffi_type).and_return :some_ffi_type
 
-        type_info.to_callback_ffi_type.must_equal :pointer
-      end
-
-      it 'correctly maps a :flags argument to :int32' do
-        allow(iface_info).to receive(:info_type).and_return :flags
-
-        type_info.to_callback_ffi_type.must_equal :int32
+        type_info.to_callback_ffi_type.must_equal :some_ffi_type
       end
     end
   end
