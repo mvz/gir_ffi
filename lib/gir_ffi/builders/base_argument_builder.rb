@@ -23,7 +23,7 @@ module GirFFI
         @length_arg = nil
         @array_arg = nil
         @is_user_data = false
-        @destroy_notifier = false
+        @is_destroy_notifier = false
       end
 
       def name
@@ -64,11 +64,9 @@ module GirFFI
         @related_callback_builder = callback_builder
       end
 
-      # TODO: Unify relationship set-up methods and improve naming. We
-      # currently have length_arg=, array_arg=, closure= and
-      # mark_as_destroy_notifier.
-      def mark_as_destroy_notifier(callback)
-        @destroy_notifier = callback
+      def mark_as_destroy_notifier(callback_builder)
+        @is_destroy_notifier = true
+        @related_callback_builder = callback_builder
       end
 
       def array_length_parameter?
@@ -80,7 +78,7 @@ module GirFFI
       end
 
       def destroy_notifier?
-        @destroy_notifier
+        @is_destroy_notifier
       end
 
       def helper_argument?
