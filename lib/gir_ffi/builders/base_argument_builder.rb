@@ -22,7 +22,7 @@ module GirFFI
         @arginfo = arginfo
         @length_arg = nil
         @array_arg = nil
-        @is_closure = false
+        @is_user_data = false
         @destroy_notifier = false
       end
 
@@ -59,11 +59,9 @@ module GirFFI
         arginfo.destroy
       end
 
-      # TODO: closure unfortunately means two things in GLib: a closure
-      # argument (user_data), and the Closure class (a callable object). Make
-      # the distinction more explicit in GirFFI.
-      def closure=(arg)
-        @is_closure = arg
+      def mark_as_user_data(callback_builder)
+        @is_user_data = true
+        @related_callback_builder = callback_builder
       end
 
       # TODO: Unify relationship set-up methods and improve naming. We
@@ -78,7 +76,7 @@ module GirFFI
       end
 
       def closure?
-        @is_closure
+        @is_user_data
       end
 
       def destroy_notifier?

@@ -57,10 +57,6 @@ describe GirFFI::Builders::ArgumentBuilder do
       let(:arg_info) { get_introspection_data('Regress', 'test_callback_user_data').args[1] }
 
       describe 'when it is a regular argument' do
-        before do
-          builder.closure = false
-        end
-
         it 'has the correct value for method_argument_name' do
           builder.method_argument_name.must_equal arg_info.name
         end
@@ -78,7 +74,7 @@ describe GirFFI::Builders::ArgumentBuilder do
         before do
           callback = Object.new
           allow(callback).to receive(:call_argument_name).and_return 'foo'
-          builder.closure = callback
+          builder.mark_as_user_data callback
         end
 
         it 'has the correct value for method_argument_name' do

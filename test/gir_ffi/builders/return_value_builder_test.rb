@@ -405,7 +405,7 @@ describe GirFFI::Builders::ReturnValueBuilder do
     let(:type_info) { callback_info.args[0].argument_type }
 
     before do
-      builder.closure = true
+      builder.mark_as_user_data :dummy
     end
 
     it 'fetches the stored object in #post_conversion' do
