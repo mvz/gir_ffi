@@ -58,5 +58,26 @@ module GirFFI
         map_basic_type(type)
       end
     end
+
+    FLATTENED_TAG_TO_GTYPE_MAP = {
+      [:array, true]     => GObject::TYPE_ARRAY,
+      [:c, true]         => GObject::TYPE_POINTER,
+      [:gboolean, false] => GObject::TYPE_BOOLEAN,
+      [:ghash, true]     => GObject::TYPE_HASH_TABLE,
+      [:glist, true]     => GObject::TYPE_POINTER,
+      [:gint32, false]   => GObject::TYPE_INT,
+      [:gint64, false]   => GObject::TYPE_INT64,
+      [:guint64, false]  => GObject::TYPE_UINT64,
+      [:strv, true]      => GObject::TYPE_STRV,
+      [:utf8, true]      => GObject::TYPE_STRING,
+      [:void, true]      => GObject::TYPE_POINTER,
+      [:void, false]     => GObject::TYPE_NONE
+    }.freeze
+
+    def self.type_info_to_gtype(type_info)
+      return type_info.interface.gtype if type_info.tag == :interface
+
+      FLATTENED_TAG_TO_GTYPE_MAP.fetch [type_info.flattened_tag, type_info.pointer?]
+    end
   end
 end

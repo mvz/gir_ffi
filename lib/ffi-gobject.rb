@@ -95,11 +95,6 @@ module GObject
     attach_function :g_value_init, [:pointer, :size_t], :pointer
     attach_function :g_value_unset, [:pointer], :pointer
 
-    attach_function :g_array_get_type, [], :size_t
-    attach_function :g_byte_array_get_type, [], :size_t
-    attach_function :g_hash_table_get_type, [], :size_t
-    attach_function :g_strv_get_type, [], :size_t
-
     attach_function :g_signal_connect_data,
                     [:pointer, :string, Callback, :pointer, ClosureNotify, ConnectFlags],
                     :ulong
@@ -114,9 +109,4 @@ module GObject
 
     attach_function :g_type_class_ref, [:size_t], :pointer
   end
-
-  TYPE_ARRAY = Lib.g_array_get_type
-  TYPE_BYTE_ARRAY = Lib.g_byte_array_get_type
-  TYPE_HASH_TABLE = Lib.g_hash_table_get_type
-  TYPE_STRV = Lib.g_strv_get_type
 end
