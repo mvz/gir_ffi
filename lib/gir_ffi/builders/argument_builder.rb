@@ -210,9 +210,9 @@ module GirFFI
           NullConvertor.new('0')
         elsif destroy_notifier?
           NullConvertor.new(DESTROY_NOTIFIER)
-        elsif closure?
-          ClosureToPointerConvertor.new(pre_convertor_argument, @is_closure)
-        elsif type_info.needs_ruby_to_c_conversion_for_functions?
+        elsif user_data?
+          ClosureToPointerConvertor.new(callback_argument_name)
+        elsif needs_ruby_to_c_conversion?
           RubyToCConvertor.new(type_info, pre_convertor_argument,
                                ownership_transfer: ownership_transfer)
         else
@@ -226,6 +226,14 @@ module GirFFI
         else
           name
         end
+      end
+
+      def needs_ruby_to_c_conversion?
+        type_info.needs_ruby_to_c_conversion_for_functions?
+      end
+
+      def callback_argument_name
+        @related_callback_builder.call_argument_name
       end
     end
   end

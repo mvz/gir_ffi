@@ -67,15 +67,15 @@ module GirFFI
       end
 
       def set_up_argument_relations
-        set_up_closure_relations
+        set_up_user_data_relations
         set_up_destroy_notifier_relations
         set_up_length_argument_relations
       end
 
-      def set_up_closure_relations
+      def set_up_user_data_relations
         @base_argument_builders.each do |bldr|
           if (idx = bldr.closure_idx) >= 0
-            @base_argument_builders[idx].closure = bldr
+            @base_argument_builders[idx].mark_as_user_data bldr
           end
         end
       end

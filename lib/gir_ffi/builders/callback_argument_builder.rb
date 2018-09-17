@@ -104,7 +104,7 @@ module GirFFI
       end
 
       def pre_convertor
-        @pre_convertor ||= if closure?
+        @pre_convertor ||= if user_data?
                              ClosureConvertor.new(pre_convertor_argument)
                            elsif needs_c_to_ruby_conversion?
                              CToRubyConvertor.new(type_info,
