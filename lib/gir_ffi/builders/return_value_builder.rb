@@ -17,7 +17,7 @@ module GirFFI
       end
 
       def has_post_conversion?
-        closure? || needs_c_to_ruby_conversion?
+        user_data? || needs_c_to_ruby_conversion?
       end
 
       def needs_c_to_ruby_conversion?
@@ -28,7 +28,7 @@ module GirFFI
 
       def post_convertor
         @post_convertor ||=
-          if closure?
+          if user_data?
             ClosureConvertor.new(capture_variable_name)
           else
             FullCToRubyConvertor.new(type_info,

@@ -210,7 +210,7 @@ module GirFFI
           NullConvertor.new('0')
         elsif destroy_notifier?
           NullConvertor.new(DESTROY_NOTIFIER)
-        elsif closure?
+        elsif user_data?
           ClosureToPointerConvertor.new(pre_convertor_argument, @related_callback_builder)
         elsif type_info.needs_ruby_to_c_conversion_for_functions?
           RubyToCConvertor.new(type_info, pre_convertor_argument,

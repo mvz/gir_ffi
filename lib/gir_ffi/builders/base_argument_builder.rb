@@ -73,7 +73,7 @@ module GirFFI
         @array_arg
       end
 
-      def closure?
+      def user_data?
         @is_user_data
       end
 
@@ -82,7 +82,7 @@ module GirFFI
       end
 
       def helper_argument?
-        array_length_parameter? || closure? || destroy_notifier?
+        array_length_parameter? || user_data? || destroy_notifier?
       end
 
       def ownership_transfer
