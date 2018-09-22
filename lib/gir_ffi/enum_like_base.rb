@@ -22,8 +22,8 @@ module GirFFI
       native_type.size
     end
 
-    def copy_value_to_pointer(value, pointer)
-      pointer.put_int32 0, to_native(value, nil)
+    def copy_value_to_pointer(value, pointer, offset = 0)
+      pointer.put_int32 offset, to_native(value, nil)
     end
 
     def get_value_from_pointer(pointer, offset)
