@@ -40,7 +40,7 @@ module GObjectIntrospection
     #
     def self.build_array_method(method, single = nil)
       method = method.to_s
-      single ||= method.to_s[0..-2]
+      single ||= method[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}

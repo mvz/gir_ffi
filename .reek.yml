@@ -37,7 +37,6 @@ detectors:
     - GObject::Object#property_value_pre_conversion
     - GObject::RubyClosure#initialize
     - GObject::Value#init_for_ruby_value
-    - GObjectIntrospection::IBaseInfo#self.build_array_method
     - GirFFI::Builders::CallbackReturnValueBuilder#base_post_conversion
   NilCheck:
     exclude:
