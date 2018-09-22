@@ -271,7 +271,7 @@ module GirFFI
 
         <<-CODE.reset_indentation
         def #{info.name}= #{builder.method_argument_name}
-          #{field_ptr} = @struct.to_ptr + #{info.offset}
+          #{field_ptr} = @struct.to_ptr
           #{builder.pre_conversion.join("\n          ")}
           #{value_storage(field_ptr, builder)}
         end
@@ -282,7 +282,7 @@ module GirFFI
 
       def value_storage(typed_ptr, builder)
         PointerValueConvertor.new(field_type_tag).
-          value_to_pointer(typed_ptr, builder.call_argument_name)
+          value_to_pointer(typed_ptr, builder.call_argument_name, info.offset)
       end
 
       def field_type_tag

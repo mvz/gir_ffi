@@ -22,9 +22,9 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def some_int8= value
-          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v1 = @struct.to_ptr
           _v2 = value
-          _v1.put_int8 0, _v2
+          _v1.put_int8 #{field_info.offset}, _v2
         end
       CODE
       instance.setter_def.must_equal expected
@@ -48,9 +48,9 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def nested_a= value
-          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v1 = @struct.to_ptr
           _v2 = Regress::TestSimpleBoxedA.copy_from(value)
-          Regress::TestSimpleBoxedA.copy_value_to_pointer(_v2, _v1)
+          Regress::TestSimpleBoxedA.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
       instance.setter_def.must_equal expected
@@ -88,10 +88,10 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def some_union= value
-          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v1 = @struct.to_ptr
           GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
           _v2 = GirFFI::SizedArray.copy_from(Regress::TestStructE__some_union__union, 2, value)
-          GirFFI::SizedArray.copy_value_to_pointer(_v2, _v1)
+          GirFFI::SizedArray.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
       instance.setter_def.must_equal expected
@@ -103,9 +103,9 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right setter method' do
       expected = <<-CODE.reset_indentation
         def class_init= value
-          _v1 = @struct.to_ptr + #{field_info.offset}
+          _v1 = @struct.to_ptr
           _v2 = GObject::ClassInitFunc.from(value)
-          GObject::ClassInitFunc.copy_value_to_pointer(_v2, _v1)
+          GObject::ClassInitFunc.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
       instance.setter_def.must_equal expected
