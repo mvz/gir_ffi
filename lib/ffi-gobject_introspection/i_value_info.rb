@@ -5,7 +5,7 @@ module GObjectIntrospection
   # Represents one of the enum values of an IEnumInfo.
   class IValueInfo < IBaseInfo
     def value
-      Lib.g_value_info_get_value @gobj
+      Lib.g_value_info_get_value self
     end
   end
 end

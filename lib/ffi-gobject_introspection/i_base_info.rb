@@ -9,16 +9,18 @@ module GObjectIntrospection
 
       ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
 
-      @gobj = ptr
+      @pointer = ptr
       @lib = lib
     end
+
+    attr_reader :pointer
 
     def self.make_finalizer(lib, ptr)
       proc { lib.g_base_info_unref ptr }
     end
 
     def to_ptr
-      @gobj
+      @pointer
     end
 
     # This is a helper method to construct a method returning an array, out
@@ -38,7 +40,7 @@ module GObjectIntrospection
     #
     def self.build_array_method(method, single = nil)
       method = method.to_s
-      single ||= method.to_s[0..-2]
+      single ||= method[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}
@@ -83,15 +85,15 @@ module GObjectIntrospection
     end
 
     def name
-      Lib.g_base_info_get_name @gobj
+      Lib.g_base_info_get_name self
     end
 
     def info_type
-      Lib.g_base_info_get_type @gobj
+      Lib.g_base_info_get_type self
     end
 
     def namespace
-      Lib.g_base_info_get_namespace @gobj
+      Lib.g_base_info_get_namespace self
     end
 
     def safe_namespace
@@ -99,17 +101,17 @@ module GObjectIntrospection
     end
 
     def container
-      ptr = Lib.g_base_info_get_container @gobj
+      ptr = Lib.g_base_info_get_container self
       Lib.g_base_info_ref ptr
       IRepository.wrap_ibaseinfo_pointer ptr
     end
 
     def deprecated?
-      Lib.g_base_info_is_deprecated @gobj
+      Lib.g_base_info_is_deprecated self
     end
 
     def attribute(name)
-      Lib.g_base_info_get_attribute @gobj, name
+      Lib.g_base_info_get_attribute self, name
     end
 
     def self.wrap(ptr)
@@ -117,7 +119,7 @@ module GObjectIntrospection
     end
 
     def ==(other)
-      other.is_a?(IBaseInfo) && Lib.g_base_info_equal(@gobj, other)
+      other.is_a?(IBaseInfo) && Lib.g_base_info_equal(self, other)
     end
   end
 end

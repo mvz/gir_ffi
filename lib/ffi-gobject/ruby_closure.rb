@@ -51,11 +51,11 @@ module GObject
     def block=(block)
       id = block.object_id
       BLOCK_STORE[id] = block
-      @struct[:block_id] = id
+      struct[:block_id] = id
     end
 
     def block
-      BLOCK_STORE[@struct[:block_id]]
+      BLOCK_STORE[struct[:block_id]]
     end
   end
 end

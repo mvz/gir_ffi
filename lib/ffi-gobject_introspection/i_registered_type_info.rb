@@ -5,15 +5,15 @@ module GObjectIntrospection
   # Represents a registered type.
   class IRegisteredTypeInfo < IBaseInfo
     def type_name
-      Lib.g_registered_type_info_get_type_name @gobj
+      Lib.g_registered_type_info_get_type_name self
     end
 
     def type_init
-      Lib.g_registered_type_info_get_type_init @gobj
+      Lib.g_registered_type_info_get_type_init self
     end
 
     def g_type
-      Lib.g_registered_type_info_get_g_type @gobj
+      Lib.g_registered_type_info_get_g_type self
     end
 
     alias gtype g_type

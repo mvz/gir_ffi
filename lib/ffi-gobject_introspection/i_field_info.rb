@@ -5,19 +5,19 @@ module GObjectIntrospection
   # Represents a field of an IStructInfo or an IUnionInfo.
   class IFieldInfo < IBaseInfo
     def flags
-      Lib.g_field_info_get_flags @gobj
+      Lib.g_field_info_get_flags self
     end
 
     def size
-      Lib.g_field_info_get_size @gobj
+      Lib.g_field_info_get_size self
     end
 
     def offset
-      Lib.g_field_info_get_offset @gobj
+      Lib.g_field_info_get_offset self
     end
 
     def field_type
-      ITypeInfo.wrap Lib.g_field_info_get_type(@gobj)
+      ITypeInfo.wrap Lib.g_field_info_get_type(self)
     end
 
     def readable?
