@@ -82,7 +82,7 @@ module GObject
     def self.make_finalizer(ptr)
       proc do
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
-        if rc.zero?
+        if rc == 0
           warn "not unreffing #{name}:#{ptr} (#{rc})"
         else
           GObject::Lib.g_object_unref ptr

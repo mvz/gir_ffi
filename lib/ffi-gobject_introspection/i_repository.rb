@@ -62,7 +62,7 @@ module GObjectIntrospection
     end
 
     def find_by_gtype(gtype)
-      raise ArgumentError, "Type #{gtype} is not a valid type" if gtype.zero?
+      raise ArgumentError, "Type #{gtype} is not a valid type" if gtype == 0
 
       wrap_info Lib.g_irepository_find_by_gtype(self, gtype)
     end

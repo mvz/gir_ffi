@@ -97,7 +97,7 @@ module GirFFI
       when :pointer
         val.null?
       when :enum
-        ffi_type.to_native(val, nil).zero?
+        ffi_type.to_native(val, nil) == 0
       else
         val == 0
       end

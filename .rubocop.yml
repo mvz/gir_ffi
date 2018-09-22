@@ -55,6 +55,10 @@ Naming/FileName:
 Style/AndOr:
   EnforcedStyle: conditionals
 
+# Prefer actual numerics
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:

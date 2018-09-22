@@ -39,7 +39,7 @@ module GirFFI
       end
 
       def hidden_struct_type?
-        flattened_tag == :struct && interface.size.zero?
+        flattened_tag == :struct && interface.empty?
       end
 
       def tag_or_class

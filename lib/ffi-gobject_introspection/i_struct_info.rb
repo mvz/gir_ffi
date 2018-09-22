@@ -33,6 +33,10 @@ module GObjectIntrospection
       Lib.g_struct_info_get_size self
     end
 
+    def empty?
+      size == 0
+    end
+
     def alignment
       Lib.g_struct_info_get_alignment self
     end
