@@ -8,10 +8,6 @@ module GirFFI
         self
       end
 
-      def zero?
-        null?
-      end
-
       # FIXME: Should probably not be here.
       def to_object
         return nil if null?
