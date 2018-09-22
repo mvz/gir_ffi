@@ -46,7 +46,7 @@ module GLib
     end
 
     def length
-      @struct[:len]
+      struct[:len]
     end
 
     def get_element_size
@@ -73,7 +73,7 @@ module GLib
     private
 
     def data_ptr
-      @struct[:data]
+      struct[:data]
     end
 
     def calculated_element_size

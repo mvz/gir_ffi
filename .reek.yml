@@ -3,11 +3,6 @@
 detectors:
   InstanceVariableAssumption:
     exclude:
-    - GLib::Array
-    - GLib::PtrArray
-    - GObject::ObjectClass
-    - GObject::RubyClosure
-    - GObject::Value
     - GirFFI::Builders::ArgumentBuilder
     - GirFFI::BaseTypeBuilder
     - GirFFI::Builders::CallbackArgumentBuilder

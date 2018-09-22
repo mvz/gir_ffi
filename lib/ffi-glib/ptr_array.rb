@@ -50,7 +50,7 @@ module GLib
     end
 
     def data_ptr
-      @struct[:pdata]
+      struct[:pdata]
     end
 
     def element_size
@@ -64,7 +64,7 @@ module GLib
     end
 
     def length
-      @struct[:len]
+      struct[:len]
     end
 
     def ==(other)
