@@ -26,7 +26,7 @@ module GirFFI
 
         def pre_conversion
           [
-            "#{field_ptr} = @struct.to_ptr + #{field_offset}",
+            "#{field_ptr} = @struct.to_ptr",
             "#{bare_value} = #{pointer_to_value_conversion}"
           ]
         end
@@ -58,7 +58,7 @@ module GirFFI
         private
 
         def pointer_to_value_conversion
-          PointerValueConvertor.new(field_type_tag).pointer_to_value(field_ptr)
+          PointerValueConvertor.new(field_type_tag).pointer_to_value(field_ptr, field_offset)
         end
 
         def field_offset

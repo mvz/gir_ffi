@@ -11,8 +11,8 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_int8
-          _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = _v1.get_int8(0)
+          _v1 = @struct.to_ptr
+          _v2 = _v1.get_int8(#{field_info.offset})
           _v2
         end
       CODE
@@ -36,8 +36,8 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def nested_a
-          _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = Regress::TestSimpleBoxedA.get_value_from_pointer(_v1, 0)
+          _v1 = @struct.to_ptr
+          _v2 = Regress::TestSimpleBoxedA.get_value_from_pointer(_v1, #{field_info.offset})
           _v3 = Regress::TestSimpleBoxedA.wrap(_v2)
           _v3
         end
@@ -62,8 +62,8 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_enum
-          _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = Regress::TestEnum.get_value_from_pointer(_v1, 0)
+          _v1 = @struct.to_ptr
+          _v2 = Regress::TestEnum.get_value_from_pointer(_v1, #{field_info.offset})
           _v2
         end
       CODE
@@ -76,8 +76,8 @@ describe GirFFI::Builders::FieldBuilder do
     it 'creates the right getter method' do
       expected = <<-CODE.reset_indentation
         def some_union
-          _v1 = @struct.to_ptr + #{field_info.offset}
-          _v2 = GirFFI::SizedArray.get_value_from_pointer(_v1, 0)
+          _v1 = @struct.to_ptr
+          _v2 = GirFFI::SizedArray.get_value_from_pointer(_v1, #{field_info.offset})
           _v3 = GirFFI::SizedArray.wrap(Regress::TestStructE__some_union__union, 2, _v2)
           _v3
         end
@@ -120,10 +120,10 @@ describe GirFFI::Builders::FieldBuilder do
       skip if field_info.field_type.array_length < 0
       expected = <<-CODE.reset_indentation
         def param_types
-          _v1 = @struct.to_ptr + #{n_params_field_info.offset}
-          _v2 = _v1.get_uint32(0)
-          _v3 = @struct.to_ptr + #{field_info.offset}
-          _v4 = _v3.get_pointer(0)
+          _v1 = @struct.to_ptr
+          _v2 = _v1.get_uint32(#{n_params_field_info.offset})
+          _v3 = @struct.to_ptr
+          _v4 = _v3.get_pointer(#{field_info.offset})
           _v5 = GirFFI::SizedArray.wrap(:GType, _v2, _v4)
           _v5
         end
