@@ -23,8 +23,8 @@ module GirFFI
       FFI.type_size FFI::Type::INT
     end
 
-    def self.copy_value_to_pointer(value, pointer)
-      pointer.put_int 0, to_native(value, nil)
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
+      pointer.put_int offset, to_native(value, nil)
     end
 
     def self.get_value_from_pointer(pointer, offset)

@@ -9,21 +9,23 @@ module GirFFI
         @type_spec = type_spec
       end
 
-      def pointer_to_value(ptr_exp)
+      def pointer_to_value(ptr_exp, offset = 0)
         case ffi_type_spec
         when Module
-          "#{ffi_type_spec}.get_value_from_pointer(#{ptr_exp}, 0)"
+          "#{ffi_type_spec}.get_value_from_pointer(#{ptr_exp}, #{offset})"
         when Symbol
-          "#{ptr_exp}.get_#{ffi_type_spec}(0)"
+          "#{ptr_exp}.get_#{ffi_type_spec}(#{offset})"
         end
       end
 
-      def value_to_pointer(ptr_exp, value_exp)
+      def value_to_pointer(ptr_exp, value_exp, offset = 0)
         case ffi_type_spec
         when Module
-          "#{ffi_type_spec}.copy_value_to_pointer(#{value_exp}, #{ptr_exp})"
+          args = [value_exp, ptr_exp]
+          args << offset unless offset == 0
+          "#{ffi_type_spec}.copy_value_to_pointer(#{args.join(', ')})"
         when Symbol
-          "#{ptr_exp}.put_#{ffi_type_spec} 0, #{value_exp}"
+          "#{ptr_exp}.put_#{ffi_type_spec} #{offset}, #{value_exp}"
         end
       end
 

@@ -39,9 +39,9 @@ module GirFFI
       pointer + offset
     end
 
-    def self.copy_value_to_pointer(value, pointer)
+    def self.copy_value_to_pointer(value, pointer, offset = 0)
       size = value.size_in_bytes
-      pointer.put_bytes(0, value.to_ptr.read_bytes(size))
+      pointer.put_bytes(offset, value.to_ptr.read_bytes(size))
     end
 
     def self.wrap(element_type, size, pointer)
