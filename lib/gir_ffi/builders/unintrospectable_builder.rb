@@ -28,7 +28,9 @@ module GirFFI
         return info if info
 
         signal_id = GObject.signal_lookup signal_name, target_gtype
-        return UnintrospectableSignalInfo.new(signal_id) unless signal_id.zero?
+        return if signal_id == 0
+
+        UnintrospectableSignalInfo.new(signal_id)
       end
     end
   end

@@ -42,12 +42,7 @@ module GirFFI
 
     def read_value(offset)
       val = fetch_value(offset)
-      case val
-      when Symbol
-        val unless ffi_type.to_native(val, nil).zero?
-      else
-        val unless val.zero?
-      end
+      val unless null_value? val
     end
 
     def getter_method
@@ -82,6 +77,30 @@ module GirFFI
 
     def ffi_type_size
       @ffi_type_size ||= FFI.type_size(ffi_type)
+    end
+
+    def null_check_strategy
+      @null_check_strategy ||=
+        if ffi_type == :pointer
+          :pointer
+        elsif ffi_type.is_a? Symbol
+          :numeric
+        elsif ffi_type < GirFFI::ClassBase
+          :pointer
+        elsif ffi_type.singleton_class.include? GirFFI::EnumBase
+          :enum
+        end
+    end
+
+    def null_value?(val)
+      case null_check_strategy
+      when :pointer
+        val.null?
+      when :enum
+        ffi_type.to_native(val, nil) == 0
+      else
+        val == 0
+      end
     end
   end
 end
