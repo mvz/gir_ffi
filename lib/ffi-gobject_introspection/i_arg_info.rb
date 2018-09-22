@@ -6,47 +6,47 @@ module GObjectIntrospection
   # Represents an argument.
   class IArgInfo < IBaseInfo
     def direction
-      Lib.g_arg_info_get_direction @gobj
+      Lib.g_arg_info_get_direction self
     end
 
     def return_value?
-      Lib.g_arg_info_is_return_value @gobj
+      Lib.g_arg_info_is_return_value self
     end
 
     def optional?
-      Lib.g_arg_info_is_optional @gobj
+      Lib.g_arg_info_is_optional self
     end
 
     def caller_allocates?
-      Lib.g_arg_info_is_caller_allocates @gobj
+      Lib.g_arg_info_is_caller_allocates self
     end
 
     def may_be_null?
-      Lib.g_arg_info_may_be_null @gobj
+      Lib.g_arg_info_may_be_null self
     end
 
     def skip?
-      Lib.g_arg_info_is_skip @gobj
+      Lib.g_arg_info_is_skip self
     end
 
     def ownership_transfer
-      Lib.g_arg_info_get_ownership_transfer @gobj
+      Lib.g_arg_info_get_ownership_transfer self
     end
 
     def scope
-      Lib.g_arg_info_get_scope @gobj
+      Lib.g_arg_info_get_scope self
     end
 
     def closure
-      Lib.g_arg_info_get_closure @gobj
+      Lib.g_arg_info_get_closure self
     end
 
     def destroy
-      Lib.g_arg_info_get_destroy @gobj
+      Lib.g_arg_info_get_destroy self
     end
 
     def argument_type
-      ITypeInfo.wrap Lib.g_arg_info_get_type(@gobj)
+      ITypeInfo.wrap Lib.g_arg_info_get_type(self)
     end
   end
 end
