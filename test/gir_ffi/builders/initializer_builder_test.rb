@@ -35,6 +35,20 @@ describe GirFFI::Builders::InitializerBuilder do
       end
     end
 
+    describe 'for Gtk::Image.new_from_icon_name' do
+      let(:function_info) { get_method_introspection_data 'Gtk', 'Image', 'new_from_icon_name' }
+      it 'builds a custom initializer' do
+        code.must_equal <<-CODE.reset_indentation
+          def initialize_from_icon_name(icon_name, size)
+            _v1 = GirFFI::InPointer.from_utf8(icon_name)
+            _v2 = Gtk::IconSize.to_native size, nil
+            _v3 = Gtk::Lib.gtk_image_new_from_icon_name _v1, _v2
+            store_pointer(_v3)
+          end
+        CODE
+      end
+    end
+
     describe 'for constructors for boxed types' do
       let(:function_info) do
         get_method_introspection_data 'GIMarshallingTests', 'BoxedStruct', 'new'

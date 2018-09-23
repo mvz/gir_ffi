@@ -66,6 +66,20 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe 'for methods taking an enum argument' do
+      let(:function_info) { get_method_introspection_data 'Gtk', 'Action', 'create_icon' }
+      it 'builds a definition with explicit argument conversion' do
+        code.must_equal <<-CODE.reset_indentation
+          def create_icon(icon_size)
+            _v1 = Gtk::IconSize.to_native icon_size, nil
+            _v2 = Gtk::Lib.gtk_action_create_icon self, _v1
+            _v3 = Gtk::Widget.wrap(_v2).tap { |it| it && it.ref }
+            return _v3
+          end
+        CODE
+      end
+    end
+
     describe 'for functions with callbacks' do
       let(:function_info) { get_introspection_data 'Regress', 'test_callback_destroy_notify' }
       it 'builds a correct definition' do
