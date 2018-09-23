@@ -37,7 +37,7 @@ describe GirFFI::EnumBase do
     end
 
     it 'raises an error for an unknown symbol' do
-      lambda { Regress::TestEnum.to_int(:foo) }.must_raise ArgumentError
+      -> { Regress::TestEnum.to_int(:foo) }.must_raise ArgumentError
     end
   end
 end
