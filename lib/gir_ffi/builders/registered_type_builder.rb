@@ -49,8 +49,8 @@ module GirFFI
       end
 
       def define_method(method_info)
-        build_class.class_eval(FunctionBuilder.new(method_info).method_definition,
-                               __FILE__, __LINE__ - 1)
+        method_definition = FunctionBuilder.new(method_info).method_definition
+        build_class.class_eval(method_definition, __FILE__, __LINE__)
       end
 
       def define_construction_methods(method_info)
@@ -59,8 +59,8 @@ module GirFFI
         unless build_class.private_instance_methods(false).include? initializer_name
           build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
         end
-        build_class.class_eval(ConstructorBuilder.new(method_info).method_definition,
-                               __FILE__, __LINE__ - 1)
+        constructor_definition = ConstructorBuilder.new(method_info).method_definition
+        build_class.class_eval(constructor_definition, __FILE__, __LINE__)
       end
 
       def remove_old_method(method_info, modul)
