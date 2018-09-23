@@ -115,7 +115,7 @@ module GirFFI
       end
 
       TAGS_NEEDING_RUBY_TO_C_CONVERSION = [
-        :array, :c, :callback, :error, :ghash, :glist, :gslist, :object,
+        :array, :c, :callback, :enum, :error, :ghash, :glist, :gslist, :object,
         :ptr_array, :struct, :strv, :utf8, :zero_terminated
       ].freeze
 
