@@ -11,7 +11,7 @@ module GirFFI
     include MethodSetup
 
     def wrap(arg)
-      self[arg]
+      self.from_native arg, nil
     end
 
     def from(arg)
