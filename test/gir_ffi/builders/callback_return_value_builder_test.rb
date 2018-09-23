@@ -55,7 +55,7 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
     it 'converts the result' do
       # Ensure variable names are generated in order
       builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Enum.from(_v1)']
+      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Enum.to_int(_v1)']
     end
 
     it 'returns the result of the conversion' do

@@ -14,8 +14,8 @@ module GirFFI
       self.from_native arg, nil
     end
 
-    def from(arg)
-      self[arg]
+    def to_int(arg)
+      self.to_native arg, nil
     end
 
     def size
