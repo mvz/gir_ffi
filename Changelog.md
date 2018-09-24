@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.13.1 / 2018-09-24
+
+* Silence some warnings.
+* Allow overrides to be applied using `Module#prepend`, as an alternative to
+  alias chaining.
+* Make `ZeroTerminated` array work with enum elements.
+* Various refactorings.
+* Improve consistency of conversion between symbols and integers for enum
+  types.
+
 ## 0.13.0 / 2018-09-08
 
 * Drop support for Ruby 2.1

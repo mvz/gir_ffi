@@ -2,5 +2,5 @@
 
 # Current GirFFI version
 module GirFFI
-  VERSION = '0.13.0'.freeze
+  VERSION = '0.13.1'.freeze
 end
