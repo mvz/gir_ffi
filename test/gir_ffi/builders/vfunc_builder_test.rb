@@ -40,7 +40,7 @@ describe GirFFI::Builders::VFuncBuilder do
         def self.call_with_argument_mapping(_proc, _instance)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = _proc.call(_v1)
-          _v3 = GIMarshallingTests::Enum.from(_v2)
+          _v3 = GIMarshallingTests::Enum.to_int(_v2)
           return _v3
         end
         CODE

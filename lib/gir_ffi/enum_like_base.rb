@@ -11,11 +11,11 @@ module GirFFI
     include MethodSetup
 
     def wrap(arg)
-      self[arg]
+      from_native arg, nil
     end
 
-    def from(arg)
-      self[arg]
+    def to_int(arg)
+      to_native arg, nil
     end
 
     def size

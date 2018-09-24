@@ -136,6 +136,14 @@ describe GirFFI::Builder do
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 
+    it 'calls attach_function with the correct types for Regress.test_enum_param' do
+      info = get_introspection_data 'Regress', 'test_enum_param'
+      expect(lib).to receive(:attach_function).
+        with('regress_test_enum_param', [Regress::TestEnum], :pointer).
+        and_return true
+      GirFFI::Builder.attach_ffi_function(lib, info)
+    end
+
     it 'does not attach the function if it is already defined' do
       info = get_introspection_data 'Regress', 'test_array_gint32_in'
       allow(lib).to receive(:method_defined?).and_return true
