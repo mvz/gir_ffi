@@ -70,9 +70,9 @@ describe GObject::Value do
     it 'wraps object values' do
       value = GObject::Object.new({})
       gv = GObject::Value.wrap_ruby_value value
-      value.ref_count.must_equal 2
+      object_ref_count(value).must_equal 2
       gv.get_value.must_equal value
-      value.ref_count.must_equal 3
+      object_ref_count(value).must_equal 3
     end
   end
 

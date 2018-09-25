@@ -39,15 +39,6 @@ module GirFFI
         @ancestor_infos ||= [info] + info.interfaces + parent_ancestor_infos
       end
 
-      def eligible_fields
-        info.fields.reject do |finfo|
-          fname = finfo.name
-          fname == 'parent_instance' ||
-            info.find_instance_method("get_#{fname}") ||
-            info.find_property(fname)
-        end
-      end
-
       def eligible_properties
         info.properties.reject do |pinfo|
           info.find_instance_method("get_#{pinfo.name}")
@@ -67,7 +58,6 @@ module GirFFI
         setup_layout
         setup_constants
         stub_methods
-        setup_field_accessors
         setup_property_accessors
         setup_vfunc_invokers
         setup_interfaces
@@ -97,12 +87,6 @@ module GirFFI
 
       def parent_ancestor_infos
         @parent_ancestor_infos ||= parent_builder.ancestor_infos
-      end
-
-      def setup_field_accessors
-        eligible_fields.each do |finfo|
-          FieldBuilder.new(finfo, klass).build
-        end
       end
 
       def setup_property_accessors

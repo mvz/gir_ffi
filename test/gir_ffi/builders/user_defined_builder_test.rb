@@ -185,15 +185,16 @@ describe GirFFI::Builders::UserDefinedBuilder do
         obj = derived_class.new
         object = GIMarshallingTests::Object.new 42
         obj.object_prop = object
-        object.ref_count.must_equal 2
+        object_ref_count(object).must_equal 2
       end
 
       it 'handles reference counting correctly when using the set_property method' do
         obj = derived_class.new
         object = GIMarshallingTests::Object.new 42
-        object.ref_count.must_equal 1
+
+        object_ref_count(object).must_equal 1
         obj.set_property('object_prop', object)
-        object.ref_count.must_equal 4 # Due to extra Value#set_value + Value#get_value
+        object_ref_count(object).must_equal 4 # Due to extra Value#set_value + Value#get_value
       end
     end
 

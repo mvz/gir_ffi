@@ -124,7 +124,7 @@ describe GObject::Object do
       skip 'cannot be reliably tested on JRuby and Rubinius' if jruby? || rubinius?
 
       ptr = GObject::Object.new.to_ptr
-      ref_count(ptr).must_equal 1
+      object_ref_count(ptr).must_equal 1
 
       GC.start
       # Creating a new object is sometimes needed to trigger enough garbage collection.
@@ -134,7 +134,7 @@ describe GObject::Object do
       GC.start
       GC.start
 
-      ref_count(ptr).must_equal 0
+      object_ref_count(ptr).must_equal 0
     end
   end
 end

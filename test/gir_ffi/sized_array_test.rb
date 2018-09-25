@@ -117,7 +117,7 @@ describe GirFFI::SizedArray do
         arr.to_ptr.wont_be :autorelease?
 
         arr.to_a.must_equal [obj, nil]
-        obj.ref_count.must_equal 2
+        object_ref_count(obj).must_equal 2
       end
     end
 

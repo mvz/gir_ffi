@@ -302,12 +302,12 @@ describe GIMarshallingTests do
 
     it 'has a working function #full_inout' do
       ob = GIMarshallingTests::Object.new 42
-      ob.ref_count.must_equal 1
+      object_ref_count(ob).must_equal 1
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      ob.ref_count.must_equal 1
-      res.ref_count.must_equal 1
+      object_ref_count(ob).must_equal 1
+      object_ref_count(res).must_equal 1
 
       res.must_be_instance_of GIMarshallingTests::Object
       res.int.must_equal 0
@@ -316,23 +316,23 @@ describe GIMarshallingTests do
     it 'has a working function #full_out' do
       res = GIMarshallingTests::Object.full_out
       res.must_be_instance_of GIMarshallingTests::Object
-      res.ref_count.must_equal 1
+      object_ref_count(res).must_equal 1
     end
 
     it 'has a working function #full_return' do
       res = GIMarshallingTests::Object.full_return
       res.must_be_instance_of GIMarshallingTests::Object
-      res.ref_count.must_equal 1
+      object_ref_count(res).must_equal 1
     end
 
     it 'has a working function #none_inout' do
       ob = GIMarshallingTests::Object.new 42
-      ob.ref_count.must_equal 1
+      object_ref_count(ob).must_equal 1
 
       res = GIMarshallingTests::Object.none_inout ob
 
-      ob.ref_count.must_equal 1
-      res.ref_count.must_equal 2
+      object_ref_count(ob).must_equal 1
+      object_ref_count(res).must_equal 2
 
       res.must_be_instance_of GIMarshallingTests::Object
       ob.int.must_equal 42
@@ -342,13 +342,13 @@ describe GIMarshallingTests do
     it 'has a working function #none_out' do
       res = GIMarshallingTests::Object.none_out
       res.must_be_instance_of GIMarshallingTests::Object
-      res.ref_count.must_equal 2
+      object_ref_count(res).must_equal 2
     end
 
     it 'has a working function #none_return' do
       res = GIMarshallingTests::Object.none_return
       res.must_be_instance_of GIMarshallingTests::Object
-      res.ref_count.must_equal 2
+      object_ref_count(res).must_equal 2
     end
 
     it 'has a working function #static_method' do
@@ -411,7 +411,7 @@ describe GIMarshallingTests do
       end
       result = derived_instance.
         get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
-      obj.ref_count.must_be :>, 0
+      object_ref_count(obj).must_be :>, 0
       result.must_equal [2, false]
       obj.must_be_instance_of GIMarshallingTests::Object
     end
@@ -426,7 +426,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
-      obj.ref_count.must_be :>, 0
+      object_ref_count(obj).must_be :>, 0
       # TODO: Check desired result
       result.must_equal [2, false]
     end
@@ -751,11 +751,6 @@ describe GIMarshallingTests do
     it 'does not have accessors for its parent instance' do
       instance.wont_respond_to :parent_instance
       instance.wont_respond_to :parent_instance=
-    end
-
-    it 'has a readable field long_' do
-      instance.long_.must_equal 0
-      instance.wont_respond_to :long_=
     end
   end
 
