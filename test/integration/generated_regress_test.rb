@@ -1444,7 +1444,7 @@ describe Regress do
       end
 
       it 'has a reference count of 1' do
-        assert_equal 1, @o.ref_count
+        assert_equal 1, object_ref_count(@o)
       end
 
       it 'has been sunk' do
@@ -1463,17 +1463,18 @@ describe Regress do
     end
 
     let(:derived_instance) { Regress::TestFundamentalSubObject.new 'foo' }
+    let(:base_struct) { Regress::TestFundamentalObject::Struct.new derived_instance.to_ptr }
 
     it 'has a working method #ref' do
-      derived_instance.refcount.must_equal 1
+      base_struct[:refcount].must_equal 1
       derived_instance.ref
-      derived_instance.refcount.must_equal 2
+      base_struct[:refcount].must_equal 2
     end
 
     it 'has a working method #unref' do
-      derived_instance.refcount.must_equal 1
+      base_struct[:refcount].must_equal 1
       derived_instance.unref
-      derived_instance.refcount.must_equal 0
+      base_struct[:refcount].must_equal 0
     end
   end
 
@@ -1490,11 +1491,7 @@ describe Regress do
     end
 
     it 'has a field :data storing the constructor parameter' do
-      assert_equal 'foo', instance.data
-    end
-
-    it "can access its parent class' fields directly" do
-      instance.flags.must_equal 0
+      assert_equal 'foo', instance.struct[:data].to_utf8
     end
   end
 
@@ -1605,7 +1602,7 @@ describe Regress do
     end
 
     it 'has a reference count of 1' do
-      assert_equal 1, instance.ref_count
+      assert_equal 1, object_ref_count(instance)
     end
 
     it 'does not float' do
@@ -1687,9 +1684,9 @@ describe Regress do
 
     it 'has a working method #instance_method_full' do
       skip unless get_method_introspection_data('Regress', 'TestObj', 'instance_method_full')
-      instance.ref_count.must_equal 1
+      object_ref_count(instance).must_equal 1
       instance.instance_method_full
-      instance.ref_count.must_equal 1
+      object_ref_count(instance).must_equal 1
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
@@ -3211,7 +3208,7 @@ describe Regress do
     skip unless get_introspection_data 'Regress', 'test_callback_return_full'
     obj = Regress::TestObj.constructor
     Regress.test_callback_return_full { obj }
-    obj.ref_count.must_equal 1
+    object_ref_count(obj).must_equal 1
   end
 
   it 'has a working function #test_callback_thaw_async' do

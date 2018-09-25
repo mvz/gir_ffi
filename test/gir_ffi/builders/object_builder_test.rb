@@ -79,23 +79,6 @@ describe GirFFI::Builders::ObjectBuilder do
     end
   end
 
-  describe '#eligible_fields' do
-    it 'skips fields that have a matching getter method' do
-      result = param_spec_builder.eligible_fields
-      result.map(&:name).wont_include 'name'
-    end
-
-    it 'skips fields that have a matching property' do
-      result = obj_builder.eligible_fields
-      result.map(&:name).wont_include 'hash_table'
-    end
-
-    it 'skips the parent instance field' do
-      result = obj_builder.eligible_fields
-      result.map(&:name).wont_include 'parent_instance'
-    end
-  end
-
   describe '#eligible_properties' do
     let(:wi_builder) do
       GirFFI::Builders::ObjectBuilder.new(

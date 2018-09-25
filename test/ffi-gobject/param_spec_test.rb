@@ -10,12 +10,13 @@ describe GObject::ParamSpec do
                            1, 3, 2,
                            readable: true, writable: true)
   end
+  let(:pspec_struct) { GObject::ParamSpec::Struct.new(pspec.to_ptr) }
 
   describe '#ref' do
     it 'increases the ref count' do
-      old = pspec.ref_count
+      old = pspec_struct[:ref_count]
       pspec.ref
-      pspec.ref_count.must_equal old + 1
+      pspec_struct[:ref_count].must_equal old + 1
     end
   end
 

@@ -63,9 +63,9 @@ describe GObject do
                                       10, 20, 15,
                                       3)
         spec.must_be_instance_of GObject::ParamSpecInt
-        spec.minimum.must_equal 10
-        spec.maximum.must_equal 20
-        spec.default_value.must_equal 15
+        spec.struct[:minimum].must_equal 10
+        spec.struct[:maximum].must_equal 20
+        spec.get_default_value.must_equal 15
       end
     end
   end
