@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.14.0 / 2018-09-25
+
+* Do not generate field accessors for Object types. Object data should normally
+  not be accessed directly.
+
 ## 0.13.1 / 2018-09-24
 
 * Silence some warnings.
