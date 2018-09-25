@@ -76,7 +76,7 @@ module GirFFI
       end
 
       def interface_class
-        @interface_class ||= Builder.build_by_gtype @param_spec.value_type if interface?
+        @interface_class ||= Builder.build_by_gtype(value_type) if interface?
       end
 
       def interface_class_name
