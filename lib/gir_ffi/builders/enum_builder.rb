@@ -26,6 +26,7 @@ module GirFFI
         setup_ffi_type
         klass.extend superclass
         setup_constants
+        setup_value_constants
         stub_methods
         setup_inspect
       end
@@ -37,6 +38,14 @@ module GirFFI
       def setup_ffi_type
         optionally_define_constant klass, :Enum do
           lib.enum(enum_sym, value_spec)
+        end
+      end
+
+      def setup_value_constants
+        info.values.each do |vinfo|
+          optionally_define_constant klass, vinfo.constant_name do
+            vinfo.value
+          end
         end
       end
 
