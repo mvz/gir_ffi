@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.1 / 2018-09-27
+
+* Add enum values as constants in the generated module.
+
 ## 0.14.0 / 2018-09-25
 
 * Do not generate field accessors for Object types. Object data should normally
