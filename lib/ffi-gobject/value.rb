@@ -131,11 +131,11 @@ module GObject
     end
 
     CLASS_TO_GTYPE_MAP = {
-      NilClass => TYPE_INVALID,
-      TrueClass => TYPE_BOOLEAN,
+      NilClass   => TYPE_INVALID,
+      TrueClass  => TYPE_BOOLEAN,
       FalseClass => TYPE_BOOLEAN,
-      Integer => TYPE_INT,
-      String => TYPE_STRING
+      Integer    => TYPE_INT,
+      String     => TYPE_STRING
     }.freeze
 
     def init_for_ruby_value(val)

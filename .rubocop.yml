@@ -5,6 +5,12 @@ AllCops:
     - 'tmp/**/*'
   TargetRubyVersion: 2.2
 
+# Tables are nice
+Layout/AlignHash:
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
+  EnforcedLastArgumentHashStyle: ignore_implicit
+
 # Dot at end of line makes it clearer that the line is not done
 Layout/DotPosition:
   EnforcedStyle: trailing
