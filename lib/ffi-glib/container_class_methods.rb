@@ -18,7 +18,7 @@ module GLib
             end
 
       super(ptr).tap do |container|
-        container.reset_typespec typespec if container
+        container&.reset_typespec typespec
       end
     end
 

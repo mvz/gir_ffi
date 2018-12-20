@@ -36,7 +36,7 @@ module GObject
 
       result = rclosure.invoke_block(*args)
 
-      return_value.set_value(result) if return_value
+      return_value&.set_value(result)
     end
 
     # @api private

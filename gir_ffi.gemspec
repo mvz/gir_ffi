@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = GirFFI::VERSION
 
   s.summary = 'FFI-based GObject binding using the GObject Introspection Repository'
-  s.required_ruby_version = '>= 2.2.0'
+  s.required_ruby_version = '>= 2.3.0'
 
   s.authors = ['Matijs van Zuijlen']
   s.email = ['matijs@matijs.net']

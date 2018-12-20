@@ -166,7 +166,7 @@ module GirFFI
       end
 
       def length_argument_name
-        length_arg && length_arg.pre_converted_name
+        length_arg&.pre_converted_name
       end
     end
   end

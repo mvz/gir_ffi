@@ -20,7 +20,7 @@ module GirFFI
 
       def find_instance_method(method)
         info = find_method method
-        return info if info && info.method?
+        return info if info&.method?
       end
 
       def find_method(_method)

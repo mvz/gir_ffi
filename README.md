@@ -53,7 +53,7 @@ examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
 
 ## Requirements
 
-GirFFI is supported on CRuby 2.2, 2.3, 2.4 and 2.5, and JRuby 9.1 and 9.2
+GirFFI is supported on CRuby 2.3, 2.4 and 2.5, and JRuby 9.1 and 9.2
 
 You will also need gobject-introspection installed with some
 introspection data.

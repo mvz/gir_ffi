@@ -38,7 +38,7 @@ module GirFFI
     end
 
     def self.copy_from(val)
-      val.ref if val
+      val&.ref
     end
 
     #
