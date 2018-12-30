@@ -114,7 +114,7 @@ module GirFFI
 
       def outgoing_convertor(base)
         FullCToRubyConvertor.new(type_info, base, length_argument_name,
-                                 ownership_transfer: @arginfo.ownership_transfer)
+                                 ownership_transfer: arginfo.ownership_transfer)
       end
 
       def sub_type_spec
@@ -138,7 +138,7 @@ module GirFFI
       # is a pointer. For example, an out parameter of type gint8* will always
       # be allocated by the caller (that's us).
       def allocated_by_them?
-        !@arginfo.caller_allocates? && type_info.pointer?
+        !arginfo.caller_allocates? && type_info.pointer?
       end
 
       def length_argument_name
@@ -155,12 +155,12 @@ module GirFFI
       end
 
       def skipped_in?
-        @arginfo.skip?
+        arginfo.skip?
       end
 
       def skipped_out?
-        @arginfo.skip? ||
-          @array_arg && @array_arg.specialized_type_tag == :strv
+        arginfo.skip? ||
+          array_arg && array_arg.specialized_type_tag == :strv
       end
 
       def has_output_value?
@@ -176,7 +176,7 @@ module GirFFI
       end
 
       def array_length_assignment
-        arrname = @array_arg.name
+        arrname = array_arg.name
         "#{name} = #{arrname}.nil? ? 0 : #{arrname}.length"
       end
 
@@ -200,7 +200,7 @@ module GirFFI
 
       def caller_allocated_object?
         [:struct, :array].include?(specialized_type_tag) &&
-          @arginfo.caller_allocates?
+          arginfo.caller_allocates?
       end
 
       DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'
@@ -233,7 +233,7 @@ module GirFFI
       end
 
       def callback_argument_name
-        @related_callback_builder.call_argument_name
+        related_callback_builder.call_argument_name
       end
     end
   end
