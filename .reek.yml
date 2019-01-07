@@ -3,7 +3,6 @@
 detectors:
   InstanceVariableAssumption:
     exclude:
-    - GirFFI::Builders::ArgumentBuilder
     - GirFFI::BaseTypeBuilder
     - GirFFI::Builders::CallbackArgumentBuilder
     - GirFFI::Builders::CallbackBuilder
