@@ -198,7 +198,7 @@ module GObject
 
     def method_map_entry
       METHOD_MAP[current_gtype] || METHOD_MAP[current_fundamental_type] ||
-        raise("No method map entry for #{current_gtype_name}")
+        raise("No method map entry for '#{current_gtype_name}'")
     end
   end
 end
