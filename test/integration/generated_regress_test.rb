@@ -412,6 +412,7 @@ describe Regress do
   end
 
   it 'has the constant FOO_FLAGS_SECOND_AND_THIRD' do
+    Regress::FOO_FLAGS_SECOND_AND_THIRD.must_equal 6
   end
 
   it 'has the constant FOO_PIE_IS_TASTY' do
@@ -1314,6 +1315,7 @@ describe Regress do
     end
 
     it 'has the member :value5' do
+      Regress::TestEnum[:value5].must_equal 49
     end
 
     it 'has a working function #param' do
@@ -1480,6 +1482,15 @@ describe Regress do
   end
 
   describe 'Regress::TestInterface' do
+    let(:derived_klass) do
+      klass = Object.const_set("DerivedClass#{Sequence.next}",
+                               Class.new(Regress::FooObject))
+      klass.send :include, Regress::TestInterface
+      GirFFI.define_type klass do |info|
+      end
+      klass
+    end
+
     it 'is a module' do
       assert_instance_of Module, Regress::TestInterface
     end
@@ -1493,10 +1504,24 @@ describe Regress do
     end
 
     it 'has a working method #emit_signal' do
-      # ???
+      a = nil
+      instance = derived_klass.new
+      GObject.signal_connect instance, 'interface-signal' do
+        a = 'hello'
+      end
+      instance.emit_signal
+      a.must_equal 'hello'
     end
+
     it "handles the 'interface-signal' signal" do
-      # ???
+      skip 'Not implemented yet'
+      a = nil
+      instance = derived_klass.new
+      GObject.signal_connect instance, 'interface-signal' do
+        a = 'hello'
+      end
+      GObject.signal_emit instance, 'interface-signal'
+      a.must_equal 'hello'
     end
   end
 
@@ -1594,6 +1619,11 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_inout_int' do
+      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+      instance.signal_connect 'sig-with-inout-int' do |_obj, i, _ud|
+        i + 1
+      end
+      instance.emit_sig_with_inout_int
     end
 
     it 'has a working method #emit_sig_with_int64' do
@@ -1643,6 +1673,7 @@ describe Regress do
     end
 
     it 'has a working method #name_conflict' do
+      instance.name_conflict.must_be_nil
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
@@ -1783,12 +1814,16 @@ describe Regress do
 
     describe "its 'byte-array' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #byte_array' do
+        skip 'Needs testing'
       end
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
       it 'can be set with #byte_array=' do
+        skip 'Needs testing'
       end
     end
 
@@ -1964,12 +1999,19 @@ describe Regress do
 
     describe "its 'name-conflict' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
+
       it 'can be retrieved with #name_conflict' do
+        skip 'Needs testing'
       end
+
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
+
       it 'can be set with #name_conflict=' do
+        skip 'Needs testing'
       end
     end
     describe "its 'pptrarray' property" do
@@ -1998,6 +2040,7 @@ describe Regress do
         instance.get_property('pptrarray').must_be :==, arr
       end
     end
+
     describe "its 'string' property" do
       it 'can be retrieved with #get_property' do
         assert_nil instance.get_property('string')
@@ -2092,6 +2135,13 @@ describe Regress do
     end
 
     it "handles the 'sig-with-inout-int' signal" do
+      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+      skip 'Not implemented yet'
+      GObject.signal_connect instance, 'sig-with-inout-int' do |_obj, i, _ud|
+        i + 2
+      end
+      result = GObject.signal_emit instance, 'sig-with-inout-int', 65
+      result.must_equal 67
     end
 
     it "handles the 'sig-with-int64-prop' signal" do
@@ -2238,8 +2288,10 @@ describe Regress do
 
   describe 'Regress::TestReferenceCounters' do
     it 'has a writable field refcount' do
+      skip 'Needs testing'
     end
     it 'has a writable field atomicrefcount' do
+      skip 'Needs testing'
     end
   end
 
@@ -3223,6 +3275,7 @@ describe Regress do
   end
 
   it 'has a working function #test_create_fundamental_hidden_class_instance' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #test_date_in_gvalue' do
@@ -3588,6 +3641,7 @@ describe Regress do
   end
 
   it 'has a working function #test_null_strv_in_gvalue' do
+    skip 'Needs testing'
   end
   it 'has a working function #test_owned_gerror_callback' do
     value = nil
