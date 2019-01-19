@@ -838,6 +838,16 @@ describe GIMarshallingTests do
       end
     end
 
+    describe "its 'some-byte-array' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #some_byte_array' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #some_byte_array=' do
+      end
+    end
     describe "its 'some-char' property" do
       it 'can be retrieved with #get_property' do
         instance.get_property('some-char').must_equal 0
@@ -878,6 +888,26 @@ describe GIMarshallingTests do
       end
     end
 
+    describe "its 'some-enum' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #some_enum' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #some_enum=' do
+      end
+    end
+    describe "its 'some-flags' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #some_flags' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #some_flags=' do
+      end
+    end
     describe "its 'some-float' property" do
       it 'can be retrieved with #get_property' do
         instance.get_property('some-float').must_equal 0.0
@@ -898,6 +928,16 @@ describe GIMarshallingTests do
       end
     end
 
+    describe "its 'some-gvalue' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #some_gvalue' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #some_gvalue=' do
+      end
+    end
     describe "its 'some-int' property" do
       it 'can be retrieved with #get_property' do
         instance.get_property('some-int').must_equal 0
@@ -980,6 +1020,12 @@ describe GIMarshallingTests do
       end
     end
 
+    describe "its 'some-readonly' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #some_readonly' do
+      end
+    end
     describe "its 'some-strv' property" do
       it 'can be retrieved with #get_property' do
         instance.get_property('some-strv').must_be :==, []
@@ -1234,6 +1280,10 @@ describe GIMarshallingTests do
     end
   end
 
+  it 'has a working function #array_bool_in' do
+  end
+  it 'has a working function #array_bool_out' do
+  end
   it 'has a working function #array_enum_in' do
     GIMarshallingTests.array_enum_in [:value1, :value2, :value3]
   end
@@ -1354,6 +1404,8 @@ describe GIMarshallingTests do
     sum.must_equal 42 + 24
   end
 
+  it 'has a working function #array_int64_in' do
+  end
   it 'has a working function #array_out' do
     res = GIMarshallingTests.array_out
     res.must_be :==, [-1, 0, 1, 2]
@@ -1412,10 +1464,19 @@ describe GIMarshallingTests do
     GIMarshallingTests.array_struct_value_in arr
   end
 
+  it 'has a working function #array_uint64_in' do
+  end
+
   it 'has a working function #array_uint8_in' do
     arr = 'abcd'.bytes.to_a
     GIMarshallingTests.array_uint8_in arr
     pass
+  end
+
+  it 'has a working function #array_unichar_in' do
+  end
+
+  it 'has a working function #array_unichar_out' do
   end
 
   it 'has a working function #array_zero_terminated_in' do
@@ -1446,6 +1507,9 @@ describe GIMarshallingTests do
   it 'has a working function #array_zero_terminated_return_struct' do
     res = GIMarshallingTests.array_zero_terminated_return_struct
     res.to_a.map(&:long_).must_equal [42, 43, 44]
+  end
+
+  it 'has a working function #array_zero_terminated_return_unichar' do
   end
 
   it 'has a working function #boolean_in_false' do
@@ -1661,6 +1725,9 @@ describe GIMarshallingTests do
     assert_in_epsilon 3.402e+38, flt
   end
 
+  it 'has a working function #garray_bool_none_in' do
+  end
+
   it 'has a working function #garray_int_none_in' do
     arr = [-1, 0, 1, 2]
     GIMarshallingTests.garray_int_none_in arr
@@ -1680,6 +1747,9 @@ describe GIMarshallingTests do
   it 'has a working function #garray_uint64_none_return' do
     res = GIMarshallingTests.garray_uint64_none_return
     res.must_be :==, [0, 0xffff_ffff_ffff_ffff]
+  end
+
+  it 'has a working function #garray_unichar_none_in' do
   end
 
   it 'has a working function #garray_utf8_container_inout' do
@@ -1823,6 +1893,12 @@ describe GIMarshallingTests do
     error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
+  it 'has a working function #ghashtable_double_in' do
+  end
+  it 'has a working function #ghashtable_float_in' do
+  end
+  it 'has a working function #ghashtable_int64_in' do
+  end
   it 'has a working function #ghashtable_int_none_in' do
     GIMarshallingTests.ghashtable_int_none_in(
       -1 => 1, 0 => 0, 1 => -1, 2 => -2)
@@ -1833,6 +1909,8 @@ describe GIMarshallingTests do
     assert_equal({ -1 => 1, 0 => 0, 1 => -1, 2 => -2 }, gh.to_hash)
   end
 
+  it 'has a working function #ghashtable_uint64_in' do
+  end
   it 'has a working function #ghashtable_utf8_container_in' do
     skip 'This function is defined in the header but not implemented'
   end

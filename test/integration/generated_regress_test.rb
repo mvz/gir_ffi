@@ -411,6 +411,9 @@ describe Regress do
     Regress::FOO_DEFINE_SHOULD_BE_EXPOSED.must_equal 'should be exposed'
   end
 
+  it 'has the constant FOO_FLAGS_SECOND_AND_THIRD' do
+  end
+
   it 'has the constant FOO_PIE_IS_TASTY' do
     Regress::FOO_PIE_IS_TASTY.must_equal 3.141590
   end
@@ -1310,6 +1313,9 @@ describe Regress do
       Regress::TestEnum[:value4].must_equal 48
     end
 
+    it 'has the member :value5' do
+    end
+
     it 'has a working function #param' do
       Regress::TestEnum.param(:value1).must_equal('value1')
       Regress::TestEnum.param(:value2).must_equal('value2')
@@ -1485,6 +1491,13 @@ describe Regress do
     it 'has non-zero positive result for #gtype' do
       Regress::TestInterface.gtype.must_be :>, 0
     end
+
+    it 'has a working method #emit_signal' do
+      # ???
+    end
+    it "handles the 'interface-signal' signal" do
+      # ???
+    end
   end
 
   describe 'Regress::TestObj' do
@@ -1580,6 +1593,9 @@ describe Regress do
       assert has_fired
     end
 
+    it 'has a working method #emit_sig_with_inout_int' do
+    end
+
     it 'has a working method #emit_sig_with_int64' do
       instance.signal_connect 'sig-with-int64-prop' do |_obj, i, _ud|
         i
@@ -1624,6 +1640,9 @@ describe Regress do
       object_ref_count(instance).must_equal 1
       instance.instance_method_full
       object_ref_count(instance).must_equal 1
+    end
+
+    it 'has a working method #name_conflict' do
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
@@ -1759,6 +1778,17 @@ describe Regress do
         instance.boxed = tb
         instance.boxed.some_int8.must_equal tb.some_int8
         instance.get_property('boxed').some_int8.must_equal tb.some_int8
+      end
+    end
+
+    describe "its 'byte-array' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #byte_array' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #byte_array=' do
       end
     end
 
@@ -1932,6 +1962,16 @@ describe Regress do
       end
     end
 
+    describe "its 'name-conflict' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #name_conflict' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #name_conflict=' do
+      end
+    end
     describe "its 'pptrarray' property" do
       it 'can be retrieved with #get_property' do
         skip 'pptrarray is not implemented properly'
@@ -2049,6 +2089,9 @@ describe Regress do
 
       a['foo'].must_be_instance_of GObject::Value
       a['foo'].get_value.must_equal 'bar'
+    end
+
+    it "handles the 'sig-with-inout-int' signal" do
     end
 
     it "handles the 'sig-with-int64-prop' signal" do
@@ -2190,6 +2233,13 @@ describe Regress do
       instance.this_is_public_after.must_equal 0
       instance.this_is_public_after = 42
       instance.this_is_public_after.must_equal 42
+    end
+  end
+
+  describe 'Regress::TestReferenceCounters' do
+    it 'has a writable field refcount' do
+    end
+    it 'has a writable field atomicrefcount' do
     end
   end
 
@@ -3172,6 +3222,9 @@ describe Regress do
     result.get_int32.must_equal 40
   end
 
+  it 'has a working function #test_create_fundamental_hidden_class_instance' do
+  end
+
   it 'has a working function #test_date_in_gvalue' do
     date = Regress.test_date_in_gvalue
     assert_equal [1984, :december, 5],
@@ -3534,6 +3587,8 @@ describe Regress do
     value.message.must_equal 'regression test owned error'
   end
 
+  it 'has a working function #test_null_strv_in_gvalue' do
+  end
   it 'has a working function #test_owned_gerror_callback' do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
