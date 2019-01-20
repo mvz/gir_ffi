@@ -2,15 +2,9 @@
 
 require 'gir_ffi_test_helper'
 
-describe 'The generated WarnLib module' do
-  before do
-    begin
-      GirFFI.setup :WarnLib
-    rescue RuntimeError
-      skip 'WarnLib GIR not available'
-    end
-  end
+GirFFI.setup :WarnLib
 
+describe 'The generated WarnLib module' do
   describe 'WarnLib::Whatever' do
     let(:derived_klass) do
       Object.const_set("DerivedClass#{Sequence.next}", Class.new(GObject::Object))
