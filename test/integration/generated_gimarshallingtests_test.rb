@@ -840,12 +840,16 @@ describe GIMarshallingTests do
 
     describe "its 'some-byte-array' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #some_byte_array' do
+        skip 'Needs testing'
       end
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
       it 'can be set with #some_byte_array=' do
+        skip 'Needs testing'
       end
     end
     describe "its 'some-char' property" do
@@ -890,22 +894,30 @@ describe GIMarshallingTests do
 
     describe "its 'some-enum' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #some_enum' do
+        skip 'Needs testing'
       end
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
       it 'can be set with #some_enum=' do
+        skip 'Needs testing'
       end
     end
     describe "its 'some-flags' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #some_flags' do
+        skip 'Needs testing'
       end
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
       it 'can be set with #some_flags=' do
+        skip 'Needs testing'
       end
     end
     describe "its 'some-float' property" do
@@ -930,12 +942,16 @@ describe GIMarshallingTests do
 
     describe "its 'some-gvalue' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #some_gvalue' do
+        skip 'Needs testing'
       end
       it 'can be set with #set_property' do
+        skip 'Needs testing'
       end
       it 'can be set with #some_gvalue=' do
+        skip 'Needs testing'
       end
     end
     describe "its 'some-int' property" do
@@ -1022,8 +1038,10 @@ describe GIMarshallingTests do
 
     describe "its 'some-readonly' property" do
       it 'can be retrieved with #get_property' do
+        skip 'Needs testing'
       end
       it 'can be retrieved with #some_readonly' do
+        skip 'Needs testing'
       end
     end
     describe "its 'some-strv' property" do
@@ -1281,8 +1299,10 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_bool_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #array_bool_out' do
+    skip 'Needs testing'
   end
   it 'has a working function #array_enum_in' do
     GIMarshallingTests.array_enum_in [:value1, :value2, :value3]
@@ -1405,6 +1425,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_int64_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #array_out' do
     res = GIMarshallingTests.array_out
@@ -1465,6 +1486,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_uint64_in' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #array_uint8_in' do
@@ -1474,9 +1496,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_unichar_in' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #array_unichar_out' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #array_zero_terminated_in' do
@@ -1510,6 +1534,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_zero_terminated_return_unichar' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #boolean_in_false' do
@@ -1726,6 +1751,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_bool_none_in' do
+    skip 'Needs testing'
   end
 
   it 'has a working function #garray_int_none_in' do
@@ -1894,10 +1920,13 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #ghashtable_double_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #ghashtable_float_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #ghashtable_int64_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #ghashtable_int_none_in' do
     GIMarshallingTests.ghashtable_int_none_in(
@@ -1910,6 +1939,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #ghashtable_uint64_in' do
+    skip 'Needs testing'
   end
   it 'has a working function #ghashtable_utf8_container_in' do
     skip 'This function is defined in the header but not implemented'
