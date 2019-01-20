@@ -2,6 +2,9 @@ sudo: required
 dist: xenial
 language: ruby
 
+env:
+  - JAVA_OPTS="$JAVA_OPTS --add-opens java.base/sun.nio.ch=ALL-UNNAMED"
+
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
