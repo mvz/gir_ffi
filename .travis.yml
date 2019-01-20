@@ -12,17 +12,20 @@ before_install:
 rvm:
   - 2.3
   - 2.4
-  - 2.5
   - 2.6
-  - jruby-9.1
-  - jruby-9.2
-  - jruby-head
   - ruby-head
 
 matrix:
-  allow_failures:
+  include:
+    - rvm: jruby-9.1
+      script: bundle exec rake test:all
+    - rvm: jruby-9.2
+      script: bundle exec rake test:all
     - rvm: jruby-head
+      script: bundle exec rake test:all
+  allow_failures:
     - rvm: ruby-head
+    - rvm: jruby-head
 
 bundler_args: --without local_development
 
