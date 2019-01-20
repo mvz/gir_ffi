@@ -146,9 +146,6 @@ describe GirFFI::Builders::ReturnValueBuilder do
                                     'Variant',
                                     'dup_bytestring')
     end
-    before do
-      skip unless type_info.zero_terminated?
-    end
 
     it 'wraps the result in #post_conversion' do
       builder.capture_variable_name.must_equal '_v1'
@@ -364,10 +361,6 @@ describe GirFFI::Builders::ReturnValueBuilder do
       get_introspection_data('GIMarshallingTests', 'CallbackIntInt')
     end
     let(:type_info) { callback_info.args[1].argument_type }
-
-    before do
-      skip unless callback_info
-    end
 
     it 'has no statements in #post_conversion' do
       builder.post_conversion.must_equal []

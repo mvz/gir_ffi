@@ -8,10 +8,6 @@ describe GirFFI::Builders::VFuncBuilder do
   describe '#mapping_method_definition' do
     let(:result) { builder.mapping_method_definition }
 
-    before do
-      skip unless vfunc_info
-    end
-
     describe 'for a vfunc with only one argument' do
       let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
@@ -218,10 +214,6 @@ describe GirFFI::Builders::VFuncBuilder do
   describe '#argument_ffi_types' do
     let(:result) { builder.argument_ffi_types }
 
-    before do
-      skip unless vfunc_info
-    end
-
     describe 'for a vfunc with only one argument' do
       let(:vfunc_info) do
         get_vfunc_introspection_data 'GIMarshallingTests', 'Object', 'method_int8_in'
@@ -235,10 +227,6 @@ describe GirFFI::Builders::VFuncBuilder do
 
   describe '#return_ffi_type' do
     let(:result) { builder.return_ffi_type }
-
-    before do
-      skip unless vfunc_info
-    end
 
     describe 'for a vfunc returning an object' do
       let(:vfunc_info) do

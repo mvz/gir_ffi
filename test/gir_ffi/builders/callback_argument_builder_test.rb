@@ -14,8 +14,6 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       end
       let(:arg_info) { vfunc_info.args[0] }
 
-      before { skip unless vfunc_info }
-
       it 'has the correct value for #pre_conversion' do
         builder.pre_conversion.must_equal ['_v1 = a']
       end
@@ -77,7 +75,6 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
     end
 
     before do
-      skip unless callback_info
       length_arg_builder.array_arg = array_arg_builder
       array_arg_builder.length_arg = length_arg_builder
     end

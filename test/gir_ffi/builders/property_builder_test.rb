@@ -63,9 +63,6 @@ describe GirFFI::Builders::PropertyBuilder do
                                       'PropertiesObject',
                                       'some-strv')
     end
-    before do
-      skip unless property_info
-    end
 
     it 'generates the correct getter definition' do
       expected = <<-CODE.reset_indentation

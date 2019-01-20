@@ -22,7 +22,6 @@ describe GObjectIntrospection::IBaseInfo do
     let(:other_info) { get_introspection_data 'Regress', 'test_value_return' }
 
     it 'returns true for a deprecated item' do
-      skip unless deprecated_info
       deprecated_info.must_be :deprecated?
     end
 
