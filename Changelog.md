@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+* Drop support for gobject-introspection below 1.46, the version available in
+  Ubuntu Xenial.
+
 ## 0.14.1 / 2018-09-27
 
 * Add enum values as constants in the generated module.
