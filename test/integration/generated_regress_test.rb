@@ -4,12 +4,10 @@ require 'gir_ffi_test_helper'
 
 GirFFI.setup :Regress
 
-if IntrospectionTestExtensions.get_introspection_data 'Regress', 'TestInheritDrawable'
-  class ConcreteDrawable < Regress::TestInheritDrawable
-  end
-
-  GirFFI.define_type ConcreteDrawable
+class ConcreteDrawable < Regress::TestInheritDrawable
 end
+
+GirFFI.define_type ConcreteDrawable
 
 # Tests generated methods and functions in the Regress namespace.
 describe Regress do
