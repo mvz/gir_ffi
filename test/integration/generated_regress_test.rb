@@ -19,23 +19,16 @@ describe Regress do
     end
   end
   it 'has the constant ANNOTATION_CALCULATED_DEFINE' do
-    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_DEFINE'
     Regress::ANNOTATION_CALCULATED_DEFINE.must_equal 100
   end
   it 'has the constant ANNOTATION_CALCULATED_LARGE' do
-    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_LARGE'
     skip 'Constant is marked with the wrong type'
     Regress::ANNOTATION_CALCULATED_LARGE.must_equal 10_000_000_000
   end
   it 'has the constant ANNOTATION_CALCULATED_LARGE_DIV' do
-    skip unless get_introspection_data 'Regress', 'ANNOTATION_CALCULATED_LARGE_DIV'
     Regress::ANNOTATION_CALCULATED_LARGE_DIV.must_equal 1_000_000
   end
   describe 'Regress::ATestError' do
-    before do
-      skip unless get_introspection_data 'Regress', 'ATestError'
-    end
-
     it 'has the member :code0' do
       Regress::ATestError[:code0].must_equal 0
     end
@@ -50,10 +43,6 @@ describe Regress do
   end
 
   describe 'Regress::AnAnonymousUnion' do
-    before do
-      skip unless get_introspection_data 'Regress', 'AnAnonymousUnion'
-    end
-
     let(:instance) { Regress::AnAnonymousUnion.new }
 
     it 'has a writable field x' do
@@ -72,22 +61,16 @@ describe Regress do
   end
 
   describe 'Regress::AnnotationBitfield' do
-    before do
-      skip unless get_introspection_data 'Regress', 'AnnotationBitfield'
-    end
     it 'has the member :foo' do
       Regress::AnnotationBitfield[:foo].must_equal 1
     end
+
     it 'has the member :bar' do
       Regress::AnnotationBitfield[:bar].must_equal 2
     end
   end
 
   describe 'Regress::AnnotationFields' do
-    before do
-      skip unless get_introspection_data 'Regress', 'AnnotationFields'
-    end
-
     let(:instance) { Regress::AnnotationFields.new }
 
     it 'has a writable field field1' do
@@ -396,7 +379,7 @@ describe Regress do
     let(:instance) { Regress::AnonymousUnionAndStruct.new }
 
     before do
-      skip unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
+      skip 'Introduced in 1.49.1' unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
     end
 
     it 'has a writable field x' do
@@ -417,7 +400,6 @@ describe Regress do
     end
   end
   it 'has the constant BOOL_CONSTANT' do
-    skip unless get_introspection_data 'Regress', 'BOOL_CONSTANT'
     Regress::BOOL_CONSTANT.must_equal true
   end
 
@@ -1034,27 +1016,22 @@ describe Regress do
   end
 
   it 'has the constant GI_SCANNER_ELSE' do
-    skip unless get_introspection_data 'Regress', 'GI_SCANNER_ELSE'
     Regress::GI_SCANNER_ELSE.must_equal 3
   end
 
   it 'has the constant GI_SCANNER_IFDEF' do
-    skip unless get_introspection_data 'Regress', 'GI_SCANNER_IFDEF'
     Regress::GI_SCANNER_IFDEF.must_equal 3
   end
 
   it 'has the constant GUINT64_CONSTANT' do
-    skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANT'
     Regress::GUINT64_CONSTANT.must_equal 18_446_744_073_709_551_615
   end
 
   it 'has the constant GUINT64_CONSTANTA' do
-    skip unless get_introspection_data 'Regress', 'GUINT64_CONSTANTA'
     Regress::GUINT64_CONSTANTA.must_equal 18_446_744_073_709_551_615
   end
 
   it 'has the constant G_GINT64_CONSTANT' do
-    skip unless get_introspection_data 'Regress', 'G_GINT64_CONSTANT'
     Regress::G_GINT64_CONSTANT.must_equal 1000
   end
 
@@ -1077,9 +1054,6 @@ describe Regress do
   end
 
   describe 'Regress::LikeGnomeKeyringPasswordSchema' do
-    before do
-      skip unless get_introspection_data 'Regress', 'LikeGnomeKeyringPasswordSchema'
-    end
     it 'creates an instance using #new' do
       obj = Regress::LikeGnomeKeyringPasswordSchema.new
       obj.must_be_instance_of Regress::LikeGnomeKeyringPasswordSchema
@@ -1105,10 +1079,6 @@ describe Regress do
   end
 
   describe 'Regress::LikeXklConfigItem' do
-    before do
-      skip unless get_introspection_data 'Regress', 'LikeXklConfigItem'
-    end
-
     let(:instance) { Regress::LikeXklConfigItem.new }
     let(:name_array) { 'foo'.bytes.to_a + [0] * 29 }
 
@@ -1126,12 +1096,10 @@ describe Regress do
   end
 
   it 'has the constant MAXUINT64' do
-    skip unless get_introspection_data 'Regress', 'MAXUINT64'
     Regress::MAXUINT64.must_equal 0xffff_ffff_ffff_ffff
   end
 
   it 'has the constant MININT64' do
-    skip unless get_introspection_data 'Regress', 'MININT64'
     Regress::MININT64.must_equal(-0x8000_0000_0000_0000)
   end
 
@@ -1140,7 +1108,6 @@ describe Regress do
   end
 
   it 'has the constant NEGATIVE_INT_CONSTANT' do
-    skip unless get_introspection_data 'Regress', 'NEGATIVE_INT_CONSTANT'
     Regress::NEGATIVE_INT_CONSTANT.must_equal(-42)
   end
 
@@ -1149,10 +1116,6 @@ describe Regress do
   end
 
   describe 'Regress::TestABCError' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestABCError'
-    end
-
     it 'has the member :code1' do
       Regress::TestABCError[:code1].must_equal 1
     end
@@ -1222,7 +1185,6 @@ describe Regress do
 
     it 'has a working method #_not_a_method' do
       # NOTE: This method is marked as moved, but this is not exposed in the typelib
-      skip unless get_method_introspection_data('Regress', 'TestBoxed', '_not_a_method')
       instance._not_a_method
       pass
     end
@@ -1272,10 +1234,6 @@ describe Regress do
   end
 
   describe 'Regress::TestBoxedC' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestBoxedC'
-    end
-
     let(:instance) { Regress::TestBoxedC.new }
 
     it 'has a writable field refcount' do
@@ -1298,9 +1256,6 @@ describe Regress do
 
   describe 'Regress::TestBoxedD' do
     let(:instance) { Regress::TestBoxedD.new 'foo', 42 }
-    before do
-      skip unless get_introspection_data 'Regress', 'TestBoxedD'
-    end
 
     it 'creates an instance using #new' do
       instance.must_be_instance_of Regress::TestBoxedD
@@ -1325,9 +1280,6 @@ describe Regress do
   end
 
   describe 'Regress::TestDEFError' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestDEFError'
-    end
     it 'has the member :code0' do
       Regress::TestDEFError[:code0].must_equal 0
     end
@@ -1396,10 +1348,6 @@ describe Regress do
   end
 
   describe 'Regress::TestError' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestError'
-    end
-
     it 'has the member :code1' do
       Regress::TestError[:code1].must_equal 1
     end
@@ -1494,10 +1442,6 @@ describe Regress do
   end
 
   describe 'Regress::TestInheritDrawable' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestInheritDrawable'
-    end
-
     it 'cannot be instantiated' do
       proc { Regress::TestInheritDrawable.new }.must_raise NoMethodError
     end
@@ -1616,8 +1560,8 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_array_len_prop' do
-      skip unless get_method_introspection_data('Regress', 'TestObj',
-                                                'emit_sig_with_array_len_prop')
+      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
+                                                                        'emit_sig_with_array_len_prop')
       array = nil
       instance.signal_connect 'sig-with-array-len-prop' do |_obj, ary|
         array = ary.to_a
@@ -1627,8 +1571,6 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_foreign_struct' do
-      skip unless get_method_introspection_data('Regress', 'TestObj',
-                                                'emit_sig_with_foreign_struct')
       has_fired = false
       instance.signal_connect 'sig-with-foreign-struct' do |_obj, cr|
         has_fired = true
@@ -1639,7 +1581,6 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_int64' do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-int64-prop'
       instance.signal_connect 'sig-with-int64-prop' do |_obj, i, _ud|
         i
       end
@@ -1657,7 +1598,6 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_uint64' do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-uint64-prop'
       instance.signal_connect 'sig-with-uint64-prop' do |_obj, i, _ud|
         i
       end
@@ -1681,22 +1621,21 @@ describe Regress do
     end
 
     it 'has a working method #instance_method_full' do
-      skip unless get_method_introspection_data('Regress', 'TestObj', 'instance_method_full')
       object_ref_count(instance).must_equal 1
       instance.instance_method_full
       object_ref_count(instance).must_equal 1
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
-      skip unless get_method_introspection_data('Regress', 'TestObj',
-                                                'not_nullable_element_typed_gpointer_in')
+      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
+                                                                        'not_nullable_element_typed_gpointer_in')
       instance.not_nullable_element_typed_gpointer_in [1, 2, 3]
       # TODO: Make method raise when passed nil
     end
 
     it 'has a working method #not_nullable_typed_gpointer_in' do
-      skip unless get_method_introspection_data('Regress', 'TestObj',
-                                                'not_nullable_typed_gpointer_in')
+      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
+                                                                        'not_nullable_typed_gpointer_in')
       obj = Regress::TestObj.new_from_file('bar')
       instance.not_nullable_typed_gpointer_in obj
       # TODO: Make method raise when passed nil
@@ -1866,10 +1805,6 @@ describe Regress do
     end
 
     describe "its 'gtype' property" do
-      before do
-        skip unless get_property_introspection_data('Regress', 'TestObj', 'gtype')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('gtype').must_equal 0
       end
@@ -2066,8 +2001,6 @@ describe Regress do
     end
 
     it "handles the 'sig-with-array-len-prop' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-array-len-prop'
-
       a = nil
 
       GObject.signal_connect(instance, 'sig-with-array-len-prop') do |_obj, arr, _user_data|
@@ -2089,8 +2022,6 @@ describe Regress do
     end
 
     it "handles the 'sig-with-foreign-struct' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-foreign-struct'
-
       a = nil
       instance.signal_connect 'sig-with-foreign-struct' do |_obj, ct|
         a = ct
@@ -2121,8 +2052,6 @@ describe Regress do
     end
 
     it "handles the 'sig-with-int64-prop' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-int64-prop'
-
       a = nil
 
       GObject.signal_connect(instance, 'sig-with-int64-prop') do |_obj, int64, _user_data|
@@ -2136,8 +2065,6 @@ describe Regress do
     end
 
     it "handles the 'sig-with-intarray-ret' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-intarray-ret'
-
       a = nil
 
       GObject.signal_connect(instance, 'sig-with-intarray-ret') do |_, i, _|
@@ -2178,8 +2105,6 @@ describe Regress do
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-uint64-prop'
-
       a = nil
 
       GObject.signal_connect(instance, 'sig-with-uint64-prop') do |_, uint64, _|
@@ -2216,10 +2141,6 @@ describe Regress do
   end
 
   describe 'Regress::TestOtherError' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestOtherError'
-    end
-
     it 'has the member :code1' do
       Regress::TestOtherError[:code1].must_equal 1
     end
@@ -2273,24 +2194,26 @@ describe Regress do
   end
 
   describe 'Regress::TestReferenceEnum' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestReferenceEnum'
-    end
     it 'has the member :0' do
       Regress::TestReferenceEnum[:"0"].must_equal 4
     end
+
     it 'has the member :1' do
       Regress::TestReferenceEnum[:"1"].must_equal 2
     end
+
     it 'has the member :2' do
       Regress::TestReferenceEnum[:"2"].must_equal 54
     end
+
     it 'has the member :3' do
       Regress::TestReferenceEnum[:"3"].must_equal 4
     end
+
     it 'has the member :4' do
       Regress::TestReferenceEnum[:"4"].must_equal 216
     end
+
     it 'has the member :5' do
       Regress::TestReferenceEnum[:"5"].must_equal(-217)
     end
@@ -2425,7 +2348,6 @@ describe Regress do
     end
 
     it 'has a working function #parse' do
-      skip unless get_method_introspection_data 'Regress', 'TestStructA', 'parse'
       a = Regress::TestStructA.parse('this string is actually ignored')
       a.some_int.must_equal 23
     end
@@ -2595,10 +2517,6 @@ describe Regress do
     end
   end
   describe 'Regress::TestStructF' do
-    before do
-      skip unless get_introspection_data 'Regress', 'TestStructF'
-    end
-
     let(:instance) { Regress::TestStructF.new }
 
     it 'has a writable field ref_count' do
@@ -2835,7 +2753,6 @@ describe Regress do
   end
 
   it 'has a working function #atest_error_quark' do
-    skip unless get_introspection_data 'Regress', 'atest_error_quark'
     result = Regress.atest_error_quark
     GLib.quark_to_string(result).must_equal 'regress-atest-error'
   end
@@ -2926,7 +2843,7 @@ describe Regress do
   end
 
   it 'has a working function #get_variant' do
-    skip unless get_introspection_data 'Regress', 'get_variant'
+    skip 'Introduced in 1.47.92' unless get_introspection_data 'Regress', 'get_variant'
     var = Regress.get_variant
     var.get_int32.must_equal 42
     # TODO: Make var not floating
@@ -2938,7 +2855,6 @@ describe Regress do
   end
 
   it 'has a working function #has_parameter_named_attrs' do
-    skip unless get_introspection_data 'Regress', 'has_parameter_named_attrs'
     Regress.has_parameter_named_attrs 42, [23] * 32
     pass
   end
@@ -2955,8 +2871,6 @@ describe Regress do
   end
 
   it 'has a working function #test_abc_error_quark' do
-    skip unless get_introspection_data 'Regress', 'test_abc_error_quark'
-
     quark = Regress.test_abc_error_quark
     GLib.quark_to_string(quark).must_equal 'regress-test-abc-error'
   end
@@ -3032,7 +2946,6 @@ describe Regress do
   end
 
   it 'has a working function #test_array_inout_callback' do
-    skip unless get_introspection_data 'Regress', 'test_array_inout_callback'
     Regress.test_array_inout_callback do |ints|
       arr = ints.to_a
       arr.shift
@@ -3071,7 +2984,7 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_out' do
-    skip unless get_introspection_data 'Regress', 'test_array_struct_out'
+    skip 'Introduced in 1.47.92' unless get_introspection_data 'Regress', 'test_array_struct_out'
     result = Regress.test_array_struct_out
     result.map(&:some_int).must_equal [22, 33, 44]
   end
@@ -3104,14 +3017,12 @@ describe Regress do
   end
 
   it 'has a working function #test_boxeds_not_a_method' do
-    skip unless get_introspection_data 'Regress', 'test_boxeds_not_a_method'
     boxed = Regress::TestBoxed.new_alternative_constructor1 123
     Regress.test_boxeds_not_a_method boxed
     pass
   end
 
   it 'has a working function #test_boxeds_not_a_static' do
-    skip unless get_introspection_data 'Regress', 'test_boxeds_not_a_static'
     Regress.test_boxeds_not_a_static
     pass
   end
@@ -3180,8 +3091,6 @@ describe Regress do
   end
 
   it 'has a working function #test_callback_destroy_notify_no_user_data' do
-    skip unless get_introspection_data 'Regress', 'test_callback_destroy_notify_no_user_data'
-
     callback_times_called = 0
     b = :not_nil
 
@@ -3203,7 +3112,6 @@ describe Regress do
   end
 
   it 'has a working function #test_callback_return_full' do
-    skip unless get_introspection_data 'Regress', 'test_callback_return_full'
     obj = Regress::TestObj.constructor
     Regress.test_callback_return_full { obj }
     object_ref_count(obj).must_equal 1
@@ -3266,13 +3174,11 @@ describe Regress do
 
   it 'has a working function #test_date_in_gvalue' do
     date = Regress.test_date_in_gvalue
-    skip unless date.respond_to? :get_year
     assert_equal [1984, :december, 5],
                  [date.get_year, date.get_month, date.get_day]
   end
 
   it 'has a working function #test_def_error_quark' do
-    skip unless get_introspection_data 'Regress', 'test_def_error_quark'
     quark = Regress.test_def_error_quark
     GLib.quark_to_string(quark).must_equal 'regress-test-def-error'
   end
@@ -3288,7 +3194,6 @@ describe Regress do
   end
 
   it 'has a working function #test_error_quark' do
-    skip unless get_introspection_data 'Regress', 'test_error_quark'
     quark = Regress.test_error_quark
     GLib.quark_to_string(quark).must_equal 'regress-test-error'
   end
@@ -3340,15 +3245,11 @@ describe Regress do
   end
 
   it 'has a working function #test_ghash_gvalue_in' do
-    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_in'
-    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
     hash_table = Regress.test_ghash_gvalue_return
     Regress.test_ghash_gvalue_in hash_table
   end
 
   it 'has a working function #test_ghash_gvalue_return' do
-    skip unless get_introspection_data 'Regress', 'test_ghash_gvalue_return'
-
     result = Regress.test_ghash_gvalue_return
     hash = result.to_hash
 
@@ -3443,7 +3344,6 @@ describe Regress do
   end
 
   it 'has a working function #test_glist_gtype_container_in' do
-    skip unless get_introspection_data 'Regress', 'test_glist_gtype_container_in'
     Regress.test_glist_gtype_container_in [Regress::TestObj.gtype, Regress::TestSubObj.gtype]
     pass
   end
@@ -3622,7 +3522,7 @@ describe Regress do
   end
 
   it 'has a working function #test_noptr_callback' do
-    skip unless get_introspection_data 'Regress', 'test_noptr_callback'
+    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_noptr_callback'
     a = 0
     Regress.test_noptr_callback { a = 1 }
     a.must_equal 1
@@ -3641,13 +3541,13 @@ describe Regress do
   end
 
   it 'has a working function #test_return_allow_none' do
-    skip unless get_introspection_data 'Regress', 'test_return_allow_none'
+    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_return_allow_none'
     result = Regress.test_return_allow_none
     result.must_be_nil
   end
 
   it 'has a working function #test_return_nullable' do
-    skip unless get_introspection_data 'Regress', 'test_return_nullable'
+    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_return_nullable'
     result = Regress.test_return_nullable
     result.must_be_nil
   end
@@ -3677,7 +3577,6 @@ describe Regress do
   end
 
   it 'has a working function #test_struct_a_parse' do
-    skip unless get_introspection_data 'Regress', 'test_struct_a_parse'
     a = Regress.test_struct_a_parse('this string is actually ignored')
     a.must_be_instance_of Regress::TestStructA
     a.some_int.must_equal 23
@@ -3766,7 +3665,6 @@ describe Regress do
   end
 
   it 'has a working function #test_unconventional_error_quark' do
-    skip unless get_introspection_data 'Regress', 'test_unconventional_error_quark'
     result = Regress.test_unconventional_error_quark
     GLib.quark_to_string(result).must_equal 'regress-test-other-error'
   end
@@ -3835,7 +3733,7 @@ describe Regress do
   end
 
   it 'has a working function #test_versioning' do
-    skip unless get_introspection_data 'Regress', 'test_versioning'
+    # TODO: Handle deprecation
     Regress.test_versioning
     pass
   end
