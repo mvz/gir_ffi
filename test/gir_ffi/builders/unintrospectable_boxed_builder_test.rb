@@ -12,12 +12,6 @@ describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   let(:bldr) { GirFFI::Builders::UnintrospectableBoxedBuilder.new(info) }
   let(:boxed_class) { bldr.build_class }
 
-  before do
-    skip unless get_property_introspection_data('GIMarshallingTests',
-                                                'PropertiesObject',
-                                                'some-boxed-glist')
-  end
-
   it 'builds a class' do
     boxed_class.must_be_instance_of Class
   end

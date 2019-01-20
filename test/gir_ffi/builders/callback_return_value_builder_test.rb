@@ -12,10 +12,6 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
                                                      return_value_info)
   end
 
-  before do
-    skip unless callback_info
-  end
-
   describe 'for :gint32' do
     let(:callback_info) { get_introspection_data('GIMarshallingTests', 'CallbackIntInt') }
 

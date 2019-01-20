@@ -219,10 +219,6 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         let(:arg_info) { function_info.args[0] }
 
-        before do
-          skip unless function_info
-        end
-
         it 'has the correct value for #pre_conversion' do
           builder.pre_conversion.must_equal ['_v1 = GLib::Array.new :utf8']
         end
@@ -383,7 +379,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       let(:arg_info) { function_info.args[0] }
 
       before do
-        skip unless function_info
+        skip 'Introduced in 1.47.1' unless function_info
       end
 
       it 'has the correct value for #pre_conversion' do

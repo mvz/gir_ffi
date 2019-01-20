@@ -18,10 +18,6 @@ describe GObjectIntrospection::IConstantInfo do
   describe 'for GLib::SOURCE_CONTINUE, a constant of type :gboolean' do
     let(:constant_info) { get_introspection_data 'GLib', 'SOURCE_CONTINUE' }
 
-    before do
-      skip unless constant_info
-    end
-
     it 'returns :gboolean as its type' do
       assert_equal :gboolean, constant_info.constant_type.tag
     end
