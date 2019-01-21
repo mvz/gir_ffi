@@ -4,6 +4,11 @@
 
 * Drop support for gobject-introspection below 1.46, the version available in
   Ubuntu Xenial.
+* Merge extended property getter and setter into regular ones. This means you
+  can always just use `#get_property` and `#set_property`. The methods
+  `#get_property_extended` and `#set_property_extended` are deprecated and will
+  be removed in GirFFI version 0.16 or later.
+* Support setting ByteArray properties directly with string values.
 
 ## 0.14.1 / 2018-09-27
 
