@@ -117,6 +117,7 @@ module GObject
     setup_instance_method! 'get_property'
     setup_instance_method! 'set_property'
 
+    # @deprecated
     def get_property_extended(property_name)
       get_property(property_name)
     end
@@ -132,6 +133,7 @@ module GObject
       value
     end
 
+    # @deprecated
     def set_property_extended(property_name, value)
       set_property property_name, value
     end
