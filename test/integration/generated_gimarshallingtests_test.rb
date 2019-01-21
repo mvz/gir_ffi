@@ -852,14 +852,12 @@ describe GIMarshallingTests do
       end
 
       it 'can be set with #set_property' do
-        ba = GLib::ByteArray.new.append('some bytes')
-        instance.set_property 'some-byte-array', ba
+        instance.set_property 'some-byte-array', 'some bytes'
         instance.get_property('some-byte-array').to_string.must_equal 'some bytes'
       end
 
       it 'can be set with #some_byte_array=' do
-        ba = GLib::ByteArray.new.append('some bytes')
-        instance.some_byte_array = ba
+        instance.some_byte_array = 'some bytes'
         instance.some_byte_array.to_string.must_equal 'some bytes'
       end
     end

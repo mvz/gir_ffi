@@ -210,6 +210,8 @@ module GObject
         GLib::List.from type_info.element_type, val
       when :strv
         GLib::Strv.from val
+      when :byte_array
+        GLib::ByteArray.from val
       when :callback
         GirFFI::Builder.build_class(type_info.interface).from val
       else
