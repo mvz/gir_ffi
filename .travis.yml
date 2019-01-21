@@ -2,6 +2,11 @@ sudo: required
 dist: xenial
 language: ruby
 
+jdk:
+  - oraclejdk8
+  - openjdk8
+  - openjdk10
+
 env:
   - JAVA_OPTS="$JAVA_OPTS --add-opens java.base/sun.nio.ch=ALL-UNNAMED"
 
@@ -15,7 +20,6 @@ before_install:
 matrix:
   include:
     - rvm: jruby-9.1
-      jdk: openjdk8
 
 bundler_args: --without local_development
 
