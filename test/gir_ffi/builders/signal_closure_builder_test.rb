@@ -41,8 +41,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a valid mapping method' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, i = param_values.map(&:get_value_plain)
@@ -82,8 +80,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a valid mapping method' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, arr, len = param_values.map(&:get_value_plain)
@@ -104,8 +100,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a valid mapping method' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, object = param_values.map(&:get_value_plain)
@@ -125,8 +119,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a valid mapping method' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, i = param_values.map(&:get_value_plain)
@@ -148,8 +140,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a mapping method that passes the string result to return_value directly' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, value = param_values.map(&:get_value_plain)
@@ -170,8 +160,6 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it 'returns a valid mapping method' do
-        skip unless signal_info
-
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, list = param_values.map(&:get_value_plain)

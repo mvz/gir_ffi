@@ -31,7 +31,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a writable field string_' do
-      skip unless get_field_introspection_data('GIMarshallingTests', 'BoxedStruct', 'string_')
       instance.string_ = 'foobar'
       instance.string_.must_equal 'foobar'
     end
@@ -218,7 +217,6 @@ describe GIMarshallingTests do
 
   describe 'GIMarshallingTests::Interface3' do
     it 'has a working method #test_variant_array_in' do
-      skip unless get_introspection_data 'GIMarshallingTests', 'Interface3'
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :test_variant_array_in, proc { |obj, in_|
@@ -231,10 +229,6 @@ describe GIMarshallingTests do
   end
 
   describe 'GIMarshallingTests::InterfaceImpl' do
-    before do
-      skip unless get_introspection_data 'GIMarshallingTests', 'InterfaceImpl'
-    end
-
     it 'has a working method #get_as_interface' do
       obj = GIMarshallingTests::InterfaceImpl.new []
       result = obj.get_as_interface
@@ -296,7 +290,6 @@ describe GIMarshallingTests do
     end
 
     it 'fails to create an instance using #new_fail' do
-      skip unless get_method_introspection_data('GIMarshallingTests', 'Object', 'new_fail')
       proc { GIMarshallingTests::Object.new_fail 42 }.must_raise GirFFI::GLibError
     end
 
@@ -359,8 +352,6 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::Object.new 42 }
 
     it 'has a working method #call_vfunc_with_callback' do
-      skip unless get_method_introspection_data('GIMarshallingTests', 'Object',
-                                                'call_vfunc_with_callback')
       cb = nil
       user_data = nil
       result = nil
@@ -386,8 +377,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_in_object_transfer_full' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_in_object_transfer_full')
       obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_in_object_transfer_full, proc { |_this, object|
@@ -401,8 +390,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_in_object_transfer_none' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_in_object_transfer_none')
       obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_in_object_transfer_none, proc { |_this, object|
@@ -417,8 +404,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_full' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_out_object_transfer_full')
       obj = nil
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc { |_obj|
@@ -432,8 +417,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_none' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_out_object_transfer_none')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
@@ -444,8 +427,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_return_object_transfer_full' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_return_object_transfer_full')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc { |_obj|
           GIMarshallingTests::Object.new 42
@@ -456,8 +437,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #get_ref_info_for_vfunc_return_object_transfer_none' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_return_object_transfer_none')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
@@ -512,8 +491,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #method_int8_arg_and_out_callee' do
-      skip unless get_method_introspection_data('GIMarshallingTests', 'Object',
-                                                'method_int8_arg_and_out_callee')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_arg_and_out_callee, proc { |_obj, arg|
           2 * arg
@@ -524,8 +501,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #method_int8_arg_and_out_caller' do
-      skip unless get_method_introspection_data('GIMarshallingTests', 'Object',
-                                                'method_int8_arg_and_out_caller')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_arg_and_out_caller, proc { |_obj, arg|
           2 * arg
@@ -551,8 +526,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #method_str_arg_out_ret' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'method_str_arg_out_ret')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_str_arg_out_ret, proc { |_obj, arg| [arg, 42] }
       end
@@ -580,8 +553,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #vfunc_array_out_parameter' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_array_out_parameter')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_array_out_parameter, proc { |_obj|
           [1.1, 2.2, 3.3]
@@ -596,8 +567,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #vfunc_caller_allocated_out_parameter' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_caller_allocated_out_parameter')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_caller_allocated_out_parameter, proc { |_obj|
           'Hello!'
@@ -647,8 +616,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #vfunc_out_enum' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_out_enum')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_enum, proc { |_obj| :value2 }
       end
@@ -656,8 +623,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #vfunc_return_enum' do
-      skip unless get_vfunc_introspection_data('GIMarshallingTests', 'Object',
-                                               'vfunc_return_enum')
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
       end
@@ -693,9 +658,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #vfunc_with_callback' do
-      skip unless get_method_introspection_data('GIMarshallingTests', 'Object',
-                                                'vfunc_with_callback')
-
       result = 1
 
       derived_instance = make_derived_instance do |info|
@@ -832,12 +794,6 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-boxed-glist' property" do
-      before do
-        skip unless get_property_introspection_data('GIMarshallingTests',
-                                                    'PropertiesObject',
-                                                    'some-boxed-glist')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('some-boxed-glist').must_be_nil
       end
@@ -859,12 +815,6 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-boxed-struct' property" do
-      before do
-        skip unless get_property_introspection_data('GIMarshallingTests',
-                                                    'PropertiesObject',
-                                                    'some-boxed-struct')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('some-boxed-struct').must_be_nil
       end
@@ -1009,12 +959,6 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-object' property" do
-      before do
-        skip unless get_property_introspection_data('GIMarshallingTests',
-                                                    'PropertiesObject',
-                                                    'some-object')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('some-object').must_be_nil
       end
@@ -1037,12 +981,6 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-strv' property" do
-      before do
-        skip unless get_property_introspection_data('GIMarshallingTests',
-                                                    'PropertiesObject',
-                                                    'some-strv')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('some-strv').must_be :==, []
       end
@@ -1143,12 +1081,6 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-variant' property" do
-      before do
-        skip unless get_property_introspection_data('GIMarshallingTests',
-                                                    'PropertiesObject',
-                                                    'some-variant')
-      end
-
       it 'can be retrieved with #get_property' do
         instance.get_property('some-variant').must_be_nil
       end
@@ -1397,19 +1329,16 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_in_nonzero_nonlen' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_nonzero_nonlen'
     GIMarshallingTests.array_in_nonzero_nonlen 1, 'abcd'.bytes.to_a
     pass
   end
 
   it 'has a working function #array_in_utf8_two_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in'
     GIMarshallingTests.array_in_utf8_two_in [-1, 0, 1, 2], '1', '2'
     pass
   end
 
   it 'has a working function #array_in_utf8_two_in_out_of_order' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in_out_of_order'
     GIMarshallingTests.array_in_utf8_two_in_out_of_order '1', [-1, 0, 1, 2], '2'
     pass
   end
@@ -1477,7 +1406,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_struct_value_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'array_struct_value_in'
     arr = [1, 2, 3].map do |val|
       GIMarshallingTests::BoxedStruct.new.tap { |struct| struct.long_ = val }
     end
@@ -1607,7 +1535,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #callback_owned_boxed' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'callback_owned_boxed'
     a = nil
 
     callback = proc { |box, _callback_data| a = box.long_ * 2 }
@@ -1746,13 +1673,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_uint64_none_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'garray_uint64_none_in'
     GIMarshallingTests.garray_uint64_none_in [0, 0xffff_ffff_ffff_ffff]
     pass
   end
 
   it 'has a working function #garray_uint64_none_return' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'garray_uint64_none_return'
     res = GIMarshallingTests.garray_uint64_none_return
     res.must_be :==, [0, 0xffff_ffff_ffff_ffff]
   end
@@ -1784,8 +1709,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_utf8_full_out_caller_allocated' do
-    skip unless get_introspection_data 'GIMarshallingTests',
-                                       'garray_utf8_full_out_caller_allocated'
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
     res.must_be :==, %w(0 1 2)
   end
@@ -1818,13 +1741,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gbytes_full_return' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gbytes_full_return'
     res = GIMarshallingTests.gbytes_full_return
     res.to_a.must_equal [0, 49, 0xFF, 51]
   end
 
   it 'has a working function #gbytes_none_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gbytes_none_in'
     GIMarshallingTests.gbytes_none_in [0, 49, 0xFF, 51]
     pass
   end
@@ -1991,13 +1912,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #glist_uint32_none_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'glist_uint32_none_in'
     GIMarshallingTests.glist_uint32_none_in [0, 0xffff_ffff]
     pass
   end
 
   it 'has a working function #glist_uint32_none_return' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'glist_uint32_none_return'
     res = GIMarshallingTests.glist_uint32_none_return
     res.must_be :==, [0, 0xffff_ffff]
   end
@@ -2243,7 +2162,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gvalue_in_with_modification' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_in_with_modification'
     gv = GObject::Value.wrap_ruby_value(42)
     GIMarshallingTests.gvalue_in_with_modification gv
     gv.get_value.must_equal 24
@@ -2264,7 +2182,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gvalue_int64_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_in'
     gv = GObject::Value.new
     gv.init GObject::TYPE_INT64
     gv.set_value 0x7fff_ffff_ffff_ffff
@@ -2273,7 +2190,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gvalue_int64_out' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_int64_out'
     gv = GIMarshallingTests.gvalue_int64_out
     gv.must_equal 0x7fff_ffff_ffff_ffff
   end
@@ -2284,7 +2200,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gvalue_out_caller_allocates' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates'
     res = GIMarshallingTests.gvalue_out_caller_allocates
     res.must_equal 42
   end
@@ -2481,8 +2396,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #int_one_in_utf8_two_in_one_allows_none' do
-    skip unless get_introspection_data('GIMarshallingTests',
-                                       'int_one_in_utf8_two_in_one_allows_none')
     GIMarshallingTests.int_one_in_utf8_two_in_one_allows_none 1, '2', '3'
     GIMarshallingTests.int_one_in_utf8_two_in_one_allows_none 1, nil, '3'
     pass
@@ -2524,8 +2437,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #int_two_in_utf8_two_in_with_allow_none' do
-    skip unless get_introspection_data('GIMarshallingTests',
-                                       'int_two_in_utf8_two_in_with_allow_none')
     GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, '3', '4'
     GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, nil, nil
     pass
@@ -2617,14 +2528,12 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #param_spec_out' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'param_spec_out'
     res = GIMarshallingTests.param_spec_out
     res.value_type.must_equal GObject::TYPE_STRING
     res.get_name.must_equal 'test-param'
   end
 
   it 'has a working function #param_spec_return' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'param_spec_return'
     res = GIMarshallingTests.param_spec_return
     res.value_type.must_equal GObject::TYPE_STRING
     res.get_name.must_equal 'test-param'
@@ -2944,7 +2853,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #utf8_as_uint8array_in' do
-    skip unless get_introspection_data 'GIMarshallingTests', 'utf8_as_uint8array_in'
     GIMarshallingTests.utf8_as_uint8array_in GIMarshallingTests::CONSTANT_UTF8.bytes.to_a
     pass
   end

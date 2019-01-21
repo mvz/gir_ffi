@@ -63,7 +63,7 @@ available under the name ending in plain `.so`. If GirFFI complains that it
 cannot find the library, try installing development packages for those
 libraries.
 
-GirFFI should work with gobject-introspection 1.32.0 and up.
+GirFFI should work with gobject-introspection 1.46.0 and up.
 
 On Debian and Ubuntu, installing `libgirepository1.0-1` and `gir1.2-glib-2.0`
 should be enough to use GirFFI in your application.

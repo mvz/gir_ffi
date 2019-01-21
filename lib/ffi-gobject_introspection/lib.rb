@@ -116,24 +116,35 @@ module GObjectIntrospection
     attach_function :g_arg_info_get_destroy, [:pointer], :int
     attach_function :g_arg_info_get_type, [:pointer], :pointer
 
-    # The values of ITypeTag were changed in an incompatible way between
-    # gobject-introspection version 0.9.0 and 0.9.1. Therefore, we need to
-    # retrieve the correct values before declaring the ITypeTag enum.
-    attach_function :tmp_type_tag_to_string, :g_type_tag_to_string, [:int], :string
-    type_tag_map = (0..31).map do |id|
-      sym = tmp_type_tag_to_string(id).to_sym
-      if sym == :unknown
-        nil
-      else
-        [sym, id]
-      end
-    end.compact.flatten
-    enum :ITypeTag, type_tag_map
+    # ITypeTag
+    enum :ITypeTag, [
+      :void,
+      :gboolean,
+      :gint8,
+      :guint8,
+      :gint16,
+      :guint16,
+      :gint32,
+      :guint32,
+      :gint64,
+      :guint64,
+      :gfloat,
+      :gdouble,
+      :GType,
+      :utf8,
+      :filename,
+      :array,
+      :interface,
+      :glist,
+      :gslist,
+      :ghash,
+      :error,
+      :gunichar
+    ]
 
-    # Now, attach g_type_tag_to_string again under its own name with an
-    # improved signature.
     attach_function :g_type_tag_to_string, [:ITypeTag], :string
 
+    # ITypeInfo
     enum :IArrayType, [
       :c,
       :array,

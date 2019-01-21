@@ -48,6 +48,8 @@ Metrics/BlockLength:
 # Be lenient with line length
 Metrics/LineLength:
   Max: 95
+  Exclude:
+    - 'test/**/*'
 
 # GObject has a lot of accessor method starting with get_ or set_
 Naming/AccessorMethodName:
@@ -73,6 +75,11 @@ Style/PercentLiteralDelimiters:
 # Allow explicit return with multiple return values
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
+
+# Allow compact procs in tests
+Style/Semicolon:
+  Exclude:
+    - 'test/**/*'
 
 # Prefer symbols to look like symbols
 Style/SymbolArray:

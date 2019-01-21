@@ -20,7 +20,6 @@ describe GirFFI::Builders::FunctionBuilder do
     describe 'for Regress:test_array_fixed_out_objects' do
       let(:function_info) { get_introspection_data 'Regress', 'test_array_fixed_out_objects' }
       it 'builds a correct definition' do
-        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.test_array_fixed_out_objects
             _v1 = FFI::MemoryPointer.new :pointer
@@ -50,7 +49,6 @@ describe GirFFI::Builders::FunctionBuilder do
     describe 'for methods taking a zero-terminated array with length argument' do
       let(:function_info) { get_method_introspection_data 'Regress', 'AnnotationObject', 'parse_args' }
       it 'builds a correct definition' do
-        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def parse_args(argv)
             argc = argv.nil? ? 0 : argv.length
@@ -124,7 +122,6 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates' }
 
       it 'creates a call to #get_value' do
-        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.gvalue_out_caller_allocates
             _v1 = GObject::Value.new
@@ -217,7 +214,6 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_introspection_data 'Regress', 'has_parameter_named_attrs' }
 
       it 'builds a correct definition' do
-        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def self.has_parameter_named_attrs(foo, attributes)
             _v1 = foo
@@ -236,7 +232,6 @@ describe GirFFI::Builders::FunctionBuilder do
       end
 
       it 'builds a correct definition' do
-        skip unless function_info
         code.must_equal <<-CODE.reset_indentation
           def method_int8_arg_and_out_callee(arg)
             _v1 = arg
@@ -396,7 +391,6 @@ describe GirFFI::Builders::FunctionBuilder do
         end
 
         it 'builds a correct definition including self.ref' do
-          skip unless function_info
           code.must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
