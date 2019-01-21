@@ -49,8 +49,7 @@ module GirFFI
     # @return [GObjectIntrospection::IPropertyInfo] The property's info
     #
     def self.find_property(name)
-      gir_ffi_builder.find_property name or
-        raise GirFFI::PropertyNotFoundError.new(name, self)
+      gir_ffi_builder.find_property name
     end
 
     #

@@ -799,15 +799,15 @@ describe GIMarshallingTests do
         instance.some_boxed_glist.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended('some-boxed-glist', [1, 2, 3])
+      it 'can be set with #set_property' do
+        instance.set_property('some-boxed-glist', [1, 2, 3])
         instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
       end
 
       it 'can be set with #some_boxed_glist=' do
         instance.some_boxed_glist = [1, 2, 3]
         instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
-        instance.get_property_extended('some-boxed-glist').to_a.must_equal [1, 2, 3]
+        instance.get_property('some-boxed-glist').to_a.must_equal [1, 2, 3]
       end
     end
 
@@ -852,14 +852,12 @@ describe GIMarshallingTests do
       end
 
       it 'can be set with #set_property' do
-        ba = GLib::ByteArray.new.append('some bytes')
-        instance.set_property 'some-byte-array', ba
+        instance.set_property 'some-byte-array', 'some bytes'
         instance.get_property('some-byte-array').to_string.must_equal 'some bytes'
       end
 
       it 'can be set with #some_byte_array=' do
-        ba = GLib::ByteArray.new.append('some bytes')
-        instance.some_byte_array = ba
+        instance.some_byte_array = 'some bytes'
         instance.some_byte_array.to_string.must_equal 'some bytes'
       end
     end
@@ -1065,8 +1063,8 @@ describe GIMarshallingTests do
         instance.some_strv.must_be :==, []
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended('some-strv', %w(foo bar))
+      it 'can be set with #set_property' do
+        instance.set_property('some-strv', %w(foo bar))
         instance.get_property('some-strv').must_be :==, %w(foo bar)
       end
 
