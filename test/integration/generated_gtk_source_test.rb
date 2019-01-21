@@ -2,16 +2,10 @@
 
 require 'gir_ffi_test_helper'
 
+GirFFI.setup :GtkSource
+
 # Tests behavior of objects in the generated GtkSource namespace.
 describe 'The generated GtkSource module' do
-  before do
-    begin
-      GirFFI.setup :GtkSource
-    rescue RuntimeError
-      skip 'GtkSource GIR not available'
-    end
-  end
-
   describe 'GtkSource::CompletionContext' do
     let(:instance) { GtkSource::CompletionContext.new }
 
