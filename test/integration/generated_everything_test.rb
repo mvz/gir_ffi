@@ -58,9 +58,7 @@ describe Everything do
   end
 
   it 'has a working function #const_return_gpointer' do
-    unless get_introspection_data 'Everything', 'const_return_gpointer'
-      skip 'Introduced in 1.47.1'
-    end
+    skip_below '1.47.1'
     _(Everything.const_return_gpointer).must_be :null?
   end
 
@@ -175,9 +173,7 @@ describe Everything do
   end
 
   it 'has a working function #one_outparam_gpointer' do
-    unless get_introspection_data 'Everything', 'one_outparam_gpointer'
-      skip 'Introduced in 1.47.1'
-    end
+    skip_below '1.47.1'
     _(Everything.one_outparam_gpointer).must_be :null?
   end
 
@@ -287,7 +283,7 @@ describe Everything do
   end
 
   it 'has a working function #oneparam_gpointer' do
-    skip 'Introduced in 1.47.1' unless get_introspection_data 'Everything', 'oneparam_gpointer'
+    skip_below '1.47.1'
     _(Everything.oneparam_gpointer(FFI::MemoryPointer.new(:int))).must_be_nil
   end
 
@@ -396,9 +392,7 @@ describe Everything do
   end
 
   it 'has a working function #passthrough_one_gpointer' do
-    unless get_introspection_data 'Everything', 'passthrough_one_gpointer'
-      skip 'Introduced in 1.47.1'
-    end
+    skip_below '1.47.1'
     ptr = FFI::MemoryPointer.new(:int)
     result = Everything.passthrough_one_gpointer(ptr)
     _(result).must_be :==, ptr

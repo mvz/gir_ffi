@@ -836,12 +836,7 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-byte-array' property" do
-      before do
-        unless get_property_introspection_data('GIMarshallingTests', 'PropertiesObject',
-                                               'some-byte-array')
-          skip 'Introduced in 1.57.2'
-        end
-      end
+      before { skip_below('1.57.2') }
 
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-byte-array')).must_be_nil

@@ -378,9 +378,7 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
       let(:arg_info) { function_info.args[0] }
 
-      before do
-        skip 'Introduced in 1.47.1' unless function_info
-      end
+      before { skip_below '1.47.1' }
 
       it 'has the correct value for #pre_conversion' do
         _(builder.pre_conversion).must_equal ['_v1 = FFI::MemoryPointer.new :pointer']
