@@ -14,5 +14,14 @@ module GLib
       len = data.bytesize
       self.class.wrap Lib.g_byte_array_append(to_ptr, bytes, len)
     end
+
+    def self.from(data)
+      case data
+      when self
+        data
+      else
+        self.new.append(data)
+      end
+    end
   end
 end

@@ -19,4 +19,10 @@ describe GLib::ByteArray do
     ba = ba.append 'abdc'
     assert_equal 'abdc', ba.to_string
   end
+
+  it 'can be created from a string' do
+    str = 'cdba'
+    ba = GLib::ByteArray.from str
+    ba.to_string.must_equal str
+  end
 end
