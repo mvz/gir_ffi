@@ -13,6 +13,7 @@ module GObjectIntrospection
     end
     ##
     build_array_method :values
+    build_finder_method :find_value, :n_values, :value
 
     def get_n_methods
       Lib.g_enum_info_get_n_methods self
