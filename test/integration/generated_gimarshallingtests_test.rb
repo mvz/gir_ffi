@@ -839,19 +839,34 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-byte-array' property" do
+      before do
+        unless get_property_introspection_data('GIMarshallingTests', 'PropertiesObject',
+                                               'some-byte-array')
+          skip 'Introduced in 1.57.2'
+        end
+      end
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        instance.get_property('some-byte-array').must_be_nil
       end
+
       it 'can be retrieved with #some_byte_array' do
-        skip 'Needs testing'
+        instance.some_byte_array.must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        ba = GLib::ByteArray.new.append('some bytes')
+        instance.set_property 'some-byte-array', ba
+        instance.get_property('some-byte-array').to_string.must_equal 'some bytes'
       end
+
       it 'can be set with #some_byte_array=' do
-        skip 'Needs testing'
+        ba = GLib::ByteArray.new.append('some bytes')
+        instance.some_byte_array = ba
+        instance.some_byte_array.to_string.must_equal 'some bytes'
       end
     end
+
     describe "its 'some-char' property" do
       it 'can be retrieved with #get_property' do
         instance.get_property('some-char').must_equal 0
