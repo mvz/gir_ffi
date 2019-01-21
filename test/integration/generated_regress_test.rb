@@ -412,6 +412,8 @@ describe Regress do
   end
 
   it 'has the constant FOO_FLAGS_SECOND_AND_THIRD' do
+    skip 'Introduced in 1.55.2' unless get_introspection_data('Regress',
+                                                              'FOO_FLAGS_SECOND_AND_THIRD')
     Regress::FOO_FLAGS_SECOND_AND_THIRD.must_equal 6
   end
 
@@ -1315,6 +1317,7 @@ describe Regress do
     end
 
     it 'has the member :value5' do
+      skip 'Introduced in 1.55.2' unless get_introspection_data('Regress', 'TestEnum').find_value(:value5)
       Regress::TestEnum[:value5].must_equal 49
     end
 
@@ -1504,6 +1507,8 @@ describe Regress do
     end
 
     it 'has a working method #emit_signal' do
+      skip 'Introduced in 1.57.2' unless get_method_introspection_data('Regress', 'TestInterface',
+                                                                       'emit_signal')
       a = nil
       instance = derived_klass.new
       GObject.signal_connect instance, 'interface-signal' do
@@ -1514,6 +1519,8 @@ describe Regress do
     end
 
     it "handles the 'interface-signal' signal" do
+      skip 'Introduced in 1.57.2' unless get_signal_introspection_data('Regress', 'TestInterface',
+                                                                       'interface-signal')
       skip 'Not implemented yet'
       a = nil
       instance = derived_klass.new
@@ -1619,7 +1626,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_inout_int' do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+      skip 'Introduced in 1.57.2' unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
       instance.signal_connect 'sig-with-inout-int' do |_obj, i, _ud|
         i + 1
       end
@@ -1673,6 +1680,8 @@ describe Regress do
     end
 
     it 'has a working method #name_conflict' do
+      skip 'Introduced in 1.53.4' unless get_method_introspection_data('Regress', 'TestObj',
+                                                                       'name_conflict')
       instance.name_conflict.must_be_nil
     end
 
@@ -2135,7 +2144,8 @@ describe Regress do
     end
 
     it "handles the 'sig-with-inout-int' signal" do
-      skip unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+      skip 'Introduced in 1.53.4' unless get_signal_introspection_data('Regress', 'TestObj',
+                                                                       'sig-with-inout-int')
       skip 'Not implemented yet'
       GObject.signal_connect instance, 'sig-with-inout-int' do |_obj, i, _ud|
         i + 2
