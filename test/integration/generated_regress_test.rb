@@ -247,16 +247,16 @@ describe Regress do
     end
 
     describe "its 'function-property' property" do
-      it 'can be retrieved with #get_property_extended' do
-        instance.get_property_extended('function-property').must_be_nil
+      it 'can be retrieved with #get_property' do
+        instance.get_property('function-property').must_be_nil
       end
 
       it 'can be retrieved with #function_property' do
         instance.function_property.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended('function-property', proc {})
+      it 'can be set with #set_property' do
+        instance.set_property('function-property', proc {})
         # AnnotationObject doesn't actually store stuff
         instance.function_property.must_be_nil
       end
@@ -264,7 +264,7 @@ describe Regress do
       it 'can be set with #function_property=' do
         instance.function_property = proc {}
         # AnnotationObject doesn't actually store stuff
-        instance.get_property_extended('function-property').must_be_nil
+        instance.get_property('function-property').must_be_nil
       end
     end
 
@@ -1908,15 +1908,15 @@ describe Regress do
         instance.hash_table.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended 'hash-table', 'foo' => -4, 'bar' => 83
+      it 'can be set with #set_property' do
+        instance.set_property 'hash-table', 'foo' => -4, 'bar' => 83
         instance.hash_table.to_hash.must_equal('foo' => -4, 'bar' => 83)
       end
 
       it 'can be set with #hash_table=' do
         instance.hash_table = { 'foo' => -4, 'bar' => 83 }
         instance.hash_table.to_hash.must_equal('foo' => -4, 'bar' => 83)
-        instance.get_property_extended('hash-table').to_hash.must_equal('foo' => -4,
+        instance.get_property('hash-table').to_hash.must_equal('foo' => -4,
                                                                         'bar' => 83)
       end
     end
@@ -1930,15 +1930,15 @@ describe Regress do
         instance.hash_table_old.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended 'hash-table-old', 'foo' => 34, 'bar' => -3
+      it 'can be set with #set_property' do
+        instance.set_property 'hash-table-old', 'foo' => 34, 'bar' => -3
         instance.hash_table_old.to_hash.must_equal('foo' => 34, 'bar' => -3)
       end
 
       it 'can be set with #hash_table_old=' do
         instance.hash_table_old = { 'foo' => 34, 'bar' => -3 }
         instance.hash_table_old.to_hash.must_equal('foo' => 34, 'bar' => -3)
-        instance.get_property_extended('hash-table-old').to_hash.must_equal('foo' => 34,
+        instance.get_property('hash-table-old').to_hash.must_equal('foo' => 34,
                                                                             'bar' => -3)
       end
     end
@@ -1965,44 +1965,44 @@ describe Regress do
     end
 
     describe "its 'list' property" do
-      it 'can be retrieved with #get_property_extended' do
-        instance.get_property_extended('list').must_be_nil
+      it 'can be retrieved with #get_property' do
+        instance.get_property('list').must_be_nil
       end
 
       it 'can be retrieved with #list' do
         instance.list.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended 'list', %w(foo bar)
+      it 'can be set with #set_property' do
+        instance.set_property 'list', %w(foo bar)
         instance.list.to_a.must_equal %w(foo bar)
       end
 
       it 'can be set with #list=' do
         instance.list = %w(foo bar)
         instance.list.to_a.must_equal %w(foo bar)
-        instance.get_property_extended('list').must_be :==, %w(foo bar)
+        instance.get_property('list').must_be :==, %w(foo bar)
       end
     end
 
     describe "its 'list-old' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property_extended('list-old').must_be_nil
+        instance.get_property('list-old').must_be_nil
       end
 
       it 'can be retrieved with #list_old' do
         instance.list_old.must_be_nil
       end
 
-      it 'can be set with #set_property_extended' do
-        instance.set_property_extended 'list-old', %w(foo bar)
+      it 'can be set with #set_property' do
+        instance.set_property 'list-old', %w(foo bar)
         instance.list_old.must_be :==, %w(foo bar)
       end
 
       it 'can be set with #list_old=' do
         instance.list_old = %w(foo bar)
         instance.list_old.must_be :==, %w(foo bar)
-        instance.get_property_extended('list-old').must_be :==, %w(foo bar)
+        instance.get_property('list-old').must_be :==, %w(foo bar)
       end
     end
 

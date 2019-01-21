@@ -34,6 +34,12 @@ describe GObject::Object do
       instance = GObject::Object.new
       proc { instance.get_property 'foo-bar' }.must_raise GirFFI::PropertyNotFoundError
     end
+
+    it 'raises an error for a property that does not exist' do
+      instance = GObject::Object.new
+      proc { instance.get_property 'foo-bar' }.
+        must_raise GirFFI::PropertyNotFoundError
+    end
   end
 
   describe '#get_property_extended' do
