@@ -455,9 +455,6 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #int8_out' do
-      # GLib minor version and GObjectIntrospection minor version should be in sync
-      skip 'Introspection data is not generated correctly' if GLib::MINOR_VERSION < 42
-
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
@@ -2642,9 +2639,6 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #param_spec_in_bool' do
-    # GLib minor version and GObjectIntrospection minor version should be in sync
-    skip 'param_spec_in_bool tests the wrong type' if GLib::MINOR_VERSION < 42
-
     ps = GObject.param_spec_boolean 'mybool', 'nick', 'blurb', true, :readable
     GIMarshallingTests.param_spec_in_bool ps
     pass
