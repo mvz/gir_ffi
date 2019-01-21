@@ -2,14 +2,6 @@ sudo: required
 dist: xenial
 language: ruby
 
-jdk:
-  - oraclejdk8
-  - openjdk8
-  - openjdk10
-
-env:
-  - JAVA_OPTS="$JAVA_OPTS --add-opens java.base/sun.nio.ch=ALL-UNNAMED"
-
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
@@ -17,9 +9,23 @@ before_install:
   - sudo apt-get install -y gir1.2-gstreamer-1.0
   - gem update --system
 
+rvm:
+  - 2.3
+  - 2.4
+  - 2.6
+  - ruby-head
+
 matrix:
   include:
     - rvm: jruby-9.1
+      script: bundle exec rake test:all
+    - rvm: jruby-9.2
+      script: bundle exec rake test:all
+    - rvm: jruby-head
+      script: bundle exec rake test:all
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: jruby-head
 
 bundler_args: --without local_development
 
