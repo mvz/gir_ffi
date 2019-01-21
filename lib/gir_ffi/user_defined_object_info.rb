@@ -37,6 +37,10 @@ module GirFFI
       nil
     end
 
+    def find_property(_property)
+      nil
+    end
+
     def parent_gtype
       @parent_gtype ||= GType.new(@klass.superclass.gtype)
     end

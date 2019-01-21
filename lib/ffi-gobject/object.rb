@@ -118,26 +118,31 @@ module GObject
     setup_instance_method! 'set_property'
 
     def get_property_extended(property_name)
-      value = get_property(property_name)
-      type_info = get_property_type property_name
-      property_value_post_conversion value, type_info
+      get_property(property_name)
     end
 
     def get_property_with_override(property_name)
       gvalue = gvalue_for_property property_name
       get_property_without_override property_name, gvalue
-      gvalue.get_value
+      value = gvalue.get_value
+
+      type_info = get_property_type property_name
+      value = property_value_post_conversion(value, type_info) if type_info
+
+      value
     end
 
     def set_property_extended(property_name, value)
-      type_info = get_property_type property_name
-      adjusted_value = property_value_pre_conversion(value, type_info)
-      set_property property_name, adjusted_value
+      set_property property_name, value
     end
 
     def set_property_with_override(property_name, value)
+      type_info = get_property_type property_name
+      value = property_value_pre_conversion(value, type_info) if type_info
+
       gvalue = gvalue_for_property(property_name)
       gvalue.set_value value
+
       set_property_without_override property_name, gvalue
     end
 
@@ -165,8 +170,7 @@ module GObject
     end
 
     def get_property_type(property_name)
-      prop = self.class.find_property(property_name)
-      prop.property_type
+      self.class.find_property(property_name)&.property_type
     end
 
     def gvalue_for_property(property_name)
@@ -175,8 +179,7 @@ module GObject
     end
 
     def property_gtype(property_name)
-      pspec = property_param_spec(property_name)
-      pspec.value_type
+      property_param_spec(property_name).value_type
     end
 
     def property_param_spec(property_name)
