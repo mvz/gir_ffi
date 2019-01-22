@@ -67,7 +67,6 @@ describe GObject do
     end
 
     it 'uses the n_params field for the length of param_types' do
-      field_info = get_field_introspection_data 'GObject', 'SignalQuery', 'param_types'
       gtype = GObject::Object.gtype
       signals = GObject.signal_list_ids gtype
       signal_query = GObject.signal_query signals.first

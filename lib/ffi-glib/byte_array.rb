@@ -20,7 +20,7 @@ module GLib
       when self
         data
       else
-        self.new.append(data)
+        new.append(data)
       end
     end
   end
