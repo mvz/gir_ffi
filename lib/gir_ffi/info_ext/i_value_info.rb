@@ -6,7 +6,7 @@ module GirFFI
     module IValueInfo
       def constant_name
         upcased_name = name.upcase
-        if upcased_name =~ /^[0-9]/
+        if /^[0-9]/.match?(upcased_name)
           "VALUE_#{upcased_name}"
         else
           upcased_name
