@@ -17,8 +17,6 @@ rvm:
 
 matrix:
   include:
-    - rvm: jruby-9.1
-      script: bundle exec rake test:all
     - rvm: jruby-9.2
       script: bundle exec rake test:all
     - rvm: jruby-head
