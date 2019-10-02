@@ -23,4 +23,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ICallbackInfo.send :include, GirFFI::InfoExt::ICallbackInfo
+GObjectIntrospection::ICallbackInfo.include GirFFI::InfoExt::ICallbackInfo

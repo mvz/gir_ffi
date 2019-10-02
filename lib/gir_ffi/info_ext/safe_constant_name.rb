@@ -18,8 +18,8 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ICallbackInfo.send :include, GirFFI::InfoExt::SafeConstantName
-GObjectIntrospection::IConstantInfo.send :include, GirFFI::InfoExt::SafeConstantName
-GObjectIntrospection::IRegisteredTypeInfo.send :include, GirFFI::InfoExt::SafeConstantName
-GObjectIntrospection::ISignalInfo.send :include, GirFFI::InfoExt::SafeConstantName
-GObjectIntrospection::IVFuncInfo.send :include, GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::ICallbackInfo.include GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::IConstantInfo.include GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::IRegisteredTypeInfo.include GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::ISignalInfo.include GirFFI::InfoExt::SafeConstantName
+GObjectIntrospection::IVFuncInfo.include GirFFI::InfoExt::SafeConstantName

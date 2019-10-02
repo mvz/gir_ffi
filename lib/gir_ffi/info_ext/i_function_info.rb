@@ -18,4 +18,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IFunctionInfo.send :include, GirFFI::InfoExt::IFunctionInfo
+GObjectIntrospection::IFunctionInfo.include GirFFI::InfoExt::IFunctionInfo

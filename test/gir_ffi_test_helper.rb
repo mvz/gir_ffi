@@ -81,4 +81,4 @@ module GirFFITestExtensions
   end
 end
 
-Minitest::Test.send :include, GirFFITestExtensions
+Minitest::Test.include GirFFITestExtensions

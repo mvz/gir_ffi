@@ -14,4 +14,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IFunctionInfo.send :include, GirFFI::InfoExt::SafeFunctionName
+GObjectIntrospection::IFunctionInfo.include GirFFI::InfoExt::SafeFunctionName

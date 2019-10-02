@@ -16,4 +16,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IFieldInfo.send :include, GirFFI::InfoExt::IFieldInfo
+GObjectIntrospection::IFieldInfo.include GirFFI::InfoExt::IFieldInfo

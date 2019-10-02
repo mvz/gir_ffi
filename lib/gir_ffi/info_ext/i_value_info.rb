@@ -22,4 +22,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IValueInfo.send :include, GirFFI::InfoExt::IValueInfo
+GObjectIntrospection::IValueInfo.include GirFFI::InfoExt::IValueInfo

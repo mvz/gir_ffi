@@ -60,4 +60,4 @@ module BaseTestExtensions
   end
 end
 
-Minitest::Test.send :include, BaseTestExtensions
+Minitest::Test.include BaseTestExtensions

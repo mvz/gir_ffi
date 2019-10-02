@@ -31,4 +31,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ISignalInfo.send :include, GirFFI::InfoExt::ISignalInfo
+GObjectIntrospection::ISignalInfo.include GirFFI::InfoExt::ISignalInfo

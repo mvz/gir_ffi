@@ -15,4 +15,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IPropertyInfo.send :include, GirFFI::InfoExt::IPropertyInfo
+GObjectIntrospection::IPropertyInfo.include GirFFI::InfoExt::IPropertyInfo

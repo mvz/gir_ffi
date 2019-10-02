@@ -49,4 +49,4 @@ module IntrospectionTestExtensions
   end
 end
 
-Minitest::Test.send :include, IntrospectionTestExtensions
+Minitest::Test.include IntrospectionTestExtensions
