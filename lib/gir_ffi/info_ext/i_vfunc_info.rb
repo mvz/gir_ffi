@@ -26,4 +26,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IVFuncInfo.send :include, GirFFI::InfoExt::IVFuncInfo
+GObjectIntrospection::IVFuncInfo.include GirFFI::InfoExt::IVFuncInfo

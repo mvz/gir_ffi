@@ -35,7 +35,7 @@ module GirFFI
       end
 
       def base_layout_specification
-        fields.map(&:layout_specification).flatten(1)
+        fields.flat_map(&:layout_specification)
       end
 
       def klass

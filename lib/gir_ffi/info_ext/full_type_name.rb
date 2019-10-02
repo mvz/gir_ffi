@@ -13,6 +13,6 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ICallbackInfo.send :include, GirFFI::InfoExt::FullTypeName
-GObjectIntrospection::IConstantInfo.send :include, GirFFI::InfoExt::FullTypeName
-GObjectIntrospection::IRegisteredTypeInfo.send :include, GirFFI::InfoExt::FullTypeName
+GObjectIntrospection::ICallbackInfo.include GirFFI::InfoExt::FullTypeName
+GObjectIntrospection::IConstantInfo.include GirFFI::InfoExt::FullTypeName
+GObjectIntrospection::IRegisteredTypeInfo.include GirFFI::InfoExt::FullTypeName

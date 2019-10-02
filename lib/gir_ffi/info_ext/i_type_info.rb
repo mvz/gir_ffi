@@ -220,4 +220,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ITypeInfo.send :include, GirFFI::InfoExt::ITypeInfo
+GObjectIntrospection::ITypeInfo.include GirFFI::InfoExt::ITypeInfo

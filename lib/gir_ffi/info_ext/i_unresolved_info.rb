@@ -11,4 +11,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::IUnresolvedInfo.send :include, GirFFI::InfoExt::IUnresolvedInfo
+GObjectIntrospection::IUnresolvedInfo.include GirFFI::InfoExt::IUnresolvedInfo

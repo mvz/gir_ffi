@@ -11,4 +11,4 @@ module GirFFI
   end
 end
 
-GObjectIntrospection::ICallableInfo.send :include, GirFFI::InfoExt::ICallableInfo
+GObjectIntrospection::ICallableInfo.include GirFFI::InfoExt::ICallableInfo

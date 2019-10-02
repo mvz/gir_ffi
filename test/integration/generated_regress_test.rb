@@ -379,7 +379,9 @@ describe Regress do
     let(:instance) { Regress::AnonymousUnionAndStruct.new }
 
     before do
-      skip 'Introduced in 1.49.1' unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
+      unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
+        skip 'Introduced in 1.49.1'
+      end
     end
 
     it 'has a writable field x' do
@@ -1317,7 +1319,9 @@ describe Regress do
     end
 
     it 'has the member :value5' do
-      skip 'Introduced in 1.55.2' unless get_introspection_data('Regress', 'TestEnum').find_value(:value5)
+      unless get_introspection_data('Regress', 'TestEnum').find_value(:value5)
+        skip 'Introduced in 1.55.2'
+      end
       Regress::TestEnum[:value5].must_equal 49
     end
 
@@ -1626,7 +1630,9 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_inout_int' do
-      skip 'Introduced in 1.57.2' unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+      unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
+        skip 'Introduced in 1.57.2'
+      end
       instance.signal_connect 'sig-with-inout-int' do |_obj, i, _ud|
         i + 1
       end
@@ -3096,7 +3102,9 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_out' do
-    skip 'Introduced in 1.47.92' unless get_introspection_data 'Regress', 'test_array_struct_out'
+    unless get_introspection_data 'Regress', 'test_array_struct_out'
+      skip 'Introduced in 1.47.92'
+    end
     result = Regress.test_array_struct_out
     result.map(&:some_int).must_equal [22, 33, 44]
   end
@@ -3660,7 +3668,9 @@ describe Regress do
   end
 
   it 'has a working function #test_return_allow_none' do
-    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_return_allow_none'
+    unless get_introspection_data 'Regress', 'test_return_allow_none'
+      skip 'Introduced in 1.47.1'
+    end
     result = Regress.test_return_allow_none
     result.must_be_nil
   end
