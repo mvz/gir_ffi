@@ -10,9 +10,7 @@ describe GObjectIntrospection::ITypeInfo do
     let(:type_info) { arg_info.argument_type }
 
     it 'raises an error' do
-      proc do
-        type_info.name
-      end.must_raise RuntimeError
+      _(proc { type_info.name }).must_raise RuntimeError
     end
   end
 
@@ -24,8 +22,8 @@ describe GObjectIntrospection::ITypeInfo do
 
       it 'returns an IUnresolvableInfo object' do
         result = type_info.interface
-        result.info_type.must_equal :unresolved
-        result.must_be_kind_of GObjectIntrospection::IUnresolvedInfo
+        _(result.info_type).must_equal :unresolved
+        _(result).must_be_kind_of GObjectIntrospection::IUnresolvedInfo
       end
     end
   end

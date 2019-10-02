@@ -41,6 +41,6 @@ describe GObjectIntrospection::Strv do
   end
 
   it 'includes Enumerable' do
-    GObjectIntrospection::Strv.must_include Enumerable
+    _(GObjectIntrospection::Strv).must_include Enumerable
   end
 end

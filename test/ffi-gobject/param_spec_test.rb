@@ -16,17 +16,17 @@ describe GObject::ParamSpec do
     it 'increases the ref count' do
       old = pspec_struct[:ref_count]
       pspec.ref
-      pspec_struct[:ref_count].must_equal old + 1
+      _(pspec_struct[:ref_count]).must_equal old + 1
     end
   end
 
   describe '#accessor_name' do
     it 'returns a safe ruby method name' do
-      pspec.accessor_name.must_equal 'foo_bar'
+      _(pspec.accessor_name).must_equal 'foo_bar'
     end
   end
 
   it 'cannot be instantiated directly' do
-    proc { GObject::ParamSpec.new }.must_raise NoMethodError
+    _(proc { GObject::ParamSpec.new }).must_raise NoMethodError
   end
 end

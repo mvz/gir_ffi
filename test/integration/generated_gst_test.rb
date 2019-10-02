@@ -14,11 +14,11 @@ describe 'the generated Gst module' do
       a = nil
       instance.signal_connect('handoff') { a = 10 }
       GObject.signal_emit(instance, 'handoff')
-      a.must_equal 10
+      _(a).must_equal 10
     end
 
     it 'correctly fetches the name' do
-      instance.name.must_equal 'sink'
+      _(instance.name).must_equal 'sink'
     end
   end
 
@@ -27,8 +27,8 @@ describe 'the generated Gst module' do
 
     it 'correctly fetches the name' do
       skip 'Audio sink was not created' unless instance
-      instance.get_name.must_equal 'audiosink'
-      instance.name.must_equal 'audiosink'
+      _(instance.get_name).must_equal 'audiosink'
+      _(instance.name).must_equal 'audiosink'
     end
   end
 end

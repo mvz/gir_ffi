@@ -13,7 +13,7 @@ describe GirFFI::Builders::ModuleBuilder do
 
       expect(gir).to receive(:find_by_name).with('Foo', 'Bar').and_return 'gir info'
 
-      builder.find_namespaced_class_info(:Bar).must_equal 'gir info'
+      _(builder.find_namespaced_class_info(:Bar)).must_equal 'gir info'
     end
 
     it 'checks downcased class name as an alternative' do
@@ -24,7 +24,7 @@ describe GirFFI::Builders::ModuleBuilder do
       expect(gir).to receive(:find_by_name).with('Foo', 'Bar').and_return nil
       expect(gir).to receive(:find_by_name).with('Foo', 'bar').and_return 'gir info'
 
-      builder.find_namespaced_class_info(:Bar).must_equal 'gir info'
+      _(builder.find_namespaced_class_info(:Bar)).must_equal 'gir info'
     end
 
     it 'raises a clear error if the named class does not exist' do

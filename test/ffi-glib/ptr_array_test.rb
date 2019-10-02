@@ -50,7 +50,7 @@ describe GLib::PtrArray do
   end
 
   it 'includes Enumerable' do
-    GLib::PtrArray.must_include Enumerable
+    _(GLib::PtrArray).must_include Enumerable
   end
 
   it 'has a working #to_a method' do
@@ -73,40 +73,40 @@ describe GLib::PtrArray do
     it 'returns true when comparing to an array with the same elements' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
 
-      arr.must_be :==, %w(1 2 3)
+      _(arr).must_be :==, %w(1 2 3)
     end
 
     it 'returns false when comparing to an array with different elements' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
 
-      arr.wont_be :==, %w(1 2)
+      _(arr).wont_be :==, %w(1 2)
     end
 
     it 'returns true when comparing to a GPtrArray with the same elements' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
       other = GLib::PtrArray.from :utf8, %w(1 2 3)
 
-      arr.must_be :==, other
+      _(arr).must_be :==, other
     end
 
     it 'returns false when comparing to a GPtrArray with different elements' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
       other = GLib::PtrArray.from :utf8, %w(1 2)
 
-      arr.wont_be :==, other
+      _(arr).wont_be :==, other
     end
   end
 
   describe '#index' do
     it 'returns the correct element' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
-      arr.index(1).must_equal '2'
+      _(arr.index(1)).must_equal '2'
     end
 
     it 'raises an error if the index is out of bounds' do
       arr = GLib::PtrArray.from :utf8, %w(1 2 3)
-      proc { arr.index(16) }.must_raise IndexError
-      proc { arr.index(-1) }.must_raise IndexError
+      _(proc { arr.index(16) }).must_raise IndexError
+      _(proc { arr.index(-1) }).must_raise IndexError
     end
   end
 end

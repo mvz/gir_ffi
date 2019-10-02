@@ -16,12 +16,12 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
     let(:callback_info) { get_introspection_data('GIMarshallingTests', 'CallbackIntInt') }
 
     it 'has no statements in #post_conversion' do
-      builder.post_conversion.must_equal []
+      _(builder.post_conversion).must_equal []
     end
 
     it 'returns the result of the callback directly' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v1'
+      _(builder.capture_variable_name).must_equal '_v1'
+      _(builder.return_value_name).must_equal '_v1'
     end
   end
 
@@ -32,12 +32,12 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
     end
 
     it 'has no statements in #post_conversion' do
-      builder.post_conversion.must_equal []
+      _(builder.post_conversion).must_equal []
     end
 
     it 'returns nothing' do
-      builder.capture_variable_name.must_be_nil
-      builder.return_value_name.must_be_nil
+      _(builder.capture_variable_name).must_be_nil
+      _(builder.return_value_name).must_be_nil
     end
   end
 
@@ -50,13 +50,13 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
 
     it 'converts the result' do
       # Ensure variable names are generated in order
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v2 = GIMarshallingTests::Enum.to_int(_v1)']
+      _(builder.capture_variable_name).must_equal '_v1'
+      _(builder.post_conversion).must_equal ['_v2 = GIMarshallingTests::Enum.to_int(_v1)']
     end
 
     it 'returns the result of the conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      _(builder.capture_variable_name).must_equal '_v1'
+      _(builder.return_value_name).must_equal '_v2'
     end
   end
 
@@ -69,13 +69,13 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
 
     it 'increases the refcount of the result and converts it to a pointer' do
       # Ensure variable names are generated in order
-      builder.capture_variable_name.must_equal '_v1'
-      builder.post_conversion.must_equal ['_v1.ref', '_v2 = GObject::Object.from(_v1).to_ptr']
+      _(builder.capture_variable_name).must_equal '_v1'
+      _(builder.post_conversion).must_equal ['_v1.ref', '_v2 = GObject::Object.from(_v1).to_ptr']
     end
 
     it 'returns the result of the conversion' do
-      builder.capture_variable_name.must_equal '_v1'
-      builder.return_value_name.must_equal '_v2'
+      _(builder.capture_variable_name).must_equal '_v1'
+      _(builder.return_value_name).must_equal '_v2'
     end
   end
 end

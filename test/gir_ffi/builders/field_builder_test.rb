@@ -16,7 +16,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v2
         end
       CODE
-      instance.getter_def.must_equal expected
+      _(instance.getter_def).must_equal expected
     end
 
     it 'creates the right setter method' do
@@ -27,7 +27,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v1.put_int8 #{field_info.offset}, _v2
         end
       CODE
-      instance.setter_def.must_equal expected
+      _(instance.setter_def).must_equal expected
     end
   end
 
@@ -42,7 +42,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v3
         end
       CODE
-      instance.getter_def.must_equal expected
+      _(instance.getter_def).must_equal expected
     end
 
     it 'creates the right setter method' do
@@ -53,7 +53,7 @@ describe GirFFI::Builders::FieldBuilder do
           Regress::TestSimpleBoxedA.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
-      instance.setter_def.must_equal expected
+      _(instance.setter_def).must_equal expected
     end
   end
 
@@ -67,7 +67,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v2
         end
       CODE
-      instance.getter_def.must_equal expected
+      _(instance.getter_def).must_equal expected
     end
   end
 
@@ -82,7 +82,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v3
         end
       CODE
-      instance.getter_def.must_equal expected
+      _(instance.getter_def).must_equal expected
     end
 
     it 'creates the right setter method' do
@@ -94,7 +94,7 @@ describe GirFFI::Builders::FieldBuilder do
           GirFFI::SizedArray.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
-      instance.setter_def.must_equal expected
+      _(instance.setter_def).must_equal expected
     end
   end
 
@@ -108,7 +108,7 @@ describe GirFFI::Builders::FieldBuilder do
           GObject::ClassInitFunc.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
       CODE
-      instance.setter_def.must_equal expected
+      _(instance.setter_def).must_equal expected
     end
   end
 
@@ -128,7 +128,7 @@ describe GirFFI::Builders::FieldBuilder do
           _v5
         end
       CODE
-      instance.getter_def.must_equal expected
+      _(instance.getter_def).must_equal expected
     end
   end
 end

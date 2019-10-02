@@ -23,21 +23,21 @@ describe 'The generated WarnLib module' do
 
     it 'has a working method #do_boo' do
       instance.do_boo 42, nil
-      @result.must_equal 'boo42'
+      _(@result).must_equal 'boo42'
     end
 
     it 'has a working method #do_moo' do
       instance.do_moo 23, nil
-      @result.must_equal 'moo23'
+      _(@result).must_equal 'moo23'
     end
   end
 
   it 'has a working function #throw_unpaired' do
-    proc { WarnLib.throw_unpaired }.must_raise GirFFI::GLibError
+    _(proc { WarnLib.throw_unpaired }).must_raise GirFFI::GLibError
   end
 
   it 'has a working function #unpaired_error_quark' do
     result = WarnLib.unpaired_error_quark
-    GLib.quark_to_string(result).must_equal 'warnlib-unpaired-error'
+    _(GLib.quark_to_string(result)).must_equal 'warnlib-unpaired-error'
   end
 end

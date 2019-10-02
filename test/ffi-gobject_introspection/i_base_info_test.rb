@@ -7,7 +7,7 @@ describe GObjectIntrospection::IBaseInfo do
   describe '#initialize' do
     it 'raises an error if a null pointer is passed' do
       expect(ptr = Object.new).to receive(:null?).and_return true
-      proc { described_class.new ptr }.must_raise ArgumentError
+      _(proc { described_class.new ptr }).must_raise ArgumentError
     end
 
     it 'raises no error if a non-null pointer is passed' do
@@ -22,11 +22,11 @@ describe GObjectIntrospection::IBaseInfo do
     let(:other_info) { get_introspection_data 'Regress', 'test_value_return' }
 
     it 'returns true for a deprecated item' do
-      deprecated_info.must_be :deprecated?
+      _(deprecated_info).must_be :deprecated?
     end
 
     it 'returns false for a non-deprecated item' do
-      other_info.wont_be :deprecated?
+      _(other_info).wont_be :deprecated?
     end
   end
 

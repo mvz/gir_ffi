@@ -19,7 +19,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
 
@@ -32,7 +32,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
 
@@ -47,7 +47,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
 
@@ -65,7 +65,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
 
@@ -87,7 +87,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
 
@@ -110,7 +110,7 @@ describe GirFFI::Builders::CallbackBuilder do
         end
         CODE
 
-        builder.mapping_method_definition.must_equal expected
+        _(builder.mapping_method_definition).must_equal expected
       end
     end
   end

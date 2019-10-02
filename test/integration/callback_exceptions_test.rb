@@ -18,7 +18,7 @@ describe 'An exception in a callback' do
 
     describe 'when the signal is emitted synchronously' do
       it 'raises an error' do
-        proc { GObject.signal_emit object, 'test' }.must_raise CallbackTestException
+        _(proc { GObject.signal_emit object, 'test' }).must_raise CallbackTestException
       end
     end
 
@@ -34,9 +34,7 @@ describe 'An exception in a callback' do
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 500 do
           main_loop.quit
         end
-        proc do
-          main_loop.run
-        end.must_raise CallbackTestException
+        _(proc { main_loop.run }).must_raise CallbackTestException
       end
     end
   end
@@ -54,9 +52,7 @@ describe 'An exception in a callback' do
           main_loop.quit
         end
 
-        proc do
-          main_loop.run
-        end.must_raise CallbackTestException
+        _(proc { main_loop.run }).must_raise CallbackTestException
       end
     end
   end

@@ -8,7 +8,7 @@ describe 'The generated Secret module' do
   describe 'Secret::Schema' do
     it 'has a working constructor' do
       instance = Secret::Schema.new('foo', :none, 'bar' => :string)
-      instance.must_be_instance_of Secret::Schema
+      _(instance).must_be_instance_of Secret::Schema
     end
   end
 end

@@ -17,7 +17,7 @@ describe GObject::ObjectClass do
       props = object_class.list_properties
       prop_names = props.map(&:get_name)
 
-      prop_names.sort.must_equal expected_props.sort
+      _(prop_names.sort).must_equal expected_props.sort
     end
   end
 
@@ -25,7 +25,7 @@ describe GObject::ObjectClass do
     it 'returns the correct GType' do
       obj = GIMarshallingTests::OverridesObject.new
       object_class = GObject.object_class_from_instance obj
-      object_class.gtype.must_equal GIMarshallingTests::OverridesObject.gtype
+      _(object_class.gtype).must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end
 end

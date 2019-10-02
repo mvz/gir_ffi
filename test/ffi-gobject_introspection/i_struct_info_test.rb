@@ -7,17 +7,17 @@ describe GObjectIntrospection::IStructInfo do
 
   describe '#find_method' do
     it 'finds a method by name string' do
-      object_info.find_method('new_simple').wont_be_nil
+      _(object_info.find_method('new_simple')).wont_be_nil
     end
 
     it 'finds a method by name symbol' do
-      object_info.find_method(:new_simple).wont_be_nil
+      _(object_info.find_method(:new_simple)).wont_be_nil
     end
   end
 
   describe '#type_name' do
     it 'returns the correct name' do
-      object_info.type_name.must_equal 'GClosure'
+      _(object_info.type_name).must_equal 'GClosure'
     end
   end
 end

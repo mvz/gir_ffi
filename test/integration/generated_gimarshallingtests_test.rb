@@ -32,19 +32,19 @@ describe GIMarshallingTests do
 
     it 'has a writable field string_' do
       instance.string_ = 'foobar'
-      instance.string_.must_equal 'foobar'
+      _(instance.string_).must_equal 'foobar'
     end
 
     it 'has a writable field g_strv' do
-      instance.g_strv.must_be :==, []
+      _(instance.g_strv).must_be :==, []
       instance.g_strv = %w(foo bar)
-      instance.g_strv.must_be :==, %w(foo bar)
+      _(instance.g_strv).must_be :==, %w(foo bar)
     end
 
     it 'creates an instance using #new' do
       bx = GIMarshallingTests::BoxedStruct.new
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
-      bx.struct.must_be :owned?
+      _(bx.struct).must_be :owned?
     end
 
     it 'has a working method #inv' do
@@ -56,26 +56,26 @@ describe GIMarshallingTests do
     it 'has a working function #inout' do
       bx = GIMarshallingTests::BoxedStruct.new
       bx.long_ = 42
-      bx.struct.must_be :owned?
+      _(bx.struct).must_be :owned?
 
       res = GIMarshallingTests::BoxedStruct.inout bx
-      bx.struct.must_be :owned?
-      res.struct.must_be :owned?
+      _(bx.struct).must_be :owned?
+      _(res.struct).must_be :owned?
 
       assert_equal 0, res.long_
     end
 
     it 'has a working function #out' do
       res = GIMarshallingTests::BoxedStruct.out
-      res.struct.must_be :owned?
+      _(res.struct).must_be :owned?
       assert_equal 42, res.long_
     end
 
     it 'has a working function #returnv' do
       res = GIMarshallingTests::BoxedStruct.returnv
-      res.struct.must_be :owned?
+      _(res.struct).must_be :owned?
       assert_equal 42, res.long_
-      res.g_strv.must_be :==, %w(0 1 2)
+      _(res.g_strv).must_be :==, %w(0 1 2)
     end
   end
 
@@ -84,7 +84,7 @@ describe GIMarshallingTests do
   end
 
   it 'has the constant CONSTANT_GERROR_DEBUG_MESSAGE' do
-    GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE.must_equal(
+    _(GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE).must_equal(
       'we got an error, life is shit')
   end
 
@@ -151,17 +151,17 @@ describe GIMarshallingTests do
 
     it 'has a working function #inout' do
       result = GIMarshallingTests::Flags.inout value2: true
-      result.must_equal(value1: true)
+      _(result).must_equal(value1: true)
     end
 
     it 'has a working function #out' do
       result = GIMarshallingTests::Flags.out
-      result.must_equal(value2: true)
+      _(result).must_equal(value2: true)
     end
 
     it 'has a working function #returnv' do
       result = GIMarshallingTests::Flags.returnv
-      result.must_equal(value2: true)
+      _(result).must_equal(value2: true)
     end
   end
 
@@ -184,17 +184,17 @@ describe GIMarshallingTests do
 
     it 'has a working function #inout' do
       result = GIMarshallingTests::GEnum.inout :value3
-      result.must_equal :value1
+      _(result).must_equal :value1
     end
 
     it 'has a working function #out' do
       result = GIMarshallingTests::GEnum.out
-      result.must_equal :value3
+      _(result).must_equal :value3
     end
 
     it 'has a working function #returnv' do
       result = GIMarshallingTests::GEnum.returnv
-      result.must_equal :value3
+      _(result).must_equal :value3
     end
   end
 
@@ -205,7 +205,7 @@ describe GIMarshallingTests do
         info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.test_int8_in 8
-      derived_instance.int.must_equal 8
+      _(derived_instance.int).must_equal 8
     end
   end
 
@@ -224,7 +224,7 @@ describe GIMarshallingTests do
         }
       end
       derived_instance.test_variant_array_in [GLib::Variant.new_byte(42)]
-      derived_instance.int.must_equal 42
+      _(derived_instance.int).must_equal 42
     end
   end
 
@@ -232,7 +232,7 @@ describe GIMarshallingTests do
     it 'has a working method #get_as_interface' do
       obj = GIMarshallingTests::InterfaceImpl.new []
       result = obj.get_as_interface
-      result.must_be_kind_of GIMarshallingTests::Interface
+      _(result).must_be_kind_of GIMarshallingTests::Interface
     end
   end
 
@@ -244,7 +244,7 @@ describe GIMarshallingTests do
       new_struct = GIMarshallingTests::SimpleStruct.new
       new_struct.int8 = 42
       instance.simple_struct = new_struct
-      instance.simple_struct.int8.must_equal 42
+      _(instance.simple_struct.int8).must_equal 42
     end
   end
 
@@ -270,11 +270,11 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::NotSimpleStruct.new }
 
     it 'has a writable field pointer' do
-      instance.pointer.must_be_nil
+      _(instance.pointer).must_be_nil
       nested = GIMarshallingTests::NestedStruct.new
       nested.simple_struct.int8 = 23
       instance.pointer = nested
-      instance.pointer.simple_struct.int8.must_equal 23
+      _(instance.pointer.simple_struct.int8).must_equal 23
     end
   end
 
@@ -290,58 +290,58 @@ describe GIMarshallingTests do
     end
 
     it 'fails to create an instance using #new_fail' do
-      proc { GIMarshallingTests::Object.new_fail 42 }.must_raise GirFFI::GLibError
+      _(proc { GIMarshallingTests::Object.new_fail 42 }).must_raise GirFFI::GLibError
     end
 
     it 'has a working function #full_inout' do
       ob = GIMarshallingTests::Object.new 42
-      object_ref_count(ob).must_equal 1
+      _(object_ref_count(ob)).must_equal 1
 
       res = GIMarshallingTests::Object.full_inout ob
 
-      object_ref_count(ob).must_equal 1
-      object_ref_count(res).must_equal 1
+      _(object_ref_count(ob)).must_equal 1
+      _(object_ref_count(res)).must_equal 1
 
-      res.must_be_instance_of GIMarshallingTests::Object
-      res.int.must_equal 0
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(res.int).must_equal 0
     end
 
     it 'has a working function #full_out' do
       res = GIMarshallingTests::Object.full_out
-      res.must_be_instance_of GIMarshallingTests::Object
-      object_ref_count(res).must_equal 1
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(object_ref_count(res)).must_equal 1
     end
 
     it 'has a working function #full_return' do
       res = GIMarshallingTests::Object.full_return
-      res.must_be_instance_of GIMarshallingTests::Object
-      object_ref_count(res).must_equal 1
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(object_ref_count(res)).must_equal 1
     end
 
     it 'has a working function #none_inout' do
       ob = GIMarshallingTests::Object.new 42
-      object_ref_count(ob).must_equal 1
+      _(object_ref_count(ob)).must_equal 1
 
       res = GIMarshallingTests::Object.none_inout ob
 
-      object_ref_count(ob).must_equal 1
-      object_ref_count(res).must_equal 2
+      _(object_ref_count(ob)).must_equal 1
+      _(object_ref_count(res)).must_equal 2
 
-      res.must_be_instance_of GIMarshallingTests::Object
-      ob.int.must_equal 42
-      res.int.must_equal 0
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(ob.int).must_equal 42
+      _(res.int).must_equal 0
     end
 
     it 'has a working function #none_out' do
       res = GIMarshallingTests::Object.none_out
-      res.must_be_instance_of GIMarshallingTests::Object
-      object_ref_count(res).must_equal 2
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(object_ref_count(res)).must_equal 2
     end
 
     it 'has a working function #none_return' do
       res = GIMarshallingTests::Object.none_return
-      res.must_be_instance_of GIMarshallingTests::Object
-      object_ref_count(res).must_equal 2
+      _(res).must_be_instance_of GIMarshallingTests::Object
+      _(object_ref_count(res)).must_equal 2
     end
 
     it 'has a working function #static_method' do
@@ -365,11 +365,11 @@ describe GIMarshallingTests do
       end
       derived_instance.call_vfunc_with_callback
 
-      user_data.must_equal 0xdeadbeef
+      _(user_data).must_equal 0xdeadbeef
       # TODO: Change implementation of CallbackBase so that this becomes an
       # instance of GIMarshallingTests::CallbackIntInt
-      cb.must_be_instance_of FFI::Function
-      result.must_equal 42
+      _(cb).must_be_instance_of FFI::Function
+      _(result).must_equal 42
     end
 
     it 'has a working method #full_in' do
@@ -385,8 +385,8 @@ describe GIMarshallingTests do
       end
       result = derived_instance.
         get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.gtype
-      result.must_equal [1, false]
-      obj.must_be_instance_of GIMarshallingTests::Object
+      _(result).must_equal [1, false]
+      _(obj).must_be_instance_of GIMarshallingTests::Object
     end
 
     it 'has a working method #get_ref_info_for_vfunc_in_object_transfer_none' do
@@ -398,9 +398,9 @@ describe GIMarshallingTests do
       end
       result = derived_instance.
         get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
-      object_ref_count(obj).must_be :>, 0
-      result.must_equal [2, false]
-      obj.must_be_instance_of GIMarshallingTests::Object
+      _(object_ref_count(obj)).must_be :>, 0
+      _(result).must_equal [2, false]
+      _(obj).must_be_instance_of GIMarshallingTests::Object
     end
 
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_full' do
@@ -411,9 +411,9 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_full
-      object_ref_count(obj).must_be :>, 0
+      _(object_ref_count(obj)).must_be :>, 0
       # TODO: Check desired result
-      result.must_equal [2, false]
+      _(result).must_equal [2, false]
     end
 
     it 'has a working method #get_ref_info_for_vfunc_out_object_transfer_none' do
@@ -423,7 +423,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_out_object_transfer_none
-      result.must_equal [1, false]
+      _(result).must_equal [1, false]
     end
 
     it 'has a working method #get_ref_info_for_vfunc_return_object_transfer_full' do
@@ -433,7 +433,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_full
-      result.must_equal [2, false]
+      _(result).must_equal [2, false]
     end
 
     it 'has a working method #get_ref_info_for_vfunc_return_object_transfer_none' do
@@ -443,7 +443,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.get_ref_info_for_vfunc_return_object_transfer_none
-      result.must_equal [1, false]
+      _(result).must_equal [1, false]
     end
 
     it 'has a working method #int8_in' do
@@ -451,7 +451,7 @@ describe GIMarshallingTests do
         info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.int8_in 23
-      derived_instance.int.must_equal 23
+      _(derived_instance.int).must_equal 23
     end
 
     it 'has a working method #int8_out' do
@@ -459,7 +459,7 @@ describe GIMarshallingTests do
         info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
 
-      derived_instance.int8_out.must_equal 42
+      _(derived_instance.int8_out).must_equal 42
     end
 
     it 'has a working method #method' do
@@ -474,17 +474,17 @@ describe GIMarshallingTests do
 
     it 'has a working method #method_array_inout' do
       res = instance.method_array_inout [-1, 0, 1, 2]
-      res.must_be :==, [-2, -1, 0, 1, 2]
+      _(res).must_be :==, [-2, -1, 0, 1, 2]
     end
 
     it 'has a working method #method_array_out' do
       res = instance.method_array_out
-      res.must_be :==, [-1, 0, 1, 2]
+      _(res).must_be :==, [-1, 0, 1, 2]
     end
 
     it 'has a working method #method_array_return' do
       res = instance.method_array_return
-      res.must_be :==, [-1, 0, 1, 2]
+      _(res).must_be :==, [-1, 0, 1, 2]
     end
 
     it 'has a working method #method_int8_arg_and_out_callee' do
@@ -494,7 +494,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.method_int8_arg_and_out_callee 32
-      result.must_equal 64
+      _(result).must_equal 64
     end
 
     it 'has a working method #method_int8_arg_and_out_caller' do
@@ -504,7 +504,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.method_int8_arg_and_out_caller 32
-      result.must_equal 64
+      _(result).must_equal 64
     end
 
     it 'has a working method #method_int8_in' do
@@ -512,21 +512,21 @@ describe GIMarshallingTests do
         info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.method_int8_in 108
-      derived_instance.int.must_equal 108
+      _(derived_instance.int).must_equal 108
     end
 
     it 'has a working method #method_int8_out' do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
-      derived_instance.method_int8_out.must_equal 42
+      _(derived_instance.method_int8_out).must_equal 42
     end
 
     it 'has a working method #method_str_arg_out_ret' do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :method_str_arg_out_ret, proc { |_obj, arg| [arg, 42] }
       end
-      derived_instance.method_str_arg_out_ret('foo').must_equal ['foo', 42]
+      _(derived_instance.method_str_arg_out_ret('foo')).must_equal ['foo', 42]
     end
 
     it 'has a working method #method_variant_array_in' do
@@ -557,10 +557,10 @@ describe GIMarshallingTests do
       end
       result = derived_instance.vfunc_array_out_parameter
       arr = result.to_a
-      arr.length.must_equal 3
-      arr[0].must_be_close_to 1.1
-      arr[1].must_be_close_to 2.2
-      arr[2].must_be_close_to 3.3
+      _(arr.length).must_equal 3
+      _(arr[0]).must_be_close_to 1.1
+      _(arr[1]).must_be_close_to 2.2
+      _(arr[2]).must_be_close_to 3.3
     end
 
     it 'has a working method #vfunc_caller_allocated_out_parameter' do
@@ -570,7 +570,7 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.vfunc_caller_allocated_out_parameter
-      result.must_equal 'Hello!'
+      _(result).must_equal 'Hello!'
     end
 
     it 'has a working method #vfunc_meth_with_error' do
@@ -582,13 +582,13 @@ describe GIMarshallingTests do
         }
       end
       result = derived_instance.vfunc_meth_with_error 42
-      result.must_equal true
+      _(result).must_equal true
 
-      err = proc { derived_instance.vfunc_meth_with_error(21) }.
+      err = _(proc { derived_instance.vfunc_meth_with_error(21) }).
         must_raise GirFFI::GLibError
-      err.message.must_equal 'This is not the answer!'
-      err.domain.must_equal 'gir_ffi'
-      err.code.must_equal 0
+      _(err.message).must_equal 'This is not the answer!'
+      _(err.domain).must_equal 'gir_ffi'
+      _(err.code).must_equal 0
     end
 
     it 'has a working method #vfunc_multiple_out_parameters' do
@@ -598,8 +598,8 @@ describe GIMarshallingTests do
           proc { |*_args| [42.1, -142.3] })
       end
       result = derived_instance.vfunc_multiple_out_parameters
-      result[0].must_be_close_to 42.1
-      result[1].must_be_close_to(-142.3)
+      _(result[0]).must_be_close_to 42.1
+      _(result[1]).must_be_close_to(-142.3)
     end
 
     it 'has a working method #vfunc_one_out_parameter' do
@@ -608,7 +608,7 @@ describe GIMarshallingTests do
           :vfunc_one_out_parameter,
           proc { |*_args| 23.4 })
       end
-      derived_instance.vfunc_one_out_parameter.
+      _(derived_instance.vfunc_one_out_parameter).
         must_be_within_epsilon 23.4
     end
 
@@ -616,14 +616,14 @@ describe GIMarshallingTests do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_out_enum, proc { |_obj| :value2 }
       end
-      derived_instance.vfunc_out_enum.must_equal :value2
+      _(derived_instance.vfunc_out_enum).must_equal :value2
     end
 
     it 'has a working method #vfunc_return_enum' do
       derived_instance = make_derived_instance do |info|
         info.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
       end
-      derived_instance.vfunc_return_enum.must_equal :value2
+      _(derived_instance.vfunc_return_enum).must_equal :value2
     end
 
     it 'has a working method #vfunc_return_value_and_multiple_out_parameters' do
@@ -632,7 +632,7 @@ describe GIMarshallingTests do
           :vfunc_return_value_and_multiple_out_parameters,
           proc { |*_args| [42, -142, 3] })
       end
-      derived_instance.vfunc_return_value_and_multiple_out_parameters.
+      _(derived_instance.vfunc_return_value_and_multiple_out_parameters).
         must_equal [42, -142, 3]
     end
 
@@ -642,7 +642,7 @@ describe GIMarshallingTests do
           :vfunc_return_value_and_one_out_parameter,
           proc { |*_args| [42, -142] })
       end
-      derived_instance.vfunc_return_value_and_one_out_parameter.
+      _(derived_instance.vfunc_return_value_and_one_out_parameter).
         must_equal [42, -142]
     end
 
@@ -651,7 +651,7 @@ describe GIMarshallingTests do
         info.install_vfunc_implementation :vfunc_return_value_only, proc { |_obj| 0x1234_5678 }
       end
       result = derived_instance.vfunc_return_value_only
-      result.must_equal 0x1234_5678
+      _(result).must_equal 0x1234_5678
     end
 
     it 'has a working method #vfunc_with_callback' do
@@ -667,8 +667,8 @@ describe GIMarshallingTests do
 
       # The current implementation of the vfunc_with_callback method currently
       # doesn't actually call the virtual function vfunc_with_callback.
-      result.must_equal 1
-      result.wont_equal 42 + 23
+      _(result).must_equal 1
+      _(result).wont_equal 42 + 23
     end
 
     describe "its 'int' property" do
@@ -704,12 +704,12 @@ describe GIMarshallingTests do
 
     it 'has a working method #method' do
       result = instance.method
-      result.must_equal 42
+      _(result).must_equal 42
     end
 
     it 'does not have accessors for its parent instance' do
-      instance.wont_respond_to :parent_instance
-      instance.wont_respond_to :parent_instance=
+      _(instance).wont_respond_to :parent_instance
+      _(instance).wont_respond_to :parent_instance=
     end
   end
 
@@ -718,7 +718,7 @@ describe GIMarshallingTests do
 
     it 'has a writable field long_' do
       instance.long_ = 43
-      instance.long_.must_equal 43
+      _(instance.long_).must_equal 43
     end
 
     it 'creates an instance using #new' do
@@ -727,7 +727,7 @@ describe GIMarshallingTests do
     end
 
     it 'has a working method #method' do
-      instance.method.must_equal 42
+      _(instance.method).must_equal 42
     end
 
     it 'has a working function #returnv' do
@@ -772,66 +772,66 @@ describe GIMarshallingTests do
 
     describe "its 'some-boolean' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boolean').must_equal false
+        _(instance.get_property('some-boolean')).must_equal false
       end
 
       it 'can be retrieved with #some_boolean' do
-        instance.some_boolean.must_equal false
+        _(instance.some_boolean).must_equal false
       end
 
       it 'can be set with #set_property' do
         instance.set_property('some-boolean', true)
-        instance.get_property('some-boolean').must_equal true
+        _(instance.get_property('some-boolean')).must_equal true
       end
 
       it 'can be set with #some_boolean=' do
         instance.some_boolean = true
-        instance.get_property('some-boolean').must_equal true
+        _(instance.get_property('some-boolean')).must_equal true
       end
     end
 
     describe "its 'some-boxed-glist' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-glist').must_be_nil
+        _(instance.get_property('some-boxed-glist')).must_be_nil
       end
 
       it 'can be retrieved with #some_boxed_glist' do
-        instance.some_boxed_glist.must_be_nil
+        _(instance.some_boxed_glist).must_be_nil
       end
 
       it 'can be set with #set_property' do
         instance.set_property('some-boxed-glist', [1, 2, 3])
-        instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
+        _(instance.some_boxed_glist.to_a).must_equal [1, 2, 3]
       end
 
       it 'can be set with #some_boxed_glist=' do
         instance.some_boxed_glist = [1, 2, 3]
-        instance.some_boxed_glist.to_a.must_equal [1, 2, 3]
-        instance.get_property('some-boxed-glist').to_a.must_equal [1, 2, 3]
+        _(instance.some_boxed_glist.to_a).must_equal [1, 2, 3]
+        _(instance.get_property('some-boxed-glist').to_a).must_equal [1, 2, 3]
       end
     end
 
     describe "its 'some-boxed-struct' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-boxed-struct').must_be_nil
+        _(instance.get_property('some-boxed-struct')).must_be_nil
       end
 
       it 'can be retrieved with #some_boxed_struct' do
-        instance.some_boxed_struct.must_be_nil
+        _(instance.some_boxed_struct).must_be_nil
       end
 
       it 'can be set with #set_property' do
         boxed = GIMarshallingTests::BoxedStruct.new
         boxed.long_ = 42
         instance.set_property('some-boxed-struct', boxed)
-        instance.get_property('some-boxed-struct').long_.must_equal 42
+        _(instance.get_property('some-boxed-struct').long_).must_equal 42
       end
 
       it 'can be set with #some_boxed_struct=' do
         boxed = GIMarshallingTests::BoxedStruct.new
         boxed.long_ = 43
         instance.some_boxed_struct = boxed
-        instance.some_boxed_struct.long_.must_equal 43
+        _(instance.some_boxed_struct.long_).must_equal 43
       end
     end
 
@@ -844,61 +844,61 @@ describe GIMarshallingTests do
       end
 
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-byte-array').must_be_nil
+        _(instance.get_property('some-byte-array')).must_be_nil
       end
 
       it 'can be retrieved with #some_byte_array' do
-        instance.some_byte_array.must_be_nil
+        _(instance.some_byte_array).must_be_nil
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-byte-array', 'some bytes'
-        instance.get_property('some-byte-array').to_string.must_equal 'some bytes'
+        _(instance.get_property('some-byte-array').to_string).must_equal 'some bytes'
       end
 
       it 'can be set with #some_byte_array=' do
         instance.some_byte_array = 'some bytes'
-        instance.some_byte_array.to_string.must_equal 'some bytes'
+        _(instance.some_byte_array.to_string).must_equal 'some bytes'
       end
     end
 
     describe "its 'some-char' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-char').must_equal 0
+        _(instance.get_property('some-char')).must_equal 0
       end
 
       it 'can be retrieved with #some_char' do
-        instance.some_char.must_equal 0
+        _(instance.some_char).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-char', 42
-        instance.get_property('some-char').must_equal 42
+        _(instance.get_property('some-char')).must_equal 42
       end
 
       it 'can be set with #some_char=' do
         instance.some_char = 43
-        instance.some_char.must_equal 43
+        _(instance.some_char).must_equal 43
       end
     end
 
     describe "its 'some-double' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-double').must_equal 0.0
+        _(instance.get_property('some-double')).must_equal 0.0
       end
 
       it 'can be retrieved with #some_double' do
-        instance.some_double.must_equal 0.0
+        _(instance.some_double).must_equal 0.0
       end
 
       it 'can be set with #set_property' do
         instance.set_property('some-double', 3.14)
-        instance.get_property('some-double').must_equal 3.14
+        _(instance.get_property('some-double')).must_equal 3.14
       end
 
       it 'can be set with #some_double=' do
         instance.some_double = 3.14
-        instance.some_double.must_equal 3.14
+        _(instance.some_double).must_equal 3.14
       end
     end
 
@@ -932,21 +932,21 @@ describe GIMarshallingTests do
     end
     describe "its 'some-float' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-float').must_equal 0.0
+        _(instance.get_property('some-float')).must_equal 0.0
       end
 
       it 'can be retrieved with #some_float' do
-        instance.some_float.must_equal 0.0
+        _(instance.some_float).must_equal 0.0
       end
 
       it 'can be set with #set_property' do
         instance.set_property('some-float', 3.14)
-        instance.get_property('some-float').must_be_close_to 3.14
+        _(instance.get_property('some-float')).must_be_close_to 3.14
       end
 
       it 'can be set with #some_float=' do
         instance.some_float = 3.14
-        instance.some_float.must_be_close_to 3.14
+        _(instance.some_float).must_be_close_to 3.14
       end
     end
 
@@ -966,83 +966,83 @@ describe GIMarshallingTests do
     end
     describe "its 'some-int' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-int').must_equal 0
+        _(instance.get_property('some-int')).must_equal 0
       end
 
       it 'can be retrieved with #some_int' do
-        instance.some_int.must_equal 0
+        _(instance.some_int).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-int', 4242
-        instance.get_property('some-int').must_equal 4242
+        _(instance.get_property('some-int')).must_equal 4242
       end
 
       it 'can be set with #some_int=' do
         instance.some_int = 4243
-        instance.some_int.must_equal 4243
+        _(instance.some_int).must_equal 4243
       end
     end
 
     describe "its 'some-int64' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-int64').must_equal 0
+        _(instance.get_property('some-int64')).must_equal 0
       end
 
       it 'can be retrieved with #some_int64' do
-        instance.some_int64.must_equal 0
+        _(instance.some_int64).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-int64', 42_000_000_000_000
-        instance.get_property('some-int64').must_equal 42_000_000_000_000
+        _(instance.get_property('some-int64')).must_equal 42_000_000_000_000
       end
 
       it 'can be set with #some_int64=' do
         instance.some_int64 = 43_000_000_000_000
-        instance.some_int64.must_equal 43_000_000_000_000
+        _(instance.some_int64).must_equal 43_000_000_000_000
       end
     end
 
     describe "its 'some-long' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-long').must_equal 0
+        _(instance.get_property('some-long')).must_equal 0
       end
 
       it 'can be retrieved with #some_long' do
-        instance.some_long.must_equal 0
+        _(instance.some_long).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-long', 4242
-        instance.get_property('some-long').must_equal 4242
+        _(instance.get_property('some-long')).must_equal 4242
       end
 
       it 'can be set with #some_long=' do
         instance.some_long = 4243
-        instance.some_long.must_equal 4243
+        _(instance.some_long).must_equal 4243
       end
     end
 
     describe "its 'some-object' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-object').must_be_nil
+        _(instance.get_property('some-object')).must_be_nil
       end
 
       it 'can be retrieved with #some_object' do
-        instance.some_object.must_be_nil
+        _(instance.some_object).must_be_nil
       end
 
       it 'can be set with #set_property' do
         ob = GIMarshallingTests::Object.new 42
         instance.set_property 'some-object', ob
-        instance.get_property('some-object').must_equal ob
+        _(instance.get_property('some-object')).must_equal ob
       end
 
       it 'can be set with #some_object=' do
         ob = GIMarshallingTests::Object.new 42
         instance.some_object = ob
-        instance.some_object.must_equal ob
+        _(instance.some_object).must_equal ob
       end
     end
 
@@ -1056,123 +1056,123 @@ describe GIMarshallingTests do
     end
     describe "its 'some-strv' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-strv').must_be :==, []
+        _(instance.get_property('some-strv')).must_be :==, []
       end
 
       it 'can be retrieved with #some_strv' do
-        instance.some_strv.must_be :==, []
+        _(instance.some_strv).must_be :==, []
       end
 
       it 'can be set with #set_property' do
         instance.set_property('some-strv', %w(foo bar))
-        instance.get_property('some-strv').must_be :==, %w(foo bar)
+        _(instance.get_property('some-strv')).must_be :==, %w(foo bar)
       end
 
       it 'can be set with #some_strv=' do
         instance.some_strv = %w(foo bar)
-        instance.some_strv.must_be :==, %w(foo bar)
+        _(instance.some_strv).must_be :==, %w(foo bar)
       end
     end
 
     describe "its 'some-uchar' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uchar').must_equal 0
+        _(instance.get_property('some-uchar')).must_equal 0
       end
 
       it 'can be retrieved with #some_uchar' do
-        instance.some_uchar.must_equal 0
+        _(instance.some_uchar).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uchar', 42
-        instance.get_property('some-uchar').must_equal 42
+        _(instance.get_property('some-uchar')).must_equal 42
       end
 
       it 'can be set with #some_uchar=' do
         instance.some_uchar = 43
-        instance.some_uchar.must_equal 43
+        _(instance.some_uchar).must_equal 43
       end
     end
 
     describe "its 'some-uint' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uint').must_equal 0
+        _(instance.get_property('some-uint')).must_equal 0
       end
 
       it 'can be retrieved with #some_uint' do
-        instance.some_uint.must_equal 0
+        _(instance.some_uint).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uint', 4242
-        instance.get_property('some-uint').must_equal 4242
+        _(instance.get_property('some-uint')).must_equal 4242
       end
 
       it 'can be set with #some_uint=' do
         instance.some_uint = 4243
-        instance.some_uint.must_equal 4243
+        _(instance.some_uint).must_equal 4243
       end
     end
 
     describe "its 'some-uint64' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-uint64').must_equal 0
+        _(instance.get_property('some-uint64')).must_equal 0
       end
 
       it 'can be retrieved with #some_uint64' do
-        instance.some_uint64.must_equal 0
+        _(instance.some_uint64).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-uint64', 42_000_000_000_000
-        instance.get_property('some-uint64').must_equal 42_000_000_000_000
+        _(instance.get_property('some-uint64')).must_equal 42_000_000_000_000
       end
 
       it 'can be set with #some_uint64=' do
         instance.some_uint64 = 43_000_000_000_000
-        instance.some_uint64.must_equal 43_000_000_000_000
+        _(instance.some_uint64).must_equal 43_000_000_000_000
       end
     end
 
     describe "its 'some-ulong' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-ulong').must_equal 0
+        _(instance.get_property('some-ulong')).must_equal 0
       end
 
       it 'can be retrieved with #some_ulong' do
-        instance.some_ulong.must_equal 0
+        _(instance.some_ulong).must_equal 0
       end
 
       it 'can be set with #set_property' do
         instance.set_property 'some-ulong', 4242
-        instance.get_property('some-ulong').must_equal 4242
+        _(instance.get_property('some-ulong')).must_equal 4242
       end
 
       it 'can be set with #some_ulong=' do
         instance.some_ulong = 4243
-        instance.some_ulong.must_equal 4243
+        _(instance.some_ulong).must_equal 4243
       end
     end
 
     describe "its 'some-variant' property" do
       it 'can be retrieved with #get_property' do
-        instance.get_property('some-variant').must_be_nil
+        _(instance.get_property('some-variant')).must_be_nil
       end
 
       it 'can be retrieved with #some_variant' do
-        instance.some_variant.must_be_nil
+        _(instance.some_variant).must_be_nil
       end
 
       it 'can be set with #set_property' do
         value = GLib::Variant.new_string('Foo')
         instance.set_property 'some-variant', value
-        instance.get_property('some-variant').must_equal value
+        _(instance.get_property('some-variant')).must_equal value
       end
 
       it 'can be set with #some_variant=' do
         value = GLib::Variant.new_string('Foo')
         instance.some_variant = value
-        instance.some_variant.must_equal value
+        _(instance.some_variant).must_equal value
       end
     end
   end
@@ -1195,15 +1195,15 @@ describe GIMarshallingTests do
     let(:instance) { GIMarshallingTests::SimpleStruct.new }
 
     it 'has a writable field long_' do
-      instance.long_.must_equal 0
+      _(instance.long_).must_equal 0
       instance.long_ = 1056
-      instance.long_.must_equal 1056
+      _(instance.long_).must_equal 1056
     end
 
     it 'has a writable field int8' do
-      instance.int8.must_equal 0
+      _(instance.int8).must_equal 0
       instance.int8 = -43
-      instance.int8.must_equal(-43)
+      _(instance.int8).must_equal(-43)
     end
 
     it 'has a working method #inv' do
@@ -1229,8 +1229,8 @@ describe GIMarshallingTests do
   describe 'GIMarshallingTests::SubObject' do
     it 'creates an instance using #new' do
       so = GIMarshallingTests::SubObject.new
-      so.must_be_instance_of GIMarshallingTests::SubObject
-      GObject.type_name_from_instance(so).
+      _(so).must_be_instance_of GIMarshallingTests::SubObject
+      _(GObject.type_name_from_instance(so)).
         must_equal 'GIMarshallingTestsSubObject'
     end
 
@@ -1247,8 +1247,8 @@ describe GIMarshallingTests do
     end
 
     it 'does not have accessors for its parent instance' do
-      instance.wont_respond_to :parent_instance
-      instance.wont_respond_to :parent_instance=
+      _(instance).wont_respond_to :parent_instance
+      _(instance).wont_respond_to :parent_instance=
     end
   end
 
@@ -1256,15 +1256,15 @@ describe GIMarshallingTests do
     it 'creates an instance using #new' do
       so = GIMarshallingTests::SubSubObject.new
       assert_instance_of GIMarshallingTests::SubSubObject, so
-      GObject.type_name_from_instance(so).
+      _(GObject.type_name_from_instance(so)).
         must_equal 'GIMarshallingTestsSubSubObject'
     end
 
     let(:instance) { GIMarshallingTests::SubSubObject.new }
 
     it 'does not have accessors for its parent instance' do
-      instance.wont_respond_to :parent_instance
-      instance.wont_respond_to :parent_instance=
+      _(instance).wont_respond_to :parent_instance
+      _(instance).wont_respond_to :parent_instance=
     end
   end
 
@@ -1320,7 +1320,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #array_fixed_inout' do
     res = GIMarshallingTests.array_fixed_inout [-1, 0, 1, 2]
-    res.must_be :==, [2, 1, 0, -1]
+    _(res).must_be :==, [2, 1, 0, -1]
   end
 
   it 'has a working function #array_fixed_int_in' do
@@ -1330,12 +1330,12 @@ describe GIMarshallingTests do
 
   it 'has a working function #array_fixed_int_return' do
     res = GIMarshallingTests.array_fixed_int_return
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_fixed_out' do
     res = GIMarshallingTests.array_fixed_out
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_fixed_out_struct' do
@@ -1350,7 +1350,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #array_fixed_short_return' do
     res = GIMarshallingTests.array_fixed_short_return
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_gvariant_container_in' do
@@ -1358,9 +1358,9 @@ describe GIMarshallingTests do
     v2 = GLib::Variant.new_string('Hello')
     result = GIMarshallingTests.array_gvariant_container_in [v1, v2]
     arr = result.to_a
-    arr.size.must_equal 2
-    arr[0].get_int32.must_equal 27
-    arr[1].get_string.must_equal 'Hello'
+    _(arr.size).must_equal 2
+    _(arr[0].get_int32).must_equal 27
+    _(arr[1].get_string).must_equal 'Hello'
   end
 
   it 'has a working function #array_gvariant_full_in' do
@@ -1368,9 +1368,9 @@ describe GIMarshallingTests do
     v2 = GLib::Variant.new_string('Hello')
     result = GIMarshallingTests.array_gvariant_full_in [v1, v2]
     arr = result.to_a
-    arr.size.must_equal 2
-    arr[0].get_int32.must_equal 27
-    arr[1].get_string.must_equal 'Hello'
+    _(arr.size).must_equal 2
+    _(arr[0].get_int32).must_equal 27
+    _(arr[1].get_string).must_equal 'Hello'
   end
 
   it 'has a working function #array_gvariant_none_in' do
@@ -1378,9 +1378,9 @@ describe GIMarshallingTests do
     v2 = GLib::Variant.new_string('Hello')
     result = GIMarshallingTests.array_gvariant_none_in [v1, v2]
     arr = result.to_a
-    arr.size.must_equal 2
-    arr[0].get_int32.must_equal 27
-    arr[1].get_string.must_equal 'Hello'
+    _(arr.size).must_equal 2
+    _(arr[0].get_int32).must_equal 27
+    _(arr[1].get_string).must_equal 'Hello'
   end
 
   it 'has a working function #array_in' do
@@ -1425,13 +1425,13 @@ describe GIMarshallingTests do
 
   it 'has a working function #array_inout' do
     res = GIMarshallingTests.array_inout [-1, 0, 1, 2]
-    res.must_be :==, [-2, -1, 0, 1, 2]
+    _(res).must_be :==, [-2, -1, 0, 1, 2]
   end
 
   it 'has a working function #array_inout_etc' do
     arr, sum = GIMarshallingTests.array_inout_etc 42, [-1, 0, 1, 2], 24
-    arr.must_be :==, [42, -1, 0, 1, 24]
-    sum.must_equal 42 + 24
+    _(arr).must_be :==, [42, -1, 0, 1, 24]
+    _(sum).must_equal 42 + 24
   end
 
   it 'has a working function #array_int64_in' do
@@ -1439,24 +1439,24 @@ describe GIMarshallingTests do
   end
   it 'has a working function #array_out' do
     res = GIMarshallingTests.array_out
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_out_etc' do
     arr, sum = GIMarshallingTests.array_out_etc 42, 24
-    arr.must_be :==, [42, 0, 1, 24]
-    sum.must_equal 42 + 24
+    _(arr).must_be :==, [42, 0, 1, 24]
+    _(sum).must_equal 42 + 24
   end
 
   it 'has a working function #array_return' do
     res = GIMarshallingTests.array_return
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_return_etc' do
     arr, sum = GIMarshallingTests.array_return_etc 42, 24
-    arr.must_be :==, [42, 0, 1, 24]
-    sum.must_equal 42 + 24
+    _(arr).must_be :==, [42, 0, 1, 24]
+    _(sum).must_equal 42 + 24
   end
 
   it 'has a working function #array_simple_struct_in' do
@@ -1485,7 +1485,7 @@ describe GIMarshallingTests do
     # NOTE: This copies values so arr's elements stay valid
     GIMarshallingTests.array_struct_take_in arr
 
-    arr.map(&:long_).must_equal [1, 2, 3]
+    _(arr.map(&:long_)).must_equal [1, 2, 3]
   end
 
   it 'has a working function #array_struct_value_in' do
@@ -1520,27 +1520,27 @@ describe GIMarshallingTests do
 
   it 'has a working function #array_zero_terminated_inout' do
     res = GIMarshallingTests.array_zero_terminated_inout %w(0 1 2)
-    res.must_be :==, ['-1', '0', '1', '2']
+    _(res).must_be :==, ['-1', '0', '1', '2']
   end
 
   it 'has a working function #array_zero_terminated_out' do
     res = GIMarshallingTests.array_zero_terminated_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #array_zero_terminated_return' do
     res = GIMarshallingTests.array_zero_terminated_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #array_zero_terminated_return_null' do
     res = GIMarshallingTests.array_zero_terminated_return_null
-    res.must_be :==, []
+    _(res).must_be :==, []
   end
 
   it 'has a working function #array_zero_terminated_return_struct' do
     res = GIMarshallingTests.array_zero_terminated_return_struct
-    res.to_a.map(&:long_).must_equal [42, 43, 44]
+    _(res.to_a.map(&:long_)).must_equal [42, 43, 44]
   end
 
   it 'has a working function #array_zero_terminated_return_unichar' do
@@ -1559,50 +1559,50 @@ describe GIMarshallingTests do
 
   it 'has a working function #boolean_inout_false_true' do
     res = GIMarshallingTests.boolean_inout_false_true false
-    res.must_equal true
+    _(res).must_equal true
   end
 
   it 'has a working function #boolean_inout_true_false' do
     res = GIMarshallingTests.boolean_inout_true_false true
-    res.must_equal false
+    _(res).must_equal false
   end
 
   it 'has a working function #boolean_out_false' do
     res = GIMarshallingTests.boolean_out_false
-    res.must_equal false
+    _(res).must_equal false
   end
 
   it 'has a working function #boolean_out_true' do
     res = GIMarshallingTests.boolean_out_true
-    res.must_equal true
+    _(res).must_equal true
   end
 
   it 'has a working function #boolean_return_false' do
     res = GIMarshallingTests.boolean_return_false
-    res.must_equal false
+    _(res).must_equal false
   end
 
   it 'has a working function #boolean_return_true' do
     res = GIMarshallingTests.boolean_return_true
-    res.must_equal true
+    _(res).must_equal true
   end
 
   it 'has a working function #boxed_struct_inout' do
     bx = GIMarshallingTests::BoxedStruct.new
     bx.long_ = 42
     res = GIMarshallingTests.boxed_struct_inout bx
-    res.long_.must_equal 0
+    _(res.long_).must_equal 0
   end
 
   it 'has a working function #boxed_struct_out' do
     res = GIMarshallingTests.boxed_struct_out
-    res.long_.must_equal 42
+    _(res.long_).must_equal 42
   end
 
   it 'has a working function #boxed_struct_returnv' do
     res = GIMarshallingTests.boxed_struct_returnv
-    res.long_.must_equal 42
-    res.g_strv.must_be :==, %w(0 1 2)
+    _(res.long_).must_equal 42
+    _(res.g_strv).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #bytearray_full_return' do
@@ -1625,12 +1625,12 @@ describe GIMarshallingTests do
     result = GIMarshallingTests.callback_multiple_out_parameters do |*_args|
       [12.0, 13.0]
     end
-    result.must_equal [12.0, 13.0]
+    _(result).must_equal [12.0, 13.0]
   end
 
   it 'has a working function #callback_one_out_parameter' do
     result = GIMarshallingTests.callback_one_out_parameter { 42.0 }
-    result.must_equal 42.0
+    _(result).must_equal 42.0
   end
 
   it 'has a working function #callback_owned_boxed' do
@@ -1639,31 +1639,31 @@ describe GIMarshallingTests do
     callback = proc { |box, _callback_data| a = box.long_ * 2 }
 
     result = GIMarshallingTests.callback_owned_boxed(&callback)
-    result.must_equal 1
-    a.must_equal 2
+    _(result).must_equal 1
+    _(a).must_equal 2
 
     result = GIMarshallingTests.callback_owned_boxed(&callback)
-    result.must_equal 2
-    a.must_equal 4
+    _(result).must_equal 2
+    _(a).must_equal 4
   end
 
   it 'has a working function #callback_return_value_and_multiple_out_parameters' do
     result = GIMarshallingTests.callback_return_value_and_multiple_out_parameters do |*_args|
       [42, -142, 3]
     end
-    result.must_equal [42, -142, 3]
+    _(result).must_equal [42, -142, 3]
   end
 
   it 'has a working function #callback_return_value_and_one_out_parameter' do
     result = GIMarshallingTests.callback_return_value_and_one_out_parameter do |*_args|
       [42, -142]
     end
-    result.must_equal [42, -142]
+    _(result).must_equal [42, -142]
   end
 
   it 'has a working function #callback_return_value_only' do
     result = GIMarshallingTests.callback_return_value_only { 42 }
-    result.must_equal 42
+    _(result).must_equal 42
   end
 
   it 'has a working function #double_in' do
@@ -1678,12 +1678,12 @@ describe GIMarshallingTests do
 
   it 'has a working function #double_out' do
     ret = GIMarshallingTests.double_out
-    ret.must_equal Float::MAX
+    _(ret).must_equal Float::MAX
   end
 
   it 'has a working function #double_return' do
     ret = GIMarshallingTests.double_return
-    ret.must_equal Float::MAX
+    _(ret).must_equal Float::MAX
   end
 
   it 'has a working function #enum_in' do
@@ -1693,22 +1693,22 @@ describe GIMarshallingTests do
 
   it 'has a working function #enum_inout' do
     e = GIMarshallingTests.enum_inout :value3
-    e.must_equal :value1
+    _(e).must_equal :value1
   end
 
   it 'has a working function #enum_out' do
     e = GIMarshallingTests.enum_out
-    e.must_equal :value3
+    _(e).must_equal :value3
   end
 
   it 'has a working function #enum_returnv' do
     e = GIMarshallingTests.enum_returnv
-    e.must_equal :value3
+    _(e).must_equal :value3
   end
 
   it 'has a working function #filename_list_return' do
     fl = GIMarshallingTests.filename_list_return
-    fl.must_be_nil
+    _(fl).must_be_nil
   end
 
   it 'has a working function #flags_in' do
@@ -1723,17 +1723,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #flags_inout' do
     res = GIMarshallingTests.flags_inout value2: true
-    res.must_equal(value1: true)
+    _(res).must_equal(value1: true)
   end
 
   it 'has a working function #flags_out' do
     res = GIMarshallingTests.flags_out
-    res.must_equal(value2: true)
+    _(res).must_equal(value2: true)
   end
 
   it 'has a working function #flags_returnv' do
     res = GIMarshallingTests.flags_returnv
-    res.must_equal(value2: true)
+    _(res).must_equal(value2: true)
   end
 
   it 'has a working function #float_in' do
@@ -1772,7 +1772,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #garray_int_none_return' do
     arr = GIMarshallingTests.garray_int_none_return
-    arr.must_be :==, [-1, 0, 1, 2]
+    _(arr).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #garray_uint64_none_in' do
@@ -1782,7 +1782,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #garray_uint64_none_return' do
     res = GIMarshallingTests.garray_uint64_none_return
-    res.must_be :==, [0, 0xffff_ffff_ffff_ffff]
+    _(res).must_be :==, [0, 0xffff_ffff_ffff_ffff]
   end
 
   it 'has a working function #garray_unichar_none_in' do
@@ -1790,38 +1790,38 @@ describe GIMarshallingTests do
 
   it 'has a working function #garray_utf8_container_inout' do
     res = GIMarshallingTests.garray_utf8_container_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #garray_utf8_container_out' do
     res = GIMarshallingTests.garray_utf8_container_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_container_return' do
     res = GIMarshallingTests.garray_utf8_container_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_full_inout' do
     arr = %w(0 1 2)
     res = GIMarshallingTests.garray_utf8_full_inout arr
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #garray_utf8_full_out' do
     res = GIMarshallingTests.garray_utf8_full_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_full_out_caller_allocated' do
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_full_return' do
     res = GIMarshallingTests.garray_utf8_full_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_none_in' do
@@ -1833,22 +1833,22 @@ describe GIMarshallingTests do
   it 'has a working function #garray_utf8_none_inout' do
     arr = %w(0 1 2)
     res = GIMarshallingTests.garray_utf8_none_inout arr
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #garray_utf8_none_out' do
     res = GIMarshallingTests.garray_utf8_none_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #garray_utf8_none_return' do
     res = GIMarshallingTests.garray_utf8_none_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gbytes_full_return' do
     res = GIMarshallingTests.gbytes_full_return
-    res.to_a.must_equal [0, 49, 0xFF, 51]
+    _(res.to_a).must_equal [0, 49, 0xFF, 51]
   end
 
   it 'has a working function #gbytes_none_in' do
@@ -1866,8 +1866,8 @@ describe GIMarshallingTests do
     cl = GIMarshallingTests.gclosure_return
     gv = GObject::Value.wrap_ruby_value 0
     result = cl.invoke gv, []
-    gv.get_value.must_equal 42
-    result.must_equal 42
+    _(gv.get_value).must_equal 42
+    _(result).must_equal 42
   end
 
   it 'has a working function #genum_in' do
@@ -1877,17 +1877,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #genum_inout' do
     res = GIMarshallingTests.genum_inout :value3
-    res.must_equal :value1
+    _(res).must_equal :value1
   end
 
   it 'has a working function #genum_out' do
     res = GIMarshallingTests.genum_out
-    res.must_equal :value3
+    _(res).must_equal :value3
   end
 
   it 'has a working function #genum_returnv' do
     res = GIMarshallingTests.genum_returnv
-    res.must_equal :value3
+    _(res).must_equal :value3
   end
 
   it 'has a working function #gerror' do
@@ -1895,9 +1895,9 @@ describe GIMarshallingTests do
       GIMarshallingTests.gerror
       flunk 'Error should have been raised'
     rescue GirFFI::GLibError => e
-      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
-      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
-      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
+      _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 
@@ -1906,27 +1906,27 @@ describe GIMarshallingTests do
       GIMarshallingTests.gerror_array_in [1, 2, 3]
       flunk 'Error should have been raised'
     rescue GirFFI::GLibError => e
-      e.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
-      e.domain.must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
-      e.code.must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
+      _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+      _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+      _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
     end
   end
 
   it 'has a working function #gerror_out' do
     error, debug = GIMarshallingTests.gerror_out
-    debug.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
-    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+    _(debug).must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
+    _(error.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it 'has a working function #gerror_out_transfer_none' do
     error, debug = GIMarshallingTests.gerror_out_transfer_none
-    debug.must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
-    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+    _(debug).must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
+    _(error.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it 'has a working function #gerror_return' do
     error = GIMarshallingTests.gerror_return
-    error.message.must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+    _(error.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
   end
 
   it 'has a working function #ghashtable_double_in' do
@@ -2026,7 +2026,7 @@ describe GIMarshallingTests do
 
   it 'has a working function #glist_int_none_return' do
     res = GIMarshallingTests.glist_int_none_return
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #glist_uint32_none_in' do
@@ -2036,37 +2036,37 @@ describe GIMarshallingTests do
 
   it 'has a working function #glist_uint32_none_return' do
     res = GIMarshallingTests.glist_uint32_none_return
-    res.must_be :==, [0, 0xffff_ffff]
+    _(res).must_be :==, [0, 0xffff_ffff]
   end
 
   it 'has a working function #glist_utf8_container_inout' do
     res = GIMarshallingTests.glist_utf8_container_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #glist_utf8_container_out' do
     res = GIMarshallingTests.glist_utf8_container_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #glist_utf8_container_return' do
     res = GIMarshallingTests.glist_utf8_container_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #glist_utf8_full_inout' do
     res = GIMarshallingTests.glist_utf8_full_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #glist_utf8_full_out' do
     res = GIMarshallingTests.glist_utf8_full_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #glist_utf8_full_return' do
     res = GIMarshallingTests.glist_utf8_full_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #glist_utf8_none_in' do
@@ -2075,47 +2075,47 @@ describe GIMarshallingTests do
 
   it 'has a working function #glist_utf8_none_inout' do
     res = GIMarshallingTests.glist_utf8_none_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #glist_utf8_none_out' do
     res = GIMarshallingTests.glist_utf8_none_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #glist_utf8_none_return' do
     res = GIMarshallingTests.glist_utf8_none_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_container_inout' do
     res = GIMarshallingTests.gptrarray_utf8_container_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gptrarray_utf8_container_out' do
     res = GIMarshallingTests.gptrarray_utf8_container_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_container_return' do
     res = GIMarshallingTests.gptrarray_utf8_container_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_full_inout' do
     res = GIMarshallingTests.gptrarray_utf8_full_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gptrarray_utf8_full_out' do
     res = GIMarshallingTests.gptrarray_utf8_full_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_full_return' do
     res = GIMarshallingTests.gptrarray_utf8_full_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_none_in' do
@@ -2124,17 +2124,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #gptrarray_utf8_none_inout' do
     res = GIMarshallingTests.gptrarray_utf8_none_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gptrarray_utf8_none_out' do
     res = GIMarshallingTests.gptrarray_utf8_none_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gptrarray_utf8_none_return' do
     res = GIMarshallingTests.gptrarray_utf8_none_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_int_none_in' do
@@ -2144,37 +2144,37 @@ describe GIMarshallingTests do
 
   it 'has a working function #gslist_int_none_return' do
     res = GIMarshallingTests.gslist_int_none_return
-    res.must_be :==, [-1, 0, 1, 2]
+    _(res).must_be :==, [-1, 0, 1, 2]
   end
 
   it 'has a working function #gslist_utf8_container_inout' do
     res = GIMarshallingTests.gslist_utf8_container_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gslist_utf8_container_out' do
     res = GIMarshallingTests.gslist_utf8_container_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_utf8_container_return' do
     res = GIMarshallingTests.gslist_utf8_container_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_utf8_full_inout' do
     res = GIMarshallingTests.gslist_utf8_full_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gslist_utf8_full_out' do
     res = GIMarshallingTests.gslist_utf8_full_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_utf8_full_return' do
     res = GIMarshallingTests.gslist_utf8_full_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_utf8_none_in' do
@@ -2184,17 +2184,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #gslist_utf8_none_inout' do
     res = GIMarshallingTests.gslist_utf8_none_inout %w(0 1 2)
-    res.must_be :==, ['-2', '-1', '0', '1']
+    _(res).must_be :==, ['-2', '-1', '0', '1']
   end
 
   it 'has a working function #gslist_utf8_none_out' do
     res = GIMarshallingTests.gslist_utf8_none_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gslist_utf8_none_return' do
     res = GIMarshallingTests.gslist_utf8_none_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gstrv_in' do
@@ -2204,17 +2204,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #gstrv_inout' do
     res = GIMarshallingTests.gstrv_inout %w(0 1 2)
-    res.must_be :==, ['-1', '0', '1', '2']
+    _(res).must_be :==, ['-1', '0', '1', '2']
   end
 
   it 'has a working function #gstrv_out' do
     res = GIMarshallingTests.gstrv_out
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gstrv_return' do
     res = GIMarshallingTests.gstrv_return
-    res.must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w(0 1 2)
   end
 
   it 'has a working function #gtype_in' do
@@ -2224,17 +2224,17 @@ describe GIMarshallingTests do
 
   it 'has a working function #gtype_inout' do
     res = GIMarshallingTests.gtype_inout GObject::TYPE_NONE
-    res.must_equal GObject::TYPE_INT
+    _(res).must_equal GObject::TYPE_INT
   end
 
   it 'has a working function #gtype_out' do
     res = GIMarshallingTests.gtype_out
-    res.must_equal GObject::TYPE_NONE
+    _(res).must_equal GObject::TYPE_NONE
   end
 
   it 'has a working function #gtype_return' do
     res = GIMarshallingTests.gtype_return
-    res.must_equal GObject::TYPE_NONE
+    _(res).must_equal GObject::TYPE_NONE
   end
 
   it 'has a working function #gtype_string_in' do
@@ -2244,12 +2244,12 @@ describe GIMarshallingTests do
 
   it 'has a working function #gtype_string_out' do
     res = GIMarshallingTests.gtype_string_out
-    res.must_equal GObject::TYPE_STRING
+    _(res).must_equal GObject::TYPE_STRING
   end
 
   it 'has a working function #gtype_string_return' do
     res = GIMarshallingTests.gtype_string_return
-    res.must_equal GObject::TYPE_STRING
+    _(res).must_equal GObject::TYPE_STRING
   end
 
   it 'has a working function #gvalue_flat_array' do
@@ -2260,9 +2260,9 @@ describe GIMarshallingTests do
   it 'has a working function #gvalue_flat_array_round_trip' do
     result = GIMarshallingTests.gvalue_flat_array_round_trip 42, '42', true
     arr = result.to_a
-    arr[0].get_value.must_equal 42
-    arr[1].get_value.must_equal '42'
-    arr[2].get_value.must_equal true
+    _(arr[0].get_value).must_equal 42
+    _(arr[1].get_value).must_equal '42'
+    _(arr[2].get_value).must_equal true
   end
 
   it 'has a working function #gvalue_in' do
@@ -2282,7 +2282,7 @@ describe GIMarshallingTests do
   it 'has a working function #gvalue_in_with_modification' do
     gv = GObject::Value.wrap_ruby_value(42)
     GIMarshallingTests.gvalue_in_with_modification gv
-    gv.get_value.must_equal 24
+    _(gv.get_value).must_equal 24
   end
 
   it 'has a working function #gvalue_in_with_type' do
@@ -2293,10 +2293,10 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_inout' do
     res = GIMarshallingTests.gvalue_inout GObject::Value.wrap_ruby_value(42)
-    res.must_equal '42'
+    _(res).must_equal '42'
 
     res = GIMarshallingTests.gvalue_inout 42
-    res.must_equal '42'
+    _(res).must_equal '42'
   end
 
   it 'has a working function #gvalue_int64_in' do
@@ -2309,28 +2309,28 @@ describe GIMarshallingTests do
 
   it 'has a working function #gvalue_int64_out' do
     gv = GIMarshallingTests.gvalue_int64_out
-    gv.must_equal 0x7fff_ffff_ffff_ffff
+    _(gv).must_equal 0x7fff_ffff_ffff_ffff
   end
 
   it 'has a working function #gvalue_out' do
     res = GIMarshallingTests.gvalue_out
-    res.must_equal 42
+    _(res).must_equal 42
   end
 
   it 'has a working function #gvalue_out_caller_allocates' do
     res = GIMarshallingTests.gvalue_out_caller_allocates
-    res.must_equal 42
+    _(res).must_equal 42
   end
 
   it 'has a working function #gvalue_return' do
     res = GIMarshallingTests.gvalue_return
-    res.must_equal 42
+    _(res).must_equal 42
   end
 
   it 'has a working function #init_function' do
     res, arr = GIMarshallingTests.init_function %w(foo bar baz)
-    res.must_equal true
-    arr.must_be :==, %w(foo bar)
+    _(res).must_equal true
+    _(arr).must_be :==, %w(foo bar)
   end
 
   it 'has a working function #int16_in_max' do
@@ -2618,22 +2618,22 @@ describe GIMarshallingTests do
 
   it 'has a working function #no_type_flags_inout' do
     res = GIMarshallingTests.no_type_flags_inout value2: true
-    res.must_equal(value1: true)
+    _(res).must_equal(value1: true)
   end
 
   it 'has a working function #no_type_flags_out' do
     res = GIMarshallingTests.no_type_flags_out
-    res.must_equal(value2: true)
+    _(res).must_equal(value2: true)
   end
 
   it 'has a working function #no_type_flags_returnv' do
     res = GIMarshallingTests.no_type_flags_returnv
-    res.must_equal(value2: true)
+    _(res).must_equal(value2: true)
   end
 
   it 'has a working function #overrides_struct_returnv' do
     res = GIMarshallingTests.overrides_struct_returnv
-    res.must_be_instance_of GIMarshallingTests::OverridesStruct
+    _(res).must_be_instance_of GIMarshallingTests::OverridesStruct
   end
 
   it 'has a working function #param_spec_in_bool' do
@@ -2644,14 +2644,14 @@ describe GIMarshallingTests do
 
   it 'has a working function #param_spec_out' do
     res = GIMarshallingTests.param_spec_out
-    res.value_type.must_equal GObject::TYPE_STRING
-    res.get_name.must_equal 'test-param'
+    _(res.value_type).must_equal GObject::TYPE_STRING
+    _(res.get_name).must_equal 'test-param'
   end
 
   it 'has a working function #param_spec_return' do
     res = GIMarshallingTests.param_spec_return
-    res.value_type.must_equal GObject::TYPE_STRING
-    res.get_name.must_equal 'test-param'
+    _(res.value_type).must_equal GObject::TYPE_STRING
+    _(res.get_name).must_equal 'test-param'
   end
 
   it 'has a working function #pointer_in_return' do
@@ -2675,9 +2675,9 @@ describe GIMarshallingTests do
   it 'has a working function #return_gvalue_flat_array' do
     result = GIMarshallingTests.return_gvalue_flat_array
     arr = result.to_a
-    arr[0].get_value.must_equal 42
-    arr[1].get_value.must_equal '42'
-    arr[2].get_value.must_equal true
+    _(arr[0].get_value).must_equal 42
+    _(arr[1].get_value).must_equal '42'
+    _(arr[2].get_value).must_equal true
   end
 
   it 'has a working function #short_in_max' do
@@ -2791,9 +2791,9 @@ describe GIMarshallingTests do
     instance = make_derived_instance do |info|
       info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
     end
-    instance.int.must_equal 0
+    _(instance.int).must_equal 0
     GIMarshallingTests.test_interface_test_int8_in instance, 8
-    instance.int.must_equal 8
+    _(instance.int).must_equal 8
   end
 
   it 'has a working function #time_t_in' do

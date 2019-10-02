@@ -17,25 +17,25 @@ describe GObjectIntrospection::IVFuncInfo do
 
   describe '#throws?' do
     it 'returns false if there is no error argument' do
-      vfunc_info.wont_be :throws?
+      _(vfunc_info).wont_be :throws?
     end
 
     it 'returns true if there is and error argument' do
-      throwing_vfunc_info.must_be :throws?
+      _(throwing_vfunc_info).must_be :throws?
     end
   end
 
   describe '#invoker' do
     it 'returns nil if no invoker method is present' do
-      throwing_vfunc_info.invoker.must_be_nil
+      _(throwing_vfunc_info.invoker).must_be_nil
     end
 
     it 'returns info for the invoker method if present' do
-      vfunc_info.invoker.name.must_equal 'method_int8_in'
+      _(vfunc_info.invoker.name).must_equal 'method_int8_in'
     end
 
     it 'returns the correct invoker even if named differently' do
-      vfunc_info_with_different_invoker.invoker.name.must_equal 'do_matrix'
+      _(vfunc_info_with_different_invoker.invoker.name).must_equal 'do_matrix'
     end
   end
 end

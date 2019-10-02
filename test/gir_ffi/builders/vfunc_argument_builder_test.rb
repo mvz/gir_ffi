@@ -13,11 +13,11 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[0] }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = in_']
+      _(builder.pre_conversion).must_equal ['_v1 = in_']
     end
 
     it 'has the correct value for #post_conversion' do
-      builder.post_conversion.must_equal []
+      _(builder.post_conversion).must_equal []
     end
   end
 
@@ -28,11 +28,11 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[0] }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = GObject::Object.wrap(object)', '_v1.ref']
+      _(builder.pre_conversion).must_equal ['_v1 = GObject::Object.wrap(object)', '_v1.ref']
     end
 
     it 'has the correct value for #post_conversion' do
-      builder.post_conversion.must_equal []
+      _(builder.post_conversion).must_equal []
     end
   end
 
@@ -43,11 +43,11 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[0] }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = object']
+      _(builder.pre_conversion).must_equal ['_v1 = object']
     end
 
     it 'has the correct value for #post_conversion' do
-      builder.post_conversion.must_equal ['_v1.put_pointer 0, GObject::Object.from(_v2)']
+      _(builder.post_conversion).must_equal ['_v1.put_pointer 0, GObject::Object.from(_v2)']
     end
   end
 
@@ -58,12 +58,12 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[0] }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.must_equal ['_v1 = object']
+      _(builder.pre_conversion).must_equal ['_v1 = object']
     end
 
     it 'has the correct value for #post_conversion' do
       builder.pre_conversion
-      builder.post_conversion.must_equal ['_v2.ref', '_v1.put_pointer 0, GObject::Object.from(_v2)']
+      _(builder.post_conversion).must_equal ['_v2.ref', '_v1.put_pointer 0, GObject::Object.from(_v2)']
     end
   end
 
@@ -75,12 +75,12 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[1] }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.
+      _(builder.pre_conversion).
         must_equal ['_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }']
     end
 
     it 'has the correct value for #post_conversion' do
-      builder.post_conversion.must_equal ['_v1.put_int8 0, _v2']
+      _(builder.post_conversion).must_equal ['_v1.put_int8 0, _v2']
     end
   end
 
@@ -90,12 +90,12 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { GirFFI::ReceiverArgumentInfo.new(type_info) }
 
     it 'has the correct value for #pre_conversion' do
-      builder.pre_conversion.
+      _(builder.pre_conversion).
         must_equal ['_v1 = GIMarshallingTests::Object.wrap(_instance)']
     end
 
     it 'has the correct value for #post_conversion' do
-      builder.post_conversion.must_equal []
+      _(builder.post_conversion).must_equal []
     end
   end
 end

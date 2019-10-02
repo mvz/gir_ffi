@@ -9,7 +9,7 @@ describe 'The generated Gio module' do
   describe 'File#new_for_path, a method returning an interface,' do
     it 'returns an object of a more specific class' do
       file = Gio::File.new_for_path('/')
-      file.class.registered_ancestors.must_equal [file.class, Gio::File, GObject::Object]
+      _(file.class.registered_ancestors).must_equal [file.class, Gio::File, GObject::Object]
 
       refute_instance_of Gio::File, file
       assert_includes file.class.registered_ancestors, Gio::File
@@ -31,7 +31,7 @@ describe 'The generated Gio module' do
 
     it 'knows its GType' do
       instance_gtype = GObject.type_from_instance @it
-      @it.class.gtype.must_equal instance_gtype
+      _(@it.class.gtype).must_equal instance_gtype
     end
   end
 
@@ -82,7 +82,7 @@ describe 'The generated Gio module' do
   describe 'the CharsetConverter class' do
     it 'includes two interfaces' do
       klass = Gio::CharsetConverter
-      klass.included_interfaces.must_equal [Gio::Initable, Gio::Converter]
+      _(klass.included_interfaces).must_equal [Gio::Initable, Gio::Converter]
     end
 
     it 'allows an instance to find the #reset method' do
@@ -102,15 +102,15 @@ describe 'The generated Gio module' do
     let(:simple_action) { Gio::SimpleAction.new('test', 'd') }
 
     it 'can read the property "state-type" with #get_property' do
-      simple_action.get_property('state-type').must_be_nil
+      _(simple_action.get_property('state-type')).must_be_nil
     end
 
     it 'can read the property "state-type" with #state_type' do
-      simple_action.state_type.must_be_nil
+      _(simple_action.state_type).must_be_nil
     end
 
     it 'cannot write the property "state-type" with #state_type=' do
-      simple_action.wont_respond_to :state_type=
+      _(simple_action).wont_respond_to :state_type=
     end
   end
 end

@@ -10,7 +10,7 @@ describe GirFFI::BoxedBase do
       # NOTE: GObject::Value uses the generic constructor, unlike
       # GIMarshallingTests::BoxedStruct, which has its own constructor.
       value = GObject::Value.new
-      value.to_ptr.wont_be_nil
+      _(value.to_ptr).wont_be_nil
     end
   end
 
@@ -19,9 +19,9 @@ describe GirFFI::BoxedBase do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.copy_from(original)
       ptr = copy.to_ptr
-      ptr.wont_be :==, original.to_ptr
-      ptr.wont_be :autorelease? if ptr.respond_to? :autorelease?
-      copy.struct.wont_be :owned?
+      _(ptr).wont_be :==, original.to_ptr
+      _(ptr).wont_be :autorelease? if ptr.respond_to? :autorelease?
+      _(copy.struct).wont_be :owned?
     end
   end
 
@@ -30,9 +30,9 @@ describe GirFFI::BoxedBase do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_own(original.to_ptr)
       ptr = copy.to_ptr
-      ptr.must_equal original.to_ptr
-      ptr.wont_be :autorelease? if ptr.respond_to? :autorelease?
-      copy.struct.must_be :owned?
+      _(ptr).must_equal original.to_ptr
+      _(ptr).wont_be :autorelease? if ptr.respond_to? :autorelease?
+      _(copy.struct).must_be :owned?
     end
   end
 
@@ -59,7 +59,7 @@ describe GirFFI::BoxedBase do
 
       expect(GObject).to have_received(:boxed_free).with(gtype, owned_ptr)
       expect(GObject).not_to have_received(:boxed_free).with(gtype, unowned_ptr)
-      owned_struct.wont_be :owned?
+      _(owned_struct).wont_be :owned?
     end
   end
 end

@@ -21,7 +21,7 @@ describe GirFFI::InPointer do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
       end
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
-      ptr.read_array_of_int32(3).must_equal [1, 0, 2]
+      _(ptr.read_array_of_int32(3)).must_equal [1, 0, 2]
     end
 
     it 'handles struct types' do
@@ -34,10 +34,10 @@ describe GirFFI::InPointer do
       struct[:foo] = 42
       struct[:bar] = 24
       ptr = GirFFI::InPointer.from_array e, [struct]
-      ptr.wont_be :==, struct.to_ptr
+      _(ptr).wont_be :==, struct.to_ptr
       new_struct = e::Struct.new ptr
-      new_struct[:foo].must_equal 42
-      new_struct[:bar].must_equal 24
+      _(new_struct[:foo]).must_equal 42
+      _(new_struct[:bar]).must_equal 24
     end
 
     it 'handles typed pointers' do
@@ -46,13 +46,13 @@ describe GirFFI::InPointer do
 
       ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [p1, p2]
 
-      ptr.read_array_of_pointer(2).must_equal [p1, p2]
+      _(ptr.read_array_of_pointer(2)).must_equal [p1, p2]
     end
 
     it 'handles pointer casting' do
       ptr = GirFFI::InPointer.from_array [:pointer, :gint32], [42, 24]
 
-      ptr.read_array_of_pointer(2).map(&:address).must_equal [42, 24]
+      _(ptr.read_array_of_pointer(2).map(&:address)).must_equal [42, 24]
     end
   end
 
@@ -67,7 +67,7 @@ describe GirFFI::InPointer do
     end
 
     it 'is an instance of FFI::MemoryPointer' do
-      @result.must_be_instance_of FFI::MemoryPointer
+      _(@result).must_be_instance_of FFI::MemoryPointer
     end
 
     it 'is zero-terminated' do
@@ -107,7 +107,7 @@ describe GirFFI::InPointer do
     end
 
     it 'is an instance of FFI::MemoryPointer' do
-      @result.must_be_instance_of FFI::MemoryPointer
+      _(@result).must_be_instance_of FFI::MemoryPointer
     end
   end
 
@@ -121,7 +121,7 @@ describe GirFFI::InPointer do
     end
 
     it 'is an instance of FFI::Pointer' do
-      @result.must_be_instance_of FFI::Pointer
+      _(@result).must_be_instance_of FFI::Pointer
     end
   end
 
@@ -152,7 +152,7 @@ describe GirFFI::InPointer do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
       end
       ptr = GirFFI::InPointer.from e, :bar
-      ptr.address.must_equal 1
+      _(ptr.address).must_equal 1
     end
 
     describe 'for type :void' do
@@ -161,11 +161,11 @@ describe GirFFI::InPointer do
         def obj.to_ptr
           :test_value
         end
-        GirFFI::InPointer.from(:void, obj).must_equal :test_value
+        _(GirFFI::InPointer.from(:void, obj)).must_equal :test_value
       end
 
       it 'returns nil when passed nil' do
-        GirFFI::InPointer.from(:void, nil).must_be_nil
+        _(GirFFI::InPointer.from(:void, nil)).must_be_nil
       end
     end
 
@@ -176,7 +176,7 @@ describe GirFFI::InPointer do
         def obj.to_ptr
           :test_value
         end
-        GirFFI::InPointer.from(klass, obj).must_equal :test_value
+        _(GirFFI::InPointer.from(klass, obj)).must_equal :test_value
       end
     end
   end

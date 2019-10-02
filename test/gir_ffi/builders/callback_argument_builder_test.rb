@@ -15,11 +15,11 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       let(:arg_info) { vfunc_info.args[0] }
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = a']
+        _(builder.pre_conversion).must_equal ['_v1 = a']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v1.put_pointer 0, GirFFI::ZeroTerminated.from(:gfloat, _v2)']
+        _(builder.post_conversion).must_equal ['_v1.put_pointer 0, GirFFI::ZeroTerminated.from(:gfloat, _v2)']
       end
     end
 
@@ -32,11 +32,11 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       let(:arg_info) { vfunc_info.args[1] }
 
       it 'has the correct value for #pre_conversion' do
-        builder.pre_conversion.must_equal ['_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }']
+        _(builder.pre_conversion).must_equal ['_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }']
       end
 
       it 'has the correct value for #post_conversion' do
-        builder.post_conversion.must_equal ['_v1.put_int8 0, _v2']
+        _(builder.post_conversion).must_equal ['_v1.put_int8 0, _v2']
       end
     end
   end
@@ -45,14 +45,14 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
     let(:arg_info) { GirFFI::ErrorArgumentInfo.new }
 
     it 'sets up a rescueing block in #pre_conversion' do
-      builder.pre_conversion.must_equal [
+      _(builder.pre_conversion).must_equal [
         '_v1 = _error',
         'begin'
       ]
     end
 
     it 'converts any exceptions to GLib::Error in #post_conversion' do
-      builder.post_conversion.must_equal [
+      _(builder.post_conversion).must_equal [
         'rescue => _v1',
         '_v2.put_pointer 0, GLib::Error.from(_v1)',
         'end'
@@ -81,44 +81,44 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
     describe 'for arrays with a length argument' do
       it 'provides a call argument name' do
-        array_arg_builder.call_argument_name.must_equal '_v1'
+        _(array_arg_builder.call_argument_name).must_equal '_v1'
       end
 
       it 'provides a capture variable name' do
-        array_arg_builder.capture_variable_name.must_equal '_v1'
+        _(array_arg_builder.capture_variable_name).must_equal '_v1'
       end
 
       it 'has the correct value for #pre_conversion' do
-        array_arg_builder.pre_conversion.
+        _(array_arg_builder.pre_conversion).
           must_equal ['_v1 = ints',
                       '_v2 = GirFFI::SizedArray.wrap(:gint32, _v3, _v1.get_pointer(0))']
       end
 
       it 'has the correct value for #post_conversion' do
         array_arg_builder.pre_conversion
-        array_arg_builder.post_conversion.
+        _(array_arg_builder.post_conversion).
           must_equal ['_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, _v4)']
       end
     end
 
     describe 'for an array length argument' do
       it 'does not provide a call argument name' do
-        length_arg_builder.call_argument_name.must_be_nil
+        _(length_arg_builder.call_argument_name).must_be_nil
       end
 
       it 'does not provide a capture variable name' do
-        length_arg_builder.capture_variable_name.must_be_nil
+        _(length_arg_builder.capture_variable_name).must_be_nil
       end
 
       it 'has the correct value for #pre_conversion' do
-        length_arg_builder.pre_conversion.
+        _(length_arg_builder.pre_conversion).
           must_equal ['_v1 = length',
                       '_v2 = _v1.get_int32(0)']
       end
 
       it 'has the correct value for #post_conversion' do
         length_arg_builder.pre_conversion
-        length_arg_builder.post_conversion.
+        _(length_arg_builder.post_conversion).
           must_equal ['_v1.put_int32 0, _v3.length']
       end
     end

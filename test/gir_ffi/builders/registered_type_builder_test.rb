@@ -14,13 +14,13 @@ describe GirFFI::Builders::RegisteredTypeBuilder do
       builder.setup_instance_method 'instance_method'
 
       obj = Regress::TestObj.constructor
-      obj.must_respond_to 'instance_method'
+      _(obj).must_respond_to 'instance_method'
     end
 
     it 'returns the name of the generated method' do
       builder = Regress::TestObj.gir_ffi_builder
       result = builder.setup_instance_method 'instance_method'
-      result.must_equal 'instance_method'
+      _(result).must_equal 'instance_method'
     end
 
     it 'returns the name of the generated method if different from the info name' do

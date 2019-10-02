@@ -16,7 +16,7 @@ describe 'The generated GTop module' do
 
     it 'can be created using Glibtop.init' do
       instance = GTop::Glibtop.init
-      instance.must_be_kind_of GTop::Glibtop
+      _(instance).must_be_kind_of GTop::Glibtop
     end
   end
 end

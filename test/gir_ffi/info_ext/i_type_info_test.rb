@@ -46,7 +46,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       it "maps a the interface's ffi_type" do
         allow(iface_info).to receive(:to_ffi_type).and_return :foo
 
-        type_info.to_ffi_type.must_equal :foo
+        _(type_info.to_ffi_type).must_equal :foo
       end
     end
   end
@@ -60,7 +60,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.element_type
-      result.must_equal :foo
+      _(result).must_equal :foo
     end
 
     it 'returns the key and value types for ghashes' do
@@ -74,14 +74,14 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:param_type).with(1).and_return valtype_info
 
       result = type_info.element_type
-      result.must_equal [:foo, :bar]
+      _(result).must_equal [:foo, :bar]
     end
 
     it 'returns nil for other types' do
       expect(type_info).to receive(:tag).and_return :foo
 
       result = type_info.element_type
-      result.must_be_nil
+      _(result).must_be_nil
     end
 
     it 'returns [:pointer, :void] if the element type is a pointer with tag :void' do
@@ -99,7 +99,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       it 'returns the type tag' do
         allow(type_info).to receive(:tag).and_return :uint32
 
-        type_info.flattened_tag.must_equal :uint32
+        _(type_info.flattened_tag).must_equal :uint32
       end
     end
 
@@ -115,7 +115,7 @@ describe GirFFI::InfoExt::ITypeInfo do
           allow(elmtype_info).to receive(:tag).and_return :utf8
           allow(elmtype_info).to receive(:pointer?).and_return true
 
-          type_info.flattened_tag.must_equal :strv
+          _(type_info.flattened_tag).must_equal :strv
         end
       end
 
@@ -124,7 +124,7 @@ describe GirFFI::InfoExt::ITypeInfo do
           allow(elmtype_info).to receive(:tag).and_return :filename
           allow(elmtype_info).to receive(:pointer?).and_return true
 
-          type_info.flattened_tag.must_equal :strv
+          _(type_info.flattened_tag).must_equal :strv
         end
       end
 
@@ -133,7 +133,7 @@ describe GirFFI::InfoExt::ITypeInfo do
           allow(elmtype_info).to receive(:tag).and_return :foo
           allow(elmtype_info).to receive(:pointer?).and_return false
 
-          type_info.flattened_tag.must_equal :zero_terminated
+          _(type_info.flattened_tag).must_equal :zero_terminated
         end
       end
     end
@@ -144,7 +144,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         expect(type_info).to receive(:zero_terminated?).and_return false
         expect(type_info).to receive(:array_type).and_return :c
 
-        type_info.flattened_tag.must_equal :c
+        _(type_info.flattened_tag).must_equal :c
       end
     end
 
@@ -154,7 +154,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         expect(type_info).to receive(:zero_terminated?).and_return false
         expect(type_info).to receive(:array_type).and_return :array
 
-        type_info.flattened_tag.must_equal :array
+        _(type_info.flattened_tag).must_equal :array
       end
     end
   end
@@ -165,7 +165,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:tag).and_return :foo
         expect(type_info).to receive(:pointer?).and_return false
 
-        type_info.tag_or_class.must_equal :foo
+        _(type_info.tag_or_class).must_equal :foo
       end
     end
 
@@ -174,7 +174,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:tag).and_return :utf8
         expect(type_info).to receive(:pointer?).and_return true
 
-        type_info.tag_or_class.must_equal :utf8
+        _(type_info.tag_or_class).must_equal :utf8
       end
     end
 
@@ -183,7 +183,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:tag).and_return :filename
         expect(type_info).to receive(:pointer?).and_return true
 
-        type_info.tag_or_class.must_equal :filename
+        _(type_info.tag_or_class).must_equal :filename
       end
     end
 
@@ -202,7 +202,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         it 'returns the built interface module' do
           allow(iface_info).to receive(:info_type).and_return :enum
 
-          type_info.tag_or_class.must_equal interface
+          _(type_info.tag_or_class).must_equal interface
         end
       end
 
@@ -210,7 +210,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         it 'returns the built interface class' do
           allow(iface_info).to receive(:info_type).and_return :object
 
-          type_info.tag_or_class.must_equal interface
+          _(type_info.tag_or_class).must_equal interface
         end
       end
 
@@ -218,14 +218,14 @@ describe GirFFI::InfoExt::ITypeInfo do
         it 'returns the built interface class' do
           allow(iface_info).to receive(:info_type).and_return :struct
 
-          type_info.tag_or_class.must_equal interface
+          _(type_info.tag_or_class).must_equal interface
         end
       end
     end
 
     describe 'for a callback' do
       it "returns the callback's wrapper class" do
-        callback_type_info.tag_or_class.must_equal Regress::TestCallback
+        _(callback_type_info.tag_or_class).must_equal Regress::TestCallback
       end
     end
 
@@ -234,7 +234,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:tag).and_return :foo
         expect(type_info).to receive(:pointer?).and_return true
 
-        type_info.tag_or_class.must_equal [:pointer, :foo]
+        _(type_info.tag_or_class).must_equal [:pointer, :foo]
       end
     end
 
@@ -243,13 +243,13 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:tag).and_return :void
         allow(type_info).to receive(:pointer?).and_return true
 
-        type_info.tag_or_class.must_equal [:pointer, :void]
+        _(type_info.tag_or_class).must_equal [:pointer, :void]
       end
     end
 
     describe 'for a complex nested hash type' do
       it 'returns a representeation of the nested structure' do
-        ghash_type_info.tag_or_class.must_equal(
+        _(ghash_type_info.tag_or_class).must_equal(
           [:pointer,
            [:ghash,
             :utf8,
@@ -270,7 +270,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       it 'delegates to interface info' do
         allow(iface_info).to receive(:to_callback_ffi_type).and_return :some_ffi_type
 
-        type_info.to_callback_ffi_type.must_equal :some_ffi_type
+        _(type_info.to_callback_ffi_type).must_equal :some_ffi_type
       end
     end
   end
@@ -282,7 +282,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an empty array' do
-        type_info.extra_conversion_arguments.must_equal []
+        _(type_info.extra_conversion_arguments).must_equal []
       end
     end
 
@@ -298,7 +298,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo, 3]
+        _(type_info.extra_conversion_arguments).must_equal [:foo, 3]
       end
     end
 
@@ -312,7 +312,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo]
+        _(type_info.extra_conversion_arguments).must_equal [:foo]
       end
     end
 
@@ -327,7 +327,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo]
+        _(type_info.extra_conversion_arguments).must_equal [:foo]
       end
     end
 
@@ -342,7 +342,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type pair' do
-        type_info.extra_conversion_arguments.must_equal [[:foo, :bar]]
+        _(type_info.extra_conversion_arguments).must_equal [[:foo, :bar]]
       end
     end
 
@@ -355,7 +355,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo]
+        _(type_info.extra_conversion_arguments).must_equal [:foo]
       end
     end
 
@@ -368,7 +368,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo]
+        _(type_info.extra_conversion_arguments).must_equal [:foo]
       end
     end
 
@@ -383,7 +383,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an array containing the element type' do
-        type_info.extra_conversion_arguments.must_equal [:foo]
+        _(type_info.extra_conversion_arguments).must_equal [:foo]
       end
     end
 
@@ -397,7 +397,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
 
       it 'returns an empty array' do
-        type_info.extra_conversion_arguments.must_equal []
+        _(type_info.extra_conversion_arguments).must_equal []
       end
     end
   end
@@ -411,7 +411,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :gint32 }
 
       it 'is nil' do
-        type_info.argument_class_name.must_be_nil
+        _(type_info.argument_class_name).must_be_nil
       end
     end
 
@@ -427,14 +427,14 @@ describe GirFFI::InfoExt::ITypeInfo do
       describe 'for :struct' do
         let(:interface_type) { :struct }
         it 'equals the struct class name' do
-          type_info.argument_class_name.must_equal 'Bar::Foo'
+          _(type_info.argument_class_name).must_equal 'Bar::Foo'
         end
       end
 
       describe 'for :union' do
         let(:interface_type) { :union }
         it 'equals the union class name' do
-          type_info.argument_class_name.must_equal 'Bar::Foo'
+          _(type_info.argument_class_name).must_equal 'Bar::Foo'
         end
       end
 
@@ -442,7 +442,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         let(:interface_type) { :interface }
 
         it 'equals the interface module name' do
-          type_info.argument_class_name.must_equal 'Bar::Foo'
+          _(type_info.argument_class_name).must_equal 'Bar::Foo'
         end
       end
 
@@ -450,7 +450,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         let(:interface_type) { :object }
 
         it 'equals the object class name' do
-          type_info.argument_class_name.must_equal 'Bar::Foo'
+          _(type_info.argument_class_name).must_equal 'Bar::Foo'
         end
       end
 
@@ -458,7 +458,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         let(:interface_type) { :callback }
 
         it 'equals the callback type name' do
-          type_info.argument_class_name.must_equal 'Bar::Foo'
+          _(type_info.argument_class_name).must_equal 'Bar::Foo'
         end
       end
     end
@@ -467,7 +467,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :strv }
 
       it 'equals GLib::Strv' do
-        type_info.argument_class_name.must_equal 'GLib::Strv'
+        _(type_info.argument_class_name).must_equal 'GLib::Strv'
       end
     end
 
@@ -484,7 +484,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals GirFFI::ZeroTerminated' do
-          type_info.argument_class_name.must_equal 'GirFFI::ZeroTerminated'
+          _(type_info.argument_class_name).must_equal 'GirFFI::ZeroTerminated'
         end
       end
 
@@ -495,7 +495,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals GLib::ByteArray' do
-          type_info.argument_class_name.must_equal 'GLib::ByteArray'
+          _(type_info.argument_class_name).must_equal 'GLib::ByteArray'
         end
       end
 
@@ -506,7 +506,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals GLib::PtrArray' do
-          type_info.argument_class_name.must_equal 'GLib::PtrArray'
+          _(type_info.argument_class_name).must_equal 'GLib::PtrArray'
         end
       end
 
@@ -517,7 +517,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals GLib::Array' do
-          type_info.argument_class_name.must_equal 'GLib::Array'
+          _(type_info.argument_class_name).must_equal 'GLib::Array'
         end
       end
     end
@@ -526,7 +526,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :glist }
 
       it 'equals GLib::List' do
-        type_info.argument_class_name.must_equal 'GLib::List'
+        _(type_info.argument_class_name).must_equal 'GLib::List'
       end
     end
 
@@ -534,7 +534,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :gslist }
 
       it 'equals GLib::SList' do
-        type_info.argument_class_name.must_equal 'GLib::SList'
+        _(type_info.argument_class_name).must_equal 'GLib::SList'
       end
     end
 
@@ -542,7 +542,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :ghash }
 
       it 'equals GLib::HashTable' do
-        type_info.argument_class_name.must_equal 'GLib::HashTable'
+        _(type_info.argument_class_name).must_equal 'GLib::HashTable'
       end
     end
 
@@ -550,7 +550,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:tag) { :error }
 
       it 'equals GLib::Error' do
-        type_info.argument_class_name.must_equal 'GLib::Error'
+        _(type_info.argument_class_name).must_equal 'GLib::Error'
       end
     end
   end
@@ -566,7 +566,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the none type' do
-        GObject.type_name(type_info.gtype).must_equal 'void'
+        _(GObject.type_name(type_info.gtype)).must_equal 'void'
       end
     end
 
@@ -575,7 +575,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the none type' do
-        GObject.type_name(type_info.gtype).must_equal 'gpointer'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gpointer'
       end
     end
 
@@ -584,7 +584,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gboolean type' do
-        GObject.type_name(type_info.gtype).must_equal 'gboolean'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gboolean'
       end
     end
 
@@ -593,7 +593,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gint type' do
-        GObject.type_name(type_info.gtype).must_equal 'gint'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gint'
       end
     end
 
@@ -602,7 +602,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the gint64 type' do
-        GObject.type_name(type_info.gtype).must_equal 'gint64'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gint64'
       end
     end
 
@@ -611,7 +611,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { false }
 
       it 'equals the guint64 type' do
-        GObject.type_name(type_info.gtype).must_equal 'guint64'
+        _(GObject.type_name(type_info.gtype)).must_equal 'guint64'
       end
     end
 
@@ -620,7 +620,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the gchararray type' do
-        GObject.type_name(type_info.gtype).must_equal 'gchararray'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gchararray'
       end
     end
 
@@ -629,7 +629,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the GHashTable type' do
-        GObject.type_name(type_info.gtype).must_equal 'GHashTable'
+        _(GObject.type_name(type_info.gtype)).must_equal 'GHashTable'
       end
     end
 
@@ -638,7 +638,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       let(:pointer?) { true }
 
       it 'equals the pointer type' do
-        GObject.type_name(type_info.gtype).must_equal 'gpointer'
+        _(GObject.type_name(type_info.gtype)).must_equal 'gpointer'
       end
     end
 
@@ -653,7 +653,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals the GArray type' do
-          GObject.type_name(type_info.gtype).must_equal 'GArray'
+          _(GObject.type_name(type_info.gtype)).must_equal 'GArray'
         end
       end
 
@@ -664,7 +664,7 @@ describe GirFFI::InfoExt::ITypeInfo do
         end
 
         it 'equals the gpointer type' do
-          GObject.type_name(type_info.gtype).must_equal 'gpointer'
+          _(GObject.type_name(type_info.gtype)).must_equal 'gpointer'
         end
       end
 
@@ -679,7 +679,7 @@ describe GirFFI::InfoExt::ITypeInfo do
             allow(elmtype_info).to receive(:tag).and_return :utf8
             allow(elmtype_info).to receive(:pointer?).and_return true
 
-            GObject.type_name(type_info.gtype).must_equal 'GStrv'
+            _(GObject.type_name(type_info.gtype)).must_equal 'GStrv'
           end
         end
 
@@ -688,7 +688,7 @@ describe GirFFI::InfoExt::ITypeInfo do
             allow(elmtype_info).to receive(:tag).and_return :filename
             allow(elmtype_info).to receive(:pointer?).and_return true
 
-            GObject.type_name(type_info.gtype).must_equal 'GStrv'
+            _(GObject.type_name(type_info.gtype)).must_equal 'GStrv'
           end
         end
       end

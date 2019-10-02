@@ -7,7 +7,7 @@ describe GirFFI::CallbackBase do
     it 'stores the passed in proc in CALLBACKS' do
       dummy_proc = 'some-callback'
       GirFFI::CallbackBase.store_callback dummy_proc
-      GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id].must_equal dummy_proc
+      _(GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id]).must_equal dummy_proc
     end
   end
 
@@ -16,7 +16,7 @@ describe GirFFI::CallbackBase do
       dummy_proc = 'some-callback'
       GirFFI::CallbackBase.store_callback dummy_proc
       GirFFI::CallbackBase.drop_callback dummy_proc
-      GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id].must_be_nil
+      _(GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id]).must_be_nil
     end
   end
 end

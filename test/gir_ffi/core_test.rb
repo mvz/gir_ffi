@@ -43,27 +43,27 @@ describe GirFFI::Core do
 
       it 'returns a GType for the derived class' do
         parent_gtype = GIMarshallingTests::OverridesObject.gtype
-        @gtype.wont_equal parent_gtype
-        GObject.type_name(@gtype).must_equal @klass.name
+        _(@gtype).wont_equal parent_gtype
+        _(GObject.type_name(@gtype)).must_equal @klass.name
       end
 
       it 'makes #gtype on the registered class return the new GType' do
-        @klass.gtype.must_equal @gtype
+        _(@klass.gtype).must_equal @gtype
       end
 
       it 'registers a type with the same size as the parent' do
         q = GObject.type_query @gtype
-        q.instance_size.must_equal GIMarshallingTests::OverridesObject::Struct.size
+        _(q.instance_size).must_equal GIMarshallingTests::OverridesObject::Struct.size
       end
 
       it 'creates a struct class for the derived class with just one member' do
-        @klass::Struct.members.must_equal [:parent]
+        _(@klass::Struct.members).must_equal [:parent]
       end
 
       it 'allows the new class to be instantiated' do
         obj = @klass.new
         type = GObject.type_from_instance obj
-        type.must_equal @gtype
+        _(type).must_equal @gtype
       end
     end
 
@@ -81,17 +81,17 @@ describe GirFFI::Core do
 
       it 'registers a type that is bigger than the parent' do
         q = GObject.type_query @gtype
-        q.instance_size.must_be :>, GIMarshallingTests::OverridesObject::Struct.size
+        _(q.instance_size).must_be :>, GIMarshallingTests::OverridesObject::Struct.size
       end
 
       it 'gives the types Struct the fields :parent and :foo' do
-        @klass::Struct.members.must_equal [:parent, :foo]
+        _(@klass::Struct.members).must_equal [:parent, :foo]
       end
 
       it 'creates accessor functions for the property' do
         obj = @klass.new
         obj.foo = 13
-        obj.foo.must_equal 13
+        _(obj.foo).must_equal 13
       end
     end
   end

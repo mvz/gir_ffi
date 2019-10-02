@@ -10,7 +10,7 @@ describe GObjectIntrospection::IRegisteredTypeInfo do
       end
 
       it 'returns interface name' do
-        registered_type_info.type_name.must_equal 'GIMarshallingTestsInterface'
+        _(registered_type_info.type_name).must_equal 'GIMarshallingTestsInterface'
       end
     end
 
@@ -20,7 +20,7 @@ describe GObjectIntrospection::IRegisteredTypeInfo do
       end
 
       it 'returns nil' do
-        registered_type_info.type_name.must_be_nil
+        _(registered_type_info.type_name).must_be_nil
       end
     end
   end

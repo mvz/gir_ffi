@@ -31,41 +31,41 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'registers a type that is bigger than the parent' do
         gtype = derived_class.gtype
         q = GObject.type_query gtype
-        q.instance_size.must_be :>, GIMarshallingTests::Object::Struct.size
+        _(q.instance_size).must_be :>, GIMarshallingTests::Object::Struct.size
       end
 
       it "gives the type's Struct fields for the parent and the property" do
-        derived_class::Struct.members.must_equal [:parent, :foo_bar]
+        _(derived_class::Struct.members).must_equal [:parent, :foo_bar]
       end
 
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.foo_bar = 13
-        obj.foo_bar.must_equal 13
+        _(obj.foo_bar).must_equal 13
       end
 
       it 'makes the property retrievable using #get_property' do
         obj = derived_class.new
         obj.foo_bar = 13
-        obj.get_property('foo-bar').must_equal 13
+        _(obj.get_property('foo-bar')).must_equal 13
       end
 
       it 'makes the property settable using #set_property' do
         obj = derived_class.new
         obj.set_property('foo-bar', 20)
-        obj.foo_bar.must_equal 20
+        _(obj.foo_bar).must_equal 20
       end
 
       it 'keeps parent properties accessible through their accessors' do
         obj = derived_class.new
         obj.int = 24
-        obj.int.must_equal 24
+        _(obj.int).must_equal 24
       end
 
       it 'keeps parent properties accessible through get_property and set_property' do
         obj = derived_class.new
         obj.set_property('int', 24)
-        obj.get_property('int').must_equal 24
+        _(obj.get_property('int')).must_equal 24
       end
     end
 
@@ -91,26 +91,26 @@ describe GirFFI::Builders::UserDefinedBuilder do
         expected_size = derived_class::Struct.size
         gtype = derived_class.gtype
         q = GObject.type_query gtype
-        q.instance_size.must_equal expected_size
+        _(q.instance_size).must_equal expected_size
       end
 
       it "gives the type's Struct fields for the parent and the properties with the correct offsets" do
         offsets = derived_class::Struct.offsets
         alignment = derived_class::Struct.alignment
-        alignment.must_equal 8 # TODO: Fix tests for platforms where this fails.
-        offsets.must_equal [[:parent, 0], [:string_prop, 32], [:int_prop, 40], [:long_prop, 48]]
+        _(alignment).must_equal 8 # TODO: Fix tests for platforms where this fails.
+        _(offsets).must_equal [[:parent, 0], [:string_prop, 32], [:int_prop, 40], [:long_prop, 48]]
       end
 
       it 'creates accessor functions for the string property' do
         obj = derived_class.new
         obj.string_prop = 'hello!'
-        obj.string_prop.must_equal 'hello!'
+        _(obj.string_prop).must_equal 'hello!'
       end
 
       it 'creates accessor functions for the integer property' do
         obj = derived_class.new
         obj.int_prop = 13
-        obj.int_prop.must_equal 13
+        _(obj.int_prop).must_equal 13
       end
     end
 
@@ -129,11 +129,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
         expected_size = derived_class::Struct.size
         gtype = derived_class.gtype
         q = GObject.type_query gtype
-        q.instance_size.must_equal expected_size
+        _(q.instance_size).must_equal expected_size
       end
 
       it "gives the type's Struct fields for the parent and the property" do
-        derived_class::Struct.members.must_equal [:parent, :boxed_prop]
+        _(derived_class::Struct.members).must_equal [:parent, :boxed_prop]
       end
 
       it 'creates accessor functions for the property' do
@@ -141,7 +141,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         boxed = GIMarshallingTests::BoxedStruct.new
         boxed.long_ = 423
         obj.boxed_prop = boxed
-        obj.boxed_prop.long_.must_equal 423
+        _(obj.boxed_prop.long_).must_equal 423
       end
     end
 
@@ -160,11 +160,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
         expected_size = derived_class::Struct.size
         gtype = derived_class.gtype
         q = GObject.type_query gtype
-        q.instance_size.must_equal expected_size
+        _(q.instance_size).must_equal expected_size
       end
 
       it "gives the type's Struct fields for the parent and the property" do
-        derived_class::Struct.members.must_equal [:parent, :object_prop]
+        _(derived_class::Struct.members).must_equal [:parent, :object_prop]
       end
 
       it 'creates accessor functions for the property' do
@@ -172,29 +172,29 @@ describe GirFFI::Builders::UserDefinedBuilder do
         object = GIMarshallingTests::Object.new 42
         object.int = 423
         obj.object_prop = object
-        obj.object_prop.int.must_equal 423
+        _(obj.object_prop.int).must_equal 423
       end
 
       it 'allows clearing the property throught the setter method' do
         obj = derived_class.new
         obj.object_prop = nil
-        obj.object_prop.must_be_nil
+        _(obj.object_prop).must_be_nil
       end
 
       it 'handles reference counting correctly when using the accessor' do
         obj = derived_class.new
         object = GIMarshallingTests::Object.new 42
         obj.object_prop = object
-        object_ref_count(object).must_equal 2
+        _(object_ref_count(object)).must_equal 2
       end
 
       it 'handles reference counting correctly when using the set_property method' do
         obj = derived_class.new
         object = GIMarshallingTests::Object.new 42
 
-        object_ref_count(object).must_equal 1
+        _(object_ref_count(object)).must_equal 1
         obj.set_property('object_prop', object)
-        object_ref_count(object).must_equal 4 # Due to extra Value#set_value + Value#get_value
+        _(object_ref_count(object)).must_equal 4 # Due to extra Value#set_value + Value#get_value
       end
     end
 
@@ -212,7 +212,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = true
-        obj.the_prop.must_equal true
+        _(obj.the_prop).must_equal true
       end
     end
 
@@ -230,7 +230,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = -13
-        obj.the_prop.must_equal(-13)
+        _(obj.the_prop).must_equal(-13)
       end
     end
 
@@ -248,7 +248,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 13
-        obj.the_prop.must_equal 13
+        _(obj.the_prop).must_equal 13
       end
     end
 
@@ -266,7 +266,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 423
-        obj.the_prop.must_equal 423
+        _(obj.the_prop).must_equal 423
       end
     end
 
@@ -284,7 +284,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 423_432
-        obj.the_prop.must_equal 423_432
+        _(obj.the_prop).must_equal 423_432
       end
     end
 
@@ -302,7 +302,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = -423_432
-        obj.the_prop.must_equal(-423_432)
+        _(obj.the_prop).must_equal(-423_432)
       end
     end
 
@@ -320,7 +320,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 423_432
-        obj.the_prop.must_equal 423_432
+        _(obj.the_prop).must_equal 423_432
       end
     end
 
@@ -338,7 +338,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 42.23
-        obj.the_prop.must_be_within_epsilon 42.23
+        _(obj.the_prop).must_be_within_epsilon 42.23
       end
     end
 
@@ -356,7 +356,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = 42.23
-        obj.the_prop.must_equal 42.23
+        _(obj.the_prop).must_equal 42.23
       end
     end
 
@@ -375,7 +375,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = :value2
-        obj.the_prop.must_equal :value2
+        _(obj.the_prop).must_equal :value2
       end
     end
 
@@ -394,7 +394,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'creates accessor functions for the property' do
         obj = derived_class.new
         obj.the_prop = { value2: true }
-        obj.the_prop.must_equal value2: true
+        _(obj.the_prop).must_equal value2: true
       end
     end
 
@@ -417,12 +417,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       it 'registers a type that is bigger than the parent' do
         class_size = GObject.type_query(derived_class.gtype).instance_size
-        class_size.must_be :>, parent_size
+        _(class_size).must_be :>, parent_size
       end
 
       it 'leaves enough space in derived struct layout' do
         struct_size = derived_class::Struct.size
-        struct_size.must_be :>, parent_size
+        _(struct_size).must_be :>, parent_size
       end
     end
 
@@ -435,8 +435,8 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       it 'registers a type under the overridden name' do
         registered_name = GObject.type_name(derived_class.gtype)
-        registered_name.must_equal info.g_name
-        registered_name.wont_equal derived_class.name
+        _(registered_name).must_equal info.g_name
+        _(registered_name).wont_equal derived_class.name
       end
     end
 
@@ -452,7 +452,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it 'allows the vfunc to be called through its invoker' do
         obj = derived_class.new
         obj.method_int8_in 12
-        obj.int.must_equal 12
+        _(obj.int).must_equal 12
       end
     end
 
@@ -474,7 +474,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       it 'allows the vfunc to be called through its invoker' do
         obj = derived_class.new
-        obj.do_matrix('bar').must_equal 44
+        _(obj.do_matrix('bar')).must_equal 44
       end
     end
 
@@ -489,13 +489,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       it 'marks the type as conforming to the included Interface' do
         iface_gtype = GIMarshallingTests::Interface.gtype
-        GObject.type_interfaces(derived_class.gtype).to_a.must_equal [iface_gtype]
+        _(GObject.type_interfaces(derived_class.gtype).to_a).must_equal [iface_gtype]
       end
 
       it 'allows the vfunc to be called through its invoker' do
         obj = derived_class.new
         obj.test_int8_in 12
-        obj.int.must_equal 12
+        _(obj.int).must_equal 12
       end
     end
 
@@ -503,22 +503,22 @@ describe GirFFI::Builders::UserDefinedBuilder do
       gtype = derived_class.gtype
       other_builder = GirFFI::Builders::UserDefinedBuilder.new info
       other_class = other_builder.build_class
-      other_class.gtype.must_equal gtype
+      _(other_class.gtype).must_equal gtype
     end
 
     it 'creates a class with a new GType' do
-      derived_class.gtype.wont_equal GIMarshallingTests::Object.gtype
+      _(derived_class.gtype).wont_equal GIMarshallingTests::Object.gtype
     end
 
     it 'makes the registered class return objects with the correct GType' do
       obj = derived_class.new
-      GObject.type_from_instance(obj).must_equal derived_class.gtype
+      _(GObject.type_from_instance(obj)).must_equal derived_class.gtype
     end
   end
 
   describe '#object_class_struct' do
     it 'returns the parent class struct' do
-      builder.object_class_struct.must_equal GIMarshallingTests::ObjectClass
+      _(builder.object_class_struct).must_equal GIMarshallingTests::ObjectClass
     end
   end
 end

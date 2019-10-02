@@ -15,59 +15,59 @@ describe GirFFI::ClassBase do
 
     it 'has #from as a pass-through method' do
       result = object_class.from :foo
-      result.must_equal :foo
+      _(result).must_equal :foo
     end
 
     describe '#==' do
       it 'returns true when comparing to an object of the same class and pointer' do
         other = object_class.wrap object.to_ptr
 
-        object.must_be :==, other
-        other.must_be :==, object
+        _(object).must_be :==, other
+        _(other).must_be :==, object
       end
 
       it 'returns true when comparing to an object of the same class and a pointer with the same address' do
         ptr = FFI::Pointer.new object.to_ptr
         other = object_class.wrap ptr
 
-        object.must_be :==, other
-        other.must_be :==, object
+        _(object).must_be :==, other
+        _(other).must_be :==, object
       end
 
       it 'returns false when comparing to an object of a sub/superclass and the same pointer' do
         subclass = Class.new(object_class)
         other = subclass.wrap object.to_ptr
 
-        object.wont_be :==, other
-        other.wont_be :==, object
+        _(object).wont_be :==, other
+        _(other).wont_be :==, object
       end
 
       it 'returns false when comparing to an object of the same class and different pointer' do
         other = object_class.wrap FFI::MemoryPointer.new(:int32)
 
-        object.wont_be :==, other
-        other.wont_be :==, object
+        _(object).wont_be :==, other
+        _(other).wont_be :==, object
       end
 
       it "returns false when comparing to an object that doesn't respond to #to_ptr" do
         other = Object.new
 
-        object.wont_be :==, other
-        other.wont_be :==, object
+        _(object).wont_be :==, other
+        _(other).wont_be :==, object
       end
 
       it 'returns false when comparing to an object of a different class and same pointer' do
         allow(other = Object.new).to receive(:to_ptr).and_return object.to_ptr
 
-        object.wont_be :==, other
-        other.wont_be :==, object
+        _(object).wont_be :==, other
+        _(other).wont_be :==, object
       end
 
       it 'returns false when comparing to an object of a different class and different pointer' do
         allow(other = Object.new).to receive(:to_ptr).and_return FFI::MemoryPointer.new(:int32)
 
-        object.wont_be :==, other
-        other.wont_be :==, object
+        _(object).wont_be :==, other
+        _(other).wont_be :==, object
       end
     end
   end
@@ -99,7 +99,7 @@ describe GirFFI::ClassBase do
       klass.const_set :GIR_FFI_BUILDER, builder
 
       result = klass.setup_and_call :foo, []
-      result.must_equal 'correct-result'
+      _(result).must_equal 'correct-result'
     end
 
     it 'raises a sensible error if the method is not found' do
@@ -109,9 +109,8 @@ describe GirFFI::ClassBase do
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      proc { klass.setup_and_call :foo, [] }.
-        must_raise(NoMethodError).message.
-        must_match(/^undefined method `foo' for/)
+      exception = _(proc { klass.setup_and_call :foo, [] }).must_raise(NoMethodError)
+      _(exception.message).must_match(/^undefined method `foo' for/)
     end
   end
 
@@ -148,7 +147,7 @@ describe GirFFI::ClassBase do
       obj = klass.new
 
       result = obj.setup_and_call :foo, []
-      result.must_equal 'correct-result'
+      _(result).must_equal 'correct-result'
     end
 
     it 'raises a sensible error if the method is not found' do
@@ -160,9 +159,8 @@ describe GirFFI::ClassBase do
 
       obj = klass.new
 
-      proc { obj.setup_and_call :foo, [] }.
-        must_raise(NoMethodError).message.
-        must_match(/^undefined method `foo' for/)
+      exception = _(proc { obj.setup_and_call :foo, [] }).must_raise(NoMethodError)
+      _(exception.message).must_match(/^undefined method `foo' for/)
     end
   end
 end

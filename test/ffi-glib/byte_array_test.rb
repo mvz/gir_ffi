@@ -23,6 +23,6 @@ describe GLib::ByteArray do
   it 'can be created from a string' do
     str = 'cdba'
     ba = GLib::ByteArray.from str
-    ba.to_string.must_equal str
+    _(ba.to_string).must_equal str
   end
 end
