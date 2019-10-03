@@ -53,16 +53,16 @@ describe GLib::HashTable do
       a = {}
       @hash.each { |k, v| a[k] = v }
       _(a).must_be :==,
-                'foo' => 'bar',
-                'baz' => 'bat',
-                'qux' => 'quux'
+                   'foo' => 'bar',
+                   'baz' => 'bat',
+                   'qux' => 'quux'
     end
 
     it 'has a working #to_hash method' do
       _(@hash.to_hash).must_be :==,
-                            'foo' => 'bar',
-                            'baz' => 'bat',
-                            'qux' => 'quux'
+                               'foo' => 'bar',
+                               'baz' => 'bat',
+                               'qux' => 'quux'
     end
   end
 end

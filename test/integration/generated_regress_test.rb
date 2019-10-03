@@ -1047,16 +1047,16 @@ describe Regress do
 
   it 'has the constant LONG_STRING_CONSTANT' do
     _(Regress::LONG_STRING_CONSTANT).must_equal %w(TYPE VALUE ENCODING CHARSET
-                                                LANGUAGE DOM INTL POSTAL PARCEL
-                                                HOME WORK PREF VOICE FAX MSG
-                                                CELL PAGER BBS MODEM CAR ISDN
-                                                VIDEO AOL APPLELINK ATTMAIL CIS
-                                                EWORLD INTERNET IBMMAIL MCIMAIL
-                                                POWERSHARE PRODIGY TLX X400 GIF
-                                                CGM WMF BMP MET PMB DIB PICT
-                                                TIFF PDF PS JPEG QTIME MPEG
-                                                MPEG2 AVI WAVE AIFF PCM X509
-                                                PGP).join(',')
+                                                   LANGUAGE DOM INTL POSTAL PARCEL
+                                                   HOME WORK PREF VOICE FAX MSG
+                                                   CELL PAGER BBS MODEM CAR ISDN
+                                                   VIDEO AOL APPLELINK ATTMAIL CIS
+                                                   EWORLD INTERNET IBMMAIL MCIMAIL
+                                                   POWERSHARE PRODIGY TLX X400 GIF
+                                                   CGM WMF BMP MET PMB DIB PICT
+                                                   TIFF PDF PS JPEG QTIME MPEG
+                                                   MPEG2 AVI WAVE AIFF PCM X509
+                                                   PGP).join(',')
   end
 
   describe 'Regress::LikeGnomeKeyringPasswordSchema' do
