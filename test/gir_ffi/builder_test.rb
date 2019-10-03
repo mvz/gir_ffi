@@ -12,14 +12,14 @@ describe GirFFI::Builder do
     it 'does not replace existing classes' do
       oldclass = GObject::Object
       GirFFI::Builder.build_class get_introspection_data('GObject', 'Object')
-      GObject::Object.must_equal oldclass
+      _(GObject::Object).must_equal oldclass
     end
   end
 
   describe '.build_module' do
     it 'refuses to build existing modules defined elsewhere' do
-      result = -> { GirFFI::Builder.build_module('Array') }.must_raise RuntimeError
-      result.message.must_equal 'The module Array was already defined elsewhere'
+      result = _(-> { GirFFI::Builder.build_module('Array') }).must_raise RuntimeError
+      _(result.message).must_equal 'The module Array was already defined elsewhere'
     end
 
     describe 'building a module for the first time' do
@@ -66,7 +66,7 @@ describe GirFFI::Builder do
   describe '.build_by_gtype' do
     it 'returns the class types known to the GIR' do
       result = GirFFI::Builder.build_by_gtype GObject::Object.gtype
-      result.must_equal GObject::Object
+      _(result).must_equal GObject::Object
     end
 
     it 'returns the class for user-defined types' do
@@ -75,7 +75,7 @@ describe GirFFI::Builder do
       gtype = GirFFI.define_type klass
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
-      found_klass.must_equal klass
+      _(found_klass).must_equal klass
     end
 
     it 'returns a valid class for boxed classes unknown to GIR' do
@@ -83,11 +83,11 @@ describe GirFFI::Builder do
       property = object_class.find_property 'some-boxed-glist'
       gtype = property.value_type
 
-      gtype.wont_equal GObject::TYPE_NONE
+      _(gtype).wont_equal GObject::TYPE_NONE
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
-      found_klass.name.must_be_nil
-      found_klass.superclass.must_equal GirFFI::BoxedBase
+      _(found_klass.name).must_be_nil
+      _(found_klass.superclass).must_equal GirFFI::BoxedBase
     end
   end
 
@@ -210,12 +210,12 @@ describe GirFFI::Builder do
 
     it 'autocreates the TestObj class on first access' do
       assert !Regress.const_defined?(:TestObj)
-      Regress::TestObj.must_be_instance_of Class
+      _(Regress::TestObj).must_be_instance_of Class
       assert Regress.const_defined? :TestObj
     end
 
     it 'knows its own module builder' do
-      Regress.gir_ffi_builder.must_be_instance_of GirFFI::Builders::ModuleBuilder
+      _(Regress.gir_ffi_builder).must_be_instance_of GirFFI::Builders::ModuleBuilder
     end
 
     after do
@@ -231,15 +231,15 @@ describe GirFFI::Builder do
     it 'C functions for called instance methods get attached to Regress::Lib' do
       o = Regress::TestObj.new_from_file('foo')
       o.instance_method
-      Regress::Lib.must_respond_to :regress_test_obj_instance_method
+      _(Regress::Lib).must_respond_to :regress_test_obj_instance_method
     end
 
     it 'the built class knows its own GIR info' do
-      Regress::TestObj.gir_info.name.must_equal 'TestObj'
+      _(Regress::TestObj.gir_info.name).must_equal 'TestObj'
     end
 
     it 'the built class knows its own class builder' do
-      Regress::TestObj.gir_ffi_builder.must_be_instance_of GirFFI::Builders::ObjectBuilder
+      _(Regress::TestObj.gir_ffi_builder).must_be_instance_of GirFFI::Builders::ObjectBuilder
     end
   end
 
@@ -254,8 +254,8 @@ describe GirFFI::Builder do
       obj = Regress::TestObj.new_from_file('foo')
       subobj = Regress::TestSubObj.new
 
-      obj.instance_method.must_equal(-1)
-      subobj.instance_method.must_equal 0
+      _(obj.instance_method).must_equal(-1)
+      _(subobj.instance_method).must_equal 0
     end
   end
 
@@ -283,7 +283,7 @@ describe GirFFI::Builder do
     end
 
     it 'sets up the inheritance chain' do
-      Regress::TestSubObj.registered_ancestors.
+      _(Regress::TestSubObj.registered_ancestors).
         must_equal [Regress::TestSubObj,
                     Regress::TestObj,
                     GObject::Object]

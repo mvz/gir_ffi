@@ -37,18 +37,18 @@ describe GirFFI::Builders::UnintrospectableBuilder do
 
     describe 'its #find_signal method' do
       it "returns nil for a signal that doesn't exist" do
-        @bldr.find_signal('foo').must_be_nil
+        _(@bldr.find_signal('foo')).must_be_nil
       end
 
       it 'finds signals in ancestor classes' do
         signal = @bldr.find_signal 'notify'
-        signal.name.must_equal 'notify'
+        _(signal.name).must_equal 'notify'
       end
     end
 
     describe '#object_class_struct' do
       it 'returns the parent class struct' do
-        @bldr.object_class_struct.must_equal GObject::ObjectClass
+        _(@bldr.object_class_struct).must_equal GObject::ObjectClass
       end
     end
   end
@@ -65,8 +65,8 @@ describe GirFFI::Builders::UnintrospectableBuilder do
     describe 'its #find_signal method' do
       it 'finds signals that are not defined in the GIR' do
         signal = builder.find_signal 'handoff'
-        signal.wont_be_nil
-        signal.name.must_equal 'handoff'
+        _(signal).wont_be_nil
+        _(signal.name).must_equal 'handoff'
       end
     end
   end

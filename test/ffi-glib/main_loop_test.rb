@@ -25,7 +25,7 @@ describe GLib::MainLoop do
 
       slow_thread.join
 
-      a.must_equal ['Before run', 'During run', 'After run']
+      _(a).must_equal ['Before run', 'During run', 'After run']
     end
 
     it 'raises and quits on exceptions in callbacks' do
@@ -43,8 +43,8 @@ describe GLib::MainLoop do
         raise MainLoopTestException
       end
 
-      -> { main_loop.run }.must_raise MainLoopTestException
-      a.must_equal 'expected'
+      _(-> { main_loop.run }).must_raise MainLoopTestException
+      _(a).must_equal 'expected'
 
       # Clean up uncalled timeout
       GLib.source_remove guard

@@ -19,7 +19,7 @@ describe GirFFI::InfoExt::ICallableInfo do
       end
 
       it 'returns the ffi types of the arguments' do
-        callable_info.argument_ffi_types.must_equal [:type1, :type2]
+        _(callable_info.argument_ffi_types).must_equal [:type1, :type2]
       end
     end
   end

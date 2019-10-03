@@ -15,33 +15,33 @@ describe GObject do
   end
 
   it 'has constants for the fundamental GTypes' do
-    GObject::TYPE_INVALID.must_equal GObject.type_from_name('invalid')
-    GObject.type_name(GObject::TYPE_INVALID).must_be_nil
+    _(GObject::TYPE_INVALID).must_equal GObject.type_from_name('invalid')
+    _(GObject.type_name(GObject::TYPE_INVALID)).must_be_nil
 
-    GObject.type_name(GObject::TYPE_NONE).must_equal       'void'
-    GObject.type_name(GObject::TYPE_INTERFACE).must_equal  'GInterface'
-    GObject.type_name(GObject::TYPE_CHAR).must_equal       'gchar'
-    GObject.type_name(GObject::TYPE_UCHAR).must_equal      'guchar'
-    GObject.type_name(GObject::TYPE_BOOLEAN).must_equal    'gboolean'
-    GObject.type_name(GObject::TYPE_INT).must_equal        'gint'
-    GObject.type_name(GObject::TYPE_UINT).must_equal       'guint'
-    GObject.type_name(GObject::TYPE_LONG).must_equal       'glong'
-    GObject.type_name(GObject::TYPE_ULONG).must_equal      'gulong'
-    GObject.type_name(GObject::TYPE_INT64).must_equal      'gint64'
-    GObject.type_name(GObject::TYPE_UINT64).must_equal     'guint64'
-    GObject.type_name(GObject::TYPE_ENUM).must_equal       'GEnum'
-    GObject.type_name(GObject::TYPE_FLAGS).must_equal      'GFlags'
-    GObject.type_name(GObject::TYPE_FLOAT).must_equal      'gfloat'
-    GObject.type_name(GObject::TYPE_DOUBLE).must_equal     'gdouble'
-    GObject.type_name(GObject::TYPE_STRING).must_equal     'gchararray'
-    GObject.type_name(GObject::TYPE_POINTER).must_equal    'gpointer'
-    GObject.type_name(GObject::TYPE_BOXED).must_equal      'GBoxed'
-    GObject.type_name(GObject::TYPE_PARAM).must_equal      'GParam'
-    GObject.type_name(GObject::TYPE_OBJECT).must_equal     'GObject'
-    GObject.type_name(GObject::TYPE_GTYPE).must_equal      'GType'
-    GObject.type_name(GObject::TYPE_VARIANT).must_equal    'GVariant'
-    GObject.type_name(GObject::TYPE_STRV).must_equal       'GStrv'
-    GObject.type_name(GObject::TYPE_HASH_TABLE).must_equal 'GHashTable'
+    _(GObject.type_name(GObject::TYPE_NONE)).must_equal       'void'
+    _(GObject.type_name(GObject::TYPE_INTERFACE)).must_equal  'GInterface'
+    _(GObject.type_name(GObject::TYPE_CHAR)).must_equal       'gchar'
+    _(GObject.type_name(GObject::TYPE_UCHAR)).must_equal      'guchar'
+    _(GObject.type_name(GObject::TYPE_BOOLEAN)).must_equal    'gboolean'
+    _(GObject.type_name(GObject::TYPE_INT)).must_equal        'gint'
+    _(GObject.type_name(GObject::TYPE_UINT)).must_equal       'guint'
+    _(GObject.type_name(GObject::TYPE_LONG)).must_equal       'glong'
+    _(GObject.type_name(GObject::TYPE_ULONG)).must_equal      'gulong'
+    _(GObject.type_name(GObject::TYPE_INT64)).must_equal      'gint64'
+    _(GObject.type_name(GObject::TYPE_UINT64)).must_equal     'guint64'
+    _(GObject.type_name(GObject::TYPE_ENUM)).must_equal       'GEnum'
+    _(GObject.type_name(GObject::TYPE_FLAGS)).must_equal      'GFlags'
+    _(GObject.type_name(GObject::TYPE_FLOAT)).must_equal      'gfloat'
+    _(GObject.type_name(GObject::TYPE_DOUBLE)).must_equal     'gdouble'
+    _(GObject.type_name(GObject::TYPE_STRING)).must_equal     'gchararray'
+    _(GObject.type_name(GObject::TYPE_POINTER)).must_equal    'gpointer'
+    _(GObject.type_name(GObject::TYPE_BOXED)).must_equal      'GBoxed'
+    _(GObject.type_name(GObject::TYPE_PARAM)).must_equal      'GParam'
+    _(GObject.type_name(GObject::TYPE_OBJECT)).must_equal     'GObject'
+    _(GObject.type_name(GObject::TYPE_GTYPE)).must_equal      'GType'
+    _(GObject.type_name(GObject::TYPE_VARIANT)).must_equal    'GVariant'
+    _(GObject.type_name(GObject::TYPE_STRV)).must_equal       'GStrv'
+    _(GObject.type_name(GObject::TYPE_HASH_TABLE)).must_equal 'GHashTable'
   end
 
   describe '::object_class_from_instance' do
@@ -50,8 +50,8 @@ describe GObject do
       object_class = GObject.object_class_from_instance obj
       gtype = object_class.g_type_class.g_type
 
-      object_class.must_be_instance_of GObject::ObjectClass
-      gtype.must_equal GIMarshallingTests::OverridesObject.gtype
+      _(object_class).must_be_instance_of GObject::ObjectClass
+      _(gtype).must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end
 
@@ -62,10 +62,10 @@ describe GObject do
                                       'The Foo Bar Property',
                                       10, 20, 15,
                                       3)
-        spec.must_be_instance_of GObject::ParamSpecInt
-        spec.struct[:minimum].must_equal 10
-        spec.struct[:maximum].must_equal 20
-        spec.get_default_value.must_equal 15
+        _(spec).must_be_instance_of GObject::ParamSpecInt
+        _(spec.struct[:minimum]).must_equal 10
+        _(spec.struct[:maximum]).must_equal 20
+        _(spec.get_default_value).must_equal 15
       end
     end
   end

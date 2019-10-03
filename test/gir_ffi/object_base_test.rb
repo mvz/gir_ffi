@@ -10,25 +10,25 @@ describe GirFFI::ObjectBase do
   describe '.wrap' do
     it 'delegates conversion to the wrapped pointer' do
       expect(ptr = Object.new).to receive(:to_object).and_return 'good-result'
-      derived_class.wrap(ptr).must_equal 'good-result'
+      _(derived_class.wrap(ptr)).must_equal 'good-result'
     end
   end
 
   describe '.to_ffi_type' do
     it 'returns itself' do
-      derived_class.to_ffi_type.must_equal derived_class
+      _(derived_class.to_ffi_type).must_equal derived_class
     end
   end
 
   describe '.object_class' do
     it 'returns an object of the class struct type' do
-      Regress::TestObj.object_class.must_be_instance_of Regress::TestObjClass
+      _(Regress::TestObj.object_class).must_be_instance_of Regress::TestObjClass
     end
 
     it 'caches its result' do
       first = Regress::TestObj.object_class
       second = Regress::TestObj.object_class
-      second.must_be :eql?, first
+      _(second).must_be :eql?, first
     end
   end
 
@@ -41,7 +41,7 @@ describe GirFFI::ObjectBase do
     end
 
     it 'finds the included interface' do
-      derived_class.included_interfaces.must_equal [GIMarshallingTests::Interface]
+      _(derived_class.included_interfaces).must_equal [GIMarshallingTests::Interface]
     end
   end
 
@@ -54,7 +54,7 @@ describe GirFFI::ObjectBase do
     end
 
     it 'finds the ancestor classes and included interface' do
-      derived_class.registered_ancestors.
+      _(derived_class.registered_ancestors).
         must_equal [derived_class,
                     GIMarshallingTests::Interface,
                     GIMarshallingTests::Object,

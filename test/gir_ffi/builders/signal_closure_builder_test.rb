@@ -12,7 +12,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
     it 'builds a descendant of RubyClosure' do
       klass = builder.build_class
-      klass.superclass.must_equal GObject::RubyClosure
+      _(klass.superclass).must_equal GObject::RubyClosure
     end
   end
 
@@ -31,7 +31,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -51,7 +51,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -70,7 +70,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -90,7 +90,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -109,7 +109,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -130,7 +130,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -150,7 +150,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
 
@@ -169,7 +169,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
         end
         CODE
 
-        builder.marshaller_definition.must_equal expected
+        _(builder.marshaller_definition).must_equal expected
       end
     end
   end

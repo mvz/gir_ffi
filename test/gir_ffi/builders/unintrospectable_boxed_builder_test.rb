@@ -13,17 +13,17 @@ describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   let(:boxed_class) { bldr.build_class }
 
   it 'builds a class' do
-    boxed_class.must_be_instance_of Class
+    _(boxed_class).must_be_instance_of Class
   end
 
   it 'builds a class derived from GirFFI::BoxedBase' do
-    boxed_class.superclass.must_equal GirFFI::BoxedBase
+    _(boxed_class.superclass).must_equal GirFFI::BoxedBase
   end
 
   it 'returns the same class when built again' do
     other_bldr = GirFFI::Builders::UnintrospectableBoxedBuilder.new(info)
     other_class = other_bldr.build_class
 
-    other_class.must_equal boxed_class
+    _(other_class).must_equal boxed_class
   end
 end

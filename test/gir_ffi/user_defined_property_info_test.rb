@@ -15,25 +15,25 @@ describe GirFFI::UserDefinedPropertyInfo do
 
   describe '#param_spec' do
     it 'returns the passed in parameter specification' do
-      info.param_spec.must_equal pspec
+      _(info.param_spec).must_equal pspec
     end
   end
 
   describe '#name' do
     it 'returns the accessor name from the parameter specification' do
-      info.name.must_equal 'foo_bar'
+      _(info.name).must_equal 'foo_bar'
     end
   end
 
   describe '#ffi_type' do
     it 'returns the ffi type corresponding to the type tag' do
-      info.ffi_type.must_equal :int
+      _(info.ffi_type).must_equal :int
     end
   end
 
   describe '#field_type.tag' do
     it 'returns the mapped type symbol' do
-      info.field_type.tag.must_equal :gint
+      _(info.field_type.tag).must_equal :gint
     end
   end
 end

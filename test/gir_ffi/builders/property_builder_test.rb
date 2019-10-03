@@ -16,7 +16,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.getter_def.must_equal expected
+      _(builder.getter_def).must_equal expected
     end
 
     it 'generates the correct setter definition' do
@@ -27,7 +27,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.setter_def.must_equal expected
+      _(builder.setter_def).must_equal expected
     end
   end
 
@@ -42,7 +42,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.getter_def.must_equal expected
+      _(builder.getter_def).must_equal expected
     end
 
     it 'generates the correct setter definition' do
@@ -53,7 +53,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.setter_def.must_equal expected
+      _(builder.setter_def).must_equal expected
     end
   end
 
@@ -72,7 +72,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.getter_def.must_equal expected
+      _(builder.getter_def).must_equal expected
     end
 
     it 'generates the correct setter definition' do
@@ -83,7 +83,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.setter_def.must_equal expected
+      _(builder.setter_def).must_equal expected
     end
   end
 
@@ -97,7 +97,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.getter_def.must_equal expected
+      _(builder.getter_def).must_equal expected
     end
 
     it 'generates the correct setter definition' do
@@ -108,7 +108,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.setter_def.must_equal expected
+      _(builder.setter_def).must_equal expected
     end
   end
 
@@ -126,7 +126,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.getter_def.must_equal expected
+      _(builder.getter_def).must_equal expected
     end
 
     it 'generates the correct setter definition' do
@@ -137,7 +137,7 @@ describe GirFFI::Builders::PropertyBuilder do
       end
       CODE
 
-      builder.setter_def.must_equal expected
+      _(builder.setter_def).must_equal expected
     end
   end
 
@@ -152,7 +152,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it 'finds methods with underscores for properties with dashes' do
-      builder.container_defines_getter_method?.must_equal true
+      _(builder.container_defines_getter_method?).must_equal true
     end
   end
 end

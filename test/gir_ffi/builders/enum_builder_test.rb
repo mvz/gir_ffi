@@ -9,15 +9,15 @@ describe GirFFI::Builders::EnumBuilder do
 
     it 'makes the created type know its proper name' do
       enum = builder.build_class
-      enum.inspect.must_equal 'Regress::TestEnum'
+      _(enum.inspect).must_equal 'Regress::TestEnum'
     end
 
     it 'adds constants for the values' do
       enum = builder.build_class
-      enum::VALUE1.must_equal enum[:value1]
-      enum::VALUE2.must_equal enum[:value2]
-      enum::VALUE3.must_equal enum[:value3]
-      enum::VALUE4.must_equal enum[:value4]
+      _(enum::VALUE1).must_equal enum[:value1]
+      _(enum::VALUE2).must_equal enum[:value2]
+      _(enum::VALUE3).must_equal enum[:value3]
+      _(enum::VALUE4).must_equal enum[:value4]
     end
   end
 end

@@ -8,14 +8,14 @@ describe GirFFI::Builders::UnionBuilder do
 
   describe '#setup_instance_method' do
     it "returns nil looking for a method that doesn't exist" do
-      builder.setup_instance_method('blub').must_be_nil
+      _(builder.setup_instance_method('blub')).must_be_nil
     end
   end
 
   describe '#layout_specification' do
     it 'returns the correct layout for GObject::TypeCValue' do
       long_type = FFI.type_size(:long) == 8 ? :int64 : :int32
-      builder.layout_specification.must_equal [:v_int, :int32, 0,
+      _(builder.layout_specification).must_equal [:v_int, :int32, 0,
                                                :v_long, long_type, 0,
                                                :v_int64, :int64, 0,
                                                :v_double, :double, 0,
@@ -25,7 +25,7 @@ describe GirFFI::Builders::UnionBuilder do
 
   describe '#layout_superclass' do
     it 'returns GirFFI::Union' do
-      builder.layout_superclass.must_equal GirFFI::Union
+      _(builder.layout_superclass).must_equal GirFFI::Union
     end
   end
 end

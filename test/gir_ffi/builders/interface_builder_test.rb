@@ -26,7 +26,7 @@ describe GirFFI::Builders::InterfaceBuilder do
 
   describe '#interface_struct' do
     it 'returns the interface struct type' do
-      interface_builder.interface_struct.must_equal Regress::TestInterfaceIface
+      _(interface_builder.interface_struct).must_equal Regress::TestInterfaceIface
     end
   end
 end

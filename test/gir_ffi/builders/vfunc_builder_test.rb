@@ -22,7 +22,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -41,7 +41,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -60,7 +60,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -81,7 +81,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -102,7 +102,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -122,7 +122,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -147,7 +147,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -167,7 +167,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -186,7 +186,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
 
@@ -206,7 +206,7 @@ describe GirFFI::Builders::VFuncBuilder do
         end
         CODE
 
-        result.must_equal expected
+        _(result).must_equal expected
       end
     end
   end
@@ -220,7 +220,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it 'returns the correct FFI types including :pointer for the receiver' do
-        result.must_equal [:pointer, :int8]
+        _(result).must_equal [:pointer, :int8]
       end
     end
   end
@@ -234,7 +234,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it 'returns :pointer' do
-        result.must_equal :pointer
+        _(result).must_equal :pointer
       end
     end
   end

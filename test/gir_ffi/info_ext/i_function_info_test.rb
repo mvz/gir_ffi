@@ -25,7 +25,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
       end
 
       it 'returns the ffi types of the arguments' do
-        function_info.argument_ffi_types.must_equal [:type1, :type2]
+        _(function_info.argument_ffi_types).must_equal [:type1, :type2]
       end
     end
 
@@ -36,7 +36,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
       end
 
       it 'appends :pointer to represent the error argument' do
-        function_info.argument_ffi_types.must_equal [:type1, :type2, :pointer]
+        _(function_info.argument_ffi_types).must_equal [:type1, :type2, :pointer]
       end
     end
 
@@ -47,7 +47,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
       end
 
       it 'prepends :pointer to represent the method reciever' do
-        function_info.argument_ffi_types.must_equal [:pointer, :type1, :type2]
+        _(function_info.argument_ffi_types).must_equal [:pointer, :type1, :type2]
       end
     end
 
@@ -58,7 +58,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
       end
 
       it 'adds :pointer for both the reciever and the error argument' do
-        function_info.argument_ffi_types.must_equal [:pointer, :type1, :type2, :pointer]
+        _(function_info.argument_ffi_types).must_equal [:pointer, :type1, :type2, :pointer]
       end
     end
   end
@@ -68,7 +68,7 @@ describe GirFFI::InfoExt::IFunctionInfo do
       allow(return_type_info = Object.new).to receive(:to_ffi_type).and_return :some_type
       allow(function_info).to receive(:return_type).and_return return_type_info
 
-      function_info.return_ffi_type.must_equal :some_type
+      _(function_info.return_ffi_type).must_equal :some_type
     end
   end
 end

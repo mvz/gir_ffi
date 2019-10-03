@@ -7,7 +7,7 @@ describe GirFFI::UnintrospectableTypeInfo do
   describe '#info_type' do
     it 'returns :unintrospectable' do
       info = GirFFI::UnintrospectableTypeInfo.new :some_type
-      info.info_type.must_equal :unintrospectable
+      _(info.info_type).must_equal :unintrospectable
     end
   end
 
@@ -22,7 +22,7 @@ describe GirFFI::UnintrospectableTypeInfo do
 
         info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-        info.parent.must_equal :foo_info
+        _(info.parent).must_equal :foo_info
       end
     end
 
@@ -36,7 +36,7 @@ describe GirFFI::UnintrospectableTypeInfo do
 
         info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-        info.parent.g_type.must_equal :foo
+        _(info.parent.g_type).must_equal :foo
       end
     end
   end
@@ -52,7 +52,7 @@ describe GirFFI::UnintrospectableTypeInfo do
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-      info.interfaces.must_equal [:foo_info, :bar_info]
+      _(info.interfaces).must_equal [:foo_info, :bar_info]
     end
 
     it 'skips interfaces that have no introspection data' do
@@ -65,21 +65,21 @@ describe GirFFI::UnintrospectableTypeInfo do
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-      info.interfaces.must_equal [:foo_info]
+      _(info.interfaces).must_equal [:foo_info]
     end
   end
 
   describe '#g_type' do
     it 'returns the passed-in gtype' do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
-      info.g_type.must_equal :some_type
+      _(info.g_type).must_equal :some_type
     end
   end
 
   describe '#fields' do
     it 'returns an empty array' do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
-      info.fields.must_equal []
+      _(info.fields).must_equal []
     end
   end
 
@@ -95,7 +95,7 @@ describe GirFFI::UnintrospectableTypeInfo do
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, gir, gobject)
 
-      info.namespace.must_equal 'FooNamespace'
+      _(info.namespace).must_equal 'FooNamespace'
     end
   end
 
@@ -107,7 +107,7 @@ describe GirFFI::UnintrospectableTypeInfo do
 
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type, nil, gobject)
 
-      info.safe_name.must_equal 'GSomeType'
+      _(info.safe_name).must_equal 'GSomeType'
     end
   end
 
@@ -115,7 +115,7 @@ describe GirFFI::UnintrospectableTypeInfo do
     it 'indicates that no signals can be found' do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
       result = info.find_signal 'any'
-      result.must_be_nil
+      _(result).must_be_nil
     end
   end
 end

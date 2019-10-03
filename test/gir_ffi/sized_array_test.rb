@@ -16,7 +16,7 @@ describe GirFFI::SizedArray do
     it 'returns nil if the wrapped pointer is null' do
       expect(ptr = Object.new).to receive(:null?).and_return true
       sarr = GirFFI::SizedArray.wrap :gint32, 3, ptr
-      sarr.must_be_nil
+      _(sarr).must_be_nil
     end
   end
 
@@ -41,17 +41,17 @@ describe GirFFI::SizedArray do
     describe 'from a Ruby array' do
       it 'creates a GirFFI::SizedArray with the same elements' do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
-        arr.must_be_instance_of GirFFI::SizedArray
+        _(arr).must_be_instance_of GirFFI::SizedArray
         assert_equal [3, 2, 1], arr.to_a
       end
 
       it 'raises an error if the array has the wrong number of elements' do
-        proc { GirFFI::SizedArray.from :gint32, 4, [3, 2, 1] }.must_raise ArgumentError
+        _(proc { GirFFI::SizedArray.from :gint32, 4, [3, 2, 1] }).must_raise ArgumentError
       end
 
       it "uses the array's size if passed -1 as the size" do
         arr = GirFFI::SizedArray.from :gint32, -1, [3, 2, 1]
-        arr.size.must_equal 3
+        _(arr.size).must_equal 3
       end
     end
 
@@ -64,13 +64,13 @@ describe GirFFI::SizedArray do
 
       it 'raises an error if the argument has the wrong number of elements' do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
-        proc { GirFFI::SizedArray.from :gint32, 4, arr }.must_raise ArgumentError
+        _(proc { GirFFI::SizedArray.from :gint32, 4, arr }).must_raise ArgumentError
       end
     end
 
     it 'returns nil when passed nil' do
       arr = GirFFI::SizedArray.from :gint32, 0, nil
-      arr.must_be_nil
+      _(arr).must_be_nil
     end
 
     it 'wraps its argument if given a pointer' do
@@ -78,7 +78,7 @@ describe GirFFI::SizedArray do
       arr2 = GirFFI::SizedArray.from :gint32, 3, arr.to_ptr
       assert_instance_of GirFFI::SizedArray, arr2
       refute arr2.equal? arr
-      arr2.to_ptr.must_equal arr.to_ptr
+      _(arr2.to_ptr).must_equal arr.to_ptr
     end
   end
 
@@ -86,26 +86,26 @@ describe GirFFI::SizedArray do
     describe 'from a Ruby array' do
       it 'creates an unowned GirFFI::SizedArray with the same elements' do
         arr = GirFFI::SizedArray.copy_from :gint32, 3, [3, 2, 1]
-        arr.must_be_instance_of GirFFI::SizedArray
+        _(arr).must_be_instance_of GirFFI::SizedArray
         assert_equal [3, 2, 1], arr.to_a
-        arr.to_ptr.wont_be :autorelease?
+        _(arr.to_ptr).wont_be :autorelease?
       end
 
       it 'creates unowned copies of struct pointer elements' do
         struct = GIMarshallingTests::BoxedStruct.new
         struct.long_ = 2342
-        struct.struct.must_be :owned?
+        _(struct.struct).must_be :owned?
 
         arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct],
                                            1,
                                            [struct])
-        arr.must_be_instance_of GirFFI::SizedArray
-        arr.to_ptr.wont_be :autorelease?
+        _(arr).must_be_instance_of GirFFI::SizedArray
+        _(arr.to_ptr).wont_be :autorelease?
 
         struct_copy = arr.first
-        struct_copy.long_.must_equal struct.long_
-        struct_copy.to_ptr.wont_be :==, struct.to_ptr
-        struct_copy.struct.wont_be :owned?
+        _(struct_copy.long_).must_equal struct.long_
+        _(struct_copy.to_ptr).wont_be :==, struct.to_ptr
+        _(struct_copy.struct).wont_be :owned?
       end
 
       it 'increases the ref count of object pointer elements' do
@@ -113,11 +113,11 @@ describe GirFFI::SizedArray do
         arr = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::Object],
                                            -1,
                                            [obj, nil])
-        arr.must_be_instance_of GirFFI::SizedArray
-        arr.to_ptr.wont_be :autorelease?
+        _(arr).must_be_instance_of GirFFI::SizedArray
+        _(arr.to_ptr).wont_be :autorelease?
 
-        arr.to_a.must_equal [obj, nil]
-        object_ref_count(obj).must_equal 2
+        _(arr.to_a).must_equal [obj, nil]
+        _(object_ref_count(obj)).must_equal 2
       end
     end
 
@@ -125,15 +125,15 @@ describe GirFFI::SizedArray do
       it 'return an unowned copy of its argument' do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
         arr2 = GirFFI::SizedArray.copy_from :gint32, 3, arr
-        arr.to_ptr.wont_be :==, arr2.to_ptr
-        arr2.to_a.must_equal [3, 2, 1]
-        arr2.to_ptr.wont_be :autorelease?
+        _(arr.to_ptr).wont_be :==, arr2.to_ptr
+        _(arr2.to_a).must_equal [3, 2, 1]
+        _(arr2.to_ptr).wont_be :autorelease?
       end
     end
 
     it 'returns nil when passed nil' do
       arr = GirFFI::SizedArray.copy_from :gint32, 0, nil
-      arr.must_be_nil
+      _(arr).must_be_nil
     end
   end
 
@@ -141,27 +141,27 @@ describe GirFFI::SizedArray do
     it 'returns true when comparing to an array with the same elements' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
 
-      sized.must_be :==, [1, 2, 3]
+      _(sized).must_be :==, [1, 2, 3]
     end
 
     it 'returns false when comparing to an array with different elements' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
 
-      sized.wont_be :==, [1, 2]
+      _(sized).wont_be :==, [1, 2]
     end
 
     it 'returns true when comparing to a sized array with the same elements' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
       other = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
 
-      sized.must_be :==, other
+      _(sized).must_be :==, other
     end
 
     it 'returns false when comparing to a sized array with different elements' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
       other = GirFFI::SizedArray.from :int32, 2, [1, 2]
 
-      sized.wont_be :==, other
+      _(sized).wont_be :==, other
     end
   end
 
@@ -169,7 +169,7 @@ describe GirFFI::SizedArray do
     it 'returns the correct value' do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
 
-      sized.size_in_bytes.must_equal 12
+      _(sized.size_in_bytes).must_equal 12
     end
   end
 
@@ -178,7 +178,7 @@ describe GirFFI::SizedArray do
       sized = GirFFI::SizedArray.from :int32, 3, [1, 2, 3]
       ptr = sized.to_ptr
       result = GirFFI::SizedArray.get_value_from_pointer(ptr, 0)
-      result.must_be :==, ptr
+      _(result).must_be :==, ptr
     end
 
     it 'offsets correctly' do
@@ -186,7 +186,7 @@ describe GirFFI::SizedArray do
       ptr = sized.to_ptr
       next_ptr = GirFFI::SizedArray.get_value_from_pointer(ptr, 4)
       tail = GirFFI::SizedArray.from(:int32, 2, next_ptr)
-      tail.must_be :==, [2, 3]
+      _(tail).must_be :==, [2, 3]
     end
   end
 
@@ -196,11 +196,11 @@ describe GirFFI::SizedArray do
       target = FFI::MemoryPointer.new sized.size_in_bytes
       GirFFI::SizedArray.copy_value_to_pointer(sized, target)
       result = GirFFI::SizedArray.from :int32, 3, target
-      result.must_be :==, [1, 2, 3]
+      _(result).must_be :==, [1, 2, 3]
     end
   end
 
   it 'includes Enumerable' do
-    GirFFI::SizedArray.must_include Enumerable
+    _(GirFFI::SizedArray).must_include Enumerable
   end
 end

@@ -8,7 +8,7 @@ describe GirFFI::InOutPointer do
       ptr = FFI::MemoryPointer.new(:int32)
       ptr.put_int32 0, 42
       instance = GirFFI::InOutPointer.new :gint32, ptr
-      instance.to_value.must_equal 42
+      _(instance.to_value).must_equal 42
     end
   end
 
@@ -23,13 +23,13 @@ describe GirFFI::InOutPointer do
       it 'works when the value is false' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
         ptr.put_int 0, 0
-        ptr.to_value.must_equal false
+        _(ptr.to_value).must_equal false
       end
 
       it 'works when the value is true' do
         ptr = GirFFI::InOutPointer.allocate_new :gboolean
         ptr.put_int 0, 1
-        ptr.to_value.must_equal true
+        _(ptr.to_value).must_equal true
       end
     end
 
@@ -49,7 +49,7 @@ describe GirFFI::InOutPointer do
         ptr = GirFFI::InOutPointer.allocate_new GObject::EnumValue
         GObject::EnumValue.copy_value_to_pointer val, ptr
         result = ptr.to_value
-        GObject::EnumValue.wrap(result).value.must_equal 3
+        _(GObject::EnumValue.wrap(result).value).must_equal 3
       end
     end
   end

@@ -56,7 +56,7 @@ describe GObject do
 
       GObject.signal_emit o, 'notify::detail'
 
-      a.must_equal 2
+      _(a).must_equal 2
     end
   end
 
@@ -88,7 +88,7 @@ describe GObject do
 
     it 'does not allow connecting an invalid signal' do
       o = Regress::TestSubObj.new
-      proc { GObject.signal_connect(o, 'not-really-a-signal') {} }.
+      _(proc { GObject.signal_connect(o, 'not-really-a-signal') {} }).
         must_raise GirFFI::SignalNotFoundError
     end
 
@@ -101,7 +101,7 @@ describe GObject do
 
     it 'requires a block' do
       o = Regress::TestSubObj.new
-      proc { GObject.signal_connect o, 'test' }.must_raise ArgumentError
+      _(proc { GObject.signal_connect o, 'test' }).must_raise ArgumentError
     end
 
     it 'allows specifying signal detail' do

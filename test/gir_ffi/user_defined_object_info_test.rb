@@ -10,7 +10,7 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:info) { GirFFI::UserDefinedObjectInfo.new :some_class }
 
     it 'returns the class passed to #initialize' do
-      info.described_class.must_equal :some_class
+      _(info.described_class).must_equal :some_class
     end
   end
 
@@ -20,7 +20,7 @@ describe GirFFI::UserDefinedObjectInfo do
 
     it 'adds the passed in property to the list of properties' do
       info.install_property foo_spec
-      info.properties.must_equal [foo_spec]
+      _(info.properties).must_equal [foo_spec]
     end
   end
 
@@ -29,21 +29,21 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:implementation) { Object.new }
 
     it 'adds to the list of vfunc implementations' do
-      info.vfunc_implementations.must_equal []
+      _(info.vfunc_implementations).must_equal []
       info.install_vfunc_implementation :foo, implementation
-      info.vfunc_implementations.map(&:name).must_equal [:foo]
+      _(info.vfunc_implementations.map(&:name)).must_equal [:foo]
     end
 
     it 'stores the passed-in implementation in the implementation object' do
       info.install_vfunc_implementation :foo, implementation
       impl = info.vfunc_implementations.first
-      impl.implementation.must_equal implementation
+      _(impl.implementation).must_equal implementation
     end
 
     it 'provides a default implementation' do
       info.install_vfunc_implementation :foo
       impl = info.vfunc_implementations.first
-      impl.implementation.class.must_equal Proc
+      _(impl.implementation.class).must_equal Proc
     end
   end
 
@@ -63,7 +63,7 @@ describe GirFFI::UserDefinedObjectInfo do
     end
 
     it 'yields the new object to the block passed' do
-      info.properties.map(&:get_name).must_equal [:foo, :bar]
+      _(info.properties.map(&:get_name)).must_equal [:foo, :bar]
     end
   end
 
@@ -76,12 +76,12 @@ describe GirFFI::UserDefinedObjectInfo do
     end
 
     it "returns the described class' name by default" do
-      info.g_name.must_equal 'foo'
+      _(info.g_name).must_equal 'foo'
     end
 
     it 'returns the the name set by #g_name= if present' do
       info.g_name = 'bar'
-      info.g_name.must_equal 'bar'
+      _(info.g_name).must_equal 'bar'
     end
   end
 
@@ -90,7 +90,7 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     it 'finds no methods' do
-      info.find_method('foo').must_be_nil
+      _(info.find_method('foo')).must_be_nil
     end
   end
 
@@ -99,7 +99,7 @@ describe GirFFI::UserDefinedObjectInfo do
     let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }
 
     it 'finds no signals' do
-      info.find_signal('foo').must_be_nil
+      _(info.find_signal('foo')).must_be_nil
     end
   end
 
@@ -113,7 +113,7 @@ describe GirFFI::UserDefinedObjectInfo do
     end
 
     it 'returns the interface infos for the include modules' do
-      info.interfaces.must_equal [modul.gir_info]
+      _(info.interfaces).must_equal [modul.gir_info]
     end
   end
 end

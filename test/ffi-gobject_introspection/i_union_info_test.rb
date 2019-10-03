@@ -7,11 +7,11 @@ describe GObjectIntrospection::IUnionInfo do
 
   describe '#find_method' do
     it 'finds a method by name string' do
-      object_info.find_method('clear').wont_be_nil
+      _(object_info.find_method('clear')).wont_be_nil
     end
 
     it 'finds a method by name symbol' do
-      object_info.find_method(:clear).wont_be_nil
+      _(object_info.find_method(:clear)).wont_be_nil
     end
   end
 end

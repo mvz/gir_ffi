@@ -18,7 +18,7 @@ describe Pango do
         scripts = GirFFI::SizedArray.new Pango::Script, size, ptr
       end
 
-      scripts.must_be :==, [:han, :katakana, :hiragana]
+      _(scripts).must_be :==, [:han, :katakana, :hiragana]
     end
   end
 end

@@ -52,7 +52,7 @@ describe GLib::List do
       lst2 = GLib::List.from :gint32, pointer
       assert_instance_of GLib::List, lst2
       refute lst2.equal? lst
-      lst2.to_a.must_equal lst.to_a
+      _(lst2.to_a).must_equal lst.to_a
     end
   end
 
@@ -60,27 +60,27 @@ describe GLib::List do
     it 'returns true when comparing to an array with the same elements' do
       list = GLib::List.from :gint32, [1, 2, 3]
 
-      list.must_be :==, [1, 2, 3]
+      _(list).must_be :==, [1, 2, 3]
     end
 
     it 'returns false when comparing to an array with different elements' do
       list = GLib::List.from :gint32, [1, 2, 3]
 
-      list.wont_be :==, [1, 2]
+      _(list).wont_be :==, [1, 2]
     end
 
     it 'returns true when comparing to a list with the same elements' do
       list = GLib::List.from :gint32, [1, 2, 3]
       other = GLib::List.from :gint32, [1, 2, 3]
 
-      list.must_be :==, other
+      _(list).must_be :==, other
     end
 
     it 'returns false when comparing to a list with different elements' do
       list = GLib::List.from :gint32, [1, 2, 3]
       other = GLib::List.from :gint32, [1, 2]
 
-      list.wont_be :==, other
+      _(list).wont_be :==, other
     end
   end
 end

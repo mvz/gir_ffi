@@ -5,12 +5,12 @@ require 'introspection_test_helper'
 describe GObjectIntrospection::GObjectTypeInit do
   describe 'Lib' do
     it 'represents the gobject-2.0 library' do
-      GObjectIntrospection::GObjectTypeInit::Lib.ffi_libraries.first.name.
+      _(GObjectIntrospection::GObjectTypeInit::Lib.ffi_libraries.first.name).
         must_match(/gobject-2\.0/)
     end
 
     it 'provides the g_type_init function' do
-      GObjectIntrospection::GObjectTypeInit::Lib.must_respond_to :g_type_init
+      _(GObjectIntrospection::GObjectTypeInit::Lib).must_respond_to :g_type_init
     end
   end
 

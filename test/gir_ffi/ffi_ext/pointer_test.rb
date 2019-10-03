@@ -14,7 +14,7 @@ describe GirFFI::FFIExt::Pointer do
       expect(GirFFI::Builder).to receive(:build_by_gtype).with(0xdeadbeef).and_return object_class
       expect(object_class).to receive(:direct_wrap).with(ptr).and_return 'good-result'
 
-      ptr.to_object.must_equal 'good-result'
+      _(ptr.to_object).must_equal 'good-result'
     end
   end
 end

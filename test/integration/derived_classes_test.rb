@@ -25,7 +25,7 @@ describe 'For derived classes' do
       it 'finds instance methods in the superclass' do
         obj = @klass.new
         result = obj.method
-        result.must_equal 42
+        _(result).must_equal 42
       end
     end
 
@@ -45,9 +45,9 @@ describe 'For derived classes' do
       end
 
       obj = klass.new 'dog'
-      obj.must_be_instance_of klass
-      obj.to_ptr.wont_be_nil
-      obj.animal.must_equal 'dog'
+      _(obj).must_be_instance_of klass
+      _(obj.to_ptr).wont_be_nil
+      _(obj.animal).must_equal 'dog'
     end
   end
 end

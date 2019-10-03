@@ -42,7 +42,7 @@ describe GObjectIntrospection::IRepository do
 
   describe '#find_by_gtype' do
     it 'raises an error if 0 is passed as the gtype' do
-      proc { gir.find_by_gtype 0 }.must_raise ArgumentError
+      _(proc { gir.find_by_gtype 0 }).must_raise ArgumentError
     end
   end
 
@@ -64,7 +64,7 @@ describe GObjectIntrospection::IRepository do
     it 'returns a list of dependencies of the given namespace' do
       gir.require 'GObject', '2.0'
       result = gir.dependencies('GObject')
-      result.must_equal ['GLib-2.0']
+      _(result).must_equal ['GLib-2.0']
     end
 
     it 'passes its struct pointer to the c function just in case' do
