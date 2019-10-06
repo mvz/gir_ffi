@@ -283,10 +283,18 @@ describe GirFFI::Builder do
     end
 
     it 'sets up the inheritance chain' do
-      _(Regress::TestSubObj.registered_ancestors).
-        must_equal [Regress::TestSubObj,
+      # Introduced in version 1.59.1
+      expected = if Regress::TestSubObj.find_property :boolean
+                   [Regress::TestSubObj,
+                    Regress::TestInterface,
                     Regress::TestObj,
                     GObject::Object]
+                 else
+                   [Regress::TestSubObj,
+                    Regress::TestObj,
+                    GObject::Object]
+                 end
+      _(Regress::TestSubObj.registered_ancestors).must_equal expected
     end
 
     it 'creates a Regress::TestSubObj#to_ptr method' do
