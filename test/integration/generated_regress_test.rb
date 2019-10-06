@@ -1515,6 +1515,16 @@ describe Regress do
       _(a).must_equal 'hello'
     end
 
+    describe "its 'number' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #number' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #number=' do
+      end
+    end
     it "handles the 'interface-signal' signal" do
       skip_below '1.57.2'
       skip 'Not implemented yet'
@@ -1610,6 +1620,9 @@ describe Regress do
       _(array.to_a).must_equal [0, 1, 2, 3, 4]
     end
 
+    it 'has a working method #emit_sig_with_error' do
+    end
+
     it 'has a working method #emit_sig_with_foreign_struct' do
       has_fired = false
       instance.signal_connect 'sig-with-foreign-struct' do |_obj, cr|
@@ -1633,6 +1646,9 @@ describe Regress do
         i
       end
       instance.emit_sig_with_int64
+    end
+
+    it 'has a working method #emit_sig_with_null_error' do
     end
 
     it 'has a working method #emit_sig_with_obj' do
@@ -2063,6 +2079,16 @@ describe Regress do
       end
     end
 
+    describe "its 'write-only' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #write_only' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #write_only=' do
+      end
+    end
     it "handles the 'all' signal" do
       a = nil
       GObject.signal_connect(instance, 'all') { a = 4 }
@@ -2119,6 +2145,8 @@ describe Regress do
       _(a).must_equal cairo_context
     end
 
+    it "handles the 'sig-with-gerror' signal" do
+    end
     it "handles the 'sig-with-hash-prop' signal" do
       a = nil
 
@@ -2654,6 +2682,9 @@ describe Regress do
     it 'has a writable field data6' do
       skip 'Introspection data cannot deal with type of this field yet'
     end
+
+    it 'has a writable field data7' do
+    end
   end
 
   describe 'Regress::TestStructFixedArray' do
@@ -2698,6 +2729,17 @@ describe Regress do
     it 'has a working method #unset_bare' do
       instance.unset_bare
       pass
+    end
+
+    describe "its 'boolean' property" do
+      it 'can be retrieved with #get_property' do
+      end
+      it 'can be retrieved with #boolean' do
+      end
+      it 'can be set with #set_property' do
+      end
+      it 'can be set with #boolean=' do
+      end
     end
 
     it 'does not have a field parent_instance' do
@@ -3086,12 +3128,24 @@ describe Regress do
     _(Regress.test_array_int_out).must_be :==, [0, 1, 2, 3, 4]
   end
 
+  it 'has a working function #test_array_struct_in_full' do
+  end
+  it 'has a working function #test_array_struct_in_none' do
+  end
   it 'has a working function #test_array_struct_out' do
     skip_below '1.47.92'
     result = Regress.test_array_struct_out
     _(result.map(&:some_int)).must_equal [22, 33, 44]
   end
 
+  it 'has a working function #test_array_struct_out_caller_alloc' do
+  end
+  it 'has a working function #test_array_struct_out_container' do
+  end
+  it 'has a working function #test_array_struct_out_full_fixed' do
+  end
+  it 'has a working function #test_array_struct_out_none' do
+  end
   it 'has a working function #test_async_ready_callback' do
     main_loop = GLib::MainLoop.new nil, false
 
