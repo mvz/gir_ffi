@@ -1492,6 +1492,9 @@ describe Regress do
                                Class.new(Regress::FooObject))
       klass.send :include, Regress::TestInterface
       GirFFI.define_type klass do |info|
+        info.install_property GObject.param_spec_int('number', 'Number', 'Number',
+                                                     0, 10, 0,
+                                                     readwrite: true, construct: true)
       end
       klass
     end
