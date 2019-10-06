@@ -9,6 +9,7 @@
   `#get_property_extended` and `#set_property_extended` are deprecated and will
   be removed in GirFFI version 0.16 or later.
 * Support setting ByteArray properties directly with string values.
+* Target Ruby 2.4+
 
 ## 0.14.1 / 2018-09-27
 
