@@ -51,8 +51,8 @@ module IntrospectionTestExtensions
   end
 
   def skip_below(introduction_version);
-    unless VERSION_GUARDS.include? introduction_version
-      raise "Unknown version #{introduction_version}"
+    unless LATEST_VERSION >= introduction_version
+      raise "Version #{introduction_version} is too new and would always be skipped"
     end
 
     skip "Introduced in #{introduction_version}" if introduction_version > version
@@ -70,6 +70,8 @@ module IntrospectionTestExtensions
     '1.47.92' => %w(Regress get_variant),
     '1.47.1'  => %w(Regress test_noptr_callback)
   }.freeze
+
+  LATEST_VERSION = VERSION_GUARDS.keys.first
 
   def calculate_version
     VERSION_GUARDS.each do |version, (namespace, klass, methodname)|
