@@ -1761,6 +1761,8 @@ describe GIMarshallingTests do
 
   it 'has a working function #garray_boxed_struct_full_return' do
     skip_below '1.61.1'
+    result = GIMarshallingTests.garray_boxed_struct_full_return
+    _(result.map(&:long_)).must_equal [42, 43, 44]
   end
 
   it 'has a working function #garray_int_none_in' do
@@ -2089,6 +2091,9 @@ describe GIMarshallingTests do
 
   it 'has a working function #gptrarray_boxed_struct_full_return' do
     skip_below '1.61.1'
+    skip 'Not implemented yet'
+    result = GIMarshallingTests.gptrarray_boxed_struct_full_return
+    _(result.map(&:long_)).must_equal [42, 43, 44]
   end
 
   it 'has a working function #gptrarray_utf8_container_inout' do

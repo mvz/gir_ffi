@@ -1517,13 +1517,27 @@ describe Regress do
 
     describe "its 'number' property" do
       before { skip_below '1.59.1' }
+
+      let(:instance) { derived_klass.new }
+
       it 'can be retrieved with #get_property' do
+        _(instance.get_property('number')).must_equal 0
       end
+
       it 'can be retrieved with #number' do
+        _(instance.number).must_equal 0
       end
+
       it 'can be set with #set_property' do
+        instance.set_property('number', 10)
+        _(instance.get_property('number')).must_equal 10
       end
+
       it 'can be set with #number=' do
+        instance.number = 4
+
+        _(instance.number).must_equal 4
+        _(instance.get_property('number')).must_equal 4
       end
     end
     it "handles the 'interface-signal' signal" do
@@ -1623,6 +1637,13 @@ describe Regress do
 
     it 'has a working method #emit_sig_with_error' do
       skip_below '1.61.1'
+      skip 'Not implemented yet'
+      error = nil
+      instance.signal_connect 'sig-with-gerror' do |_obj, err|
+        error = err
+      end
+      instance.emit_sig_with_error
+      _(error).must_be_instance_of GLib::Error
     end
 
     it 'has a working method #emit_sig_with_foreign_struct' do
@@ -1652,6 +1673,13 @@ describe Regress do
 
     it 'has a working method #emit_sig_with_null_error' do
       skip_below '1.61.1'
+      skip 'Not implemented yet'
+      error = nil
+      instance.signal_connect 'sig-with-gerror' do |_obj, err|
+        error = err
+      end
+      instance.emit_sig_with_null_error
+      _(error).must_be_nil
     end
 
     it 'has a working method #emit_sig_with_obj' do
@@ -2085,13 +2113,30 @@ describe Regress do
     describe "its 'write-only' property" do
       before { skip_below '1.59.1' }
 
-      it 'can be retrieved with #get_property' do
+      it 'cannot be retrieved with #get_property' do
+        skip 'Not implemented yet'
+        _(proc { instance.get_property('write-only') }).must_raise GirFFI::GLibError
       end
-      it 'can be retrieved with #write_only' do
+
+      it 'cannot be retrieved with #write_only' do
+        skip 'Not implemented yet'
+        _(proc { instance.write_only }).must_raise NoMethodError
       end
+
       it 'can be set with #set_property' do
+        instance.int = 42
+        instance.set_property('write-only', false)
+        _(instance.int).must_equal 42
+        instance.set_property('write-only', true)
+        _(instance.int).must_equal 0
       end
+
       it 'can be set with #write_only=' do
+        instance.int = 42
+        instance.write_only = false
+        _(instance.int).must_equal 42
+        instance.write_only = true
+        _(instance.int).must_equal 0
       end
     end
     it "handles the 'all' signal" do
@@ -2152,6 +2197,11 @@ describe Regress do
 
     it "handles the 'sig-with-gerror' signal" do
       skip_below '1.61.1'
+      skip 'Not implemented yet'
+      a = nil
+      GObject.signal_connect(instance, 'sig-with-gerror') { a = 4 }
+      GObject.signal_emit instance, 'sig-with-gerror'
+      _(a).must_equal 4
     end
 
     it "handles the 'sig-with-hash-prop' signal" do
@@ -2692,6 +2742,8 @@ describe Regress do
 
     it 'has a writable field data7' do
       skip_below '1.59.3'
+      instance.data7 = 42
+      _(instance.data7).must_equal 42
     end
   end
 
@@ -2743,12 +2795,21 @@ describe Regress do
       before { skip_below '1.59.1' }
 
       it 'can be retrieved with #get_property' do
+        _(instance.get_property('boolean')).must_equal true
       end
+
       it 'can be retrieved with #boolean' do
+        _(instance.boolean).must_equal true
       end
+
       it 'can be set with #set_property' do
+        instance.set_property('boolean', false)
+        _(instance.get_property('boolean')).must_equal false
       end
+
       it 'can be set with #boolean=' do
+        instance.boolean = false
+        _(instance.get_property('boolean')).must_equal false
       end
     end
 
@@ -3140,10 +3201,21 @@ describe Regress do
 
   it 'has a working function #test_array_struct_in_full' do
     skip_below '1.59.4'
+    # FIXME: Allow passing field values to .new
+    arr = [Regress::TestStructA.new.tap { |it| it.some_int = 201 },
+           Regress::TestStructA.new.tap { |it| it.some_int = 202 }]
+    Regress.test_array_struct_in_full(arr)
   end
+
   it 'has a working function #test_array_struct_in_none' do
     skip_below '1.59.4'
+    # FIXME: Allow passing field values to .new
+    arr = [Regress::TestStructA.new.tap { |it| it.some_int = 301 },
+           Regress::TestStructA.new.tap { |it| it.some_int = 302 },
+           Regress::TestStructA.new.tap { |it| it.some_int = 303 }]
+    Regress.test_array_struct_in_none(arr)
   end
+
   it 'has a working function #test_array_struct_out' do
     skip_below '1.47.92'
     result = Regress.test_array_struct_out
@@ -3152,16 +3224,29 @@ describe Regress do
 
   it 'has a working function #test_array_struct_out_caller_alloc' do
     skip_below '1.59.4'
+    skip 'Not implemented yet'
+    result = Regress.test_array_struct_out_caller_alloc 3
+    _(result.map(&:some_int)).must_equal [22, 33, 44]
   end
+
   it 'has a working function #test_array_struct_out_container' do
     skip_below '1.59.4'
+    result = Regress.test_array_struct_out_container
+    _(result.map(&:some_int)).must_equal [11, 13, 17, 19, 23]
   end
+
   it 'has a working function #test_array_struct_out_full_fixed' do
     skip_below '1.59.4'
+    result = Regress.test_array_struct_out_full_fixed
+    _(result.map(&:some_int)).must_equal [2, 3, 5, 7]
   end
+
   it 'has a working function #test_array_struct_out_none' do
     skip_below '1.59.4'
+    result = Regress.test_array_struct_out_none
+    _(result.map(&:some_int)).must_equal [111, 222, 333]
   end
+
   it 'has a working function #test_async_ready_callback' do
     main_loop = GLib::MainLoop.new nil, false
 
