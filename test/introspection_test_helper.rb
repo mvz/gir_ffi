@@ -63,6 +63,7 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    '1.59.4'  => %w(Regress test_array_struct_in_none),
     '1.58.3'  => %w(Regress TestReferenceCounters),
     '1.57.2'  => %w(Regress TestInterface emit_signal),
     '1.55.2'  => %w(Regress FOO_FLAGS_SECOND_AND_THIRD),
