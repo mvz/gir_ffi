@@ -1760,6 +1760,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_boxed_struct_full_return' do
+    skip_below '1.61.1'
   end
 
   it 'has a working function #garray_int_none_in' do
@@ -2087,6 +2088,7 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #gptrarray_boxed_struct_full_return' do
+    skip_below '1.61.1'
   end
 
   it 'has a working function #gptrarray_utf8_container_inout' do

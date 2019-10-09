@@ -1516,6 +1516,7 @@ describe Regress do
     end
 
     describe "its 'number' property" do
+      before { skip_below '1.59.1' }
       it 'can be retrieved with #get_property' do
       end
       it 'can be retrieved with #number' do
@@ -1621,6 +1622,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_error' do
+      skip_below '1.61.1'
     end
 
     it 'has a working method #emit_sig_with_foreign_struct' do
@@ -1649,6 +1651,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_null_error' do
+      skip_below '1.61.1'
     end
 
     it 'has a working method #emit_sig_with_obj' do
@@ -2080,6 +2083,8 @@ describe Regress do
     end
 
     describe "its 'write-only' property" do
+      before { skip_below '1.59.1' }
+
       it 'can be retrieved with #get_property' do
       end
       it 'can be retrieved with #write_only' do
@@ -2146,7 +2151,9 @@ describe Regress do
     end
 
     it "handles the 'sig-with-gerror' signal" do
+      skip_below '1.61.1'
     end
+
     it "handles the 'sig-with-hash-prop' signal" do
       a = nil
 
@@ -2684,6 +2691,7 @@ describe Regress do
     end
 
     it 'has a writable field data7' do
+      skip_below '1.59.3'
     end
   end
 
@@ -2732,6 +2740,8 @@ describe Regress do
     end
 
     describe "its 'boolean' property" do
+      before { skip_below '1.59.1' }
+
       it 'can be retrieved with #get_property' do
       end
       it 'can be retrieved with #boolean' do
@@ -3129,8 +3139,10 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_in_full' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_array_struct_in_none' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_array_struct_out' do
     skip_below '1.47.92'
@@ -3139,12 +3151,16 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_out_caller_alloc' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_array_struct_out_container' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_array_struct_out_full_fixed' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_array_struct_out_none' do
+    skip_below '1.59.4'
   end
   it 'has a working function #test_async_ready_callback' do
     main_loop = GLib::MainLoop.new nil, false
