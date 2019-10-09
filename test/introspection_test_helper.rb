@@ -20,7 +20,9 @@ end
 GObjectIntrospection::IRepository.prepend LocalSharedLibrary
 
 module IntrospectionTestExtensions
-  module_function
+  class << self
+    attr_accessor :version
+  end
 
   def get_introspection_data(namespace, name)
     gir = GObjectIntrospection::IRepository.default
@@ -46,6 +48,40 @@ module IntrospectionTestExtensions
 
   def get_vfunc_introspection_data(namespace, klass, name)
     get_introspection_data(namespace, klass).find_vfunc name
+  end
+
+  def skip_below(introduction_version);
+    unless VERSION_GUARDS.include? introduction_version
+      raise "Unknown version #{introduction_version}"
+    end
+
+    skip "Introduced in #{introduction_version}" if introduction_version > version
+  end
+
+  def version
+    IntrospectionTestExtensions.version ||= calculate_version
+  end
+
+  VERSION_GUARDS = {
+    '1.57.2'  => %w(Regress TestInterface emit_signal),
+    '1.55.2'  => %w(Regress FOO_FLAGS_SECOND_AND_THIRD),
+    '1.53.4'  => %w(Regress TestObj name_conflict),
+    '1.49.1'  => %w(Regress AnonymousUnionAndStruct),
+    '1.47.92' => %w(Regress get_variant),
+    '1.47.1'  => %w(Regress test_noptr_callback)
+  }.freeze
+
+  def calculate_version
+    VERSION_GUARDS.each do |version, (namespace, klass, methodname)|
+      result = if methodname
+                 get_method_introspection_data(namespace, klass, methodname)
+               else
+                 get_introspection_data(namespace, klass)
+               end
+      return version if result
+    end
+
+    '1.46.0' # Minimum supported version
   end
 end
 

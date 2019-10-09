@@ -376,11 +376,7 @@ describe Regress do
   describe 'Regress::AnonymousUnionAndStruct' do
     let(:instance) { Regress::AnonymousUnionAndStruct.new }
 
-    before do
-      unless get_introspection_data 'Regress', 'AnonymousUnionAndStruct'
-        skip 'Introduced in 1.49.1'
-      end
-    end
+    before { skip_below '1.49.1' }
 
     it 'has a writable field x' do
       instance.x = 42
@@ -412,8 +408,7 @@ describe Regress do
   end
 
   it 'has the constant FOO_FLAGS_SECOND_AND_THIRD' do
-    skip 'Introduced in 1.55.2' unless get_introspection_data('Regress',
-                                                              'FOO_FLAGS_SECOND_AND_THIRD')
+    skip_below '1.55.2'
     _(Regress::FOO_FLAGS_SECOND_AND_THIRD).must_equal 6
   end
 
@@ -1317,9 +1312,7 @@ describe Regress do
     end
 
     it 'has the member :value5' do
-      unless get_introspection_data('Regress', 'TestEnum').find_value(:value5)
-        skip 'Introduced in 1.55.2'
-      end
+      skip_below '1.55.2'
       _(Regress::TestEnum[:value5]).must_equal 49
     end
 
@@ -1512,8 +1505,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_signal' do
-      skip 'Introduced in 1.57.2' unless get_method_introspection_data('Regress', 'TestInterface',
-                                                                       'emit_signal')
+      skip_below '1.57.2'
       a = nil
       instance = derived_klass.new
       GObject.signal_connect instance, 'interface-signal' do
@@ -1524,8 +1516,7 @@ describe Regress do
     end
 
     it "handles the 'interface-signal' signal" do
-      skip 'Introduced in 1.57.2' unless get_signal_introspection_data('Regress', 'TestInterface',
-                                                                       'interface-signal')
+      skip_below '1.57.2'
       skip 'Not implemented yet'
       a = nil
       instance = derived_klass.new
@@ -1610,8 +1601,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_array_len_prop' do
-      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
-                                                                        'emit_sig_with_array_len_prop')
+      skip_below '1.47.92'
       array = nil
       instance.signal_connect 'sig-with-array-len-prop' do |_obj, ary|
         array = ary.to_a
@@ -1631,9 +1621,7 @@ describe Regress do
     end
 
     it 'has a working method #emit_sig_with_inout_int' do
-      unless get_signal_introspection_data 'Regress', 'TestObj', 'sig-with-inout-int'
-        skip 'Introduced in 1.57.2'
-      end
+      skip_below '1.57.2'
       instance.signal_connect 'sig-with-inout-int' do |_obj, i, _ud|
         i + 1
       end
@@ -1687,21 +1675,18 @@ describe Regress do
     end
 
     it 'has a working method #name_conflict' do
-      skip 'Introduced in 1.53.4' unless get_method_introspection_data('Regress', 'TestObj',
-                                                                       'name_conflict')
+      skip_below '1.53.4'
       _(instance.name_conflict).must_be_nil
     end
 
     it 'has a working method #not_nullable_element_typed_gpointer_in' do
-      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
-                                                                        'not_nullable_element_typed_gpointer_in')
+      skip_below '1.47.92'
       instance.not_nullable_element_typed_gpointer_in [1, 2, 3]
       # TODO: Make method raise when passed nil
     end
 
     it 'has a working method #not_nullable_typed_gpointer_in' do
-      skip 'Introduced in 1.47.92' unless get_method_introspection_data('Regress', 'TestObj',
-                                                                        'not_nullable_typed_gpointer_in')
+      skip_below '1.47.92'
       obj = Regress::TestObj.new_from_file('bar')
       instance.not_nullable_typed_gpointer_in obj
       # TODO: Make method raise when passed nil
@@ -2151,8 +2136,7 @@ describe Regress do
     end
 
     it "handles the 'sig-with-inout-int' signal" do
-      skip 'Introduced in 1.53.4' unless get_signal_introspection_data('Regress', 'TestObj',
-                                                                       'sig-with-inout-int')
+      skip_below '1.53.4'
       skip 'Not implemented yet'
       GObject.signal_connect instance, 'sig-with-inout-int' do |_obj, i, _ud|
         i + 2
@@ -2962,7 +2946,7 @@ describe Regress do
   end
 
   it 'has a working function #get_variant' do
-    skip 'Introduced in 1.47.92' unless get_introspection_data 'Regress', 'get_variant'
+    skip_below '1.47.92'
     var = Regress.get_variant
     _(var.get_int32).must_equal 42
     # TODO: Make var not floating
@@ -3103,9 +3087,7 @@ describe Regress do
   end
 
   it 'has a working function #test_array_struct_out' do
-    unless get_introspection_data 'Regress', 'test_array_struct_out'
-      skip 'Introduced in 1.47.92'
-    end
+    skip_below '1.47.92'
     result = Regress.test_array_struct_out
     _(result.map(&:some_int)).must_equal [22, 33, 44]
   end
@@ -3647,7 +3629,7 @@ describe Regress do
   end
 
   it 'has a working function #test_noptr_callback' do
-    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_noptr_callback'
+    skip_below '1.47.1'
     a = 0
     Regress.test_noptr_callback { a = 1 }
     _(a).must_equal 1
@@ -3669,15 +3651,13 @@ describe Regress do
   end
 
   it 'has a working function #test_return_allow_none' do
-    unless get_introspection_data 'Regress', 'test_return_allow_none'
-      skip 'Introduced in 1.47.1'
-    end
+    skip_below '1.47.1'
     result = Regress.test_return_allow_none
     _(result).must_be_nil
   end
 
   it 'has a working function #test_return_nullable' do
-    skip 'Introduced in 1.47.1' unless get_introspection_data 'Regress', 'test_return_nullable'
+    skip_below '1.47.1'
     result = Regress.test_return_nullable
     _(result).must_be_nil
   end
