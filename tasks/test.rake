@@ -71,7 +71,7 @@ class Listener
       result.puts "    it \"handles the '#{obj_name}' signal\" do"
     when 'type', 'alias', 'return-value', 'parameters',
       'instance-parameter', 'parameter', 'doc', 'array',
-      'repository', 'include', 'package'
+      'repository', 'include', 'package', 'source-position'
       # Not printed"
     else
       puts "Skipping #{name}: #{attrs}"

@@ -1759,6 +1759,12 @@ describe GIMarshallingTests do
     skip 'Needs testing'
   end
 
+  it 'has a working function #garray_boxed_struct_full_return' do
+    skip_below '1.61.1'
+    result = GIMarshallingTests.garray_boxed_struct_full_return
+    _(result.map(&:long_)).must_equal [42, 43, 44]
+  end
+
   it 'has a working function #garray_int_none_in' do
     arr = [-1, 0, 1, 2]
     GIMarshallingTests.garray_int_none_in arr
@@ -2081,6 +2087,13 @@ describe GIMarshallingTests do
   it 'has a working function #glist_utf8_none_return' do
     res = GIMarshallingTests.glist_utf8_none_return
     _(res).must_be :==, %w(0 1 2)
+  end
+
+  it 'has a working function #gptrarray_boxed_struct_full_return' do
+    skip_below '1.61.1'
+    skip 'Not implemented yet'
+    result = GIMarshallingTests.gptrarray_boxed_struct_full_return
+    _(result.map(&:long_)).must_equal [42, 43, 44]
   end
 
   it 'has a working function #gptrarray_utf8_container_inout' do
