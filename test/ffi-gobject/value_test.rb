@@ -105,6 +105,26 @@ describe GObject::Value do
       _(gv.get_value).must_equal value
     end
 
+    it 'handles flag values presented as hashes' do
+      value = { flag2: true }
+      gv = GObject::Value.for_gtype Regress::TestFlags.gtype
+      gv.set_value value
+      _(gv.get_value).must_equal value
+    end
+
+    it 'handles flag values presented as symbols' do
+      gv = GObject::Value.for_gtype Regress::TestFlags.gtype
+      gv.set_value :flag2
+      _(gv.get_value).must_equal(flag2: true)
+    end
+
+    it 'handles flag values presented as numbers' do
+      value = { flag2: true }
+      gv = GObject::Value.for_gtype Regress::TestFlags.gtype
+      gv.set_value Regress::TestFlags.to_native(value, nil)
+      _(gv.get_value).must_equal value
+    end
+
     it 'handles GType values' do
       value = GObject::TYPE_STRING
       gv = GObject::Value.for_gtype GObject::TYPE_GTYPE
@@ -211,9 +231,9 @@ describe GObject::Value do
     end
 
     it 'unwraps a flags value' do
-      value = Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+      value = { flag1: true, flag3: true }
       gv = GObject::Value.for_gtype Regress::TestFlags.gtype
-      gv.set_flags value
+      gv.set_flags Regress::TestFlags.to_native(value, nil)
       _(gv.get_value).must_equal value
     end
 

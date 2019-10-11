@@ -3523,7 +3523,7 @@ describe Regress do
     _(hash['strings'].get_value.to_a).must_equal %w(first second third)
 
     if has_enum_and_flag_keys
-      _(hash['flags'].get_value).must_equal Regress::TestFlags[:flag1] | Regress::TestFlags[:flag3]
+      _(hash['flags'].get_value).must_equal flag1: true, flag3: true
       _(hash['enum'].get_value).must_equal :value2
     end
 

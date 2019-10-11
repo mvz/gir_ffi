@@ -29,29 +29,29 @@ module GObject
     end
 
     METHOD_MAP = {
-      TYPE_INVALID   => [:get_none,          :set_none],
+      TYPE_INVALID   => [:get_none,           :set_none],
       # TYPE_NONE is skipped
-      TYPE_INTERFACE => [:get_object,        :set_instance_enhanced],
-      TYPE_CHAR      => [:get_schar,         :set_schar],
-      TYPE_UCHAR     => [:get_uchar,         :set_uchar],
-      TYPE_BOOLEAN   => [:get_boolean,       :set_boolean],
-      TYPE_INT       => [:get_int,           :set_int],
-      TYPE_UINT      => [:get_uint,          :set_uint],
-      TYPE_LONG      => [:get_long,          :set_long],
-      TYPE_ULONG     => [:get_ulong,         :set_ulong],
-      TYPE_INT64     => [:get_int64,         :set_int64],
-      TYPE_UINT64    => [:get_uint64,        :set_uint64],
-      TYPE_ENUM      => [:get_enum_enhanced, :set_enum_enhanced],
-      TYPE_FLAGS     => [:get_flags,         :set_flags],
-      TYPE_FLOAT     => [:get_float,         :set_float],
-      TYPE_DOUBLE    => [:get_double,        :set_double],
-      TYPE_STRING    => [:get_string,        :set_string],
-      TYPE_POINTER   => [:get_pointer,       :set_pointer],
-      TYPE_BOXED     => [:get_boxed,         :set_boxed],
-      TYPE_PARAM     => [:get_param,         :set_param],
-      TYPE_OBJECT    => [:get_object,        :set_instance_enhanced],
-      TYPE_GTYPE     => [:get_gtype,         :set_gtype],
-      TYPE_VARIANT   => [:get_variant,       :set_variant]
+      TYPE_INTERFACE => [:get_object,         :set_instance_enhanced],
+      TYPE_CHAR      => [:get_schar,          :set_schar],
+      TYPE_UCHAR     => [:get_uchar,          :set_uchar],
+      TYPE_BOOLEAN   => [:get_boolean,        :set_boolean],
+      TYPE_INT       => [:get_int,            :set_int],
+      TYPE_UINT      => [:get_uint,           :set_uint],
+      TYPE_LONG      => [:get_long,           :set_long],
+      TYPE_ULONG     => [:get_ulong,          :set_ulong],
+      TYPE_INT64     => [:get_int64,          :set_int64],
+      TYPE_UINT64    => [:get_uint64,         :set_uint64],
+      TYPE_ENUM      => [:get_enum_enhanced,  :set_enum_enhanced],
+      TYPE_FLAGS     => [:get_flags_enhanced, :set_flags_enhanced],
+      TYPE_FLOAT     => [:get_float,          :set_float],
+      TYPE_DOUBLE    => [:get_double,         :set_double],
+      TYPE_STRING    => [:get_string,         :set_string],
+      TYPE_POINTER   => [:get_pointer,        :set_pointer],
+      TYPE_BOXED     => [:get_boxed,          :set_boxed],
+      TYPE_PARAM     => [:get_param,          :set_param],
+      TYPE_OBJECT    => [:get_object,         :set_instance_enhanced],
+      TYPE_GTYPE     => [:get_gtype,          :set_gtype],
+      TYPE_VARIANT   => [:get_variant,        :set_variant]
     }.freeze
 
     def set_value(val)
@@ -157,12 +157,21 @@ module GObject
     end
 
     def set_enum_enhanced(val)
-      val = current_gtype_class[val] if val.is_a? Symbol
+      val = current_gtype_class.to_native(val, nil)
       set_enum val
     end
 
     def get_enum_enhanced
       current_gtype_class.wrap(get_enum)
+    end
+
+    def set_flags_enhanced(val)
+      val = current_gtype_class.to_native(val, nil)
+      set_flags val
+    end
+
+    def get_flags_enhanced
+      current_gtype_class.wrap(get_flags)
     end
 
     def current_gtype_class
