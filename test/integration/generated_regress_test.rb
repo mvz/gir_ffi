@@ -2063,25 +2063,25 @@ describe Regress do
       end
     end
     describe "its 'pptrarray' property" do
+      before do
+        skip 'The pptrarray property is not implemented properly'
+      end
+
       it 'can be retrieved with #get_property' do
-        skip 'pptrarray is not implemented properly'
         _(instance.get_property('pptrarray')).must_be_nil
       end
 
       it 'can be retrieved with #pptrarray' do
-        skip 'pptrarray is not implemented properly'
         _(instance.pptrarray).must_be_nil
       end
 
       it 'can be set with #set_property' do
-        skip 'pptrarray is not implemented properly'
         arr = Regress.test_garray_container_return
         instance.set_property 'pptrarray', arr
         _(instance.pptrarray).must_be :==, arr
       end
 
       it 'can be set with #pptrarray=' do
-        skip 'pptrarray is not implemented properly'
         arr = Regress.test_garray_container_return
         instance.pptrarray = arr
         _(instance.pptrarray).must_be :==, arr
