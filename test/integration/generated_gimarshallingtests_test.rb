@@ -898,33 +898,51 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-enum' property" do
+      before { skip_below('1.52.1') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-enum')).must_equal :value1
       end
+
       it 'can be retrieved with #some_enum' do
-        skip 'Needs testing'
+        _(instance.some_enum).must_equal :value1
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('some-enum', :value3)
+        _(instance.get_property('some-enum')).must_equal :value3
       end
+
       it 'can be set with #some_enum=' do
-        skip 'Needs testing'
+        instance.some_enum = :value3
+        _(instance.some_enum).must_equal :value3
+        _(instance.get_property('some-enum')).must_equal :value3
       end
     end
+
     describe "its 'some-flags' property" do
+      before { skip_below('1.52.1') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-flags')).must_equal value1: true
       end
+
       it 'can be retrieved with #some_flags' do
-        skip 'Needs testing'
+        _(instance.some_flags).must_equal value1: true
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('some-flags', value3: true)
+        _(instance.get_property('some-flags')).must_equal value3: true
       end
+
       it 'can be set with #some_flags=' do
-        skip 'Needs testing'
+        instance.some_flags = :value3
+        _(instance.some_flags).must_equal(value3: true)
+        _(instance.get_property('some-flags')).must_equal(value3: true)
       end
     end
+
     describe "its 'some-float' property" do
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-float')).must_equal 0.0
