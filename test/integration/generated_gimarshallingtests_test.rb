@@ -964,19 +964,30 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-gvalue' property" do
+      before { skip_below '1.52.1' }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-gvalue')).must_be_nil
       end
+
       it 'can be retrieved with #some_gvalue' do
-        skip 'Needs testing'
+        _(instance.some_gvalue).must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        value = GObject::Value.from 42
+        instance.set_property('some-gvalue', value)
+        _(instance.get_property('some-gvalue').get_value).must_equal 42
       end
+
       it 'can be set with #some_gvalue=' do
-        skip 'Needs testing'
+        value = GObject::Value.from 42
+        instance.some_gvalue = value
+        _(instance.some_gvalue.get_value).must_equal 42
+        _(instance.get_property('some-gvalue').get_value).must_equal 42
       end
     end
+
     describe "its 'some-int' property" do
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-int')).must_equal 0
@@ -1060,13 +1071,17 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-readonly' property" do
+      before { skip_below('1.57.2') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-readonly')).must_equal 42
       end
+
       it 'can be retrieved with #some_readonly' do
-        skip 'Needs testing'
+        _(instance.some_readonly).must_equal 42
       end
     end
+
     describe "its 'some-strv' property" do
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-strv')).must_be :==, []
@@ -1322,11 +1337,16 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_bool_in' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    GIMarshallingTests.array_bool_in [true, false, true, true]
   end
+
   it 'has a working function #array_bool_out' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    result = GIMarshallingTests.array_bool_out
+    _(result.to_a).must_equal [true, false, true, true]
   end
+
   it 'has a working function #array_enum_in' do
     GIMarshallingTests.array_enum_in [:value1, :value2, :value3]
   end
@@ -1448,8 +1468,10 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_int64_in' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    GIMarshallingTests.array_int64_in [-1, 0, 1, 2]
   end
+
   it 'has a working function #array_out' do
     res = GIMarshallingTests.array_out
     _(res).must_be :==, [-1, 0, 1, 2]
@@ -1509,7 +1531,8 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_uint64_in' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    GIMarshallingTests.array_uint64_in [-1, 0, 1, 2]
   end
 
   it 'has a working function #array_uint8_in' do
@@ -1519,11 +1542,19 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_unichar_in' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    arr = [0x63, 0x6f, 0x6e, 0x73, 0x74,
+           0x20, 0x2665, 0x20, 0x75, 0x74,
+           0x66, 0x38]
+    GIMarshallingTests.array_unichar_in arr
   end
 
   it 'has a working function #array_unichar_out' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    result = GIMarshallingTests.array_unichar_out
+    _(result.to_a).must_equal [0x63, 0x6f, 0x6e, 0x73, 0x74,
+                               0x20, 0x2665, 0x20, 0x75, 0x74,
+                               0x66, 0x38]
   end
 
   it 'has a working function #array_zero_terminated_in' do
@@ -1557,7 +1588,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #array_zero_terminated_return_unichar' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    res = GIMarshallingTests.array_zero_terminated_return_unichar
+    _(res.to_a).must_equal [0x63, 0x6f, 0x6e, 0x73, 0x74,
+                            0x20, 0x2665, 0x20, 0x75, 0x74,
+                            0x66, 0x38]
   end
 
   it 'has a working function #boolean_in_false' do
@@ -1774,7 +1809,8 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_bool_none_in' do
-    skip 'Needs testing'
+    skip_below '1.51.1'
+    GIMarshallingTests.garray_bool_none_in [true, false, true, true]
   end
 
   it 'has a working function #garray_boxed_struct_full_return' do
@@ -1805,6 +1841,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #garray_unichar_none_in' do
+    skip_below '1.51.1'
+    arr = [0x63, 0x6f, 0x6e, 0x73, 0x74,
+           0x20, 0x2665, 0x20, 0x75, 0x74,
+           0x66, 0x38]
+    GIMarshallingTests.garray_unichar_none_in arr
   end
 
   it 'has a working function #garray_utf8_container_inout' do
