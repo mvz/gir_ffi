@@ -10,6 +10,7 @@
   be removed in GirFFI version 0.16 or later.
 * Support setting ByteArray properties directly with string values.
 * Target Ruby 2.4+
+* Implement getting and setting of flag properties and GValues.
 
 ## 0.14.1 / 2018-09-27
 
