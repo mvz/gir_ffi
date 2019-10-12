@@ -964,19 +964,30 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-gvalue' property" do
+      before { skip_below '1.52.1' }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-gvalue')).must_be_nil
       end
+
       it 'can be retrieved with #some_gvalue' do
-        skip 'Needs testing'
+        _(instance.some_gvalue).must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        value = GObject::Value.from 42
+        instance.set_property('some-gvalue', value)
+        _(instance.get_property('some-gvalue').get_value).must_equal 42
       end
+
       it 'can be set with #some_gvalue=' do
-        skip 'Needs testing'
+        value = GObject::Value.from 42
+        instance.some_gvalue = value
+        _(instance.some_gvalue.get_value).must_equal 42
+        _(instance.get_property('some-gvalue').get_value).must_equal 42
       end
     end
+
     describe "its 'some-int' property" do
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-int')).must_equal 0
