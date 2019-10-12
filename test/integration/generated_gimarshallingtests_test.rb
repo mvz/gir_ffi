@@ -1071,13 +1071,17 @@ describe GIMarshallingTests do
     end
 
     describe "its 'some-readonly' property" do
+      before { skip_below('1.57.2') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('some-readonly')).must_equal 42
       end
+
       it 'can be retrieved with #some_readonly' do
-        skip 'Needs testing'
+        _(instance.some_readonly).must_equal 42
       end
     end
+
     describe "its 'some-strv' property" do
       it 'can be retrieved with #get_property' do
         _(instance.get_property('some-strv')).must_be :==, []
