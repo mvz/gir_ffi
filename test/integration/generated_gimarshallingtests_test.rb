@@ -1990,14 +1990,23 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #ghashtable_double_in' do
-    skip 'Needs testing'
+    skip_below '1.51.2'
+    GIMarshallingTests.ghashtable_double_in(
+      "-1" => -0.1, "0" => 0.0, "1" => 0.1, "2" => 0.2)
   end
+
   it 'has a working function #ghashtable_float_in' do
-    skip 'Needs testing'
+    skip_below '1.51.2'
+    GIMarshallingTests.ghashtable_float_in(
+      "-1" => -0.1, "0" => 0.0, "1" => 0.1, "2" => 0.2)
   end
+
   it 'has a working function #ghashtable_int64_in' do
-    skip 'Needs testing'
+    skip_below '1.51.2'
+    GIMarshallingTests.ghashtable_int64_in(
+      "-1" => -1, "0" => 0, "1" => 1, "2" => 0x100000000)
   end
+
   it 'has a working function #ghashtable_int_none_in' do
     GIMarshallingTests.ghashtable_int_none_in(
       -1 => 1, 0 => 0, 1 => -1, 2 => -2)
@@ -2009,8 +2018,11 @@ describe GIMarshallingTests do
   end
 
   it 'has a working function #ghashtable_uint64_in' do
-    skip 'Needs testing'
+    skip_below '1.51.2'
+    GIMarshallingTests.ghashtable_uint64_in(
+      "-1" => 0x100000000, "0" => 0, "1" => 1, "2" => 2)
   end
+
   it 'has a working function #ghashtable_utf8_container_in' do
     skip 'This function is defined in the header but not implemented'
   end

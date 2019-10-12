@@ -146,6 +146,26 @@ describe GirFFI::InPointer do
       assert_equal 23, result.address
     end
 
+    it "returns a pointer to the value for type :gint64" do
+      result = GirFFI::InPointer.from :gint64, -0x90000000
+      assert_equal(-0x90000000, result.read_int64)
+    end
+
+    it "returns a pointer to the value for type :guint64" do
+      result = GirFFI::InPointer.from :guint64, 0xf0000000
+      assert_equal 0xf0000000, result.read_uint64
+    end
+
+    it "returns a pointer to the value for type :gdouble" do
+      result = GirFFI::InPointer.from :gdouble, 0.1
+      assert_in_epsilon 0.1, result.read_double
+    end
+
+    it "returns a pointer to the value for type :gfloat" do
+      result = GirFFI::InPointer.from :gfloat, 0.1
+      assert_in_epsilon 0.1, result.read_float
+    end
+
     it 'handles enum types' do
       e = Module.new do
         extend GirFFI::EnumBase
