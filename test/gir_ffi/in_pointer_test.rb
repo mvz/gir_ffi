@@ -148,12 +148,12 @@ describe GirFFI::InPointer do
 
     it "returns a pointer to the value for type :gint64" do
       result = GirFFI::InPointer.from :gint64, -0x90000000
-      assert_equal(-0x90000000, result.read_int64)
+      assert_equal(-0x90000000, result.get_int64(0))
     end
 
     it "returns a pointer to the value for type :guint64" do
       result = GirFFI::InPointer.from :guint64, 0xf0000000
-      assert_equal 0xf0000000, result.read_uint64
+      assert_equal 0xf0000000, result.get_uint64(0)
     end
 
     it "returns a pointer to the value for type :gdouble" do

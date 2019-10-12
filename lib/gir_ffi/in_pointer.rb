@@ -57,7 +57,7 @@ module GirFFI
         ffi_type = TypeMap.type_specification_to_ffi_type type
         FFI::MemoryPointer.new(ffi_type).tap do |block|
           block.autorelease = false
-          block.send "write_#{ffi_type}", value
+          block.send "put_#{ffi_type}", 0, value
         end
       end
 
