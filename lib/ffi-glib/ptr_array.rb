@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "ffi-glib/container_class_methods"
-require "ffi-glib/array_methods"
+require "gir_ffi/array_element_convertor"
 
 GLib.load_class :PtrArray
 
@@ -48,20 +48,25 @@ module GLib
       ary.each { |item| add item }
     end
 
+    # Re-implementation of the g_ptrarray_index macro
     def index(idx)
       unless (0...length).cover? idx
         raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
       end
 
       item_ptr = data_ptr + idx * element_size
-      case element_type
-      when :utf8
-        item_ptr.get_pointer(0).to_utf8
-      when Module
-        element_type.wrap(item_ptr.get_pointer(0))
-      else
-        raise "Unsupported #{element_type}"
-      end
+
+      convert_element_type = case element_type
+                             when :utf8
+                               :utf8
+                             when GirFFI::ObjectBase
+                               element_type
+                             else
+                               [:pointer, element_type]
+                             end
+
+      convertor = GirFFI::ArrayElementConvertor.new convert_element_type, item_ptr
+      convertor.to_ruby_value
     end
 
     def each
