@@ -3459,7 +3459,7 @@ describe Regress do
     instance = Regress.test_create_fundamental_hidden_class_instance
     _(instance).must_be_kind_of Regress::TestFundamentalObject
     g_type = instance.object_class.g_type
-    _(GObject.type_name g_type).must_equal "RegressTestFundamentalHiddenSubObject"
+    _(GObject.type_name(g_type)).must_equal "RegressTestFundamentalHiddenSubObject"
   end
 
   it "has a working function #test_date_in_gvalue" do

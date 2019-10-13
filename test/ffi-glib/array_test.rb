@@ -94,7 +94,7 @@ describe GLib::Array do
       end
       arr = GLib::Array.from GObject::EnumValue, values
       _(arr).must_be_instance_of GLib::Array
-      _(arr.to_a.map &:value).must_equal [1, 2, 3]
+      _(arr.to_a.map(&:value)).must_equal [1, 2, 3]
     end
 
     it "return its argument if given a GArray" do
