@@ -40,8 +40,12 @@ describe GObject do
     _(GObject.type_name(GObject::TYPE_OBJECT)).must_equal     "GObject"
     _(GObject.type_name(GObject::TYPE_GTYPE)).must_equal      "GType"
     _(GObject.type_name(GObject::TYPE_VARIANT)).must_equal    "GVariant"
-    _(GObject.type_name(GObject::TYPE_STRV)).must_equal       "GStrv"
+
+    _(GObject.type_name(GObject::TYPE_ARRAY)).must_equal      "GArray"
+    _(GObject.type_name(GObject::TYPE_BYTE_ARRAY)).must_equal "GByteArray"
+    _(GObject.type_name(GObject::TYPE_ERROR)).must_equal      "GError"
     _(GObject.type_name(GObject::TYPE_HASH_TABLE)).must_equal "GHashTable"
+    _(GObject.type_name(GObject::TYPE_STRV)).must_equal       "GStrv"
   end
 
   describe "::object_class_from_instance" do

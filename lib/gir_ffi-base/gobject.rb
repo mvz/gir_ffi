@@ -43,6 +43,7 @@ module GObject
 
   TYPE_ARRAY = Lib.g_array_get_type
   TYPE_BYTE_ARRAY = Lib.g_byte_array_get_type
+  TYPE_ERROR = Lib.g_error_get_type
   TYPE_HASH_TABLE = Lib.g_hash_table_get_type
   TYPE_STRV = Lib.g_strv_get_type
 end
