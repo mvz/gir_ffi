@@ -3821,8 +3821,11 @@ describe Regress do
   end
 
   it 'has a working function #test_null_strv_in_gvalue' do
-    skip 'Needs testing'
+    skip_below '1.53.1'
+    result = Regress.test_null_strv_in_gvalue
+    _(result.to_a).must_be :empty?
   end
+
   it 'has a working function #test_owned_gerror_callback' do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
