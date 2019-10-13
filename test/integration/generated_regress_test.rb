@@ -3502,10 +3502,7 @@ describe Regress do
     arr = Regress.test_garray_container_return
     _(arr).must_be_instance_of GLib::PtrArray
     _(arr.len).must_equal 1
-
-    ptr = arr.pdata
-    ptr2 = ptr.read_pointer
-    _(ptr2.read_string).must_be :==, "regress"
+    _(arr.to_a).must_equal ["regress"]
   end
 
   it "has a working function #test_garray_full_return" do
