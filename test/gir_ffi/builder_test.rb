@@ -78,6 +78,15 @@ describe GirFFI::Builder do
       _(found_klass).must_equal klass
     end
 
+    it "returns the class for user-defined types not derived from GObject" do
+      klass = Class.new Regress::TestFundamentalObject
+      Object.const_set "Derived#{Sequence.next}", klass
+      gtype = GirFFI.define_type klass
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      _(found_klass).must_equal klass
+    end
+
     it "returns a valid class for boxed classes unknown to GIR" do
       object_class = GIMarshallingTests::PropertiesObject.object_class
       property = object_class.find_property "some-boxed-glist"
