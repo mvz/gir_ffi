@@ -78,6 +78,15 @@ describe GirFFI::Builder do
       _(found_klass).must_equal klass
     end
 
+    it "returns the class for user-defined types not derived from GObject" do
+      klass = Class.new Regress::TestFundamentalObject
+      Object.const_set "Derived#{Sequence.next}", klass
+      gtype = GirFFI.define_type klass
+
+      found_klass = GirFFI::Builder.build_by_gtype gtype
+      _(found_klass).must_equal klass
+    end
+
     it "returns a valid class for boxed classes unknown to GIR" do
       object_class = GIMarshallingTests::PropertiesObject.object_class
       property = object_class.find_property "some-boxed-glist"
@@ -88,6 +97,11 @@ describe GirFFI::Builder do
       found_klass = GirFFI::Builder.build_by_gtype gtype
       _(found_klass.name).must_be_nil
       _(found_klass.superclass).must_equal GirFFI::BoxedBase
+    end
+
+    it "refuse to build classes for base types" do
+      _(-> { GirFFI::Builder.build_by_gtype GObject::TYPE_INT }).
+        must_raise RuntimeError, "Unable to handle type gint"
     end
   end
 
