@@ -1861,17 +1861,26 @@ describe Regress do
     end
 
     describe "its 'byte-array' property" do
+      before { skip_below('1.57.2') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('byte-array')).must_be_nil
       end
+
       it 'can be retrieved with #byte_array' do
-        skip 'Needs testing'
+        _(instance.byte_array).must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property 'byte-array', 'hello'
+        _(instance.get_property('byte-array').to_string).must_equal 'hello'
       end
+
       it 'can be set with #byte_array=' do
-        skip 'Needs testing'
+        instance.byte_array = 'bye'
+        _(instance.byte_array.to_string).must_equal 'bye'
+        instance.byte_array = GLib::ByteArray.from('byebye')
+        _(instance.get_property('byte-array').to_string).must_equal 'byebye'
       end
     end
 
@@ -2046,20 +2055,26 @@ describe Regress do
     end
 
     describe "its 'name-conflict' property" do
+      before { skip_below '1.53.4' }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('name-conflict')).must_equal 42
       end
 
-      it 'can be retrieved with #name_conflict' do
-        skip 'Needs testing'
+      it 'cannot be retrieved with #name_conflict' do
+        # Method names are prioritized over property names, so we call the
+        # method here instead of fetching the property
+        _(instance.name_conflict).must_be_nil
       end
 
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('name-conflict', 23)
+        _(instance.get_property('name-conflict')).must_equal 23
       end
 
       it 'can be set with #name_conflict=' do
-        skip 'Needs testing'
+        instance.name_conflict = 23
+        _(instance.get_property('name-conflict')).must_equal 23
       end
     end
     describe "its 'pptrarray' property" do
@@ -2373,11 +2388,20 @@ describe Regress do
   end
 
   describe 'Regress::TestReferenceCounters' do
+    let(:instance) { Regress::TestReferenceCounters.new }
+
+    before { skip_below '1.59.1' }
+
     it 'has a writable field refcount' do
-      skip 'Needs testing'
+      _(instance.refcount).must_equal 0
+      instance.refcount = 42
+      _(instance.refcount).must_equal 42
     end
+
     it 'has a writable field atomicrefcount' do
-      skip 'Needs testing'
+      _(instance.atomicrefcount).must_equal 0
+      instance.atomicrefcount = 42
+      _(instance.atomicrefcount).must_equal 42
     end
   end
 
@@ -3797,8 +3821,11 @@ describe Regress do
   end
 
   it 'has a working function #test_null_strv_in_gvalue' do
-    skip 'Needs testing'
+    skip_below '1.53.1'
+    result = Regress.test_null_strv_in_gvalue
+    _(result.to_a).must_be :empty?
   end
+
   it 'has a working function #test_owned_gerror_callback' do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
