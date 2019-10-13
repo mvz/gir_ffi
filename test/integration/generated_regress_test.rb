@@ -855,7 +855,8 @@ describe Regress do
     it "has a working method #add" do
       other_instance = Regress::FooRectangle.new
       result = instance.add other_instance
-      _(result).must_equal other_instance
+      # NOTE: inout annotation has no effect on the method receiver
+      _(result).must_be_nil
     end
   end
 
