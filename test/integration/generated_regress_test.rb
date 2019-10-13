@@ -2055,20 +2055,26 @@ describe Regress do
     end
 
     describe "its 'name-conflict' property" do
+      before { skip_below '1.53.4' }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('name-conflict')).must_equal 42
       end
 
-      it 'can be retrieved with #name_conflict' do
-        skip 'Needs testing'
+      it 'cannot be retrieved with #name_conflict' do
+        # Method names are prioritized over property names, so we call the
+        # method here instead of fetching the property
+        _(instance.name_conflict).must_be_nil
       end
 
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property('name-conflict', 23)
+        _(instance.get_property('name-conflict')).must_equal 23
       end
 
       it 'can be set with #name_conflict=' do
-        skip 'Needs testing'
+        instance.name_conflict = 23
+        _(instance.get_property('name-conflict')).must_equal 23
       end
     end
     describe "its 'pptrarray' property" do
