@@ -18,12 +18,10 @@ module GirFFI
       end
 
       def marshaller_definition
-        container_type_info = ReceiverTypeInfo.new(container_info)
-        receiver_info = ReceiverArgumentInfo.new(container_type_info)
-
-        MarshallingMethodBuilder.for_signal(receiver_info,
-                                            info).method_definition
+        MarshallingMethodBuilder.for_signal(info).method_definition
       end
+
+      private
 
       def klass
         @klass ||= get_or_define_class container_class, @classname, GObject::RubyClosure
