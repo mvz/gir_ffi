@@ -29,6 +29,8 @@ module GirFFI
       case type
       when :utf8, :filename
         from_utf8 val
+      when :gfloat, :gdouble, :gint64, :guint64
+        from_basic_type type, val
       when :gint32, :guint32, :gint8, :GType
         FFI::Pointer.new val
       when GirFFI::EnumLikeBase
@@ -50,6 +52,14 @@ module GirFFI
 
     class << self
       private
+
+      def from_basic_type(type, value)
+        ffi_type = TypeMap.type_specification_to_ffi_type type
+        FFI::MemoryPointer.new(ffi_type).tap do |block|
+          block.autorelease = false
+          block.send "put_#{ffi_type}", 0, value
+        end
+      end
 
       def from_simple_type_array(type, ary)
         case type
