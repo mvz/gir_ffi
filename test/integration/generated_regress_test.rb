@@ -2388,11 +2388,20 @@ describe Regress do
   end
 
   describe 'Regress::TestReferenceCounters' do
+    let(:instance) { Regress::TestReferenceCounters.new }
+
+    before { skip_below '1.59.1' }
+
     it 'has a writable field refcount' do
-      skip 'Needs testing'
+      _(instance.refcount).must_equal 0
+      instance.refcount = 42
+      _(instance.refcount).must_equal 42
     end
+
     it 'has a writable field atomicrefcount' do
-      skip 'Needs testing'
+      _(instance.atomicrefcount).must_equal 0
+      instance.atomicrefcount = 42
+      _(instance.atomicrefcount).must_equal 42
     end
   end
 
