@@ -853,9 +853,9 @@ describe Regress do
     end
 
     it "has a working method #add" do
-      skip "Not implemented yet"
       other_instance = Regress::FooRectangle.new
-      instance.add other_instance
+      result = instance.add other_instance
+      _(result).must_equal other_instance
     end
   end
 
