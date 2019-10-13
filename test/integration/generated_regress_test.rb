@@ -853,9 +853,10 @@ describe Regress do
     end
 
     it "has a working method #add" do
-      skip "Not implemented yet"
       other_instance = Regress::FooRectangle.new
-      instance.add other_instance
+      result = instance.add other_instance
+      # NOTE: inout annotation has no effect on the method receiver
+      _(result).must_be_nil
     end
   end
 
