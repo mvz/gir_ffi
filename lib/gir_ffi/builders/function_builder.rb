@@ -37,11 +37,16 @@ module GirFFI
       private
 
       def receiver_call_argument
-        if @info.instance_ownership_transfer == :everything
+        container_type_info = ReceiverTypeInfo.new(container_info)
+        if @info.instance_ownership_transfer == :everything && container_type_info.flattened_tag == :object
           "self.ref"
         else
           "self"
         end
+      end
+
+      def container_info
+        @container_info ||= @info.container
       end
     end
   end

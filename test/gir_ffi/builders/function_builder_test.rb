@@ -401,6 +401,24 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "struct ownership transfer" do
+      describe "for Regress::FooRectangle#add" do
+        let(:function_info) do
+          get_method_introspection_data("Regress", "FooRectangle",
+                                        "add")
+        end
+
+        it "builds a correct definition without #ref" do
+          _(code).must_equal <<~CODE
+          def add(r2)
+            _v1 = Regress::FooRectangle.from(r2)
+            Regress::Lib.regress_foo_rectangle_add self, _v1
+          end
+          CODE
+        end
+      end
+    end
+
+    describe "boxed struct ownership transfer" do
       describe "for GIMarshallingTests::BoxedStruct.inout" do
         let(:function_info) do
           get_method_introspection_data("GIMarshallingTests", "BoxedStruct", "inout")
