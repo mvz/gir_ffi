@@ -89,6 +89,11 @@ describe GirFFI::Builder do
       _(found_klass.name).must_be_nil
       _(found_klass.superclass).must_equal GirFFI::BoxedBase
     end
+
+    it "refuse to build classes for base types" do
+      _(-> { GirFFI::Builder.build_by_gtype GObject::TYPE_INT }).
+        must_raise RuntimeError, "Unable to handle type gint"
+    end
   end
 
   describe ".attach_ffi_function" do

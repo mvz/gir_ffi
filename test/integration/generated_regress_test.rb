@@ -3455,7 +3455,9 @@ describe Regress do
   end
 
   it "has a working function #test_create_fundamental_hidden_class_instance" do
-    skip "Needs testing"
+    skip_below "1.51.2"
+    instance = Regress.test_create_fundamental_hidden_class_instance
+    _(instance).must_be_kind_of Regress::TestFundamentalObject
   end
 
   it "has a working function #test_date_in_gvalue" do

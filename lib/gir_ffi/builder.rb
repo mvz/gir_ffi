@@ -19,11 +19,17 @@ module GirFFI
 
     def self.build_by_gtype(gtype)
       info = GObjectIntrospection::IRepository.default.find_by_gtype gtype
-      info ||= case GObject.type_fundamental gtype
-               when GObject::TYPE_BOXED
-                 UnintrospectableBoxedInfo.new gtype
-               when GObject::TYPE_OBJECT
-                 UnintrospectableTypeInfo.new gtype
+      info ||= begin
+                 fund = GObject.type_fundamental gtype
+                 if fund == GObject::TYPE_BOXED
+                   UnintrospectableBoxedInfo.new gtype
+                 elsif fund == GObject::TYPE_OBJECT
+                   UnintrospectableTypeInfo.new gtype
+                 elsif fund >= GObject::TYPE_RESERVED_USER_FIRST
+                   UnintrospectableTypeInfo.new gtype
+                 else
+                   raise "Unable to handle type #{GObject.type_name gtype}"
+                 end
                end
 
       build_class info
