@@ -1861,17 +1861,26 @@ describe Regress do
     end
 
     describe "its 'byte-array' property" do
+      before { skip_below('1.57.2') }
+
       it 'can be retrieved with #get_property' do
-        skip 'Needs testing'
+        _(instance.get_property('byte-array')).must_be_nil
       end
+
       it 'can be retrieved with #byte_array' do
-        skip 'Needs testing'
+        _(instance.byte_array).must_be_nil
       end
+
       it 'can be set with #set_property' do
-        skip 'Needs testing'
+        instance.set_property 'byte-array', 'hello'
+        _(instance.get_property('byte-array').to_string).must_equal 'hello'
       end
+
       it 'can be set with #byte_array=' do
-        skip 'Needs testing'
+        instance.byte_array = 'bye'
+        _(instance.byte_array.to_string).must_equal 'bye'
+        instance.byte_array = GLib::ByteArray.from('byebye')
+        _(instance.get_property('byte-array').to_string).must_equal 'byebye'
       end
     end
 
