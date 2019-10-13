@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "gir_ffi/array_element_convertor"
+
 module GirFFI
   # Class representing an array with a determined size
   class SizedArray
@@ -17,8 +19,8 @@ module GirFFI
     end
 
     def index(idx)
-      ptr = InOutPointer.new element_type, @pointer + idx * element_size
-      ptr.to_ruby_value
+      convertor = ArrayElementConvertor.new element_type, @pointer + idx * element_size
+      convertor.to_ruby_value
     end
 
     def each

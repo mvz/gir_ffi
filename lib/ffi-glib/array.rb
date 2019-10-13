@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "ffi-glib/container_class_methods"
-require "ffi-glib/array_methods"
+require "gir_ffi/array_element_convertor"
 
 GLib.load_class :Array
 
@@ -10,7 +10,6 @@ module GLib
   # be necessary to create objects of this class from Ruby directly.
   class Array
     include Enumerable
-    include ArrayMethods
     extend ContainerClassMethods
 
     attr_reader :element_type
@@ -68,6 +67,17 @@ module GLib
         @element_type = guess_element_type
       end
       self
+    end
+
+    # Re-implementation of the g_array_index macro
+    def index(idx)
+      unless (0...length).cover? idx
+        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
+      end
+
+      item_ptr = data_ptr + idx * element_size
+      convertor = GirFFI::ArrayElementConvertor.new element_type, item_ptr
+      convertor.to_ruby_value
     end
 
     private

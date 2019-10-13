@@ -82,6 +82,21 @@ describe GLib::Array do
       _(arr.to_a).must_equal [true, false, true]
     end
 
+    it "creates a GArray from an array of :utf8 values" do
+      arr = GLib::Array.from :utf8, %w(hello there)
+      _(arr).must_be_instance_of GLib::Array
+      _(arr.to_a).must_equal %w(hello there)
+    end
+
+    it "creates a GArray from an array of struct values" do
+      values = [1, 2, 3].map do |val|
+        GObject::EnumValue.new.tap { |it| it.value = val }
+      end
+      arr = GLib::Array.from GObject::EnumValue, values
+      _(arr).must_be_instance_of GLib::Array
+      _(arr.to_a.map(&:value)).must_equal [1, 2, 3]
+    end
+
     it "return its argument if given a GArray" do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]

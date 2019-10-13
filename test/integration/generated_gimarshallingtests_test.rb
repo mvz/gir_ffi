@@ -2162,7 +2162,6 @@ describe GIMarshallingTests do
 
   it "has a working function #gptrarray_boxed_struct_full_return" do
     skip_below "1.61.1"
-    skip "Not implemented yet"
     result = GIMarshallingTests.gptrarray_boxed_struct_full_return
     _(result.map(&:long_)).must_equal [42, 43, 44]
   end
