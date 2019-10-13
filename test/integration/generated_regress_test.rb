@@ -1638,7 +1638,6 @@ describe Regress do
 
     it "has a working method #emit_sig_with_error" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       error = nil
       instance.signal_connect "sig-with-gerror" do |_obj, err|
         error = err
@@ -1674,7 +1673,6 @@ describe Regress do
 
     it "has a working method #emit_sig_with_null_error" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       error = nil
       instance.signal_connect "sig-with-gerror" do |_obj, err|
         error = err
