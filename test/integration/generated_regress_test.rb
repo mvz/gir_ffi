@@ -2213,7 +2213,6 @@ describe Regress do
 
     it "handles the 'sig-with-gerror' signal" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       a = nil
       GObject.signal_connect(instance, "sig-with-gerror") { a = 4 }
       GObject.signal_emit instance, "sig-with-gerror"
