@@ -10,7 +10,6 @@ module GLib
   # pointers.
   class PtrArray
     include Enumerable
-    include ArrayMethods
     extend ContainerClassMethods
 
     attr_reader :element_type
@@ -49,12 +48,20 @@ module GLib
       ary.each { |item| add item }
     end
 
-    def data_ptr
-      struct[:pdata]
-    end
+    def index(idx)
+      unless (0...length).cover? idx
+        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
+      end
 
-    def element_size
-      POINTER_SIZE
+      item_ptr = data_ptr + idx * element_size
+      case element_type
+      when :utf8
+        item_ptr.get_pointer(0).to_utf8
+      when Module
+        element_type.wrap(item_ptr.get_pointer(0))
+      else
+        raise "Unsupported #{element_type}"
+      end
     end
 
     def each
@@ -69,6 +76,16 @@ module GLib
 
     def ==(other)
       to_a == other.to_a
+    end
+
+    private
+
+    def element_size
+      POINTER_SIZE
+    end
+
+    def data_ptr
+      struct[:pdata]
     end
   end
 end
