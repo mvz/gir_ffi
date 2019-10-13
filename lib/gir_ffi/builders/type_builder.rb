@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/callback_builder'
-require 'gir_ffi/builders/constant_builder'
-require 'gir_ffi/builders/enum_builder'
-require 'gir_ffi/builders/flags_builder'
-require 'gir_ffi/builders/interface_builder'
-require 'gir_ffi/builders/object_builder'
-require 'gir_ffi/builders/struct_builder'
-require 'gir_ffi/builders/signal_closure_builder'
-require 'gir_ffi/builders/unintrospectable_boxed_builder'
-require 'gir_ffi/builders/unintrospectable_builder'
-require 'gir_ffi/builders/union_builder'
-require 'gir_ffi/builders/vfunc_builder'
+require "gir_ffi/builders/callback_builder"
+require "gir_ffi/builders/constant_builder"
+require "gir_ffi/builders/enum_builder"
+require "gir_ffi/builders/flags_builder"
+require "gir_ffi/builders/interface_builder"
+require "gir_ffi/builders/object_builder"
+require "gir_ffi/builders/struct_builder"
+require "gir_ffi/builders/signal_closure_builder"
+require "gir_ffi/builders/unintrospectable_boxed_builder"
+require "gir_ffi/builders/unintrospectable_builder"
+require "gir_ffi/builders/union_builder"
+require "gir_ffi/builders/vfunc_builder"
 
 module GirFFI
   module Builders

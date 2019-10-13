@@ -14,7 +14,7 @@ module GObject
     end
 
     def accessor_name
-      get_name.tr('-', '_')
+      get_name.tr("-", "_")
     end
 
     def value_type

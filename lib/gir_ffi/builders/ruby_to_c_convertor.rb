@@ -17,7 +17,7 @@ module GirFFI
       end
 
       def conversion_arguments(name)
-        @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(', ')
+        @type_info.extra_conversion_arguments.map(&:inspect).push(name).join(", ")
       end
 
       private
@@ -25,18 +25,18 @@ module GirFFI
       def conversion_method
         case @type_info.flattened_tag
         when :utf8
-          'from_utf8'
+          "from_utf8"
         when :struct, :c
           case @ownership_transfer
           when :everything
-            'copy_from'
+            "copy_from"
           else
-            'from'
+            "from"
           end
         when :enum
-          'to_int'
+          "to_int"
         else
-          'from'
+          "from"
         end
       end
     end

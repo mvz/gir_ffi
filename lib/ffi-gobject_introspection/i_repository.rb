@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'singleton'
+require "singleton"
 
-require 'ffi-gobject_introspection/lib'
-require 'ffi-gobject_introspection/strv'
-require 'ffi-gobject_introspection/g_error'
+require "ffi-gobject_introspection/lib"
+require "ffi-gobject_introspection/strv"
+require "ffi-gobject_introspection/g_error"
 
 module GObjectIntrospection
   # The Gobject Introspection Repository. This class is the point of

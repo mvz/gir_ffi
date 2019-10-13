@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_type_builder'
-require 'gir_ffi/builders/mapping_method_builder'
-require 'gir_ffi/callback_base'
+require "gir_ffi/builders/base_type_builder"
+require "gir_ffi/builders/mapping_method_builder"
+require "gir_ffi/callback_base"
 
 module GirFFI
   module Builders

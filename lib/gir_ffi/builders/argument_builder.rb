@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_argument_builder'
-require 'gir_ffi/builders/closure_to_pointer_convertor'
-require 'gir_ffi/builders/full_c_to_ruby_convertor'
-require 'gir_ffi/builders/ruby_to_c_convertor'
-require 'gir_ffi/builders/pointer_value_convertor'
-require 'gir_ffi/builders/null_convertor'
+require "gir_ffi/builders/base_argument_builder"
+require "gir_ffi/builders/closure_to_pointer_convertor"
+require "gir_ffi/builders/full_c_to_ruby_convertor"
+require "gir_ffi/builders/ruby_to_c_convertor"
+require "gir_ffi/builders/pointer_value_convertor"
+require "gir_ffi/builders/null_convertor"
 
 module GirFFI
   module Builders
@@ -203,11 +203,11 @@ module GirFFI
           arginfo.caller_allocates?
       end
 
-      DESTROY_NOTIFIER = 'GLib::DestroyNotify.default'
+      DESTROY_NOTIFIER = "GLib::DestroyNotify.default"
 
       def ingoing_convertor
         if skipped_in?
-          NullConvertor.new('0')
+          NullConvertor.new("0")
         elsif destroy_notifier?
           NullConvertor.new(DESTROY_NOTIFIER)
         elsif user_data?

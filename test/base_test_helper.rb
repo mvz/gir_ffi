@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
-require 'simplecov'
+require "simplecov"
 SimpleCov.start do
-  track_files 'lib/**/*.rb'
-  add_filter '/test/'
+  track_files "lib/**/*.rb"
+  add_filter "/test/"
 end
 
-if ENV['CI']
+if ENV["CI"]
   begin
-    require 'coveralls'
+    require "coveralls"
     Coveralls.wear!
   rescue LoadError
     nil
   end
 end
 
-require 'minitest/autorun'
-require 'rspec/mocks/minitest_integration'
+require "minitest/autorun"
+require "rspec/mocks/minitest_integration"
 
 Thread.abort_on_exception = true
 

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/builders/closure_argument_builder'
-require 'gir_ffi/builders/closure_return_value_builder'
-require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/method_template'
+require "gir_ffi/variable_name_generator"
+require "gir_ffi/builders/closure_argument_builder"
+require "gir_ffi/builders/closure_return_value_builder"
+require "gir_ffi/builders/argument_builder_collection"
+require "gir_ffi/builders/method_template"
 
 module GirFFI
   module Builders
@@ -25,7 +25,7 @@ module GirFFI
       ## Methods used by MethodTemplate
 
       def method_name
-        'marshaller'
+        "marshaller"
       end
 
       def method_arguments
@@ -59,7 +59,7 @@ module GirFFI
       private
 
       def call_argument_list
-        @argument_builder_collection.call_argument_names.join(', ')
+        @argument_builder_collection.call_argument_names.join(", ")
       end
 
       def param_names

@@ -83,6 +83,10 @@ Style/Semicolon:
   Exclude:
     - 'test/**/*'
 
+# Don't commit to presence or absence of interpolation
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
 # Prefer symbols to look like symbols
 Style/SymbolArray:
   EnforcedStyle: brackets

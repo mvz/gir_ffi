@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/type_base'
+require "gir_ffi/type_base"
 
 module GirFFI
   # Base module for generated registered GLib types (these are types that have a

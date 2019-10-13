@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
-require 'ffi-gobject'
+require "ffi-gobject"
 
 describe GObject::ObjectClass do
-  describe '#list_properties' do
+  describe "#list_properties" do
     it "returns GIMarshallingTests::OverridesObject's properties" do
       obj = GIMarshallingTests::OverridesObject.new
       object_class = GObject.object_class_from_instance obj
 
-      info = get_introspection_data 'GIMarshallingTests', 'OverridesObject'
+      info = get_introspection_data "GIMarshallingTests", "OverridesObject"
       expected_props = info.properties.map(&:name)
       expected_props += info.parent.properties.map(&:name)
 
@@ -21,8 +21,8 @@ describe GObject::ObjectClass do
     end
   end
 
-  describe '#gtype' do
-    it 'returns the correct GType' do
+  describe "#gtype" do
+    it "returns the correct GType" do
       obj = GIMarshallingTests::OverridesObject.new
       object_class = GObject.object_class_from_instance obj
       _(object_class.gtype).must_equal GIMarshallingTests::OverridesObject.gtype

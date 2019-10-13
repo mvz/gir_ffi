@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/builders/callback_argument_builder'
-require 'gir_ffi/builders/vfunc_argument_builder'
-require 'gir_ffi/builders/callback_return_value_builder'
-require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/base_method_builder'
+require "gir_ffi/variable_name_generator"
+require "gir_ffi/builders/callback_argument_builder"
+require "gir_ffi/builders/vfunc_argument_builder"
+require "gir_ffi/builders/callback_return_value_builder"
+require "gir_ffi/builders/argument_builder_collection"
+require "gir_ffi/builders/base_method_builder"
 
 module GirFFI
   module Builders
@@ -30,12 +30,12 @@ module GirFFI
       ## Methods used by MethodTemplate
 
       def method_name
-        'call_with_argument_mapping'
+        "call_with_argument_mapping"
       end
 
       def method_arguments
         @method_arguments ||=
-          argument_builder_collection.method_argument_names.dup.unshift('_proc')
+          argument_builder_collection.method_argument_names.dup.unshift("_proc")
       end
 
       def invocation
@@ -57,7 +57,7 @@ module GirFFI
       private
 
       def call_argument_list
-        argument_builder_collection.call_argument_names.join(', ')
+        argument_builder_collection.call_argument_names.join(", ")
       end
     end
   end

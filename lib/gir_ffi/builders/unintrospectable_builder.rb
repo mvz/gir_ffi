@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/object_builder'
-require 'gir_ffi/unintrospectable_signal_info'
+require "gir_ffi/builders/object_builder"
+require "gir_ffi/unintrospectable_signal_info"
 
 module GirFFI
   module Builders

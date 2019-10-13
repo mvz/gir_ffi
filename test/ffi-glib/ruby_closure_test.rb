@@ -1,23 +1,23 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GObject::RubyClosure do
-  describe '.new' do
-    it 'takes a mandatory block argument' do
+  describe ".new" do
+    it "takes a mandatory block argument" do
       assert_raises ArgumentError do
         GObject::RubyClosure.new
       end
     end
 
-    it 'returns a kind of Closure' do
+    it "returns a kind of Closure" do
       c = GObject::RubyClosure.new {}
       assert_kind_of GObject::Closure, c
     end
   end
 
-  describe '.wrap' do
-    it 'returns a fully functional object that can invoke the original block' do
+  describe ".wrap" do
+    it "returns a fully functional object that can invoke the original block" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::RubyClosure.wrap(c.to_ptr)
@@ -26,7 +26,7 @@ describe GObject::RubyClosure do
     end
   end
 
-  describe '.marshaller' do
+  describe ".marshaller" do
     it "invokes its closure argument's block" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
@@ -34,7 +34,7 @@ describe GObject::RubyClosure do
       assert_equal 2, a
     end
 
-    it 'works when its closure argument is a GObject::Closure' do
+    it "works when its closure argument is a GObject::Closure" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::Closure.wrap(c.to_ptr)
@@ -50,8 +50,8 @@ describe GObject::RubyClosure do
     end
   end
 
-  describe '#invoke' do
-    it 'invokes the ruby block' do
+  describe "#invoke" do
+    it "invokes the ruby block" do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::Closure.wrap(c.to_ptr)

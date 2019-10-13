@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/property_not_found_error'
+require "gir_ffi/property_not_found_error"
 
 GObject.load_class :Object
 
@@ -44,7 +44,7 @@ module GObject
         obj
       end
     else
-      setup_method! 'new'
+      setup_method! "new"
 
       # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
       def initialize_with_automatic_gtype(properties = {})
@@ -114,8 +114,8 @@ module GObject
       GObject.signal_connect_after(self, event, data, &block)
     end
 
-    setup_instance_method! 'get_property'
-    setup_instance_method! 'set_property'
+    setup_instance_method! "get_property"
+    setup_instance_method! "set_property"
 
     # @deprecated
     def get_property_extended(property_name)
@@ -154,7 +154,7 @@ module GObject
     alias set_property_without_override set_property
     alias set_property set_property_with_override
 
-    setup_instance_method! 'is_floating'
+    setup_instance_method! "is_floating"
     alias floating? is_floating
 
     private

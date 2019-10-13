@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/initializer_return_value_builder'
-require 'gir_ffi/builders/base_method_builder'
+require "gir_ffi/builders/initializer_return_value_builder"
+require "gir_ffi/builders/base_method_builder"
 
 module GirFFI
   module Builders
@@ -17,7 +17,7 @@ module GirFFI
       end
 
       def method_name
-        @info.safe_name.sub(/^new/, 'initialize')
+        @info.safe_name.sub(/^new/, "initialize")
       end
 
       def result

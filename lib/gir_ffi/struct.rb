@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/ownable'
+require "gir_ffi/ownable"
 
 module GirFFI
   # Struct that can be owned.

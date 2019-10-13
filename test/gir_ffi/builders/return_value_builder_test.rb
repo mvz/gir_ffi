@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
@@ -11,389 +11,389 @@ describe GirFFI::Builders::ReturnValueBuilder do
     GirFFI::Builders::ReturnValueBuilder.new(var_gen, return_type_info)
   end
 
-  describe 'for :gint32' do
+  describe "for :gint32" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'int_return_min')
+      get_introspection_data("GIMarshallingTests",
+                             "int_return_min")
     end
 
-    it 'has no statements in #post_conversion' do
+    it "has no statements in #post_conversion" do
       _(builder.post_conversion).must_equal []
     end
 
-    it 'returns the result of the c function directly' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v1'
+    it "returns the result of the c function directly" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v1"
     end
   end
 
-  describe 'for :struct' do
-    describe 'with transfer :nothing' do
+  describe "for :struct" do
+    describe "with transfer :nothing" do
       let(:method_info) do
-        get_method_introspection_data('GIMarshallingTests',
-                                      'BoxedStruct',
-                                      'returnv')
+        get_method_introspection_data("GIMarshallingTests",
+                                      "BoxedStruct",
+                                      "returnv")
       end
 
-      it 'wraps and copies the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.post_conversion).must_equal ['_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)']
+      it "wraps and copies the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.post_conversion).must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)"]
       end
 
-      it 'returns the copied result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the copied result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
   end
 
-  describe 'for :union' do
+  describe "for :union" do
     let(:method_info) do
-      get_method_introspection_data('GIMarshallingTests',
-                                    'Union',
-                                    'returnv')
+      get_method_introspection_data("GIMarshallingTests",
+                                    "Union",
+                                    "returnv")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GIMarshallingTests::Union.wrap_copy(_v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GIMarshallingTests::Union.wrap_copy(_v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :interface' do
+  describe "for :interface" do
     let(:method_info) do
-      get_method_introspection_data('Gio',
-                                    'File',
-                                    'new_for_commandline_arg')
+      get_method_introspection_data("Gio",
+                                    "File",
+                                    "new_for_commandline_arg")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = Gio::File.wrap(_v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = Gio::File.wrap(_v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :object' do
-    describe 'with full ownership transfer' do
+  describe "for :object" do
+    describe "with full ownership transfer" do
       let(:method_info) do
-        get_method_introspection_data('GIMarshallingTests',
-                                      'Object',
-                                      'full_return')
+        get_method_introspection_data("GIMarshallingTests",
+                                      "Object",
+                                      "full_return")
       end
 
-      it 'wraps the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.post_conversion).must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1)']
+      it "wraps the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.post_conversion).must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1)"]
       end
 
-      it 'returns the wrapped result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the wrapped result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
 
-    describe 'with no ownership transfer' do
+    describe "with no ownership transfer" do
       let(:method_info) do
-        get_method_introspection_data('GIMarshallingTests',
-                                      'Object',
-                                      'none_return')
+        get_method_introspection_data("GIMarshallingTests",
+                                      "Object",
+                                      "none_return")
       end
 
-      it 'wraps the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
+      it "wraps the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
         _(builder.post_conversion).
-          must_equal ['_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }']
+          must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }"]
       end
 
-      it 'returns the wrapped result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the wrapped result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
   end
 
-  describe 'for :strv' do
+  describe "for :strv" do
     let(:method_info) do
-      get_method_introspection_data('GLib',
-                                    'KeyFile',
-                                    'get_locale_string_list')
+      get_method_introspection_data("GLib",
+                                    "KeyFile",
+                                    "get_locale_string_list")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::Strv.wrap(_v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::Strv.wrap(_v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :zero_terminated' do
+  describe "for :zero_terminated" do
     let(:method_info) do
-      get_method_introspection_data('GLib',
-                                    'Variant',
-                                    'dup_bytestring')
+      get_method_introspection_data("GLib",
+                                    "Variant",
+                                    "dup_bytestring")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :byte_array' do
+  describe "for :byte_array" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'bytearray_full_return')
+      get_introspection_data("GIMarshallingTests",
+                             "bytearray_full_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::ByteArray.wrap(_v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::ByteArray.wrap(_v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :ptr_array' do
+  describe "for :ptr_array" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'gptrarray_utf8_none_return')
+      get_introspection_data("GIMarshallingTests",
+                             "gptrarray_utf8_none_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::PtrArray.wrap(:utf8, _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::PtrArray.wrap(:utf8, _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :glist' do
+  describe "for :glist" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'glist_int_none_return')
+      get_introspection_data("GIMarshallingTests",
+                             "glist_int_none_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::List.wrap(:gint32, _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::List.wrap(:gint32, _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :gslist' do
+  describe "for :gslist" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'gslist_int_none_return')
+      get_introspection_data("GIMarshallingTests",
+                             "gslist_int_none_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::SList.wrap(:gint32, _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::SList.wrap(:gint32, _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :ghash' do
+  describe "for :ghash" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'ghashtable_int_none_return')
+      get_introspection_data("GIMarshallingTests",
+                             "ghashtable_int_none_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :array' do
+  describe "for :array" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'garray_int_none_return')
+      get_introspection_data("GIMarshallingTests",
+                             "garray_int_none_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::Array.wrap(:gint32, _v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::Array.wrap(:gint32, _v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :error' do
+  describe "for :error" do
     let(:method_info) do
-      get_introspection_data('GIMarshallingTests',
-                             'gerror_return')
+      get_introspection_data("GIMarshallingTests",
+                             "gerror_return")
     end
 
-    it 'wraps the result in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GLib::Error.wrap(_v1)']
+    it "wraps the result in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GLib::Error.wrap(_v1)"]
     end
 
-    it 'returns the wrapped result' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the wrapped result" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for :c' do
-    describe 'with fixed size' do
+  describe "for :c" do
+    describe "with fixed size" do
       let(:method_info) do
-        get_introspection_data('GIMarshallingTests',
-                               'array_fixed_int_return')
+        get_introspection_data("GIMarshallingTests",
+                               "array_fixed_int_return")
       end
 
-      it 'converts the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.post_conversion).must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)']
+      it "converts the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.post_conversion).must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)"]
       end
 
-      it 'returns the wrapped result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the wrapped result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
 
-    describe 'with separate size parameter' do
+    describe "with separate size parameter" do
       let(:length_argument) { Object.new }
       let(:method_info) do
-        get_method_introspection_data('GIMarshallingTests',
-                                      'Object',
-                                      'method_array_return')
+        get_method_introspection_data("GIMarshallingTests",
+                                      "Object",
+                                      "method_array_return")
       end
 
       before do
-        allow(length_argument).to receive(:post_converted_name).and_return 'bar'
+        allow(length_argument).to receive(:post_converted_name).and_return "bar"
         builder.length_arg = length_argument
       end
 
-      it 'converts the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.post_conversion).must_equal ['_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)']
+      it "converts the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.post_conversion).must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)"]
       end
 
-      it 'returns the wrapped result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the wrapped result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
   end
 
-  describe 'for :utf8' do
-    describe 'with no transfer' do
+  describe "for :utf8" do
+    describe "with no transfer" do
       let(:method_info) do
-        get_introspection_data('GIMarshallingTests', 'utf8_none_return')
+        get_introspection_data("GIMarshallingTests", "utf8_none_return")
       end
 
-      it 'converts the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.post_conversion).must_equal ['_v2 = _v1.to_utf8']
+      it "converts the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.post_conversion).must_equal ["_v2 = _v1.to_utf8"]
       end
 
-      it 'returns the converted result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the converted result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
 
-    describe 'with full transfer' do
+    describe "with full transfer" do
       let(:method_info) do
-        get_introspection_data('GIMarshallingTests', 'utf8_full_return')
+        get_introspection_data("GIMarshallingTests", "utf8_full_return")
       end
 
-      it 'autoreleases and converts the result in #post_conversion' do
-        _(builder.capture_variable_name).must_equal '_v1'
+      it "autoreleases and converts the result in #post_conversion" do
+        _(builder.capture_variable_name).must_equal "_v1"
         _(builder.post_conversion).
-          must_equal ['_v2 = GirFFI::AllocationHelper.free_after _v1, &:to_utf8']
+          must_equal ["_v2 = GirFFI::AllocationHelper.free_after _v1, &:to_utf8"]
       end
 
-      it 'returns the converted result' do
-        _(builder.capture_variable_name).must_equal '_v1'
-        _(builder.return_value_name).must_equal '_v2'
+      it "returns the converted result" do
+        _(builder.capture_variable_name).must_equal "_v1"
+        _(builder.return_value_name).must_equal "_v2"
       end
     end
   end
 
-  describe 'for :void pointer' do
+  describe "for :void pointer" do
     let(:ownership_transfer) { :nothing }
     let(:callback_info) do
-      get_introspection_data('GIMarshallingTests', 'CallbackIntInt')
+      get_introspection_data("GIMarshallingTests", "CallbackIntInt")
     end
     let(:type_info) { callback_info.args[1].argument_type }
 
-    it 'has no statements in #post_conversion' do
+    it "has no statements in #post_conversion" do
       _(builder.post_conversion).must_equal []
     end
 
-    it 'returns the result of the c function directly' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v1'
+    it "returns the result of the c function directly" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v1"
     end
   end
 
-  describe 'for :void' do
+  describe "for :void" do
     let(:method_info) do
-      get_method_introspection_data('Regress', 'TestObj', 'null_out')
+      get_method_introspection_data("Regress", "TestObj", "null_out")
     end
 
-    it 'has no statements in #post_conversion' do
+    it "has no statements in #post_conversion" do
       _(builder.post_conversion).must_equal []
     end
 
-    it 'marks itself as irrelevant' do
+    it "marks itself as irrelevant" do
       _(builder.relevant?).must_equal false
     end
 
-    it 'returns nothing' do
+    it "returns nothing" do
       _(builder.return_value_name).must_be_nil
     end
   end
 
-  describe 'for a closure argument' do
+  describe "for a closure argument" do
     let(:ownership_transfer) { :nothing }
     let(:callback_info) do
-      get_introspection_data('Regress', 'TestCallbackUserData')
+      get_introspection_data("Regress", "TestCallbackUserData")
     end
     let(:type_info) { callback_info.args[0].argument_type }
 
@@ -401,32 +401,32 @@ describe GirFFI::Builders::ReturnValueBuilder do
       builder.mark_as_user_data :dummy
     end
 
-    it 'fetches the stored object in #post_conversion' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.post_conversion).must_equal ['_v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_v1)']
+    it "fetches the stored object in #post_conversion" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.post_conversion).must_equal ["_v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_v1)"]
     end
 
-    it 'returns the stored object' do
-      _(builder.capture_variable_name).must_equal '_v1'
-      _(builder.return_value_name).must_equal '_v2'
+    it "returns the stored object" do
+      _(builder.capture_variable_name).must_equal "_v1"
+      _(builder.return_value_name).must_equal "_v2"
     end
   end
 
-  describe 'for a skipped return value' do
+  describe "for a skipped return value" do
     let(:method_info) do
-      get_method_introspection_data('Regress', 'TestObj', 'skip_return_val')
+      get_method_introspection_data("Regress", "TestObj", "skip_return_val")
     end
     let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, :nothing, true) }
 
-    it 'has no statements in #post_conversion' do
+    it "has no statements in #post_conversion" do
       _(builder.post_conversion).must_equal []
     end
 
-    it 'marks itself as irrelevant' do
+    it "marks itself as irrelevant" do
       _(builder.relevant?).must_equal false
     end
 
-    it 'returns nothing' do
+    it "returns nothing" do
       _(builder.return_value_name).must_be_nil
     end
   end

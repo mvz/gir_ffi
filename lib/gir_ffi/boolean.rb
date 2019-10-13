@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ffi'
+require "ffi"
 
 module GirFFI
   # Class representing a boolean (natively, an int).

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/boolean'
-require 'gir_ffi/sized_array'
+require "gir_ffi/boolean"
+require "gir_ffi/sized_array"
 
 module GirFFI
   # Maps GObject type tags and type specification to types FFI can handle.

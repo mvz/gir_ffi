@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'yard'
+require "yard"
 
 # Template helper to modify processing of links in HTML generated from our
 # markdown files.
@@ -15,6 +15,6 @@ end
 
 YARD::Templates::Template.extra_includes << LocalLinkHelper
 
-YARD::Tags::Library.define_tag('Overrides!', :override)
-custom_template_path = File.join(File.dirname(__FILE__), 'templates')
+YARD::Tags::Library.define_tag("Overrides!", :override)
+custom_template_path = File.join(File.dirname(__FILE__), "templates")
 YARD::Templates::Engine.register_template_path custom_template_path

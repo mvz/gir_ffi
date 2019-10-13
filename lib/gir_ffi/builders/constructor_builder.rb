@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/method_template'
-require 'gir_ffi/builders/null_return_value_builder'
+require "gir_ffi/builders/argument_builder_collection"
+require "gir_ffi/builders/method_template"
+require "gir_ffi/builders/null_return_value_builder"
 
 module GirFFI
   module Builders
@@ -30,16 +30,16 @@ module GirFFI
       end
 
       def method_arguments
-        ['*args', '&block']
+        ["*args", "&block"]
       end
 
       def preparation
-        if @info.safe_name == 'new'
-          ['obj = allocate']
+        if @info.safe_name == "new"
+          ["obj = allocate"]
         else
           [
             "raise NoMethodError unless self == #{@info.container.full_type_name}",
-            'obj = allocate'
+            "obj = allocate"
           ]
         end
       end
@@ -49,13 +49,13 @@ module GirFFI
       end
 
       def result
-        ['obj']
+        ["obj"]
       end
 
       private
 
       def initializer_name
-        @info.safe_name.sub(/^new/, 'initialize')
+        @info.safe_name.sub(/^new/, "initialize")
       end
     end
   end

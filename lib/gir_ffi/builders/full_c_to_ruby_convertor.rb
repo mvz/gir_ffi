@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/c_to_ruby_convertor'
+require "gir_ffi/builders/c_to_ruby_convertor"
 
 module GirFFI
   module Builders

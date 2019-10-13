@@ -59,7 +59,7 @@ module GObjectIntrospection
     end
 
     def find_property(name)
-      name = name.to_s.tr('_', '-')
+      name = name.to_s.tr("_", "-")
       properties.find { |prop| prop.name == name }
     end
 

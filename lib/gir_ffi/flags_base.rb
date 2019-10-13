@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/enum_like_base'
+require "gir_ffi/enum_like_base"
 
 module GirFFI
   # Base module for flags.

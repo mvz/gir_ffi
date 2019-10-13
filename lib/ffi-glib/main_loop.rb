@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'singleton'
+require "singleton"
 
 GLib.load_class :MainLoop
 
@@ -40,7 +40,7 @@ module GLib
     setup_instance_method! :run
 
     def run_with_thread_enabler
-      ThreadEnabler.instance.setup_idle_handler if RUBY_ENGINE == 'ruby'
+      ThreadEnabler.instance.setup_idle_handler if RUBY_ENGINE == "ruby"
       RUNNING_LOOPS << self
       result = run_without_thread_enabler
       exception = EXCEPTIONS.shift
@@ -63,6 +63,6 @@ module GLib
   end
 end
 
-Signal.trap 'INT' do
+Signal.trap "INT" do
   GLib::MainLoop.handle_exception(Interrupt.new)
 end

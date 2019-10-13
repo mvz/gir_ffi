@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/with_layout'
+require "gir_ffi/builders/with_layout"
 
 module GirFFI
   module Builders

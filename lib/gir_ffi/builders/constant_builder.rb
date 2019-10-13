@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_type_builder'
+require "gir_ffi/builders/base_type_builder"
 module GirFFI
   module Builders
     # Implements the creation of a constant. Though semantically not a

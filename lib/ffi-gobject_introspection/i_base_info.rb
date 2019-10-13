@@ -5,7 +5,7 @@ module GObjectIntrospection
   # Decendant types will be implemented as needed.
   class IBaseInfo
     def initialize(ptr, lib = Lib)
-      raise ArgumentError, 'ptr must not be null' if ptr.null?
+      raise ArgumentError, "ptr must not be null" if ptr.null?
 
       ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
 
@@ -69,7 +69,7 @@ module GObjectIntrospection
     #
     def self.build_finder_method(method, counter = nil, fetcher = nil)
       method = method.to_s
-      single = method.sub(/^find_/, '')
+      single = method.sub(/^find_/, "")
       counter ||= "n_#{single}s"
       fetcher ||= single
       class_eval <<-CODE, __FILE__, __LINE__ + 1

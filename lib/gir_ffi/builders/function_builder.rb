@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/return_value_builder'
-require 'gir_ffi/builders/base_method_builder'
+require "gir_ffi/builders/return_value_builder"
+require "gir_ffi/builders/base_method_builder"
 
 module GirFFI
   module Builders
@@ -38,9 +38,9 @@ module GirFFI
 
       def receiver_call_argument
         if @info.instance_ownership_transfer == :everything
-          'self.ref'
+          "self.ref"
         else
-          'self'
+          "self"
         end
       end
     end

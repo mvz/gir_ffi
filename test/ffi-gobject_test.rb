@@ -1,34 +1,34 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GObject do
   before do
     GirFFI.setup :Regress
   end
 
-  describe '::signal_emit' do
-    it 'emits a signal' do
+  describe "::signal_emit" do
+    it "emits a signal" do
       a = 1
       o = Regress::TestSubObj.new
       prc = proc { a = 2 }
       callback = GObject::Callback.from prc
-      ::GObject::Lib.g_signal_connect_data o, 'test', callback, nil, nil, 0
-      GObject.signal_emit o, 'test'
+      ::GObject::Lib.g_signal_connect_data o, "test", callback, nil, nil, 0
+      GObject.signal_emit o, "test"
       assert_equal 2, a
     end
 
-    it 'handles return values' do
+    it "handles return values" do
       s = Gio::SocketService.new
 
       argtypes = [:pointer, :pointer, :pointer, :pointer]
       callback = FFI::Function.new(:bool, argtypes) { |_a, _b, _c, _d| true }
-      ::GObject::Lib.g_signal_connect_data s, 'incoming', callback, nil, nil, 0
-      rv = GObject.signal_emit s, 'incoming'
+      ::GObject::Lib.g_signal_connect_data s, "incoming", callback, nil, nil, 0
+      rv = GObject.signal_emit s, "incoming"
       assert_equal true, rv
     end
 
-    it 'passes in extra arguments' do
+    it "passes in extra arguments" do
       o = Regress::TestSubObj.new
       sb = Regress::TestSimpleBoxedA.new
       sb.some_int8 = 31
@@ -40,79 +40,79 @@ describe GObject do
       callback = FFI::Function.new(:void, argtypes) do |_a, b, _c|
         b2 = b
       end
-      ::GObject::Lib.g_signal_connect_data o, 'test-with-static-scope-arg', callback, nil, nil, 0
-      GObject.signal_emit o, 'test-with-static-scope-arg', sb
+      ::GObject::Lib.g_signal_connect_data o, "test-with-static-scope-arg", callback, nil, nil, 0
+      GObject.signal_emit o, "test-with-static-scope-arg", sb
 
       sb2 = Regress::TestSimpleBoxedA.wrap b2
       assert sb.equals(sb2)
     end
 
-    it 'allows specifying signal detail' do
+    it "allows specifying signal detail" do
       a = 1
       o = Regress::TestSubObj.new
 
       callback = FFI::Function.new(:void, [:pointer, :pointer, :pointer]) { a = 2 }
-      ::GObject::Lib.g_signal_connect_data o, 'notify::detail', callback, nil, nil, 0
+      ::GObject::Lib.g_signal_connect_data o, "notify::detail", callback, nil, nil, 0
 
-      GObject.signal_emit o, 'notify::detail'
+      GObject.signal_emit o, "notify::detail"
 
       _(a).must_equal 2
     end
   end
 
-  describe '::signal_connect' do
-    it 'installs a signal handler' do
+  describe "::signal_connect" do
+    it "installs a signal handler" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, 'test') { a = 2 }
-      GObject.signal_emit o, 'test'
+      GObject.signal_connect(o, "test") { a = 2 }
+      GObject.signal_emit o, "test"
       assert_equal 2, a
     end
 
-    it 'passes user data to handler' do
+    it "passes user data to handler" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, 'test', 2) { |_i, d| a = d }
-      GObject.signal_emit o, 'test'
+      GObject.signal_connect(o, "test", 2) { |_i, d| a = d }
+      GObject.signal_emit o, "test"
       assert_equal 2, a
     end
 
-    it 'passes object to handler' do
+    it "passes object to handler" do
       o = Regress::TestSubObj.new
       o2 = nil
-      GObject.signal_connect(o, 'test') { |i, _d| o2 = i }
-      GObject.signal_emit o, 'test'
+      GObject.signal_connect(o, "test") { |i, _d| o2 = i }
+      GObject.signal_emit o, "test"
       assert_instance_of Regress::TestSubObj, o2
       assert_equal o.to_ptr, o2.to_ptr
     end
 
-    it 'does not allow connecting an invalid signal' do
+    it "does not allow connecting an invalid signal" do
       o = Regress::TestSubObj.new
-      _(proc { GObject.signal_connect(o, 'not-really-a-signal') {} }).
+      _(proc { GObject.signal_connect(o, "not-really-a-signal") {} }).
         must_raise GirFFI::SignalNotFoundError
     end
 
-    it 'handles return values' do
+    it "handles return values" do
       s = Gio::SocketService.new
-      GObject.signal_connect(s, 'incoming') { true }
-      rv = GObject.signal_emit s, 'incoming'
+      GObject.signal_connect(s, "incoming") { true }
+      rv = GObject.signal_emit s, "incoming"
       assert_equal true, rv
     end
 
-    it 'requires a block' do
+    it "requires a block" do
       o = Regress::TestSubObj.new
-      _(proc { GObject.signal_connect o, 'test' }).must_raise ArgumentError
+      _(proc { GObject.signal_connect o, "test" }).must_raise ArgumentError
     end
 
-    it 'allows specifying signal detail' do
+    it "allows specifying signal detail" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, 'notify::detail', 2) { |_i, _, d| a = d }
-      GObject.signal_emit o, 'notify::detail'
+      GObject.signal_connect(o, "notify::detail", 2) { |_i, _, d| a = d }
+      GObject.signal_emit o, "notify::detail"
       assert_equal 2, a
     end
 
-    describe 'connecting a signal with extra arguments' do
+    describe "connecting a signal with extra arguments" do
       before do
         @a = nil
         @b = 2
@@ -121,30 +121,30 @@ describe GObject do
         sb = Regress::TestSimpleBoxedA.new
         sb.some_int = 23
 
-        GObject.signal_connect(o, 'test-with-static-scope-arg', 2) do |_instance, object, user_data|
+        GObject.signal_connect(o, "test-with-static-scope-arg", 2) do |_instance, object, user_data|
           @a = user_data
           @b = object
         end
-        GObject.signal_emit o, 'test-with-static-scope-arg', sb
+        GObject.signal_emit o, "test-with-static-scope-arg", sb
       end
 
-      it 'passes on the user data argument' do
+      it "passes on the user data argument" do
         assert_equal 2, @a
       end
 
-      it 'passes on the extra arguments' do
+      it "passes on the extra arguments" do
         assert_instance_of Regress::TestSimpleBoxedA, @b
         assert_equal 23, @b.some_int
       end
     end
   end
 
-  describe '::signal_connect_after' do
-    it 'installs a signal handler' do
+  describe "::signal_connect_after" do
+    it "installs a signal handler" do
       a = 1
       o = Regress::TestSubObj.new
-      GObject.signal_connect_after(o, 'test') { a = 2 }
-      GObject.signal_emit o, 'test'
+      GObject.signal_connect_after(o, "test") { a = 2 }
+      GObject.signal_emit o, "test"
       assert_equal 2, a
     end
   end

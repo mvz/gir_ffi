@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/info_ext/full_type_name'
+require "gir_ffi/info_ext/full_type_name"
 
 module GirFFI
   # Represents a type not found in the GIR, conforming, as needed, to the

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/allocation_helper'
-require 'gir_ffi/builder'
-require 'gir_ffi/glib_error'
-require 'gir_ffi/object_store'
+require "gir_ffi/allocation_helper"
+require "gir_ffi/builder"
+require "gir_ffi/glib_error"
+require "gir_ffi/object_store"
 
 module GirFFI
   # Helper module containing methods used during argument conversion in

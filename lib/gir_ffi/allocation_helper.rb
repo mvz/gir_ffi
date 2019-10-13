@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/lib_c'
+require "gir_ffi/lib_c"
 
 module GirFFI
   # Helper module for alloction-related functionality.

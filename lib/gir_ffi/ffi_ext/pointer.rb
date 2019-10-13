@@ -17,7 +17,7 @@ module GirFFI
       end
 
       def to_utf8
-        null? ? nil : read_string.force_encoding('utf-8')
+        null? ? nil : read_string.force_encoding("utf-8")
       end
     end
   end

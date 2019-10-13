@@ -21,7 +21,7 @@ module GirFFI
     end
 
     def name
-      '_instance'
+      "_instance"
     end
   end
 end

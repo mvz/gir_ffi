@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'ffi-glib/container_class_methods'
-require 'ffi-glib/array_methods'
+require "ffi-glib/container_class_methods"
+require "ffi-glib/array_methods"
 
 GLib.load_class :Array
 
@@ -83,7 +83,7 @@ module GLib
     def check_element_size_match
       return if calculated_element_size == get_element_size
 
-      warn 'WARNING: Element sizes do not match'
+      warn "WARNING: Element sizes do not match"
     end
 
     def guess_element_type

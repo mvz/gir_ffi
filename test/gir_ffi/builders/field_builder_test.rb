@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GirFFI::Builders::FieldBuilder do
-  let(:target_class) { 'dummy' }
+  let(:target_class) { "dummy" }
   let(:instance) { GirFFI::Builders::FieldBuilder.new field_info, target_class }
 
-  describe 'for a field of type :gint8 with an offset' do
-    let(:field_info) { get_field_introspection_data 'Regress', 'TestSimpleBoxedA', 'some_int8' }
-    it 'creates the right getter method' do
+  describe "for a field of type :gint8 with an offset" do
+    let(:field_info) { get_field_introspection_data "Regress", "TestSimpleBoxedA", "some_int8" }
+    it "creates the right getter method" do
       expected = <<-CODE.reset_indentation
         def some_int8
           _v1 = @struct.to_ptr
@@ -19,7 +19,7 @@ describe GirFFI::Builders::FieldBuilder do
       _(instance.getter_def).must_equal expected
     end
 
-    it 'creates the right setter method' do
+    it "creates the right setter method" do
       expected = <<-CODE.reset_indentation
         def some_int8= value
           _v1 = @struct.to_ptr
@@ -31,9 +31,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe 'for a field of type :struct' do
-    let(:field_info) { get_field_introspection_data 'Regress', 'TestBoxed', 'nested_a' }
-    it 'creates the right getter method' do
+  describe "for a field of type :struct" do
+    let(:field_info) { get_field_introspection_data "Regress", "TestBoxed", "nested_a" }
+    it "creates the right getter method" do
       expected = <<-CODE.reset_indentation
         def nested_a
           _v1 = @struct.to_ptr
@@ -45,7 +45,7 @@ describe GirFFI::Builders::FieldBuilder do
       _(instance.getter_def).must_equal expected
     end
 
-    it 'creates the right setter method' do
+    it "creates the right setter method" do
       expected = <<-CODE.reset_indentation
         def nested_a= value
           _v1 = @struct.to_ptr
@@ -57,9 +57,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe 'for a field of type :enum' do
-    let(:field_info) { get_field_introspection_data 'Regress', 'TestStructA', 'some_enum' }
-    it 'creates the right getter method' do
+  describe "for a field of type :enum" do
+    let(:field_info) { get_field_introspection_data "Regress", "TestStructA", "some_enum" }
+    it "creates the right getter method" do
       expected = <<-CODE.reset_indentation
         def some_enum
           _v1 = @struct.to_ptr
@@ -71,9 +71,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe 'for an inline fixed-size array field' do
-    let(:field_info) { get_field_introspection_data 'Regress', 'TestStructE', 'some_union' }
-    it 'creates the right getter method' do
+  describe "for an inline fixed-size array field" do
+    let(:field_info) { get_field_introspection_data "Regress", "TestStructE", "some_union" }
+    it "creates the right getter method" do
       expected = <<-CODE.reset_indentation
         def some_union
           _v1 = @struct.to_ptr
@@ -85,7 +85,7 @@ describe GirFFI::Builders::FieldBuilder do
       _(instance.getter_def).must_equal expected
     end
 
-    it 'creates the right setter method' do
+    it "creates the right setter method" do
       expected = <<-CODE.reset_indentation
         def some_union= value
           _v1 = @struct.to_ptr
@@ -98,9 +98,9 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe 'for a field of type :callback' do
-    let(:field_info) { get_field_introspection_data 'GObject', 'TypeInfo', 'class_init' }
-    it 'creates the right setter method' do
+  describe "for a field of type :callback" do
+    let(:field_info) { get_field_introspection_data "GObject", "TypeInfo", "class_init" }
+    it "creates the right setter method" do
       expected = <<-CODE.reset_indentation
         def class_init= value
           _v1 = @struct.to_ptr
@@ -112,11 +112,11 @@ describe GirFFI::Builders::FieldBuilder do
     end
   end
 
-  describe 'for a field with a related array length field' do
-    let(:field_info) { get_field_introspection_data 'GObject', 'SignalQuery', 'param_types' }
-    let(:n_params_field_info) { get_field_introspection_data 'GObject', 'SignalQuery', 'n_params' }
+  describe "for a field with a related array length field" do
+    let(:field_info) { get_field_introspection_data "GObject", "SignalQuery", "param_types" }
+    let(:n_params_field_info) { get_field_introspection_data "GObject", "SignalQuery", "n_params" }
 
-    it 'creates the right getter method' do
+    it "creates the right getter method" do
       skip if field_info.field_type.array_length < 0
       expected = <<-CODE.reset_indentation
         def param_types

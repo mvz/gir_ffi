@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_argument_builder'
+require "gir_ffi/builders/base_argument_builder"
 
 module GirFFI
   module Builders

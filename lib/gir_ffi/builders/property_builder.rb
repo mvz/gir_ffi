@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/method_template'
-require 'gir_ffi/builders/argument_builder_collection'
-require 'gir_ffi/builders/property_argument_builder'
-require 'gir_ffi/builders/property_return_value_builder'
-require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/field_argument_info'
+require "gir_ffi/builders/method_template"
+require "gir_ffi/builders/argument_builder_collection"
+require "gir_ffi/builders/property_argument_builder"
+require "gir_ffi/builders/property_return_value_builder"
+require "gir_ffi/variable_name_generator"
+require "gir_ffi/field_argument_info"
 
 module GirFFI
   module Builders
@@ -132,7 +132,7 @@ module GirFFI
       end
 
       def argument_info
-        @argument_info ||= FieldArgumentInfo.new('value', type_info)
+        @argument_info ||= FieldArgumentInfo.new("value", type_info)
       end
 
       def container_class

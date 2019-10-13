@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
 # Ensure GLib is defined by GirFFI itself
-raise 'The module GLib was already defined elsewhere' if Kernel.const_defined? :GLib
+raise "The module GLib was already defined elsewhere" if Kernel.const_defined? :GLib
 
-require 'gir_ffi/core'
+require "gir_ffi/core"
 
 # Bypass check for existing modules
-GirFFI::Builders::ModuleBuilder.new('GLib').generate
+GirFFI::Builders::ModuleBuilder.new("GLib").generate
 
-require 'ffi-glib/array'
-require 'ffi-glib/byte_array'
-require 'ffi-glib/bytes'
-require 'ffi-glib/destroy_notify'
-require 'ffi-glib/error'
-require 'ffi-glib/hash_table'
-require 'ffi-glib/list'
-require 'ffi-glib/main_loop'
-require 'ffi-glib/ptr_array'
-require 'ffi-glib/s_list'
-require 'ffi-glib/strv'
-require 'ffi-glib/variant'
+require "ffi-glib/array"
+require "ffi-glib/byte_array"
+require "ffi-glib/bytes"
+require "ffi-glib/destroy_notify"
+require "ffi-glib/error"
+require "ffi-glib/hash_table"
+require "ffi-glib/list"
+require "ffi-glib/main_loop"
+require "ffi-glib/ptr_array"
+require "ffi-glib/s_list"
+require "ffi-glib/strv"
+require "ffi-glib/variant"
 
 # Module representing GLib's GLib namespace.
 module GLib

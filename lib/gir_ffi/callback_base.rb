@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/type_base'
+require "gir_ffi/type_base"
 
 module GirFFI
   # Base module for callbacks and vfuncs.

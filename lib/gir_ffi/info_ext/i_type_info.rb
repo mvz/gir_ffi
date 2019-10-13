@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builder_helper'
+require "gir_ffi/builder_helper"
 
 module GirFFI
   module InfoExt
@@ -63,18 +63,18 @@ module GirFFI
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {
-        array:           'GLib::Array',
-        byte_array:      'GLib::ByteArray',
-        c:               'GirFFI::SizedArray',
-        error:           'GLib::Error',
-        ghash:           'GLib::HashTable',
-        glist:           'GLib::List',
-        gslist:          'GLib::SList',
-        ptr_array:       'GLib::PtrArray',
-        strv:            'GLib::Strv',
-        utf8:            'GirFFI::InPointer', # TODO: Create a string-like class
-        void:            'GirFFI::InPointer', # TODO: Create a void-pointer class
-        zero_terminated: 'GirFFI::ZeroTerminated'
+        array:           "GLib::Array",
+        byte_array:      "GLib::ByteArray",
+        c:               "GirFFI::SizedArray",
+        error:           "GLib::Error",
+        ghash:           "GLib::HashTable",
+        glist:           "GLib::List",
+        gslist:          "GLib::SList",
+        ptr_array:       "GLib::PtrArray",
+        strv:            "GLib::Strv",
+        utf8:            "GirFFI::InPointer", # TODO: Create a string-like class
+        void:            "GirFFI::InPointer", # TODO: Create a void-pointer class
+        zero_terminated: "GirFFI::ZeroTerminated"
       }.freeze
 
       # TODO: Use class rather than class name
@@ -170,7 +170,7 @@ module GirFFI
         end
       end
 
-      GOBJECT_VALUE_NAME = 'GObject::Value'
+      GOBJECT_VALUE_NAME = "GObject::Value"
 
       def gvalue?
         argument_class_name == GOBJECT_VALUE_NAME

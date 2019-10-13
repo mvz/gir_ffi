@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/type_builder'
-require 'gir_ffi/builders/module_builder'
-require 'gir_ffi/builder_helper'
-require 'gir_ffi/unintrospectable_type_info'
-require 'gir_ffi/unintrospectable_boxed_info'
+require "gir_ffi/builders/type_builder"
+require "gir_ffi/builders/module_builder"
+require "gir_ffi/builder_helper"
+require "gir_ffi/unintrospectable_type_info"
+require "gir_ffi/unintrospectable_boxed_info"
 
 module GirFFI
   # Builds modules and classes based on information found in the

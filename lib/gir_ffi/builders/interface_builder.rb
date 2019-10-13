@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/interface_base'
+require "gir_ffi/builders/registered_type_builder"
+require "gir_ffi/interface_base"
 
 module GirFFI
   module Builders

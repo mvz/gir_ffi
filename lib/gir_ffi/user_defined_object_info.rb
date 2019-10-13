@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/user_defined_property_info'
-require 'gir_ffi/vfunc_implementation'
+require "gir_ffi/user_defined_property_info"
+require "gir_ffi/vfunc_implementation"
 
 module GirFFI
   # Represents a user defined type, conforming, as needed, to the interface of

@@ -1,75 +1,75 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GirFFI::Builders::ObjectBuilder do
   let(:obj_builder) do
     GirFFI::Builders::ObjectBuilder.new(
-      get_introspection_data('Regress', 'TestObj'))
+      get_introspection_data("Regress", "TestObj"))
   end
   let(:sub_obj_builder) do
     GirFFI::Builders::ObjectBuilder.new(
-      get_introspection_data('Regress', 'TestSubObj'))
+      get_introspection_data("Regress", "TestSubObj"))
   end
   let(:param_spec_builder) do
     GirFFI::Builders::ObjectBuilder.new(
-      get_introspection_data('GObject', 'ParamSpec'))
+      get_introspection_data("GObject", "ParamSpec"))
   end
 
-  describe '#find_signal' do
+  describe "#find_signal" do
     it 'finds the signal "test" for TestObj' do
-      sig = obj_builder.find_signal 'test'
-      _(sig.name).must_equal 'test'
+      sig = obj_builder.find_signal "test"
+      _(sig.name).must_equal "test"
     end
 
     it 'finds the signal "test" for TestSubObj' do
-      sig = sub_obj_builder.find_signal 'test'
-      _(sig.name).must_equal 'test'
+      sig = sub_obj_builder.find_signal "test"
+      _(sig.name).must_equal "test"
     end
 
     it 'finds the signal "changed" for Gtk::Entry' do
-      builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data('Gtk', 'Entry')
-      sig = builder.find_signal 'changed'
-      _(sig.name).must_equal 'changed'
+      builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data("Gtk", "Entry")
+      sig = builder.find_signal "changed"
+      _(sig.name).must_equal "changed"
     end
 
     it "returns nil for a signal that doesn't exist" do
-      _(obj_builder.find_signal('foo')).must_be_nil
+      _(obj_builder.find_signal("foo")).must_be_nil
     end
   end
 
-  describe '#find_property' do
-    it 'finds a property specified on the class itself' do
-      prop = obj_builder.find_property('int')
-      _(prop.name).must_equal 'int'
+  describe "#find_property" do
+    it "finds a property specified on the class itself" do
+      prop = obj_builder.find_property("int")
+      _(prop.name).must_equal "int"
     end
 
-    it 'finds a property specified on the parent class' do
-      prop = sub_obj_builder.find_property('int')
-      _(prop.name).must_equal 'int'
+    it "finds a property specified on the parent class" do
+      prop = sub_obj_builder.find_property("int")
+      _(prop.name).must_equal "int"
     end
 
-    it 'returns nil if the property is not found' do
-      _(sub_obj_builder.find_property('this-property-does-not-exist')).must_be_nil
+    it "returns nil if the property is not found" do
+      _(sub_obj_builder.find_property("this-property-does-not-exist")).must_be_nil
     end
   end
 
-  describe '#object_class_struct' do
-    it 'returns the class struct type' do
+  describe "#object_class_struct" do
+    it "returns the class struct type" do
       _(obj_builder.object_class_struct).must_equal Regress::TestObjClass
     end
 
-    it 'returns the parent struct type for classes without their own struct' do
-      binding_info = get_introspection_data 'GObject', 'Binding'
+    it "returns the parent struct type for classes without their own struct" do
+      binding_info = get_introspection_data "GObject", "Binding"
       builder = GirFFI::Builders::ObjectBuilder.new binding_info
       _(builder.object_class_struct).must_equal GObject::ObjectClass
     end
   end
 
-  describe 'for a struct without defined fields' do
-    let(:info) { get_introspection_data 'GObject', 'Binding' }
+  describe "for a struct without defined fields" do
+    let(:info) { get_introspection_data "GObject", "Binding" }
 
-    it 'uses a single field of the parent struct type as the default layout' do
+    it "uses a single field of the parent struct type as the default layout" do
       _(info.n_fields).must_equal 0
 
       builder = GirFFI::Builders::ObjectBuilder.new info
@@ -79,20 +79,20 @@ describe GirFFI::Builders::ObjectBuilder do
     end
   end
 
-  describe '#eligible_properties' do
+  describe "#eligible_properties" do
     let(:wi_builder) do
       GirFFI::Builders::ObjectBuilder.new(
-        get_introspection_data('Regress', 'TestWi8021x'))
+        get_introspection_data("Regress", "TestWi8021x"))
     end
 
-    it 'includes properties that do not have a matching getter method' do
+    it "includes properties that do not have a matching getter method" do
       result = obj_builder.eligible_properties
-      _(result.map(&:name)).must_include 'double'
+      _(result.map(&:name)).must_include "double"
     end
 
-    it 'skips properties that have a matching getter method' do
+    it "skips properties that have a matching getter method" do
       result = wi_builder.eligible_properties
-      _(result.map(&:name)).wont_include 'testbool'
+      _(result.map(&:name)).wont_include "testbool"
     end
   end
 end

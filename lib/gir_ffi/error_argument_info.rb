@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/error_type_info'
+require "gir_ffi/error_type_info"
 
 module GirFFI
   # Represents an error argument with the same interface as IArgInfo
@@ -14,7 +14,7 @@ module GirFFI
     end
 
     def name
-      '_error'
+      "_error"
     end
   end
 end

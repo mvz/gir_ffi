@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/core'
+require "gir_ffi/core"
 
 # Bypass check for existing modules
-GirFFI::Builders::ModuleBuilder.new('GObject').generate
+GirFFI::Builders::ModuleBuilder.new("GObject").generate
 
-require 'ffi-gobject/value'
-require 'ffi-gobject/initially_unowned'
-require 'ffi-gobject/closure'
-require 'ffi-gobject/object'
-require 'ffi-gobject/object_class'
-require 'ffi-gobject/param_spec'
-require 'ffi-gobject/ruby_closure'
-require 'gir_ffi/signal_not_found_error'
+require "ffi-gobject/value"
+require "ffi-gobject/initially_unowned"
+require "ffi-gobject/closure"
+require "ffi-gobject/object"
+require "ffi-gobject/object_class"
+require "ffi-gobject/param_spec"
+require "ffi-gobject/ruby_closure"
+require "gir_ffi/signal_not_found_error"
 
 # Module representing GLib's GObject namespace.
 module GObject
@@ -47,7 +47,7 @@ module GObject
   end
 
   def self.signal_emit(object, detailed_signal, *args)
-    signal, detail = detailed_signal.split('::')
+    signal, detail = detailed_signal.split("::")
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
 
@@ -63,9 +63,9 @@ module GObject
   end
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
-    raise ArgumentError, 'Block needed' unless block_given?
+    raise ArgumentError, "Block needed" unless block_given?
 
-    signal_name, = detailed_signal.split('::')
+    signal_name, = detailed_signal.split("::")
     sig_info = object.class.find_signal signal_name
 
     closure = sig_info.wrap_in_closure do |*args|

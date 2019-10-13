@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builder_helper'
-require 'gir_ffi/module_base'
-require 'gir_ffi/builders/function_builder'
+require "gir_ffi/builder_helper"
+require "gir_ffi/module_base"
+require "gir_ffi/builders/function_builder"
 
-require 'indentation'
+require "indentation"
 
 module GirFFI
   module Builders
@@ -68,7 +68,7 @@ module GirFFI
       def build_dependencies
         deps = gir.dependencies @namespace
         deps.each do |dep|
-          name, version = dep.split '-'
+          name, version = dep.split "-"
           Builder.build_module name, version
         end
       end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ffi-glib/list_methods'
+require "ffi-glib/list_methods"
 
 GLib.load_class :List
 

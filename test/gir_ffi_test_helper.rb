@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'introspection_test_helper'
+require "introspection_test_helper"
 
-require 'gir_ffi'
+require "gir_ffi"
 
 # Global sequence provider. Needed to make unique class names.
 class Sequence

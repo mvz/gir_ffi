@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_return_value_builder'
-require 'gir_ffi/builders/full_c_to_ruby_convertor'
-require 'gir_ffi/builders/closure_convertor'
+require "gir_ffi/builders/base_return_value_builder"
+require "gir_ffi/builders/full_c_to_ruby_convertor"
+require "gir_ffi/builders/closure_convertor"
 
 module GirFFI
   module Builders

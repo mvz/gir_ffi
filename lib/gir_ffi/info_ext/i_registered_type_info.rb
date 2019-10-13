@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builder_helper'
+require "gir_ffi/builder_helper"
 
 module GirFFI
   module InfoExt
@@ -24,7 +24,7 @@ module GirFFI
       end
 
       def find_method(_method)
-        raise 'Must be overridden in subclass'
+        raise "Must be overridden in subclass"
       end
     end
   end

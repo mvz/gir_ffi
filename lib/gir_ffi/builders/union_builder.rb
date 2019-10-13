@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/builders/struct_like'
-require 'gir_ffi/union_base'
-require 'gir_ffi/union'
+require "gir_ffi/builders/registered_type_builder"
+require "gir_ffi/builders/struct_like"
+require "gir_ffi/union_base"
+require "gir_ffi/union"
 
 module GirFFI
   module Builders

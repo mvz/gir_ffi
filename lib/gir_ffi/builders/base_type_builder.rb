@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builder_helper'
+require "gir_ffi/builder_helper"
 
 module GirFFI
   # Base class for type builders.

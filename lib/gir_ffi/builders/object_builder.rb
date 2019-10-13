@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/registered_type_builder'
-require 'gir_ffi/builders/with_layout'
-require 'gir_ffi/builders/property_builder'
-require 'gir_ffi/object_base'
-require 'gir_ffi/struct'
+require "gir_ffi/builders/registered_type_builder"
+require "gir_ffi/builders/with_layout"
+require "gir_ffi/builders/property_builder"
+require "gir_ffi/object_base"
+require "gir_ffi/struct"
 
 module GirFFI
   module Builders
@@ -114,7 +114,7 @@ module GirFFI
       end
 
       def setup_initializer
-        return if info.find_method 'new'
+        return if info.find_method "new"
 
         if info.abstract?
           define_abstract_initializer

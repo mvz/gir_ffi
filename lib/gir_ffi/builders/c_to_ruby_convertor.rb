@@ -35,19 +35,19 @@ module GirFFI
         when :struct, :union
           case @ownership_transfer
           when :everything
-            'wrap_own'
+            "wrap_own"
           when :nothing
-            'wrap_copy'
+            "wrap_copy"
           else
-            'wrap'
+            "wrap"
           end
         else
-          'wrap'
+          "wrap"
         end
       end
 
       def conversion_argument_list
-        conversion_arguments.join(', ')
+        conversion_arguments.join(", ")
       end
 
       def conversion_arguments

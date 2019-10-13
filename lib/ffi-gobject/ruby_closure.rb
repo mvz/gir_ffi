@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ffi-gobject/closure'
+require "ffi-gobject/closure"
 
 module GObject
   # Encapsulates Ruby blocks as GObject Closures.

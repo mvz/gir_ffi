@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/info_ext/full_type_name'
+require "gir_ffi/info_ext/full_type_name"
 
 module GirFFI
   # Represents a boxed type not found in the GIR, conforming, as needed, to the
@@ -20,7 +20,7 @@ module GirFFI
       GObject.type_name g_type
     end
 
-    DEFAULT_BOXED_NAMESPACE = 'GLib'
+    DEFAULT_BOXED_NAMESPACE = "GLib"
 
     def namespace
       DEFAULT_BOXED_NAMESPACE

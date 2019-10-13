@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/registered_type_base'
-require 'gir_ffi/method_setup'
+require "gir_ffi/registered_type_base"
+require "gir_ffi/method_setup"
 
 module GirFFI
   # Base module for enums and flags.

@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GirFFI::Builders::FunctionBuilder do
-  describe '#method_definition' do
+  describe "#method_definition" do
     let(:builder) { GirFFI::Builders::FunctionBuilder.new function_info }
     let(:code) { builder.method_definition }
 
-    describe 'generally' do
-      let(:function_info) { get_method_introspection_data 'GObject', 'Object', 'get_property' }
+    describe "generally" do
+      let(:function_info) { get_method_introspection_data "GObject", "Object", "get_property" }
 
-      it 'returns the same result when called twice' do
+      it "returns the same result when called twice" do
         original = builder.method_definition
         copy = builder.method_definition
         _(copy).must_equal original
       end
     end
 
-    describe 'for Regress:test_array_fixed_out_objects' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_array_fixed_out_objects' }
-      it 'builds a correct definition' do
+    describe "for Regress:test_array_fixed_out_objects" do
+      let(:function_info) { get_introspection_data "Regress", "test_array_fixed_out_objects" }
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_array_fixed_out_objects
             _v1 = FFI::MemoryPointer.new :pointer
@@ -31,9 +31,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions having a linked length argument' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_array_gint16_in' }
-      it 'builds a correct definition' do
+    describe "for functions having a linked length argument" do
+      let(:function_info) { get_introspection_data "Regress", "test_array_gint16_in" }
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_array_gint16_in(ints)
             n_ints = ints.nil? ? 0 : ints.length
@@ -46,9 +46,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for methods taking a zero-terminated array with length argument' do
-      let(:function_info) { get_method_introspection_data 'Regress', 'AnnotationObject', 'parse_args' }
-      it 'builds a correct definition' do
+    describe "for methods taking a zero-terminated array with length argument" do
+      let(:function_info) { get_method_introspection_data "Regress", "AnnotationObject", "parse_args" }
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def parse_args(argv)
             argc = argv.nil? ? 0 : argv.length
@@ -64,9 +64,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions with callbacks' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_callback_destroy_notify' }
-      it 'builds a correct definition' do
+    describe "for functions with callbacks" do
+      let(:function_info) { get_introspection_data "Regress", "test_callback_destroy_notify" }
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_callback_destroy_notify(&callback)
             _v1 = Regress::TestCallbackUserData.from(callback)
@@ -79,9 +79,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions that take a GValue' do
-      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_in' }
-      it 'creates a call to GObject::Value#from' do
+    describe "for functions that take a GValue" do
+      let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_in" }
+      it "creates a call to GObject::Value#from" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.gvalue_in(value)
             _v1 = GObject::Value.from(value)
@@ -91,9 +91,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions that return a GValue' do
-      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_return' }
-      it 'creates a call to #get_value' do
+    describe "for functions that return a GValue" do
+      let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_return" }
+      it "creates a call to #get_value" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.gvalue_return
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_gvalue_return
@@ -104,9 +104,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions that have a GValue out argument' do
-      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out' }
-      it 'creates a call to #get_value' do
+    describe "for functions that have a GValue out argument" do
+      let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_out" }
+      it "creates a call to #get_value" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.gvalue_out
             _v1 = FFI::MemoryPointer.new :pointer
@@ -118,10 +118,10 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions that have a caller-allocated GValue out argument' do
-      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'gvalue_out_caller_allocates' }
+    describe "for functions that have a caller-allocated GValue out argument" do
+      let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_out_caller_allocates" }
 
-      it 'creates a call to #get_value' do
+      it "creates a call to #get_value" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.gvalue_out_caller_allocates
             _v1 = GObject::Value.new
@@ -133,9 +133,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions with a nullable input array' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_array_int_null_in' }
-      it 'builds correct definition' do
+    describe "for functions with a nullable input array" do
+      let(:function_info) { get_introspection_data "Regress", "test_array_int_null_in" }
+      it "builds correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_array_int_null_in(arr = nil)
             len = arr.nil? ? 0 : arr.length
@@ -147,9 +147,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions with a nullable output array' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_array_int_null_out' }
-      it 'builds correct definition' do
+    describe "for functions with a nullable output array" do
+      let(:function_info) { get_introspection_data "Regress", "test_array_int_null_out" }
+      it "builds correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_array_int_null_out
             _v1 = FFI::MemoryPointer.new :int32
@@ -163,9 +163,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for a method with an inout array with size argument' do
-      let(:function_info) { get_method_introspection_data 'GIMarshallingTests', 'Object', 'method_array_inout' }
-      it 'builds the correct definition' do
+    describe "for a method with an inout array with size argument" do
+      let(:function_info) { get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout" }
+      it "builds the correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def method_array_inout(ints)
             length = ints.nil? ? 0 : ints.length
@@ -182,10 +182,10 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for a simple method' do
-      let(:function_info) { get_method_introspection_data 'Regress', 'TestObj', 'instance_method' }
+    describe "for a simple method" do
+      let(:function_info) { get_method_introspection_data "Regress", "TestObj", "instance_method" }
 
-      it 'builds a correct definition' do
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def instance_method
             _v1 = Regress::Lib.regress_test_obj_instance_method self
@@ -195,9 +195,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for GLib::Variant.get_strv' do
-      let(:function_info) { get_method_introspection_data 'GLib', 'Variant', 'get_strv' }
-      it 'builds a correct definition' do
+    describe "for GLib::Variant.get_strv" do
+      let(:function_info) { get_method_introspection_data "GLib", "Variant", "get_strv" }
+      it "builds a correct definition" do
         size_type = ":uint#{FFI.type_size(:size_t) * 8}"
         _(code).must_equal <<-CODE.reset_indentation
           def get_strv
@@ -210,10 +210,10 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for Regress.has_parameter_named_attrs' do
-      let(:function_info) { get_introspection_data 'Regress', 'has_parameter_named_attrs' }
+    describe "for Regress.has_parameter_named_attrs" do
+      let(:function_info) { get_introspection_data "Regress", "has_parameter_named_attrs" }
 
-      it 'builds a correct definition' do
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.has_parameter_named_attrs(foo, attributes)
             _v1 = foo
@@ -225,13 +225,13 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for GIMarshallingTests::Object#method_int8_arg_and_out_callee' do
+    describe "for GIMarshallingTests::Object#method_int8_arg_and_out_callee" do
       let(:function_info) do
-        get_method_introspection_data('GIMarshallingTests', 'Object',
-                                      'method_int8_arg_and_out_callee')
+        get_method_introspection_data("GIMarshallingTests", "Object",
+                                      "method_int8_arg_and_out_callee")
       end
 
-      it 'builds a correct definition' do
+      it "builds a correct definition" do
         _(code).must_equal <<-CODE.reset_indentation
           def method_int8_arg_and_out_callee(arg)
             _v1 = arg
@@ -244,15 +244,15 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'object ownership transfer' do
-      describe 'for GIMarshallingTests::Object#full_in' do
+    describe "object ownership transfer" do
+      describe "for GIMarshallingTests::Object#full_in" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'full_in')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "full_in")
         end
 
         # NOTE: This method is transfer-ownership: none, despite the name.
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def full_in
             GIMarshallingTests::Lib.gi_marshalling_tests_object_full_in self
@@ -261,13 +261,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.full_inout' do
+      describe "for GIMarshallingTests::Object.full_inout" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'full_inout')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "full_inout")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.full_inout(object)
             _v1 = FFI::MemoryPointer.new :pointer
@@ -280,13 +280,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.full_out' do
+      describe "for GIMarshallingTests::Object.full_out" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'full_out')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "full_out")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.full_out
             _v1 = FFI::MemoryPointer.new :pointer
@@ -298,13 +298,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.full_return' do
+      describe "for GIMarshallingTests::Object.full_return" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'full_return')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "full_return")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.full_return
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_full_return
@@ -315,13 +315,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object#none_in' do
+      describe "for GIMarshallingTests::Object#none_in" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'none_in')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "none_in")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def none_in
             GIMarshallingTests::Lib.gi_marshalling_tests_object_none_in self
@@ -330,13 +330,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.none_inout' do
+      describe "for GIMarshallingTests::Object.none_inout" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'none_inout')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "none_inout")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.none_inout(object)
             _v1 = FFI::MemoryPointer.new :pointer
@@ -349,13 +349,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.none_out' do
+      describe "for GIMarshallingTests::Object.none_out" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'none_out')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "none_out")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.none_out
             _v1 = FFI::MemoryPointer.new :pointer
@@ -367,13 +367,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::Object.none_return' do
+      describe "for GIMarshallingTests::Object.none_return" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'Object',
-                                        'none_return')
+          get_method_introspection_data("GIMarshallingTests", "Object",
+                                        "none_return")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.none_return
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_none_return
@@ -384,13 +384,13 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for Regress::TestObj#instance_method_full' do
+      describe "for Regress::TestObj#instance_method_full" do
         let(:function_info) do
-          get_method_introspection_data('Regress', 'TestObj',
-                                        'instance_method_full')
+          get_method_introspection_data("Regress", "TestObj",
+                                        "instance_method_full")
         end
 
-        it 'builds a correct definition including self.ref' do
+        it "builds a correct definition including self.ref" do
           _(code).must_equal <<-CODE.reset_indentation
           def instance_method_full
             Regress::Lib.regress_test_obj_instance_method_full self.ref
@@ -400,13 +400,13 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'struct ownership transfer' do
-      describe 'for GIMarshallingTests::BoxedStruct.inout' do
+    describe "struct ownership transfer" do
+      describe "for GIMarshallingTests::BoxedStruct.inout" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'inout')
+          get_method_introspection_data("GIMarshallingTests", "BoxedStruct", "inout")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.inout(struct_)
             _v1 = FFI::MemoryPointer.new :pointer
@@ -419,12 +419,12 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::BoxedStruct.out' do
+      describe "for GIMarshallingTests::BoxedStruct.out" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'out')
+          get_method_introspection_data("GIMarshallingTests", "BoxedStruct", "out")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.out
             _v1 = FFI::MemoryPointer.new :pointer
@@ -436,12 +436,12 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
 
-      describe 'for GIMarshallingTests::BoxedStruct.returnv' do
+      describe "for GIMarshallingTests::BoxedStruct.returnv" do
         let(:function_info) do
-          get_method_introspection_data('GIMarshallingTests', 'BoxedStruct', 'returnv')
+          get_method_introspection_data("GIMarshallingTests", "BoxedStruct", "returnv")
         end
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.returnv
             _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_returnv
@@ -453,11 +453,11 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'string ownership transfer' do
-      describe 'for Regress.test_utf8_out' do
-        let(:function_info) { get_introspection_data 'Regress', 'test_utf8_out' }
+    describe "string ownership transfer" do
+      describe "for Regress.test_utf8_out" do
+        let(:function_info) { get_introspection_data "Regress", "test_utf8_out" }
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
           def self.test_utf8_out
             _v1 = FFI::MemoryPointer.new :pointer
@@ -470,9 +470,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions with an allow-none ingoing parameter' do
-      let(:function_info) { get_introspection_data 'Regress', 'test_utf8_null_in' }
-      it 'builds correct definition with default parameter value' do
+    describe "for functions with an allow-none ingoing parameter" do
+      let(:function_info) { get_introspection_data "Regress", "test_utf8_null_in" }
+      it "builds correct definition with default parameter value" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.test_utf8_null_in(in_ = nil)
             _v1 = GirFFI::InPointer.from_utf8(in_)
@@ -482,9 +482,9 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'for functions where some allow-none cannot be honored' do
-      let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_in_utf8_two_in_out_of_order' }
-      it 'builds correct definition with default parameter value on the later arguments' do
+    describe "for functions where some allow-none cannot be honored" do
+      let(:function_info) { get_introspection_data "GIMarshallingTests", "array_in_utf8_two_in_out_of_order" }
+      it "builds correct definition with default parameter value on the later arguments" do
         _(code).must_equal <<-CODE.reset_indentation
           def self.array_in_utf8_two_in_out_of_order(a, ints, b = nil)
             length = ints.nil? ? 0 : ints.length
@@ -498,11 +498,11 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
-    describe 'ownership transfer for an ingoing array of structs' do
-      describe 'with no ownership transfer of the elements' do
-        let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_struct_in' }
+    describe "ownership transfer for an ingoing array of structs" do
+      describe "with no ownership transfer of the elements" do
+        let(:function_info) { get_introspection_data "GIMarshallingTests", "array_struct_in" }
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
             def self.array_struct_in(structs)
               length = structs.nil? ? 0 : structs.length
@@ -513,10 +513,10 @@ describe GirFFI::Builders::FunctionBuilder do
           CODE
         end
       end
-      describe 'with ownership transfer of the elements' do
-        let(:function_info) { get_introspection_data 'GIMarshallingTests', 'array_struct_take_in' }
+      describe "with ownership transfer of the elements" do
+        let(:function_info) { get_introspection_data "GIMarshallingTests", "array_struct_take_in" }
 
-        it 'builds a correct definition' do
+        it "builds a correct definition" do
           _(code).must_equal <<-CODE.reset_indentation
             def self.array_struct_take_in(structs)
               length = structs.nil? ? 0 : structs.length

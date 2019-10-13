@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 describe GLib::DestroyNotify do
-  describe '.default' do
-    it 'removes the passed-in key from the callback store' do
-      dummy_proc = 'some-callback'
+  describe ".default" do
+    it "removes the passed-in key from the callback store" do
+      dummy_proc = "some-callback"
       GirFFI::CallbackBase.store_callback dummy_proc
       _(GirFFI::CallbackBase::CALLBACKS[dummy_proc.object_id]).wont_be_nil
 

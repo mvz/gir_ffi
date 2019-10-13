@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ffi-glib/container_class_methods'
+require "ffi-glib/container_class_methods"
 
 module GLib
   # Common methods for List and SList.

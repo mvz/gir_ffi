@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require 'gir_ffi_test_helper'
+require "gir_ffi_test_helper"
 
 GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::BoxedBase do
-  describe 'initialize' do
-    it 'sets up the held struct pointer' do
+  describe "initialize" do
+    it "sets up the held struct pointer" do
       # NOTE: GObject::Value uses the generic constructor, unlike
       # GIMarshallingTests::BoxedStruct, which has its own constructor.
       value = GObject::Value.new
@@ -14,8 +14,8 @@ describe GirFFI::BoxedBase do
     end
   end
 
-  describe 'copy_from' do
-    it 'returns a copy with owned false' do
+  describe "copy_from" do
+    it "returns a copy with owned false" do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.copy_from(original)
       ptr = copy.to_ptr
@@ -25,8 +25,8 @@ describe GirFFI::BoxedBase do
     end
   end
 
-  describe 'wrap_own' do
-    it 'wraps and owns the supplied pointer' do
+  describe "wrap_own" do
+    it "wraps and owns the supplied pointer" do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_own(original.to_ptr)
       ptr = copy.to_ptr
@@ -36,9 +36,9 @@ describe GirFFI::BoxedBase do
     end
   end
 
-  describe 'upon garbage collection' do
-    it 'frees and disowns the underlying struct if it is owned' do
-      skip 'cannot be reliably tested on JRuby and Rubinius' if jruby? || rubinius?
+  describe "upon garbage collection" do
+    it "frees and disowns the underlying struct if it is owned" do
+      skip "cannot be reliably tested on JRuby and Rubinius" if jruby? || rubinius?
 
       allow(GObject).to receive(:boxed_free)
       gtype = GIMarshallingTests::BoxedStruct.gtype

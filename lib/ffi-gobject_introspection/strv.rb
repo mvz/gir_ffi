@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'ffi'
+require "ffi"
 
 module GObjectIntrospection
   # Represents a null-terminated array of strings.

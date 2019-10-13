@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/base_argument_builder'
-require 'gir_ffi/builders/c_to_ruby_convertor'
-require 'gir_ffi/builders/closure_convertor'
-require 'gir_ffi/builders/null_convertor'
-require 'gir_ffi/builders/pointer_value_convertor'
+require "gir_ffi/builders/base_argument_builder"
+require "gir_ffi/builders/c_to_ruby_convertor"
+require "gir_ffi/builders/closure_convertor"
+require "gir_ffi/builders/null_convertor"
+require "gir_ffi/builders/pointer_value_convertor"
 
 module GirFFI
   module Builders
@@ -53,7 +53,7 @@ module GirFFI
         when :inout
           [out_parameter_preparation, ingoing_pre_conversion]
         when :error
-          [out_parameter_preparation, 'begin']
+          [out_parameter_preparation, "begin"]
         end
       end
 
@@ -65,7 +65,7 @@ module GirFFI
           [
             "rescue => #{result_name}",
             value_to_pointer_conversion,
-            'end'
+            "end"
           ]
         else
           []

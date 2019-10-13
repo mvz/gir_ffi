@@ -2,9 +2,9 @@
 
 When(/^I wait some time for a command to start up$/) do
   time = case RUBY_ENGINE
-         when 'jruby'
+         when "jruby"
            10
-         when 'rbx'
+         when "rbx"
            4
          else
            1

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'gir_ffi/builders/argument_builder'
-require 'gir_ffi/builders/base_argument_builder'
-require 'gir_ffi/builders/null_argument_builder'
-require 'gir_ffi/builders/pointer_value_convertor'
-require 'gir_ffi/variable_name_generator'
-require 'gir_ffi/field_argument_info'
+require "gir_ffi/builders/argument_builder"
+require "gir_ffi/builders/base_argument_builder"
+require "gir_ffi/builders/null_argument_builder"
+require "gir_ffi/builders/pointer_value_convertor"
+require "gir_ffi/variable_name_generator"
+require "gir_ffi/field_argument_info"
 
 module GirFFI
   module Builders
@@ -208,7 +208,7 @@ module GirFFI
 
         def length_argument_info
           @length_argument_info ||=
-            GetterArgumentInfo.new 'length', array_length_field.field_type
+            GetterArgumentInfo.new "length", array_length_field.field_type
         end
 
         def field_offset
@@ -224,7 +224,7 @@ module GirFFI
         end
 
         def field_argument_info
-          @field_argument_info ||= GetterArgumentInfo.new 'value', field_type
+          @field_argument_info ||= GetterArgumentInfo.new "value", field_type
         end
       end
 
@@ -300,7 +300,7 @@ module GirFFI
       end
 
       def field_argument_info
-        @field_argument_info ||= FieldArgumentInfo.new 'value', field_type
+        @field_argument_info ||= FieldArgumentInfo.new "value", field_type
       end
 
       def setter_builder

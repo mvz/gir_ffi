@@ -1,38 +1,38 @@
 # frozen_string_literal: true
 
-require 'introspection_test_helper'
+require "introspection_test_helper"
 
 describe GObjectIntrospection::IBaseInfo do
   let(:described_class) { GObjectIntrospection::IBaseInfo }
-  describe '#initialize' do
-    it 'raises an error if a null pointer is passed' do
+  describe "#initialize" do
+    it "raises an error if a null pointer is passed" do
       expect(ptr = Object.new).to receive(:null?).and_return true
       _(proc { described_class.new ptr }).must_raise ArgumentError
     end
 
-    it 'raises no error if a non-null pointer is passed' do
+    it "raises no error if a non-null pointer is passed" do
       expect(ptr = Object.new).to receive(:null?).and_return false
       described_class.new ptr
       pass
     end
   end
 
-  describe '#deprecated?' do
-    let(:deprecated_info) { get_introspection_data 'Regress', 'test_versioning' }
-    let(:other_info) { get_introspection_data 'Regress', 'test_value_return' }
+  describe "#deprecated?" do
+    let(:deprecated_info) { get_introspection_data "Regress", "test_versioning" }
+    let(:other_info) { get_introspection_data "Regress", "test_value_return" }
 
-    it 'returns true for a deprecated item' do
+    it "returns true for a deprecated item" do
       _(deprecated_info).must_be :deprecated?
     end
 
-    it 'returns false for a non-deprecated item' do
+    it "returns false for a non-deprecated item" do
       _(other_info).wont_be :deprecated?
     end
   end
 
-  describe 'upon garbage collection' do
-    it 'calls g_base_info_unref' do
-      skip 'cannot be reliably tested on JRuby and Rubinius' if jruby? || rubinius?
+  describe "upon garbage collection" do
+    it "calls g_base_info_unref" do
+      skip "cannot be reliably tested on JRuby and Rubinius" if jruby? || rubinius?
 
       expect(ptr = Object.new).to receive(:null?).and_return false
       expect(lib = Object.new).to receive(:g_base_info_unref).with(ptr).and_return nil
