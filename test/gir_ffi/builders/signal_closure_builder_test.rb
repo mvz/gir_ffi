@@ -179,6 +179,8 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
+        skip_below "1.61.1"
+
         expected = <<-CODE.reset_indentation
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, error = param_values.map(&:get_value_plain)
