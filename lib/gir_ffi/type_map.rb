@@ -62,6 +62,7 @@ module GirFFI
     FLATTENED_TAG_TO_GTYPE_MAP = {
       [:array, true]     => GObject::TYPE_ARRAY,
       [:c, true]         => GObject::TYPE_POINTER,
+      [:error, true]     => GObject::TYPE_POINTER,
       [:gboolean, false] => GObject::TYPE_BOOLEAN,
       [:ghash, true]     => GObject::TYPE_HASH_TABLE,
       [:glist, true]     => GObject::TYPE_POINTER,

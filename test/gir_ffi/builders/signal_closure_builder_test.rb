@@ -172,5 +172,26 @@ describe GirFFI::Builders::SignalClosureBuilder do
         _(builder.marshaller_definition).must_equal expected
       end
     end
+
+    describe "for a signal with GError argument" do
+      let(:signal_info) do
+        get_signal_introspection_data "Regress", "TestObj", "sig-with-gerror"
+      end
+
+      it "returns a valid mapping method" do
+        skip_below "1.61.1"
+
+        expected = <<-CODE.reset_indentation
+        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+          _instance, error = param_values.map(&:get_value_plain)
+          _v1 = _instance
+          _v2 = GLib::Error.wrap(error)
+          wrap(closure.to_ptr).invoke_block(_v1, _v2)
+        end
+        CODE
+
+        _(builder.marshaller_definition).must_equal expected
+      end
+    end
   end
 end

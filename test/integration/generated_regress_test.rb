@@ -1638,7 +1638,6 @@ describe Regress do
 
     it "has a working method #emit_sig_with_error" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       error = nil
       instance.signal_connect "sig-with-gerror" do |_obj, err|
         error = err
@@ -1674,7 +1673,6 @@ describe Regress do
 
     it "has a working method #emit_sig_with_null_error" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       error = nil
       instance.signal_connect "sig-with-gerror" do |_obj, err|
         error = err
@@ -2213,11 +2211,12 @@ describe Regress do
 
     it "handles the 'sig-with-gerror' signal" do
       skip_below "1.61.1"
-      skip "Not implemented yet"
       a = nil
-      GObject.signal_connect(instance, "sig-with-gerror") { a = 4 }
-      GObject.signal_emit instance, "sig-with-gerror"
-      _(a).must_equal 4
+      GObject.signal_connect(instance, "sig-with-gerror") do |_obj, err|
+        a = err
+      end
+      GObject.signal_emit instance, "sig-with-gerror", GLib::Error.new
+      _(a).must_be_instance_of GLib::Error
     end
 
     it "handles the 'sig-with-hash-prop' signal" do

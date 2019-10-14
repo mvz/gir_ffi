@@ -642,6 +642,15 @@ describe GirFFI::InfoExt::ITypeInfo do
       end
     end
 
+    describe "for pointer to :error" do
+      let(:tag) { :error }
+      let(:pointer?) { true }
+
+      it "equals the gint type" do
+        _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+      end
+    end
+
     describe "for arrays" do
       let(:tag) { :array }
       let(:pointer?) { true }

@@ -12,6 +12,7 @@ module GObject
     attach_function :g_type_fundamental, [:size_t], :size_t
     attach_function :g_array_get_type, [], :size_t
     attach_function :g_byte_array_get_type, [], :size_t
+    attach_function :g_error_get_type, [], :size_t
     attach_function :g_hash_table_get_type, [], :size_t
     attach_function :g_strv_get_type, [], :size_t
   end
