@@ -60,25 +60,29 @@ module GirFFI
     end
 
     FLATTENED_TAG_TO_GTYPE_MAP = {
-      [:array, true]     => GObject::TYPE_ARRAY,
-      [:c, true]         => GObject::TYPE_POINTER,
-      [:error, true]     => GObject::TYPE_POINTER,
-      [:gboolean, false] => GObject::TYPE_BOOLEAN,
-      [:ghash, true]     => GObject::TYPE_HASH_TABLE,
-      [:glist, true]     => GObject::TYPE_POINTER,
-      [:gint32, false]   => GObject::TYPE_INT,
-      [:gint64, false]   => GObject::TYPE_INT64,
-      [:guint64, false]  => GObject::TYPE_UINT64,
-      [:strv, true]      => GObject::TYPE_STRV,
-      [:utf8, true]      => GObject::TYPE_STRING,
-      [:void, true]      => GObject::TYPE_POINTER,
-      [:void, false]     => GObject::TYPE_NONE
+      gboolean: GObject::TYPE_BOOLEAN,
+      gint32:   GObject::TYPE_INT,
+      gint64:   GObject::TYPE_INT64,
+      guint64:  GObject::TYPE_UINT64,
+      void:     GObject::TYPE_NONE
+    }.freeze
+
+    FLATTENED_TAG_POINTER_TO_GTYPE_MAP = {
+      array:    GObject::TYPE_ARRAY,
+      ghash:    GObject::TYPE_HASH_TABLE,
+      strv:     GObject::TYPE_STRV,
+      utf8:     GObject::TYPE_STRING,
     }.freeze
 
     def self.type_info_to_gtype(type_info)
       return type_info.interface.gtype if type_info.tag == :interface
 
-      FLATTENED_TAG_TO_GTYPE_MAP.fetch [type_info.flattened_tag, type_info.pointer?]
+      flattened_tag = type_info.flattened_tag
+      if type_info.pointer?
+        FLATTENED_TAG_POINTER_TO_GTYPE_MAP.fetch(flattened_tag, GObject::TYPE_POINTER)
+      else
+        FLATTENED_TAG_TO_GTYPE_MAP.fetch(flattened_tag)
+      end
     end
   end
 end

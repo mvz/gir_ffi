@@ -561,93 +561,98 @@ describe GirFFI::InfoExt::ITypeInfo do
       allow(type_info).to receive(:pointer?).and_return pointer?
     end
 
-    describe "for :void" do
-      let(:tag) { :void }
+    describe "for non-pointers" do
       let(:pointer?) { false }
+      describe "for :void" do
+        let(:tag) { :void }
 
-      it "equals the none type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "void"
+        it "equals the none type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "void"
+        end
+      end
+
+      describe "for :gboolean" do
+        let(:tag) { :gboolean }
+
+        it "equals the gboolean type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gboolean"
+        end
+      end
+
+      describe "for :gint32" do
+        let(:tag) { :gint32 }
+
+        it "equals the gint type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gint"
+        end
+      end
+
+      describe "for :gint64" do
+        let(:tag) { :gint64 }
+
+        it "equals the gint64 type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gint64"
+        end
+      end
+
+      describe "for :guint64" do
+        let(:tag) { :guint64 }
+
+        it "equals the guint64 type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "guint64"
+        end
       end
     end
 
-    describe "for :void pointer" do
-      let(:tag) { :void }
+    describe "for pointers" do
       let(:pointer?) { true }
 
-      it "equals the none type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+      describe "to :void" do
+        let(:tag) { :void }
+
+        it "equals the gpointer type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+        end
       end
-    end
 
-    describe "for :gboolean" do
-      let(:tag) { :gboolean }
-      let(:pointer?) { false }
+      describe "to :utf8" do
+        let(:tag) { :utf8 }
 
-      it "equals the gboolean type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gboolean"
+        it "equals the gchararray type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gchararray"
+        end
       end
-    end
 
-    describe "for :gint32" do
-      let(:tag) { :gint32 }
-      let(:pointer?) { false }
+      describe "to :ghash" do
+        let(:tag) { :ghash }
 
-      it "equals the gint type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gint"
+        it "equals the GHashTable type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "GHashTable"
+        end
       end
-    end
 
-    describe "for :gint64" do
-      let(:tag) { :gint64 }
-      let(:pointer?) { false }
+      describe "to :glist" do
+        let(:tag) { :glist }
 
-      it "equals the gint64 type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gint64"
+        it "equals the pointer type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+        end
       end
-    end
 
-    describe "for :guint64" do
-      let(:tag) { :guint64 }
-      let(:pointer?) { false }
+      describe "to :error" do
+        let(:tag) { :error }
 
-      it "equals the guint64 type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "guint64"
+        it "equals the gpointer type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+        end
       end
-    end
 
-    describe "for pointer to :utf8" do
-      let(:tag) { :utf8 }
-      let(:pointer?) { true }
+      describe "to :guint32" do
+        let(:tag) { :guint32 }
 
-      it "equals the gchararray type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gchararray"
-      end
-    end
-
-    describe "for pointer to :ghash" do
-      let(:tag) { :ghash }
-      let(:pointer?) { true }
-
-      it "equals the GHashTable type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "GHashTable"
-      end
-    end
-
-    describe "for pointer to :glist" do
-      let(:tag) { :glist }
-      let(:pointer?) { true }
-
-      it "equals the pointer type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
-      end
-    end
-
-    describe "for pointer to :error" do
-      let(:tag) { :error }
-      let(:pointer?) { true }
-
-      it "equals the gint type" do
-        _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+        it "equals the gpointer type" do
+          _(GObject.type_name(type_info.gtype)).must_equal "gpointer"
+        end
       end
     end
 
