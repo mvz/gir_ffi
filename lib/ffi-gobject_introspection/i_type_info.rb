@@ -13,7 +13,9 @@ module GObjectIntrospection
     end
 
     def param_type(index)
-      ITypeInfo.wrap Lib.g_type_info_get_param_type(self, index)
+      @param_type_cache ||= []
+      @param_type_cache[index] ||=
+        ITypeInfo.wrap Lib.g_type_info_get_param_type(self, index)
     end
 
     def interface
