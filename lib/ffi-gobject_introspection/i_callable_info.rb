@@ -9,7 +9,7 @@ module GObjectIntrospection
   # IFunctionInfo, ICallbackInfo or IVFuncInfo.
   class ICallableInfo < IBaseInfo
     def return_type
-      ITypeInfo.wrap Lib.g_callable_info_get_return_type(self)
+      @return_type ||= ITypeInfo.wrap Lib.g_callable_info_get_return_type(self)
     end
 
     def caller_owns
