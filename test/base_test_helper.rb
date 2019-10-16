@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+
+old_verbose = $VERBOSE
+$VERBOSE = false
 require "test-prof"
+$VERBOSE = old_verbose
 
 TestProf::RubyProf.configure do |config|
   config.min_percent = 0.5
