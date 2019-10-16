@@ -17,7 +17,7 @@ module GObjectIntrospection
     end
 
     def field_type
-      ITypeInfo.wrap Lib.g_field_info_get_type(self)
+      @field_type ||= ITypeInfo.wrap Lib.g_field_info_get_type(self)
     end
 
     def readable?
