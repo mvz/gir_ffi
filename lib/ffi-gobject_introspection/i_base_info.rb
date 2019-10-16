@@ -104,7 +104,7 @@ module GObjectIntrospection
     end
 
     def safe_namespace
-      namespace.gsub(/^./, &:upcase)
+      namespace.sub(/^[a-z]/, &:upcase)
     end
 
     def container
