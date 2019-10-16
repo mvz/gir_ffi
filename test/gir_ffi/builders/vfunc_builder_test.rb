@@ -14,7 +14,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, in_)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = in_
@@ -32,7 +32,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = _proc.call(_v1)
@@ -51,7 +51,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = GIMarshallingTests::CallbackIntInt.wrap(callback)
@@ -71,7 +71,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = arg
@@ -92,7 +92,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, arg, out)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = arg
@@ -113,7 +113,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, a)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = a
@@ -133,7 +133,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method including receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, x, _error)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = x
@@ -157,7 +157,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = _proc.call(_v1)
@@ -177,7 +177,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, object)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = GObject::Object.wrap(object)
@@ -196,7 +196,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, _instance, object)
           _v1 = GIMarshallingTests::Object.wrap(_instance)
           _v2 = object

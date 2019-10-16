@@ -13,7 +13,7 @@ describe GirFFI::MethodStubber do
       end
 
       it "creates a method stub" do
-        _(result).must_equal <<-STUB.reset_indentation
+        _(result).must_equal <<~STUB
           def instance_method *args, &block
             setup_and_call "instance_method", args, &block
           end
@@ -27,7 +27,7 @@ describe GirFFI::MethodStubber do
       end
 
       it "creates a class method stub" do
-        _(result).must_equal <<-STUB.reset_indentation
+        _(result).must_equal <<~STUB
           def self.static_method *args, &block
             setup_and_call "static_method", args, &block
           end
@@ -41,7 +41,7 @@ describe GirFFI::MethodStubber do
       end
 
       it "creates a module method stub" do
-        _(result).must_equal <<-STUB.reset_indentation
+        _(result).must_equal <<~STUB
           def self.test_int *args, &block
             setup_and_call "test_int", args, &block
           end
@@ -54,7 +54,7 @@ describe GirFFI::MethodStubber do
 
       it "creates a method stub with a safe name that sets up the unsafe method" do
         allow(method_info).to receive(:name).and_return ""
-        _(result).must_equal <<-STUB.reset_indentation
+        _(result).must_equal <<~STUB
           def _ *args, &block
             setup_and_call "", args, &block
           end
