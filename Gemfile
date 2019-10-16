@@ -6,6 +6,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "pry", "~> 0.12.0"
+gem "test-prof"
+gem "ruby-prof"
 
 if ENV["CI"]
   gem "coveralls", group: :development if ENV["TRAVIS_RUBY_VERSION"] == "2.4"

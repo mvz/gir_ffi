@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test-prof"
+
 if ENV["CI"]
   begin
     require "coveralls"
