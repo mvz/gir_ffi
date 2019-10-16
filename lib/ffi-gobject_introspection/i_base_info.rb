@@ -85,7 +85,7 @@ module GObjectIntrospection
     end
 
     def name
-      Lib.g_base_info_get_name self
+      @name ||= Lib.g_base_info_get_name self
     end
 
     def info_type
