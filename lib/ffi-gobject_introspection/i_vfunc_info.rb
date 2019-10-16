@@ -13,7 +13,7 @@ module GObjectIntrospection
     end
 
     def invoker
-      IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker self
+      @invoker ||= IFunctionInfo.wrap Lib.g_vfunc_info_get_invoker self
     end
   end
 end

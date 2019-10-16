@@ -100,7 +100,7 @@ module GObjectIntrospection
     end
 
     def namespace
-      Lib.g_base_info_get_namespace self
+      @namespace ||= Lib.g_base_info_get_namespace self
     end
 
     def safe_namespace

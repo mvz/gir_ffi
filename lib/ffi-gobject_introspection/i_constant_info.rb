@@ -29,7 +29,7 @@ module GObjectIntrospection
     end
 
     def constant_type
-      ITypeInfo.wrap Lib.g_constant_info_get_type self
+      @constant_type ||= ITypeInfo.wrap Lib.g_constant_info_get_type self
     end
 
     private

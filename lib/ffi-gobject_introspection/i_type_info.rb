@@ -27,7 +27,7 @@ module GObjectIntrospection
     end
 
     def array_length
-      Lib.g_type_info_get_array_length self
+      @array_length ||= Lib.g_type_info_get_array_length self
     end
 
     def array_fixed_size

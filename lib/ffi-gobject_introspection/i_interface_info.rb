@@ -81,7 +81,7 @@ module GObjectIntrospection
     build_array_method :constants
 
     def iface_struct
-      IStructInfo.wrap Lib.g_interface_info_get_iface_struct(self)
+      @iface_struct ||= IStructInfo.wrap Lib.g_interface_info_get_iface_struct(self)
     end
   end
 end
