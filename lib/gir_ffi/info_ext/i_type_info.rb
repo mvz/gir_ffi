@@ -6,8 +6,29 @@ module GirFFI
   module InfoExt
     # Extensions for GObjectIntrospection::ITypeInfo needed by GirFFI
     module ITypeInfo
+      FLATTENED_TAG_TO_GTYPE_MAP = {
+        gboolean: GObject::TYPE_BOOLEAN,
+        gint32:   GObject::TYPE_INT,
+        gint64:   GObject::TYPE_INT64,
+        guint64:  GObject::TYPE_UINT64,
+        void:     GObject::TYPE_NONE
+      }.freeze
+
+      FLATTENED_TAG_POINTER_TO_GTYPE_MAP = {
+        array:    GObject::TYPE_ARRAY,
+        ghash:    GObject::TYPE_HASH_TABLE,
+        strv:     GObject::TYPE_STRV,
+        utf8:     GObject::TYPE_STRING,
+      }.freeze
+
       def gtype
-        TypeMap.type_info_to_gtype self
+        return interface.gtype if tag == :interface
+
+        if pointer?
+          FLATTENED_TAG_POINTER_TO_GTYPE_MAP.fetch(flattened_tag, GObject::TYPE_POINTER)
+        else
+          FLATTENED_TAG_TO_GTYPE_MAP.fetch(flattened_tag)
+        end
       end
 
       def make_g_value

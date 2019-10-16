@@ -17,8 +17,8 @@ module GirFFI
       end
 
       def arguments_to_gvalues(instance, arguments)
-        arg_g_values = args.zip(arguments).map do |info, arg|
-          info.argument_type.make_g_value.tap { |it| it.set_value arg }
+        arg_g_values = argument_types.zip(arguments).map do |type, arg|
+          type.make_g_value.tap { |it| it.set_value arg }
         end
 
         arg_g_values.unshift GObject::Value.wrap_instance(instance)
@@ -26,6 +26,10 @@ module GirFFI
 
       def gvalue_for_return_value
         return_type.make_g_value
+      end
+
+      def argument_types
+        @argument_types ||= args.map(&:argument_type)
       end
     end
   end

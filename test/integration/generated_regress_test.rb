@@ -1541,9 +1541,9 @@ describe Regress do
         _(instance.get_property("number")).must_equal 4
       end
     end
+
     it "handles the 'interface-signal' signal" do
       skip_below "1.57.2"
-      skip "Not implemented yet"
       a = nil
       instance = derived_klass.new
       GObject.signal_connect instance, "interface-signal" do
