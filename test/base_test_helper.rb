@@ -2,6 +2,10 @@
 
 require "test-prof"
 
+TestProf::RubyProf.configure do |config|
+  config.min_percent = 0.5
+end
+
 if ENV["CI"]
   begin
     require "coveralls"
