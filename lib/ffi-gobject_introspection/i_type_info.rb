@@ -17,8 +17,10 @@ module GObjectIntrospection
     end
 
     def interface
-      ptr = Lib.g_type_info_get_interface self
-      IRepository.wrap_ibaseinfo_pointer ptr
+      @interface ||= begin
+                       ptr = Lib.g_type_info_get_interface self
+                       IRepository.wrap_ibaseinfo_pointer ptr
+                     end
     end
 
     def array_length
