@@ -96,7 +96,7 @@ module GObjectIntrospection
     end
 
     def info_type
-      Lib.g_base_info_get_type self
+      @info_type ||= Lib.g_base_info_get_type self
     end
 
     def namespace
