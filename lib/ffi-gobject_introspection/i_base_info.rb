@@ -108,9 +108,11 @@ module GObjectIntrospection
     end
 
     def container
-      ptr = Lib.g_base_info_get_container self
-      Lib.g_base_info_ref ptr
-      IRepository.wrap_ibaseinfo_pointer ptr
+      @container ||= begin
+                       ptr = Lib.g_base_info_get_container self
+                       Lib.g_base_info_ref ptr
+                       IRepository.wrap_ibaseinfo_pointer ptr
+                     end
     end
 
     def deprecated?
