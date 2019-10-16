@@ -80,7 +80,7 @@ module GirFFI
       end
 
       def interface_class
-        Builder.build_class interface if tag == :interface
+        @interface_class ||= Builder.build_class interface if tag == :interface
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {
