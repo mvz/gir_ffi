@@ -5,7 +5,8 @@ module GObjectIntrospection
   # Represents type information, direction, transfer etc.
   class ITypeInfo < IBaseInfo
     def pointer?
-      Lib.g_type_info_is_pointer self
+      return @pointer_eh if defined? @pointer_eh
+      @pointer_eh = Lib.g_type_info_is_pointer self
     end
 
     def tag
