@@ -69,17 +69,22 @@ module GObjectIntrospection
     #
     def self.build_finder_method(method, counter = nil, fetcher = nil)
       method = method.to_s
+      cache_ivar = "@#{method}_cache"
       single = method.sub(/^find_/, "")
       counter ||= "n_#{single}s"
       fetcher ||= single
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}(name)
+          #{cache_ivar} ||= begin
+              hash = {}
+              #{counter}.times do |i|
+                it = #{fetcher}(i)
+                hash[it.name] = it
+              end
+              hash
+            end
           name = name.to_s
-          #{counter}.times do |i|
-            it = #{fetcher}(i)
-            return it if it.name == name
-          end
-          nil
+          #{cache_ivar}[name]
         end
       CODE
     end
