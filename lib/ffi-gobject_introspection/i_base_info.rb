@@ -40,13 +40,15 @@ module GObjectIntrospection
     #
     def self.build_array_method(method, single = nil)
       method = method.to_s
+      cache_ivar = "@#{method}_cache"
       single ||= method[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}
-          (0..(#{count} - 1)).map do |i|
-            #{single} i
-          end
+          #{cache_ivar} ||=
+            (0..(#{count} - 1)).map do |i|
+              #{single} i
+            end
         end
       CODE
     end
