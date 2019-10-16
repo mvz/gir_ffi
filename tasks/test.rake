@@ -156,9 +156,10 @@ namespace :test do
   task overrides: :lib
   task integration: :lib
 
-  desc 'Run the entire test suite as one'
+  desc 'Run the entire test suite as one with simplecov activated'
   define_test_task(:all) do |t|
     t.test_files = FileList['test/**/*_test.rb']
+    t.ruby_opts += ['-rbundler/setup -rsimplecov -w -Itest']
   end
 
   task all: :lib
