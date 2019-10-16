@@ -9,7 +9,7 @@ module GObjectIntrospection
     end
 
     def tag
-      Lib.g_type_info_get_tag self
+      @tag ||= Lib.g_type_info_get_tag self
     end
 
     def param_type(index)
