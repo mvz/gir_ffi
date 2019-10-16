@@ -9,7 +9,7 @@ module GObjectIntrospection
     end
 
     def flags
-      Lib.g_function_info_get_flags self
+      @flags ||= Lib.g_function_info_get_flags self
     end
 
     def method?
