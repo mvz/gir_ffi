@@ -9,7 +9,7 @@ describe GirFFI::Builders::FieldBuilder do
   describe "for a field of type :gint8 with an offset" do
     let(:field_info) { get_field_introspection_data "Regress", "TestSimpleBoxedA", "some_int8" }
     it "creates the right getter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def some_int8
           _v1 = @struct.to_ptr
           _v2 = _v1.get_int8(#{field_info.offset})
@@ -20,7 +20,7 @@ describe GirFFI::Builders::FieldBuilder do
     end
 
     it "creates the right setter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def some_int8= value
           _v1 = @struct.to_ptr
           _v2 = value
@@ -34,7 +34,7 @@ describe GirFFI::Builders::FieldBuilder do
   describe "for a field of type :struct" do
     let(:field_info) { get_field_introspection_data "Regress", "TestBoxed", "nested_a" }
     it "creates the right getter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def nested_a
           _v1 = @struct.to_ptr
           _v2 = Regress::TestSimpleBoxedA.get_value_from_pointer(_v1, #{field_info.offset})
@@ -46,7 +46,7 @@ describe GirFFI::Builders::FieldBuilder do
     end
 
     it "creates the right setter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def nested_a= value
           _v1 = @struct.to_ptr
           _v2 = Regress::TestSimpleBoxedA.copy_from(value)
@@ -60,7 +60,7 @@ describe GirFFI::Builders::FieldBuilder do
   describe "for a field of type :enum" do
     let(:field_info) { get_field_introspection_data "Regress", "TestStructA", "some_enum" }
     it "creates the right getter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def some_enum
           _v1 = @struct.to_ptr
           _v2 = Regress::TestEnum.get_value_from_pointer(_v1, #{field_info.offset})
@@ -74,7 +74,7 @@ describe GirFFI::Builders::FieldBuilder do
   describe "for an inline fixed-size array field" do
     let(:field_info) { get_field_introspection_data "Regress", "TestStructE", "some_union" }
     it "creates the right getter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def some_union
           _v1 = @struct.to_ptr
           _v2 = GirFFI::SizedArray.get_value_from_pointer(_v1, #{field_info.offset})
@@ -86,7 +86,7 @@ describe GirFFI::Builders::FieldBuilder do
     end
 
     it "creates the right setter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def some_union= value
           _v1 = @struct.to_ptr
           GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
@@ -101,7 +101,7 @@ describe GirFFI::Builders::FieldBuilder do
   describe "for a field of type :callback" do
     let(:field_info) { get_field_introspection_data "GObject", "TypeInfo", "class_init" }
     it "creates the right setter method" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def class_init= value
           _v1 = @struct.to_ptr
           _v2 = GObject::ClassInitFunc.from(value)
@@ -118,7 +118,7 @@ describe GirFFI::Builders::FieldBuilder do
 
     it "creates the right getter method" do
       skip if field_info.field_type.array_length < 0
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
         def param_types
           _v1 = @struct.to_ptr
           _v2 = _v1.get_uint32(#{n_params_field_info.offset})

@@ -23,7 +23,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid marshaller converting only the receiver" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance = param_values.first.get_value_plain
           _v1 = _instance
@@ -41,7 +41,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, i = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -61,7 +61,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, result = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -80,7 +80,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, arr, len = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -100,7 +100,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, object = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -119,7 +119,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, i = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -140,7 +140,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a mapping method that passes the string result to return_value directly" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, value = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -160,7 +160,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
 
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, list = param_values.map(&:get_value_plain)
           _v1 = _instance
@@ -181,7 +181,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
       it "returns a valid mapping method" do
         skip_below "1.61.1"
 
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
           _instance, error = param_values.map(&:get_value_plain)
           _v1 = _instance

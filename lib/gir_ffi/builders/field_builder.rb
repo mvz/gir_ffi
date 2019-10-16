@@ -269,10 +269,10 @@ module GirFFI
 
         field_ptr = builder.new_variable
 
-        <<-CODE.reset_indentation
+        <<~CODE
         def #{info.name}= #{builder.method_argument_name}
           #{field_ptr} = @struct.to_ptr
-          #{builder.pre_conversion.join("\n          ")}
+          #{builder.pre_conversion.join("\n  ")}
           #{value_storage(field_ptr, builder)}
         end
         CODE

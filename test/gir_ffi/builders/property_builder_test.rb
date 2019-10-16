@@ -8,7 +8,7 @@ describe GirFFI::Builders::PropertyBuilder do
   describe "for a property of type :glist" do
     let(:property_info) { get_property_introspection_data("Regress", "TestObj", "list") }
     it "generates the correct getter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def list
         _v1 = get_property('list')
         _v2 = GLib::List.wrap(:utf8, _v1)
@@ -20,7 +20,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct setter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def list= value
         _v1 = GLib::List.from(:utf8, value)
         set_property("list", _v1)
@@ -34,7 +34,7 @@ describe GirFFI::Builders::PropertyBuilder do
   describe "for a property of type :ghash" do
     let(:property_info) { get_property_introspection_data("Regress", "TestObj", "hash-table") }
     it "generates the correct getter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def hash_table
         _v1 = get_property('hash-table')
         _v2 = GLib::HashTable.wrap([:utf8, :gint8], _v1)
@@ -46,7 +46,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct setter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def hash_table= value
         _v1 = GLib::HashTable.from([:utf8, :gint8], value)
         set_property("hash-table", _v1)
@@ -65,7 +65,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct getter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def some_strv
         _v1 = get_property('some-strv')
         _v1
@@ -76,7 +76,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct setter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def some_strv= value
         _v1 = GLib::Strv.from(value)
         set_property("some-strv", _v1)
@@ -90,7 +90,7 @@ describe GirFFI::Builders::PropertyBuilder do
   describe "for a property of type :utf8" do
     let(:property_info) { get_property_introspection_data("Regress", "TestObj", "string") }
     it "generates the correct getter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def string
         _v1 = get_property('string')
         _v1
@@ -101,7 +101,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct setter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def string= value
         _v1 = value
         set_property("string", _v1)
@@ -118,7 +118,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct getter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def function_property
         _v1 = get_property('function-property')
         _v2 = Regress::AnnotationCallback.wrap(_v1)
@@ -130,7 +130,7 @@ describe GirFFI::Builders::PropertyBuilder do
     end
 
     it "generates the correct setter definition" do
-      expected = <<-CODE.reset_indentation
+      expected = <<~CODE
       def function_property= value
         _v1 = Regress::AnnotationCallback.from(value)
         set_property("function-property", _v1)

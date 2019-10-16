@@ -9,7 +9,7 @@ describe GirFFI::Builders::CallbackBuilder do
     describe "for a callback with arguments and return value" do
       let(:callback_info) { get_introspection_data "Regress", "TestCallbackFull" }
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, foo, bar, path)
           _v1 = foo
           _v2 = bar
@@ -26,7 +26,7 @@ describe GirFFI::Builders::CallbackBuilder do
     describe "for a callback with no arguments or return value" do
       let(:callback_info) { get_introspection_data "Regress", "TestSimpleCallback" }
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc)
           _proc.call()
         end
@@ -39,7 +39,7 @@ describe GirFFI::Builders::CallbackBuilder do
     describe "for a callback with a closure argument" do
       let(:callback_info) { get_introspection_data "Regress", "TestCallbackUserData" }
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, user_data)
           _v1 = GirFFI::ArgHelper::OBJECT_STORE.fetch(user_data)
           _v2 = _proc.call(_v1)
@@ -57,7 +57,7 @@ describe GirFFI::Builders::CallbackBuilder do
                                "CallbackOneOutParameter")
       end
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, a)
           _v1 = a
           _v2 = _proc.call()
@@ -75,7 +75,7 @@ describe GirFFI::Builders::CallbackBuilder do
                                "TestCallbackArrayInOut")
       end
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, ints, length)
           _v1 = length
           _v2 = _v1.get_int32(0)
@@ -100,7 +100,7 @@ describe GirFFI::Builders::CallbackBuilder do
         field_info.field_type.interface
       end
       it "returns a valid mapping method" do
-        expected = <<-CODE.reset_indentation
+        expected = <<~CODE
         def self.call_with_argument_mapping(_proc, object, property_id, value, pspec)
           _v1 = GObject::Object.wrap(object)
           _v2 = property_id
