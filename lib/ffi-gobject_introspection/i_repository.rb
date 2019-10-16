@@ -58,26 +58,16 @@ module GObjectIntrospection
     end
 
     def find_by_name(namespace, name)
-      prepare_caches
+      @name_cache ||= {}
       @name_cache[[namespace, name]] ||=
-        begin
-          info = wrap_info Lib.g_irepository_find_by_name(self, namespace, name)
-          if info.is_a? IRegisteredTypeInfo
-            @gtype_cache[info.g_type] ||= info
-          end
-          info
-        end
+        wrap_info Lib.g_irepository_find_by_name(self, namespace, name)
     end
 
     def find_by_gtype(gtype)
       raise ArgumentError, "Type #{gtype} is not a valid type" if gtype == 0
 
-      prepare_caches
-      @gtype_cache[gtype] ||=
-        begin
-          info = wrap_info Lib.g_irepository_find_by_gtype(self, gtype)
-          @name_cache[[info.namespace, info.name]] ||= info if info
-        end
+      @gtype_cache ||= {}
+      @gtype_cache[gtype] ||= wrap_info Lib.g_irepository_find_by_gtype(self, gtype)
     end
 
     def dependencies(namespace)
@@ -103,11 +93,6 @@ module GObjectIntrospection
     end
 
     private
-
-    def prepare_caches
-      @name_cache ||= {}
-      @gtype_cache ||= {}
-    end
 
     def wrap_info(ptr)
       self.class.wrap_ibaseinfo_pointer ptr
