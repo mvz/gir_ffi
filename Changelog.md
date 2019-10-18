@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.15.0 / 2019-10-19
 
 * Drop support for gobject-introspection below 1.46, the version available in
   Ubuntu Xenial.
@@ -19,6 +19,7 @@
   instance receiver as transfer `:everything`.
 * Support signals with GError arguments.
 * Cache various methods on IBaseInfo and its subclasses.
+* Generate aliases for accessor methods instead of relying on `method_missing`.
 
 ## 0.14.1 / 2018-09-27
 
