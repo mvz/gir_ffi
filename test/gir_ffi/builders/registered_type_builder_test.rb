@@ -39,16 +39,16 @@ describe GirFFI::Builders::RegisteredTypeBuilder do
       _(instance).must_respond_to :testbool=
     end
 
-    it "does not add getter alias for method with arguments" do
+    it "adds getter alias for method with arguments" do
       instance = Regress::TestObj.constructor
       _(instance).must_respond_to :get_qdata
-      _(instance).wont_respond_to :qdata
+      _(instance).must_respond_to :qdata
     end
 
-    it "does not add getter alias for method with more than one argument" do
+    it "does not add setter alias for method with more than one argument" do
       instance = Regress::TestObj.constructor
-      _(instance).must_respond_to :get_qdata
-      _(instance).wont_respond_to :qdata
+      _(instance).must_respond_to :set_data
+      _(instance).wont_respond_to :data=
     end
   end
 end

@@ -95,7 +95,7 @@ module GirFFI
       end
 
       def alias_accessors(minfo)
-        if minfo.n_args == 0 && minfo.name =~ /^get_(.*)/
+        if minfo.name =~ /^get_(.*)/
           klass.send :alias_method, Regexp.last_match(1), minfo.name
         elsif minfo.n_args == 1 && minfo.name =~ /^set_(.*)/
           klass.send :alias_method, "#{Regexp.last_match(1)}=", minfo.name
