@@ -6,6 +6,7 @@ module GObjectIntrospection
   class ITypeInfo < IBaseInfo
     def pointer?
       return @pointer_eh if defined? @pointer_eh
+
       @pointer_eh = Lib.g_type_info_is_pointer self
     end
 

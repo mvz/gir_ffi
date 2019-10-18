@@ -5,7 +5,6 @@ module GirFFI
     # Extension module provinding a #safe_name method suitable for types.
     module SafeConstantName
       def safe_name
-        #name.sub(/^[_a-z]/) do |char|
         name.tr("-", "_").sub(/^[_a-z]/) do |char|
           case char
           when "_"
