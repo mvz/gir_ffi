@@ -27,4 +27,16 @@ describe GirFFI::Builders::RegisteredTypeBuilder do
       skip "Need some way to test this now that GLib::IConv is gone"
     end
   end
+
+  describe "#stub_methods" do
+    it "adds getter method aliases" do
+      instance = Regress::TestWi8021x.new
+      _(instance).must_respond_to :testbool
+    end
+
+    it "adds setter method aliases" do
+      instance = Regress::TestWi8021x.new
+      _(instance).must_respond_to :testbool=
+    end
+  end
 end
