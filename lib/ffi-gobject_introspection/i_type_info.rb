@@ -5,24 +5,30 @@ module GObjectIntrospection
   # Represents type information, direction, transfer etc.
   class ITypeInfo < IBaseInfo
     def pointer?
-      Lib.g_type_info_is_pointer self
+      return @pointer_eh if defined? @pointer_eh
+
+      @pointer_eh = Lib.g_type_info_is_pointer self
     end
 
     def tag
-      Lib.g_type_info_get_tag self
+      @tag ||= Lib.g_type_info_get_tag self
     end
 
     def param_type(index)
-      ITypeInfo.wrap Lib.g_type_info_get_param_type(self, index)
+      @param_type_cache ||= []
+      @param_type_cache[index] ||=
+        ITypeInfo.wrap Lib.g_type_info_get_param_type(self, index)
     end
 
     def interface
-      ptr = Lib.g_type_info_get_interface self
-      IRepository.wrap_ibaseinfo_pointer ptr
+      @interface ||= begin
+                       ptr = Lib.g_type_info_get_interface self
+                       IRepository.wrap_ibaseinfo_pointer ptr
+                     end
     end
 
     def array_length
-      Lib.g_type_info_get_array_length self
+      @array_length ||= Lib.g_type_info_get_array_length self
     end
 
     def array_fixed_size

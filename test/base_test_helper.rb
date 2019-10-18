@@ -1,5 +1,18 @@
 # frozen_string_literal: true
 
+old_verbose = $VERBOSE
+$VERBOSE = false
+begin
+  require "test-prof"
+
+  TestProf::RubyProf.configure do |config|
+    config.min_percent = 0.5
+  end
+rescue LoadError
+  warn "test-prof not available"
+end
+$VERBOSE = old_verbose
+
 if ENV["CI"]
   begin
     require "coveralls"

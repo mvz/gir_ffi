@@ -21,7 +21,8 @@ module GObjectIntrospection
     end
 
     def get_method(index)
-      IFunctionInfo.wrap Lib.g_struct_info_get_method(self, index)
+      @method_cache ||= []
+      @method_cache[index] ||= IFunctionInfo.wrap Lib.g_struct_info_get_method(self, index)
     end
 
     ##

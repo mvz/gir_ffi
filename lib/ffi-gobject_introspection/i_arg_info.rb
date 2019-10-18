@@ -46,7 +46,7 @@ module GObjectIntrospection
     end
 
     def argument_type
-      ITypeInfo.wrap Lib.g_arg_info_get_type(self)
+      @argument_type ||= ITypeInfo.wrap Lib.g_arg_info_get_type(self)
     end
   end
 end

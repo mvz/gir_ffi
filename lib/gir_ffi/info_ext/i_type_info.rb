@@ -45,14 +45,15 @@ module GirFFI
       end
 
       def flattened_tag
-        case tag
-        when :interface
-          interface_type
-        when :array
-          flattened_array_type
-        else
-          tag
-        end
+        @flattened_tag ||=
+          case tag
+          when :interface
+            interface_type
+          when :array
+            flattened_array_type
+          else
+            tag
+          end
       end
 
       def interface_type
@@ -80,7 +81,7 @@ module GirFFI
       end
 
       def interface_class
-        Builder.build_class interface if tag == :interface
+        @interface_class ||= Builder.build_class interface if tag == :interface
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {

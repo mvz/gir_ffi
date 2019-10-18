@@ -21,7 +21,7 @@ module GObjectIntrospection
     end
 
     def parent
-      IObjectInfo.wrap Lib.g_object_info_get_parent(self)
+      @parent ||= IObjectInfo.wrap Lib.g_object_info_get_parent(self)
     end
 
     def n_interfaces

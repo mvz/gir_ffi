@@ -40,13 +40,15 @@ module GObjectIntrospection
     #
     def self.build_array_method(method, single = nil)
       method = method.to_s
+      cache_ivar = "@#{method}_cache"
       single ||= method[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}
-          (0..(#{count} - 1)).map do |i|
-            #{single} i
-          end
+          #{cache_ivar} ||=
+            (0..(#{count} - 1)).map do |i|
+              #{single} i
+            end
         end
       CODE
     end
@@ -69,41 +71,48 @@ module GObjectIntrospection
     #
     def self.build_finder_method(method, counter = nil, fetcher = nil)
       method = method.to_s
+      cache_ivar = "@#{method}_cache"
       single = method.sub(/^find_/, "")
       counter ||= "n_#{single}s"
       fetcher ||= single
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}(name)
+          #{cache_ivar} ||= begin
+              hash = {}
+              #{counter}.times do |i|
+                it = #{fetcher}(i)
+                hash[it.name] = it
+              end
+              hash
+            end
           name = name.to_s
-          #{counter}.times do |i|
-            it = #{fetcher}(i)
-            return it if it.name == name
-          end
-          nil
+          #{cache_ivar}[name]
         end
       CODE
     end
 
     def name
-      Lib.g_base_info_get_name self
+      @name ||= Lib.g_base_info_get_name self
     end
 
     def info_type
-      Lib.g_base_info_get_type self
+      @info_type ||= Lib.g_base_info_get_type self
     end
 
     def namespace
-      Lib.g_base_info_get_namespace self
+      @namespace ||= Lib.g_base_info_get_namespace self
     end
 
     def safe_namespace
-      namespace.gsub(/^./, &:upcase)
+      namespace.sub(/^[a-z]/, &:upcase)
     end
 
     def container
-      ptr = Lib.g_base_info_get_container self
-      Lib.g_base_info_ref ptr
-      IRepository.wrap_ibaseinfo_pointer ptr
+      @container ||= begin
+                       ptr = Lib.g_base_info_get_container self
+                       Lib.g_base_info_ref ptr
+                       IRepository.wrap_ibaseinfo_pointer ptr
+                     end
     end
 
     def deprecated?
