@@ -15,11 +15,11 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, in_)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = in_
-          _proc.call(_v1, _v2)
-        end
+          def self.call_with_argument_mapping(_proc, _instance, in_)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = in_
+            _proc.call(_v1, _v2)
+          end
         CODE
 
         _(result).must_equal expected
@@ -33,12 +33,12 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = _proc.call(_v1)
-          _v3 = GIMarshallingTests::Enum.to_int(_v2)
-          return _v3
-        end
+          def self.call_with_argument_mapping(_proc, _instance)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = _proc.call(_v1)
+            _v3 = GIMarshallingTests::Enum.to_int(_v2)
+            return _v3
+          end
         CODE
 
         _(result).must_equal expected
@@ -52,12 +52,12 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = GIMarshallingTests::CallbackIntInt.wrap(callback)
-          _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(callback_data)
-          _proc.call(_v1, _v2, _v3)
-        end
+          def self.call_with_argument_mapping(_proc, _instance, callback, callback_data)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = GIMarshallingTests::CallbackIntInt.wrap(callback)
+            _v3 = GirFFI::ArgHelper::OBJECT_STORE.fetch(callback_data)
+            _proc.call(_v1, _v2, _v3)
+          end
         CODE
 
         _(result).must_equal expected
@@ -72,13 +72,13 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, arg, out)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = arg
-          _v3 = out
-          _v4 = _proc.call(_v1, _v2)
-          _v3.put_int8 0, _v4
-        end
+          def self.call_with_argument_mapping(_proc, _instance, arg, out)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = arg
+            _v3 = out
+            _v4 = _proc.call(_v1, _v2)
+            _v3.put_int8 0, _v4
+          end
         CODE
 
         _(result).must_equal expected
@@ -93,13 +93,13 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, arg, out)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = arg
-          _v3 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }
-          _v4 = _proc.call(_v1, _v2)
-          _v3.put_int8 0, _v4
-        end
+          def self.call_with_argument_mapping(_proc, _instance, arg, out)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = arg
+            _v3 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }
+            _v4 = _proc.call(_v1, _v2)
+            _v3.put_int8 0, _v4
+          end
         CODE
 
         _(result).must_equal expected
@@ -114,12 +114,12 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, a)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = a
-          _v3 = _proc.call(_v1)
-          GObject::Value.copy_value_to_pointer(GObject::Value.from(_v3), _v2)
-        end
+          def self.call_with_argument_mapping(_proc, _instance, a)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = a
+            _v3 = _proc.call(_v1)
+            GObject::Value.copy_value_to_pointer(GObject::Value.from(_v3), _v2)
+          end
         CODE
 
         _(result).must_equal expected
@@ -134,17 +134,17 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method including receiver" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, x, _error)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = x
-          _v3 = _error
-          begin
-          _v4 = _proc.call(_v1, _v2)
-          rescue => _v5
-          _v3.put_pointer 0, GLib::Error.from(_v5)
+          def self.call_with_argument_mapping(_proc, _instance, x, _error)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = x
+            _v3 = _error
+            begin
+            _v4 = _proc.call(_v1, _v2)
+            rescue => _v5
+            _v3.put_pointer 0, GLib::Error.from(_v5)
+            end
+            return _v4
           end
-          return _v4
-        end
         CODE
 
         _(result).must_equal expected
@@ -158,13 +158,13 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = _proc.call(_v1)
-          _v2.ref
-          _v3 = GObject::Object.from(_v2).to_ptr
-          return _v3
-        end
+          def self.call_with_argument_mapping(_proc, _instance)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = _proc.call(_v1)
+            _v2.ref
+            _v3 = GObject::Object.from(_v2).to_ptr
+            return _v3
+          end
         CODE
 
         _(result).must_equal expected
@@ -178,12 +178,12 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, object)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = GObject::Object.wrap(object)
-          _v2.ref
-          _proc.call(_v1, _v2)
-        end
+          def self.call_with_argument_mapping(_proc, _instance, object)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = GObject::Object.wrap(object)
+            _v2.ref
+            _proc.call(_v1, _v2)
+          end
         CODE
 
         _(result).must_equal expected
@@ -197,13 +197,13 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.call_with_argument_mapping(_proc, _instance, object)
-          _v1 = GIMarshallingTests::Object.wrap(_instance)
-          _v2 = object
-          _v3 = _proc.call(_v1)
-          _v3.ref
-          _v2.put_pointer 0, GObject::Object.from(_v3)
-        end
+          def self.call_with_argument_mapping(_proc, _instance, object)
+            _v1 = GIMarshallingTests::Object.wrap(_instance)
+            _v2 = object
+            _v3 = _proc.call(_v1)
+            _v3.ref
+            _v2.put_pointer 0, GObject::Object.from(_v3)
+          end
         CODE
 
         _(result).must_equal expected
