@@ -24,11 +24,11 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid marshaller converting only the receiver" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance = param_values.first.get_value_plain
-          _v1 = _instance
-          wrap(closure.to_ptr).invoke_block(_v1)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance = param_values.first.get_value_plain
+            _v1 = _instance
+            wrap(closure.to_ptr).invoke_block(_v1)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -42,13 +42,13 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, i = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = i
-          _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
-          return_value.set_value _v3
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, i = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = i
+            _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
+            return_value.set_value _v3
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -62,12 +62,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, result = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = result
-          wrap(closure.to_ptr).invoke_block(_v1, _v2)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, result = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = result
+            wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -81,13 +81,13 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, arr, len = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = len
-          _v3 = GirFFI::SizedArray.wrap(:guint32, _v2, arr)
-          wrap(closure.to_ptr).invoke_block(_v1, _v3)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, arr, len = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = len
+            _v3 = GirFFI::SizedArray.wrap(:guint32, _v2, arr)
+            wrap(closure.to_ptr).invoke_block(_v1, _v3)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -101,12 +101,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, object = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = Regress::TestSimpleBoxedA.wrap(object)
-          wrap(closure.to_ptr).invoke_block(_v1, _v2)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, object = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = Regress::TestSimpleBoxedA.wrap(object)
+            wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -120,14 +120,14 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, i = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = i
-          _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
-          _v4 = GLib::Array.from(:gint32, _v3)
-          return_value.set_value _v4
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, i = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = i
+            _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
+            _v4 = GLib::Array.from(:gint32, _v3)
+            return_value.set_value _v4
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -141,13 +141,13 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a mapping method that passes the string result to return_value directly" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, value = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = value
-          _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
-          return_value.set_value _v3
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, value = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = value
+            _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
+            return_value.set_value _v3
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -161,12 +161,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
       it "returns a valid mapping method" do
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, list = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = GLib::List.wrap(:utf8, list)
-          wrap(closure.to_ptr).invoke_block(_v1, _v2)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, list = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = GLib::List.wrap(:utf8, list)
+            wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected
@@ -182,12 +182,12 @@ describe GirFFI::Builders::SignalClosureBuilder do
         skip_below "1.61.1"
 
         expected = <<~CODE
-        def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-          _instance, error = param_values.map(&:get_value_plain)
-          _v1 = _instance
-          _v2 = GLib::Error.wrap(error)
-          wrap(closure.to_ptr).invoke_block(_v1, _v2)
-        end
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, error = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = GLib::Error.wrap(error)
+            wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          end
         CODE
 
         _(builder.marshaller_definition).must_equal expected

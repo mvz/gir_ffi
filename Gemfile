@@ -6,8 +6,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "pry", "~> 0.12.0"
-gem "test-prof", platform: :mri
 gem "ruby-prof", platform: :mri
+gem "test-prof", platform: :mri
 
 if ENV["CI"]
   gem "coveralls", group: :development if ENV["TRAVIS_RUBY_VERSION"] == "2.4"

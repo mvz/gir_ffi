@@ -254,9 +254,9 @@ describe GirFFI::Builders::FunctionBuilder do
         # NOTE: This method is transfer-ownership: none, despite the name.
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def full_in
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_in self
-          end
+            def full_in
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_full_in self
+            end
           CODE
         end
       end
@@ -269,13 +269,13 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.full_inout(object)
-            _v1 = FFI::MemoryPointer.new :pointer
-            _v1.put_pointer 0, GIMarshallingTests::Object.from(object && object.ref)
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
-            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
-            return _v2
-          end
+            def self.full_inout(object)
+              _v1 = FFI::MemoryPointer.new :pointer
+              _v1.put_pointer 0, GIMarshallingTests::Object.from(object && object.ref)
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_full_inout _v1
+              _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
+              return _v2
+            end
           CODE
         end
       end
@@ -288,12 +288,12 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.full_out
-            _v1 = FFI::MemoryPointer.new :pointer
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_full_out _v1
-            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
-            return _v2
-          end
+            def self.full_out
+              _v1 = FFI::MemoryPointer.new :pointer
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_full_out _v1
+              _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0))
+              return _v2
+            end
           CODE
         end
       end
@@ -306,11 +306,11 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.full_return
-            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_full_return
-            _v2 = GIMarshallingTests::Object.wrap(_v1)
-            return _v2
-          end
+            def self.full_return
+              _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_full_return
+              _v2 = GIMarshallingTests::Object.wrap(_v1)
+              return _v2
+            end
           CODE
         end
       end
@@ -323,9 +323,9 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def none_in
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_in self
-          end
+            def none_in
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_none_in self
+            end
           CODE
         end
       end
@@ -338,13 +338,13 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.none_inout(object)
-            _v1 = FFI::MemoryPointer.new :pointer
-            _v1.put_pointer 0, GIMarshallingTests::Object.from(object)
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_inout _v1
-            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
-            return _v2
-          end
+            def self.none_inout(object)
+              _v1 = FFI::MemoryPointer.new :pointer
+              _v1.put_pointer 0, GIMarshallingTests::Object.from(object)
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_none_inout _v1
+              _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
+              return _v2
+            end
           CODE
         end
       end
@@ -357,12 +357,12 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.none_out
-            _v1 = FFI::MemoryPointer.new :pointer
-            GIMarshallingTests::Lib.gi_marshalling_tests_object_none_out _v1
-            _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
-            return _v2
-          end
+            def self.none_out
+              _v1 = FFI::MemoryPointer.new :pointer
+              GIMarshallingTests::Lib.gi_marshalling_tests_object_none_out _v1
+              _v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }
+              return _v2
+            end
           CODE
         end
       end
@@ -375,11 +375,11 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.none_return
-            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_none_return
-            _v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }
-            return _v2
-          end
+            def self.none_return
+              _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_object_none_return
+              _v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }
+              return _v2
+            end
           CODE
         end
       end
@@ -392,9 +392,9 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition including self.ref" do
           _(code).must_equal <<~CODE
-          def instance_method_full
-            Regress::Lib.regress_test_obj_instance_method_full self.ref
-          end
+            def instance_method_full
+              Regress::Lib.regress_test_obj_instance_method_full self.ref
+            end
           CODE
         end
       end
@@ -409,10 +409,10 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition without #ref" do
           _(code).must_equal <<~CODE
-          def add(r2)
-            _v1 = Regress::FooRectangle.from(r2)
-            Regress::Lib.regress_foo_rectangle_add self, _v1
-          end
+            def add(r2)
+              _v1 = Regress::FooRectangle.from(r2)
+              Regress::Lib.regress_foo_rectangle_add self, _v1
+            end
           CODE
         end
       end
@@ -426,13 +426,13 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.inout(struct_)
-            _v1 = FFI::MemoryPointer.new :pointer
-            _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.copy_from(struct_)
-            GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_inout _v1
-            _v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))
-            return _v2
-          end
+            def self.inout(struct_)
+              _v1 = FFI::MemoryPointer.new :pointer
+              _v1.put_pointer 0, GIMarshallingTests::BoxedStruct.copy_from(struct_)
+              GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_inout _v1
+              _v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))
+              return _v2
+            end
           CODE
         end
       end
@@ -444,12 +444,12 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.out
-            _v1 = FFI::MemoryPointer.new :pointer
-            GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_out _v1
-            _v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1.get_pointer(0))
-            return _v2
-          end
+            def self.out
+              _v1 = FFI::MemoryPointer.new :pointer
+              GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_out _v1
+              _v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1.get_pointer(0))
+              return _v2
+            end
           CODE
         end
       end
@@ -461,11 +461,11 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.returnv
-            _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_returnv
-            _v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)
-            return _v2
-          end
+            def self.returnv
+              _v1 = GIMarshallingTests::Lib.gi_marshalling_tests_boxed_struct_returnv
+              _v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)
+              return _v2
+            end
           CODE
         end
       end
@@ -477,12 +477,12 @@ describe GirFFI::Builders::FunctionBuilder do
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
-          def self.test_utf8_out
-            _v1 = FFI::MemoryPointer.new :pointer
-            Regress::Lib.regress_test_utf8_out _v1
-            _v2 = GirFFI::AllocationHelper.free_after _v1.get_pointer(0), &:to_utf8
-            return _v2
-          end
+            def self.test_utf8_out
+              _v1 = FFI::MemoryPointer.new :pointer
+              Regress::Lib.regress_test_utf8_out _v1
+              _v2 = GirFFI::AllocationHelper.free_after _v1.get_pointer(0), &:to_utf8
+              return _v2
+            end
           CODE
         end
       end

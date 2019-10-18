@@ -15,10 +15,10 @@ module GirFFI
       }.freeze
 
       FLATTENED_TAG_POINTER_TO_GTYPE_MAP = {
-        array:    GObject::TYPE_ARRAY,
-        ghash:    GObject::TYPE_HASH_TABLE,
-        strv:     GObject::TYPE_STRV,
-        utf8:     GObject::TYPE_STRING,
+        array: GObject::TYPE_ARRAY,
+        ghash: GObject::TYPE_HASH_TABLE,
+        strv:  GObject::TYPE_STRV,
+        utf8:  GObject::TYPE_STRING
       }.freeze
 
       def gtype

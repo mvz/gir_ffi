@@ -42,6 +42,7 @@ module GirFFI
         unless modul.const_defined? :GIR_FFI_BUILDER
           raise "The module #{module_name} was already defined elsewhere"
         end
+
         return modul
       end
       Builders::ModuleBuilder.new(module_name,

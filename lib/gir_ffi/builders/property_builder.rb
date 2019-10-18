@@ -102,10 +102,10 @@ module GirFFI
 
       def converting_setter_def
         <<~CODE
-        def #{setter_name} value
-          #{setter_builder.pre_conversion.join("\n")}
-          set_property("#{property_name}", #{setter_builder.call_argument_name})
-        end
+          def #{setter_name} value
+            #{setter_builder.pre_conversion.join("\n")}
+            set_property("#{property_name}", #{setter_builder.call_argument_name})
+          end
         CODE
       end
 
