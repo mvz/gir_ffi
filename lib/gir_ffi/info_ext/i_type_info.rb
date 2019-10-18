@@ -18,7 +18,7 @@ module GirFFI
         array: GObject::TYPE_ARRAY,
         ghash: GObject::TYPE_HASH_TABLE,
         strv:  GObject::TYPE_STRV,
-        utf8:  GObject::TYPE_STRING,
+        utf8:  GObject::TYPE_STRING
       }.freeze
 
       def gtype
