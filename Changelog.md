@@ -11,6 +11,14 @@
 * Support setting ByteArray properties directly with string values.
 * Target Ruby 2.4+
 * Implement getting and setting of flag properties and GValues.
+* Add support for basic hashtable values larger than pointer.
+* Support unintrospectable classes not derived from GObject but from some other
+  fundamental object type.
+* Make GPtrArray work with boxed types.
+* Do not try to ref method reciever for struct instance methods marking the
+  instance receiver as transfer `:everything`.
+* Support signals with GError arguments.
+* Cache various methods on IBaseInfo and its subclasses.
 
 ## 0.14.1 / 2018-09-27
 
