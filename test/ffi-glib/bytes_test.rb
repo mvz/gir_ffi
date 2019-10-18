@@ -13,6 +13,11 @@ describe GLib::Bytes do
     _(bytes.get_size).must_equal 3
   end
 
+  it "has #size as an alias for #get_size" do
+    bytes = GLib::Bytes.new [1, 2, 3]
+    _(bytes.size).must_equal 3
+  end
+
   it "has a working #get_data method" do
     bytes = GLib::Bytes.new [1, 2, 3]
     _(bytes.get_data.to_a).must_equal [1, 2, 3]

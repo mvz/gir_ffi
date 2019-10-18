@@ -65,30 +65,6 @@ describe GObject::Object do
     end
   end
 
-  describe "automatic accessor methods" do
-    class AccessorTest < GObject::Object
-      def get_x
-        @x
-      end
-
-      def set_x(val)
-        @x = val
-      end
-    end
-
-    subject { AccessorTest.new }
-
-    it "reads x by calling get_x" do
-      subject.set_x(1)
-      assert_equal 1, subject.x
-    end
-
-    it "writes x by calling set_x" do
-      subject.x = 2
-      assert_equal 2, subject.x
-    end
-  end
-
   describe "#signal_connect" do
     subject { GObject::Object.new }
 

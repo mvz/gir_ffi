@@ -77,6 +77,7 @@ module GirFFI
       def stub_methods
         info.get_methods.each do |minfo|
           klass.class_eval MethodStubber.new(minfo).method_stub, __FILE__, __LINE__
+          alias_accessors(minfo) if minfo.method?
         end
       end
 
@@ -91,6 +92,14 @@ module GirFFI
 
       def fields
         info.fields
+      end
+
+      def alias_accessors(minfo)
+        if minfo.n_args == 0 && minfo.name =~ /^get_(.*)/
+          klass.send :alias_method, Regexp.last_match(1), minfo.name
+        elsif minfo.n_args == 1 && minfo.name =~ /^set_(.*)/
+          klass.send :alias_method, "#{Regexp.last_match(1)}=", minfo.name
+        end
       end
     end
   end

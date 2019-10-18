@@ -291,6 +291,7 @@ module GirFFI
 
       attr_reader :container_class
 
+      # TODO: Inject container_info on initialization
       def container_info
         @container_info ||= info.container
       end

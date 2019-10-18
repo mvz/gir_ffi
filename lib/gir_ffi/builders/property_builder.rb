@@ -143,6 +143,7 @@ module GirFFI
         @container_module ||= Object.const_get(container_info.safe_namespace)
       end
 
+      # TODO: Inject container_info on initialization
       def container_info
         @container_info ||= @info.container
       end

@@ -90,22 +90,6 @@ module GObject
       end
     end
 
-    # TODO: Generate accessor methods from GIR at class definition time
-    def method_missing(method, *args)
-      getter_name = "get_#{method}"
-      return send(getter_name, *args) if respond_to?(getter_name)
-
-      if method.to_s =~ /(.*)=$/
-        setter_name = "set_#{Regexp.last_match[1]}"
-        return send(setter_name, *args) if respond_to?(setter_name)
-      end
-      super
-    end
-
-    def respond_to_missing?(*)
-      false
-    end
-
     def signal_connect(event, data = nil, &block)
       GObject.signal_connect(self, event, data, &block)
     end
