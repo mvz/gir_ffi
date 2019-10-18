@@ -103,12 +103,22 @@ describe GObject do
   end
 
   describe GObject::ParamSpec do
-    it "does not have a separate #name field accessor" do
+    it "has a generated field accessor for #flags but not #get_flags method" do
       pspec = GObject.param_spec_int("foo", "foo bar",
                                      "The Foo Bar Property",
                                      10, 20, 15,
                                      3)
-      _(pspec).wont_respond_to :name
+      _(pspec).wont_respond_to :get_flags
+      _(pspec.method(:flags).original_name).must_equal :flags
+    end
+
+    it "aliases #get_name to #name instead of having a separate field accessor" do
+      pspec = GObject.param_spec_int("foo", "foo bar",
+                                     "The Foo Bar Property",
+                                     10, 20, 15,
+                                     3)
+      _(pspec).must_respond_to :get_name
+      _(pspec.method(:name).original_name).must_equal :get_name
     end
   end
 end
