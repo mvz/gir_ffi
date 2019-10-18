@@ -78,10 +78,10 @@ module GirFFI
         info.get_methods.each do |minfo|
           klass.class_eval MethodStubber.new(minfo).method_stub, __FILE__, __LINE__
           if minfo.name =~ /^get_(.*)/ && minfo.method?
-            klass.alias_method $1, minfo.name
+            klass.alias_method Regexp.last_match(1), minfo.name
           end
           if minfo.name =~ /^set_(.*)/ && minfo.method?
-            klass.alias_method "#{$1}=", minfo.name
+            klass.alias_method "#{Regexp.last_match(1)}=", minfo.name
           end
         end
       end
