@@ -13,10 +13,6 @@ Layout/AlignHash:
   EnforcedHashRocketStyle: table
   EnforcedLastArgumentHashStyle: ignore_implicit
 
-# Dot at end of line makes it clearer that the line is not done
-Layout/DotPosition:
-  EnforcedStyle: trailing
-
 # Multi-line assignment should be simply indented. Aligning them makes it even
 # harder to keep a sane line length.
 Layout/MultilineOperationIndentation:

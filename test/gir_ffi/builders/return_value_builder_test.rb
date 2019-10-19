@@ -111,8 +111,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it "wraps the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
-        _(builder.post_conversion).
-          must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }"]
+        _(builder.post_conversion)
+          .must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }"]
       end
 
       it "returns the wrapped result" do
@@ -344,8 +344,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it "autoreleases and converts the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
-        _(builder.post_conversion).
-          must_equal ["_v2 = GirFFI::AllocationHelper.free_after _v1, &:to_utf8"]
+        _(builder.post_conversion)
+          .must_equal ["_v2 = GirFFI::AllocationHelper.free_after _v1, &:to_utf8"]
       end
 
       it "returns the converted result" do

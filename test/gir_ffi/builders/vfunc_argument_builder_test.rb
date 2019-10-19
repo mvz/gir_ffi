@@ -75,8 +75,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[1] }
 
     it "has the correct value for #pre_conversion" do
-      _(builder.pre_conversion).
-        must_equal ["_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"]
+      _(builder.pre_conversion)
+        .must_equal ["_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"]
     end
 
     it "has the correct value for #post_conversion" do
@@ -90,8 +90,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { GirFFI::ReceiverArgumentInfo.new(type_info) }
 
     it "has the correct value for #pre_conversion" do
-      _(builder.pre_conversion).
-        must_equal ["_v1 = GIMarshallingTests::Object.wrap(_instance)"]
+      _(builder.pre_conversion)
+        .must_equal ["_v1 = GIMarshallingTests::Object.wrap(_instance)"]
     end
 
     it "has the correct value for #post_conversion" do

@@ -88,8 +88,8 @@ describe GObject do
 
     it "does not allow connecting an invalid signal" do
       o = Regress::TestSubObj.new
-      _(proc { GObject.signal_connect(o, "not-really-a-signal") {} }).
-        must_raise GirFFI::SignalNotFoundError
+      _(proc { GObject.signal_connect(o, "not-really-a-signal") {} })
+        .must_raise GirFFI::SignalNotFoundError
     end
 
     it "handles return values" do

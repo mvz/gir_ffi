@@ -117,8 +117,8 @@ describe GirFFI::ArgHelper do
     end
 
     it "raises if array does not have the correct size" do
-      result = _(-> { GirFFI::ArgHelper.check_fixed_array_size(3, [1, 2], "foo") }).
-        must_raise ArgumentError
+      result = _(-> { GirFFI::ArgHelper.check_fixed_array_size(3, [1, 2], "foo") })
+        .must_raise ArgumentError
       _(result.message).must_equal "foo should have size 3"
     end
   end

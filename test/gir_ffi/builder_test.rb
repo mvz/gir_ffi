@@ -55,9 +55,9 @@ describe GirFFI::Builder do
 
     it "passes the version on to ModuleBuilder" do
       builder = double(generate: nil)
-      expect(GirFFI::Builders::ModuleBuilder).to receive(:new).
-        with("Foo", namespace: "Foo", version: "1.0").
-        and_return builder
+      expect(GirFFI::Builders::ModuleBuilder).to receive(:new)
+        .with("Foo", namespace: "Foo", version: "1.0")
+        .and_return builder
 
       GirFFI::Builder.build_module "Foo", "1.0"
     end
@@ -100,8 +100,8 @@ describe GirFFI::Builder do
     end
 
     it "refuse to build classes for base types" do
-      _(-> { GirFFI::Builder.build_by_gtype GObject::TYPE_INT }).
-        must_raise RuntimeError, "Unable to handle type gint"
+      _(-> { GirFFI::Builder.build_by_gtype GObject::TYPE_INT })
+        .must_raise RuntimeError, "Unable to handle type gint"
     end
   end
 
@@ -111,12 +111,12 @@ describe GirFFI::Builder do
     it "calls attach_function with the correct types for Regress.test_callback_destroy_notify" do
       function_info = get_introspection_data "Regress", "test_callback_destroy_notify"
 
-      expect(lib).
-        to receive(:attach_function).
-        with("regress_test_callback_destroy_notify",
-             [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
-             :int32).
-        and_return true
+      expect(lib)
+        .to receive(:attach_function)
+        .with("regress_test_callback_destroy_notify",
+              [Regress::TestCallbackUserData, :pointer, GLib::DestroyNotify],
+              :int32)
+        .and_return true
 
       GirFFI::Builder.attach_ffi_function(lib, function_info)
     end
@@ -124,37 +124,37 @@ describe GirFFI::Builder do
     it "calls attach_function with the correct types for Regress::TestObj#torture_signature_0" do
       info = get_method_introspection_data "Regress", "TestObj", "torture_signature_0"
 
-      expect(lib).
-        to receive(:attach_function).
-        with("regress_test_obj_torture_signature_0",
-             [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
-             :void).
-        and_return true
+      expect(lib)
+        .to receive(:attach_function)
+        .with("regress_test_obj_torture_signature_0",
+              [:pointer, :int32, :pointer, :pointer, :pointer, :pointer, :uint32],
+              :void)
+        .and_return true
 
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 
     it "calls attach_function with the correct types for Regress::TestObj#instance_method" do
       info = get_method_introspection_data "Regress", "TestObj", "instance_method"
-      expect(lib).to receive(:attach_function).
-        with("regress_test_obj_instance_method", [:pointer], :int32).
-        and_return true
+      expect(lib).to receive(:attach_function)
+        .with("regress_test_obj_instance_method", [:pointer], :int32)
+        .and_return true
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 
     it "calls attach_function with the correct types for Regress.test_array_gint32_in" do
       info = get_introspection_data "Regress", "test_array_gint32_in"
-      expect(lib).to receive(:attach_function).
-        with("regress_test_array_gint32_in", [:int32, :pointer], :int32).
-        and_return true
+      expect(lib).to receive(:attach_function)
+        .with("regress_test_array_gint32_in", [:int32, :pointer], :int32)
+        .and_return true
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 
     it "calls attach_function with the correct types for Regress.test_enum_param" do
       info = get_introspection_data "Regress", "test_enum_param"
-      expect(lib).to receive(:attach_function).
-        with("regress_test_enum_param", [Regress::TestEnum], :pointer).
-        and_return true
+      expect(lib).to receive(:attach_function)
+        .with("regress_test_enum_param", [Regress::TestEnum], :pointer)
+        .and_return true
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 

@@ -121,8 +121,8 @@ module GirFFI
       end
 
       def sorted_base_argument_builders
-        @sorted_base_argument_builders ||= @base_argument_builders.
-          sort_by.with_index { |arg, i| [arg.array_length_idx, i] }
+        @sorted_base_argument_builders ||= @base_argument_builders
+          .sort_by.with_index { |arg, i| [arg.array_length_idx, i] }
       end
 
       def split_off_block_argument

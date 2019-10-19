@@ -1808,8 +1808,8 @@ describe Regress do
       ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
       _([ret, y, z, q]).must_equal [true, -21, 2 * -21, "hello".length + 12]
 
-      _(proc { instance.torture_signature_1(-21, "hello", 11) }).
-        must_raise GirFFI::GLibError
+      _(proc { instance.torture_signature_1(-21, "hello", 11) })
+        .must_raise GirFFI::GLibError
     end
 
     describe "its 'bare' property" do
@@ -2968,8 +2968,8 @@ describe Regress do
   end
 
   it "has a working function #annotation_string_zero_terminated_out" do
-    _(Regress.annotation_string_zero_terminated_out(%w(foo bar)).to_a).
-      must_equal %w(foo bar)
+    _(Regress.annotation_string_zero_terminated_out(%w(foo bar)).to_a)
+      .must_equal %w(foo bar)
   end
 
   it "has a working function #annotation_test_parsing_bug630862" do
@@ -3920,8 +3920,8 @@ describe Regress do
     ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
     _([ret, y, z, q]).must_equal [true, -21, 2 * -21, "hello".length + 12]
 
-    _(proc { Regress.test_torture_signature_1(-21, "hello", 11) }).
-      must_raise GirFFI::GLibError
+    _(proc { Regress.test_torture_signature_1(-21, "hello", 11) })
+      .must_raise GirFFI::GLibError
   end
 
   it "has a working function #test_torture_signature_2" do

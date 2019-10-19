@@ -54,11 +54,11 @@ describe GirFFI::ObjectBase do
     end
 
     it "finds the ancestor classes and included interface" do
-      _(derived_class.registered_ancestors).
-        must_equal [derived_class,
-                    GIMarshallingTests::Interface,
-                    GIMarshallingTests::Object,
-                    GObject::Object]
+      _(derived_class.registered_ancestors)
+        .must_equal [derived_class,
+                     GIMarshallingTests::Interface,
+                     GIMarshallingTests::Object,
+                     GObject::Object]
     end
   end
 end

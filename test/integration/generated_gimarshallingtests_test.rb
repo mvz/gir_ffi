@@ -383,8 +383,8 @@ describe GIMarshallingTests do
           obj = object
         }
       end
-      result = derived_instance.
-        get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.gtype
+      result = derived_instance
+        .get_ref_info_for_vfunc_in_object_transfer_full GIMarshallingTests::Object.gtype
       _(result).must_equal [1, false]
       _(obj).must_be_instance_of GIMarshallingTests::Object
     end
@@ -396,8 +396,8 @@ describe GIMarshallingTests do
           obj = object
         }
       end
-      result = derived_instance.
-        get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
+      result = derived_instance
+        .get_ref_info_for_vfunc_in_object_transfer_none GIMarshallingTests::Object.gtype
       _(object_ref_count(obj)).must_be :>, 0
       _(result).must_equal [2, false]
       _(obj).must_be_instance_of GIMarshallingTests::Object
@@ -584,8 +584,8 @@ describe GIMarshallingTests do
       result = derived_instance.vfunc_meth_with_error 42
       _(result).must_equal true
 
-      err = _(proc { derived_instance.vfunc_meth_with_error(21) }).
-        must_raise GirFFI::GLibError
+      err = _(proc { derived_instance.vfunc_meth_with_error(21) })
+        .must_raise GirFFI::GLibError
       _(err.message).must_equal "This is not the answer!"
       _(err.domain).must_equal "gir_ffi"
       _(err.code).must_equal 0
@@ -608,8 +608,8 @@ describe GIMarshallingTests do
           :vfunc_one_out_parameter,
           proc { |*_args| 23.4 })
       end
-      _(derived_instance.vfunc_one_out_parameter).
-        must_be_within_epsilon 23.4
+      _(derived_instance.vfunc_one_out_parameter)
+        .must_be_within_epsilon 23.4
     end
 
     it "has a working method #vfunc_out_enum" do
@@ -632,8 +632,8 @@ describe GIMarshallingTests do
           :vfunc_return_value_and_multiple_out_parameters,
           proc { |*_args| [42, -142, 3] })
       end
-      _(derived_instance.vfunc_return_value_and_multiple_out_parameters).
-        must_equal [42, -142, 3]
+      _(derived_instance.vfunc_return_value_and_multiple_out_parameters)
+        .must_equal [42, -142, 3]
     end
 
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
@@ -642,8 +642,8 @@ describe GIMarshallingTests do
           :vfunc_return_value_and_one_out_parameter,
           proc { |*_args| [42, -142] })
       end
-      _(derived_instance.vfunc_return_value_and_one_out_parameter).
-        must_equal [42, -142]
+      _(derived_instance.vfunc_return_value_and_one_out_parameter)
+        .must_equal [42, -142]
     end
 
     it "has a working method #vfunc_return_value_only" do
@@ -1258,8 +1258,8 @@ describe GIMarshallingTests do
     it "creates an instance using #new" do
       so = GIMarshallingTests::SubObject.new
       _(so).must_be_instance_of GIMarshallingTests::SubObject
-      _(GObject.type_name_from_instance(so)).
-        must_equal "GIMarshallingTestsSubObject"
+      _(GObject.type_name_from_instance(so))
+        .must_equal "GIMarshallingTestsSubObject"
     end
 
     let(:instance) { GIMarshallingTests::SubObject.new }
@@ -1284,8 +1284,8 @@ describe GIMarshallingTests do
     it "creates an instance using #new" do
       so = GIMarshallingTests::SubSubObject.new
       assert_instance_of GIMarshallingTests::SubSubObject, so
-      _(GObject.type_name_from_instance(so)).
-        must_equal "GIMarshallingTestsSubSubObject"
+      _(GObject.type_name_from_instance(so))
+        .must_equal "GIMarshallingTestsSubSubObject"
     end
 
     let(:instance) { GIMarshallingTests::SubSubObject.new }

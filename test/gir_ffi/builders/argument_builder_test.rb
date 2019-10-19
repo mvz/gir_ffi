@@ -14,8 +14,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #pre_conversion" do
-          _(builder.pre_conversion).
-            must_equal ["_v1 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)"]
+          _(builder.pre_conversion)
+            .must_equal ["_v1 = GirFFI::SizedArray.copy_from([:pointer, GIMarshallingTests::BoxedStruct], -1, structs)"]
         end
 
         it "has the correct value for #post_conversion" do
@@ -144,8 +144,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post_conversion" do
-          _(builder.post_conversion).
-            must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }"]
+          _(builder.post_conversion)
+            .must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1.get_pointer(0)).tap { |it| it && it.ref }"]
         end
       end
     end
@@ -163,8 +163,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post_conversion" do
-          _(builder.post_conversion).
-            must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1.get_pointer(0))"]
+          _(builder.post_conversion)
+            .must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1.get_pointer(0))"]
         end
       end
 
@@ -412,9 +412,9 @@ describe GirFFI::Builders::ArgumentBuilder do
       end
 
       it "has the correct value for #pre_conversion" do
-        _(builder.pre_conversion).
-          must_equal ["_v1 = FFI::MemoryPointer.new GIMarshallingTests::NoTypeFlags",
-                      "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
+        _(builder.pre_conversion)
+          .must_equal ["_v1 = FFI::MemoryPointer.new GIMarshallingTests::NoTypeFlags",
+                       "GIMarshallingTests::NoTypeFlags.copy_value_to_pointer(#{arg_info.name}, _v1)"]
       end
 
       it "has the correct value for #post_conversion" do
@@ -525,8 +525,8 @@ describe GirFFI::Builders::ArgumentBuilder do
         end
 
         it "has the correct value for #post_conversion" do
-          _(builder.post_conversion).
-            must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))"]
+          _(builder.post_conversion)
+            .must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_own(_v1.get_pointer(0))"]
         end
       end
     end

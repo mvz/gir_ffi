@@ -69,13 +69,13 @@ describe GObjectIntrospection::IRepository do
 
     it "passes its struct pointer to the c function just in case" do
       gir.require "GObject", "2.0"
-      allow(GObjectIntrospection::Lib).to receive(:g_irepository_get_dependencies).
-        and_call_original
+      allow(GObjectIntrospection::Lib).to receive(:g_irepository_get_dependencies)
+        .and_call_original
 
       gir.dependencies("GObject")
 
-      expect(GObjectIntrospection::Lib).to have_received(:g_irepository_get_dependencies).
-        with(gir, "GObject")
+      expect(GObjectIntrospection::Lib).to have_received(:g_irepository_get_dependencies)
+        .with(gir, "GObject")
     end
   end
 end

@@ -91,8 +91,8 @@ module GirFFI
       end
 
       def ingoing_value_storage
-        PointerValueConvertor.new(type_spec).
-          value_to_pointer(call_argument_name, ingoing_convertor.conversion)
+        PointerValueConvertor.new(type_spec)
+          .value_to_pointer(call_argument_name, ingoing_convertor.conversion)
       end
 
       def has_post_conversion?

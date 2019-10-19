@@ -281,8 +281,8 @@ module GirFFI
       private
 
       def value_storage(typed_ptr, builder)
-        PointerValueConvertor.new(field_type_tag).
-          value_to_pointer(typed_ptr, builder.call_argument_name, info.offset)
+        PointerValueConvertor.new(field_type_tag)
+          .value_to_pointer(typed_ptr, builder.call_argument_name, info.offset)
       end
 
       def field_type_tag
