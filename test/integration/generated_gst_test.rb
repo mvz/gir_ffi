@@ -20,6 +20,10 @@ describe "the generated Gst module" do
     it "correctly fetches the name" do
       _(instance.name).must_equal "sink"
     end
+
+    it "allows the can-activate-push property to be read" do
+      _(instance.get_property("can-activate-push")).must_equal true
+    end
   end
 
   describe "Gst::AutoAudioSink" do

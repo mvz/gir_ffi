@@ -46,6 +46,10 @@ module GirFFI
       []
     end
 
+    def find_property(_any)
+      nil
+    end
+
     def find_signal(_any)
       nil
     end
