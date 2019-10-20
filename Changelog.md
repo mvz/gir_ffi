@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.1 / 2019-10-20
+
+* Allow access to properties for unintrospectable classes.
+
 ## 0.15.0 / 2019-10-19
 
 * Drop support for gobject-introspection below 1.46, the version available in
