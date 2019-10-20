@@ -69,5 +69,16 @@ describe GirFFI::Builders::UnintrospectableBuilder do
         _(signal.name).must_equal "handoff"
       end
     end
+
+    describe "its #find_property method" do
+      it "returns nil for a property that doesn't exist" do
+        _(builder.find_property("foo")).must_be_nil
+      end
+
+      it "finds properies in ancestor classes" do
+        property = builder.find_property "name"
+        _(property.name).must_equal "name"
+      end
+    end
   end
 end
