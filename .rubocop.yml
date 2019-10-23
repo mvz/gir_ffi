@@ -1,4 +1,7 @@
-require: rubocop-performance
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
 
 AllCops:
   Exclude:
@@ -13,17 +16,18 @@ Layout/AlignHash:
   EnforcedHashRocketStyle: table
   EnforcedLastArgumentHashStyle: ignore_implicit
 
-# Multi-line assignment should be simply indented. Aligning them makes it even
-# harder to keep a sane line length.
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: indented
-
+# Don't force lonely closing parentheses
 Layout/MultilineMethodCallBraceLayout:
   EnforcedStyle: same_line
 
 # Multi-line method calls should be simply indented. Aligning them makes it
 # even harder to keep a sane line length.
 Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+# Multi-line assignment should be simply indented. Aligning them makes it even
+# harder to keep a sane line length.
+Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 # Force consistent spacing independent of block contents
@@ -53,10 +57,6 @@ Metrics/LineLength:
 Naming/AccessorMethodName:
   Enabled: false
 
-# GirFFI uses a gir_ffi-something naming scheme.
-Naming/FileName:
-  Enabled: false
-
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
@@ -74,12 +74,7 @@ Style/PercentLiteralDelimiters:
 Style/RedundantReturn:
   AllowMultipleReturnValues: true
 
-# Allow compact procs in tests
-Style/Semicolon:
-  Exclude:
-    - 'test/**/*'
-
-# Don't commit to presence or absence of interpolation
+# Do not commit to use of interpolation
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
@@ -88,6 +83,10 @@ Style/SymbolArray:
   EnforcedStyle: brackets
 
 # Project-specific configuration goes here.
+
+# GirFFI uses a gir_ffi-something naming scheme.
+Naming/FileName:
+  Enabled: false
 
 # TODO: See about has_ and have_
 Naming/PredicateName:
@@ -104,5 +103,3 @@ Performance/FixedSize:
 Style/TrivialAccessors:
   ExactNameMatch: true
   AllowPredicates: true
-
-inherit_from: .rubocop_todo.yml
