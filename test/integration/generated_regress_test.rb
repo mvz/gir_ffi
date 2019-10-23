@@ -941,7 +941,10 @@ describe Regress do
       instance = make_derived_instance do |info|
         # TODO: Do not pass callback again in user_data if destroy notifier is absent
         info.install_vfunc_implementation :do_baz,
-                                          proc { |obj, callback, _user_data| callback.call; a = obj.get_name }
+                                          proc { |obj, callback, _user_data|
+                                            callback.call
+                                            a = obj.get_name
+                                          }
       end
       b = nil
       instance.do_baz { b = "hello" }
@@ -2314,7 +2317,10 @@ describe Regress do
     it "handles the 'test' signal" do
       a = b = nil
       o = Regress::TestSubObj.new
-      GObject.signal_connect(o, "test", 2) { |i, d| a = d; b = i }
+      GObject.signal_connect(o, "test", 2) do |i, d|
+        a = d
+        b = i
+      end
       GObject.signal_emit o, "test"
       assert_equal [2, o], [a, b]
     end
@@ -3347,7 +3353,10 @@ describe Regress do
   it "has a working function #test_callback_async" do
     a = 1
     stored_proc = nil
-    Regress.test_callback_async { |user_data| stored_proc = user_data; a = 2 }
+    Regress.test_callback_async do |user_data|
+      stored_proc = user_data
+      a = 2
+    end
     result = Regress.test_callback_thaw_async
     _(a).must_equal 2
     _(stored_proc).wont_be_nil
@@ -3360,7 +3369,10 @@ describe Regress do
   it "has a working function #test_callback_destroy_notify" do
     a = 1
     stored_proc = nil
-    r1 = Regress.test_callback_destroy_notify { |user_data| stored_proc = user_data; a = 2 }
+    r1 = Regress.test_callback_destroy_notify do |user_data|
+      stored_proc = user_data
+      a = 2
+    end
     _(a).must_equal 2
     stored_id = stored_proc.object_id
     _(GirFFI::CallbackBase::CALLBACKS[stored_id].object_id).must_equal stored_id
@@ -3401,9 +3413,18 @@ describe Regress do
 
   it "has a working function #test_callback_thaw_async" do
     invoked = []
-    Regress.test_callback_async { invoked << 1; 1 }
-    Regress.test_callback_async { invoked << 2; 2 }
-    Regress.test_callback_async { invoked << 3; 3 }
+    Regress.test_callback_async do
+      invoked << 1
+      1
+    end
+    Regress.test_callback_async do
+      invoked << 2
+      2
+    end
+    Regress.test_callback_async do
+      invoked << 3
+      3
+    end
     result = Regress.test_callback_thaw_async
     _(invoked).must_equal [3, 2, 1]
     _(result).must_equal 1
@@ -3418,7 +3439,10 @@ describe Regress do
 
   it "has a working function #test_callback_user_data" do
     stored_id = nil
-    result = Regress.test_callback_user_data { |u| stored_id = u; 5 }
+    result = Regress.test_callback_user_data do |u|
+      stored_id = u
+      5
+    end
     # TODO: Ensure that the key stored_id is no longer in the callback store
     _(stored_id).wont_be_nil
     _(result).must_equal 5
