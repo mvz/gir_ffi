@@ -50,7 +50,7 @@ module IntrospectionTestExtensions
     get_introspection_data(namespace, klass).find_vfunc name
   end
 
-  def skip_below(introduction_version);
+  def skip_below(introduction_version)
     unless LATEST_VERSION >= introduction_version
       raise "Version #{introduction_version} is too new and would always be skipped"
     end
