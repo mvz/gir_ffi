@@ -3,10 +3,21 @@ language: ruby
 dist: xenial
 
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libgirepository1.0-dev gobject-introspection gir1.2-gtop-2.0
-  - sudo apt-get install -y gir1.2-gtk-3.0 gir1.2-pango-1.0 gir1.2-secret-1
-  - sudo apt-get install -y gir1.2-gstreamer-1.0 gir1.2-gtksource-3.0
+  - sudo apt-get update
+  # Provides libgirepository-1.0.so.1
+  - sudo apt-get install libgirepository-1.0-1
+  # Provides source code for test libraries and tools to generate introspection data
+  - sudo apt-get install gobject-introspection
+  # Provides gir files for various libraries, needed for generating gir files
+  # for test libraries
+  - sudo apt-get install libgirepository1.0-dev
+  # The following packages provide typelibs for various libraries
+  - sudo apt-get install gir1.2-gtop-2.0
+  - sudo apt-get install gir1.2-gtk-3.0
+  - sudo apt-get install gir1.2-pango-1.0
+  - sudo apt-get install gir1.2-secret-1
+  - sudo apt-get install gir1.2-gstreamer-1.0
+  - sudo apt-get install gir1.2-gtksource-3.0
 
 cache:
   bundler: true
