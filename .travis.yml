@@ -31,6 +31,7 @@ rvm:
   - ruby-head
 
 matrix:
+  # Do not run cucumber scenarios on JRuby
   include:
     - rvm: jruby-9.2
       script: bundle exec rake test:all
