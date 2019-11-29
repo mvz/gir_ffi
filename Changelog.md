@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.15.2 / 2019-11-29
+
+* Load girepository-1.0 library in a way that does not require installing a
+  development package.
+
 ## 0.15.1 / 2019-10-20
 
 * Allow access to properties for unintrospectable classes.
