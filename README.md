@@ -73,7 +73,8 @@ To run the tests, you should additionally install `libgirepository1.0-dev`,
 `gir1.2-gtksource-3.0`, `gir1.2-pango-1.0`, `gir1.2-secret-1` and
 `gir1.2-gstreamer-1.0`. This should be enough to get `rake test` working.
 
-GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV.
+GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV. Pull
+requests to support these platforms are welcome.
 
 ## Overrides
 
@@ -96,9 +97,9 @@ Please feel free to file bugs or send pull requests!
 If you just want to help out but don't know where to start, have a look at
 TODO.md, and check the notes in the code (e.g., using `dnote`).
 
-If you want to send pull requests or patches, please try to follow these
-instructions. If you get stuck, make a pull request anyway and I'll try to help
-out.
+If you want to send pull requests or patches, try to follow the instructions
+below. **If you get stuck, please make a pull request anyway and I'll try to
+help out.**
 
 * Make sure `rake test` runs without reporting any failures.
 * Add tests for your feature. Otherwise, I can't see if it works or if I
@@ -119,7 +120,7 @@ The following people have contributed to GirFFI over the years:
 
 ## License
 
-Copyright &copy; 2009&ndash;2018 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2019 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
