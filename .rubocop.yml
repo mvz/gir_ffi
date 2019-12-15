@@ -11,7 +11,7 @@ AllCops:
   TargetRubyVersion: 2.4
 
 # Tables are nice
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
   EnforcedLastArgumentHashStyle: ignore_implicit
@@ -53,10 +53,6 @@ Metrics/LineLength:
   Exclude:
     - 'test/**/*'
 
-# GObject has a lot of accessor method starting with get_ or set_
-Naming/AccessorMethodName:
-  Enabled: false
-
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
@@ -84,13 +80,17 @@ Style/SymbolArray:
 
 # Project-specific configuration goes here.
 
+# GObject has a lot of accessor method starting with get_ or set_
+Naming/AccessorMethodName:
+  Enabled: false
+
 # GirFFI uses a gir_ffi-something naming scheme.
 Naming/FileName:
   Enabled: false
 
 # TODO: See about has_ and have_
 Naming/PredicateName:
-  NamePrefixBlacklist:
+  ForbiddenPrefixes:
     - is_
 
 # In tests, we want to do this to be more clear
