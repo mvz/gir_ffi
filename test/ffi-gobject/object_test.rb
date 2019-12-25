@@ -103,7 +103,7 @@ describe GObject::Object do
 
   describe "upon garbage collection" do
     it "lowers the reference count" do
-      skip "cannot be reliably tested on JRuby and Rubinius" if jruby? || rubinius?
+      skip "cannot be reliably tested on JRuby" if jruby?
 
       ptr = GObject::Object.new.to_ptr
       _(object_ref_count(ptr)).must_equal 1

@@ -369,7 +369,7 @@ describe GObject::Value do
 
   describe "upon garbage collection" do
     it "restores the underlying GValue to its pristine state" do
-      skip "cannot be reliably tested on JRuby and Rubinius" if jruby? || rubinius?
+      skip "cannot be reliably tested on JRuby" if jruby?
 
       value = GObject::Value.from 42
 

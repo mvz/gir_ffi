@@ -38,7 +38,7 @@ describe GirFFI::BoxedBase do
 
   describe "upon garbage collection" do
     it "frees and disowns the underlying struct if it is owned" do
-      skip "cannot be reliably tested on JRuby and Rubinius" if jruby? || rubinius?
+      skip "cannot be reliably tested on JRuby" if jruby?
 
       allow(GObject).to receive(:boxed_free)
       gtype = GIMarshallingTests::BoxedStruct.gtype
