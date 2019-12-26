@@ -70,21 +70,4 @@ describe GirFFI::Builders::StructBuilder do
       _(proc { builder.superclass }).must_raise RuntimeError
     end
   end
-
-  describe "#setup_class" do
-    before do
-      save_module :Regress
-    end
-
-    it "stubs the structs methods" do
-      info = get_introspection_data "Regress", "TestStructA"
-      builder = GirFFI::Builders::StructBuilder.new info
-      builder.setup_class
-      assert_defines_instance_method Regress::TestStructA, :clone
-    end
-
-    after do
-      restore_module :Regress
-    end
-  end
 end
