@@ -18,12 +18,13 @@ describe GirFFI::Core do
   end
 
   it "sets up dependencies" do
-    save_module :GObject
+    save_module :Utility
     save_module :Regress
+    refute Object.const_defined?(:Utility)
     GirFFI.setup :Regress
-    assert Object.const_defined?(:GObject)
+    assert Object.const_defined?(:Utility)
     restore_module :Regress
-    restore_module :GObject
+    restore_module :Utility
   end
 
   describe ".setup" do
