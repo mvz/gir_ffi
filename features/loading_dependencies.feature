@@ -10,7 +10,7 @@ Feature: Loading dependencies
       GirFFI.setup :Gtk
       puts "Atk exists after: #{Object.const_defined?(:Atk)}"
       """
-    And I run `ruby dependencies.rb`
+    When I run `ruby dependencies.rb`
     Then the output should contain exactly:
       """
       Atk exists before: false
