@@ -1,3 +1,18 @@
+# Instructions
+# ------------
+#
+# Build the Docker image using:
+#
+#   docker build -t test-gir_ffi .
+#
+# You can pick any image name instead of test-gir_ffi, of course. After the
+# build is done, run bash interactively inside the image like so:
+#
+#   docker run -v $PWD:/gir_ffi --rm -it test-gir_ffi:latest bash
+#
+# The `-v $PWD:/gir_ffi` will make the container pick up any changes to the
+# code, so you can edit and re-run the tests.
+
 FROM ruby:2.4
 
 RUN apt-get update
