@@ -48,7 +48,7 @@ Metrics/BlockLength:
     - '*.gemspec' # Gem spec blocks can be any size
 
 # Be lenient with line length
-Metrics/LineLength:
+Layout/LineLength:
   Max: 95
   Exclude:
     - 'test/**/*'
