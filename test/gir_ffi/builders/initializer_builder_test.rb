@@ -21,7 +21,9 @@ describe GirFFI::Builders::InitializerBuilder do
     end
 
     describe "for constructors with a custom name" do
-      let(:function_info) { get_method_introspection_data "Regress", "TestObj", "new_from_file" }
+      let(:function_info) do
+        get_method_introspection_data "Regress", "TestObj", "new_from_file"
+      end
       it "builds a custom initializer" do
         _(code).must_equal <<~CODE
           def initialize_from_file(x)

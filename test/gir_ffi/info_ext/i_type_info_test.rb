@@ -195,7 +195,8 @@ describe GirFFI::InfoExt::ITypeInfo do
         allow(type_info).to receive(:interface).and_return iface_info
         expect(type_info).to receive(:pointer?).and_return false
 
-        expect(GirFFI::Builder).to receive(:build_class).with(iface_info).and_return interface
+        expect(GirFFI::Builder)
+          .to receive(:build_class).with(iface_info).and_return interface
       end
 
       describe "when the interface type is :enum" do

@@ -8,7 +8,9 @@ describe GirFFI::Builders::FunctionBuilder do
     let(:code) { builder.method_definition }
 
     describe "generally" do
-      let(:function_info) { get_method_introspection_data "GObject", "Object", "get_property" }
+      let(:function_info) do
+        get_method_introspection_data "GObject", "Object", "get_property"
+      end
 
       it "returns the same result when called twice" do
         original = builder.method_definition
@@ -18,7 +20,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for Regress:test_array_fixed_out_objects" do
-      let(:function_info) { get_introspection_data "Regress", "test_array_fixed_out_objects" }
+      let(:function_info) do
+        get_introspection_data "Regress", "test_array_fixed_out_objects"
+      end
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.test_array_fixed_out_objects
@@ -47,7 +51,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for methods taking a zero-terminated array with length argument" do
-      let(:function_info) { get_method_introspection_data "Regress", "AnnotationObject", "parse_args" }
+      let(:function_info) do
+        get_method_introspection_data "Regress", "AnnotationObject", "parse_args"
+      end
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def parse_args(argv)
@@ -65,7 +71,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for functions with callbacks" do
-      let(:function_info) { get_introspection_data "Regress", "test_callback_destroy_notify" }
+      let(:function_info) do
+        get_introspection_data "Regress", "test_callback_destroy_notify"
+      end
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.test_callback_destroy_notify(&callback)
@@ -119,7 +127,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for functions that have a caller-allocated GValue out argument" do
-      let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_out_caller_allocates" }
+      let(:function_info) do
+        get_introspection_data "GIMarshallingTests", "gvalue_out_caller_allocates"
+      end
 
       it "creates a call to #get_value" do
         _(code).must_equal <<~CODE
@@ -164,7 +174,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for a method with an inout array with size argument" do
-      let(:function_info) { get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout" }
+      let(:function_info) do
+        get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout"
+      end
       it "builds the correct definition" do
         _(code).must_equal <<~CODE
           def method_array_inout(ints)
@@ -183,7 +195,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for a simple method" do
-      let(:function_info) { get_method_introspection_data "Regress", "TestObj", "instance_method" }
+      let(:function_info) do
+        get_method_introspection_data "Regress", "TestObj", "instance_method"
+      end
 
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
@@ -501,7 +515,9 @@ describe GirFFI::Builders::FunctionBuilder do
     end
 
     describe "for functions where some allow-none cannot be honored" do
-      let(:function_info) { get_introspection_data "GIMarshallingTests", "array_in_utf8_two_in_out_of_order" }
+      let(:function_info) do
+        get_introspection_data "GIMarshallingTests", "array_in_utf8_two_in_out_of_order"
+      end
       it "builds correct definition with default parameter value on the later arguments" do
         _(code).must_equal <<~CODE
           def self.array_in_utf8_two_in_out_of_order(a, ints, b = nil)
@@ -518,7 +534,9 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "ownership transfer for an ingoing array of structs" do
       describe "with no ownership transfer of the elements" do
-        let(:function_info) { get_introspection_data "GIMarshallingTests", "array_struct_in" }
+        let(:function_info) do
+          get_introspection_data "GIMarshallingTests", "array_struct_in"
+        end
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE
@@ -532,7 +550,9 @@ describe GirFFI::Builders::FunctionBuilder do
         end
       end
       describe "with ownership transfer of the elements" do
-        let(:function_info) { get_introspection_data "GIMarshallingTests", "array_struct_take_in" }
+        let(:function_info) do
+          get_introspection_data "GIMarshallingTests", "array_struct_take_in"
+        end
 
         it "builds a correct definition" do
           _(code).must_equal <<~CODE

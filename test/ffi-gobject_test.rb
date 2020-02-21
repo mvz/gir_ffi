@@ -40,7 +40,8 @@ describe GObject do
       callback = FFI::Function.new(:void, argtypes) do |_a, b, _c|
         b2 = b
       end
-      ::GObject::Lib.g_signal_connect_data o, "test-with-static-scope-arg", callback, nil, nil, 0
+      ::GObject::Lib.g_signal_connect_data(o, "test-with-static-scope-arg",
+                                           callback, nil, nil, 0)
       GObject.signal_emit o, "test-with-static-scope-arg", sb
 
       sb2 = Regress::TestSimpleBoxedA.wrap b2
@@ -121,7 +122,8 @@ describe GObject do
         sb = Regress::TestSimpleBoxedA.new
         sb.some_int = 23
 
-        GObject.signal_connect(o, "test-with-static-scope-arg", 2) do |_instance, object, user_data|
+        GObject.signal_connect(o, "test-with-static-scope-arg", 2) \
+          do |_instance, object, user_data|
           @a = user_data
           @b = object
         end

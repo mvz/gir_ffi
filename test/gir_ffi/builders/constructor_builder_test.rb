@@ -21,7 +21,9 @@ describe GirFFI::Builders::ConstructorBuilder do
     end
 
     describe "for constructors with a custom name" do
-      let(:function_info) { get_method_introspection_data "Regress", "TestObj", "new_from_file" }
+      let(:function_info) do
+        get_method_introspection_data "Regress", "TestObj", "new_from_file"
+      end
       it "builds a custom constructor" do
         _(code).must_equal <<~CODE
           def self.new_from_file(*args, &block)

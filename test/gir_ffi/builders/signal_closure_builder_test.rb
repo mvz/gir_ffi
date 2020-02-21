@@ -139,7 +139,8 @@ describe GirFFI::Builders::SignalClosureBuilder do
         get_signal_introspection_data "Gtk", "Scale", "format-value"
       end
 
-      it "returns a mapping method that passes the string result to return_value directly" do
+      it "returns a mapping method that passes the string result to return_value directly" \
+        do
         expected = <<~CODE
           def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
             _instance, value = param_values.map(&:get_value_plain)

@@ -88,7 +88,9 @@ module GirFFI
         lib.extend FFI::Library
         lib.extend FFI::BitMasks
         lib.ffi_lib_flags :global, :lazy
-        lib.ffi_lib(*shared_library_specification.split(/,/)) if shared_library_specification
+        if shared_library_specification
+          lib.ffi_lib(*shared_library_specification.split(/,/))
+        end
       end
 
       def shared_library_specification

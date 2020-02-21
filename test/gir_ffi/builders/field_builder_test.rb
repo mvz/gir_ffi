@@ -7,7 +7,9 @@ describe GirFFI::Builders::FieldBuilder do
   let(:instance) { GirFFI::Builders::FieldBuilder.new field_info, target_class }
 
   describe "for a field of type :gint8 with an offset" do
-    let(:field_info) { get_field_introspection_data "Regress", "TestSimpleBoxedA", "some_int8" }
+    let(:field_info) do
+      get_field_introspection_data "Regress", "TestSimpleBoxedA", "some_int8"
+    end
     it "creates the right getter method" do
       expected = <<~CODE
         def some_int8
@@ -113,8 +115,12 @@ describe GirFFI::Builders::FieldBuilder do
   end
 
   describe "for a field with a related array length field" do
-    let(:field_info) { get_field_introspection_data "GObject", "SignalQuery", "param_types" }
-    let(:n_params_field_info) { get_field_introspection_data "GObject", "SignalQuery", "n_params" }
+    let(:field_info) do
+      get_field_introspection_data "GObject", "SignalQuery", "param_types"
+    end
+    let(:n_params_field_info) do
+      get_field_introspection_data "GObject", "SignalQuery", "n_params"
+    end
 
     it "creates the right getter method" do
       skip if field_info.field_type.array_length < 0

@@ -85,7 +85,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with an out argument allocated by us, the callee" do
+    describe "for a vfunc with an out argument allocated by the callee" do
       let(:vfunc_info) do
         get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                      "method_int8_arg_and_out_callee")
@@ -106,7 +106,7 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
-    describe "for a vfunc with a GObject::Value out argument allocated by them, the caller" do
+    describe "for a vfunc with a GObject::Value out argument allocated by the caller" do
       let(:vfunc_info) do
         get_vfunc_introspection_data("GIMarshallingTests", "Object",
                                      "vfunc_caller_allocated_out_parameter")
@@ -153,7 +153,8 @@ describe GirFFI::Builders::VFuncBuilder do
 
     describe "for a vfunc with a full-transfer return value" do
       let(:vfunc_info) do
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_object_transfer_full"
+        get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                     "vfunc_return_object_transfer_full"
       end
 
       it "returns a valid mapping method" do
@@ -173,7 +174,8 @@ describe GirFFI::Builders::VFuncBuilder do
 
     describe "for a vfunc with a transfer-none in argument" do
       let(:vfunc_info) do
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_in_object_transfer_none"
+        get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                     "vfunc_in_object_transfer_none"
       end
 
       it "returns a valid mapping method" do
@@ -192,7 +194,8 @@ describe GirFFI::Builders::VFuncBuilder do
 
     describe "for a vfunc with a full-transfer outgoing argument" do
       let(:vfunc_info) do
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_out_object_transfer_full"
+        get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                     "vfunc_out_object_transfer_full"
       end
 
       it "returns a valid mapping method" do
@@ -230,7 +233,8 @@ describe GirFFI::Builders::VFuncBuilder do
 
     describe "for a vfunc returning an object" do
       let(:vfunc_info) do
-        get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_object_transfer_full"
+        get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                     "vfunc_return_object_transfer_full"
       end
 
       it "returns :pointer" do

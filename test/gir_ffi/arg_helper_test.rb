@@ -7,7 +7,8 @@ describe GirFFI::ArgHelper do
     it "handles class types" do
       klass = Class.new
       expect(klass).to receive(:wrap).with(:pointer_value).and_return :wrapped_value
-      _(GirFFI::ArgHelper.cast_from_pointer(klass, :pointer_value)).must_equal :wrapped_value
+      _(GirFFI::ArgHelper.cast_from_pointer(klass, :pointer_value))
+        .must_equal :wrapped_value
     end
 
     describe "for :gint8" do
@@ -62,32 +63,38 @@ describe GirFFI::ArgHelper do
     it "handles GHashTable" do
       hash = GLib::HashTable.from [:utf8, :gint32], "foo" => 1, "bar" => 2
       ptr = hash.to_ptr
-      result = GirFFI::ArgHelper.cast_from_pointer([:pointer, [:ghash, :utf8, :gint32]], ptr)
+      result = GirFFI::ArgHelper.cast_from_pointer([:pointer, [:ghash, :utf8, :gint32]],
+                                                   ptr)
       _(result.to_hash).must_equal hash.to_hash
     end
 
     describe "when passing a broken typespec" do
       it "raises on unknown symbol" do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer(:foo, ptr) }).must_raise RuntimeError
+        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer(:foo, ptr) })
+          .must_raise RuntimeError
         _(exception.message).must_equal "Don't know how to cast foo"
       end
 
       it "raises on unexpected main type for complex type" do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer([:utf8], ptr) }).must_raise RuntimeError
+        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer([:utf8], ptr) })
+          .must_raise RuntimeError
         _(exception.message).must_equal "Don't know how to cast [:utf8]"
       end
 
       it "raises on unexpected sub type for complex type" do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer([:pointer, :utf8], ptr) }).must_raise RuntimeError
+        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer([:pointer, :utf8], ptr) })
+          .must_raise RuntimeError
         _(exception.message).must_equal "Don't know how to cast [:pointer, :utf8]"
       end
 
       it "raises on unexpected container type for complex type" do
         ptr = FFI::Pointer.new(0xffffffff)
-        exception = _(-> { GirFFI::ArgHelper.cast_from_pointer([:pointer, [:gint32]], ptr) }).must_raise RuntimeError
+        exception =
+          _(-> { GirFFI::ArgHelper.cast_from_pointer([:pointer, [:gint32]], ptr) })
+            .must_raise RuntimeError
         _(exception.message).must_equal "Don't know how to cast [:pointer, [:gint32]]"
       end
     end

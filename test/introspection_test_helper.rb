@@ -4,7 +4,8 @@ require "base_test_helper"
 
 require "ffi-gobject_introspection"
 
-GObjectIntrospection::IRepository.prepend_search_path File.join(File.dirname(__FILE__), "lib")
+GObjectIntrospection::IRepository
+  .prepend_search_path File.join(File.dirname(__FILE__), "lib")
 
 module LocalSharedLibrary
   def shared_library(namespace)

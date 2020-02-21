@@ -3655,7 +3655,8 @@ describe Regress do
   end
 
   it "has a working function #test_glist_gtype_container_in" do
-    Regress.test_glist_gtype_container_in [Regress::TestObj.gtype, Regress::TestSubObj.gtype]
+    Regress.test_glist_gtype_container_in [Regress::TestObj.gtype,
+                                           Regress::TestSubObj.gtype]
     pass
   end
 

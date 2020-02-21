@@ -4,7 +4,9 @@ require "gir_ffi_test_helper"
 
 describe GirFFI::Builders::CallbackReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
-  let(:return_value_info) { GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false) }
+  let(:return_value_info) do
+    GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false)
+  end
   let(:type_info) { callback_info.return_type }
   let(:ownership_transfer) { callback_info.caller_owns }
   let(:builder) do
@@ -70,7 +72,8 @@ describe GirFFI::Builders::CallbackReturnValueBuilder do
     it "increases the refcount of the result and converts it to a pointer" do
       # Ensure variable names are generated in order
       _(builder.capture_variable_name).must_equal "_v1"
-      _(builder.post_conversion).must_equal ["_v1.ref", "_v2 = GObject::Object.from(_v1).to_ptr"]
+      _(builder.post_conversion)
+        .must_equal ["_v1.ref", "_v2 = GObject::Object.from(_v1).to_ptr"]
     end
 
     it "returns the result of the conversion" do
