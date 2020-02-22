@@ -16,7 +16,7 @@ module GirFFI
       end
 
       def value_spec
-        info.values.map do |vinfo|
+        value_infos.map do |vinfo|
           val = GirFFI::ArgHelper.cast_uint32_to_int32(vinfo.value)
           [vinfo.name.to_sym, val]
         end.flatten
@@ -42,7 +42,7 @@ module GirFFI
       end
 
       def setup_value_constants
-        info.values.each do |vinfo|
+        value_infos.each do |vinfo|
           optionally_define_constant klass, vinfo.constant_name do
             vinfo.value
           end
@@ -63,6 +63,10 @@ module GirFFI
 
       def superclass
         EnumBase
+      end
+
+      def value_infos
+        @value_infos ||= info.values
       end
     end
   end
