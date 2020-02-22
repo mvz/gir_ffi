@@ -53,7 +53,8 @@ describe GObject::Object do
   describe "#set_property" do
     it "raises an error for a property that does not exist" do
       instance = GObject::Object.new
-      _(proc { instance.set_property "foo-bar", 123 }).must_raise GirFFI::PropertyNotFoundError
+      _(proc { instance.set_property "foo-bar", 123 })
+        .must_raise GirFFI::PropertyNotFoundError
     end
   end
 

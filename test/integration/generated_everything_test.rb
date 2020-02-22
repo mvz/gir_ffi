@@ -340,7 +340,8 @@ describe Everything do
   end
 
   it "has a working function #passthrough_one_GType" do
-    _(Everything.passthrough_one_GType(GObject::TYPE_OBJECT)).must_equal GObject::TYPE_OBJECT
+    _(Everything.passthrough_one_GType(GObject::TYPE_OBJECT))
+      .must_equal GObject::TYPE_OBJECT
   end
 
   it "has a working function #passthrough_one_filename" do

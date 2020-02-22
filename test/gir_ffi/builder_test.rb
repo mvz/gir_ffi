@@ -108,7 +108,7 @@ describe GirFFI::Builder do
   describe ".attach_ffi_function" do
     let(:lib) { Module.new }
 
-    it "calls attach_function with the correct types for Regress.test_callback_destroy_notify" do
+    it "attaches regress_test_callback_destroy_notify with the correct types" do
       function_info = get_introspection_data "Regress", "test_callback_destroy_notify"
 
       expect(lib)
@@ -121,7 +121,7 @@ describe GirFFI::Builder do
       GirFFI::Builder.attach_ffi_function(lib, function_info)
     end
 
-    it "calls attach_function with the correct types for Regress::TestObj#torture_signature_0" do
+    it "attaches regress_test_obj_torture_signature_0 with the correct types" do
       info = get_method_introspection_data "Regress", "TestObj", "torture_signature_0"
 
       expect(lib)
@@ -134,7 +134,7 @@ describe GirFFI::Builder do
       GirFFI::Builder.attach_ffi_function(lib, info)
     end
 
-    it "calls attach_function with the correct types for Regress::TestObj#instance_method" do
+    it "attaches regress_test_obj_instance_method with the correct types" do
       info = get_method_introspection_data "Regress", "TestObj", "instance_method"
       expect(lib).to receive(:attach_function)
         .with("regress_test_obj_instance_method", [:pointer], :int32)

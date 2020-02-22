@@ -23,7 +23,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
   describe "for a transfer-none in argument" do
     let(:vfunc_info) do
-      get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_in_object_transfer_none"
+      get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                   "vfunc_in_object_transfer_none"
     end
     let(:arg_info) { vfunc_info.args[0] }
 
@@ -38,7 +39,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
   describe "for a transfer-none outgoing object argument" do
     let(:vfunc_info) do
-      get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_out_object_transfer_none"
+      get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                   "vfunc_out_object_transfer_none"
     end
     let(:arg_info) { vfunc_info.args[0] }
 
@@ -53,7 +55,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
   describe "for a full-transfer outgoing object argument" do
     let(:vfunc_info) do
-      get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_out_object_transfer_full"
+      get_vfunc_introspection_data "GIMarshallingTests", "Object",
+                                   "vfunc_out_object_transfer_full"
     end
     let(:arg_info) { vfunc_info.args[0] }
 
@@ -63,7 +66,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
     it "has the correct value for #post_conversion" do
       builder.pre_conversion
-      _(builder.post_conversion).must_equal ["_v2.ref", "_v1.put_pointer 0, GObject::Object.from(_v2)"]
+      _(builder.post_conversion)
+        .must_equal ["_v2.ref", "_v1.put_pointer 0, GObject::Object.from(_v2)"]
     end
   end
 
@@ -76,7 +80,9 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
     it "has the correct value for #pre_conversion" do
       _(builder.pre_conversion)
-        .must_equal ["_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"]
+        .must_equal [
+          "_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"
+        ]
     end
 
     it "has the correct value for #post_conversion" do

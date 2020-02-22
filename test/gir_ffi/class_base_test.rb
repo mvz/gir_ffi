@@ -19,14 +19,14 @@ describe GirFFI::ClassBase do
     end
 
     describe "#==" do
-      it "returns true when comparing to an object of the same class and pointer" do
+      it "returns true for an object of the same class and pointer" do
         other = object_class.wrap object.to_ptr
 
         _(object).must_be :==, other
         _(other).must_be :==, object
       end
 
-      it "returns true when comparing to an object of the same class and a pointer with the same address" do
+      it "returns true for an object of the same class and pointer with the same address" do
         ptr = FFI::Pointer.new object.to_ptr
         other = object_class.wrap ptr
 
@@ -34,7 +34,7 @@ describe GirFFI::ClassBase do
         _(other).must_be :==, object
       end
 
-      it "returns false when comparing to an object of a sub/superclass and the same pointer" do
+      it "returns false for an object of a sub/superclass and the same pointer" do
         subclass = Class.new(object_class)
         other = subclass.wrap object.to_ptr
 
@@ -42,29 +42,30 @@ describe GirFFI::ClassBase do
         _(other).wont_be :==, object
       end
 
-      it "returns false when comparing to an object of the same class and different pointer" do
+      it "returns false for an object of the same class and different pointer" do
         other = object_class.wrap FFI::MemoryPointer.new(:int32)
 
         _(object).wont_be :==, other
         _(other).wont_be :==, object
       end
 
-      it "returns false when comparing to an object that doesn't respond to #to_ptr" do
+      it "returns false for an object that doesn't respond to #to_ptr" do
         other = Object.new
 
         _(object).wont_be :==, other
         _(other).wont_be :==, object
       end
 
-      it "returns false when comparing to an object of a different class and same pointer" do
+      it "returns false for an object of a different class and same pointer" do
         allow(other = Object.new).to receive(:to_ptr).and_return object.to_ptr
 
         _(object).wont_be :==, other
         _(other).wont_be :==, object
       end
 
-      it "returns false when comparing to an object of a different class and different pointer" do
-        allow(other = Object.new).to receive(:to_ptr).and_return FFI::MemoryPointer.new(:int32)
+      it "returns false for an object of a different class and different pointer" do
+        allow(other = Object.new)
+          .to receive(:to_ptr).and_return FFI::MemoryPointer.new(:int32)
 
         _(object).wont_be :==, other
         _(other).wont_be :==, object
@@ -116,11 +117,13 @@ describe GirFFI::ClassBase do
 
   describe "#setup_and_call" do
     it "looks up instance methods in all builders" do
-      expect(builder = Object.new).to receive(:setup_instance_method).with("foo").and_return "foo"
+      expect(builder = Object.new)
+        .to receive(:setup_instance_method).with("foo").and_return "foo"
       klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
-      expect(sub_builder = Object.new).to receive(:setup_instance_method).with("foo").and_return nil
+      expect(sub_builder = Object.new)
+        .to receive(:setup_instance_method).with("foo").and_return nil
       sub_klass = Class.new klass do
         def foo; end
 
@@ -134,7 +137,8 @@ describe GirFFI::ClassBase do
     end
 
     it "calls the method given by the result of .setup_instance_method" do
-      expect(builder = Object.new).to receive(:setup_instance_method).with("foo").and_return "bar"
+      expect(builder = Object.new)
+        .to receive(:setup_instance_method).with("foo").and_return "bar"
       klass = Class.new GirFFI::ClassBase do
         def bar
           "correct-result"
@@ -151,7 +155,8 @@ describe GirFFI::ClassBase do
     end
 
     it "raises a sensible error if the method is not found" do
-      expect(builder = Object.new).to receive(:setup_instance_method).with("foo").and_return nil
+      expect(builder = Object.new)
+        .to receive(:setup_instance_method).with("foo").and_return nil
       klass = Class.new GirFFI::ClassBase do
         def initialize; end
       end

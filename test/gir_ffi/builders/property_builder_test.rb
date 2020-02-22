@@ -32,7 +32,9 @@ describe GirFFI::Builders::PropertyBuilder do
   end
 
   describe "for a property of type :ghash" do
-    let(:property_info) { get_property_introspection_data("Regress", "TestObj", "hash-table") }
+    let(:property_info) do
+      get_property_introspection_data("Regress", "TestObj", "hash-table")
+    end
     it "generates the correct getter definition" do
       expected = <<~CODE
         def hash_table
@@ -148,7 +150,8 @@ describe GirFFI::Builders::PropertyBuilder do
     before do
       allow(property_info).to receive(:container).and_return container_info
       allow(property_info).to receive(:name).and_return "foo-bar"
-      allow(container_info).to receive(:find_instance_method).with("foo_bar").and_return true
+      allow(container_info)
+        .to receive(:find_instance_method).with("foo_bar").and_return true
     end
 
     it "finds methods with underscores for properties with dashes" do

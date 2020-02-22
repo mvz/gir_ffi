@@ -34,9 +34,12 @@ describe GirFFI::Builders::StructBuilder do
 
     describe "for a struct with a layout with a complex type" do
       it "does not flatten the complex type specification" do
-        expect(simplefield = Object.new).to receive(:layout_specification).and_return [:bar, :foo, 0]
-        expect(complexfield = Object.new).to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
-        expect(struct = Object.new).to receive(:fields).and_return [simplefield, complexfield]
+        expect(simplefield = Object.new)
+          .to receive(:layout_specification).and_return [:bar, :foo, 0]
+        expect(complexfield = Object.new)
+          .to receive(:layout_specification).and_return [:baz, [:qux, 2], 0]
+        expect(struct = Object.new)
+          .to receive(:fields).and_return [simplefield, complexfield]
 
         allow(struct).to receive(:safe_name).and_return "Bar"
         allow(struct).to receive(:namespace).and_return "Foo"

@@ -19,7 +19,8 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       end
 
       it "has the correct value for #post_conversion" do
-        _(builder.post_conversion).must_equal ["_v1.put_pointer 0, GirFFI::ZeroTerminated.from(:gfloat, _v2)"]
+        _(builder.post_conversion)
+          .must_equal ["_v1.put_pointer 0, GirFFI::ZeroTerminated.from(:gfloat, _v2)"]
       end
     end
 
@@ -32,7 +33,10 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
       let(:arg_info) { vfunc_info.args[1] }
 
       it "has the correct value for #pre_conversion" do
-        _(builder.pre_conversion).must_equal ["_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"]
+        _(builder.pre_conversion)
+          .must_equal [
+            "_v1 = FFI::MemoryPointer.new(:int8).tap { |ptr| out.put_pointer 0, ptr }"
+          ]
       end
 
       it "has the correct value for #post_conversion" do

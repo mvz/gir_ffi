@@ -50,7 +50,9 @@ describe GirFFI::MethodStubber do
     end
 
     describe "for a method with an empty name" do
-      let(:method_info) { get_method_introspection_data("Regress", "TestObj", "instance_method") }
+      let(:method_info) do
+        get_method_introspection_data("Regress", "TestObj", "instance_method")
+      end
 
       it "creates a method stub with a safe name that sets up the unsafe method" do
         allow(method_info).to receive(:name).and_return ""

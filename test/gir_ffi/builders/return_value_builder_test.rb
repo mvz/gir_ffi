@@ -6,7 +6,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
   let(:var_gen) { GirFFI::VariableNameGenerator.new }
   let(:type_info) { method_info.return_type }
   let(:ownership_transfer) { method_info.caller_owns }
-  let(:return_type_info) { GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false) }
+  let(:return_type_info) do
+    GirFFI::ReturnValueInfo.new(type_info, ownership_transfer, false)
+  end
   let(:builder) do
     GirFFI::Builders::ReturnValueBuilder.new(var_gen, return_type_info)
   end
@@ -37,7 +39,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it "wraps and copies the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
-        _(builder.post_conversion).must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)"]
+        _(builder.post_conversion)
+          .must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(_v1)"]
       end
 
       it "returns the copied result" do
@@ -56,7 +59,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it "wraps the result in #post_conversion" do
       _(builder.capture_variable_name).must_equal "_v1"
-      _(builder.post_conversion).must_equal ["_v2 = GIMarshallingTests::Union.wrap_copy(_v1)"]
+      _(builder.post_conversion)
+        .must_equal ["_v2 = GIMarshallingTests::Union.wrap_copy(_v1)"]
     end
 
     it "returns the wrapped result" do
@@ -112,7 +116,9 @@ describe GirFFI::Builders::ReturnValueBuilder do
       it "wraps the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
         _(builder.post_conversion)
-          .must_equal ["_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }"]
+          .must_equal [
+            "_v2 = GIMarshallingTests::Object.wrap(_v1).tap { |it| it && it.ref }"
+          ]
       end
 
       it "returns the wrapped result" do
@@ -149,7 +155,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it "wraps the result in #post_conversion" do
       _(builder.capture_variable_name).must_equal "_v1"
-      _(builder.post_conversion).must_equal ["_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)"]
+      _(builder.post_conversion)
+        .must_equal ["_v2 = GirFFI::ZeroTerminated.wrap(:guint8, _v1)"]
     end
 
     it "returns the wrapped result" do
@@ -234,7 +241,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it "wraps the result in #post_conversion" do
       _(builder.capture_variable_name).must_equal "_v1"
-      _(builder.post_conversion).must_equal ["_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)"]
+      _(builder.post_conversion)
+        .must_equal ["_v2 = GLib::HashTable.wrap([:gint32, :gint32], _v1)"]
     end
 
     it "returns the wrapped result" do
@@ -286,7 +294,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it "converts the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
-        _(builder.post_conversion).must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)"]
+        _(builder.post_conversion)
+          .must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, 4, _v1)"]
       end
 
       it "returns the wrapped result" do
@@ -310,7 +319,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
       it "converts the result in #post_conversion" do
         _(builder.capture_variable_name).must_equal "_v1"
-        _(builder.post_conversion).must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)"]
+        _(builder.post_conversion)
+          .must_equal ["_v2 = GirFFI::SizedArray.wrap(:gint32, bar, _v1)"]
       end
 
       it "returns the wrapped result" do
@@ -403,7 +413,8 @@ describe GirFFI::Builders::ReturnValueBuilder do
 
     it "fetches the stored object in #post_conversion" do
       _(builder.capture_variable_name).must_equal "_v1"
-      _(builder.post_conversion).must_equal ["_v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_v1)"]
+      _(builder.post_conversion)
+        .must_equal ["_v2 = GirFFI::ArgHelper::OBJECT_STORE.fetch(_v1)"]
     end
 
     it "returns the stored object" do

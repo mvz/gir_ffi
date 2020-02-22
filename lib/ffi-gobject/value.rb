@@ -179,7 +179,9 @@ module GObject
     end
 
     def check_type_compatibility(val)
-      return if GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
+      if GObject::Value.type_compatible(GObject.type_from_instance(val), current_gtype)
+        return
+      end
 
       raise ArgumentError, "#{val.class} is incompatible with #{current_gtype_name}"
     end

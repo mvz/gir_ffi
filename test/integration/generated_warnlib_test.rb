@@ -14,8 +14,10 @@ describe "The generated WarnLib module" do
       @result = nil
       derived_klass.class_eval { include WarnLib::Whatever }
       GirFFI.define_type derived_klass do |info|
-        info.install_vfunc_implementation :do_boo, proc { |_obj, x, _y| @result = "boo#{x}" }
-        info.install_vfunc_implementation :do_moo, proc { |_obj, x, _y| @result = "moo#{x}" }
+        info.install_vfunc_implementation :do_boo,
+                                          proc { |_obj, x, _y| @result = "boo#{x}" }
+        info.install_vfunc_implementation :do_moo,
+                                          proc { |_obj, x, _y| @result = "moo#{x}" }
       end
     end
 

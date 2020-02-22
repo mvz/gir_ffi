@@ -16,6 +16,10 @@ Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedLastArgumentHashStyle: ignore_implicit
 
+# Be lenient with line length
+Layout/LineLength:
+  Max: 92
+
 # Don't force lonely closing parentheses
 Layout/MultilineMethodCallBraceLayout:
   EnforcedStyle: same_line
@@ -34,7 +38,7 @@ Layout/MultilineOperationIndentation:
 Layout/SpaceBeforeBlockBraces:
   EnforcedStyleForEmptyBraces: space
 
-# This cop gives bad advice
+# Assume the programmer knows how bracketed block syntax works
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
@@ -47,15 +51,22 @@ Metrics/BlockLength:
     - 'test/**/*' # Test describe blocks can be any size
     - '*.gemspec' # Gem spec blocks can be any size
 
-# Be lenient with line length
-Layout/LineLength:
-  Max: 95
-  Exclude:
-    - 'test/**/*'
-
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
+
+# Require at least two dependent lines before suggesting a guard clause
+Style/GuardClause:
+  MinBodyLength: 2
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
 
 # Prefer actual numerics
 Style/NumericPredicate:
@@ -64,6 +75,7 @@ Style/NumericPredicate:
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
+    '%W': ()
     '%w': ()
 
 # Allow explicit return with multiple return values

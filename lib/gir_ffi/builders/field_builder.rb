@@ -58,7 +58,8 @@ module GirFFI
         private
 
         def pointer_to_value_conversion
-          PointerValueConvertor.new(field_type_tag).pointer_to_value(field_ptr, field_offset)
+          PointerValueConvertor.new(field_type_tag)
+            .pointer_to_value(field_ptr, field_offset)
         end
 
         def field_offset
