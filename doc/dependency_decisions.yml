@@ -1,0 +1,31 @@
+---
+- - :permit
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2017-07-23 09:37:14.276265835 Z
+- - :permit
+  - New BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2017-07-23 09:37:32.127538860 Z
+- - :permit
+  - Simplified BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2017-07-23 09:37:34.607645593 Z
+- - :permit
+  - ruby
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2017-07-23 09:37:37.759288433 Z
+- - :permit
+  - LGPL-2.1+
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2017-07-23 09:38:16.579029334 Z
