@@ -18,6 +18,7 @@ module GirFFI
     GIR_FFI_BUILDER = Builders::NullClassBuilder.new
 
     attr_reader :struct
+
     def_delegators :@struct, :to_ptr
 
     def setup_and_call(method, arguments, &block)

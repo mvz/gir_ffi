@@ -46,14 +46,6 @@ Lint/AmbiguousBlockAssociation:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
-# Activate new cops from RuboCop 0.81 and 0.82
-Lint/RaiseException:
-  Enabled: true
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-Lint/StructNewOverride:
-  Enabled: true
-
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*' # Test describe blocks can be any size
@@ -63,21 +55,9 @@ Metrics/BlockLength:
 Style/AndOr:
   EnforcedStyle: conditionals
 
-# Activate new cop from RuboCop 0.82
-Style/ExponentialNotation:
-  Enabled: true
-
 # Require at least two dependent lines before suggesting a guard clause
 Style/GuardClause:
   MinBodyLength: 2
-
-# Activate new cops from RuboCop 0.80
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformKeys:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true
 
 # Prefer actual numerics
 Style/NumericPredicate:
@@ -101,6 +81,32 @@ Style/StringLiterals:
 Style/SymbolArray:
   EnforcedStyle: brackets
 
+# Accessors are only trivial if they match the ivar name.
+# Also, allow accessors with ? in the name.
+Style/TrivialAccessors:
+  ExactNameMatch: true
+  AllowPredicates: true
+
+# Activate new cops from RuboCop 0.80 - 0.83
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/RaiseException:
+  Enabled: true
+Lint/StructNewOverride:
+  Enabled: true
+Style/ExponentialNotation:
+  Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
+
 # Project-specific configuration goes here.
 
 # GObject has a lot of accessor method starting with get_ or set_
@@ -120,9 +126,3 @@ Naming/PredicateName:
 Performance/FixedSize:
   Exclude:
     - 'test/**/*.rb'
-
-# Accessors are only trivial if they match the ivar name.
-# Also, allow accessors with ? in the name.
-Style/TrivialAccessors:
-  ExactNameMatch: true
-  AllowPredicates: true
