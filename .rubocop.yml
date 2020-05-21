@@ -8,7 +8,7 @@ AllCops:
     - 'examples/*'
     - 'tasks/test.rake'
     - 'tmp/**/*'
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 # Tables are nice
 Layout/HashAlignment:

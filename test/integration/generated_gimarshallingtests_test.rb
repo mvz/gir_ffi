@@ -1968,25 +1968,21 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gerror" do
-    begin
-      GIMarshallingTests.gerror
-      flunk "Error should have been raised"
-    rescue GirFFI::GLibError => e
-      _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
-      _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
-      _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
-    end
+    GIMarshallingTests.gerror
+    flunk "Error should have been raised"
+  rescue GirFFI::GLibError => e
+    _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+    _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+    _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
   end
 
   it "has a working function #gerror_array_in" do
-    begin
-      GIMarshallingTests.gerror_array_in [1, 2, 3]
-      flunk "Error should have been raised"
-    rescue GirFFI::GLibError => e
-      _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
-      _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
-      _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
-    end
+    GIMarshallingTests.gerror_array_in [1, 2, 3]
+    flunk "Error should have been raised"
+  rescue GirFFI::GLibError => e
+    _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+    _(e.domain).must_equal GIMarshallingTests::CONSTANT_GERROR_DOMAIN
+    _(e.code).must_equal GIMarshallingTests::CONSTANT_GERROR_CODE
   end
 
   it "has a working function #gerror_out" do
