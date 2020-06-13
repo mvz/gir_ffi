@@ -23,7 +23,19 @@ module GirFFI
       end
 
       def klass
-        @klass ||= get_or_define_class namespace_module, @classname, CallbackBase
+        @klass ||= get_or_define_class container_module, @classname, CallbackBase
+      end
+
+      def container_module
+        @container_module ||=
+          if @info.container
+            type_info = @info.container
+            field_info = type_info.container
+            container_class_info = field_info.container
+            namespace_module.const_get container_class_info.safe_name
+          else
+            namespace_module
+          end
       end
 
       def mapping_method_definition

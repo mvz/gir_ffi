@@ -1621,6 +1621,11 @@ describe Regress do
       _(instance).wont_be :floating?
     end
 
+    it "defines callback type Matrix in the metaclass namespace" do
+      _(Regress::TestObjClass.const_defined? :Matrix).must_equal true
+      _(Regress.const_defined? :Matrix).must_equal false
+    end
+
     it "has a working method #matrix" do
       _(instance.matrix("bar")).must_equal 42
     end
