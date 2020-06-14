@@ -1674,6 +1674,13 @@ describe Regress do
       instance.emit_sig_with_int64
     end
 
+    it "defines signal type Sig_with_int64_prop in the class namespace" do
+      instance.signal_connect("sig-with-int64-prop") { |_obj, i, _ud| i }
+      instance.emit_sig_with_int64
+      _(Regress::TestObj.const_defined? :Sig_with_int64_prop).must_equal true
+      _(Regress.const_defined? :Sig_with_int64_prop).must_equal false
+    end
+
     it "has a working method #emit_sig_with_null_error" do
       skip_below "1.61.1"
       error = nil
