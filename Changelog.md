@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.15.3 / 2020-06-14
+
+* Officially support Ruby 2.7
+* Officially drop support for Ruby 2.4
+* Store classes representing inline callback types in the class that defines
+  them instead of in the main namespace, thus avoiding some potential name
+  clashes
+* Update development dependencies
+* Various code quality improvements
+* Record approved licenses for dependencies
+
 ## 0.15.2 / 2019-11-29
 
 * Load girepository-1.0 library in a way that does not require installing a
