@@ -3,6 +3,7 @@
 require "gir_ffi_test_helper"
 
 GirFFI.setup :Regress
+GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::ObjectBase do
   let(:derived_class) { Class.new GirFFI::ObjectBase }
