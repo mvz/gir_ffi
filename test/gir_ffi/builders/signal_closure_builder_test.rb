@@ -134,20 +134,21 @@ describe GirFFI::Builders::SignalClosureBuilder do
       end
     end
 
-    describe "for a signal returning an string" do
+    describe "for a signal returning a string" do
       let(:signal_info) do
-        get_signal_introspection_data "Gtk", "Scale", "format-value"
+        get_signal_introspection_data "Regress", "AnnotationObject", "attribute-signal"
       end
 
       it "returns a mapping method that passes the string result to return_value directly" \
         do
         expected = <<~CODE
           def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
-            _instance, value = param_values.map(&:get_value_plain)
+            _instance, arg1, arg2 = param_values.map(&:get_value_plain)
             _v1 = _instance
-            _v2 = value
-            _v3 = wrap(closure.to_ptr).invoke_block(_v1, _v2)
-            return_value.set_value _v3
+            _v2 = arg1
+            _v3 = arg2
+            _v4 = wrap(closure.to_ptr).invoke_block(_v1, _v2, _v3)
+            return_value.set_value _v4
           end
         CODE
 
