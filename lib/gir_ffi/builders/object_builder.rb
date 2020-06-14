@@ -32,7 +32,12 @@ module GirFFI
       end
 
       def object_class_struct
-        @object_class_struct ||= Builder.build_class object_class_struct_info
+        @object_class_struct ||=
+          if object_class_struct_info
+            Builder.build_class object_class_struct_info
+          else
+            parent_builder.object_class_struct
+          end
       end
 
       def ancestor_infos
@@ -48,8 +53,7 @@ module GirFFI
       protected
 
       def object_class_struct_info
-        @object_class_struct_info ||=
-          info.class_struct || parent_builder.object_class_struct_info
+        @object_class_struct_info ||= info.class_struct
       end
 
       private
