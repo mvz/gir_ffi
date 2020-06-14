@@ -17,20 +17,20 @@ describe GirFFI::Builders::ObjectBuilder do
   end
 
   describe "#find_signal" do
-    it 'finds the signal "test" for TestObj' do
+    it 'finds a signal defined on the class itself' do
       sig = obj_builder.find_signal "test"
       _(sig.name).must_equal "test"
     end
 
-    it 'finds the signal "test" for TestSubObj' do
+    it 'finds a signal defined on a superclass' do
       sig = sub_obj_builder.find_signal "test"
       _(sig.name).must_equal "test"
     end
 
-    it 'finds the signal "changed" for Gtk::Entry' do
-      builder = GirFFI::Builders::ObjectBuilder.new get_introspection_data("Gtk", "Entry")
-      sig = builder.find_signal "changed"
-      _(sig.name).must_equal "changed"
+    it 'finds signals defined on interfaces' do
+      skip_below "1.57.2"
+      sig = sub_obj_builder.find_signal "interface-signal"
+      _(sig.name).must_equal "interface-signal"
     end
 
     it "returns nil for a signal that doesn't exist" do
