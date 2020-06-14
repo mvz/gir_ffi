@@ -64,6 +64,13 @@ describe GirFFI::Builders::ObjectBuilder do
       builder = GirFFI::Builders::ObjectBuilder.new binding_info
       _(builder.object_class_struct).must_equal GObject::ObjectClass
     end
+
+    it "returns a valid class for disguised type classes" do
+      binding_info = get_introspection_data "Regress", "FooBuffer"
+      builder = GirFFI::Builders::ObjectBuilder.new binding_info
+
+      _(builder.object_class_struct.name).must_equal "Regress::FooBufferClass"
+    end
   end
 
   describe "for a struct without defined fields" do
