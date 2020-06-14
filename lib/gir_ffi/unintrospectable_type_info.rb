@@ -56,7 +56,7 @@ module GirFFI
 
     # TODO: Create custom class that includes the interfaces instead
     def class_struct
-      parent.class_struct
+      nil
     end
   end
 end
