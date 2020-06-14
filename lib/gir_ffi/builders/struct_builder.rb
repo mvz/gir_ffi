@@ -25,6 +25,10 @@ module GirFFI
         StructBase
       end
 
+      def klass
+        @klass ||= get_or_define_class(namespace_module, @classname) { superclass }
+      end
+
       def parent_field_type
         fields.first.field_type
       end
