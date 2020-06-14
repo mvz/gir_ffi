@@ -17,17 +17,17 @@ describe GirFFI::Builders::ObjectBuilder do
   end
 
   describe "#find_signal" do
-    it 'finds a signal defined on the class itself' do
+    it "finds a signal defined on the class itself" do
       sig = obj_builder.find_signal "test"
       _(sig.name).must_equal "test"
     end
 
-    it 'finds a signal defined on a superclass' do
+    it "finds a signal defined on a superclass" do
       sig = sub_obj_builder.find_signal "test"
       _(sig.name).must_equal "test"
     end
 
-    it 'finds signals defined on interfaces' do
+    it "finds signals defined on interfaces" do
       skip_below "1.57.2"
       sig = sub_obj_builder.find_signal "interface-signal"
       _(sig.name).must_equal "interface-signal"

@@ -1622,8 +1622,8 @@ describe Regress do
     end
 
     it "defines callback type Matrix in the metaclass namespace" do
-      _(Regress::TestObjClass.const_defined? :Matrix).must_equal true
-      _(Regress.const_defined? :Matrix).must_equal false
+      _(Regress::TestObjClass.const_defined?(:Matrix)).must_equal true
+      _(Regress.const_defined?(:Matrix)).must_equal false
     end
 
     it "has a working method #matrix" do
@@ -1682,8 +1682,8 @@ describe Regress do
     it "defines signal type Sig_with_int64_prop in the class namespace" do
       instance.signal_connect("sig-with-int64-prop") { |_obj, i, _ud| i }
       instance.emit_sig_with_int64
-      _(Regress::TestObj.const_defined? :Sig_with_int64_prop).must_equal true
-      _(Regress.const_defined? :Sig_with_int64_prop).must_equal false
+      _(Regress::TestObj.const_defined?(:Sig_with_int64_prop)).must_equal true
+      _(Regress.const_defined?(:Sig_with_int64_prop)).must_equal false
     end
 
     it "has a working method #emit_sig_with_null_error" do
