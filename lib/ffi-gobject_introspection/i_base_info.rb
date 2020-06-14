@@ -107,10 +107,10 @@ module GObjectIntrospection
       namespace.sub(/^[a-z]/, &:upcase)
     end
 
-    # TODO: Avoid calling for IStructInfo
     def container
       @container ||= begin
                        ptr = Lib.g_base_info_get_container self
+                       return if ptr.null?
                        Lib.g_base_info_ref ptr
                        IRepository.wrap_ibaseinfo_pointer ptr
                      end

@@ -12,7 +12,12 @@ module GirFFI
     end
 
     def get_or_define_class(namespace, name, parent)
-      optionally_define_constant(namespace, name) { Class.new parent }
+      klass = optionally_define_constant(namespace, name) { Class.new parent }
+      unless klass.superclass == parent
+        raise "Expected superclass #{parent}, found #{klass.superclass}"
+      end
+
+      klass
     end
 
     def get_or_define_module(parent, name)
