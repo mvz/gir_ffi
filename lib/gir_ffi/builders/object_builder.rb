@@ -39,9 +39,8 @@ module GirFFI
       def object_class_struct
         @object_class_struct ||=
           if object_class_struct_info
-            class_struct_builder = ClassStructBuilder.new(object_class_struct_info,
-                                                          parent_builder.object_class_struct)
-            class_struct_builder.build_class
+            ClassStructBuilder.new(object_class_struct_info,
+                                   parent_builder.object_class_struct).build_class
           else
             parent_builder.object_class_struct
           end
