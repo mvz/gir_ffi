@@ -106,7 +106,5 @@ module GObject
 
     attach_function :g_param_spec_ref, [:pointer], :pointer
     attach_function :g_param_spec_sink, [:pointer], :pointer
-
-    attach_function :g_type_class_ref, [:size_t], :pointer
   end
 end

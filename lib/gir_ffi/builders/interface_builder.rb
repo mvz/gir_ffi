@@ -8,7 +8,9 @@ module GirFFI
     # Implements the creation of a module representing an Interface.
     class InterfaceBuilder < RegisteredTypeBuilder
       def interface_struct
-        @interface_struct ||= Builder.build_class iface_struct_info
+        @interface_struct ||=
+          ClassStructBuilder.new(iface_struct_info,
+                                 GObject::TypeInterface).build_class
       end
 
       private

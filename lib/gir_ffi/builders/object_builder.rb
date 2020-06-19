@@ -3,6 +3,7 @@
 require "gir_ffi/builders/registered_type_builder"
 require "gir_ffi/builders/with_layout"
 require "gir_ffi/builders/property_builder"
+require "gir_ffi/builders/class_struct_builder"
 require "gir_ffi/object_base"
 require "gir_ffi/struct"
 
@@ -16,6 +17,10 @@ module GirFFI
       class ObjectBaseBuilder
         def build_class
           ObjectBase
+        end
+
+        def object_class_struct
+          GObject::TypeClass
         end
 
         def ancestor_infos
@@ -32,7 +37,13 @@ module GirFFI
       end
 
       def object_class_struct
-        @object_class_struct ||= Builder.build_class object_class_struct_info
+        @object_class_struct ||=
+          if object_class_struct_info
+            ClassStructBuilder.new(object_class_struct_info,
+                                   parent_builder.object_class_struct).build_class
+          else
+            parent_builder.object_class_struct
+          end
       end
 
       def ancestor_infos
@@ -48,8 +59,7 @@ module GirFFI
       protected
 
       def object_class_struct_info
-        @object_class_struct_info ||=
-          info.class_struct || parent_builder.object_class_struct_info
+        @object_class_struct_info ||= info.class_struct
       end
 
       private
