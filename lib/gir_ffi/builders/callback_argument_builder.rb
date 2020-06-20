@@ -19,6 +19,8 @@ module GirFFI
         false
       end
 
+      # All arguments to the argument mapper must always be provided. They may
+      # be nil, though.
       def allow_none?
         false
       end

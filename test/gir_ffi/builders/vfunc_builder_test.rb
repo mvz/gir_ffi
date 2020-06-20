@@ -183,7 +183,7 @@ describe GirFFI::Builders::VFuncBuilder do
           def self.call_with_argument_mapping(_proc, _instance, object)
             _v1 = GIMarshallingTests::Object.wrap(_instance)
             _v2 = GObject::Object.wrap(object)
-            _v2.ref
+            _v2&.ref
             _proc.call(_v1, _v2)
           end
         CODE

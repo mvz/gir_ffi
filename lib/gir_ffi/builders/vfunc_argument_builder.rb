@@ -9,7 +9,7 @@ module GirFFI
     class VFuncArgumentBuilder < CallbackArgumentBuilder
       def pre_conversion
         if ingoing_ref_needed?
-          super + ["#{pre_converted_name}.ref"]
+          super + ["#{pre_converted_name}&.ref"]
         else
           super
         end
