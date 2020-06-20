@@ -64,6 +64,7 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    "1.61.3"  => %w(Regress test_array_static_in_int),
     "1.61.1"  => %w(Regress TestObj emit_sig_with_error),
     "1.59.4"  => %w(Regress test_array_struct_in_none),
     "1.58.3"  => %w(Regress TestReferenceCounters),
