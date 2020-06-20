@@ -547,6 +547,14 @@ describe GIMarshallingTests do
     it "has a working method #method_with_default_implementation" do
       instance.method_with_default_implementation 104
       assert_equal 104, instance.int
+
+      derived_instance = make_derived_instance do |info|
+        info.install_vfunc_implementation(
+          :method_with_default_implementation,
+          proc { |obj, num| obj.int = num * 2 })
+      end
+      derived_instance.method_with_default_implementation 16
+      assert_equal 32, derived_instance.int
     end
 
     it "has a working method #none_in" do

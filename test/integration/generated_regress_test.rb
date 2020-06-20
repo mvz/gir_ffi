@@ -3241,6 +3241,12 @@ describe Regress do
     _(Regress.test_array_int_out).must_be :==, [0, 1, 2, 3, 4]
   end
 
+  it "has a working function #test_array_static_in_int" do
+    skip_below "1.61.3"
+    Regress.test_array_static_in_int (1..10).to_a
+    pass
+  end
+
   it "has a working function #test_array_struct_in_full" do
     skip_below "1.59.4"
     # FIXME: Allow passing field values to .new
