@@ -1622,6 +1622,11 @@ describe Regress do
     end
 
     it "defines callback type Matrix in the metaclass namespace" do
+      # Make sure Regress::TestObjClass exists
+      # NOTE: Perhaps gtype struct classes should be stored out of the way in
+      # some other namespace.
+      Regress::TestObj.object_class
+
       _(Regress::TestObjClass.const_defined?(:Matrix)).must_equal true
       _(Regress.const_defined?(:Matrix)).must_equal false
     end
