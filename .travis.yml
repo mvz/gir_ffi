@@ -22,8 +22,6 @@ before_install:
 cache:
   bundler: true
 
-bundler_args: --without local_development
-
 rvm:
   - 2.5
   - 2.6

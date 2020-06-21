@@ -10,5 +10,5 @@ gem "ruby-prof", platform: :mri
 gem "test-prof", platform: :mri
 
 if ENV["CI"]
-  gem "coveralls", group: :development if ENV["TRAVIS_RUBY_VERSION"] == "2.4"
+  gem "coveralls", group: :development if ENV["TRAVIS_RUBY_VERSION"] == "2.7"
 end
