@@ -3,15 +3,11 @@
 require "gir_ffi_test_helper"
 
 GirFFI.setup :Regress
+GirFFI.setup :GIMarshallingTests
 
 # Tests deriving Ruby classes from GObject classes.
 describe "For derived classes" do
   describe "setting up methods when first called" do
-    before do
-      save_module :GIMarshallingTests
-      GirFFI.setup :GIMarshallingTests
-    end
-
     describe "when an interface is mixed in" do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
@@ -27,10 +23,6 @@ describe "For derived classes" do
         result = obj.method
         _(result).must_equal 42
       end
-    end
-
-    after do
-      restore_module :GIMarshallingTests
     end
   end
 

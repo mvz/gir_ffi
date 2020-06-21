@@ -17,16 +17,6 @@ describe GirFFI::Core do
     GirFFI.setup :xlib
   end
 
-  it "sets up dependencies" do
-    save_module :Utility
-    save_module :Regress
-    refute Object.const_defined?(:Utility)
-    GirFFI.setup :Regress
-    assert Object.const_defined?(:Utility)
-    restore_module :Regress
-    restore_module :Utility
-  end
-
   describe ".setup" do
     it "passes the desired version down to the module builder" do
       expect(GirFFI::Builder).to receive(:build_module).with("Regress", "0.1")

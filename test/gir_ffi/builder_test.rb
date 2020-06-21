@@ -22,35 +22,27 @@ describe GirFFI::Builder do
       _(result.message).must_equal "The module Array was already defined elsewhere"
     end
 
-    describe "building a module for the first time" do
-      before do
-        save_module :Regress
-        GirFFI::Builder.build_module "Regress"
-      end
-
-      it "creates a Lib module ready to attach functions from the shared library" do
-        gir = GObjectIntrospection::IRepository.default
-        expected = [gir.shared_library("Regress")]
-        assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
-      end
-
-      after do
-        restore_module :Regress
-      end
+    it "creates a Lib module ready to attach functions from the shared library" do
+      # Regress has already been build by GirFFI.setup, which will have done
+      # something like:
+      #
+      #     GirFFI::Builder.build_module "Regress"
+      #
+      gir = GObjectIntrospection::IRepository.default
+      expected = [gir.shared_library("Regress")]
+      assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
     end
 
-    describe "building a module that already exists" do
-      it "does not replace the existing module" do
-        oldmodule = Regress
-        GirFFI::Builder.build_module "Regress"
-        assert_equal oldmodule, Regress
-      end
+    it "does not replace an existing module" do
+      oldmodule = Regress
+      GirFFI::Builder.build_module "Regress"
+      assert_equal oldmodule, Regress
+    end
 
-      it "does not replace the existing Lib module" do
-        oldmodule = Regress::Lib
-        GirFFI::Builder.build_module "Regress"
-        assert_equal oldmodule, Regress::Lib
-      end
+    it "does not replace the an existing module's Lib module" do
+      oldmodule = Regress::Lib
+      GirFFI::Builder.build_module "Regress"
+      assert_equal oldmodule, Regress::Lib
     end
 
     it "passes the version on to ModuleBuilder" do
