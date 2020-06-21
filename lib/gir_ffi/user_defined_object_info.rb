@@ -27,7 +27,6 @@ module GirFFI
     end
 
     def install_vfunc_implementation(name, implementation = nil)
-      implementation ||= ->(obj, *args) { obj.public_send name, *args }
       @vfunc_implementations << VFuncImplementation.new(name, implementation)
     end
 
