@@ -53,7 +53,7 @@ examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
 
 ## Requirements
 
-GirFFI is supported on CRuby 2.4, 2.5 and 2.6, and JRuby 9.2.
+GirFFI is supported on CRuby 2.5, 2.6 and 2.7, and JRuby 9.2.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -65,7 +65,7 @@ libraries.
 
 GirFFI should work with gobject-introspection 1.46.0 and up.
 
-On Debian and Ubuntu, installing `libgirepository1.0-1` and `gir1.2-glib-2.0`
+On Debian and Ubuntu, installing `libgirepository-1.0-1` and `gir1.2-glib-2.0`
 should be enough to use GirFFI in your application.
 
 To run the tests, you should additionally install `libgirepository1.0-dev`,
@@ -120,7 +120,7 @@ The following people have contributed to GirFFI over the years:
 
 ## License
 
-Copyright &copy; 2009&ndash;2019 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2020 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
