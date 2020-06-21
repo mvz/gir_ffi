@@ -12,6 +12,7 @@ module GirFFI
       end
 
       def setup_class
+        check_ancestry
         setup_layout
         register_type
         setup_constants
@@ -25,6 +26,12 @@ module GirFFI
       end
 
       private
+
+      def check_ancestry
+        unless klass < GirFFI::ObjectBase
+          raise ArgumentError, "#{klass} is not a GObject class"
+        end
+      end
 
       def register_type
         @gtype = GObject.type_register_static(parent_gtype.to_i,

@@ -95,5 +95,16 @@ describe GirFFI::Core do
         _(obj.foo).must_equal 13
       end
     end
+
+    describe "with a type that is not a GObject" do
+      let(:klass) { Class.new GObject::RubyClosure }
+      before do
+        Object.const_set "DerivedB#{Sequence.next}", klass
+      end
+
+      it "raises a friendly error" do
+        _(proc { GirFFI.define_type klass }).must_raise ArgumentError
+      end
+    end
   end
 end
