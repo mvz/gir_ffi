@@ -2,13 +2,10 @@
 
 require "gir_ffi_test_helper"
 
+GirFFI.setup :Regress
+
 # Tests how methods are looked up and generated on first use.
 describe "Looking up methods" do
-  before do
-    save_module :Regress
-    GirFFI.setup :Regress
-  end
-
   describe "an instance method" do
     it "is found from a subclass" do
       assert_defines_instance_method Regress::TestObj, :forced_method
@@ -26,9 +23,5 @@ describe "Looking up methods" do
 
       Regress::TestSubObj.static_method 42
     end
-  end
-
-  after do
-    restore_module :Regress
   end
 end
