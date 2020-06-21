@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
 module GirFFI
-  # Base module providing class methods for generated classes representing GLib
+  # Base class providing methods for generated classes representing GLib
   # structs, unions and boxed types.
-  module StructLikeBase
-    def self.included(base)
-      base.extend ClassMethods
+  class StructLikeBase < ClassBase
+    extend FFI::DataConverter
+
+    def initialize
+      @struct = self.class::Struct.new
+      @struct.owned = true
+      @struct.to_ptr.autorelease = false
     end
 
     # Class methods for struct-like classes.
-    module ClassMethods
+    class << self
       def native_type
         FFI::Type::Struct.new(self::Struct)
       end
