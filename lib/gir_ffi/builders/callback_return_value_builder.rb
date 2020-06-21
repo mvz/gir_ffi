@@ -9,11 +9,7 @@ module GirFFI
     # callbacks.
     class CallbackReturnValueBuilder < BaseReturnValueBuilder
       def post_conversion
-        if has_post_conversion?
-          optional_outgoing_ref + base_post_conversion
-        else
-          []
-        end
+        optional_outgoing_ref + base_post_conversion
       end
 
       private
@@ -35,7 +31,9 @@ module GirFFI
       end
 
       def base_post_conversion
-        if specialized_type_tag == :object
+        if !has_post_conversion?
+          []
+        elsif specialized_type_tag == :object
           ["#{post_converted_name} = #{post_convertor.conversion}.to_ptr"]
         else
           ["#{post_converted_name} = #{post_convertor.conversion}"]

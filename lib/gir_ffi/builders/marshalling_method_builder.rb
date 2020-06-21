@@ -12,7 +12,10 @@ module GirFFI
     # handler. This method converts arguments from C to Ruby, and the
     # result from Ruby to C.
     class MarshallingMethodBuilder < BaseMethodBuilder
-      def self.for_signal(receiver_info, info)
+      def self.for_signal(info)
+        container_info = info.container
+        container_type_info = ReceiverTypeInfo.new(container_info)
+        receiver_info = ReceiverArgumentInfo.new(container_type_info)
         new receiver_info, info
       end
 
