@@ -5,7 +5,8 @@ raise "The module GLib was already defined elsewhere" if Kernel.const_defined? :
 
 require "gir_ffi/core"
 
-# Bypass check for existing modules
+# Set up the GLib module, bypassing the check for existing modules. This also
+# creates GLib::Lib.
 GirFFI::Builders::ModuleBuilder.new("GLib").generate
 
 require "ffi-glib/array"
@@ -28,8 +29,8 @@ module GLib
   load_class :EqualFunc
   load_class :Func
 
-  # Module for attaching functions from the glib library.
-  # NOTE: This module is defined by the call to GirFFI.setup above.
+  # Module for attaching functions from the glib library. This module is
+  # defined by the call to ModuleBuilder#generate above.
   module Lib
     attach_function :g_slist_prepend, [:pointer, :pointer], :pointer
 
