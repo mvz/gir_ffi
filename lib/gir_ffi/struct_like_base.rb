@@ -7,9 +7,9 @@ module GirFFI
     extend FFI::DataConverter
 
     def initialize
-      @struct = self.class::Struct.new
-      @struct.owned = true
-      @struct.to_ptr.autorelease = false
+      store_pointer(nil)
+      struct.owned = true
+      struct.to_ptr.autorelease = false
     end
 
     # Class methods for struct-like classes.

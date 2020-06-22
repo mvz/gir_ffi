@@ -5,10 +5,6 @@ require "gir_ffi/class_base"
 module GirFFI
   # Base class for generated classes representing boxed types.
   class BoxedBase < StructLikeBase
-    def initialize
-      store_pointer(nil)
-    end
-
     def self.make_finalizer(struct)
       proc do
         if struct.owned?

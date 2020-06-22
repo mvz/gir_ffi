@@ -7,12 +7,6 @@ module GObject
   class Value
     setup_instance_method! :init
 
-    def initialize
-      super
-      struct.owned = true
-      to_ptr.autorelease = nil
-    end
-
     def self.make_finalizer(struct)
       proc do
         if struct.owned?
