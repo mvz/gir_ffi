@@ -158,10 +158,4 @@ describe GirFFI::StructLikeBase do
       _(result.long_).must_equal 42
     end
   end
-
-  it "adds its class methods to classes that include it" do
-    struct_class = Class.new
-    struct_class.send :include, GirFFI::StructLikeBase
-    _(struct_class.singleton_class).must_include GirFFI::StructLikeBase::ClassMethods
-  end
 end

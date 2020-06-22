@@ -4,14 +4,6 @@ require "gir_ffi/boxed_base"
 
 module GirFFI
   # Base class for generated classes representing GLib unions.
-  class UnionBase < ClassBase
-    extend FFI::DataConverter
-    include GirFFI::StructLikeBase
-
-    def initialize
-      @struct = self.class::Struct.new
-      @struct.owned = true
-      @struct.to_ptr.autorelease = false
-    end
+  class UnionBase < StructLikeBase
   end
 end

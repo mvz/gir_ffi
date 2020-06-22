@@ -6,7 +6,7 @@ GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::StructBase do
   it "inherits from StructLikeBase" do
-    _(GirFFI::StructBase).must_include GirFFI::StructLikeBase
+    _(GirFFI::StructBase.ancestors).must_include GirFFI::StructLikeBase
   end
 
   describe "new" do
