@@ -4,7 +4,7 @@ require "gir_ffi/class_base"
 
 module GirFFI
   # Base class for generated classes representing boxed types.
-  class BoxedBase < StructBase
+  class BoxedBase < StructLikeBase
     def initialize
       store_pointer(nil)
     end
