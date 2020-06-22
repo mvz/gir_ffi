@@ -74,11 +74,6 @@ module GObject
       self
     end
 
-    def store_pointer(ptr)
-      super
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(ptr)
-    end
-
     def self.make_finalizer(ptr)
       proc do
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
@@ -104,6 +99,15 @@ module GObject
     alias floating? is_floating
 
     private
+
+    def store_pointer(ptr)
+      super
+      make_finalizer
+    end
+
+    def make_finalizer
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(struct.to_ptr)
+    end
 
     def names_and_gvalues_for_properties(properties)
       return [], [] unless properties.any?
