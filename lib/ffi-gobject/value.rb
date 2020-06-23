@@ -77,8 +77,6 @@ module GObject
       Lib.g_value_copy value, target unless value.uninitialized?
     end
 
-    private
-
     CLASS_TO_GTYPE_MAP = {
       NilClass   => TYPE_INVALID,
       TrueClass  => TYPE_BOOLEAN,

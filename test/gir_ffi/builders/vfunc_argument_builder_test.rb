@@ -29,7 +29,8 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
     let(:arg_info) { vfunc_info.args[0] }
 
     it "has the correct value for #pre_conversion" do
-      _(builder.pre_conversion).must_equal ["_v1 = GObject::Object.wrap(object)", "_v1&.ref"]
+      _(builder.pre_conversion)
+        .must_equal ["_v1 = GObject::Object.wrap(object)", "_v1&.ref"]
     end
 
     it "has the correct value for #post_conversion" do
