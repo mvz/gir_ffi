@@ -1,5 +1,4 @@
 coverage/
-html/
 doc/**/*.html
 doc/**/*.css
 doc/**/*.js
