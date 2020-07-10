@@ -67,6 +67,8 @@ module GirFFI
           from_utf8_array ary
         when :gboolean
           from_boolean_array ary
+        when :guint8
+          from_char_array ary
         else
           from_basic_type_array type, ary
         end
@@ -90,6 +92,11 @@ module GirFFI
 
       def from_boolean_array(ary)
         from_basic_type_array :int, ary.map { |val| val ? 1 : 0 }
+      end
+
+      def from_char_array(ary)
+        ary = ary.bytes if ary.is_a? String
+        from_basic_type_array :int8, ary
       end
 
       def from_pointer_array(type, ary)

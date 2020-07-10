@@ -55,6 +55,14 @@ describe GirFFI::SizedArray do
       end
     end
 
+    describe "from a Ruby string" do
+      it "creates a GirFFI::SizedArray with elements corresponding to the string's bytes" do
+        arr = GirFFI::SizedArray.from :guint8, 3, "foo"
+        _(arr).must_be_instance_of GirFFI::SizedArray
+        assert_equal "foo".bytes, arr.to_a
+      end
+    end
+
     describe "from a GirFFI::SizedArray" do
       it "return its argument" do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
