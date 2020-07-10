@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require File.join(File.dirname(__FILE__), "lib/gir_ffi/version.rb")
+require "rake/file_list"
 
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
@@ -22,12 +23,7 @@ Gem::Specification.new do |s|
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
 
-  s.files = Dir["{lib,test,tasks,examples}/**/*",
-                "*.md",
-                "Gemfile",
-                "Rakefile",
-                "COPYING.LIB"] & `git ls-files -z`.split("\0")
-
+  s.files = Rake::FileList["{docs,examples,lib}/**/*", "COPYING.LIB"].exclude(*File.read('.gitignore').split)
   s.rdoc_options = ["--main", "README.md"]
   s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
@@ -39,6 +35,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rake", ["~> 13.0"])
   s.add_development_dependency("rexml", ["~> 3.0"])
   s.add_development_dependency("rspec-mocks", ["~> 3.5"])
+  s.add_development_dependency("rubocop-packaging", ["~> 0.1.1"])
   s.add_development_dependency("simplecov", ["~> 0.18.0"])
 
   s.require_paths = ["lib"]
