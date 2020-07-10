@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require File.join(File.dirname(__FILE__), "lib/gir_ffi/version.rb")
+require "rake/file_list"
 
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
