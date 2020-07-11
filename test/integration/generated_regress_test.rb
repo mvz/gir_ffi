@@ -1485,14 +1485,18 @@ describe Regress do
 
   describe "Regress::TestInterface" do
     let(:derived_klass) do
-      klass = Object.const_set("DerivedClass#{Sequence.next}",
-                               Class.new(Regress::FooObject))
-      klass.send :include, Regress::TestInterface
-      GirFFI.define_type klass do |info|
-        info.install_property GObject.param_spec_int("number", "Number", "Number",
-                                                     0, 10, 0,
-                                                     readwrite: true, construct: true)
+      name = "DerivedClass#{Sequence.next}"
+
+      klass = Class.new(Regress::FooObject) do
+        include Regress::TestInterface
+
+        install_property GObject.param_spec_int("number", "Number", "Number",
+                                                0, 10, 0,
+                                                readwrite: true, construct: true)
       end
+
+      Object.const_set(name, klass)
+      GirFFI.define_type klass
       klass
     end
 

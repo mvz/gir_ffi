@@ -58,16 +58,16 @@ describe GirFFI::Core do
       end
     end
 
-    describe "with a block with a call to #install_property" do
+    describe "with a class with a call to #install_property" do
       before do
-        @klass = Class.new GIMarshallingTests::OverridesObject
-        Object.const_set "DerivedB#{Sequence.next}", @klass
-        @gtype = GirFFI.define_type @klass do |info|
-          info.install_property GObject.param_spec_int("foo", "foo bar",
-                                                       "The Foo Bar Property",
-                                                       10, 20, 15,
-                                                       3)
+        @klass = Class.new GIMarshallingTests::OverridesObject do
+          install_property GObject.param_spec_int("foo", "foo bar",
+                                                  "The Foo Bar Property",
+                                                  10, 20, 15,
+                                                  3)
         end
+        Object.const_set "DerivedB#{Sequence.next}", @klass
+        @gtype = GirFFI.define_type @klass
       end
 
       it "registers a type that is bigger than the parent" do
