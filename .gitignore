@@ -1,5 +1,4 @@
 coverage/
-html/
 doc/**/*.html
 doc/**/*.css
 doc/**/*.js
@@ -8,8 +7,6 @@ pkg/
 .yardoc
 gir_ffi*.gem
 *.rbc
-hs_err_pid*.log
-core
 Gemfile.lock
 test/lib/.deps
 test/lib/.libs
@@ -30,9 +27,9 @@ test/lib/*.lo
 test/lib/*.o
 test/lib/libtool
 test/lib/ltmain.sh
-test/lib/stamp-h1
 test/lib/m4/libtool.m4
 test/lib/m4/lt*.m4
 test/lib/missing
+test/lib/stamp-h1
 .rbx/
 .bundle/
