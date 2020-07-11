@@ -23,7 +23,8 @@ Gem::Specification.new do |s|
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
 
-  s.files = Rake::FileList["{docs,examples,lib}/**/*", "COPYING.LIB"].exclude(*File.read('.gitignore').split)
+  s.files = Rake::FileList["{docs,examples,lib}/**/*", "COPYING.LIB"]
+    .exclude(*File.read(".gitignore").split)
   s.rdoc_options = ["--main", "README.md"]
   s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
