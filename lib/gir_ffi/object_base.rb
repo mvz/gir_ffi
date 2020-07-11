@@ -98,5 +98,15 @@ module GirFFI
 
       gir_info.install_property(param_spec)
     end
+
+    def self.install_vfunc_implementation(name, implementation = nil)
+      if const_defined? :GIR_FFI_BUILDER, false
+        raise "Installing a property in a class that is already set up is not supported"
+      end
+
+      prepare_user_defined_class
+
+      gir_info.install_vfunc_implementation(name, implementation)
+    end
   end
 end

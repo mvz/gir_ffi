@@ -14,9 +14,8 @@ describe GIMarshallingTests do
   end
 
   def make_derived_instance
-    GirFFI.define_type derived_klass do |info|
-      yield info if block_given?
-    end
+    yield derived_klass if block_given?
+    GirFFI.define_type derived_klass
     derived_klass.new
   end
 
@@ -201,8 +200,8 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::Interface" do
     it "has a working method #test_int8_in" do
       derived_klass.class_eval { include GIMarshallingTests::Interface }
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.test_int8_in 8
       _(derived_instance.int).must_equal 8
@@ -218,8 +217,8 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::Interface3" do
     it "has a working method #test_variant_array_in" do
       derived_klass.class_eval { include GIMarshallingTests::Interface3 }
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :test_variant_array_in, proc { |obj, in_|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :test_variant_array_in, proc { |obj, in_|
           obj.int = in_.to_a.first.get_byte
         }
       end
@@ -356,8 +355,8 @@ describe GIMarshallingTests do
       user_data = nil
       result = nil
 
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_with_callback,
           proc { |_obj, callback, callback_data|
             cb = callback
@@ -380,8 +379,8 @@ describe GIMarshallingTests do
 
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_full" do
       obj = nil
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_in_object_transfer_full,
           proc { |_this, object|
             obj = object
@@ -395,8 +394,8 @@ describe GIMarshallingTests do
 
     it "has a working method #get_ref_info_for_vfunc_in_object_transfer_none" do
       obj = nil
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_in_object_transfer_none,
           proc { |_this, object|
             obj = object
@@ -411,8 +410,8 @@ describe GIMarshallingTests do
 
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_full" do
       obj = nil
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_full, proc { |_obj|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_out_object_transfer_full, proc { |_obj|
           obj = GIMarshallingTests::Object.new(42)
         }
       end
@@ -423,8 +422,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_out_object_transfer_none" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_object_transfer_none, proc { |_obj|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_out_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -433,8 +432,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_full" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_full, proc { |_obj|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_return_object_transfer_full, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -443,8 +442,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_ref_info_for_vfunc_return_object_transfer_none" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_object_transfer_none, proc { |_obj|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_return_object_transfer_none, proc { |_obj|
           GIMarshallingTests::Object.new 42
         }
       end
@@ -453,16 +452,17 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #int8_in" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :method_int8_in,
+                                           proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.int8_in 23
       _(derived_instance.int).must_equal 23
     end
 
     it "has a working method #int8_out" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
 
       _(derived_instance.int8_out).must_equal 42
@@ -494,8 +494,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_callee" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :method_int8_arg_and_out_callee,
           proc { |_obj, arg|
             2 * arg
@@ -506,8 +506,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_arg_and_out_caller" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :method_int8_arg_and_out_caller,
           proc { |_obj, arg|
             2 * arg
@@ -518,24 +518,25 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #method_int8_in" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_in, proc { |obj, in_| obj.int = in_ }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :method_int8_in,
+                                           proc { |obj, in_| obj.int = in_ }
       end
       derived_instance.method_int8_in 108
       _(derived_instance.int).must_equal 108
     end
 
     it "has a working method #method_int8_out" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :method_int8_out, proc { |_obj| 42 }
       end
       _(derived_instance.method_int8_out).must_equal 42
     end
 
     it "has a working method #method_str_arg_out_ret" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(:method_str_arg_out_ret,
-                                          proc { |_obj, arg| [arg, 42] })
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(:method_str_arg_out_ret,
+                                           proc { |_obj, arg| [arg, 42] })
       end
       _(derived_instance.method_str_arg_out_ret("foo")).must_equal ["foo", 42]
     end
@@ -548,8 +549,8 @@ describe GIMarshallingTests do
       instance.method_with_default_implementation 104
       assert_equal 104, instance.int
 
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :method_with_default_implementation,
           proc { |obj, num| obj.int = num * 2 })
       end
@@ -569,8 +570,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_array_out_parameter" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_array_out_parameter, proc { |_obj|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_array_out_parameter, proc { |_obj|
           [1.1, 2.2, 3.3]
         }
       end
@@ -583,8 +584,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_caller_allocated_out_parameter" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_caller_allocated_out_parameter,
           proc { |_obj|
             "Hello!"
@@ -595,8 +596,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_meth_with_error" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_meth_with_err, proc { |_object, x|
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_meth_with_err, proc { |_object, x|
           raise "This is not the answer!" unless x == 42
 
           true
@@ -613,8 +614,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_multiple_out_parameters" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_multiple_out_parameters,
           proc { |*_args| [42.1, -142.3] })
       end
@@ -624,8 +625,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_one_out_parameter" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_one_out_parameter,
           proc { |*_args| 23.4 })
       end
@@ -634,22 +635,22 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_out_enum" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_out_enum, proc { |_obj| :value2 }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_out_enum, proc { |_obj| :value2 }
       end
       _(derived_instance.vfunc_out_enum).must_equal :value2
     end
 
     it "has a working method #vfunc_return_enum" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
       end
       _(derived_instance.vfunc_return_enum).must_equal :value2
     end
 
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_return_value_and_multiple_out_parameters,
           proc { |*_args| [42, -142, 3] })
       end
@@ -658,8 +659,8 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_return_value_and_one_out_parameter,
           proc { |*_args| [42, -142] })
       end
@@ -668,9 +669,9 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #vfunc_return_value_only" do
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(:vfunc_return_value_only,
-                                          proc { |_obj| 0x1234_5678 })
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(:vfunc_return_value_only,
+                                           proc { |_obj| 0x1234_5678 })
       end
       result = derived_instance.vfunc_return_value_only
       _(result).must_equal 0x1234_5678
@@ -679,8 +680,8 @@ describe GIMarshallingTests do
     it "has a working method #vfunc_with_callback" do
       result = 1
 
-      derived_instance = make_derived_instance do |info|
-        info.install_vfunc_implementation(
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
           :vfunc_with_callback,
           proc { |_obj, callback, callback_data|
             callback.call(42, callback_data)
@@ -2887,8 +2888,8 @@ describe GIMarshallingTests do
 
   it "has a working function #test_interface_test_int8_in" do
     derived_klass.class_eval { include GIMarshallingTests::Interface }
-    instance = make_derived_instance do |info|
-      info.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
+    instance = make_derived_instance do |klass|
+      klass.install_vfunc_implementation :test_int8_in, proc { |obj, in_| obj.int = in_ }
     end
     _(instance.int).must_equal 0
     GIMarshallingTests.test_interface_test_int8_in instance, 8
