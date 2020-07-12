@@ -26,56 +26,35 @@ These in the order they occured to me, and may therefore be fixed in any order.
 
 ## Derived types
 
-Derived classes can now be registered with GObject, but the way to do this is
-not very nice:
+Derived classes are now registered like so:
 
     class Derived < Base
-    end
+      install_property GObject.param_spec_int("foo", "foo bar",
+                                              "The Foo Bar Property",
+                                               10, 20, 15, 3)
 
-    GirFFI.define_type Derived do |info|
-      info.install_property GObject.param_spec_int("foo", "foo bar",
-                                                   "The Foo Bar Property",
-                                                   10, 20, 15, 3)
       # assume Base defines a virtual function called 'some_vfunc'
-      info.install_vfunc_implementation :some_vfunc, proc {|obj|
-        #implementation goes here
+      install_vfunc_implementation :some_vfunc, proc {|obj|
+        # implementation goes here
       }
-    end
 
-or
-
-    class Derived < Base
-      def some_vfunc
-        #implementation goes here
+      def other_vfunc
+        # implementation
       end
+
+      # assume Base defines a virtual function called 'other_vfunc'
+      install_vfunc_implementation :other_vfunc
     end
 
-    GirFFI.define_type Derived do |info|
-      info.install_property GObject.param_spec_int("foo", "foo bar",
-                                                   "The Foo Bar Property",
-                                                   10, 20, 15, 3)
-      info.install_vfunc_implementation :some_vfunc
-    end
+    GirFFI.define_type Derived
 
+Potential improvements:
 
-It would be good to replace this with something that's easier to use:
+* Allow `define_type` to be called in the class definition
 * Perhaps auto-register types, like Gtk# does
 * Perhaps automagically find vfunc implementations, like PyGObject and
   Ruby-GNOME do
 * What about properties?
-
-How about:
-
-    class Derived < Base
-      include SomeGObjectInterface
-
-      register_type 'Derived'
-
-      install_property ...
-      install_vfunc_implementation ...
-    end
-
-This needs issue #63 to be resolved.
 
 NOTE: When adding an interface module to a derived class, its prerequisites
 should be checked.
