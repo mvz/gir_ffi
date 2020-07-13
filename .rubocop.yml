@@ -69,9 +69,13 @@ Style/AndOr:
 Style/GuardClause:
   MinBodyLength: 2
 
-# Prefer actual numerics
+# Sometimes an if statement just looks better than next with a guard clause
+Style/Next:
+  Enabled: false
+
+# Allow both real comparison and predicate methods
 Style/NumericPredicate:
-  EnforcedStyle: comparison
+  Enabled: false
 
 # Use older RuboCop default
 Style/PercentLiteralDelimiters:
