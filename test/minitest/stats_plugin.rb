@@ -15,7 +15,7 @@ module Minitest
     end
 
     def report
-      slowest = @results.sort_by(&:time).reverse.first(10)
+      slowest = @results.sort_by(&:time).last(10).reverse
       slowest.each do |result|
         puts format("%<time>10.4f %<location>s",
                     time: result.time,
