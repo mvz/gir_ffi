@@ -10,6 +10,7 @@ AllCops:
     - 'examples/*'
     - 'tasks/test.rake'
     - 'tmp/**/*'
+  NewCops: enable
   TargetRubyVersion: 2.5
 
 # Tables are nice
@@ -53,6 +54,10 @@ Metrics/BlockLength:
     - 'test/**/*' # Test describe blocks can be any size
     - '*.gemspec' # Gem spec blocks can be any size
 
+# This one is broken
+Minitest/AssertOutput:
+  Enabled: false
+
 Performance/StartWith:
   AutoCorrect: true
 
@@ -91,36 +96,6 @@ Style/SymbolArray:
 Style/TrivialAccessors:
   ExactNameMatch: true
   AllowPredicates: true
-
-# Activate new cops from RuboCop 0.80 - 0.86
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-Lint/RaiseException:
-  Enabled: true
-Lint/StructNewOverride:
-  Enabled: true
-Style/ExponentialNotation:
-  Enabled: true
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformKeys:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true
-Style/RedundantFetchBlock:
-  Enabled: true
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-Style/RedundantRegexpEscape:
-  Enabled: true
-Style/SlicingWithRange:
-  Enabled: true
 
 # Project-specific configuration goes here.
 
