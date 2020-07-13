@@ -4,8 +4,7 @@ module GirFFI
   # The ArrayElementConvertor class handles conversion from C array elements to
   # ruby values
   class ArrayElementConvertor
-    attr_reader :value_type
-    attr_reader :pointer
+    attr_reader :value_type, :pointer
 
     def initialize(type, ptr)
       @value_type = type

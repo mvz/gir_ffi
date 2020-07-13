@@ -3,8 +3,7 @@
 module GirFFI
   # Represents a return value with the same interface as IArgInfo
   class ReturnValueInfo
-    attr_reader :argument_type
-    attr_reader :ownership_transfer
+    attr_reader :argument_type, :ownership_transfer
 
     def initialize(type, ownership_transfer, skip)
       @argument_type = type

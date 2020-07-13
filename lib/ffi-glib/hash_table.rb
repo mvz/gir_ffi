@@ -10,8 +10,7 @@ module GLib
     include Enumerable
     extend ContainerClassMethods
 
-    attr_reader :key_type
-    attr_reader :value_type
+    attr_reader :key_type, :value_type
 
     def initialize(key_type, value_type)
       @key_type = key_type

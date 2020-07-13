@@ -11,8 +11,7 @@ module GirFFI
   module Builders
     # Method builder used for the creation of property getter methods.
     class PropertyGetterBuilder
-      attr_reader :info
-      attr_reader :return_value_builder
+      attr_reader :info, :return_value_builder
 
       def initialize(info, return_value_builder)
         @return_value_builder = return_value_builder
