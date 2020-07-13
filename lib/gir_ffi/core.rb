@@ -28,8 +28,23 @@ module GirFFI
       Builder.build_module namespace, version
     end
 
-    def define_type(klass, &block)
-      info = UserDefinedObjectInfo.new(klass, &block)
+    def define_type(klass)
+      unless klass < GirFFI::ObjectBase
+        raise ArgumentError, "#{klass} is not a GObject class"
+      end
+
+      klass.prepare_user_defined_class
+      info = klass.gir_info
+
+      unless info.is_a? UserDefinedObjectInfo
+        raise ArgumentError, "#{klass} is not a user-defined class"
+      end
+
+      if block_given?
+        warn "Using define_type with a block is deprecated." \
+          " Call the relevant functions inside the class definition instead."
+        yield info
+      end
       Builders::UserDefinedBuilder.new(info).build_class
 
       klass.gtype

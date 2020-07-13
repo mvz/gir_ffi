@@ -921,16 +921,15 @@ describe Regress do
 
     def make_derived_instance
       derived_klass.send :include, Regress::FooSubInterface
-      GirFFI.define_type derived_klass do |info|
-        yield info if block_given?
-      end
+      yield derived_klass if block_given?
+      GirFFI.define_type derived_klass
       derived_klass.new
     end
 
     it "has a working method #do_bar" do
       result = nil
-      instance = make_derived_instance do |info|
-        info.install_vfunc_implementation :do_bar, proc { |obj| result = obj.get_name }
+      instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :do_bar, proc { |obj| result = obj.get_name }
       end
       instance.do_bar
       _(result).must_equal "regress_foo"
@@ -938,13 +937,13 @@ describe Regress do
 
     it "has a working method #do_baz" do
       a = nil
-      instance = make_derived_instance do |info|
+      instance = make_derived_instance do |klass|
         # TODO: Do not pass callback again in user_data if destroy notifier is absent
-        info.install_vfunc_implementation :do_baz,
-                                          proc { |obj, callback, _user_data|
-                                            callback.call
-                                            a = obj.get_name
-                                          }
+        klass.install_vfunc_implementation :do_baz,
+                                           proc { |obj, callback, _user_data|
+                                             callback.call
+                                             a = obj.get_name
+                                           }
       end
       b = nil
       instance.do_baz { b = "hello" }
@@ -1485,14 +1484,18 @@ describe Regress do
 
   describe "Regress::TestInterface" do
     let(:derived_klass) do
-      klass = Object.const_set("DerivedClass#{Sequence.next}",
-                               Class.new(Regress::FooObject))
-      klass.send :include, Regress::TestInterface
-      GirFFI.define_type klass do |info|
-        info.install_property GObject.param_spec_int("number", "Number", "Number",
-                                                     0, 10, 0,
-                                                     readwrite: true, construct: true)
+      name = "DerivedClass#{Sequence.next}"
+
+      klass = Class.new(Regress::FooObject) do
+        include Regress::TestInterface
+
+        install_property GObject.param_spec_int("number", "Number", "Number",
+                                                0, 10, 0,
+                                                readwrite: true, construct: true)
       end
+
+      Object.const_set(name, klass)
+      GirFFI.define_type klass
       klass
     end
 

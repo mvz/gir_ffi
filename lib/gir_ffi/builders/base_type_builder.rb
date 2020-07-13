@@ -35,7 +35,7 @@ module GirFFI
     end
 
     def setup_constants
-      klass.const_set :GIR_INFO, info
+      optionally_define_constant(klass, :GIR_INFO) { info }
       klass.const_set :GIR_FFI_BUILDER, self
     end
 

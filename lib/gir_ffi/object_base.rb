@@ -81,5 +81,32 @@ module GirFFI
         it < GirFFI::ObjectBase || it.singleton_class.include?(InterfaceBase)
       end
     end
+
+    def self.prepare_user_defined_class
+      return if const_defined? :GIR_INFO, false
+
+      info = UserDefinedObjectInfo.new(self)
+      const_set :GIR_INFO, info
+    end
+
+    def self.install_property(param_spec)
+      if const_defined? :GIR_FFI_BUILDER, false
+        raise "Installing a property in a class that is already set up is not supported"
+      end
+
+      prepare_user_defined_class
+
+      gir_info.install_property(param_spec)
+    end
+
+    def self.install_vfunc_implementation(name, implementation = nil)
+      if const_defined? :GIR_FFI_BUILDER, false
+        raise "Installing a property in a class that is already set up is not supported"
+      end
+
+      prepare_user_defined_class
+
+      gir_info.install_vfunc_implementation(name, implementation)
+    end
   end
 end
