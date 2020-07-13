@@ -1203,7 +1203,7 @@ describe Regress do
 
     it "has a working method #equals" do
       tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
-      assert_equal true, instance.equals(tb2)
+      assert instance.equals(tb2)
     end
   end
 
@@ -3318,16 +3318,16 @@ describe Regress do
   end
 
   it "has a working function #test_boolean" do
-    assert_equal false, Regress.test_boolean(false)
-    assert_equal true, Regress.test_boolean(true)
+    refute Regress.test_boolean(false)
+    assert Regress.test_boolean(true)
   end
 
   it "has a working function #test_boolean_false" do
-    assert_equal false, Regress.test_boolean_false(false)
+    refute Regress.test_boolean_false(false)
   end
 
   it "has a working function #test_boolean_true" do
-    assert_equal true, Regress.test_boolean_true(true)
+    assert Regress.test_boolean_true(true)
   end
 
   it "has a working function #test_boxeds_not_a_method" do
@@ -3927,7 +3927,7 @@ describe Regress do
   end
 
   it "has a working function #test_strv_in" do
-    assert_equal true, Regress.test_strv_in(%w(1 2 3))
+    assert Regress.test_strv_in(%w(1 2 3))
   end
 
   it "has a working function #test_strv_in_gvalue" do
