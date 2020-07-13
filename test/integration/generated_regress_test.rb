@@ -1987,7 +1987,7 @@ describe Regress do
         instance.hash_table = { "foo" => -4, "bar" => 83 }
         _(instance.hash_table.to_hash).must_equal("foo" => -4, "bar" => 83)
         _(instance.get_property("hash-table").to_hash).must_equal("foo" => -4,
-                                                                        "bar" => 83)
+                                                                  "bar" => 83)
       end
     end
 
@@ -2009,7 +2009,7 @@ describe Regress do
         instance.hash_table_old = { "foo" => 34, "bar" => -3 }
         _(instance.hash_table_old.to_hash).must_equal("foo" => 34, "bar" => -3)
         _(instance.get_property("hash-table-old").to_hash).must_equal("foo" => 34,
-                                                                            "bar" => -3)
+                                                                      "bar" => -3)
       end
     end
 
@@ -3570,15 +3570,15 @@ describe Regress do
     hash = Regress.test_ghash_container_return
     _(hash).must_be_instance_of GLib::HashTable
     _(hash.to_hash).must_equal("foo" => "bar",
-                            "baz" => "bat",
-                            "qux" => "quux")
+                               "baz" => "bat",
+                               "qux" => "quux")
   end
 
   it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_gvalue_in" do
@@ -3616,8 +3616,8 @@ describe Regress do
     hash = result.to_hash
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
-                                      "baz" => "bat",
-                                      "qux" => "quux")
+                                         "baz" => "bat",
+                                         "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nested_everything_return2" do
@@ -3625,8 +3625,8 @@ describe Regress do
     hash = result.to_hash
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
-                                      "baz" => "bat",
-                                      "qux" => "quux")
+                                         "baz" => "bat",
+                                         "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nothing_in" do
@@ -3644,15 +3644,15 @@ describe Regress do
   it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_null_in" do

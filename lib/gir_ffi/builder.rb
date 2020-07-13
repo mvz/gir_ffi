@@ -47,7 +47,7 @@ module GirFFI
       end
       Builders::ModuleBuilder.new(module_name,
                                   namespace: namespace,
-                                  version: version).generate
+                                  version:   version).generate
     end
 
     # TODO: Move elsewhere, perhaps to FunctionBuilder.

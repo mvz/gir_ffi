@@ -17,7 +17,6 @@ AllCops:
 Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: table
-  EnforcedLastArgumentHashStyle: ignore_implicit
 
 # Be lenient with line length
 Layout/LineLength:
