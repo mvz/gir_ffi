@@ -400,7 +400,7 @@ describe Regress do
   end
 
   it "has the constant DOUBLE_CONSTANT" do
-    assert_equal 44.22, Regress::DOUBLE_CONSTANT
+    assert_in_delta(44.22, Regress::DOUBLE_CONSTANT)
   end
 
   it "has the constant FOO_DEFINE_SHOULD_BE_EXPOSED" do
@@ -1597,7 +1597,7 @@ describe Regress do
 
     it "has a working function #static_method" do
       rv = Regress::TestObj.static_method 623
-      assert_equal 623.0, rv
+      assert_in_delta(623.0, rv)
     end
 
     it "has a working function #static_method_callback" do
@@ -2581,7 +2581,7 @@ describe Regress do
 
       assert_equal 2556, b.some_int
       assert_equal(-10, b.some_int8)
-      assert_equal 1.03455e20, b.some_double
+      assert_in_delta(1.03455e20, b.some_double)
       assert_equal :value2, b.some_enum
     end
 
@@ -2622,7 +2622,7 @@ describe Regress do
       assert_equal 42, b.some_int8
       assert_equal 2556, b.nested_a.some_int
       assert_equal(-10, b.nested_a.some_int8)
-      assert_equal 1.03455e20, b.nested_a.some_double
+      assert_in_delta(1.03455e20, b.nested_a.some_double)
       assert_equal :value2, b.nested_a.some_enum
     end
   end
@@ -3525,7 +3525,7 @@ describe Regress do
 
   it "has a working function #test_double" do
     r = Regress.test_double 5435.32
-    assert_equal 5435.32, r
+    assert_in_delta(5435.32, r)
   end
 
   it "has a working function #test_enum_param" do
