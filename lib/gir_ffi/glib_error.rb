@@ -4,8 +4,7 @@ module GirFFI
   # Exception class to be raised whenever an error is signaled through
   # GLib::Error.
   class GLibError < RuntimeError
-    attr_reader :domain_quark
-    attr_reader :code
+    attr_reader :domain_quark, :code
 
     def initialize(g_error)
       @domain_quark = g_error.domain

@@ -21,7 +21,7 @@ module GirFFI
 
       def initialize(receiver_info, info)
         super(info, ClosureReturnValueBuilder,
-              receiver_info: receiver_info,
+              receiver_info:          receiver_info,
               argument_builder_class: ClosureArgumentBuilder)
       end
 

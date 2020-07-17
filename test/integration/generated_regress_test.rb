@@ -400,7 +400,7 @@ describe Regress do
   end
 
   it "has the constant DOUBLE_CONSTANT" do
-    assert_equal 44.22, Regress::DOUBLE_CONSTANT
+    assert_in_delta(44.22, Regress::DOUBLE_CONSTANT)
   end
 
   it "has the constant FOO_DEFINE_SHOULD_BE_EXPOSED" do
@@ -1203,7 +1203,7 @@ describe Regress do
 
     it "has a working method #equals" do
       tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
-      assert_equal true, instance.equals(tb2)
+      assert instance.equals(tb2)
     end
   end
 
@@ -1597,7 +1597,7 @@ describe Regress do
 
     it "has a working function #static_method" do
       rv = Regress::TestObj.static_method 623
-      assert_equal 623.0, rv
+      assert_in_delta(623.0, rv)
     end
 
     it "has a working function #static_method_callback" do
@@ -1987,7 +1987,7 @@ describe Regress do
         instance.hash_table = { "foo" => -4, "bar" => 83 }
         _(instance.hash_table.to_hash).must_equal("foo" => -4, "bar" => 83)
         _(instance.get_property("hash-table").to_hash).must_equal("foo" => -4,
-                                                                        "bar" => 83)
+                                                                  "bar" => 83)
       end
     end
 
@@ -2009,7 +2009,7 @@ describe Regress do
         instance.hash_table_old = { "foo" => 34, "bar" => -3 }
         _(instance.hash_table_old.to_hash).must_equal("foo" => 34, "bar" => -3)
         _(instance.get_property("hash-table-old").to_hash).must_equal("foo" => 34,
-                                                                            "bar" => -3)
+                                                                      "bar" => -3)
       end
     end
 
@@ -2581,7 +2581,7 @@ describe Regress do
 
       assert_equal 2556, b.some_int
       assert_equal(-10, b.some_int8)
-      assert_equal 1.03455e20, b.some_double
+      assert_in_delta(1.03455e20, b.some_double)
       assert_equal :value2, b.some_enum
     end
 
@@ -2622,7 +2622,7 @@ describe Regress do
       assert_equal 42, b.some_int8
       assert_equal 2556, b.nested_a.some_int
       assert_equal(-10, b.nested_a.some_int8)
-      assert_equal 1.03455e20, b.nested_a.some_double
+      assert_in_delta(1.03455e20, b.nested_a.some_double)
       assert_equal :value2, b.nested_a.some_enum
     end
   end
@@ -3318,16 +3318,16 @@ describe Regress do
   end
 
   it "has a working function #test_boolean" do
-    assert_equal false, Regress.test_boolean(false)
-    assert_equal true, Regress.test_boolean(true)
+    refute Regress.test_boolean(false)
+    assert Regress.test_boolean(true)
   end
 
   it "has a working function #test_boolean_false" do
-    assert_equal false, Regress.test_boolean_false(false)
+    refute Regress.test_boolean_false(false)
   end
 
   it "has a working function #test_boolean_true" do
-    assert_equal true, Regress.test_boolean_true(true)
+    assert Regress.test_boolean_true(true)
   end
 
   it "has a working function #test_boxeds_not_a_method" do
@@ -3525,7 +3525,7 @@ describe Regress do
 
   it "has a working function #test_double" do
     r = Regress.test_double 5435.32
-    assert_equal 5435.32, r
+    assert_in_delta(5435.32, r)
   end
 
   it "has a working function #test_enum_param" do
@@ -3570,15 +3570,15 @@ describe Regress do
     hash = Regress.test_ghash_container_return
     _(hash).must_be_instance_of GLib::HashTable
     _(hash.to_hash).must_equal("foo" => "bar",
-                            "baz" => "bat",
-                            "qux" => "quux")
+                               "baz" => "bat",
+                               "qux" => "quux")
   end
 
   it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_gvalue_in" do
@@ -3616,8 +3616,8 @@ describe Regress do
     hash = result.to_hash
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
-                                      "baz" => "bat",
-                                      "qux" => "quux")
+                                         "baz" => "bat",
+                                         "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nested_everything_return2" do
@@ -3625,8 +3625,8 @@ describe Regress do
     hash = result.to_hash
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
-                                      "baz" => "bat",
-                                      "qux" => "quux")
+                                         "baz" => "bat",
+                                         "qux" => "quux")
   end
 
   it "has a working function #test_ghash_nothing_in" do
@@ -3644,15 +3644,15 @@ describe Regress do
   it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
     _(ghash.to_hash).must_be :==, "foo" => "bar",
-                               "baz" => "bat",
-                               "qux" => "quux"
+                                  "baz" => "bat",
+                                  "qux" => "quux"
   end
 
   it "has a working function #test_ghash_null_in" do
@@ -3927,7 +3927,7 @@ describe Regress do
   end
 
   it "has a working function #test_strv_in" do
-    assert_equal true, Regress.test_strv_in(%w(1 2 3))
+    assert Regress.test_strv_in(%w(1 2 3))
   end
 
   it "has a working function #test_strv_in_gvalue" do

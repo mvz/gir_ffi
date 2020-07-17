@@ -23,7 +23,7 @@ describe GObjectIntrospection::IConstantInfo do
     end
 
     it "returns true as its value" do
-      assert_equal true, constant_info.value
+      assert constant_info.value
     end
   end
 end

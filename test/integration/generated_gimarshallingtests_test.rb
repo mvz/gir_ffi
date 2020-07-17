@@ -2445,7 +2445,7 @@ describe GIMarshallingTests do
 
   it "has a working function #int16_inout_max_min" do
     res = GIMarshallingTests.int16_inout_max_min 0x7fff
-    assert_equal res, -0x8000
+    assert_equal(-0x8000, res)
   end
 
   it "has a working function #int16_inout_min_max" do

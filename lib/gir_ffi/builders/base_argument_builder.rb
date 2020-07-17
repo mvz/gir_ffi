@@ -14,8 +14,8 @@ module GirFFI
         until when while yield
       ).freeze
 
-      attr_reader :arginfo
-      attr_reader :related_callback_builder
+      attr_reader :arginfo, :related_callback_builder
+
       attr_accessor :length_arg, :array_arg
 
       def initialize(var_gen, arginfo)
