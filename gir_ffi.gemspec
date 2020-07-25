@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rspec-mocks", ["~> 3.5"])
   s.add_development_dependency("rubocop", ["~> 0.88.0"])
   s.add_development_dependency("rubocop-minitest", ["~> 0.10.0"])
-  s.add_development_dependency("rubocop-packaging", ["~> 0.1.1"])
+  s.add_development_dependency("rubocop-packaging", ["~> 0.2.0"])
   s.add_development_dependency("rubocop-performance", ["~> 1.7.0"])
   s.add_development_dependency("simplecov", ["~> 0.18.0"])
 
