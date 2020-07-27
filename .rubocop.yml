@@ -53,10 +53,6 @@ Metrics/BlockLength:
     - 'test/**/*' # Test describe blocks can be any size
     - '*.gemspec' # Gem spec blocks can be any size
 
-# This one is broken
-Minitest/AssertOutput:
-  Enabled: false
-
 Performance/StartWith:
   AutoCorrect: true
 
