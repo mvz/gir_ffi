@@ -1,27 +1,30 @@
 # frozen_string_literal: true
 
-require File.join(File.dirname(__FILE__), "lib/gir_ffi/version.rb")
 require "rake/file_list"
+require_relative "lib/gir_ffi/version"
 
 Gem::Specification.new do |s|
   s.name = "gir_ffi"
   s.version = GirFFI::VERSION
-
   s.summary = "FFI-based GObject binding using the GObject Introspection Repository"
-  s.required_ruby_version = ">= 2.5.0"
-
   s.authors = ["Matijs van Zuijlen"]
   s.email = ["matijs@matijs.net"]
   s.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
 
+  s.required_ruby_version = ">= 2.5.0"
+
   s.license = "LGPL-2.1+"
 
-  s.description = <<-DESC
+  s.description = <<~DESC
     GirFFI creates bindings for GObject-based libraries at runtime based on introspection
     data provided by the GObject Introspection Repository (GIR) system. Bindings are created
     at runtime and use FFI to interface with the C libraries. In cases where the GIR does not
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
+
+  s.metadata["homepage_uri"] = s.homepage
+  s.metadata["source_code_uri"] = "https://github.com/mvz/gir_ffi"
+  s.metadata["changelog_uri"] = "https://github.com/mvz/gir_ffi/blob/master/Changelog.md"
 
   s.files = Rake::FileList["{docs,examples,lib}/**/*", "COPYING.LIB"]
     .exclude(*File.read(".gitignore").split)
