@@ -31,6 +31,8 @@ clean_globs = [".yardoc",
 CLEAN.include(Rake::FileList.new(*clean_globs))
 
 load "tasks/test.rake"
+load "tasks/manifest.rake"
 
 task default: "test:all"
 task default: "test:features"
+task build: "manifest:check"
