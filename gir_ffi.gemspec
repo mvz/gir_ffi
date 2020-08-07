@@ -39,7 +39,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("rake", ["~> 13.0"])
   s.add_development_dependency("rexml", ["~> 3.0"])
   s.add_development_dependency("rspec-mocks", ["~> 3.5"])
-  s.add_development_dependency("rubocop", ["~> 0.88.0"])
+  s.add_development_dependency("rubocop", ["~> 0.89.0"])
   s.add_development_dependency("rubocop-minitest", ["~> 0.10.1"])
   s.add_development_dependency("rubocop-packaging", ["~> 0.2.0"])
   s.add_development_dependency("rubocop-performance", ["~> 1.7.0"])
