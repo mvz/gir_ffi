@@ -26,8 +26,7 @@ Gem::Specification.new do |s|
   s.metadata["source_code_uri"] = "https://github.com/mvz/gir_ffi"
   s.metadata["changelog_uri"] = "https://github.com/mvz/gir_ffi/blob/master/Changelog.md"
 
-  s.files = Rake::FileList["{docs,examples,lib}/**/*", "COPYING.LIB"]
-    .exclude(*File.read(".gitignore").split)
+  s.files = File.read("Manifest.txt").split
   s.rdoc_options = ["--main", "README.md"]
   s.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
