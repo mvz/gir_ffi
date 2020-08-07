@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency("aruba", ["~> 1.0.0"])
   s.add_development_dependency("minitest", ["~> 5.12"])
   s.add_development_dependency("rake", ["~> 13.0"])
+  s.add_development_dependency("rake-manifest", ["~> 0.1.0"])
   s.add_development_dependency("rexml", ["~> 3.0"])
   s.add_development_dependency("rspec-mocks", ["~> 3.5"])
   s.add_development_dependency("rubocop", ["~> 0.89.0"])
