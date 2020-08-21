@@ -69,8 +69,8 @@ On Debian and Ubuntu, installing `libgirepository-1.0-1` and `gir1.2-glib-2.0`
 should be enough to use GirFFI in your application.
 
 To run the tests, you should additionally install `libgirepository1.0-dev`,
-`gobject-introspection`, `gir1.2-gtop-2.0`, `gir1.2-gtk-3.0`,
-`gir1.2-gtksource-3.0`, `gir1.2-pango-1.0`, `gir1.2-secret-1` and
+`gobject-introspection`, `libcairo2-dev`, `gir1.2-gtop-2.0`, `gir1.2-gtk-3.0`,
+`gir1.2-pango-1.0`, `gir1.2-gtksource-3.0`, `gir1.2-secret-1` and
 `gir1.2-gstreamer-1.0`. This should be enough to get `rake test` working.
 
 GirFFI has not been tested on Mac OS X or Microsoft Windows. YMMV. Pull
