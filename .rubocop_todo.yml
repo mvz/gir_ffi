@@ -45,11 +45,6 @@ Naming/MemoizedInstanceVariableName:
     - 'lib/gir_ffi/builders/constant_builder.rb'
     - 'lib/gir_ffi/builders/user_defined_builder.rb'
 
-# Offense count: 1
-Packaging/RelativeRequireToLib:
-  Exclude:
-    - 'gir_ffi.gemspec'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
