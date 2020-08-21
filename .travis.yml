@@ -8,6 +8,8 @@ before_install:
   - sudo apt-get install libgirepository-1.0-1
   # Provides source code for test libraries and tools to generate introspection data
   - sudo apt-get install gobject-introspection
+  # The regress.c test library needs cairo headers
+  - sudo apt-get install libcairo2-dev
   # Provides gir files for various libraries, needed for generating gir files
   # for test libraries
   - sudo apt-get install libgirepository1.0-dev
