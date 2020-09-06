@@ -14,8 +14,8 @@ module GLib
     end
 
     def append(data)
-      self.class.wrap(element_type,
-                      Lib.g_list_append(self, element_ptr_for(data)))
+      store_pointer Lib.g_list_append(self, element_ptr_for(data))
+      self
     end
   end
 end
