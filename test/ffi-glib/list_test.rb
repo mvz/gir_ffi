@@ -82,5 +82,11 @@ describe GLib::List do
 
       _(list).wont_be :==, other
     end
+
+    it "returns true when comparing an empty list with an empty array" do
+      list = GLib::List.from :gint32, []
+
+      _(list).must_be :==, []
+    end
   end
 end
