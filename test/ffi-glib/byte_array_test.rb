@@ -8,10 +8,18 @@ describe GLib::ByteArray do
     assert_instance_of GLib::ByteArray, ba
   end
 
-  it "allows strings to be appended to it" do
-    ba = GLib::ByteArray.new
-    ba.append "abdc"
-    pass
+  describe "#append" do
+    it "allows strings to be appended" do
+      ba = GLib::ByteArray.new
+      ba.append "abdc"
+      pass
+    end
+
+    it "returns self" do
+      ba = GLib::ByteArray.new
+      result = ba.append "abdc"
+      _(result.object_id).must_equal ba.object_id
+    end
   end
 
   it "has a working #to_string method" do

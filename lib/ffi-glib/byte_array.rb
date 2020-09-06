@@ -12,7 +12,8 @@ module GLib
     def append(data)
       bytes = GirFFI::InPointer.from_utf8 data
       len = data.bytesize
-      self.class.wrap Lib.g_byte_array_append(to_ptr, bytes, len)
+      Lib.g_byte_array_append(to_ptr, bytes, len)
+      self
     end
 
     def self.from(data)
