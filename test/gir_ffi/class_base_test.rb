@@ -94,8 +94,6 @@ describe GirFFI::ClassBase do
         def self.bar
           "correct-result"
         end
-
-        def initialize; end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 
@@ -105,9 +103,7 @@ describe GirFFI::ClassBase do
 
     it "raises a sensible error if the method is not found" do
       expect(builder = Object.new).to receive(:setup_method).with("foo").and_return nil
-      klass = Class.new GirFFI::ClassBase do
-        def initialize; end
-      end
+      klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
       exception = _(proc { klass.setup_and_call :foo, [] }).must_raise(NoMethodError)
@@ -126,8 +122,6 @@ describe GirFFI::ClassBase do
         .to receive(:setup_instance_method).with("foo").and_return nil
       sub_klass = Class.new klass do
         def foo; end
-
-        def initialize; end
       end
       sub_klass.const_set :GIR_FFI_BUILDER, sub_builder
 
@@ -143,8 +137,6 @@ describe GirFFI::ClassBase do
         def bar
           "correct-result"
         end
-
-        def initialize; end
       end
       klass.const_set :GIR_FFI_BUILDER, builder
 
@@ -157,9 +149,7 @@ describe GirFFI::ClassBase do
     it "raises a sensible error if the method is not found" do
       expect(builder = Object.new)
         .to receive(:setup_instance_method).with("foo").and_return nil
-      klass = Class.new GirFFI::ClassBase do
-        def initialize; end
-      end
+      klass = Class.new GirFFI::ClassBase
       klass.const_set :GIR_FFI_BUILDER, builder
 
       obj = klass.new

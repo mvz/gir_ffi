@@ -24,7 +24,7 @@ describe GLib::ByteArray do
 
   it "has a working #to_string method" do
     ba = GLib::ByteArray.new
-    ba = ba.append "abdc"
+    ba.append "abdc"
     assert_equal "abdc", ba.to_string
   end
 

@@ -38,11 +38,13 @@ module GLib
 
     def tail
       return nil if struct.null?
+
       self.class.wrap(element_type, struct[:next])
     end
 
     def head
       return nil if struct.null?
+
       GirFFI::ArgHelper.cast_from_pointer(element_type, struct[:data])
     end
 
