@@ -9,27 +9,58 @@ describe GLib::List do
   end
 
   describe "#append" do
-    it "appends integer values" do
+    it "updates the list object itself" do
       lst = GLib::List.new :gint32
       res = lst.append 1
-      assert_equal 1, res.data
+      _(res.to_ptr).must_equal lst.to_ptr
+    end
+
+    it "appends integer values" do
+      lst = GLib::List.new :gint32
+      lst.append 1
+      _(lst.data).must_equal 1
     end
 
     it "appends string values" do
       lst = GLib::List.new :utf8
-      res = lst.append "bla"
-      assert_equal "bla", res.data
+      lst.append "bla"
+      _(lst.data).must_equal "bla"
     end
 
     it "appends multiple values into a single list" do
       lst = GLib::List.new :gint32
+      lst.append 1
+      lst.append 2
 
-      lst = lst.append 1
-      lst = lst.append 2
+      _(lst).must_be :==, [1, 2]
+    end
+  end
 
-      assert_equal 1, lst.data
-      nxt = lst.next
-      assert_equal 2, nxt.data
+  describe "#prepend" do
+    it "updates the list object itself" do
+      lst = GLib::List.new :gint32
+      res = lst.prepend 1
+      _(res.to_ptr).must_equal lst.to_ptr
+    end
+
+    it "prepends integer values" do
+      lst = GLib::List.new :gint32
+      lst.prepend 1
+      _(lst.data).must_equal 1
+    end
+
+    it "prepends string values" do
+      lst = GLib::List.new :utf8
+      lst.prepend "bla"
+      _(lst.data).must_equal "bla"
+    end
+
+    it "prepends multiple values into a single list" do
+      lst = GLib::List.new :gint32
+      lst.prepend 1
+      lst.prepend 2
+
+      _(lst).must_be :==, [2, 1]
     end
   end
 
@@ -53,6 +84,11 @@ describe GLib::List do
       assert_instance_of GLib::List, lst2
       refute lst2.equal? lst
       _(lst2.to_a).must_equal lst.to_a
+    end
+
+    it "creates a GList from a Ruby range" do
+      lst = GLib::List.from :gint32, (1..3)
+      assert_equal [1, 2, 3], lst.to_a
     end
   end
 
@@ -81,6 +117,12 @@ describe GLib::List do
       other = GLib::List.from :gint32, [1, 2]
 
       _(list).wont_be :==, other
+    end
+
+    it "returns true when comparing an empty list with an empty array" do
+      list = GLib::List.from :gint32, []
+
+      _(list).must_be :==, []
     end
   end
 end

@@ -14,6 +14,7 @@ module GLib
       replace_method base, :data, :head
 
       base.extend ContainerClassMethods
+      base.extend ClassMethods
     end
 
     def self.replace_method(base, old, new)
@@ -36,10 +37,12 @@ module GLib
     end
 
     def tail
+      return nil if struct.null?
       self.class.wrap(element_type, struct[:next])
     end
 
     def head
+      return nil if struct.null?
       GirFFI::ArgHelper.cast_from_pointer(element_type, struct[:data])
     end
 
@@ -68,6 +71,12 @@ module GLib
 
     def element_ptr_for(data)
       GirFFI::InPointer.from(element_type, data)
+    end
+
+    module ClassMethods
+      def from_enumerable(type, arr)
+        arr.reduce(new(type)) { |lst, val| lst.prepend val }.reverse
+      end
     end
   end
 end

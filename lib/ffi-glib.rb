@@ -32,9 +32,13 @@ module GLib
   # Module for attaching functions from the glib library. This module is
   # defined by the call to ModuleBuilder#generate above.
   module Lib
+    attach_function :g_slist_append, [:pointer, :pointer], :pointer
     attach_function :g_slist_prepend, [:pointer, :pointer], :pointer
+    attach_function :g_slist_reverse, [:pointer], :pointer
 
     attach_function :g_list_append, [:pointer, :pointer], :pointer
+    attach_function :g_list_prepend, [:pointer, :pointer], :pointer
+    attach_function :g_list_reverse, [:pointer], :pointer
 
     attach_function :g_hash_table_foreach, [:pointer, HFunc, :pointer], :void
     attach_function :g_hash_table_new, [HashFunc, EqualFunc], :pointer
