@@ -14,8 +14,8 @@ module GLib
     end
 
     def prepend(data)
-      self.class.wrap(element_type,
-                      Lib.g_slist_prepend(self, element_ptr_for(data)))
+      store_pointer Lib.g_slist_prepend(self, element_ptr_for(data))
+      self
     end
   end
 end

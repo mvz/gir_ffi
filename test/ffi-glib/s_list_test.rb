@@ -9,27 +9,31 @@ describe GLib::SList do
   end
 
   describe "#prepend" do
-    it "prepends integer values" do
+    it "updates the list object itself" do
       lst = GLib::SList.new :gint32
       res = lst.prepend 1
-      assert_equal 1, res.data
+      _(res.to_ptr).must_equal lst.to_ptr
+    end
+
+    it "prepends integer values" do
+      lst = GLib::SList.new :gint32
+      lst.prepend 1
+      _(lst).must_be :==, [1]
     end
 
     it "prepends string values" do
       lst = GLib::SList.new :utf8
-      res = lst.prepend "bla"
-      assert_equal "bla", res.data
+      lst.prepend "bla"
+      _(lst).must_be :==, ["bla"]
     end
 
     it "prepends multiple values into a single list" do
       lst = GLib::SList.new :gint32
 
-      res = lst.prepend 1
-      res2 = res.prepend 2
+      lst.prepend 1
+      lst.prepend 2
 
-      assert_equal 2, res2.data
-      assert_equal 1, res.data
-      assert_equal res.to_ptr, res2.next.to_ptr
+      _(lst).must_be :==, [2, 1]
     end
   end
 
