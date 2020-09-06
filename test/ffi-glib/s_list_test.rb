@@ -8,6 +8,34 @@ describe GLib::SList do
     assert_equal :gint32, arr.element_type
   end
 
+  describe "#append" do
+    it "updates the list object itself" do
+      lst = GLib::SList.new :gint32
+      res = lst.append 1
+      _(res.to_ptr).must_equal lst.to_ptr
+    end
+
+    it "appends integer values" do
+      lst = GLib::SList.new :gint32
+      lst.append 1
+      _(lst.data).must_equal 1
+    end
+
+    it "appends string values" do
+      lst = GLib::SList.new :utf8
+      lst.append "bla"
+      _(lst.data).must_equal "bla"
+    end
+
+    it "appends multiple values into a single list" do
+      lst = GLib::SList.new :gint32
+      lst.append 1
+      lst.append 2
+
+      _(lst).must_be :==, [1, 2]
+    end
+  end
+
   describe "#prepend" do
     it "updates the list object itself" do
       lst = GLib::SList.new :gint32
