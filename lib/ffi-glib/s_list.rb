@@ -10,7 +10,7 @@ module GLib
     include ListMethods
 
     def self.from_enumerable(type, arr)
-      arr.reverse.reduce(new(type)) { |lst, val| lst.prepend val }
+      arr.reduce(new(type)) { |lst, val| lst.prepend val }.reverse
     end
 
     def append(data)
@@ -20,6 +20,11 @@ module GLib
 
     def prepend(data)
       store_pointer Lib.g_slist_prepend(self, element_ptr_for(data))
+      self
+    end
+
+    def reverse
+      store_pointer Lib.g_slist_reverse(self)
       self
     end
   end

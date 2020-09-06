@@ -85,6 +85,11 @@ describe GLib::List do
       refute lst2.equal? lst
       _(lst2.to_a).must_equal lst.to_a
     end
+
+    it "creates a GList from a Ruby range" do
+      lst = GLib::List.from :gint32, (1..3)
+      assert_equal [1, 2, 3], lst.to_a
+    end
   end
 
   describe "#==" do

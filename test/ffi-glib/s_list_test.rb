@@ -76,6 +76,11 @@ describe GLib::SList do
       lst2 = GLib::SList.from :gint32, lst
       assert_equal lst, lst2
     end
+
+    it "creates a GSList from a Ruby range" do
+      lst = GLib::SList.from :gint32, (1..3)
+      assert_equal [1, 2, 3], lst.to_a
+    end
   end
 
   describe "#==" do
