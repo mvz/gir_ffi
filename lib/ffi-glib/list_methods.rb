@@ -73,6 +73,7 @@ module GLib
       GirFFI::InPointer.from(element_type, data)
     end
 
+    # Common class methods for List and SList
     module ClassMethods
       def from_enumerable(type, arr)
         arr.reduce(new(type)) { |lst, val| lst.prepend val }.reverse
