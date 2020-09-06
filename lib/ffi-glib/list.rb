@@ -10,7 +10,7 @@ module GLib
     include ListMethods
 
     def self.from_enumerable(type, arr)
-      arr.reduce(new(type)) { |lst, val| lst.append val }
+      arr.reverse.reduce(new(type)) { |lst, val| lst.prepend val }
     end
 
     def append(data)
