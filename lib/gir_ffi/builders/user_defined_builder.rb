@@ -105,7 +105,7 @@ module GirFFI
       end
 
       def class_size
-        parent_gtype.class_size + interface_gtypes.map(&:class_size).inject(0, :+)
+        parent_gtype.class_size + interface_gtypes.map(&:class_size).sum
       end
 
       def setup_properties(object_class_ptr)
