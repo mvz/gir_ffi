@@ -36,6 +36,34 @@ describe GLib::List do
     end
   end
 
+  describe "#prepend" do
+    it "updates the list object itself" do
+      lst = GLib::List.new :gint32
+      res = lst.prepend 1
+      _(res.to_ptr).must_equal lst.to_ptr
+    end
+
+    it "prepends integer values" do
+      lst = GLib::List.new :gint32
+      lst.prepend 1
+      _(lst.data).must_equal 1
+    end
+
+    it "prepends string values" do
+      lst = GLib::List.new :utf8
+      lst.prepend "bla"
+      _(lst.data).must_equal "bla"
+    end
+
+    it "prepends multiple values into a single list" do
+      lst = GLib::List.new :gint32
+      lst.prepend 1
+      lst.prepend 2
+
+      _(lst).must_be :==, [2, 1]
+    end
+  end
+
   describe "::from" do
     it "creates a GList from a Ruby array" do
       lst = GLib::List.from :gint32, [3, 2, 1]
