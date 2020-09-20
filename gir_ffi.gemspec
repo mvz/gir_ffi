@@ -40,7 +40,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec-mocks", "~> 3.5"
   spec.add_development_dependency "rubocop", "~> 0.91.0"
   spec.add_development_dependency "rubocop-minitest", "~> 0.10.1"
-  spec.add_development_dependency "rubocop-packaging", "~> 0.4.0"
+  spec.add_development_dependency "rubocop-packaging", "~> 0.5.0"
   spec.add_development_dependency "rubocop-performance", "~> 1.8.0"
   spec.add_development_dependency "simplecov", "~> 0.19.0"
 end
