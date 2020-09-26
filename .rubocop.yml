@@ -10,6 +10,7 @@ AllCops:
     - 'examples/*'
     - 'tasks/test.rake'
     - 'tmp/**/*'
+    - 'vendor/bundle/**/*'
   NewCops: enable
   TargetRubyVersion: 2.5
 

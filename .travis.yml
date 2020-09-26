@@ -1,3 +1,4 @@
+---
 language: ruby
 
 dist: xenial
@@ -24,19 +25,25 @@ before_install:
 cache:
   bundler: true
 
-rvm:
-  - 2.5
-  - 2.6
-  - 2.7
-  - ruby-head
+script: bundle exec rake
 
-matrix:
-  # Do not run cucumber scenarios on JRuby
+# - Run full test suite on MRI
+# - Do not run cucumber scenarios on JRuby
+# - Run rubocop on MRI 2.7.1
+jobs:
   include:
+    - rvm: 2.5
+    - rvm: 2.6
+    - rvm: 2.7
+    - rvm: ruby-head
     - rvm: jruby-9.2
       script: bundle exec rake test:all
     - rvm: jruby-head
       script: bundle exec rake test:all
+    - rvm: 2.7.1
+      name: "RuboCop"
+      before_install: []
+      script: bundle exec rubocop
   allow_failures:
     - rvm: ruby-head
     - rvm: jruby-head
