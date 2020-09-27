@@ -13,15 +13,6 @@ rescue LoadError
 end
 $VERBOSE = old_verbose
 
-if ENV["CI"]
-  begin
-    require "coveralls"
-    Coveralls.wear!
-  rescue LoadError
-    nil
-  end
-end
-
 require "minitest/autorun"
 require "rspec/mocks/minitest_integration"
 
