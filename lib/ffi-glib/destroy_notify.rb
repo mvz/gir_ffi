@@ -9,8 +9,8 @@ module GLib
   class DestroyNotify
     def self.default
       @default ||= from proc { |user_data|
-        callback_key = GirFFI::ArgHelper::OBJECT_STORE.fetch(user_data)
-        drop_callback callback_key
+        callback = GirFFI::ArgHelper::OBJECT_STORE.fetch(user_data)
+        drop_callback callback
       }
     end
   end
