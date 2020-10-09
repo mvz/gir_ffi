@@ -35,10 +35,10 @@ module GirFFI
       from_native ptr, nil
     end
 
-    CALLBACKS = {}
+    CALLBACKS = Set.new
 
     def self.store_callback(prc)
-      CALLBACKS[prc] = prc
+      CALLBACKS.add prc
     end
 
     def self.drop_callback(prc)
