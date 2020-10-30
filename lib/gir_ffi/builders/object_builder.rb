@@ -117,9 +117,9 @@ module GirFFI
         return if vfunc_name == invoker_name
 
         klass.class_eval <<-DEF, __FILE__, __LINE__ + 1
-          def #{vfunc_name} *args, &block
-            #{invoker_name}(*args, &block)
-          end
+          def #{vfunc_name} *args, &block   # def foo *args, &block
+            #{invoker_name}(*args, &block)  #   foo_invoker *args, &block
+          end                               # end
         DEF
       end
 
