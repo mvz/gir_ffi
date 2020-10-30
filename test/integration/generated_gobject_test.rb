@@ -24,12 +24,14 @@ describe GObject do
     let(:instance) { GObject::TypeInfo.new }
     it "has a working field setter for class_init" do
       instance.class_init = proc do |_object_class, _data|
+        # nothing
       end
     end
 
     it "has a working field getter for class_init" do
       _(instance.class_init).must_be_nil
       instance.class_init = proc do |_object_class, _data|
+        # nothing
       end
       result = instance.class_init
       _(result).wont_be_nil

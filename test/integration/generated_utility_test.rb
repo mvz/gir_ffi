@@ -80,7 +80,7 @@ describe Utility do
 
     it "has a working method #watch_dir" do
       # This method doesn't actually do anything
-      instance.watch_dir("/") {}
+      instance.watch_dir("/") { nil }
       pass
     end
   end
@@ -168,7 +168,7 @@ describe Utility do
 
   it "has a working function #dir_foreach" do
     # This method doesn't actually do anything
-    result = Utility.dir_foreach("/") {}
+    result = Utility.dir_foreach("/") { nil }
     _(result).must_be_nil
   end
 end

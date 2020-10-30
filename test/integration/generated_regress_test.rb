@@ -235,7 +235,7 @@ describe Regress do
     end
 
     it "has a working method #watch_full" do
-      instance.watch {}
+      instance.watch { nil }
     end
 
     it "has a working method #with_voidp" do
@@ -254,13 +254,13 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property("function-property", proc {})
+        instance.set_property("function-property", proc { nil })
         # AnnotationObject doesn't actually store stuff
         _(instance.function_property).must_be_nil
       end
 
       it "can be set with #function_property=" do
-        instance.function_property = proc {}
+        instance.function_property = proc { nil }
         # AnnotationObject doesn't actually store stuff
         _(instance.get_property("function-property")).must_be_nil
       end
@@ -2944,7 +2944,7 @@ describe Regress do
   end
 
   it "has a working function #annotation_custom_destroy" do
-    result = Regress.annotation_custom_destroy {}
+    result = Regress.annotation_custom_destroy { nil }
     _(result).must_be_nil
   end
 

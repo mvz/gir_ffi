@@ -6,7 +6,7 @@ describe GObject::Closure do
   describe ".new" do
     it "updates the ref_count of the created object" do
       # Tested on a subclass ...
-      c = GObject::RubyClosure.new {}
+      c = GObject::RubyClosure.new { nil }
       _(c.ref_count).must_equal 1
     end
   end

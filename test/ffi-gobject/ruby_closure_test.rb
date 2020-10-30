@@ -11,7 +11,7 @@ describe GObject::RubyClosure do
     end
 
     it "returns a kind of Closure" do
-      c = GObject::RubyClosure.new {}
+      c = GObject::RubyClosure.new { nil }
       assert_kind_of GObject::Closure, c
     end
   end
