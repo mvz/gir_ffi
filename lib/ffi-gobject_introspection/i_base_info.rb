@@ -35,7 +35,7 @@ module GObjectIntrospection
     # Examples:
     #
     #   build_array_method :fields
-    #   build_array_mehtod :properties, :property
+    #   build_array_method :properties, :property
     #   build_array_method :get_methods
     #
     def self.build_array_method(method, single = nil)
@@ -44,12 +44,12 @@ module GObjectIntrospection
       single ||= method[0..-2]
       count = method.sub(/^(get_)?/, '\\1n_')
       class_eval <<-CODE, __FILE__, __LINE__ + 1
-        def #{method}
-          #{cache_ivar} ||=
-            (0..(#{count} - 1)).map do |i|
-              #{single} i
-            end
-        end
+        def #{method}                       # def fields
+          #{cache_ivar} ||=                 #   @fields_cache ||=
+            (0..(#{count} - 1)).map do |i|  #     (0..(n_fields - 1)).map do |i|
+              #{single} i                   #       field i
+            end                             #     end
+        end                                 # end
       CODE
     end
 
@@ -76,18 +76,18 @@ module GObjectIntrospection
       counter ||= "n_#{single}s"
       fetcher ||= single
       class_eval <<-CODE, __FILE__, __LINE__ + 1
-        def #{method}(name)
-          #{cache_ivar} ||= begin
-              hash = {}
-              #{counter}.times do |i|
-                it = #{fetcher}(i)
-                hash[it.name] = it
-              end
-              hash
-            end
-          name = name.to_s
-          #{cache_ivar}[name]
-        end
+        def #{method}(name)           # def find_field(name)
+          #{cache_ivar} ||= begin     #   @find_field_cache ||= begin
+              hash = {}               #       hash = {}
+              #{counter}.times do |i| #       n_fields.times do |i|
+                it = #{fetcher}(i)    #         it = field(i)
+                hash[it.name] = it    #         hash[it.name] = it
+              end                     #       end
+              hash                    #       hash
+            end                       #     end
+          name = name.to_s            #   name = name.to_s
+          #{cache_ivar}[name]         #   @find_field_cache[name]
+        end                           # end
       CODE
     end
 
