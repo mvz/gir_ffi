@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.15.4 / 2020-11-01
+
+* Support disguised object class structs
+* Handle the case where vfunc object arguments are null
+* Bail out earlier when trying to register non-GObject class
+* Small improvements
+* Use `Module#prepend` for overrides
+* Clean up initialization of structs, unions, and boxed types
+* Make `GObject::Object#store_pointer` private like in the superclass
+* Handle creating SizedArray of uint8 from a string
+* Improve derived class setup
+* Improve List and SList methods
+* Make `ByteArray#append` return self
+* Improve packaging infrastructure (thanks, utkarsh2102!)
+
 ## 0.15.3 / 2020-06-14
 
 * Officially support Ruby 2.7
