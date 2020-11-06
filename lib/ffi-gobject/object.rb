@@ -7,7 +7,25 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-    if !GLib.check_version(2, 54, 0)
+    if GLib.check_version(2, 54, 0)
+      setup_method! "new"
+
+      # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
+      def initialize_with_automatic_gtype(properties = {})
+        gparameters = properties.map do |name, value|
+          name = name.to_s
+          property_param_spec(name)
+          GObject::Parameter.new.tap do |gparam|
+            gparam.name = name
+            gparam.value = value
+          end
+        end
+        initialize_without_automatic_gtype(self.class.gtype, gparameters)
+      end
+
+      alias initialize_without_automatic_gtype initialize
+      alias initialize initialize_with_automatic_gtype
+    else
       GObject::Lib.attach_function(:g_object_new_with_properties,
                                    [:size_t, :uint32, :pointer, :pointer],
                                    :pointer)
@@ -43,24 +61,6 @@ module GObject
         obj.__send__ :initialize, *args, &block
         obj
       end
-    else
-      setup_method! "new"
-
-      # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
-      def initialize_with_automatic_gtype(properties = {})
-        gparameters = properties.map do |name, value|
-          name = name.to_s
-          property_param_spec(name)
-          GObject::Parameter.new.tap do |gparam|
-            gparam.name = name
-            gparam.value = value
-          end
-        end
-        initialize_without_automatic_gtype(self.class.gtype, gparameters)
-      end
-
-      alias initialize_without_automatic_gtype initialize
-      alias initialize initialize_with_automatic_gtype
     end
 
     alias base_initialize initialize

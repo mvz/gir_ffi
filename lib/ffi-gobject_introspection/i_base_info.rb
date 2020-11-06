@@ -110,10 +110,10 @@ module GObjectIntrospection
     def container
       @container ||= begin
                        ptr = Lib.g_base_info_get_container self
-                       return if ptr.null?
-
-                       Lib.g_base_info_ref ptr
-                       IRepository.wrap_ibaseinfo_pointer ptr
+                       unless ptr.null?
+                         Lib.g_base_info_ref ptr
+                         IRepository.wrap_ibaseinfo_pointer ptr
+                       end
                      end
     end
 
