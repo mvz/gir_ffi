@@ -1,0 +1,64 @@
+# This workflow will download a prebuilt Ruby version, install dependencies and
+# run tests with Rake
+# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+
+name: Ruby
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7, jruby-9.2]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install non-ruby dependencies
+      run: |
+        sudo apt-get update
+        # Provides libgirepository-1.0.so.1
+        sudo apt-get install libgirepository-1.0-1
+        # Provides source code for test libraries and tools to generate introspection data
+        sudo apt-get install gobject-introspection
+        # The regress.c test library needs cairo headers
+        sudo apt-get install libcairo2-dev
+        # Provides gir files for various libraries, needed for generating gir files
+        # for test libraries
+        sudo apt-get install libgirepository1.0-dev
+        # The following packages provide typelibs for various libraries
+        sudo apt-get install gir1.2-gtop-2.0
+        sudo apt-get install gir1.2-gtk-3.0
+        sudo apt-get install gir1.2-pango-1.0
+        sudo apt-get install gir1.2-secret-1
+        sudo apt-get install gir1.2-gstreamer-1.0
+        sudo apt-get install gir1.2-gtksource-3.0
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
+    - name: Run tests
+      run: bundle exec rake
+
+  rubocop:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7
+        bundler-cache: true
+    - name: Run RuboCop
+      run: bundle exec rubocop -P
