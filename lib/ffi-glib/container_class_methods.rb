@@ -11,9 +11,7 @@ module GLib
               nil
             when FFI::Pointer
               ptr
-            when self
-              ptr.to_ptr
-            when GirFFI::BoxedBase
+            when self, GirFFI::BoxedBase
               ptr.to_ptr
             end
 

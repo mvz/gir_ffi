@@ -23,9 +23,8 @@ module GirFFI
                  fund = GObject.type_fundamental gtype
                  if fund == GObject::TYPE_BOXED
                    UnintrospectableBoxedInfo.new gtype
-                 elsif fund == GObject::TYPE_OBJECT
-                   UnintrospectableTypeInfo.new gtype
-                 elsif fund >= GObject::TYPE_RESERVED_USER_FIRST
+                 elsif fund == GObject::TYPE_OBJECT ||
+                       fund >= GObject::TYPE_RESERVED_USER_FIRST
                    UnintrospectableTypeInfo.new gtype
                  else
                    raise "Unable to handle type #{GObject.type_name gtype}"

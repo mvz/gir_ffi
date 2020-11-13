@@ -43,7 +43,7 @@ module GirFFI
       def find_namespaced_class_info(classname)
         name = classname.to_s
         info = gir.find_by_name(@namespace, name) ||
-          gir.find_by_name(@namespace, name.sub(/^./, &:downcase))
+               gir.find_by_name(@namespace, name.sub(/^./, &:downcase))
         unless info
           raise NameError,
                 "Class #{classname} not found in namespace #{@namespace}"
