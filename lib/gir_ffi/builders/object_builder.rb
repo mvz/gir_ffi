@@ -3,7 +3,6 @@
 require "gir_ffi/builders/registered_type_builder"
 require "gir_ffi/builders/with_layout"
 require "gir_ffi/builders/property_builder"
-require "gir_ffi/builders/class_struct_builder"
 require "gir_ffi/object_base"
 require "gir_ffi/struct"
 
@@ -38,11 +37,14 @@ module GirFFI
 
       def object_class_struct
         @object_class_struct ||=
-          if object_class_struct_info
-            ClassStructBuilder.new(object_class_struct_info,
-                                   parent_builder.object_class_struct).build_class
-          else
-            parent_builder.object_class_struct
+          begin
+            parent_struct = parent_builder.object_class_struct
+            if object_class_struct_info
+              StructBuilder.new(object_class_struct_info,
+                                superclass: parent_struct).build_class
+            else
+              parent_struct
+            end
           end
       end
 
