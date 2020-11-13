@@ -14,16 +14,27 @@ module GirFFI
         raise "Info does not represent gtype_struct" unless info.gtype_struct?
       end
 
+      private
+
       def superclass
         @superclass ||=
           begin
-            if info.namespace == "GObject" && info.name == "InitiallyUnownedClass"
+            full_name = info.full_type_name
+            if full_name == "GObject::InitiallyUnownedClass"
               GObject::ObjectClass
             else
-              parent_field = info.fields.first
-              parent_info = parent_field.field_type.interface
+              raise "Unable to calculate parent class for #{full_name}" unless parent_info
+
               Builder.build_class parent_info
             end
+          end
+      end
+
+      def parent_info
+        @parent_info ||=
+          begin
+            parent_field = info.fields.first
+            parent_field.field_type.interface if parent_field
           end
       end
 
