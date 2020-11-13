@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.5 / 2020-11-13
+
+* Make building and finding metaclasses via Builder.build_class work again
+
 ## 0.15.4 / 2020-11-01
 
 * Support disguised object class structs
