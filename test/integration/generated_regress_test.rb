@@ -1350,7 +1350,7 @@ describe Regress do
       _(Regress::TestEnumUnsigned[:value1]).must_equal 1
     end
 
-    # NOTE In c, the positive and negative values are not distinguished
+    # NOTE: In c, the positive and negative values are not distinguished
     it "has the member :value2" do
       _(Regress::TestEnumUnsigned[:value2]).must_equal(-2_147_483_648)
     end

@@ -36,11 +36,6 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-# Multi-line assignment should be simply indented. Aligning them makes it even
-# harder to keep a sane line length.
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: indented
-
 # Force consistent spacing independent of block contents
 Layout/SpaceBeforeBlockBraces:
   EnforcedStyleForEmptyBraces: space

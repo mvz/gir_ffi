@@ -86,7 +86,7 @@ module GObject
   load_class :ParamFlags
 
   # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
-  module Lib
+  Lib.class_eval do
     attach_function :g_object_ref_sink, [:pointer], :pointer
     attach_function :g_object_ref, [:pointer], :pointer
     attach_function :g_object_unref, [:pointer], :pointer
