@@ -79,7 +79,6 @@ lib/gir_ffi/builders/c_to_ruby_convertor.rb
 lib/gir_ffi/builders/callback_argument_builder.rb
 lib/gir_ffi/builders/callback_builder.rb
 lib/gir_ffi/builders/callback_return_value_builder.rb
-lib/gir_ffi/builders/class_struct_builder.rb
 lib/gir_ffi/builders/closure_argument_builder.rb
 lib/gir_ffi/builders/closure_convertor.rb
 lib/gir_ffi/builders/closure_return_value_builder.rb

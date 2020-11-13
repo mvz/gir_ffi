@@ -9,8 +9,8 @@ module GirFFI
     class InterfaceBuilder < RegisteredTypeBuilder
       def interface_struct
         @interface_struct ||=
-          ClassStructBuilder.new(iface_struct_info,
-                                 GObject::TypeInterface).build_class
+          StructBuilder.new(iface_struct_info,
+                            superclass: GObject::TypeInterface).build_class
       end
 
       private

@@ -64,10 +64,10 @@ describe GirFFI::Builders::StructBuilder do
       _(builder.superclass).must_equal GirFFI::BoxedBase
     end
 
-    it "raises an error for a type class" do
+    it "returns the parent type class for a type class" do
       info = get_introspection_data "GIMarshallingTests", "SubSubObjectClass"
       builder = GirFFI::Builders::StructBuilder.new info
-      _(proc { builder.superclass }).must_raise RuntimeError
+      _(builder.superclass).must_equal GIMarshallingTests::SubObjectClass
     end
   end
 end

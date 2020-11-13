@@ -39,13 +39,7 @@ module GirFFI
 
       # TODO: Pull up to include :function and :module
       def self.builder_for(info)
-        info_type = info.info_type
-        builder_class = if info_type == :struct && info.gtype_struct?
-                          ClassStructBuilder
-                        else
-                          TYPE_MAP[info_type]
-                        end
-        builder_class.new(info)
+        TYPE_MAP[info.info_type].new(info)
       end
     end
   end

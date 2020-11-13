@@ -10,23 +10,48 @@ module GirFFI
     class StructBuilder < RegisteredTypeBuilder
       include StructLike
 
-      def layout_superclass
-        GirFFI::Struct
+      def initialize(info, superclass: nil)
+        @superclass = superclass
+        super info
       end
 
       def superclass
-        raise "Use ClassStructBuilder to build #{info.full_type_name}" if info.gtype_struct?
-        return BoxedBase if GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
+        @superclass ||= if info.gtype_struct?
+                          gtype_struct_parent
+                        elsif GObject.type_fundamental(info.gtype) == GObject::TYPE_BOXED
+                          BoxedBase
+                        else
+                          StructBase
+                        end
+      end
 
-        StructBase
+      private
+
+      def layout_superclass
+        GirFFI::Struct
       end
 
       def klass
         @klass ||= get_or_define_class(namespace_module, @classname) { superclass }
       end
 
+      def parent_info
+        @parent_info ||= parent_field_type&.interface
+      end
+
       def parent_field_type
-        fields.first.field_type
+        fields.first&.field_type
+      end
+
+      def gtype_struct_parent
+        full_name = info.full_type_name
+        if full_name == "GObject::InitiallyUnownedClass"
+          GObject::ObjectClass
+        else
+          raise "Unable to calculate parent class for #{full_name}" unless parent_info
+
+          Builder.build_class parent_info
+        end
       end
     end
   end
