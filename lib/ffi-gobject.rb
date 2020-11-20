@@ -63,7 +63,7 @@ module GObject
   end
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
-    raise ArgumentError, "Block needed" unless block_given?
+    block or raise ArgumentError, "Block needed"
 
     signal_name, = detailed_signal.split("::")
     sig_info = object.class.find_signal signal_name

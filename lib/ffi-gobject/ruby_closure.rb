@@ -18,7 +18,7 @@ module GObject
     end
 
     def initialize(&block)
-      raise ArgumentError unless block_given?
+      block or raise ArgumentError, "Block needed"
 
       initialize_simple(self.class::Struct.size, nil)
       self.block = block
