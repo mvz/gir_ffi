@@ -7,16 +7,6 @@ module GObject
   class Value
     setup_instance_method! :init
 
-    def self.make_finalizer(struct)
-      proc do
-        if struct.owned?
-          ptr = struct.to_ptr
-          Lib.g_value_unset ptr unless struct[:g_type] == TYPE_INVALID
-          GObject.boxed_free gtype, ptr
-        end
-      end
-    end
-
     METHOD_MAP = {
       TYPE_INVALID   => [:get_none,           :set_none],
       # TYPE_NONE is skipped

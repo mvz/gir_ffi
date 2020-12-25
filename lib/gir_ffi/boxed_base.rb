@@ -6,17 +6,23 @@ module GirFFI
   # Base class for generated classes representing boxed types.
   class BoxedBase < StructLikeBase
     def self.make_finalizer(struct)
-      proc do
-        if struct.owned?
-          struct.owned = nil
-          GObject.boxed_free gtype, struct.to_ptr
-        end
-      end
+      proc { finalize(struct) }
     end
 
     def self.copy(val)
       ptr = GObject.boxed_copy(gtype, val)
       wrap(ptr)
+    end
+
+    class << self
+      protected
+
+      def finalize(struct)
+        struct.owned? or return
+
+        struct.owned = nil
+        GObject.boxed_free gtype, struct.to_ptr
+      end
     end
 
     private

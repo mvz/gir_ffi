@@ -75,7 +75,13 @@ module GObject
     end
 
     def self.make_finalizer(ptr)
-      proc do
+      proc { finalize ptr }
+    end
+
+    class << self
+      protected
+
+      def finalize(ptr)
         rc = GObject::Object::Struct.new(ptr)[:ref_count]
         if rc == 0
           warn "not unreffing #{name}:#{ptr} (#{rc})"

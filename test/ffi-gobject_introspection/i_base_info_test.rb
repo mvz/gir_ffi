@@ -31,22 +31,12 @@ describe GObjectIntrospection::IBaseInfo do
   end
 
   describe "upon garbage collection" do
-    it "calls g_base_info_unref" do
-      skip "cannot be reliably tested on JRuby" if jruby?
-
-      expect(ptr = Object.new).to receive(:null?).and_return false
-      expect(lib = Object.new).to receive(:g_base_info_unref).with(ptr).and_return nil
-      described_class.new ptr, lib
-
-      GC.start
-
-      # Yes, the next three lines are needed. https://gist.github.com/4277829
-      allow(ptr2 = Object.new).to receive(:null?).and_return false
-      allow(lib).to receive(:g_base_info_unref).with(ptr2).and_return nil
-      described_class.new ptr2, lib
-
-      GC.start
-      GC.start
+    it "reduces the reference count" do
+      info = get_introspection_data "Regress", "test_value_return"
+      GObjectIntrospection::Lib.g_base_info_ref info.to_ptr
+      old_ref_count = info.to_ptr.get_int32(4)
+      described_class.send :finalize, info.to_ptr
+      _(info.to_ptr.get_int32(4)).must_equal old_ref_count - 1
     end
   end
 end

@@ -104,23 +104,11 @@ describe GObject::Object do
 
   describe "upon garbage collection" do
     it "lowers the reference count" do
-      skip "cannot be reliably tested on JRuby" if jruby?
-
-      # Make sure other pending finalizers have been run
-      GC.start
-
-      ptr = GObject::Object.new.to_ptr
-      _(object_ref_count(ptr)).must_equal 1
-
-      GC.start
-      # Creating a new object is sometimes needed to trigger enough garbage collection.
-      GObject::Object.new
-      sleep 1
-
-      GC.start
-      GC.start
-
-      _(object_ref_count(ptr)).must_equal 0
+      obj = GObject::Object.new
+      GObject::Lib.g_object_ref obj.to_ptr
+      _(object_ref_count(obj)).must_equal 2
+      GObject::Object.send :finalize, obj.to_ptr
+      _(object_ref_count(obj)).must_equal 1
     end
   end
 end
