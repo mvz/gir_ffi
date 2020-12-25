@@ -118,16 +118,15 @@ describe GObject do
         @a = nil
         @b = 2
 
-        o = Regress::TestSubObj.new
+        obj = Regress::TestSubObj.new
         sb = Regress::TestSimpleBoxedA.new
         sb.some_int = 23
 
-        GObject.signal_connect(o, "test-with-static-scope-arg", 2) \
-          do |_instance, object, user_data|
-          @a = user_data
-          @b = object
+        GObject.signal_connect(obj, "test-with-static-scope-arg", 2) do |_i, o, u|
+          @a = u
+          @b = o
         end
-        GObject.signal_emit o, "test-with-static-scope-arg", sb
+        GObject.signal_emit obj, "test-with-static-scope-arg", sb
       end
 
       it "passes on the user data argument" do
