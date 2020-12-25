@@ -362,20 +362,12 @@ describe GObject::Value do
 
   describe "upon garbage collection" do
     it "restores the underlying GValue to its pristine state" do
-      skip "cannot be reliably tested on JRuby" if jruby?
-
       value = GObject::Value.from 42
 
-      # Drop reference to original GObject::Value
-      value = GObject::Value.wrap value.to_ptr
       _(value.current_gtype_name).must_equal "gint"
 
-      GC.start
-      # Creating a new object is sometimes needed to trigger enough garbage collection.
-      GObject::Value.new
-      sleep 1
-      GC.start
-      GC.start
+      struct = value.struct
+      GObject::Value.send :finalize, struct
 
       _(value.current_gtype_name).wont_equal "gint"
     end
