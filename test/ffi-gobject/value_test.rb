@@ -7,17 +7,10 @@ GirFFI.setup :Gio
 
 describe GObject::Value do
   describe "::Struct" do
-    describe "layout" do
-      let(:layout) { GObject::Value::Struct.layout }
+    let(:struct) { GObject::Value::Struct }
 
-      it "consists of :g_type and :data" do
-        _(layout.members).must_equal [:g_type, :data]
-      end
-
-      it "has an array as its second element" do
-        types = layout.fields.map(&:type)
-        _(types[1].class).must_equal FFI::Type::Array
-      end
+    it "has the members :g_type and :data" do
+      _(struct.members).must_equal [:g_type, :data]
     end
   end
 
