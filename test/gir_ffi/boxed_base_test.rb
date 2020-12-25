@@ -38,8 +38,6 @@ describe GirFFI::BoxedBase do
 
   describe "upon garbage collection" do
     it "frees and disowns the underlying struct if it is owned" do
-      skip "cannot be reliably tested on JRuby" if jruby?
-
       allow(GObject).to receive(:boxed_free)
       gtype = GIMarshallingTests::BoxedStruct.gtype
 
@@ -50,12 +48,8 @@ describe GirFFI::BoxedBase do
       unowned_struct.owned = false
       unowned_ptr = unowned_struct.to_ptr
 
-      GC.start
-      # Creating a new object is sometimes needed to trigger enough garbage collection.
-      GIMarshallingTests::BoxedStruct.new
-      sleep 1
-      GC.start
-      GC.start
+      GIMarshallingTests::BoxedStruct.send :finalize, owned_struct
+      GIMarshallingTests::BoxedStruct.send :finalize, unowned_struct
 
       expect(GObject).to have_received(:boxed_free).with(gtype, owned_ptr)
       expect(GObject).not_to have_received(:boxed_free).with(gtype, unowned_ptr)
