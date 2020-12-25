@@ -4,19 +4,26 @@ module GObjectIntrospection
   # Wraps GIBaseInfo struct, the base \type for all info types.
   # Decendant types will be implemented as needed.
   class IBaseInfo
-    def initialize(ptr, lib = Lib)
+    def initialize(ptr)
       raise ArgumentError, "ptr must not be null" if ptr.null?
 
-      ObjectSpace.define_finalizer self, self.class.make_finalizer(lib, ptr)
+      ObjectSpace.define_finalizer self, self.class.make_finalizer(ptr)
 
       @pointer = ptr
-      @lib = lib
     end
 
     attr_reader :pointer
 
-    def self.make_finalizer(lib, ptr)
-      proc { lib.g_base_info_unref ptr }
+    def self.make_finalizer(ptr)
+      proc { finalize ptr }
+    end
+
+    class << self
+      protected
+
+      def finalize(ptr)
+        Lib.g_base_info_unref ptr
+      end
     end
 
     def to_ptr
