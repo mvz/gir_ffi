@@ -35,4 +35,5 @@ load "tasks/manifest.rake"
 
 task default: "test:all"
 task default: "test:features"
+task default: "manifest:check"
 task build: "manifest:check"
