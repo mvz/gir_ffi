@@ -11,7 +11,7 @@ class Listener
   include REXML::StreamListener
 
   def initialize
-    @inside_class = false
+    @class_stack = []
     @stack = []
     @skip_state = []
   end
@@ -19,8 +19,8 @@ class Listener
   attr_accessor :result
   attr_accessor :namespace
 
-  def tag_start(name, attrs)
-    @stack.push [name, attrs]
+  def tag_start(tag, attrs)
+    @stack.push [tag, attrs]
     if @skip_state.last || skippable?(attrs)
       @skip_state.push true
       return
@@ -29,16 +29,18 @@ class Listener
     end
 
     obj_name = attrs['name']
-    case name
+    case tag
     when 'constant'
       result.puts "  it \"has the constant #{obj_name}\" do"
     when 'record', 'class', 'enumeration', 'bitfield', 'interface', 'union'
-      result.puts "  describe \"#{namespace}::#{obj_name}\" do"
-      @inside_class = name
+      unless @class_stack.any?
+        result.puts "  describe \"#{namespace}::#{obj_name}\" do"
+      end
+      @class_stack << [tag, obj_name]
     when 'constructor'
       result.puts "    it \"creates an instance using ##{obj_name}\" do"
     when 'field'
-      if @inside_class != 'class'
+      if current_object_type != 'class'
         if attrs['private'] == '1'
           result.puts "    it \"has a private field #{obj_name}\" do"
         elsif attrs['writable'] == '1'
@@ -48,8 +50,8 @@ class Listener
         end
       end
     when 'function', 'method'
-      spaces = @inside_class ? '  ' : ''
-      result.puts "  #{spaces}it \"has a working #{name} ##{obj_name}\" do"
+      spaces = @class_stack.any? ? '  ' : ''
+      result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
     when 'member'
       result.puts "    it \"has the member :#{obj_name}\" do"
     when 'namespace'
@@ -71,28 +73,33 @@ class Listener
       result.puts "    it \"handles the '#{obj_name}' signal\" do"
     when 'type', 'alias', 'return-value', 'parameters',
       'instance-parameter', 'parameter', 'doc', 'array',
-      'repository', 'include', 'package', 'source-position'
-      # Not printed"
+      'repository', 'include', 'package', 'source-position',
+      'implements', 'prerequisite', 'attribute',
+      'docsection', 'doc-version', 'doc-deprecated', 'doc-stability',
+      'virtual-method', 'callback'
+      # Not printed
     else
-      puts "Skipping #{name}: #{attrs}"
+      puts "Skipping #{tag}: #{attrs}"
     end
   end
 
-  def tag_end(name)
-    org_name, = *@stack.pop
+  def tag_end(tag)
+    orig_tag, = *@stack.pop
     skipping = @skip_state.pop
-    raise "Expected #{org_name}, got #{name}" if org_name != name
+    raise "Expected #{orig_tag}, got #{tag}" if orig_tag != tag
     return if skipping
 
-    case name
+    case tag
     when 'constant'
       result.puts '  end'
     when 'record', 'class', 'enumeration', 'bitfield',
       'interface', 'union'
-      result.puts '  end'
-      @inside_class = false
+      @class_stack.pop
+      unless @class_stack.any?
+        result.puts '  end'
+      end
     when 'function', 'method'
-      if @inside_class
+      if @class_stack.any?
         result.puts '    end'
       else
         result.puts '  end'
@@ -100,11 +107,13 @@ class Listener
     when 'constructor', 'member', 'property', 'glib:signal'
       result.puts '    end'
     when 'field'
-      result.puts '    end' if @inside_class != 'class'
+      result.puts '    end' if current_object_type != 'class'
     when 'namespace'
       result.puts 'end'
     end
   end
+
+  private
 
   def skippable?(attrs)
     return true if attrs['disguised'] == '1'
@@ -112,6 +121,14 @@ class Listener
     return true if attrs['glib:is-gtype-struct-for']
 
     false
+  end
+
+  def current_object_type
+    @class_stack.last&.first
+  end
+
+  def current_object_name
+    @class_stack.last&.last
   end
 end
 
