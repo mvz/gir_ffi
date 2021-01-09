@@ -6,8 +6,8 @@ GirFFI.setup :GTop
 
 # Tests generated methods and functions in the GTop namespace. This namespace
 # contains types with bad names, like 'glibtop_cpu'.
-describe "The generated GTop module" do
-  describe "Glibtop" do
+describe GTop do
+  describe "GTop::Glibtop" do
     it "is a valid struct class" do
       # Superclass is either BoxedBase or StructBase, depending on library
       # versions. This means StructLikeBase is always one of the ancestors.

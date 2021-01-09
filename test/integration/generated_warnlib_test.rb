@@ -4,7 +4,7 @@ require "gir_ffi_test_helper"
 
 GirFFI.setup :WarnLib
 
-describe "The generated WarnLib module" do
+describe WarnLib do
   describe "WarnLib::Whatever" do
     let(:derived_klass) do
       Object.const_set("DerivedClass#{Sequence.next}", Class.new(GObject::Object))

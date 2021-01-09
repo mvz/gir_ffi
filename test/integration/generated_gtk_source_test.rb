@@ -5,7 +5,7 @@ require "gir_ffi_test_helper"
 GirFFI.setup :GtkSource, "3.0"
 
 # Tests behavior of objects in the generated GtkSource namespace.
-describe "The generated GtkSource module" do
+describe GtkSource do
   describe "GtkSource::CompletionContext" do
     let(:instance) { GtkSource::CompletionContext.new }
 
