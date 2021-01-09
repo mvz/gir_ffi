@@ -68,6 +68,8 @@ describe Regress do
     end
 
     it "has the member :foobar" do
+      skip_below "1.66.0"
+      _(Regress::AnnotationBitfield[:foobar]).must_equal 3
     end
   end
 
@@ -94,6 +96,10 @@ describe Regress do
     end
 
     it "has a writable field field4" do
+      skip_below "1.66.0"
+      _(instance.field4).must_equal 0
+      instance.field4 = 326
+      _(instance.field4).must_equal 326
     end
   end
 
