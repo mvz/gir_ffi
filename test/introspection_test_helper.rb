@@ -64,6 +64,8 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    "1.66.1"  => %w(GIMarshallingTests Object vfunc_return_flags),
+    "1.66.0"  => %w(GIMarshallingTests Object vfunc_multiple_inout_parameters),
     "1.61.3"  => %w(Regress test_array_static_in_int),
     "1.61.1"  => %w(Regress TestObj emit_sig_with_error),
     "1.59.4"  => %w(Regress test_array_struct_in_none),
