@@ -53,6 +53,12 @@ describe GirFFI::SizedArray do
         arr = GirFFI::SizedArray.from :gint32, -1, [3, 2, 1]
         _(arr.size).must_equal 3
       end
+
+      it "can create an array of strings" do
+        arr = GirFFI::SizedArray.from :utf8, 3, ["foo", "bar", "baz"]
+        _(arr).must_be_instance_of GirFFI::SizedArray
+        _(arr.to_a).must_equal ["foo", "bar", "baz"]
+      end
     end
 
     describe "from a Ruby string" do
