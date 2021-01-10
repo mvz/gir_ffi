@@ -2453,7 +2453,7 @@ describe GIMarshallingTests do
     skip_below "1.66.1"
     gv = GObject::Value.new
     gv.init GIMarshallingTests::Flags.gtype
-    gv.set_enum GIMarshallingTests::Flags[:value3]
+    gv.set_flags GIMarshallingTests::Flags[:value3]
     GIMarshallingTests.gvalue_in_flags gv
   end
 
