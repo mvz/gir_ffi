@@ -1,8 +1,15 @@
 # Changelog
 
+## 0.15.6 / 2021-01-10
+
+* Officially support Ruby 3.0
+* Rely on `GObject.boxed_free` to free GValue objects
+* Require 'set' in `callback_base.rb`, which needs it (thanks, Jordan Webb!)
+* Make SizedArray handle `:filename` elements
+
 ## 0.15.5 / 2020-11-13
 
-* Make building and finding metaclasses via Builder.build_class work again
+* Make building and finding metaclasses via `Builder.build_class` work again
 
 ## 0.15.4 / 2020-11-01
 
