@@ -22,6 +22,7 @@ module GirFFI
       array:     :pointer,
       c:         GirFFI::SizedArray,
       utf8:      :pointer,
+      filename:  :pointer,
       GType:     gsize_type,
       gboolean:  GirFFI::Boolean,
       gunichar:  :uint32,

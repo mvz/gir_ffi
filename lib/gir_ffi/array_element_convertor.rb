@@ -14,7 +14,7 @@ module GirFFI
     def to_ruby_value
       bare_value = to_value
       case value_type
-      when :utf8
+      when :utf8, :filename
         bare_value.to_utf8
       when Array
         value_type[1].wrap bare_value
