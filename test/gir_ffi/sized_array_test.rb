@@ -55,9 +55,15 @@ describe GirFFI::SizedArray do
       end
 
       it "can create an array of strings" do
-        arr = GirFFI::SizedArray.from :utf8, 3, ["foo", "bar", "baz"]
+        arr = GirFFI::SizedArray.from :utf8, 3, %w(foo bar baz)
         _(arr).must_be_instance_of GirFFI::SizedArray
-        _(arr.to_a).must_equal ["foo", "bar", "baz"]
+        _(arr.to_a).must_equal %w(foo bar baz)
+      end
+
+      it "can create an array of filenames" do
+        arr = GirFFI::SizedArray.from :filename, 3, %w(foo bar baz)
+        _(arr).must_be_instance_of GirFFI::SizedArray
+        _(arr.to_a).must_equal %w(foo bar baz)
       end
     end
 
