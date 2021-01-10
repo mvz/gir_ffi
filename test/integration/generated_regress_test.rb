@@ -66,6 +66,11 @@ describe Regress do
     it "has the member :bar" do
       _(Regress::AnnotationBitfield[:bar]).must_equal 2
     end
+
+    it "has the member :foobar" do
+      skip_below "1.66.0"
+      _(Regress::AnnotationBitfield[:foobar]).must_equal 3
+    end
   end
 
   describe "Regress::AnnotationFields" do
@@ -88,6 +93,13 @@ describe Regress do
 
     it "has a writable field len" do
       skip "len should not be set independently"
+    end
+
+    it "has a writable field field4" do
+      skip_below "1.66.0"
+      _(instance.field4).must_equal 0
+      instance.field4 = 326
+      _(instance.field4).must_equal 326
     end
   end
 

@@ -613,6 +613,18 @@ describe GIMarshallingTests do
       _(err.code).must_equal 0
     end
 
+    it "has a working method #vfunc_multiple_inout_parameters" do
+      skip_below "1.66.0"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
+          :vfunc_multiple_inout_parameters,
+          proc { |_obj, aa, bb| [bb * 2, aa * 2] })
+      end
+      result = derived_instance.vfunc_multiple_inout_parameters 23.6, 16.9
+      _(result[0]).must_be_close_to 33.8
+      _(result[1]).must_be_close_to 47.2
+    end
+
     it "has a working method #vfunc_multiple_out_parameters" do
       derived_instance = make_derived_instance do |klass|
         klass.install_vfunc_implementation(
@@ -622,6 +634,17 @@ describe GIMarshallingTests do
       result = derived_instance.vfunc_multiple_out_parameters
       _(result[0]).must_be_close_to 42.1
       _(result[1]).must_be_close_to(-142.3)
+    end
+
+    it "has a working method #vfunc_one_inout_parameter" do
+      skip_below "1.66.0"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
+          :vfunc_one_inout_parameter,
+          proc { |_obj, aa| aa * 3 })
+      end
+      result = derived_instance.vfunc_one_inout_parameter 16.9
+      _(result).must_be_close_to 50.7
     end
 
     it "has a working method #vfunc_one_out_parameter" do
@@ -641,11 +664,41 @@ describe GIMarshallingTests do
       _(derived_instance.vfunc_out_enum).must_equal :value2
     end
 
+    it "has a working method #vfunc_out_flags" do
+      skip_below "1.66.1"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_out_flags,
+                                           proc { |_obj| { value2: true } }
+      end
+      _(derived_instance.vfunc_out_flags).must_equal(value2: true)
+    end
+
     it "has a working method #vfunc_return_enum" do
       derived_instance = make_derived_instance do |klass|
         klass.install_vfunc_implementation :vfunc_return_enum, proc { |_obj| :value2 }
       end
       _(derived_instance.vfunc_return_enum).must_equal :value2
+    end
+
+    it "has a working method #vfunc_return_flags" do
+      skip_below "1.66.1"
+      skip "Not implemented yet"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation :vfunc_return_flags,
+                                           proc { |_obj| { value2: true } }
+      end
+      _(derived_instance.vfunc_return_flags).must_equal(value2: true)
+    end
+
+    it "has a working method #vfunc_return_value_and_multiple_inout_parameters" do
+      skip_below "1.66.0"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
+          :vfunc_return_value_and_multiple_inout_parameters,
+          proc { |_obj, aa, bb| [bb * 2, aa * 2, 42] })
+      end
+      result = derived_instance.vfunc_return_value_and_multiple_inout_parameters 23, 16
+      _(result).must_equal [32, 46, 42]
     end
 
     it "has a working method #vfunc_return_value_and_multiple_out_parameters" do
@@ -656,6 +709,17 @@ describe GIMarshallingTests do
       end
       _(derived_instance.vfunc_return_value_and_multiple_out_parameters)
         .must_equal [42, -142, 3]
+    end
+
+    it "has a working method #vfunc_return_value_and_one_inout_parameter" do
+      skip_below "1.66.0"
+      derived_instance = make_derived_instance do |klass|
+        klass.install_vfunc_implementation(
+          :vfunc_return_value_and_one_inout_parameter,
+          proc { |_obj, aa| [aa * 2, 42] })
+      end
+      result = derived_instance.vfunc_return_value_and_one_inout_parameter 23
+      _(result).must_equal [46, 42]
     end
 
     it "has a working method #vfunc_return_value_and_one_out_parameter" do
@@ -1409,6 +1473,12 @@ describe GIMarshallingTests do
   it "has a working function #array_fixed_short_return" do
     res = GIMarshallingTests.array_fixed_short_return
     _(res).must_be :==, [-1, 0, 1, 2]
+  end
+
+  it "has a working function #array_flags_in" do
+    skip_below "1.66.1"
+    skip "Not implemented yet"
+    GIMarshallingTests.array_flags_in [:value1, :value2, :value3]
   end
 
   it "has a working function #array_gvariant_container_in" do
@@ -2377,6 +2447,14 @@ describe GIMarshallingTests do
     gv.set_enum GIMarshallingTests::GEnum[:value3]
     GIMarshallingTests.gvalue_in_enum gv
     pass
+  end
+
+  it "has a working function #gvalue_in_flags" do
+    skip_below "1.66.1"
+    gv = GObject::Value.new
+    gv.init GIMarshallingTests::Flags.gtype
+    gv.set_enum GIMarshallingTests::Flags[:value3]
+    GIMarshallingTests.gvalue_in_flags gv
   end
 
   it "has a working function #gvalue_in_with_modification" do
