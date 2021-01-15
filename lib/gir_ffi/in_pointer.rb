@@ -77,9 +77,10 @@ module GirFFI
       def from_module_type_array(type, ary)
         if type == GObject::Value
           from_gvalue_array type, ary
-        elsif type < GirFFI::ClassBase
+        elsif type < GirFFI::ClassBase ||
+              type.singleton_class < GirFFI::InterfaceBase
           from_struct_array type, ary
-        elsif type.singleton_class.include? GirFFI::EnumBase
+        elsif type.singleton_class < GirFFI::EnumBase
           from_enum_array type, ary
         else
           raise NotImplementedError, type
