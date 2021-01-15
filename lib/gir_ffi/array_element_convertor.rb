@@ -18,7 +18,7 @@ module GirFFI
         bare_value.to_utf8
       when Array
         value_type[1].wrap bare_value
-      when Class
+      when Module
         value_type.wrap bare_value
       else
         bare_value

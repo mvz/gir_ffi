@@ -53,18 +53,6 @@ describe GirFFI::SizedArray do
         arr = GirFFI::SizedArray.from :gint32, -1, [3, 2, 1]
         _(arr.size).must_equal 3
       end
-
-      it "can create an array of strings" do
-        arr = GirFFI::SizedArray.from :utf8, 3, %w(foo bar baz)
-        _(arr).must_be_instance_of GirFFI::SizedArray
-        _(arr.to_a).must_equal %w(foo bar baz)
-      end
-
-      it "can create an array of filenames" do
-        arr = GirFFI::SizedArray.from :filename, 3, %w(foo bar baz)
-        _(arr).must_be_instance_of GirFFI::SizedArray
-        _(arr.to_a).must_equal %w(foo bar baz)
-      end
     end
 
     describe "from a Ruby string" do
@@ -217,6 +205,40 @@ describe GirFFI::SizedArray do
       GirFFI::SizedArray.copy_value_to_pointer(sized, target)
       result = GirFFI::SizedArray.from :int32, 3, target
       _(result).must_be :==, [1, 2, 3]
+    end
+  end
+
+  describe "creating and reading back" do
+    it "works for an array of strings" do
+      arr = GirFFI::SizedArray.from :utf8, 3, %w(foo bar baz)
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.to_a).must_equal %w(foo bar baz)
+    end
+
+    it "works for an array of filenames" do
+      arr = GirFFI::SizedArray.from :filename, 3, %w(foo bar baz)
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.to_a).must_equal %w(foo bar baz)
+    end
+
+    it "works for an array of enums" do
+      arr = GirFFI::SizedArray.from Regress::TestEnum, -1, [:value2, :value3, :value4]
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.to_a).must_equal [:value2, :value3, :value4]
+    end
+
+    it "works for an array of objects" do
+      obj = Regress::TestObj.constructor
+      arr = GirFFI::SizedArray.from Regress::TestObj, -1, [obj]
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.to_a).must_equal [obj]
+    end
+
+    it "works for an array of interface implementations" do
+      value = Gio.file_new_for_path("/")
+      arr = GirFFI::SizedArray.from Gio::File, -1, [value]
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.to_a).must_equal [value]
     end
   end
 

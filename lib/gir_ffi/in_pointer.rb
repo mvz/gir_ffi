@@ -79,8 +79,10 @@ module GirFFI
           from_gvalue_array type, ary
         elsif type < GirFFI::ClassBase
           from_struct_array type, ary
-        elsif type.singleton_class.include? GirFFI::EnumBase
+        elsif type.singleton_class < GirFFI::EnumBase
           from_enum_array type, ary
+        elsif type.singleton_class < GirFFI::InterfaceBase
+          from_struct_array type, ary
         else
           raise NotImplementedError, type
         end
