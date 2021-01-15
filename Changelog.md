@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.7 / 2021-01-15
+
+* Handle sized arrays with interface element types
+
 ## 0.15.6 / 2021-01-10
 
 * Officially support Ruby 3.0
