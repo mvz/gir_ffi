@@ -39,7 +39,7 @@ module GLib
     end
 
     def to_hash
-      Hash[to_a]
+      to_a.to_h
     end
 
     # @override
