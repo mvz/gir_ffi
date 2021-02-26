@@ -471,6 +471,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
       before do
         derived_class.class_eval do
           def matrix(_arg)
+            puts "Inside the matrix!"
             44
           end
         end

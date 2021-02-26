@@ -58,7 +58,9 @@ module GirFFI
       return unless prc
 
       new do |*args|
-        call_with_argument_mapping(prc, *args)
+        result = call_with_argument_mapping(prc, *args)
+        puts "Result: #{result}"
+        result
       rescue StandardError => e
         GLib::MainLoop.handle_exception e
       end
@@ -71,6 +73,8 @@ module GirFFI
     def to_native
       @to_native ||= begin
                        builder = self.class.gir_ffi_builder
+                       puts "#to_native: #{self.class}"
+                       puts builder.return_ffi_type
                        FFI::Function.new(builder.return_ffi_type,
                                          builder.argument_ffi_types, self)
                      end

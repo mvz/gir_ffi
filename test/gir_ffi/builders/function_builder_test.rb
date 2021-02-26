@@ -258,6 +258,23 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+      describe "for Regress::TestObj#do_matrix" do
+        let(:function_info) do
+          get_method_introspection_data("Regress", "TestObj",
+                                        "do_matrix")
+        end
+
+        it "builds a correct definition including self.ref" do
+          _(code).must_equal <<~CODE
+            def do_matrix(somestr)
+              _v1 = GirFFI::InPointer.from_utf8(somestr)
+              _v2 = Regress::Lib.regress_test_obj_do_matrix self, _v1
+              return _v2
+            end
+          CODE
+        end
+      end
+
     describe "object ownership transfer" do
       describe "for GIMarshallingTests::Object#full_in" do
         let(:function_info) do
