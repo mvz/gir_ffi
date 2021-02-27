@@ -71,7 +71,11 @@ module GirFFI
     def to_native
       @to_native ||= begin
                        builder = self.class.gir_ffi_builder
-                       FFI::Function.new(builder.return_ffi_type,
+                       return_type = builder.return_ffi_type
+                       if return_type == :int32
+                         return_type = :int64
+                       end
+                       FFI::Function.new(return_type,
                                          builder.argument_ffi_types, self)
                      end
     end
