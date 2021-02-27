@@ -467,13 +467,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
       before do
         derived_class
-          .install_vfunc_implementation :matrix, ->(_obj, *_args) { 44 }
+          .install_vfunc_implementation :matrix, ->(_obj, *_args) { 523446 }
         builder.build_class
       end
 
       it "allows the vfunc to be called through its invoker" do
         obj = derived_class.new
-        _(obj.do_matrix("bar")).must_equal 44
+        _(obj.do_matrix("bar")).must_equal 46
       end
     end
 
