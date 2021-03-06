@@ -89,24 +89,9 @@ already exist:
 * `gir_ffi-tracker`: overrides for Tracker
 * `gir_ffi-gst`: overrides for GStreamer
 
-## Hacking and contributing
+## Contributing
 
-Please feel free to file bugs or send pull requests!
-
-If you just want to help out but don't know where to start, have a look at
-TODO.md, and check the notes in the code (e.g., using `dnote`).
-
-If you want to send pull requests or patches, try to follow the instructions
-below. **If you get stuck, please make a pull request anyway and I'll try to
-help out.**
-
-* Make sure `rake test` runs without reporting any failures.
-* Add tests for your feature. Otherwise, I can't see if it works or if I
-  break it later.
-* Make sure latest master merges cleanly with your branch. Things might
-  have moved around since you forked.
-* Try not to include changes that are irrelevant to your feature in the
-  same commit.
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## Contributors
 
