@@ -266,13 +266,13 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property("function-property", proc { nil })
+        instance.set_property("function-property", proc {})
         # AnnotationObject doesn't actually store stuff
         _(instance.function_property).must_be_nil
       end
 
       it "can be set with #function_property=" do
-        instance.function_property = proc { nil }
+        instance.function_property = proc {}
         # AnnotationObject doesn't actually store stuff
         _(instance.get_property("function-property")).must_be_nil
       end
