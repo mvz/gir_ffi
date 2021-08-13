@@ -2826,7 +2826,7 @@ describe Regress do
     it "has a working method #frob" do
       instance.array = (0..9).to_a
       instance.frob
-      _(instance.array).must_be :==, (42..42 + 9).to_a
+      _(instance.array).must_be :==, (42..(42 + 9)).to_a
       _(instance.just_int).must_equal 7
     end
   end
