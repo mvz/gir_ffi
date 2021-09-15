@@ -44,6 +44,10 @@ Layout/SpaceBeforeBlockBraces:
 Lint/AmbiguousBlockAssociation:
   Enabled: false
 
+# Assume the programmer knows precendence rules
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
 # Allow if (foo = get_foo) style
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
