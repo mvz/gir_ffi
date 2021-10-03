@@ -360,16 +360,38 @@ describe GObject::Value do
     end
   end
 
-  describe "upon garbage collection" do
+  describe "#unset" do
     it "restores the underlying GValue to its pristine state" do
       value = GObject::Value.from 42
 
-      _(value.current_gtype_name).must_equal "gint"
+      _(value.current_gtype).must_equal GObject::TYPE_INT
 
-      struct = value.struct
-      GObject::Value.send :finalize, struct
+      value.unset
 
-      _(value.current_gtype_name).wont_equal "gint"
+      _(value.current_gtype).must_equal GObject::TYPE_INVALID
+    end
+  end
+
+  describe "upon garbage collection" do
+    it "frees the underlying GValue memory" do
+      value = GObject::Value.from 42
+
+      _(value.current_gtype).must_equal GObject::TYPE_INT
+
+      GObject::Value.send :finalize, value.struct
+
+      _(value.current_gtype).wont_equal GObject::TYPE_INT
+    end
+
+    it "drops refcount on contained objects" do
+      obj = GObject::Object.new({})
+      gv = GObject::Value.from obj
+
+      _(object_ref_count(obj)).must_equal 2
+
+      GObject::Value.send :finalize, gv.struct
+
+      _(object_ref_count(obj)).must_equal 1
     end
   end
 end
