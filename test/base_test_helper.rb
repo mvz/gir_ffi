@@ -14,6 +14,7 @@ end
 $VERBOSE = old_verbose
 
 require "minitest/autorun"
+require "minitest/focus"
 require "rspec/mocks/minitest_integration"
 require "pry"
 
