@@ -7,60 +7,40 @@ GObject.load_class :Object
 module GObject
   # Overrides for GObject, GObject's generic base class.
   class Object
-    if GLib.check_version(2, 54, 0)
-      setup_method! "new"
+    GObject::Lib.attach_function(:g_object_new_with_properties,
+                                 [:size_t, :uint32, :pointer, :pointer],
+                                 :pointer)
 
-      # Before GLib 2.54.0, use g_object_newv, which takes an array of GParameter.
-      def initialize_with_automatic_gtype(properties = {})
-        gparameters = properties.map do |name, value|
-          name = name.to_s
-          property_param_spec(name)
-          GObject::Parameter.new.tap do |gparam|
-            gparam.name = name
-            gparam.value = value
-          end
-        end
-        initialize_without_automatic_gtype(self.class.gtype, gparameters)
-      end
+    def self.new_with_properties(*args, &block)
+      obj = allocate
+      obj.__send__ :initialize_with_properties, *args, &block
+      obj
+    end
 
-      alias initialize_without_automatic_gtype initialize
-      alias initialize initialize_with_automatic_gtype
-    else
-      GObject::Lib.attach_function(:g_object_new_with_properties,
-                                   [:size_t, :uint32, :pointer, :pointer],
-                                   :pointer)
+    # Starting with GLib 2.54.0, use g_object_new_with_properties, which
+    # takes an array of names and an array of values.
+    def initialize_with_properties(properties = {})
+      names, gvalues = names_and_gvalues_for_properties(properties)
 
-      def self.new_with_properties(*args, &block)
-        obj = allocate
-        obj.__send__ :initialize_with_properties, *args, &block
-        obj
-      end
+      n_properties = names.length
+      names_arr = GirFFI::SizedArray.from(:utf8, -1, names)
+      gvalues_arr = GirFFI::SizedArray.from(GObject::Value, -1, gvalues)
 
-      # Starting with GLib 2.54.0, use g_object_new_with_properties, which
-      # takes an array of names and an array of values.
-      def initialize_with_properties(properties = {})
-        names, gvalues = names_and_gvalues_for_properties(properties)
+      ptr = GObject::Lib.g_object_new_with_properties(self.class.gtype,
+                                                      n_properties,
+                                                      names_arr,
+                                                      gvalues_arr)
+      store_pointer ptr
+    end
 
-        n_properties = names.length
-        names_arr = GirFFI::SizedArray.from(:utf8, -1, names)
-        gvalues_arr = GirFFI::SizedArray.from(GObject::Value, -1, gvalues)
+    alias old_initialze initialize
+    alias initialize initialize_with_properties
+    remove_method :old_initialze
 
-        ptr = GObject::Lib.g_object_new_with_properties(self.class.gtype,
-                                                        n_properties,
-                                                        names_arr,
-                                                        gvalues_arr)
-        store_pointer ptr
-      end
-
-      alias old_initialze initialize
-      alias initialize initialize_with_properties
-      remove_method :old_initialze
-
-      def self.new(*args, &block)
-        obj = allocate
-        obj.__send__ :initialize, *args, &block
-        obj
-      end
+    def self.new(*args, &block)
+      obj = allocate
+      obj.__send__ :initialize, *args, &block
+      obj
     end
 
     alias base_initialize initialize

@@ -51,7 +51,7 @@ examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
 
 ## Requirements
 
-GirFFI is supported on CRuby 2.5, 2.6, 2.7 and 3.0, and JRuby 9.2.
+GirFFI is supported on CRuby 2.6, 2.7 and 3.0, and JRuby 9.3.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -61,7 +61,8 @@ available under the name ending in plain `.so`. If GirFFI complains that it
 cannot find the library, try installing development packages for those
 libraries.
 
-GirFFI should work with gobject-introspection 1.46.0 and up.
+GirFFI should work with gobject-introspection 1.56.0 and up, and glib 2.56.0
+and up.
 
 On Debian and Ubuntu, installing `libgirepository-1.0-1` and `gir1.2-glib-2.0`
 should be enough to use GirFFI in your application.

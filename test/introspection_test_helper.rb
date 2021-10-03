@@ -64,18 +64,13 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
-    "1.66.1"  => %w(GIMarshallingTests Object vfunc_return_flags),
-    "1.66.0"  => %w(GIMarshallingTests Object vfunc_multiple_inout_parameters),
-    "1.61.3"  => %w(Regress test_array_static_in_int),
-    "1.61.1"  => %w(Regress TestObj emit_sig_with_error),
-    "1.59.4"  => %w(Regress test_array_struct_in_none),
-    "1.58.3"  => %w(Regress TestReferenceCounters),
-    "1.57.2"  => %w(Regress TestInterface emit_signal),
-    "1.55.2"  => %w(Regress FOO_FLAGS_SECOND_AND_THIRD),
-    "1.53.4"  => %w(Regress TestObj name_conflict),
-    "1.49.1"  => %w(Regress AnonymousUnionAndStruct),
-    "1.47.92" => %w(Regress get_variant),
-    "1.47.1"  => %w(Regress test_noptr_callback)
+    "1.66.1" => %w(GIMarshallingTests Object vfunc_return_flags),
+    "1.66.0" => %w(GIMarshallingTests Object vfunc_multiple_inout_parameters),
+    "1.61.3" => %w(Regress test_array_static_in_int),
+    "1.61.1" => %w(Regress TestObj emit_sig_with_error),
+    "1.59.4" => %w(Regress test_array_struct_in_none),
+    "1.58.3" => %w(Regress TestReferenceCounters),
+    "1.57.2" => %w(Regress TestInterface emit_signal)
   }.freeze
 
   LATEST_VERSION = VERSION_GUARDS.keys.first
@@ -90,7 +85,7 @@ module IntrospectionTestExtensions
       return version if result
     end
 
-    "1.46.0" # Minimum supported version
+    "1.56.0" # Minimum supported version
   end
 end
 
