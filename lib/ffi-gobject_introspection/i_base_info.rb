@@ -49,7 +49,7 @@ module GObjectIntrospection
       method = method.to_s
       cache_ivar = "@#{method}_cache"
       single ||= method[0..-2]
-      count = method.sub(/^(get_)?/, '\\1n_')
+      count = method.sub(/^(get_)?/, "\\1n_")
       class_eval <<-CODE, __FILE__, __LINE__ + 1
         def #{method}                       # def fields
           #{cache_ivar} ||=                 #   @fields_cache ||=
