@@ -69,7 +69,7 @@ module GObject
     sig_info = object.class.find_signal signal_name
 
     closure = sig_info.wrap_in_closure do |*args|
-      block.call(*args << data)
+      yield(*args << data)
     end
 
     signal_connect_closure object, detailed_signal, closure, after
