@@ -7,7 +7,7 @@ Feature: Loading dependencies
       require 'gir_ffi'
 
       puts "Atk exists before: #{Object.const_defined?(:Atk)}"
-      GirFFI.setup :Gtk
+      GirFFI.setup :Gtk, "3.0"
       puts "Atk exists after: #{Object.const_defined?(:Atk)}"
       """
     When I run `ruby dependencies.rb`
