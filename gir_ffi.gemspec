@@ -23,8 +23,10 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/mvz/gir_ffi"
   spec.metadata["changelog_uri"] = "https://github.com/mvz/gir_ffi/blob/master/Changelog.md"
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = File.read("Manifest.txt").split
+
   spec.rdoc_options = ["--main", "README.md"]
   spec.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
   spec.require_paths = ["lib"]
@@ -39,7 +41,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake-manifest", "~> 0.2.0"
   spec.add_development_dependency "rexml", "~> 3.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.5"
-  spec.add_development_dependency "rubocop", "~> 1.22.1"
+  spec.add_development_dependency "rubocop", "~> 1.23.0"
   spec.add_development_dependency "rubocop-minitest", "~> 0.16.0"
   spec.add_development_dependency "rubocop-packaging", "~> 0.5.0"
   spec.add_development_dependency "rubocop-performance", "~> 1.12.0"
