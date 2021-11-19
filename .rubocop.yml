@@ -8,7 +8,6 @@ require:
 AllCops:
   Exclude:
     - 'examples/*'
-    - 'tasks/test.rake'
     - 'tmp/**/*'
     - 'vendor/bundle/**/*'
   NewCops: enable
