@@ -1303,6 +1303,26 @@ describe GIMarshallingTests do
     end
   end
 
+  describe "GIMarshallingTests::SignalsObject" do
+    before { skip_below "1.67.1" }
+
+    it "creates an instance using #new" do
+      skip "Needs testing"
+    end
+    it "has a working method #emit_boxed_gptrarray_boxed_struct" do
+      skip "Needs testing"
+    end
+    it "has a working method #emit_boxed_gptrarray_utf8" do
+      skip "Needs testing"
+    end
+    it "handles the 'some-boxed-gptrarray-boxed-struct' signal" do
+      skip "Needs testing"
+    end
+    it "handles the 'some-boxed-gptrarray-utf8' signal" do
+      skip "Needs testing"
+    end
+  end
+
   describe "GIMarshallingTests::SimpleStruct" do
     it "creates an instance using #new" do
       ss = GIMarshallingTests::SimpleStruct.new
