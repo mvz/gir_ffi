@@ -59,6 +59,16 @@ describe GObject do
 
       _(a).must_equal 2
     end
+
+    it "raises an error for signals with inout arguments" do
+      skip_below "1.57.2"
+      obj = Regress::TestObj.constructor
+      obj.signal_connect "sig-with-inout-int" do |_obj, i, _ud|
+        i + 1
+      end
+      _(proc { GObject.signal_emit obj, "sig-with-inout-int", 0 })
+        .must_raise NotImplementedError
+    end
   end
 
   describe "::signal_connect" do
