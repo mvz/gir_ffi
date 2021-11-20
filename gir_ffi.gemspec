@@ -17,7 +17,6 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
   spec.license = "LGPL-2.1+"
-
   spec.required_ruby_version = ">= 2.6.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
@@ -26,10 +25,10 @@ Gem::Specification.new do |spec|
   spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = File.read("Manifest.txt").split
+  spec.require_paths = ["lib"]
 
   spec.rdoc_options = ["--main", "README.md"]
   spec.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
-  spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "ffi", "~> 1.8"
   spec.add_runtime_dependency "ffi-bit_masks", "~> 0.1.1"
