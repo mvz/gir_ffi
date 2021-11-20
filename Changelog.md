@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.15.8 / 2021-11-20
+
+* Drop support for Ruby 2.5
+* Bump minimum supported version of gobject-introspection to 1.56.0
+* Bump minimum supported version of glib to 2.56.0
+* Handle functions that have swapped closure annotation
+* Handle GPtrArray arguments in signal handlers
+
 ## 0.15.7 / 2021-01-15
 
 * Handle sized arrays with interface element types
