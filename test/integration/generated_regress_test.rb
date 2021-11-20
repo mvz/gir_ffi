@@ -1738,6 +1738,11 @@ describe Regress do
       pass
     end
 
+    it "has a working method #get_string" do
+      skip_below "1.69.0"
+      skip "Needs testing"
+    end
+
     it "has a working method #instance_method" do
       rv = instance.instance_method
       assert_equal(-1, rv)
@@ -1777,6 +1782,11 @@ describe Regress do
       obj = Regress::TestObj.new_from_file("bar")
       instance.set_bare obj
       _(instance.bare).must_equal obj
+    end
+
+    it "has a working method #set_string" do
+      skip_below "1.69.0"
+      skip "Needs testing"
     end
 
     it "has a working method #skip_inout_param" do
