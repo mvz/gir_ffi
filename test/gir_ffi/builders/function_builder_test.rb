@@ -173,6 +173,31 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    # NOTE: The closure annotation should normally point at the user data, but
+    # for this function, from gobject-introspection 1.67.1, the annotation points
+    # from the user data to the closure.
+    describe "for functions that have swapped closure annotation" do
+      let(:function_info) do
+        get_introspection_data "GObject", "signal_handlers_unblock_matched"
+      end
+      it "builds a correct definition" do
+        skip_below "1.67.1"
+        _(code).must_equal <<~CODE
+          def self.signal_handlers_unblock_matched(instance, mask, signal_id, detail, closure = nil, func = nil)
+            _v1 = GObject::Object.from(instance)
+            _v2 = mask
+            _v3 = signal_id
+            _v4 = detail
+            _v5 = GObject::Closure.from(closure)
+            _v6 = func
+            _v7 = GirFFI::ArgHelper.store(_v5)
+            _v8 = GObject::Lib.g_signal_handlers_unblock_matched _v1, _v2, _v3, _v4, _v5, _v6, _v7
+            return _v8
+          end
+        CODE
+      end
+    end
+
     describe "for a method with an inout array with size argument" do
       let(:function_info) do
         get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout"

@@ -75,7 +75,11 @@ module GirFFI
       def set_up_user_data_relations
         @base_argument_builders.each do |bldr|
           if (idx = bldr.closure_idx) >= 0
-            @base_argument_builders[idx].mark_as_user_data bldr
+            target_bldr = @base_argument_builders[idx]
+            unless target_bldr.specialized_type_tag == :void
+              target_bldr, bldr = bldr, target_bldr
+            end
+            target_bldr.mark_as_user_data bldr
           end
         end
       end
