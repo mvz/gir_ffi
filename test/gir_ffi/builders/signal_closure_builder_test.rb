@@ -194,5 +194,27 @@ describe GirFFI::Builders::SignalClosureBuilder do
         _(builder.marshaller_definition).must_equal expected
       end
     end
+
+    describe "for a signal with GPtrArray argument" do
+      let(:signal_info) do
+        get_signal_introspection_data("GIMarshallingTests", "SignalsObject",
+                                      "some-boxed-gptrarray-boxed-struct")
+      end
+
+      it "returns a valid mapping method" do
+        skip_below "1.67.1"
+
+        expected = <<~CODE
+          def self.marshaller(closure, return_value, param_values, _invocation_hint, _marshal_data)
+            _instance, arg = param_values.map(&:get_value_plain)
+            _v1 = _instance
+            _v2 = GLib::PtrArray.wrap(GIMarshallingTests::BoxedStruct, arg)
+            wrap(closure.to_ptr).invoke_block(_v1, _v2)
+          end
+        CODE
+
+        _(builder.marshaller_definition).must_equal expected
+      end
+    end
   end
 end
