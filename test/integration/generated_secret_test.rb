@@ -4,7 +4,7 @@ require "gir_ffi_test_helper"
 
 GirFFI.setup :Secret
 
-describe "The generated Secret module" do
+describe Secret do
   describe "Secret::Schema" do
     it "has a working constructor" do
       instance = Secret::Schema.new("foo", :none, "bar" => :string)
