@@ -198,6 +198,31 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    # NOTE: Originally, the closure annotation would point from the callback to
+    # the user data, and the destroy annotation would point from the callback
+    # to the corresponding destroy_notiy argument. However, for this function,
+    # from gobject-introspection 1.67.1, the closure annotation points from the
+    # user data tot the callback, and the destroy annotation points from the
+    # destroy notifier to the user data.
+    describe "for functions that have incorrect destroy notifier annotation" do
+      let(:function_info) do
+        get_introspection_data "GObject", "signal_add_emission_hook"
+      end
+      it "builds a correct definition" do
+        _(code).must_equal <<~CODE
+          def self.signal_add_emission_hook(signal_id, detail, &hook_func)
+            _v1 = signal_id
+            _v2 = detail
+            _v3 = GObject::SignalEmissionHook.from(hook_func)
+            _v4 = GirFFI::ArgHelper.store(_v3)
+            _v5 = GLib::DestroyNotify.default
+            _v6 = GObject::Lib.g_signal_add_emission_hook _v1, _v2, _v3, _v4, _v5
+            return _v6
+          end
+        CODE
+      end
+    end
+
     describe "for a method with an inout array with size argument" do
       let(:function_info) do
         get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout"

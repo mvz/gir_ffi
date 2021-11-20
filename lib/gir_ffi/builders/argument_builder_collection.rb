@@ -87,7 +87,14 @@ module GirFFI
       def set_up_destroy_notifier_relations
         @base_argument_builders.each do |bldr|
           if (idx = bldr.destroy_idx) >= 0
-            @base_argument_builders[idx].mark_as_destroy_notifier bldr
+            target = @base_argument_builders[idx]
+            if target.specialized_type_tag == :callback &&
+               bldr.specialized_type_tag == :callback
+              target.mark_as_destroy_notifier bldr
+            else
+              warn "Not marking #{target.name} (#{target.specialized_type_tag})" \
+                   " as destroy notifier for #{bldr.name} (#{bldr.specialized_type_tag})"
+            end
           end
         end
       end
