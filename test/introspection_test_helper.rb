@@ -64,6 +64,8 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    "1.69.0" => %w(Regress TestObj get_string),
+    "1.67.1" => %w(GIMarshallingTests SignalsObject),
     "1.66.1" => %w(GIMarshallingTests Object vfunc_return_flags),
     "1.66.0" => %w(GIMarshallingTests Object vfunc_multiple_inout_parameters),
     "1.61.3" => %w(Regress test_array_static_in_int),
@@ -76,11 +78,11 @@ module IntrospectionTestExtensions
   LATEST_VERSION = VERSION_GUARDS.keys.first
 
   def calculate_version
-    VERSION_GUARDS.each do |version, (namespace, klass, methodname)|
-      result = if methodname
-                 get_method_introspection_data(namespace, klass, methodname)
+    VERSION_GUARDS.each do |version, (namespace, class_or_function, method_name)|
+      result = if method_name
+                 get_method_introspection_data(namespace, class_or_function, method_name)
                else
-                 get_introspection_data(namespace, klass)
+                 get_introspection_data(namespace, class_or_function)
                end
       return version if result
     end
