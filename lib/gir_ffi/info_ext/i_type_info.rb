@@ -166,7 +166,8 @@ module GirFFI
       end
 
       def needs_c_to_ruby_conversion_for_closures?
-        [:array, :c, :error, :ghash, :glist, :struct, :strv].include?(flattened_tag)
+        [:array, :c, :error, :ghash, :glist, :ptr_array, :struct, :strv]
+          .include?(flattened_tag)
       end
 
       def needs_ruby_to_c_conversion_for_closures?

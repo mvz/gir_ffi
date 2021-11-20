@@ -1304,22 +1304,59 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::SignalsObject" do
+    let(:instance) { GIMarshallingTests::SignalsObject.new }
+
     before { skip_below "1.67.1" }
 
     it "creates an instance using #new" do
-      skip "Needs testing"
+      so = GIMarshallingTests::SignalsObject.new
+      _(so).must_be_instance_of GIMarshallingTests::SignalsObject
     end
+
     it "has a working method #emit_boxed_gptrarray_boxed_struct" do
-      skip "Needs testing"
+      result = nil
+      instance.signal_connect "some-boxed-gptrarray-boxed-struct" do |_obj, arr, _user_data|
+        # Conversion to array must happen in the block since the array is
+        # emptied out after the signal emitter is done.
+        result = arr.to_a
+      end
+
+      instance.emit_boxed_gptrarray_boxed_struct
+      _(result.map(&:long_)).must_equal [42, 43, 44]
     end
+
     it "has a working method #emit_boxed_gptrarray_utf8" do
-      skip "Needs testing"
+      result = nil
+      instance.signal_connect "some-boxed-gptrarray-utf8" do |_obj, arr, _user_data|
+        # Conversion to array must happen in the block since the array is
+        # emptied out after the signal emitter is done.
+        result = arr.to_a
+      end
+
+      instance.emit_boxed_gptrarray_utf8
+      _(result).must_equal %w(0 1 2)
     end
+
     it "handles the 'some-boxed-gptrarray-boxed-struct' signal" do
-      skip "Needs testing"
+      result = nil
+      instance.signal_connect "some-boxed-gptrarray-boxed-struct" do |_obj, arr, _user_data|
+        result = arr
+      end
+
+      ptrarr = GIMarshallingTests.gptrarray_boxed_struct_full_return
+      GObject.signal_emit instance, "some-boxed-gptrarray-boxed-struct", ptrarr
+      _(result.map(&:long_)).must_equal [42, 43, 44]
     end
+
     it "handles the 'some-boxed-gptrarray-utf8' signal" do
-      skip "Needs testing"
+      result = nil
+      instance.signal_connect "some-boxed-gptrarray-utf8" do |_obj, arr, _user_data|
+        result = arr
+      end
+
+      ptrarr = GLib::PtrArray.from_enumerable :utf8, %w(foo bar)
+      GObject.signal_emit instance, "some-boxed-gptrarray-utf8", ptrarr
+      _(result.to_a).must_equal %w(foo bar)
     end
   end
 
