@@ -22,6 +22,10 @@ module GirFFI
       def has_invoker?
         invoker
       end
+
+      def full_name
+        "#{container.full_name}::#{safe_name}"
+      end
     end
   end
 end

@@ -14,6 +14,16 @@ module GirFFI
       def return_ffi_type
         return_type.to_ffi_type
       end
+
+      def full_name
+        if method?
+          "#{container.full_name}##{safe_name}"
+        elsif container
+          "#{container.full_name}.#{safe_name}"
+        else
+          "#{safe_namespace}.#{safe_name}"
+        end
+      end
     end
   end
 end
