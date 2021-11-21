@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module GirFFI
-  # Helper class for storing objects for later retrieval. Used to store user
-  # data arguments.
+  # Helper class for storing objects for later retrieval. Used to by ArgHelper
+  # to store callback arguments to keep them from being garbage collected.
   class ObjectStore
     def initialize
       @store = {}
