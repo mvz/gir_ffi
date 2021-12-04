@@ -44,7 +44,7 @@ module GirFFI
       end
 
       def gtype_struct_parent
-        full_name = info.full_type_name
+        full_name = info.full_name
         if full_name == "GObject::InitiallyUnownedClass"
           GObject::ObjectClass
         else
