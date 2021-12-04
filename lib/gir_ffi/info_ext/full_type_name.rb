@@ -2,11 +2,12 @@
 
 module GirFFI
   module InfoExt
-    # Extension module provinding a #full_type_name method suitable for
+    # Extension module provinding a #full_name method suitable for
     # callbacks, constants and registered types. Signals and vfuncs need a
     # different implementation.
+    #
     module FullTypeName
-      def full_type_name
+      def full_name
         "#{safe_namespace}::#{safe_name}"
       end
     end

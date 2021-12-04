@@ -422,7 +422,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       before do
         allow(type_info).to receive(:interface).and_return iface_info
         allow(iface_info).to receive(:info_type).and_return interface_type
-        allow(iface_info).to receive(:full_type_name).and_return "Bar::Foo"
+        allow(iface_info).to receive(:full_name).and_return "Bar::Foo"
       end
 
       describe "for :struct" do

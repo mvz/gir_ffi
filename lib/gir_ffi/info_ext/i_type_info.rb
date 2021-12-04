@@ -106,7 +106,7 @@ module GirFFI
       end
 
       def interface_class_name
-        interface.full_type_name if tag == :interface
+        interface.full_name if tag == :interface
       end
 
       def to_ffi_type

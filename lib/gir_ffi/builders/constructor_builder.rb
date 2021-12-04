@@ -38,7 +38,7 @@ module GirFFI
           ["obj = allocate"]
         else
           [
-            "raise NoMethodError unless self == #{@info.container.full_type_name}",
+            "raise NoMethodError unless self == #{@info.container.full_name}",
             "obj = allocate"
           ]
         end
