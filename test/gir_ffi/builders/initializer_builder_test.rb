@@ -37,6 +37,28 @@ describe GirFFI::Builders::InitializerBuilder do
       end
     end
 
+    describe "for constructors with multiple function arguments" do
+      let(:function_info) do
+        get_method_introspection_data "GLib", "Tree", "new_full"
+      end
+
+      it "builds a custom initializer" do
+        skip unless function_info
+
+        _(code).must_equal <<~CODE
+          def initialize_full(key_compare_func, key_destroy_func)
+            _v1 = GLib::CompareDataFunc.from(key_compare_func)
+            _v2 = GirFFI::ArgHelper.store(_v1)
+            _v3 = GLib::DestroyNotify.from(key_destroy_func)
+            _v4 = GLib::DestroyNotify.default
+            _v5 = GLib::Lib.g_tree_new_full _v1, _v2, _v3, _v4
+            store_pointer(_v5)
+            @struct.owned = true
+          end
+        CODE
+      end
+    end
+
     describe "for constructors for boxed types" do
       let(:function_info) do
         get_method_introspection_data "GIMarshallingTests", "BoxedStruct", "new"
