@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.15.9 / 2021-12-05
+
+* Skip setting destroy notifier state if types don't make sense
+* Handle functions with multiple user-supplied callback arguments
+
 ## 0.15.8 / 2021-11-20
 
 * Drop support for Ruby 2.5
