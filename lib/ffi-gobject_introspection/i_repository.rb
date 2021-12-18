@@ -92,6 +92,14 @@ module GObjectIntrospection
       klass.wrap ptr
     end
 
+    def inspect
+      n_names = @name_cache ? @name_cache.length : 0
+      n_types = @gtype_cache ? @gtype_cache.length : 0
+      "#<%s 0x%x (cache toplevel: %d names, %d gtypes)>" % [
+        self.class, self.object_id, n_names, n_types
+      ]
+    end
+
     private
 
     def wrap_info(ptr)
