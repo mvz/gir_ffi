@@ -56,7 +56,8 @@ module GirFFI
     end
 
     def interfaces
-      (@klass.included_modules - @klass.superclass.included_modules).map(&:gir_info)
+      (@klass.included_modules - @klass.superclass.included_modules).
+        select { |m| m.respond_to?(:gir_info) }.map(&:gir_info)
     end
 
     def find_signal(_signal_name)
