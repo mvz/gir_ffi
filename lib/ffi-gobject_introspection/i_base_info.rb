@@ -139,5 +139,11 @@ module GObjectIntrospection
     def ==(other)
       other.is_a?(IBaseInfo) && Lib.g_base_info_equal(self, other)
     end
+
+    def inspect
+      "#<%s 0x%x (%p %s::%s)>" % [
+        self.class, self.object_id, self.info_type, self.namespace, self.name
+      ]
+    end
   end
 end
