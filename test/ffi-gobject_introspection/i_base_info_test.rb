@@ -6,14 +6,7 @@ describe GObjectIntrospection::IBaseInfo do
   let(:described_class) { GObjectIntrospection::IBaseInfo }
   describe "#initialize" do
     it "raises an error if a null pointer is passed" do
-      expect(ptr = Object.new).to receive(:null?).and_return true
-      _(proc { described_class.new ptr }).must_raise ArgumentError
-    end
-
-    it "raises no error if a non-null pointer is passed" do
-      expect(ptr = Object.new).to receive(:null?).and_return false
-      described_class.new ptr
-      pass
+      _(proc { described_class.new FFI::Pointer::NULL }).must_raise ArgumentError
     end
   end
 
