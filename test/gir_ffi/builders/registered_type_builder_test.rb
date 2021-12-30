@@ -7,7 +7,7 @@ GirFFI.setup :Regress
 describe GirFFI::Builders::RegisteredTypeBuilder do
   describe "#setup_instance_method" do
     it "restores a method that was removed" do
-      Regress::TestObj.class_eval { remove_method "instance_method" }
+      Regress::TestObj.class_eval { remove_method :instance_method }
 
       builder = Regress::TestObj.gir_ffi_builder
 
