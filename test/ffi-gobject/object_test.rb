@@ -27,7 +27,7 @@ describe GObject::Object do
 
   describe "#get_property" do
     it "is overridden to have arity 1" do
-      _(GObject::Object.instance_method("get_property").arity).must_equal 1
+      _(GObject::Object.instance_method(:get_property).arity).must_equal 1
     end
 
     it "raises an error for a property that does not exist" do
