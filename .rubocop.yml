@@ -1,5 +1,9 @@
 inherit_from: .rubocop_todo.yml
 
+inherit_mode:
+  merge:
+    - Exclude
+
 require:
   - rubocop-minitest
   - rubocop-packaging
@@ -8,8 +12,6 @@ require:
 AllCops:
   Exclude:
     - 'examples/*'
-    - 'tmp/**/*'
-    - 'vendor/bundle/**/*'
   NewCops: enable
   TargetRubyVersion: 2.6
 
