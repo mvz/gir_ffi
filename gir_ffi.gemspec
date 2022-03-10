@@ -33,16 +33,16 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "ffi", "~> 1.8"
   spec.add_runtime_dependency "ffi-bit_masks", "~> 0.1.1"
 
-  spec.add_development_dependency "aruba", "~> 2.0.0"
+  spec.add_development_dependency "aruba", "~> 2.0"
   spec.add_development_dependency "minitest", "~> 5.12"
-  spec.add_development_dependency "minitest-focus", "~> 1.3.1"
+  spec.add_development_dependency "minitest-focus", ["~> 1.3", ">= 1.3.1"]
   spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "rake-manifest", "~> 0.2.0"
   spec.add_development_dependency "rexml", "~> 3.0"
   spec.add_development_dependency "rspec-mocks", "~> 3.5"
-  spec.add_development_dependency "rubocop", "~> 1.25.0"
+  spec.add_development_dependency "rubocop", "~> 1.25"
   spec.add_development_dependency "rubocop-minitest", "~> 0.17.0"
   spec.add_development_dependency "rubocop-packaging", "~> 0.5.0"
-  spec.add_development_dependency "rubocop-performance", "~> 1.13.0"
+  spec.add_development_dependency "rubocop-performance", "~> 1.13"
   spec.add_development_dependency "simplecov", "~> 0.21.0"
 end
