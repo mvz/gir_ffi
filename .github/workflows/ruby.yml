@@ -29,6 +29,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install non-ruby dependencies
         run: |
+          # Ensure all packages can be found
+          sudo apt-get update
           # Provides libgirepository-1.0.so.1
           sudo apt-get install libgirepository-1.0-1
           # Provides source code for test libraries and tools to generate introspection data
