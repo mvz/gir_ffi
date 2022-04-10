@@ -8,17 +8,17 @@ module GirFFI
     module ITypeInfo
       FLATTENED_TAG_TO_GTYPE_MAP = {
         gboolean: GObject::TYPE_BOOLEAN,
-        gint32:   GObject::TYPE_INT,
-        gint64:   GObject::TYPE_INT64,
-        guint64:  GObject::TYPE_UINT64,
-        void:     GObject::TYPE_NONE
+        gint32: GObject::TYPE_INT,
+        gint64: GObject::TYPE_INT64,
+        guint64: GObject::TYPE_UINT64,
+        void: GObject::TYPE_NONE
       }.freeze
 
       FLATTENED_TAG_POINTER_TO_GTYPE_MAP = {
         array: GObject::TYPE_ARRAY,
         ghash: GObject::TYPE_HASH_TABLE,
-        strv:  GObject::TYPE_STRV,
-        utf8:  GObject::TYPE_STRING
+        strv: GObject::TYPE_STRV,
+        utf8: GObject::TYPE_STRING
       }.freeze
 
       def gtype
@@ -85,17 +85,17 @@ module GirFFI
       end
 
       TAG_TO_WRAPPER_CLASS_MAP = {
-        array:           "GLib::Array",
-        byte_array:      "GLib::ByteArray",
-        c:               "GirFFI::SizedArray",
-        error:           "GLib::Error",
-        ghash:           "GLib::HashTable",
-        glist:           "GLib::List",
-        gslist:          "GLib::SList",
-        ptr_array:       "GLib::PtrArray",
-        strv:            "GLib::Strv",
-        utf8:            "GirFFI::InPointer", # TODO: Create a string-like class
-        void:            "GirFFI::InPointer", # TODO: Create a void-pointer class
+        array: "GLib::Array",
+        byte_array: "GLib::ByteArray",
+        c: "GirFFI::SizedArray",
+        error: "GLib::Error",
+        ghash: "GLib::HashTable",
+        glist: "GLib::List",
+        gslist: "GLib::SList",
+        ptr_array: "GLib::PtrArray",
+        strv: "GLib::Strv",
+        utf8: "GirFFI::InPointer", # TODO: Create a string-like class
+        void: "GirFFI::InPointer", # TODO: Create a void-pointer class
         zero_terminated: "GirFFI::ZeroTerminated"
       }.freeze
 

@@ -19,11 +19,6 @@ AllCops:
 Layout/BeginEndAlignment:
   EnforcedStyleAlignWith: begin
 
-# Tables are nice
-Layout/HashAlignment:
-  EnforcedColonStyle: table
-  EnforcedHashRocketStyle: table
-
 # Be lenient with line length
 Layout/LineLength:
   Max: 92
@@ -81,12 +76,6 @@ Style/Next:
 # Allow both real comparison and predicate methods
 Style/NumericPredicate:
   Enabled: false
-
-# Use older RuboCop default
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%W': ()
-    '%w': ()
 
 # Allow explicit return with multiple return values
 Style/RedundantReturn:

@@ -23,7 +23,7 @@ module GirFFI
 
       def initialize(receiver_info, info, builder_class)
         super(info, CallbackReturnValueBuilder,
-              receiver_info:          receiver_info,
+              receiver_info: receiver_info,
               argument_builder_class: builder_class)
       end
 

@@ -63,12 +63,12 @@ module GObjectIntrospection
 
     # IFunctionInfo
     bit_mask :IFunctionInfoFlags,
-             is_method:      (1 << 0),
+             is_method: (1 << 0),
              is_constructor: (1 << 1),
-             is_getter:      (1 << 2),
-             is_setter:      (1 << 3),
-             wraps_vfunc:    (1 << 4),
-             throws:         (1 << 5)
+             is_getter: (1 << 2),
+             is_setter: (1 << 3),
+             wraps_vfunc: (1 << 4),
+             throws: (1 << 5)
 
     attach_function :g_function_info_get_symbol, [:pointer], :string
     attach_function :g_function_info_get_flags, [:pointer], :IFunctionInfoFlags
@@ -231,10 +231,10 @@ module GObjectIntrospection
 
     # IVFuncInfo
     bit_mask :IVFuncInfoFlags,
-             must_chain_up:     (1 << 0),
-             must_override:     (1 << 1),
+             must_chain_up: (1 << 0),
+             must_override: (1 << 1),
              must_not_override: (1 << 2),
-             throws:            (1 << 3)
+             throws: (1 << 3)
 
     attach_function :g_vfunc_info_get_flags, [:pointer], :IVFuncInfoFlags
     attach_function :g_vfunc_info_get_invoker, [:pointer], :pointer
@@ -294,9 +294,9 @@ module GObjectIntrospection
 
     # NOTE: This type has more values, but these are the ones used
     bit_mask :ParamFlags,
-             readable:       (1 << 0),
-             writable:       (1 << 1),
-             construct:      (1 << 2),
+             readable: (1 << 0),
+             writable: (1 << 1),
+             construct: (1 << 2),
              construct_only: (1 << 3)
 
     attach_function :g_property_info_get_flags, [:pointer], :ParamFlags

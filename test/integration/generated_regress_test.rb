@@ -182,7 +182,7 @@ describe Regress do
 
     it "has a working method #get_strings" do
       list = instance.get_strings
-      _(list.to_a).must_equal %w(bar regress_annotation)
+      _(list.to_a).must_equal %w[bar regress_annotation]
     end
 
     it "has a working method #hidden_self" do
@@ -221,7 +221,7 @@ describe Regress do
     end
 
     it "has a working method #parse_args" do
-      _(instance.parse_args(%w(one two)).to_a).must_equal %w(one two)
+      _(instance.parse_args(%w[one two]).to_a).must_equal %w[one two]
     end
 
     it "has a working method #set_data" do
@@ -358,8 +358,8 @@ describe Regress do
       end
 
       # TODO: Automatically convert to GLib::List
-      GObject.signal_emit instance, "list-signal", GLib::List.from(:utf8, %w(foo bar))
-      _(result.to_a).must_equal %w(foo bar)
+      GObject.signal_emit instance, "list-signal", GLib::List.from(:utf8, %w[foo bar])
+      _(result.to_a).must_equal %w[foo bar]
     end
 
     it "handles the 'string-signal' signal" do
@@ -1056,7 +1056,7 @@ describe Regress do
   end
 
   it "has the constant LONG_STRING_CONSTANT" do
-    _(Regress::LONG_STRING_CONSTANT).must_equal %w(TYPE VALUE ENCODING CHARSET
+    _(Regress::LONG_STRING_CONSTANT).must_equal %w[TYPE VALUE ENCODING CHARSET
                                                    LANGUAGE DOM INTL POSTAL PARCEL
                                                    HOME WORK PREF VOICE FAX MSG
                                                    CELL PAGER BBS MODEM CAR ISDN
@@ -1066,7 +1066,7 @@ describe Regress do
                                                    CGM WMF BMP MET PMB DIB PICT
                                                    TIFF PDF PS JPEG QTIME MPEG
                                                    MPEG2 AVI WAVE AIFF PCM X509
-                                                   PGP).join(",")
+                                                   PGP].join(",")
   end
 
   describe "Regress::LikeGnomeKeyringPasswordSchema" do
@@ -2066,14 +2066,14 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property "list", %w(foo bar)
-        _(instance.list.to_a).must_equal %w(foo bar)
+        instance.set_property "list", %w[foo bar]
+        _(instance.list.to_a).must_equal %w[foo bar]
       end
 
       it "can be set with #list=" do
-        instance.list = %w(foo bar)
-        _(instance.list.to_a).must_equal %w(foo bar)
-        _(instance.get_property("list")).must_be :==, %w(foo bar)
+        instance.list = %w[foo bar]
+        _(instance.list.to_a).must_equal %w[foo bar]
+        _(instance.get_property("list")).must_be :==, %w[foo bar]
       end
     end
 
@@ -2087,14 +2087,14 @@ describe Regress do
       end
 
       it "can be set with #set_property" do
-        instance.set_property "list-old", %w(foo bar)
-        _(instance.list_old).must_be :==, %w(foo bar)
+        instance.set_property "list-old", %w[foo bar]
+        _(instance.list_old).must_be :==, %w[foo bar]
       end
 
       it "can be set with #list_old=" do
-        instance.list_old = %w(foo bar)
-        _(instance.list_old).must_be :==, %w(foo bar)
-        _(instance.get_property("list-old")).must_be :==, %w(foo bar)
+        instance.list_old = %w[foo bar]
+        _(instance.list_old).must_be :==, %w[foo bar]
+        _(instance.get_property("list-old")).must_be :==, %w[foo bar]
       end
     end
 
@@ -2338,9 +2338,9 @@ describe Regress do
         a = strs
       end
 
-      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(%w(foo bar))
+      GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(%w[foo bar])
 
-      _(a.to_a).must_equal %w(foo bar)
+      _(a.to_a).must_equal %w[foo bar]
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
@@ -2975,8 +2975,8 @@ describe Regress do
   end
 
   it "has a working function #annotation_init" do
-    result = Regress.annotation_init %w(foo bar)
-    _(result.to_a).must_equal %w(foo bar)
+    result = Regress.annotation_init %w[foo bar]
+    _(result.to_a).must_equal %w[foo bar]
   end
 
   it "has a working function #annotation_invalid_regress_annotation" do
@@ -3008,7 +3008,7 @@ describe Regress do
   end
 
   it "has a working function #annotation_string_array_length" do
-    _(Regress.annotation_string_array_length(%w(foo bar))).must_be_nil
+    _(Regress.annotation_string_array_length(%w[foo bar])).must_be_nil
   end
 
   it "has a working function #annotation_string_zero_terminated" do
@@ -3016,8 +3016,8 @@ describe Regress do
   end
 
   it "has a working function #annotation_string_zero_terminated_out" do
-    _(Regress.annotation_string_zero_terminated_out(%w(foo bar)).to_a)
-      .must_equal %w(foo bar)
+    _(Regress.annotation_string_zero_terminated_out(%w[foo bar]).to_a)
+      .must_equal %w[foo bar]
   end
 
   it "has a working function #annotation_test_parsing_bug630862" do
@@ -3103,11 +3103,11 @@ describe Regress do
   end
 
   it "has a working function #foo_test_string_array" do
-    _(Regress.foo_test_string_array(%w(foo bar))).must_be_nil
+    _(Regress.foo_test_string_array(%w[foo bar])).must_be_nil
   end
 
   it "has a working function #foo_test_string_array_with_g" do
-    _(Regress.foo_test_string_array_with_g(%w(foo bar))).must_be_nil
+    _(Regress.foo_test_string_array_with_g(%w[foo bar])).must_be_nil
   end
 
   it "has a working function #foo_test_unsigned_qualifier" do
@@ -3176,7 +3176,7 @@ describe Regress do
 
     _(result).must_equal 2 * c
     _(a.to_a).must_equal [-1, 0, 1, 2]
-    _(b.to_a).must_equal %w(one two three)
+    _(b.to_a).must_equal %w[one two three]
   end
 
   it "has a working function #test_array_fixed_out_objects" do
@@ -3615,7 +3615,7 @@ describe Regress do
     _(hash["integer"].get_value).must_equal 12
     _(hash["boolean"].get_value).must_equal true
     _(hash["string"].get_value).must_equal "some text"
-    _(hash["strings"].get_value.to_a).must_equal %w(first second third)
+    _(hash["strings"].get_value.to_a).must_equal %w[first second third]
 
     if has_enum_and_flag_keys
       _(hash["flags"].get_value).must_equal flag1: true, flag3: true
@@ -3623,9 +3623,9 @@ describe Regress do
     end
 
     expected_keys = if has_enum_and_flag_keys
-                      %w(boolean enum flags integer string strings)
+                      %w[boolean enum flags integer string strings]
                     else
-                      %w(boolean integer string strings)
+                      %w[boolean integer string strings]
                     end
 
     _(hash.keys.sort).must_equal expected_keys
@@ -3692,12 +3692,12 @@ describe Regress do
   it "has a working function #test_glist_container_return" do
     list = Regress.test_glist_container_return
     assert_instance_of GLib::List, list
-    _(list).must_be :==, %w(1 2 3)
+    _(list).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_glist_everything_return" do
     list = Regress.test_glist_everything_return
-    _(list).must_be :==, %w(1 2 3)
+    _(list).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_glist_gtype_container_in" do
@@ -3707,23 +3707,23 @@ describe Regress do
   end
 
   it "has a working function #test_glist_nothing_in" do
-    Regress.test_glist_nothing_in %w(1 2 3)
+    Regress.test_glist_nothing_in %w[1 2 3]
     pass
   end
 
   it "has a working function #test_glist_nothing_in2" do
-    Regress.test_glist_nothing_in2 %w(1 2 3)
+    Regress.test_glist_nothing_in2 %w[1 2 3]
     pass
   end
 
   it "has a working function #test_glist_nothing_return" do
     list = Regress.test_glist_nothing_return
-    _(list).must_be :==, %w(1 2 3)
+    _(list).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_glist_nothing_return2" do
     list = Regress.test_glist_nothing_return2
-    _(list).must_be :==, %w(1 2 3)
+    _(list).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_glist_null_in" do
@@ -3739,32 +3739,32 @@ describe Regress do
   it "has a working function #test_gslist_container_return" do
     slist = Regress.test_gslist_container_return
     assert_instance_of GLib::SList, slist
-    _(slist).must_be :==, %w(1 2 3)
+    _(slist).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_gslist_everything_return" do
     slist = Regress.test_gslist_everything_return
-    _(slist).must_be :==, %w(1 2 3)
+    _(slist).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_gslist_nothing_in" do
-    Regress.test_gslist_nothing_in %w(1 2 3)
+    Regress.test_gslist_nothing_in %w[1 2 3]
     pass
   end
 
   it "has a working function #test_gslist_nothing_in2" do
-    Regress.test_gslist_nothing_in2 %w(1 2 3)
+    Regress.test_gslist_nothing_in2 %w[1 2 3]
     pass
   end
 
   it "has a working function #test_gslist_nothing_return" do
     slist = Regress.test_gslist_nothing_return
-    _(slist).must_be :==, %w(1 2 3)
+    _(slist).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_gslist_nothing_return2" do
     slist = Regress.test_gslist_nothing_return2
-    _(slist).must_be :==, %w(1 2 3)
+    _(slist).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_gslist_null_in" do
@@ -3783,7 +3783,7 @@ describe Regress do
   end
 
   it "has a working function #test_gvariant_as" do
-    _(Regress.test_gvariant_as.get_strv.to_a).must_equal %w(one two three)
+    _(Regress.test_gvariant_as.get_strv.to_a).must_equal %w[one two three]
   end
 
   it "has a working function #test_gvariant_asv" do
@@ -3947,32 +3947,32 @@ describe Regress do
   end
 
   it "has a working function #test_strv_in" do
-    assert Regress.test_strv_in(%w(1 2 3))
+    assert Regress.test_strv_in(%w[1 2 3])
   end
 
   it "has a working function #test_strv_in_gvalue" do
     arr = Regress.test_strv_in_gvalue
-    _(arr).must_be :==, %w(one two three)
+    _(arr).must_be :==, %w[one two three]
   end
 
   it "has a working function #test_strv_out" do
     arr = Regress.test_strv_out
-    _(arr).must_be :==, %w(thanks for all the fish)
+    _(arr).must_be :==, %w[thanks for all the fish]
   end
 
   it "has a working function #test_strv_out_c" do
     arr = Regress.test_strv_out_c
-    _(arr).must_be :==, %w(thanks for all the fish)
+    _(arr).must_be :==, %w[thanks for all the fish]
   end
 
   it "has a working function #test_strv_out_container" do
     arr = Regress.test_strv_out_container
-    _(arr).must_be :==, %w(1 2 3)
+    _(arr).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_strv_outarg" do
     arr = Regress.test_strv_outarg
-    _(arr).must_be :==, %w(1 2 3)
+    _(arr).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_timet" do
@@ -4083,12 +4083,12 @@ describe Regress do
 
   it "has a working function #test_utf8_out_nonconst_return" do
     r, out = Regress.test_utf8_out_nonconst_return
-    assert_equal %w(first second), [r, out]
+    assert_equal %w[first second], [r, out]
   end
 
   it "has a working function #test_utf8_out_out" do
     out0, out1 = Regress.test_utf8_out_nonconst_return
-    assert_equal %w(first second), [out0, out1]
+    assert_equal %w[first second], [out0, out1]
   end
 
   it "has a working function #test_value_return" do

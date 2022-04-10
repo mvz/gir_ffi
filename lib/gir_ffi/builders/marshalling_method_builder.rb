@@ -21,7 +21,7 @@ module GirFFI
 
       def initialize(receiver_info, info)
         super(info, ClosureReturnValueBuilder,
-              receiver_info:          receiver_info,
+              receiver_info: receiver_info,
               argument_builder_class: ClosureArgumentBuilder)
       end
 
@@ -32,7 +32,7 @@ module GirFFI
       end
 
       def method_arguments
-        %w(closure return_value param_values _invocation_hint _marshal_data)
+        %w[closure return_value param_values _invocation_hint _marshal_data]
       end
 
       def preparation

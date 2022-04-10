@@ -64,15 +64,15 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
-    "1.69.0" => %w(Regress TestObj get_string),
-    "1.67.1" => %w(GIMarshallingTests SignalsObject),
-    "1.66.1" => %w(GIMarshallingTests Object vfunc_return_flags),
-    "1.66.0" => %w(GIMarshallingTests Object vfunc_multiple_inout_parameters),
-    "1.61.3" => %w(Regress test_array_static_in_int),
-    "1.61.1" => %w(Regress TestObj emit_sig_with_error),
-    "1.59.4" => %w(Regress test_array_struct_in_none),
-    "1.58.3" => %w(Regress TestReferenceCounters),
-    "1.57.2" => %w(Regress TestInterface emit_signal)
+    "1.69.0" => %w[Regress TestObj get_string],
+    "1.67.1" => %w[GIMarshallingTests SignalsObject],
+    "1.66.1" => %w[GIMarshallingTests Object vfunc_return_flags],
+    "1.66.0" => %w[GIMarshallingTests Object vfunc_multiple_inout_parameters],
+    "1.61.3" => %w[Regress test_array_static_in_int],
+    "1.61.1" => %w[Regress TestObj emit_sig_with_error],
+    "1.59.4" => %w[Regress test_array_struct_in_none],
+    "1.58.3" => %w[Regress TestReferenceCounters],
+    "1.57.2" => %w[Regress TestInterface emit_signal]
   }.freeze
 
   LATEST_VERSION = VERSION_GUARDS.keys.first

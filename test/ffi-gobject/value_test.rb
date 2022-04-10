@@ -309,14 +309,14 @@ describe GObject::Value do
     end
 
     it "unwraps a Strv" do
-      strv = GLib::Strv.from %w(foo bar)
+      strv = GLib::Strv.from %w[foo bar]
       val = GObject::Value.for_gtype GObject::TYPE_STRV
       val.set_boxed strv
 
       result = val.get_value
 
       _(result).must_be_kind_of GLib::Strv
-      _(result.to_a).must_equal %w(foo bar)
+      _(result.to_a).must_equal %w[foo bar]
     end
   end
 

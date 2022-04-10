@@ -83,9 +83,9 @@ describe GLib::Array do
     end
 
     it "creates a GArray from an array of :utf8 values" do
-      arr = GLib::Array.from :utf8, %w(hello there)
+      arr = GLib::Array.from :utf8, %w[hello there]
       _(arr).must_be_instance_of GLib::Array
-      _(arr.to_a).must_equal %w(hello there)
+      _(arr.to_a).must_equal %w[hello there]
     end
 
     it "creates a GArray from an array of struct values" do
@@ -151,7 +151,7 @@ describe GLib::Array do
     end
 
     it "returns the proper element for an array of :utf8" do
-      arr = GLib::Array.from :utf8, %w(a b c)
+      arr = GLib::Array.from :utf8, %w[a b c]
       _(arr.index(1)).must_equal "b"
     end
 
