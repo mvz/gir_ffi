@@ -15,21 +15,21 @@ module GirFFI
       # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
       G_TYPE_TAG_MAP = {
         GObject::TYPE_BOOLEAN => :gboolean,
-        GObject::TYPE_CHAR    => :gint8,
-        GObject::TYPE_UCHAR   => :guint8,
-        GObject::TYPE_FLOAT   => :gfloat,
-        GObject::TYPE_DOUBLE  => :gdouble,
-        GObject::TYPE_INT     => :gint,
-        GObject::TYPE_UINT    => :guint,
-        GObject::TYPE_LONG    => :glong,
-        GObject::TYPE_ULONG   => :gulong,
-        GObject::TYPE_INT64   => :gint64,
-        GObject::TYPE_UINT64  => :guint64,
-        GObject::TYPE_ENUM    => :interface,
-        GObject::TYPE_FLAGS   => :interface,
-        GObject::TYPE_STRING  => :utf8,
-        GObject::TYPE_BOXED   => :interface,
-        GObject::TYPE_OBJECT  => :interface
+        GObject::TYPE_CHAR => :gint8,
+        GObject::TYPE_UCHAR => :guint8,
+        GObject::TYPE_FLOAT => :gfloat,
+        GObject::TYPE_DOUBLE => :gdouble,
+        GObject::TYPE_INT => :gint,
+        GObject::TYPE_UINT => :guint,
+        GObject::TYPE_LONG => :glong,
+        GObject::TYPE_ULONG => :gulong,
+        GObject::TYPE_INT64 => :gint64,
+        GObject::TYPE_UINT64 => :guint64,
+        GObject::TYPE_ENUM => :interface,
+        GObject::TYPE_FLAGS => :interface,
+        GObject::TYPE_STRING => :utf8,
+        GObject::TYPE_BOXED => :interface,
+        GObject::TYPE_OBJECT => :interface
       }.freeze
 
       def tag
@@ -39,21 +39,21 @@ module GirFFI
       # TODO: Unify with InfoExt::ITypeInfo.flattened_tag_to_gtype_map
       G_TYPE_POINTER_MAP = {
         GObject::TYPE_BOOLEAN => false,
-        GObject::TYPE_CHAR    => false,
-        GObject::TYPE_UCHAR   => false,
-        GObject::TYPE_FLOAT   => false,
-        GObject::TYPE_DOUBLE  => false,
-        GObject::TYPE_INT     => false,
-        GObject::TYPE_UINT    => false,
-        GObject::TYPE_LONG    => false,
-        GObject::TYPE_ULONG   => false,
-        GObject::TYPE_INT64   => false,
-        GObject::TYPE_UINT64  => false,
-        GObject::TYPE_ENUM    => false,
-        GObject::TYPE_FLAGS   => false,
-        GObject::TYPE_STRING  => true,
-        GObject::TYPE_BOXED   => true,
-        GObject::TYPE_OBJECT  => true
+        GObject::TYPE_CHAR => false,
+        GObject::TYPE_UCHAR => false,
+        GObject::TYPE_FLOAT => false,
+        GObject::TYPE_DOUBLE => false,
+        GObject::TYPE_INT => false,
+        GObject::TYPE_UINT => false,
+        GObject::TYPE_LONG => false,
+        GObject::TYPE_ULONG => false,
+        GObject::TYPE_INT64 => false,
+        GObject::TYPE_UINT64 => false,
+        GObject::TYPE_ENUM => false,
+        GObject::TYPE_FLAGS => false,
+        GObject::TYPE_STRING => true,
+        GObject::TYPE_BOXED => true,
+        GObject::TYPE_OBJECT => true
       }.freeze
 
       def pointer?
@@ -61,9 +61,9 @@ module GirFFI
       end
 
       G_TYPE_INTERFACE_TAG_MAP = {
-        GObject::TYPE_ENUM   => :enum,
-        GObject::TYPE_FLAGS  => :flags,
-        GObject::TYPE_BOXED  => :struct,
+        GObject::TYPE_ENUM => :enum,
+        GObject::TYPE_FLAGS => :flags,
+        GObject::TYPE_BOXED => :struct,
         GObject::TYPE_OBJECT => :object
       }.freeze
 

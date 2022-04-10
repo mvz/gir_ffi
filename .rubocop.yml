@@ -19,11 +19,6 @@ AllCops:
 Layout/BeginEndAlignment:
   EnforcedStyleAlignWith: begin
 
-# Tables are nice
-Layout/HashAlignment:
-  EnforcedColonStyle: table
-  EnforcedHashRocketStyle: table
-
 # Be lenient with line length
 Layout/LineLength:
   Max: 92
