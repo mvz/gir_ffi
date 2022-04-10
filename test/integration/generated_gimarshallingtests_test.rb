@@ -36,8 +36,8 @@ describe GIMarshallingTests do
 
     it "has a writable field g_strv" do
       _(instance.g_strv).must_be :==, []
-      instance.g_strv = %w(foo bar)
-      _(instance.g_strv).must_be :==, %w(foo bar)
+      instance.g_strv = %w[foo bar]
+      _(instance.g_strv).must_be :==, %w[foo bar]
     end
 
     it "creates an instance using #new" do
@@ -74,7 +74,7 @@ describe GIMarshallingTests do
       res = GIMarshallingTests::BoxedStruct.returnv
       _(res.struct).must_be :owned?
       assert_equal 42, res.long_
-      _(res.g_strv).must_be :==, %w(0 1 2)
+      _(res.g_strv).must_be :==, %w[0 1 2]
     end
   end
 
@@ -1181,13 +1181,13 @@ describe GIMarshallingTests do
       end
 
       it "can be set with #set_property" do
-        instance.set_property("some-strv", %w(foo bar))
-        _(instance.get_property("some-strv")).must_be :==, %w(foo bar)
+        instance.set_property("some-strv", %w[foo bar])
+        _(instance.get_property("some-strv")).must_be :==, %w[foo bar]
       end
 
       it "can be set with #some_strv=" do
-        instance.some_strv = %w(foo bar)
-        _(instance.some_strv).must_be :==, %w(foo bar)
+        instance.some_strv = %w[foo bar]
+        _(instance.some_strv).must_be :==, %w[foo bar]
       end
     end
 
@@ -1334,7 +1334,7 @@ describe GIMarshallingTests do
       end
 
       instance.emit_boxed_gptrarray_utf8
-      _(result).must_equal %w(0 1 2)
+      _(result).must_equal %w[0 1 2]
     end
 
     it "handles the 'some-boxed-gptrarray-boxed-struct' signal" do
@@ -1354,9 +1354,9 @@ describe GIMarshallingTests do
         result = arr
       end
 
-      ptrarr = GLib::PtrArray.from_enumerable :utf8, %w(foo bar)
+      ptrarr = GLib::PtrArray.from_enumerable :utf8, %w[foo bar]
       GObject.signal_emit instance, "some-boxed-gptrarray-utf8", ptrarr
-      _(result.to_a).must_equal %w(foo bar)
+      _(result.to_a).must_equal %w[foo bar]
     end
   end
 
@@ -1654,7 +1654,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_string_in" do
-    GIMarshallingTests.array_string_in %w(foo bar)
+    GIMarshallingTests.array_string_in %w[foo bar]
     pass
   end
 
@@ -1710,23 +1710,23 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #array_zero_terminated_in" do
-    GIMarshallingTests.array_zero_terminated_in %w(0 1 2)
+    GIMarshallingTests.array_zero_terminated_in %w[0 1 2]
     pass
   end
 
   it "has a working function #array_zero_terminated_inout" do
-    res = GIMarshallingTests.array_zero_terminated_inout %w(0 1 2)
+    res = GIMarshallingTests.array_zero_terminated_inout %w[0 1 2]
     _(res).must_be :==, ["-1", "0", "1", "2"]
   end
 
   it "has a working function #array_zero_terminated_out" do
     res = GIMarshallingTests.array_zero_terminated_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #array_zero_terminated_return" do
     res = GIMarshallingTests.array_zero_terminated_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #array_zero_terminated_return_null" do
@@ -1802,7 +1802,7 @@ describe GIMarshallingTests do
   it "has a working function #boxed_struct_returnv" do
     res = GIMarshallingTests.boxed_struct_returnv
     _(res.long_).must_equal 42
-    _(res.g_strv).must_be :==, %w(0 1 2)
+    _(res.g_strv).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #bytearray_full_return" do
@@ -2002,61 +2002,61 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #garray_utf8_container_inout" do
-    res = GIMarshallingTests.garray_utf8_container_inout %w(0 1 2)
+    res = GIMarshallingTests.garray_utf8_container_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_container_out" do
     res = GIMarshallingTests.garray_utf8_container_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_container_return" do
     res = GIMarshallingTests.garray_utf8_container_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_full_inout" do
-    arr = %w(0 1 2)
+    arr = %w[0 1 2]
     res = GIMarshallingTests.garray_utf8_full_inout arr
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_full_out" do
     res = GIMarshallingTests.garray_utf8_full_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_full_out_caller_allocated" do
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_full_return" do
     res = GIMarshallingTests.garray_utf8_full_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_none_in" do
-    arr = %w(0 1 2)
+    arr = %w[0 1 2]
     GIMarshallingTests.garray_utf8_none_in arr
     pass
   end
 
   it "has a working function #garray_utf8_none_inout" do
-    arr = %w(0 1 2)
+    arr = %w[0 1 2]
     res = GIMarshallingTests.garray_utf8_none_inout arr
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #garray_utf8_none_out" do
     res = GIMarshallingTests.garray_utf8_none_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #garray_utf8_none_return" do
     res = GIMarshallingTests.garray_utf8_none_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gbytes_full_return" do
@@ -2261,52 +2261,52 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #glist_utf8_container_inout" do
-    res = GIMarshallingTests.glist_utf8_container_inout %w(0 1 2)
+    res = GIMarshallingTests.glist_utf8_container_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_container_out" do
     res = GIMarshallingTests.glist_utf8_container_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_container_return" do
     res = GIMarshallingTests.glist_utf8_container_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_full_inout" do
-    res = GIMarshallingTests.glist_utf8_full_inout %w(0 1 2)
+    res = GIMarshallingTests.glist_utf8_full_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_full_out" do
     res = GIMarshallingTests.glist_utf8_full_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_full_return" do
     res = GIMarshallingTests.glist_utf8_full_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_none_in" do
-    GIMarshallingTests.glist_utf8_none_in %w(0 1 2)
+    GIMarshallingTests.glist_utf8_none_in %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_none_inout" do
-    res = GIMarshallingTests.glist_utf8_none_inout %w(0 1 2)
+    res = GIMarshallingTests.glist_utf8_none_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #glist_utf8_none_out" do
     res = GIMarshallingTests.glist_utf8_none_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #glist_utf8_none_return" do
     res = GIMarshallingTests.glist_utf8_none_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_boxed_struct_full_return" do
@@ -2316,52 +2316,52 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gptrarray_utf8_container_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_container_inout %w(0 1 2)
+    res = GIMarshallingTests.gptrarray_utf8_container_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_container_out" do
     res = GIMarshallingTests.gptrarray_utf8_container_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_container_return" do
     res = GIMarshallingTests.gptrarray_utf8_container_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_full_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_full_inout %w(0 1 2)
+    res = GIMarshallingTests.gptrarray_utf8_full_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_full_out" do
     res = GIMarshallingTests.gptrarray_utf8_full_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_full_return" do
     res = GIMarshallingTests.gptrarray_utf8_full_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_none_in" do
-    GIMarshallingTests.gptrarray_utf8_none_in %w(0 1 2)
+    GIMarshallingTests.gptrarray_utf8_none_in %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_none_inout" do
-    res = GIMarshallingTests.gptrarray_utf8_none_inout %w(0 1 2)
+    res = GIMarshallingTests.gptrarray_utf8_none_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gptrarray_utf8_none_out" do
     res = GIMarshallingTests.gptrarray_utf8_none_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gptrarray_utf8_none_return" do
     res = GIMarshallingTests.gptrarray_utf8_none_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_int_none_in" do
@@ -2375,73 +2375,73 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #gslist_utf8_container_inout" do
-    res = GIMarshallingTests.gslist_utf8_container_inout %w(0 1 2)
+    res = GIMarshallingTests.gslist_utf8_container_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_container_out" do
     res = GIMarshallingTests.gslist_utf8_container_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_utf8_container_return" do
     res = GIMarshallingTests.gslist_utf8_container_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_utf8_full_inout" do
-    res = GIMarshallingTests.gslist_utf8_full_inout %w(0 1 2)
+    res = GIMarshallingTests.gslist_utf8_full_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_full_out" do
     res = GIMarshallingTests.gslist_utf8_full_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_utf8_full_return" do
     res = GIMarshallingTests.gslist_utf8_full_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_utf8_none_in" do
-    GIMarshallingTests.gslist_utf8_none_in %w(0 1 2)
+    GIMarshallingTests.gslist_utf8_none_in %w[0 1 2]
     pass
   end
 
   it "has a working function #gslist_utf8_none_inout" do
-    res = GIMarshallingTests.gslist_utf8_none_inout %w(0 1 2)
+    res = GIMarshallingTests.gslist_utf8_none_inout %w[0 1 2]
     _(res).must_be :==, ["-2", "-1", "0", "1"]
   end
 
   it "has a working function #gslist_utf8_none_out" do
     res = GIMarshallingTests.gslist_utf8_none_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gslist_utf8_none_return" do
     res = GIMarshallingTests.gslist_utf8_none_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gstrv_in" do
-    GIMarshallingTests.gstrv_in %w(0 1 2)
+    GIMarshallingTests.gstrv_in %w[0 1 2]
     pass
   end
 
   it "has a working function #gstrv_inout" do
-    res = GIMarshallingTests.gstrv_inout %w(0 1 2)
+    res = GIMarshallingTests.gstrv_inout %w[0 1 2]
     _(res).must_be :==, ["-1", "0", "1", "2"]
   end
 
   it "has a working function #gstrv_out" do
     res = GIMarshallingTests.gstrv_out
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gstrv_return" do
     res = GIMarshallingTests.gstrv_return
-    _(res).must_be :==, %w(0 1 2)
+    _(res).must_be :==, %w[0 1 2]
   end
 
   it "has a working function #gtype_in" do
@@ -2563,9 +2563,9 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #init_function" do
-    res, arr = GIMarshallingTests.init_function %w(foo bar baz)
+    res, arr = GIMarshallingTests.init_function %w[foo bar baz]
     _(res).must_equal true
-    _(arr).must_be :==, %w(foo bar)
+    _(arr).must_be :==, %w[foo bar]
   end
 
   it "has a working function #int16_in_max" do
@@ -2836,7 +2836,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #multi_array_key_value_in" do
-    keys = %w(one two three)
+    keys = %w[one two three]
     values = [1, 2, 3].map { |val| GObject::Value.wrap_ruby_value val }
     GIMarshallingTests.multi_array_key_value_in keys, values
   end

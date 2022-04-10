@@ -77,23 +77,23 @@ describe GirFFI::InPointer do
 
   describe "an instance created with .from_array :utf8" do
     before do
-      @result = GirFFI::InPointer.from_array :utf8, %w(foo bar baz)
+      @result = GirFFI::InPointer.from_array :utf8, %w[foo bar baz]
     end
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
-      assert_equal %w(foo bar baz), ary.map(&:read_string)
+      assert_equal %w[foo bar baz], ary.map(&:read_string)
     end
   end
 
   describe "an instance created with .from_array :filename" do
     before do
-      @result = GirFFI::InPointer.from_array :filename, %w(foo bar baz)
+      @result = GirFFI::InPointer.from_array :filename, %w[foo bar baz]
     end
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
-      assert_equal %w(foo bar baz), ary.map(&:read_string)
+      assert_equal %w[foo bar baz], ary.map(&:read_string)
     end
   end
 

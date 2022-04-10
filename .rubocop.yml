@@ -77,12 +77,6 @@ Style/Next:
 Style/NumericPredicate:
   Enabled: false
 
-# Use older RuboCop default
-Style/PercentLiteralDelimiters:
-  PreferredDelimiters:
-    '%W': ()
-    '%w': ()
-
 # Allow explicit return with multiple return values
 Style/RedundantReturn:
   AllowMultipleReturnValues: true

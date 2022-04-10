@@ -18,7 +18,7 @@ describe GObjectIntrospection::Strv do
 
   describe "#each" do
     it "yields each string element" do
-      ary = %w(one two three)
+      ary = %w[one two three]
       ptrs = ary.map { |a| FFI::MemoryPointer.from_string(a) }
       ptrs << nil
       block = FFI::MemoryPointer.new(:pointer, ptrs.length)
@@ -29,7 +29,7 @@ describe GObjectIntrospection::Strv do
       strv.each do |str|
         arr << str
       end
-      assert_equal %w(one two three), arr
+      assert_equal %w[one two three], arr
     end
 
     it "yields zero times for a Strv wrapping a null pointer" do

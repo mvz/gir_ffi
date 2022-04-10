@@ -6,13 +6,13 @@ module GirFFI
     # classes are used by FunctionBuilder to create the code that
     # processes each argument before and after the actual function call.
     class BaseArgumentBuilder
-      KEYWORDS = %w(
+      KEYWORDS = %w[
         alias and begin break case class def do
         else elsif end ensure false for if in
         module next nil not or redo rescue retry
         return self super then true undef unless
         until when while yield
-      ).freeze
+      ].freeze
 
       attr_reader :arginfo, :related_callback_builder
 

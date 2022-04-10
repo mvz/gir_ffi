@@ -22,7 +22,7 @@ describe GirFFI::SizedArray do
 
   describe "#each" do
     it "yields each element" do
-      ary = %w(one two three)
+      ary = %w[one two three]
       ptrs = ary.map { |a| FFI::MemoryPointer.from_string(a) }
       ptrs << nil
       block = FFI::MemoryPointer.new(:pointer, ptrs.length)
@@ -33,7 +33,7 @@ describe GirFFI::SizedArray do
       sarr.each do |str|
         arr << str
       end
-      assert_equal %w(one two three), arr
+      assert_equal %w[one two three], arr
     end
   end
 
@@ -210,15 +210,15 @@ describe GirFFI::SizedArray do
 
   describe "creating and reading back" do
     it "works for an array of strings" do
-      arr = GirFFI::SizedArray.from :utf8, 3, %w(foo bar baz)
+      arr = GirFFI::SizedArray.from :utf8, 3, %w[foo bar baz]
       _(arr).must_be_instance_of GirFFI::SizedArray
-      _(arr.to_a).must_equal %w(foo bar baz)
+      _(arr.to_a).must_equal %w[foo bar baz]
     end
 
     it "works for an array of filenames" do
-      arr = GirFFI::SizedArray.from :filename, 3, %w(foo bar baz)
+      arr = GirFFI::SizedArray.from :filename, 3, %w[foo bar baz]
       _(arr).must_be_instance_of GirFFI::SizedArray
-      _(arr.to_a).must_equal %w(foo bar baz)
+      _(arr.to_a).must_equal %w[foo bar baz]
     end
 
     it "works for an array of enums" do

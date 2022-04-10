@@ -29,7 +29,7 @@ describe GLib::PtrArray do
       a = []
       arr.each { |v| a << v }
 
-      assert_equal %w(test1 test2 test3), a
+      assert_equal %w[test1 test2 test3], a
     end
 
     it "works when exiting the loop prematurely" do
@@ -45,7 +45,7 @@ describe GLib::PtrArray do
         break if v == "test2"
       end
 
-      assert_equal %w(test1 test2), a
+      assert_equal %w[test1 test2], a
     end
   end
 
@@ -60,7 +60,7 @@ describe GLib::PtrArray do
     GLib::PtrArray.add arr, "test2"
     GLib::PtrArray.add arr, "test3"
 
-    assert_equal %w(test1 test2 test3), arr.to_a
+    assert_equal %w[test1 test2 test3], arr.to_a
   end
 
   it "has #add as an instance method too" do
@@ -71,27 +71,27 @@ describe GLib::PtrArray do
 
   describe "#==" do
     it "returns true when comparing to an array with the same elements" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
 
-      _(arr).must_be :==, %w(1 2 3)
+      _(arr).must_be :==, %w[1 2 3]
     end
 
     it "returns false when comparing to an array with different elements" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
 
-      _(arr).wont_be :==, %w(1 2)
+      _(arr).wont_be :==, %w[1 2]
     end
 
     it "returns true when comparing to a GPtrArray with the same elements" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
-      other = GLib::PtrArray.from :utf8, %w(1 2 3)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
+      other = GLib::PtrArray.from :utf8, %w[1 2 3]
 
       _(arr).must_be :==, other
     end
 
     it "returns false when comparing to a GPtrArray with different elements" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
-      other = GLib::PtrArray.from :utf8, %w(1 2)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
+      other = GLib::PtrArray.from :utf8, %w[1 2]
 
       _(arr).wont_be :==, other
     end
@@ -99,12 +99,12 @@ describe GLib::PtrArray do
 
   describe "#index" do
     it "returns the correct element" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
       _(arr.index(1)).must_equal "2"
     end
 
     it "raises an error if the index is out of bounds" do
-      arr = GLib::PtrArray.from :utf8, %w(1 2 3)
+      arr = GLib::PtrArray.from :utf8, %w[1 2 3]
       _(proc { arr.index(16) }).must_raise IndexError
       _(proc { arr.index(-1) }).must_raise IndexError
     end
