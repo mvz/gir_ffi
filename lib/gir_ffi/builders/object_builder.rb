@@ -39,8 +39,8 @@ module GirFFI
         @object_class_struct ||=
           begin
             parent_struct = parent_builder.object_class_struct
-            if object_class_struct_info
-              StructBuilder.new(object_class_struct_info,
+            if class_struct_info
+              StructBuilder.new(class_struct_info,
                                 superclass: parent_struct).build_class
             else
               parent_struct
@@ -58,12 +58,6 @@ module GirFFI
         end
       end
 
-      protected
-
-      def object_class_struct_info
-        @object_class_struct_info ||= info.class_struct
-      end
-
       private
 
       def setup_class
@@ -74,6 +68,10 @@ module GirFFI
         setup_vfunc_invokers
         setup_interfaces
         setup_initializer
+      end
+
+      def class_struct_info
+        @class_struct_info ||= info.class_struct
       end
 
       # FIXME: Private method only used in subclass
