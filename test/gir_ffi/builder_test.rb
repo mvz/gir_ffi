@@ -80,8 +80,8 @@ describe GirFFI::Builder do
     end
 
     it "returns a valid class for boxed classes unknown to GIR" do
-      object_class = GIMarshallingTests::PropertiesObject.object_class
-      property = object_class.find_property "some-boxed-glist"
+      class_struct = GIMarshallingTests::PropertiesObject.class_struct
+      property = class_struct.find_property "some-boxed-glist"
       gtype = property.value_type
 
       _(gtype).wont_equal GObject::TYPE_NONE

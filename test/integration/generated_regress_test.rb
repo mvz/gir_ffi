@@ -1640,7 +1640,7 @@ describe Regress do
       # Make sure Regress::TestObjClass exists
       # NOTE: Perhaps gtype struct classes should be stored out of the way in
       # some other namespace.
-      Regress::TestObj.object_class
+      Regress::TestObj.class_struct
 
       _(Regress::TestObjClass.const_defined?(:Matrix)).must_equal true
       _(Regress.const_defined?(:Matrix)).must_equal false

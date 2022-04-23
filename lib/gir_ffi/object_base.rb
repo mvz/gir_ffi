@@ -8,7 +8,7 @@ module GirFFI
     extend FFI::DataConverter
 
     def object_class
-      self.class.object_class
+      self.class.class_struct
     end
 
     def self.native_type
@@ -64,8 +64,8 @@ module GirFFI
         raise GirFFI::SignalNotFoundError.new(name, self)
     end
 
-    def self.object_class
-      @object_class ||=
+    def self.class_struct
+      @class_struct ||=
         begin
           ptr = GObject::Lib.g_type_class_ref(gtype)
           gir_ffi_builder.object_class_struct.wrap ptr

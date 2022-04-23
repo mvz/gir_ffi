@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-GObject::Object.object_class
+GObject::Object.class_struct
 
 module GObject
   # Overrides for GObjectClass, a struct containing GObject's class data
