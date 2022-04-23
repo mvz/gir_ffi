@@ -18,7 +18,7 @@ module GirFFI
           ObjectBase
         end
 
-        def object_class_struct
+        def class_struct_class
           GObject::TypeClass
         end
 
@@ -35,10 +35,10 @@ module GirFFI
         seek_in_ancestor_infos { |info| info.find_property property_name }
       end
 
-      def object_class_struct
-        @object_class_struct ||=
+      def class_struct_class
+        @class_struct_class ||=
           begin
-            parent_struct = parent_builder.object_class_struct
+            parent_struct = parent_builder.class_struct_class
             if class_struct_info
               StructBuilder.new(class_struct_info,
                                 superclass: parent_struct).build_class

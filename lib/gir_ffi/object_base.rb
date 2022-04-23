@@ -68,7 +68,7 @@ module GirFFI
       @class_struct ||=
         begin
           ptr = GObject::Lib.g_type_class_ref(gtype)
-          gir_ffi_builder.object_class_struct.wrap ptr
+          gir_ffi_builder.class_struct_class.wrap ptr
         end
     end
 

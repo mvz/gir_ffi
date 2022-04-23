@@ -520,9 +520,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
   end
 
-  describe "#object_class_struct" do
-    it "returns the parent class struct" do
-      _(builder.object_class_struct).must_equal GIMarshallingTests::ObjectClass
+  describe "#class_struct_class" do
+    it "returns the parent class' class struct class" do
+      _(builder.class_struct_class).must_equal GIMarshallingTests::ObjectClass
     end
   end
 end

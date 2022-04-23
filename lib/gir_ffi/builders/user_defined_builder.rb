@@ -133,7 +133,7 @@ module GirFFI
 
       def setup_vfuncs(object_class_ptr)
         super_class_struct =
-          superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
+          superclass.gir_ffi_builder.class_struct_class::Struct.new(object_class_ptr)
 
         info.vfunc_implementations.each do |impl|
           setup_vfunc parent_info, super_class_struct, impl

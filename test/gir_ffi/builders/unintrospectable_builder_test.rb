@@ -46,9 +46,9 @@ describe GirFFI::Builders::UnintrospectableBuilder do
       end
     end
 
-    describe "#object_class_struct" do
-      it "returns the parent class struct" do
-        _(@bldr.object_class_struct).must_equal GObject::ObjectClass
+    describe "#class_struct_class" do
+      it "returns the parent class' class struct class" do
+        _(@bldr.class_struct_class).must_equal GObject::ObjectClass
       end
     end
   end
