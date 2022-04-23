@@ -7,7 +7,7 @@ module GirFFI
   class ObjectBase < ClassBase
     extend FFI::DataConverter
 
-    def object_class
+    def class_struct
       self.class.class_struct
     end
 

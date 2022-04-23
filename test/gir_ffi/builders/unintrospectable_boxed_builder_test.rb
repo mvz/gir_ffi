@@ -6,7 +6,7 @@ GirFFI.setup :GIMarshallingTests
 
 describe GirFFI::Builders::UnintrospectableBoxedBuilder do
   let(:instance) { GIMarshallingTests::PropertiesObject.new }
-  let(:property) { instance.object_class.find_property "some-boxed-glist" }
+  let(:property) { instance.class_struct.find_property "some-boxed-glist" }
   let(:gtype) { property.value_type }
   let(:info) { GirFFI::UnintrospectableBoxedInfo.new(gtype) }
   let(:bldr) { GirFFI::Builders::UnintrospectableBoxedBuilder.new(info) }
