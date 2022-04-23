@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-GObject::Object.object_class
+GObject::Object.class_struct
 
 module GObject
-  # Overrides for GObjectClass, a struct containing GObject's class data
+  # Overrides for GObjectClass, the class struct for GObject::Object
   class ObjectClass
     def set_property=(callback)
       struct[:set_property] = GObject::ObjectSetPropertyFunc.from callback

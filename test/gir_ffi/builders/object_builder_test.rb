@@ -54,22 +54,22 @@ describe GirFFI::Builders::ObjectBuilder do
     end
   end
 
-  describe "#object_class_struct" do
+  describe "#class_struct_class" do
     it "returns the class struct type" do
-      _(obj_builder.object_class_struct).must_equal Regress::TestObjClass
+      _(obj_builder.class_struct_class).must_equal Regress::TestObjClass
     end
 
     it "returns the parent struct type for classes without their own struct" do
       binding_info = get_introspection_data "GObject", "Binding"
       builder = GirFFI::Builders::ObjectBuilder.new binding_info
-      _(builder.object_class_struct).must_equal GObject::ObjectClass
+      _(builder.class_struct_class).must_equal GObject::ObjectClass
     end
 
     it "returns a valid class for disguised type classes" do
       binding_info = get_introspection_data "Regress", "FooBuffer"
       builder = GirFFI::Builders::ObjectBuilder.new binding_info
 
-      _(builder.object_class_struct.name).must_equal "Regress::FooBufferClass"
+      _(builder.class_struct_class.name).must_equal "Regress::FooBufferClass"
     end
   end
 

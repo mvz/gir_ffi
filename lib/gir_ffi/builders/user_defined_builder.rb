@@ -79,9 +79,9 @@ module GirFFI
 
       def class_init_proc
         proc do |type_class_or_ptr, _data|
-          object_class_ptr = type_class_or_ptr.to_ptr
-          setup_properties object_class_ptr
-          setup_vfuncs object_class_ptr
+          class_struct_ptr = type_class_or_ptr.to_ptr
+          setup_properties class_struct_ptr
+          setup_vfuncs class_struct_ptr
         end
       end
 
@@ -108,14 +108,14 @@ module GirFFI
         parent_gtype.class_size + interface_gtypes.sum(&:class_size)
       end
 
-      def setup_properties(object_class_ptr)
-        object_class = GObject::ObjectClass.wrap object_class_ptr
+      def setup_properties(class_struct_ptr)
+        class_struct = GObject::ObjectClass.wrap class_struct_ptr
 
-        object_class.get_property = property_getter
-        object_class.set_property = property_setter
+        class_struct.get_property = property_getter
+        class_struct.set_property = property_setter
 
         property_fields.each_with_index do |property, index|
-          object_class.install_property index + 1, property.param_spec
+          class_struct.install_property index + 1, property.param_spec
         end
       end
 
@@ -131,9 +131,9 @@ module GirFFI
         end
       end
 
-      def setup_vfuncs(object_class_ptr)
+      def setup_vfuncs(class_struct_ptr)
         super_class_struct =
-          superclass.gir_ffi_builder.object_class_struct::Struct.new(object_class_ptr)
+          superclass.gir_ffi_builder.class_struct_class::Struct.new(class_struct_ptr)
 
         info.vfunc_implementations.each do |impl|
           setup_vfunc parent_info, super_class_struct, impl

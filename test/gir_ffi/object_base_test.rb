@@ -21,14 +21,14 @@ describe GirFFI::ObjectBase do
     end
   end
 
-  describe ".object_class" do
+  describe ".class_struct" do
     it "returns an object of the class struct type" do
-      _(Regress::TestObj.object_class).must_be_instance_of Regress::TestObjClass
+      _(Regress::TestObj.class_struct).must_be_instance_of Regress::TestObjClass
     end
 
     it "caches its result" do
-      first = Regress::TestObj.object_class
-      second = Regress::TestObj.object_class
+      first = Regress::TestObj.class_struct
+      second = Regress::TestObj.class_struct
       _(second).must_be :eql?, first
     end
   end

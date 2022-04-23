@@ -18,7 +18,7 @@ module GirFFI
           ObjectBase
         end
 
-        def object_class_struct
+        def class_struct_class
           GObject::TypeClass
         end
 
@@ -35,12 +35,12 @@ module GirFFI
         seek_in_ancestor_infos { |info| info.find_property property_name }
       end
 
-      def object_class_struct
-        @object_class_struct ||=
+      def class_struct_class
+        @class_struct_class ||=
           begin
-            parent_struct = parent_builder.object_class_struct
-            if object_class_struct_info
-              StructBuilder.new(object_class_struct_info,
+            parent_struct = parent_builder.class_struct_class
+            if class_struct_info
+              StructBuilder.new(class_struct_info,
                                 superclass: parent_struct).build_class
             else
               parent_struct
@@ -58,12 +58,6 @@ module GirFFI
         end
       end
 
-      protected
-
-      def object_class_struct_info
-        @object_class_struct_info ||= info.class_struct
-      end
-
       private
 
       def setup_class
@@ -74,6 +68,10 @@ module GirFFI
         setup_vfunc_invokers
         setup_interfaces
         setup_initializer
+      end
+
+      def class_struct_info
+        @class_struct_info ||= info.class_struct
       end
 
       # FIXME: Private method only used in subclass

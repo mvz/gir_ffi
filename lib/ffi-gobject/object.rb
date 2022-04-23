@@ -117,7 +117,7 @@ module GObject
     end
 
     def property_param_spec(property_name)
-      object_class.find_property property_name or
+      class_struct.find_property property_name or
         raise GirFFI::PropertyNotFoundError.new(property_name, self.class)
     end
 
