@@ -8,13 +8,13 @@ describe GirFFI::FFIExt::Pointer do
     it "finds the wrapping class by gtype and wraps the pointer in it" do
       ptr = pointer_class.new
       expect(ptr).to receive(:null?).and_return false
-      object_class = Class.new
+      klass = Class.new
 
       expect(GObject)
         .to receive(:type_from_instance_pointer).with(ptr).and_return 0xdeadbeef
       expect(GirFFI::Builder)
-        .to receive(:build_by_gtype).with(0xdeadbeef).and_return object_class
-      expect(object_class).to receive(:direct_wrap).with(ptr).and_return "good-result"
+        .to receive(:build_by_gtype).with(0xdeadbeef).and_return klass
+      expect(klass).to receive(:direct_wrap).with(ptr).and_return "good-result"
 
       _(ptr.to_object).must_equal "good-result"
     end

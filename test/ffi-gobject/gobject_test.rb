@@ -51,10 +51,10 @@ describe GObject do
   describe "::object_class_from_instance" do
     it "returns a GObject::ObjectClass with the correct GType" do
       obj = GIMarshallingTests::OverridesObject.new
-      object_class = GObject.object_class_from_instance obj
-      gtype = object_class.g_type_class.g_type
+      class_struct = GObject.object_class_from_instance obj
+      gtype = class_struct.g_type_class.g_type
 
-      _(object_class).must_be_instance_of GObject::ObjectClass
+      _(class_struct).must_be_instance_of GObject::ObjectClass
       _(gtype).must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end

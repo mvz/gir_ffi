@@ -109,13 +109,13 @@ module GirFFI
       end
 
       def setup_properties(object_class_ptr)
-        object_class = GObject::ObjectClass.wrap object_class_ptr
+        class_struct = GObject::ObjectClass.wrap object_class_ptr
 
-        object_class.get_property = property_getter
-        object_class.set_property = property_setter
+        class_struct.get_property = property_getter
+        class_struct.set_property = property_setter
 
         property_fields.each_with_index do |property, index|
-          object_class.install_property index + 1, property.param_spec
+          class_struct.install_property index + 1, property.param_spec
         end
       end
 
