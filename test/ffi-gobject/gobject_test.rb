@@ -48,17 +48,6 @@ describe GObject do
     _(GObject.type_name(GObject::TYPE_STRV)).must_equal       "GStrv"
   end
 
-  describe "::object_class_from_instance" do
-    it "returns a GObject::ObjectClass with the correct GType" do
-      obj = GIMarshallingTests::OverridesObject.new
-      class_struct = GObject.object_class_from_instance obj
-      gtype = class_struct.g_type_class.g_type
-
-      _(class_struct).must_be_instance_of GObject::ObjectClass
-      _(gtype).must_equal GIMarshallingTests::OverridesObject.gtype
-    end
-  end
-
   describe "creating ParamSpecs" do
     describe "#param_spec_int" do
       it "creates a GObject::ParamSpecInt" do

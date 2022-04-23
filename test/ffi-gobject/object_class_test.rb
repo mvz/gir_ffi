@@ -8,7 +8,7 @@ describe GObject::ObjectClass do
   describe "#list_properties" do
     it "returns GIMarshallingTests::OverridesObject's properties" do
       obj = GIMarshallingTests::OverridesObject.new
-      class_struct = GObject.object_class_from_instance obj
+      class_struct = obj.class_struct
 
       info = get_introspection_data "GIMarshallingTests", "OverridesObject"
       expected_props = info.properties.map(&:name)
@@ -24,7 +24,7 @@ describe GObject::ObjectClass do
   describe "#gtype" do
     it "returns the correct GType" do
       obj = GIMarshallingTests::OverridesObject.new
-      class_struct = GObject.object_class_from_instance obj
+      class_struct = obj.class_struct
       _(class_struct.gtype).must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end
