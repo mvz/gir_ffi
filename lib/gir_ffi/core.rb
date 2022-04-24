@@ -40,11 +40,6 @@ module GirFFI
         raise ArgumentError, "#{klass} is not a user-defined class"
       end
 
-      if block_given?
-        warn "Using define_type with a block is deprecated." \
-             " Call the relevant functions inside the class definition instead."
-        yield info
-      end
       Builders::UserDefinedBuilder.new(info).build_class
 
       klass.gtype
