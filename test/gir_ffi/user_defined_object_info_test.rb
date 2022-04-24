@@ -47,26 +47,6 @@ describe GirFFI::UserDefinedObjectInfo do
     end
   end
 
-  describe "#initialize" do
-    let(:foo_spec) { Object.new }
-    let(:bar_spec) { Object.new }
-    let(:info) do
-      GirFFI::UserDefinedObjectInfo.new :some_class do |inf|
-        inf.install_property foo_spec
-        inf.install_property bar_spec
-      end
-    end
-
-    before do
-      allow(foo_spec).to receive(:get_name).and_return :foo
-      allow(bar_spec).to receive(:get_name).and_return :bar
-    end
-
-    it "yields the new object to the block passed" do
-      _(info.properties.map(&:get_name)).must_equal [:foo, :bar]
-    end
-  end
-
   describe "#g_name" do
     let(:user_class) { Object.new }
     let(:info) { GirFFI::UserDefinedObjectInfo.new user_class }

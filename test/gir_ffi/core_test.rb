@@ -25,7 +25,7 @@ describe GirFFI::Core do
   end
 
   describe "::define_type" do
-    describe "without a block" do
+    describe "with a class with no extra properties added" do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
         Object.const_set "DerivedA#{Sequence.next}", @klass
@@ -91,6 +91,14 @@ describe GirFFI::Core do
       before do
         Object.const_set "DerivedB#{Sequence.next}", klass
       end
+
+      it "raises a friendly error" do
+        _(proc { GirFFI.define_type klass }).must_raise ArgumentError
+      end
+    end
+
+    describe "with a type that is not user-defined" do
+      let(:klass) { GIMarshallingTests::OverridesObject }
 
       it "raises a friendly error" do
         _(proc { GirFFI.define_type klass }).must_raise ArgumentError

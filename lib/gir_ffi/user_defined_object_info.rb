@@ -13,9 +13,6 @@ module GirFFI
       @klass = klass
       @properties = []
       @vfunc_implementations = []
-
-      # FIXME: Limit access to only install_property and install_vfunc_implementation.
-      yield self if block_given?
     end
 
     def described_class
