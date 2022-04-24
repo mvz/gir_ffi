@@ -33,11 +33,11 @@ Metrics/ClassLength:
 
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:
-  Max: 12
+  Max: 8
 
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 Metrics/MethodLength:
-  Max: 31
+  Max: 15
 
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ModuleLength:

@@ -18,36 +18,29 @@ class Listener
 
   attr_accessor :result, :namespace
 
+  HANDLED_TAGS = %w[
+    constant record class enumeration bitfield interface union constructor
+    field function method member namespace property
+  ].freeze
+
+  SILENT_TAGS = %w[
+    type alias return-value parameters instance-parameter parameter doc array
+    repository include package source-position implements prerequisite
+    attribute docsection doc-version doc-deprecated doc-stability
+    virtual-method callback
+  ].freeze
+
   def tag_start(tag, attrs)
     push_state(tag, attrs)
     return if skipping?
 
     obj_name = attrs["name"]
     case tag
-    when "constant"
-      start_constant(obj_name)
-    when "record", "class", "enumeration", "bitfield", "interface", "union"
-      start_object(tag, obj_name)
-    when "constructor"
-      start_constructor(obj_name)
-    when "field"
-      start_field(obj_name, attrs)
-    when "function", "method"
-      start_function(tag, obj_name)
-    when "member"
-      start_member(obj_name)
-    when "namespace"
-      start_namespace(obj_name)
-    when "property"
-      start_property(obj_name, attrs)
+    when *HANDLED_TAGS
+      send "start_#{tag}", tag, obj_name, attrs
     when "glib:signal"
-      start_signal(obj_name)
-    when "type", "alias", "return-value", "parameters",
-      "instance-parameter", "parameter", "doc", "array",
-      "repository", "include", "package", "source-position",
-      "implements", "prerequisite", "attribute",
-      "docsection", "doc-version", "doc-deprecated", "doc-stability",
-      "virtual-method", "callback"
+      start_signal(tag, obj_name, attrs)
+    when *SILENT_TAGS
       # Not printed
     else
       puts "Skipping #{tag}: #{attrs}"
@@ -95,20 +88,27 @@ class Listener
     @skip_state.last
   end
 
-  def start_constant(obj_name)
+  def start_constant(_tag, obj_name, _attrs)
     result.puts "  it \"has the constant #{obj_name}\" do"
   end
 
-  def start_object(tag, obj_name)
+  def start_object(tag, obj_name, _attrs)
     result.puts "  describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
     @class_stack << [tag, obj_name]
   end
 
-  def start_constructor(obj_name)
+  alias start_bitfield start_object
+  alias start_class start_object
+  alias start_enumeration start_object
+  alias start_interface start_object
+  alias start_record start_object
+  alias start_union start_object
+
+  def start_constructor(_tag, obj_name, _attrs)
     result.puts "    it \"creates an instance using ##{obj_name}\" do"
   end
 
-  def start_field(obj_name, attrs)
+  def start_field(_tag, obj_name, attrs)
     return if current_object_type == "class"
 
     if attrs["private"] == "1"
@@ -120,20 +120,22 @@ class Listener
     end
   end
 
-  def start_function(tag, obj_name)
+  def start_function(tag, obj_name, _attrs)
     spaces = @class_stack.any? ? "  " : ""
     result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
   end
 
-  def start_member(obj_name)
+  alias start_method start_function
+
+  def start_member(_tag, obj_name, _attrs)
     result.puts "    it \"has the member :#{obj_name}\" do"
   end
 
-  def start_namespace(obj_name)
+  def start_namespace(_tag, obj_name, _attrs)
     result.puts "describe #{obj_name} do"
   end
 
-  def start_property(obj_name, attrs)
+  def start_property(_tag, obj_name, attrs)
     accessor_name = obj_name.tr("-", "_")
 
     result.puts "    describe \"its '#{obj_name}' property\" do"
@@ -150,7 +152,7 @@ class Listener
     result.puts "      end"
   end
 
-  def start_signal(obj_name)
+  def start_signal(_tag, obj_name, _attrs)
     result.puts "    it \"handles the '#{obj_name}' signal\" do"
   end
 
