@@ -63,8 +63,8 @@ module GirFFI
       end
 
       def return_value_builder
-        @return_value_builder = @return_value_builder_class.new(variable_generator,
-                                                                return_value_info)
+        @return_value_builder ||= @return_value_builder_class.new(variable_generator,
+                                                                  return_value_info)
       end
 
       def receiver_builder
