@@ -18,62 +18,29 @@ class Listener
 
   attr_accessor :result, :namespace
 
+  HANDLED_TAGS = %w[
+    constant record class enumeration bitfield interface union constructor
+    field function method member namespace property
+  ].freeze
+
+  SILENT_TAGS = %w[
+    type alias return-value parameters instance-parameter parameter doc array
+    repository include package source-position implements prerequisite
+    attribute docsection doc-version doc-deprecated doc-stability
+    virtual-method callback
+  ].freeze
+
   def tag_start(tag, attrs)
-    @stack.push [tag, attrs]
-    if @skip_state.last || skippable?(attrs)
-      @skip_state.push true
-      return
-    else
-      @skip_state.push false
-    end
+    push_state(tag, attrs)
+    return if skipping?
 
     obj_name = attrs["name"]
     case tag
-    when "constant"
-      result.puts "  it \"has the constant #{obj_name}\" do"
-    when "record", "class", "enumeration", "bitfield", "interface", "union"
-      result.puts "  describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
-      @class_stack << [tag, obj_name]
-    when "constructor"
-      result.puts "    it \"creates an instance using ##{obj_name}\" do"
-    when "field"
-      if current_object_type != "class"
-        if attrs["private"] == "1"
-          result.puts "    it \"has a private field #{obj_name}\" do"
-        elsif attrs["writable"] == "1"
-          result.puts "    it \"has a writable field #{obj_name}\" do"
-        else
-          result.puts "    it \"has a read-only field #{obj_name}\" do"
-        end
-      end
-    when "function", "method"
-      spaces = @class_stack.any? ? "  " : ""
-      result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
-    when "member"
-      result.puts "    it \"has the member :#{obj_name}\" do"
-    when "namespace"
-      result.puts "describe #{obj_name} do"
-    when "property"
-      accessor_name = obj_name.tr("-", "_")
-      result.puts "    describe \"its '#{obj_name}' property\" do"
-      result.puts "      it \"can be retrieved with #get_property\" do"
-      result.puts "      end"
-      result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
-      result.puts "      end"
-      if attrs["writable"] == "1"
-        result.puts "      it \"can be set with #set_property\" do"
-        result.puts "      end"
-        result.puts "      it \"can be set with ##{accessor_name}=\" do"
-        result.puts "      end"
-      end
+    when *HANDLED_TAGS
+      send "start_#{tag}", tag, obj_name, attrs
     when "glib:signal"
-      result.puts "    it \"handles the '#{obj_name}' signal\" do"
-    when "type", "alias", "return-value", "parameters",
-      "instance-parameter", "parameter", "doc", "array",
-      "repository", "include", "package", "source-position",
-      "implements", "prerequisite", "attribute",
-      "docsection", "doc-version", "doc-deprecated", "doc-stability",
-      "virtual-method", "callback"
+      start_signal(tag, obj_name, attrs)
+    when *SILENT_TAGS
       # Not printed
     else
       puts "Skipping #{tag}: #{attrs}"
@@ -81,34 +48,157 @@ class Listener
   end
 
   def tag_end(tag)
-    orig_tag, = *@stack.pop
-    skipping = @skip_state.pop
+    orig_tag, skipping = pop_state
     raise "Expected #{orig_tag}, got #{tag}" if orig_tag != tag
     return if skipping
 
     case tag
-    when "constant"
-      result.puts "  end"
-    when "record", "class", "enumeration", "bitfield",
-      "interface", "union"
-      @class_stack.pop
-      result.puts "  end" unless @class_stack.any?
-    when "function", "method"
-      if @class_stack.any?
-        result.puts "    end"
-      else
-        result.puts "  end"
-      end
-    when "constructor", "member", "property", "glib:signal"
-      result.puts "    end"
-    when "field"
-      result.puts "    end" if current_object_type != "class"
-    when "namespace"
-      result.puts "end"
+    when *HANDLED_TAGS
+      send "end_#{tag}"
+    when "glib:signal"
+      end_signal
     end
   end
 
   private
+
+  def push_state(tag, attrs)
+    @stack.push [tag, attrs]
+    if @skip_state.last || skippable?(attrs)
+      @skip_state.push true
+    else
+      @skip_state.push false
+    end
+  end
+
+  def pop_state
+    orig_tag, = *@stack.pop
+    skipping = @skip_state.pop
+
+    return orig_tag, skipping
+  end
+
+  def skipping?
+    @skip_state.last
+  end
+
+  def start_constant(_tag, obj_name, _attrs)
+    emit_indented 2, "it \"has the constant #{obj_name}\" do"
+  end
+
+  def start_object(tag, obj_name, _attrs)
+    emit_indented 2, "describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
+    @class_stack << [tag, obj_name]
+  end
+
+  alias start_bitfield start_object
+  alias start_class start_object
+  alias start_enumeration start_object
+  alias start_interface start_object
+  alias start_record start_object
+  alias start_union start_object
+
+  def start_constructor(_tag, obj_name, _attrs)
+    emit_indented 4, "it \"creates an instance using ##{obj_name}\" do"
+  end
+
+  def start_field(_tag, obj_name, attrs)
+    return if current_object_type == "class"
+
+    if attrs["private"] == "1"
+      emit_indented 4, "it \"has a private field #{obj_name}\" do"
+    elsif attrs["writable"] == "1"
+      emit_indented 4, "it \"has a writable field #{obj_name}\" do"
+    else
+      emit_indented 4, "it \"has a read-only field #{obj_name}\" do"
+    end
+  end
+
+  def start_function(tag, obj_name, _attrs)
+    spaces = @class_stack.any? ? "  " : ""
+    emit_indented 2, "#{spaces}it \"has a working #{tag} ##{obj_name}\" do"
+  end
+
+  alias start_method start_function
+
+  def start_member(_tag, obj_name, _attrs)
+    emit_indented 4, "it \"has the member :#{obj_name}\" do"
+  end
+
+  def start_namespace(_tag, obj_name, _attrs)
+    emit_indented 0, "describe #{obj_name} do"
+  end
+
+  def start_property(_tag, obj_name, attrs)
+    accessor_name = obj_name.tr("-", "_")
+
+    emit_indented 4, "describe \"its '#{obj_name}' property\" do"
+
+    emit_indented 6, <<~RUBY
+      it "can be retrieved with #get_property" do
+      end
+      it "can be retrieved with ##{accessor_name}" do
+      end
+    RUBY
+
+    return if attrs["writable"] != "1"
+
+    emit_indented 6, <<~RUBY
+      it "can be set with #set_property" do
+      end
+      it "can be set with ##{accessor_name}=" do
+      end
+    RUBY
+  end
+
+  def start_signal(_tag, obj_name, _attrs)
+    emit_indented 4, "it \"handles the '#{obj_name}' signal\" do"
+  end
+
+  def end_constant
+    emit_indented 2, "end"
+  end
+
+  def end_object
+    @class_stack.pop
+    emit_indented 2, "end" unless @class_stack.any?
+  end
+
+  alias end_record end_object
+  alias end_class end_object
+  alias end_enumeration end_object
+  alias end_bitfield end_object
+  alias end_interface end_object
+  alias end_union end_object
+
+  def end_function
+    if @class_stack.any?
+      emit_indented 4, "end"
+    else
+      emit_indented 2, "end"
+    end
+  end
+
+  alias end_constructor end_function
+  alias end_method end_function
+  alias end_member end_function
+  alias end_property end_function
+  alias end_signal end_function
+
+  def end_field
+    emit_indented 4, "end" if current_object_type != "class"
+  end
+
+  def end_namespace
+    emit_indented 0, "end"
+  end
+
+  def emit_indented(indentation, string)
+    prefix = " " * indentation
+    string.split("\n").each do |line|
+      result.puts "#{prefix}#{line}"
+    end
+  end
 
   def skippable?(attrs)
     return true if attrs["disguised"] == "1"
