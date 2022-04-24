@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module GirFFI
-  # Methods for setting up instance methods
+  # Methods for setting up instance methods.
+  #
+  # Depends on .gir_ffi_builder being defined in the extending class.
   module InstanceMethodSetup
     def setup_instance_method(name)
       gir_ffi_builder.setup_instance_method name
