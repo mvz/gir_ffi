@@ -42,26 +42,10 @@ describe GObject::Object do
     end
   end
 
-  describe "#get_property_extended" do
-    it "raises an error for a property that does not exist" do
-      instance = GObject::Object.new
-      _(proc { instance.get_property_extended "foo-bar" })
-        .must_raise GirFFI::PropertyNotFoundError
-    end
-  end
-
   describe "#set_property" do
     it "raises an error for a property that does not exist" do
       instance = GObject::Object.new
       _(proc { instance.set_property "foo-bar", 123 })
-        .must_raise GirFFI::PropertyNotFoundError
-    end
-  end
-
-  describe "#set_property_extended" do
-    it "raises an error for a property that does not exist" do
-      instance = GObject::Object.new
-      _(proc { instance.set_property_extended "foo-bar", 123 })
         .must_raise GirFFI::PropertyNotFoundError
     end
   end
