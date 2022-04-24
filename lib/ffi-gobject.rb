@@ -70,7 +70,8 @@ module GObject
   load_class :ClosureMarshal
   load_class :ParamFlags
 
-  # NOTE: This Lib module is set up in `gir_ffi-base/gobject/lib.rb`.
+  # Attach some needed functions to the GObject Lib, which was set up in
+  # `gir_ffi-base/gobject/lib.rb`.
   Lib.class_eval do
     attach_function :g_object_ref_sink, [:pointer], :pointer
     attach_function :g_object_ref, [:pointer], :pointer
