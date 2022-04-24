@@ -44,11 +44,7 @@ module GObject
     argument_gvalues = sig_info.arguments_to_gvalues object, args
     return_gvalue = sig_info.gvalue_for_return_value
 
-    result = signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
-    # NOTE: Depending on the version of GObjectIntrospection, the result will
-    # be stored in result or return_gvalue. This was changed between versions
-    # 1.44 and 1.46.
-    result || return_gvalue.get_value
+    signal_emitv argument_gvalues, signal_id, detail_quark, return_gvalue
   end
 
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
