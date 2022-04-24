@@ -53,16 +53,10 @@ class Listener
     return if skipping
 
     case tag
-    when "constant"
-      end_constant
-    when "record", "class", "enumeration", "bitfield", "interface", "union"
-      end_object
-    when "function", "method", "constructor", "member", "property", "glib:signal"
-      end_functionish
-    when "field"
-      end_field
-    when "namespace"
-      end_namespace
+    when *HANDLED_TAGS
+      send "end_#{tag}"
+    when "glib:signal"
+      end_signal
     end
   end
 
@@ -170,13 +164,26 @@ class Listener
     emit_indented 2, "end" unless @class_stack.any?
   end
 
-  def end_functionish
+  alias end_record end_object
+  alias end_class end_object
+  alias end_enumeration end_object
+  alias end_bitfield end_object
+  alias end_interface end_object
+  alias end_union end_object
+
+  def end_function
     if @class_stack.any?
       emit_indented 4, "end"
     else
       emit_indented 2, "end"
     end
   end
+
+  alias end_constructor end_function
+  alias end_method end_function
+  alias end_member end_function
+  alias end_property end_function
+  alias end_signal end_function
 
   def end_field
     emit_indented 4, "end" if current_object_type != "class"
