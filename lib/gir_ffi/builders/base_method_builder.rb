@@ -21,12 +21,28 @@ module GirFFI
         @receiver_info = receiver_info
       end
 
-      def variable_generator
-        @variable_generator ||= VariableNameGenerator.new
-      end
-
       def method_definition
         template.method_definition
+      end
+
+      # Methods used by MethodTemplate
+
+      def invocation
+        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}".strip
+      end
+
+      def method_arguments
+        argument_builder_collection.method_argument_names
+      end
+
+      def preparation
+        []
+      end
+
+      private
+
+      def variable_generator
+        @variable_generator ||= VariableNameGenerator.new
       end
 
       def template
@@ -47,8 +63,8 @@ module GirFFI
       end
 
       def return_value_builder
-        @return_value_builder = @return_value_builder_class.new(variable_generator,
-                                                                return_value_info)
+        @return_value_builder ||= @return_value_builder_class.new(variable_generator,
+                                                                  return_value_info)
       end
 
       def receiver_builder
@@ -70,22 +86,6 @@ module GirFFI
             NullArgumentBuilder.new
           end
       end
-
-      # Methods used by MethodTemplate
-
-      def invocation
-        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}".strip
-      end
-
-      def method_arguments
-        argument_builder_collection.method_argument_names
-      end
-
-      def preparation
-        []
-      end
-
-      private
 
       def lib_name
         "#{@info.safe_namespace}::Lib"
