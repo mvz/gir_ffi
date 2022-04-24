@@ -89,11 +89,11 @@ class Listener
   end
 
   def start_constant(_tag, obj_name, _attrs)
-    result.puts "  it \"has the constant #{obj_name}\" do"
+    emit_indented 2, "it \"has the constant #{obj_name}\" do"
   end
 
   def start_object(tag, obj_name, _attrs)
-    result.puts "  describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
+    emit_indented 2, "describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
     @class_stack << [tag, obj_name]
   end
 
@@ -105,80 +105,92 @@ class Listener
   alias start_union start_object
 
   def start_constructor(_tag, obj_name, _attrs)
-    result.puts "    it \"creates an instance using ##{obj_name}\" do"
+    emit_indented 4, "it \"creates an instance using ##{obj_name}\" do"
   end
 
   def start_field(_tag, obj_name, attrs)
     return if current_object_type == "class"
 
     if attrs["private"] == "1"
-      result.puts "    it \"has a private field #{obj_name}\" do"
+      emit_indented 4, "it \"has a private field #{obj_name}\" do"
     elsif attrs["writable"] == "1"
-      result.puts "    it \"has a writable field #{obj_name}\" do"
+      emit_indented 4, "it \"has a writable field #{obj_name}\" do"
     else
-      result.puts "    it \"has a read-only field #{obj_name}\" do"
+      emit_indented 4, "it \"has a read-only field #{obj_name}\" do"
     end
   end
 
   def start_function(tag, obj_name, _attrs)
     spaces = @class_stack.any? ? "  " : ""
-    result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
+    emit_indented 2, "#{spaces}it \"has a working #{tag} ##{obj_name}\" do"
   end
 
   alias start_method start_function
 
   def start_member(_tag, obj_name, _attrs)
-    result.puts "    it \"has the member :#{obj_name}\" do"
+    emit_indented 4, "it \"has the member :#{obj_name}\" do"
   end
 
   def start_namespace(_tag, obj_name, _attrs)
-    result.puts "describe #{obj_name} do"
+    emit_indented 0, "describe #{obj_name} do"
   end
 
   def start_property(_tag, obj_name, attrs)
     accessor_name = obj_name.tr("-", "_")
 
-    result.puts "    describe \"its '#{obj_name}' property\" do"
-    result.puts "      it \"can be retrieved with #get_property\" do"
-    result.puts "      end"
-    result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
-    result.puts "      end"
+    emit_indented 4, "describe \"its '#{obj_name}' property\" do"
+
+    emit_indented 6, <<~RUBY
+      it "can be retrieved with #get_property" do
+      end
+      it "can be retrieved with ##{accessor_name}" do
+      end
+    RUBY
 
     return if attrs["writable"] != "1"
 
-    result.puts "      it \"can be set with #set_property\" do"
-    result.puts "      end"
-    result.puts "      it \"can be set with ##{accessor_name}=\" do"
-    result.puts "      end"
+    emit_indented 6, <<~RUBY
+      it "can be set with #set_property" do
+      end
+      it "can be set with ##{accessor_name}=" do
+      end
+    RUBY
   end
 
   def start_signal(_tag, obj_name, _attrs)
-    result.puts "    it \"handles the '#{obj_name}' signal\" do"
+    emit_indented 4, "it \"handles the '#{obj_name}' signal\" do"
   end
 
   def end_constant
-    result.puts "  end"
+    emit_indented 2, "end"
   end
 
   def end_object
     @class_stack.pop
-    result.puts "  end" unless @class_stack.any?
+    emit_indented 2, "end" unless @class_stack.any?
   end
 
   def end_functionish
     if @class_stack.any?
-      result.puts "    end"
+      emit_indented 4, "end"
     else
-      result.puts "  end"
+      emit_indented 2, "end"
     end
   end
 
   def end_field
-    result.puts "    end" if current_object_type != "class"
+    emit_indented 4, "end" if current_object_type != "class"
   end
 
   def end_namespace
-    result.puts "end"
+    emit_indented 0, "end"
+  end
+
+  def emit_indented(indentation, string)
+    prefix = " " * indentation
+    string.split("\n").each do |line|
+      result.puts "#{prefix}#{line}"
+    end
   end
 
   def skippable?(attrs)

@@ -18,10 +18,6 @@ Lint/MissingSuper:
     - 'lib/gir_ffi/struct_like_base.rb'
     - 'test/minitest/stats_plugin.rb'
 
-# Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
-Metrics/AbcSize:
-  Max: 21
-
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 # IgnoredMethods: refine
 Metrics/BlockLength:
