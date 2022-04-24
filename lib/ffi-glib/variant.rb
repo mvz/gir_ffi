@@ -14,13 +14,11 @@ module GLib
     alias get_string_without_override get_string
     alias get_string get_string_with_override
 
-    # Initializing method used in constructors. For Variant, this needs to sink
-    # the variant's floating reference.
+    # Initializing method used in constructors. For Variant the constructing
+    # functions all return floating references, so this is need to take full
+    # ownership.
     #
-    # NOTE: This is very hard to test since it is not possible to get the
-    # variant's ref count directely. However, there is an error when running
-    # the tests on 32-bit systems.
-    #
+    # Also see the documentation for g_variant_ref_sink.
     def store_pointer(ptr)
       Lib.g_variant_ref_sink ptr
       super
