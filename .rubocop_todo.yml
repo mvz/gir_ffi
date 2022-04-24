@@ -20,7 +20,7 @@ Lint/MissingSuper:
 
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 60
+  Max: 26
 
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 # IgnoredMethods: refine
@@ -33,11 +33,11 @@ Metrics/ClassLength:
 
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:
-  Max: 19
+  Max: 13
 
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
 Metrics/MethodLength:
-  Max: 57
+  Max: 36
 
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ModuleLength:
@@ -45,7 +45,7 @@ Metrics/ModuleLength:
 
 # Configuration parameters: IgnoredMethods.
 Metrics/PerceivedComplexity:
-  Max: 14
+  Max: 9
 
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional

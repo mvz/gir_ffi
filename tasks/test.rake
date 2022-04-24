@@ -30,44 +30,23 @@ class Listener
     obj_name = attrs["name"]
     case tag
     when "constant"
-      result.puts "  it \"has the constant #{obj_name}\" do"
+      start_constant(obj_name)
     when "record", "class", "enumeration", "bitfield", "interface", "union"
-      result.puts "  describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
-      @class_stack << [tag, obj_name]
+      start_object(tag, obj_name)
     when "constructor"
-      result.puts "    it \"creates an instance using ##{obj_name}\" do"
+      start_constructor(obj_name)
     when "field"
-      if current_object_type != "class"
-        if attrs["private"] == "1"
-          result.puts "    it \"has a private field #{obj_name}\" do"
-        elsif attrs["writable"] == "1"
-          result.puts "    it \"has a writable field #{obj_name}\" do"
-        else
-          result.puts "    it \"has a read-only field #{obj_name}\" do"
-        end
-      end
+      start_field(obj_name, attrs)
     when "function", "method"
-      spaces = @class_stack.any? ? "  " : ""
-      result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
+      start_function(tag, obj_name)
     when "member"
-      result.puts "    it \"has the member :#{obj_name}\" do"
+      start_member(obj_name)
     when "namespace"
-      result.puts "describe #{obj_name} do"
+      start_namespace(obj_name)
     when "property"
-      accessor_name = obj_name.tr("-", "_")
-      result.puts "    describe \"its '#{obj_name}' property\" do"
-      result.puts "      it \"can be retrieved with #get_property\" do"
-      result.puts "      end"
-      result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
-      result.puts "      end"
-      if attrs["writable"] == "1"
-        result.puts "      it \"can be set with #set_property\" do"
-        result.puts "      end"
-        result.puts "      it \"can be set with ##{accessor_name}=\" do"
-        result.puts "      end"
-      end
+      start_property(obj_name, attrs)
     when "glib:signal"
-      result.puts "    it \"handles the '#{obj_name}' signal\" do"
+      start_signal(obj_name)
     when "type", "alias", "return-value", "parameters",
       "instance-parameter", "parameter", "doc", "array",
       "repository", "include", "package", "source-position",
@@ -109,6 +88,65 @@ class Listener
   end
 
   private
+
+  def start_constant(obj_name)
+    result.puts "  it \"has the constant #{obj_name}\" do"
+  end
+
+  def start_object(tag, obj_name)
+    result.puts "  describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
+    @class_stack << [tag, obj_name]
+  end
+
+  def start_constructor(obj_name)
+    result.puts "    it \"creates an instance using ##{obj_name}\" do"
+  end
+
+  def start_field(obj_name, attrs)
+    return if current_object_type == "class"
+
+    if attrs["private"] == "1"
+      result.puts "    it \"has a private field #{obj_name}\" do"
+    elsif attrs["writable"] == "1"
+      result.puts "    it \"has a writable field #{obj_name}\" do"
+    else
+      result.puts "    it \"has a read-only field #{obj_name}\" do"
+    end
+  end
+
+  def start_function(tag, obj_name)
+    spaces = @class_stack.any? ? "  " : ""
+    result.puts "  #{spaces}it \"has a working #{tag} ##{obj_name}\" do"
+  end
+
+  def start_member(obj_name)
+    result.puts "    it \"has the member :#{obj_name}\" do"
+  end
+
+  def start_namespace(obj_name)
+    result.puts "describe #{obj_name} do"
+  end
+
+  def start_property(obj_name, attrs)
+    accessor_name = obj_name.tr("-", "_")
+
+    result.puts "    describe \"its '#{obj_name}' property\" do"
+    result.puts "      it \"can be retrieved with #get_property\" do"
+    result.puts "      end"
+    result.puts "      it \"can be retrieved with ##{accessor_name}\" do"
+    result.puts "      end"
+
+    return if attrs["writable"] != "1"
+
+    result.puts "      it \"can be set with #set_property\" do"
+    result.puts "      end"
+    result.puts "      it \"can be set with ##{accessor_name}=\" do"
+    result.puts "      end"
+  end
+
+  def start_signal(obj_name)
+    result.puts "    it \"handles the '#{obj_name}' signal\" do"
+  end
 
   def skippable?(attrs)
     return true if attrs["disguised"] == "1"
