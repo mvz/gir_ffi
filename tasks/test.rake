@@ -19,13 +19,8 @@ class Listener
   attr_accessor :result, :namespace
 
   def tag_start(tag, attrs)
-    @stack.push [tag, attrs]
-    if @skip_state.last || skippable?(attrs)
-      @skip_state.push true
-      return
-    else
-      @skip_state.push false
-    end
+    push_state(tag, attrs)
+    return if skipping?
 
     obj_name = attrs["name"]
     case tag
@@ -60,8 +55,7 @@ class Listener
   end
 
   def tag_end(tag)
-    orig_tag, = *@stack.pop
-    skipping = @skip_state.pop
+    orig_tag, skipping = pop_state
     raise "Expected #{orig_tag}, got #{tag}" if orig_tag != tag
     return if skipping
 
@@ -80,6 +74,26 @@ class Listener
   end
 
   private
+
+  def push_state(tag, attrs)
+    @stack.push [tag, attrs]
+    if @skip_state.last || skippable?(attrs)
+      @skip_state.push true
+    else
+      @skip_state.push false
+    end
+  end
+
+  def pop_state
+    orig_tag, = *@stack.pop
+    skipping = @skip_state.pop
+
+    return orig_tag, skipping
+  end
+
+  def skipping?
+    @skip_state.last
+  end
 
   def start_constant(obj_name)
     result.puts "  it \"has the constant #{obj_name}\" do"
