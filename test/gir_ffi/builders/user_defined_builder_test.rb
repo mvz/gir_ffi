@@ -11,21 +11,21 @@ describe GirFFI::Builders::UserDefinedBuilder do
     Object.const_set("DerivedClass#{Sequence.next}", Class.new(base_class))
   end
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
-  let(:info) { GirFFI::UserDefinedObjectInfo.new derived_class }
+  let(:info) { derived_class.gir_info }
+
+  before do
+    derived_class.prepare_user_defined_class
+  end
 
   describe "#build_class" do
-    before do
-      builder.build_class
-    end
-
     describe "with type info containing one integer property" do
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_int("foo-bar", "foo bar",
-                                                     "The Foo Bar Property",
-                                                     10, 20, 15,
-                                                     readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_int("foo-bar", "foo bar",
+                                                   "The Foo Bar Property",
+                                                   10, 20, 15,
+                                                   readable: true, writable: true)
+        builder.build_class
       end
 
       it "registers a type that is bigger than the parent" do
@@ -70,21 +70,23 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing properties of several different types" do
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_string("string-prop", "string property",
-                                                        "The String Property",
-                                                        "this is the default value",
-                                                        readable: true, writable: true)
-          it.install_property GObject.param_spec_int("int-prop", "integer property",
-                                                     "The Integer Property",
-                                                     10, 20, 15,
-                                                     readable: true, writable: true)
-          it.install_property GObject.param_spec_long("long-prop", "long property",
-                                                      "The Long Property",
-                                                      10.0, 50.0, 42.0,
+      before do
+        derived_class
+          .install_property GObject.param_spec_string("string-prop", "string property",
+                                                      "The String Property",
+                                                      "this is the default value",
                                                       readable: true, writable: true)
-        end
+        derived_class
+          .install_property GObject.param_spec_int("int-prop", "integer property",
+                                                   "The Integer Property",
+                                                   10, 20, 15,
+                                                   readable: true, writable: true)
+        derived_class
+          .install_property GObject.param_spec_long("long-prop", "long property",
+                                                    "The Long Property",
+                                                    10.0, 50.0, 42.0,
+                                                    readable: true, writable: true)
+        builder.build_class
       end
 
       it "registers a type of the proper size" do
@@ -119,13 +121,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a boxed property" do
       let(:boxed_gtype) { GIMarshallingTests::BoxedStruct.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_boxed("boxed-prop", "boxed property",
-                                                       "The Boxed Property",
-                                                       boxed_gtype,
-                                                       readable: true, writable: true)
-        end
+
+      before do
+        derived_class
+          .install_property GObject.param_spec_boxed("boxed-prop", "boxed property",
+                                                     "The Boxed Property",
+                                                     boxed_gtype,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "registers a type of the proper size" do
@@ -150,13 +153,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with an object property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_object("object-prop", "object property",
-                                                        "The Object Property",
-                                                        object_gtype,
-                                                        readable: true, writable: true)
-        end
+
+      before do
+        derived_class
+          .install_property GObject.param_spec_object("object-prop", "object property",
+                                                      "The Object Property",
+                                                      object_gtype,
+                                                      readable: true, writable: true)
+        builder.build_class
       end
 
       it "registers a type of the proper size" do
@@ -204,13 +208,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a boolean property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_boolean("the-prop", "the property",
-                                                         "The Property",
-                                                         true,
-                                                         readable: true, writable: true)
-        end
+
+      before do
+        derived_class
+          .install_property GObject.param_spec_boolean("the-prop", "the property",
+                                                       "The Property",
+                                                       true,
+                                                       readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -222,13 +227,14 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a char property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_char("the-prop", "the property",
-                                                      "The Property",
-                                                      -20, 100, 15,
-                                                      readable: true, writable: true)
-        end
+
+      before do
+        derived_class
+          .install_property GObject.param_spec_char("the-prop", "the property",
+                                                    "The Property",
+                                                    -20, 100, 15,
+                                                    readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -240,13 +246,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a uchar property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_uchar("the-prop", "the property",
-                                                       "The Property",
-                                                       10, 100, 15,
-                                                       readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_uchar("the-prop", "the property",
+                                                     "The Property",
+                                                     10, 100, 15,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -258,13 +264,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a uint property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_uint("the-prop", "the property",
-                                                      "The Property",
-                                                      10, 100, 15,
-                                                      readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_uint("the-prop", "the property",
+                                                    "The Property",
+                                                    10, 100, 15,
+                                                    readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -276,13 +282,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a ulong property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_ulong("the-prop", "the property",
-                                                       "The Property",
-                                                       10, 100, 15,
-                                                       readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_ulong("the-prop", "the property",
+                                                     "The Property",
+                                                     10, 100, 15,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -294,13 +300,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a int64 property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_int64("the-prop", "the property",
-                                                       "The Property",
-                                                       10, 100, 15,
-                                                       readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_int64("the-prop", "the property",
+                                                     "The Property",
+                                                     10, 100, 15,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -312,13 +318,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a uint64 property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_uint64("the-prop", "the property",
-                                                        "The Property",
-                                                        10, 100, 15,
-                                                        readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_uint64("the-prop", "the property",
+                                                      "The Property",
+                                                      10, 100, 15,
+                                                      readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -330,13 +336,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a float property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_float("the-prop", "the property",
-                                                       "The Property",
-                                                       10.0, 100.0, 15.0,
-                                                       readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_float("the-prop", "the property",
+                                                     "The Property",
+                                                     10.0, 100.0, 15.0,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -348,13 +354,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a double property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_double("the-prop", "the property",
-                                                        "The Property",
-                                                        10.0, 100.0, 15.0,
-                                                        readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_double("the-prop", "the property",
+                                                      "The Property",
+                                                      10.0, 100.0, 15.0,
+                                                      readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -366,14 +372,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with an enum property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          prop = GObject.param_spec_enum("the-prop", "the property",
-                                         "The Property",
-                                         GIMarshallingTests::GEnum.gtype, 0,
-                                         readable: true, writable: true)
-          it.install_property prop
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_enum("the-prop", "the property",
+                                                    "The Property",
+                                                    GIMarshallingTests::GEnum.gtype, 0,
+                                                    readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -385,14 +390,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with a flags property" do
       let(:object_gtype) { GIMarshallingTests::Object.gtype }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          prop = GObject.param_spec_flags("the-prop", "the property",
-                                          "The Property",
-                                          GIMarshallingTests::Flags.gtype, 0,
-                                          readable: true, writable: true)
-          it.install_property prop
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_flags("the-prop", "the property",
+                                                     "The Property",
+                                                     GIMarshallingTests::Flags.gtype, 0,
+                                                     readable: true, writable: true)
+        builder.build_class
       end
 
       it "creates accessor functions for the property" do
@@ -410,13 +414,13 @@ describe GirFFI::Builders::UserDefinedBuilder do
       let(:derived_class) do
         Object.const_set("DerivedClass#{Sequence.next}", Class.new(parent_class))
       end
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_property GObject.param_spec_int("int-prop", "integer property",
-                                                     "Integer Property",
-                                                     10, 20, 15,
-                                                     readable: true, writable: true)
-        end
+      before do
+        derived_class
+          .install_property GObject.param_spec_int("int-prop", "integer property",
+                                                   "Integer Property",
+                                                   10, 20, 15,
+                                                   readable: true, writable: true)
+        builder.build_class
       end
 
       it "registers a type that is bigger than the parent" do
@@ -431,10 +435,9 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing an overridden g_name" do
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.g_name = "OtherName#{Sequence.next}"
-        end
+      before do
+        info.g_name = "OtherName#{Sequence.next}"
+        builder.build_class
       end
 
       it "registers a type under the overridden name" do
@@ -445,12 +448,11 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing a vfunc" do
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_vfunc_implementation :method_int8_in, proc { |instance, in_|
-            instance.int = in_
-          }
-        end
+      before do
+        derived_class
+          .install_vfunc_implementation :method_int8_in,
+                                        proc { |instance, in_| instance.int = in_ }
+        builder.build_class
       end
 
       it "allows the vfunc to be called through its invoker" do
@@ -462,18 +464,16 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "when using a default vfunc implementation" do
       let(:base_class) { Regress::TestObj }
-      let(:info) do
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_vfunc_implementation :matrix
-        end
-      end
 
       before do
+        derived_class.install_vfunc_implementation :matrix
+
         derived_class.class_eval do
           def matrix(_arg)
             44
           end
         end
+        builder.build_class
       end
 
       it "allows the vfunc to be called through its invoker" do
@@ -483,12 +483,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     describe "with type info containing a vfunc from an included Interface" do
-      let(:info) do
+      before do
         derived_class.class_eval { include GIMarshallingTests::Interface }
-        GirFFI::UserDefinedObjectInfo.new derived_class do |it|
-          it.install_vfunc_implementation :test_int8_in,
-                                          proc { |instance, in_| instance.int = in_ }
-        end
+        derived_class
+          .install_vfunc_implementation :test_int8_in,
+                                        proc { |instance, in_| instance.int = in_ }
+        builder.build_class
       end
 
       it "marks the type as conforming to the included Interface" do
@@ -504,6 +504,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     it "keeps the gtype for an already registered class" do
+      builder.build_class
       gtype = derived_class.gtype
       other_builder = GirFFI::Builders::UserDefinedBuilder.new info
       other_class = other_builder.build_class
@@ -511,10 +512,12 @@ describe GirFFI::Builders::UserDefinedBuilder do
     end
 
     it "creates a class with a new GType" do
+      builder.build_class
       _(derived_class.gtype).wont_equal GIMarshallingTests::Object.gtype
     end
 
     it "makes the registered class return objects with the correct GType" do
+      builder.build_class
       obj = derived_class.new
       _(GObject.type_from_instance(obj)).must_equal derived_class.gtype
     end
