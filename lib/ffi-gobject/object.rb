@@ -123,11 +123,6 @@ module GObject
 
     # Overrides for GObject, GObject's generic base class.
     module Overrides
-      # @deprecated
-      def get_property_extended(property_name)
-        get_property(property_name)
-      end
-
       def get_property(property_name)
         gvalue = gvalue_for_property property_name
         super property_name, gvalue
@@ -137,11 +132,6 @@ module GObject
         value = property_value_post_conversion(value, type_info) if type_info
 
         value
-      end
-
-      # @deprecated
-      def set_property_extended(property_name, value)
-        set_property property_name, value
       end
 
       def set_property(property_name, value)
