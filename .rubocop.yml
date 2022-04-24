@@ -48,10 +48,11 @@ Lint/AmbiguousOperatorPrecedence:
 Lint/AssignmentInCondition:
   AllowSafeAssignment: true
 
-# Test describe blocks and gem specification blocks can be any size
+# Test describe blocks, rake task namespaces, and gem specification blocks can be any size
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+    - 'tasks/*.rake'
     - '*.gemspec'
 
 # Allow semantic variation in and/or external determination of symbols
