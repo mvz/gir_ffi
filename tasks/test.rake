@@ -67,23 +67,15 @@ class Listener
 
     case tag
     when "constant"
-      result.puts "  end"
-    when "record", "class", "enumeration", "bitfield",
-      "interface", "union"
-      @class_stack.pop
-      result.puts "  end" unless @class_stack.any?
-    when "function", "method"
-      if @class_stack.any?
-        result.puts "    end"
-      else
-        result.puts "  end"
-      end
-    when "constructor", "member", "property", "glib:signal"
-      result.puts "    end"
+      end_constant
+    when "record", "class", "enumeration", "bitfield", "interface", "union"
+      end_object
+    when "function", "method", "constructor", "member", "property", "glib:signal"
+      end_functionish
     when "field"
-      result.puts "    end" if current_object_type != "class"
+      end_field
     when "namespace"
-      result.puts "end"
+      end_namespace
     end
   end
 
@@ -146,6 +138,31 @@ class Listener
 
   def start_signal(obj_name)
     result.puts "    it \"handles the '#{obj_name}' signal\" do"
+  end
+
+  def end_constant
+    result.puts "  end"
+  end
+
+  def end_object
+    @class_stack.pop
+    result.puts "  end" unless @class_stack.any?
+  end
+
+  def end_functionish
+    if @class_stack.any?
+      result.puts "    end"
+    else
+      result.puts "  end"
+    end
+  end
+
+  def end_field
+    result.puts "    end" if current_object_type != "class"
+  end
+
+  def end_namespace
+    result.puts "end"
   end
 
   def skippable?(attrs)
