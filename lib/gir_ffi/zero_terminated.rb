@@ -85,7 +85,7 @@ module GirFFI
           :pointer
         elsif ffi_type.is_a? Symbol
           :numeric
-        elsif ffi_type < GirFFI::ClassBase
+        elsif ffi_type < GirFFI::ClassBase # rubocop:disable Lint/DuplicateBranch
           :pointer
         elsif ffi_type.singleton_class.include? GirFFI::EnumBase
           :enum
