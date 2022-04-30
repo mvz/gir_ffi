@@ -462,7 +462,22 @@ describe GirFFI::Builders::UserDefinedBuilder do
       end
     end
 
-    describe "when using a default vfunc implementation" do
+    describe "when defining a vfunc that returns a value using a block" do
+      let(:base_class) { Regress::TestObj }
+
+      before do
+        derived_class
+          .install_vfunc_implementation :matrix, ->(_obj, *_args) { 44 }
+        builder.build_class
+      end
+
+      it "allows the vfunc to be called through its invoker" do
+        obj = derived_class.new
+        _(obj.do_matrix("bar")).must_equal 44
+      end
+    end
+
+    describe "when defining a vfunc that returns a value using a method" do
       let(:base_class) { Regress::TestObj }
 
       before do
@@ -479,6 +494,19 @@ describe GirFFI::Builders::UserDefinedBuilder do
       it "allows the vfunc to be called through its invoker" do
         obj = derived_class.new
         _(obj.do_matrix("bar")).must_equal 44
+      end
+    end
+
+    describe "when using the default implementation of a vfunc" do
+      let(:base_class) { Regress::TestObj }
+
+      before do
+        builder.build_class
+      end
+
+      it "allows the vfunc to be called through its invoker" do
+        obj = derived_class.new
+        _(obj.do_matrix("bar")).must_equal 42
       end
     end
 
