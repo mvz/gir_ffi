@@ -111,24 +111,26 @@ module GirFFI
       def setup_properties(class_struct_ptr)
         class_struct = GObject::ObjectClass.wrap class_struct_ptr
 
-        class_struct.get_property = property_getter
-        class_struct.set_property = property_setter
+        class_struct.struct[:get_property] = property_getter_func
+        class_struct.struct[:set_property] = property_setter_func
 
         property_fields.each_with_index do |property, index|
           class_struct.install_property index + 1, property.param_spec
         end
       end
 
-      def property_getter
-        proc do |object, _property_id, value, pspec|
+      def property_getter_func
+        getter = proc do |object, _property_id, value, pspec|
           value.set_value object.send(pspec.accessor_name)
         end
+        GObject::ObjectGetPropertyFunc.from getter
       end
 
-      def property_setter
-        proc do |object, _property_id, value, pspec|
+      def property_setter_func
+        setter = proc do |object, _property_id, value, pspec|
           object.send("#{pspec.accessor_name}=", value.get_value)
         end
+        GObject::ObjectSetPropertyFunc.from setter
       end
 
       def setup_vfuncs(class_struct_ptr)
