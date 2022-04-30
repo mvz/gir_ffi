@@ -78,17 +78,17 @@ module GirFFI
       end
 
       def class_init_proc
-        proc do |type_class_or_ptr, _data|
-          class_struct_ptr = type_class_or_ptr.to_ptr
+        proc do |type_class, _data|
+          class_struct_ptr = type_class.to_ptr
           setup_properties class_struct_ptr
           setup_vfuncs class_struct_ptr
         end
       end
 
       def interface_init_proc(interface)
-        proc do |interface_or_ptr, _data|
-          interface_ptr = interface_or_ptr.to_ptr
-          setup_interface_vfuncs interface, interface_ptr
+        proc do |type_interface, _data|
+          interface_struct_ptr = type_interface.to_ptr
+          setup_interface_vfuncs interface, interface_struct_ptr
         end
       end
 
@@ -140,10 +140,10 @@ module GirFFI
         end
       end
 
-      def setup_interface_vfuncs(interface, interface_ptr)
+      def setup_interface_vfuncs(interface, interface_struct_ptr)
         interface_builder = interface.gir_ffi_builder
 
-        interface_struct = interface_builder.interface_struct.wrap(interface_ptr)
+        interface_struct = interface_builder.interface_struct.wrap(interface_struct_ptr)
         interface_info = interface_builder.info
 
         info.vfunc_implementations.each do |impl|
