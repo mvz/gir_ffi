@@ -78,17 +78,17 @@ module GirFFI
       end
 
       def class_init_proc
-        proc do |type_class_or_ptr, _data|
-          class_struct_ptr = type_class_or_ptr.to_ptr
+        proc do |type_class, _data|
+          class_struct_ptr = type_class.to_ptr
           setup_properties class_struct_ptr
           setup_vfuncs class_struct_ptr
         end
       end
 
       def interface_init_proc(interface)
-        proc do |interface_or_ptr, _data|
-          interface_ptr = interface_or_ptr.to_ptr
-          setup_interface_vfuncs interface, interface_ptr
+        proc do |type_interface, _data|
+          interface_struct_ptr = type_interface.to_ptr
+          setup_interface_vfuncs interface, interface_struct_ptr
         end
       end
 
@@ -111,39 +111,41 @@ module GirFFI
       def setup_properties(class_struct_ptr)
         class_struct = GObject::ObjectClass.wrap class_struct_ptr
 
-        class_struct.get_property = property_getter
-        class_struct.set_property = property_setter
+        class_struct.struct[:get_property] = property_getter_func
+        class_struct.struct[:set_property] = property_setter_func
 
         property_fields.each_with_index do |property, index|
           class_struct.install_property index + 1, property.param_spec
         end
       end
 
-      def property_getter
-        proc do |object, _property_id, value, pspec|
+      def property_getter_func
+        getter = proc do |object, _property_id, value, pspec|
           value.set_value object.send(pspec.accessor_name)
         end
+        GObject::ObjectGetPropertyFunc.from getter
       end
 
-      def property_setter
-        proc do |object, _property_id, value, pspec|
+      def property_setter_func
+        setter = proc do |object, _property_id, value, pspec|
           object.send("#{pspec.accessor_name}=", value.get_value)
         end
+        GObject::ObjectSetPropertyFunc.from setter
       end
 
       def setup_vfuncs(class_struct_ptr)
         super_class_struct =
-          superclass.gir_ffi_builder.class_struct_class::Struct.new(class_struct_ptr)
+          superclass.gir_ffi_builder.class_struct_class.wrap(class_struct_ptr)
 
         info.vfunc_implementations.each do |impl|
           setup_vfunc parent_info, super_class_struct, impl
         end
       end
 
-      def setup_interface_vfuncs(interface, interface_ptr)
+      def setup_interface_vfuncs(interface, interface_struct_ptr)
         interface_builder = interface.gir_ffi_builder
 
-        interface_struct = interface_builder.interface_struct::Struct.new(interface_ptr)
+        interface_struct = interface_builder.interface_struct.wrap(interface_struct_ptr)
         interface_info = interface_builder.info
 
         info.vfunc_implementations.each do |impl|
@@ -156,12 +158,8 @@ module GirFFI
         vfunc_info = ancestor_info.find_vfunc vfunc_name.to_s
         return unless vfunc_info
 
-        install_vfunc ancestor_struct, vfunc_name, vfunc_info, impl.implementation
-      end
-
-      def install_vfunc(container_struct, vfunc_name, vfunc_info, implementation)
-        vfunc = VFuncBuilder.new(vfunc_info).build_class
-        container_struct[vfunc_name] = vfunc.from implementation
+        vfunc_class = VFuncBuilder.new(vfunc_info).build_class
+        ancestor_struct.struct[vfunc_name] = vfunc_class.from(impl.implementation)
       end
 
       def properties
