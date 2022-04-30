@@ -156,12 +156,8 @@ module GirFFI
         vfunc_info = ancestor_info.find_vfunc vfunc_name.to_s
         return unless vfunc_info
 
-        install_vfunc ancestor_struct, vfunc_name, vfunc_info, impl.implementation
-      end
-
-      def install_vfunc(container_struct, vfunc_name, vfunc_info, implementation)
         vfunc_class = VFuncBuilder.new(vfunc_info).build_class
-        container_struct.struct[vfunc_name] = vfunc_class.from(implementation)
+        ancestor_struct.struct[vfunc_name] = vfunc_class.from(impl.implementation)
       end
 
       def properties
