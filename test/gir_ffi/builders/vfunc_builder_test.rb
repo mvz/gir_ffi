@@ -241,5 +241,15 @@ describe GirFFI::Builders::VFuncBuilder do
         _(result).must_equal :pointer
       end
     end
+
+    describe "for a vfunc returning an integer" do
+      let(:vfunc_info) do
+        get_vfunc_introspection_data "Regress", "TestObj", "matrix"
+      end
+
+      it "returns :int32" do
+        _(result).must_equal :int32
+      end
+    end
   end
 end
