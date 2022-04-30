@@ -50,21 +50,7 @@ module GLib
 
     # Re-implementation of the g_ptrarray_index macro
     def index(idx)
-      unless (0...length).cover? idx
-        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
-      end
-
-      item_ptr = data_ptr + idx * element_size
-
-      convert_element_type = case element_type
-                             when :utf8
-                               :utf8
-                             when GirFFI::ObjectBase
-                               element_type
-                             else
-                               [:pointer, element_type]
-                             end
-
+      item_ptr = item_pointer(idx)
       convertor = GirFFI::ArrayElementConvertor.new convert_element_type, item_ptr
       convertor.to_ruby_value
     end
@@ -84,6 +70,29 @@ module GLib
     end
 
     private
+
+    def item_pointer(idx)
+      check_bounds(idx)
+
+      data_ptr + idx * element_size
+    end
+
+    def check_bounds(idx)
+      unless (0...length).cover? idx
+        raise IndexError, "Index #{idx} outside of bounds 0..#{length - 1}"
+      end
+    end
+
+    def convert_element_type
+      case element_type
+      when :utf8
+        :utf8
+      when GirFFI::ObjectBase
+        element_type
+      else
+        [:pointer, element_type]
+      end
+    end
 
     def element_size
       POINTER_SIZE
