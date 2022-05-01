@@ -29,10 +29,8 @@ module GirFFI
       send method_name, *arguments, &block
     end
 
-    # NOTE: JRuby should fix FFI::MemoryPointer#== to return true for
-    # equivalent FFI::Pointer. For now, user to_ptr.address
     def ==(other)
-      other.class == self.class && to_ptr.address == other.to_ptr.address
+      other.class == self.class && to_ptr == other.to_ptr
     end
 
     def self.setup_and_call(method, arguments, &block)

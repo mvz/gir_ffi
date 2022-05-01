@@ -214,13 +214,7 @@ module GirFFI
       end
 
       def subtype_ffi_type(index)
-        subtype = param_type(index).to_ffi_type
-        if subtype == :pointer
-          # NOTE: Don't use pointer directly to appease JRuby.
-          :"uint#{FFI.type_size(:pointer) * 8}"
-        else
-          subtype
-        end
+        param_type(index).to_ffi_type
       end
 
       def flattened_array_type
