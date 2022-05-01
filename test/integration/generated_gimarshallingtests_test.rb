@@ -1171,6 +1171,30 @@ describe GIMarshallingTests do
       end
     end
 
+    describe "its 'some-string' property" do
+      before do
+        skip_below "1.71.0"
+      end
+
+      it "can be retrieved with #get_property" do
+        _(instance.get_property("some-string")).must_be_nil
+      end
+
+      it "can be retrieved with #some_string" do
+        _(instance.some_string).must_be_nil
+      end
+
+      it "can be set with #set_property" do
+        instance.set_property("some-string", "foo bar")
+        _(instance.get_property("some-string")).must_be :==, "foo bar"
+      end
+
+      it "can be set with #some_string=" do
+        instance.some_string = "foo bar"
+        _(instance.some_string).must_be :==, "foo bar"
+      end
+    end
+
     describe "its 'some-strv' property" do
       it "can be retrieved with #get_property" do
         _(instance.get_property("some-strv")).must_be :==, []
@@ -2479,6 +2503,12 @@ describe GIMarshallingTests do
     _(res).must_equal GObject::TYPE_STRING
   end
 
+  it "has a working function #gvalue_copy" do
+    skip_below "1.71.0"
+    res = GIMarshallingTests.gvalue_copy "foobar"
+    _(res).must_equal "foobar"
+  end
+
   it "has a working function #gvalue_flat_array" do
     GIMarshallingTests.gvalue_flat_array [42, "42", true]
     pass
@@ -2560,6 +2590,12 @@ describe GIMarshallingTests do
   it "has a working function #gvalue_return" do
     res = GIMarshallingTests.gvalue_return
     _(res).must_equal 42
+  end
+
+  it "has a working function #gvalue_round_trip" do
+    skip_below "1.71.0"
+    res = GIMarshallingTests.gvalue_round_trip "foobar"
+    _(res).must_equal "foobar"
   end
 
   it "has a working function #init_function" do
