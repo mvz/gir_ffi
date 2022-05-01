@@ -64,6 +64,7 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    "1.71.0" => %w[Regress TestFundamentalObjectNoGetSetFunc],
     "1.69.0" => %w[Regress TestObj get_string],
     "1.67.1" => %w[GIMarshallingTests SignalsObject],
     "1.66.1" => %w[GIMarshallingTests Object vfunc_return_flags],

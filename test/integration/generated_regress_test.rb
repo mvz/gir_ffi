@@ -975,6 +975,11 @@ describe Regress do
   end
 
   describe "Regress::FooSubobject" do
+    it "cannot be instantiated" do
+      skip "Not yet implemented"
+      _(proc { Regress::FooSubobject.new }).must_raise NoMethodError
+    end
+
     it "creates an instance using #new" do
       skip "This function is defined in the header but not implemented"
     end
@@ -1445,7 +1450,36 @@ describe Regress do
     end
   end
 
+  describe "Regress::TestFundamentalObjectNoGetSetFunc" do
+    before do
+      skip_below "1.71.0"
+    end
+
+    it "does not have GObject::Object as an ancestor" do
+      refute(Regress::TestFundamentalObjectNoGetSetFunc < GObject::Object)
+    end
+
+    it "creates an instance using #new" do
+      obj = Regress::TestFundamentalObjectNoGetSetFunc.new "foo"
+      _(obj).must_be_instance_of Regress::TestFundamentalObjectNoGetSetFunc
+    end
+
+    it "has a working function #make_compatible_with_fundamental_sub_object" do
+      Regress::TestFundamentalObjectNoGetSetFunc
+        .make_compatible_with_fundamental_sub_object
+    end
+
+    it "has a working method #get_data" do
+      obj = Regress::TestFundamentalObjectNoGetSetFunc.new "foo"
+      _(obj.get_data).must_equal "foo"
+    end
+  end
+
   describe "Regress::TestFundamentalSubObject" do
+    it "does not have GObject::Object as an ancestor" do
+      refute(Regress::TestFundamentalSubObject < GObject::Object)
+    end
+
     it "creates an instance using #new" do
       obj = Regress::TestFundamentalSubObject.new "foo"
       _(obj).must_be_instance_of Regress::TestFundamentalSubObject
@@ -1459,6 +1493,21 @@ describe Regress do
 
     it "has a field :data storing the constructor parameter" do
       assert_equal "foo", instance.struct[:data].to_utf8
+    end
+  end
+
+  describe "Regress::TestFundamentalSubObjectNoGetSetFunc" do
+    before do
+      skip_below "1.71.0"
+    end
+
+    it "does not have GObject::Object as an ancestor" do
+      refute(Regress::TestFundamentalSubObjectNoGetSetFunc < GObject::Object)
+    end
+
+    it "creates an instance using #new" do
+      obj = Regress::TestFundamentalSubObjectNoGetSetFunc.new "foo"
+      _(obj).must_be_instance_of Regress::TestFundamentalSubObjectNoGetSetFunc
     end
   end
 

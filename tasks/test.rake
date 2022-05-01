@@ -86,17 +86,34 @@ class Listener
     emit_indented 2, "it \"has the constant #{obj_name}\" do"
   end
 
-  def start_object(tag, obj_name, _attrs)
+  def start_class(tag, obj_name, attrs)
+    emit_indented 2, "describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
+
+    if attrs["glib:fundamental"] == "1"
+      emit_indented 4, <<~RUBY
+        it "does not have GObject::Object as an ancestor" do
+        end
+      RUBY
+    end
+    if attrs["abstract"] == "1"
+      emit_indented 4, <<~RUBY
+        it "cannot be instantiated" do
+        end
+      RUBY
+    end
+    @class_stack << [tag, obj_name]
+  end
+
+  def start_type(tag, obj_name, _attrs)
     emit_indented 2, "describe \"#{namespace}::#{obj_name}\" do" unless @class_stack.any?
     @class_stack << [tag, obj_name]
   end
 
-  alias start_bitfield start_object
-  alias start_class start_object
-  alias start_enumeration start_object
-  alias start_interface start_object
-  alias start_record start_object
-  alias start_union start_object
+  alias start_bitfield start_type
+  alias start_enumeration start_type
+  alias start_interface start_type
+  alias start_record start_type
+  alias start_union start_type
 
   def start_constructor(_tag, obj_name, _attrs)
     emit_indented 4, "it \"creates an instance using ##{obj_name}\" do"
@@ -134,10 +151,12 @@ class Listener
 
     emit_indented 4, "describe \"its '#{obj_name}' property\" do"
 
+    can = attrs["readable"] == "0" ? "cannot" : "can"
+
     emit_indented 6, <<~RUBY
-      it "can be retrieved with #get_property" do
+      it "#{can} be retrieved with #get_property" do
       end
-      it "can be retrieved with ##{accessor_name}" do
+      it "#{can} be retrieved with ##{accessor_name}" do
       end
     RUBY
 
