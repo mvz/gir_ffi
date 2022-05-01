@@ -143,6 +143,24 @@ describe GirFFI::Builders::FunctionBuilder do
       end
     end
 
+    describe "for functions with an out parameter of type filename" do
+      let(:function_info) { get_introspection_data "GLib", "file_open_tmp" }
+
+      it "creates code similar to that for strings" do
+        _(code).must_equal <<~CODE
+          def self.file_open_tmp(tmpl = nil)
+            _v1 = tmpl
+            _v2 = FFI::MemoryPointer.new :pointer
+            _v3 = FFI::MemoryPointer.new(:pointer).write_pointer nil
+            _v4 = GLib::Lib.g_file_open_tmp _v1, _v2, _v3
+            GirFFI::ArgHelper.check_error(_v3)
+            _v5 = GirFFI::AllocationHelper.free_after _v2.get_pointer(0), &:to_utf8
+            return _v4, _v5
+          end
+        CODE
+      end
+    end
+
     describe "for functions with a nullable input array" do
       let(:function_info) { get_introspection_data "Regress", "test_array_int_null_in" }
       it "builds correct definition" do
