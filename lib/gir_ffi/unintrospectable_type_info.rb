@@ -37,9 +37,9 @@ module GirFFI
     end
 
     def interfaces
-      @gobject.type_interfaces(@g_type).map do |gtype|
+      @gobject.type_interfaces(@g_type).filter_map do |gtype|
         @gir.find_by_gtype gtype
-      end.compact
+      end
     end
 
     def fields

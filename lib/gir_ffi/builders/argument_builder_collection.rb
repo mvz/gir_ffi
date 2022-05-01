@@ -28,11 +28,11 @@ module GirFFI
 
       def capture_variable_names
         @capture_variable_names ||=
-          all_builders.map(&:capture_variable_name).compact
+          all_builders.filter_map(&:capture_variable_name)
       end
 
       def call_argument_names
-        @call_argument_names ||= argument_builders.map(&:call_argument_name).compact
+        @call_argument_names ||= argument_builders.filter_map(&:call_argument_name)
       end
 
       def method_argument_names
@@ -50,7 +50,7 @@ module GirFFI
       end
 
       def return_value_names
-        @return_value_names ||= all_builders.map(&:return_value_name).compact
+        @return_value_names ||= all_builders.filter_map(&:return_value_name)
       end
 
       def has_return_values?
@@ -149,7 +149,7 @@ module GirFFI
 
       def base_argument_names(arguments)
         required_found = false
-        arguments.reverse.map do |it|
+        arguments.reverse.filter_map do |it|
           name = it.method_argument_name
           if it.allow_none? && !required_found
             "#{name} = nil"
@@ -157,7 +157,7 @@ module GirFFI
             required_found = true
             name
           end
-        end.compact.reverse
+        end.reverse
       end
     end
   end
