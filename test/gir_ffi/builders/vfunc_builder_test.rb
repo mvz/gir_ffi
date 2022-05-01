@@ -26,6 +26,25 @@ describe GirFFI::Builders::VFuncBuilder do
       end
     end
 
+    describe "for a vfunc returning an integer" do
+      let(:vfunc_info) do
+        get_vfunc_introspection_data "Regress", "TestObj", "matrix"
+      end
+
+      it "returns a valid mapping method including receiver" do
+        expected = <<~CODE
+          def self.call_with_argument_mapping(_proc, _instance, somestr)
+            _v1 = Regress::TestObj.wrap(_instance)
+            _v2 = somestr.to_utf8
+            _v3 = _proc.call(_v1, _v2)
+            return _v3
+          end
+        CODE
+
+        _(result).must_equal expected
+      end
+    end
+
     describe "for a vfunc returning an enum" do
       let(:vfunc_info) do
         get_vfunc_introspection_data "GIMarshallingTests", "Object", "vfunc_return_enum"
@@ -239,6 +258,16 @@ describe GirFFI::Builders::VFuncBuilder do
 
       it "returns :pointer" do
         _(result).must_equal :pointer
+      end
+    end
+
+    describe "for a vfunc returning an integer" do
+      let(:vfunc_info) do
+        get_vfunc_introspection_data "Regress", "TestObj", "matrix"
+      end
+
+      it "returns :int32" do
+        _(result).must_equal :int32
       end
     end
   end
