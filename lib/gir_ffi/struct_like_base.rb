@@ -22,7 +22,6 @@ module GirFFI
         self
       end
 
-      # NOTE: Needed for JRuby's FFI
       def to_native(value, _context)
         value.struct
       end
