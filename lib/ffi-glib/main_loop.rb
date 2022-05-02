@@ -40,7 +40,7 @@ module GLib
     setup_instance_method! :run
 
     def run_with_thread_enabler
-      ThreadEnabler.instance.setup_idle_handler if RUBY_ENGINE == "ruby"
+      ThreadEnabler.instance.setup_idle_handler
       RUNNING_LOOPS << self
       result = run_without_thread_enabler
       exception = EXCEPTIONS.shift
