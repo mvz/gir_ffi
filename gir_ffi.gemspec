@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
   spec.license = "LGPL-2.1+"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.required_ruby_version = ">= 2.7.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/mvz/gir_ffi"
