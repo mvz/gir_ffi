@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.16.0 / 2022-05-21
+
+* Support Ruby 3.1
+* Rename `#object_class` to `#class_struct`
+* Remove `GObject.object_class_from_instance`
+* Limit public interface of `BaseMethodBuilder`
+* Remove deprecated methods from `GObject::Object`
+* Stop accepting blocks when defining a type
+* Check parameter direction in signal argument conversion
+* Drop support for JRuby
+* Drop support for Ruby 2.6
+
 ## 0.15.9 / 2021-12-05
 
 * Skip setting destroy notifier state if types don't make sense
@@ -144,8 +156,8 @@
   changed.
 * Make `Strv#each` thread-safe.
 * Drop support for CRuby 2.0.
-* Move `::type_init` and base `Strv` implementation into `GObjectIntrospection`, making
-  it stand-alone.
+* Move `::type_init` and base `Strv` implementation into `GObjectIntrospection`,
+  making it stand-alone.
 * Move `GLib::Boolean` to `GirFFI::Boolean`.
 * Guard against instantiating abstract classes using the default constructor.
 * Handle user-defined properties containing dashes
@@ -166,7 +178,7 @@
     actual effect even on CRuby.
   - Immediately free string pointers whose ownership is transfered. Again, the
     #autorelease technique doesn't work on JRuby.
-  - Fix handling of callee-allocated out parameters in vfuncs. The put_pointer
+  - Fix handling of callee-allocated out parameters in vfuncs. The `put_pointer`
     method was wrongly called, and JRuby is more picky about what types that
     method expects, exposing the bug.
 
@@ -185,7 +197,8 @@
 
 ## 0.9.5 / 2016-03-05
 
-* Abort if modules were defined earlier, e.g., through the gems from the ruby-gnome family.
+* Abort if modules were defined earlier, e.g., through the gems from the
+  ruby-gnome family.
 * Extend integration testing with GObjectIntrospection's test libraries.
 * Find signals on user-defined types.
 * Allow getting and setting of properties with a callback value.
@@ -500,7 +513,7 @@
 ## 0.4.2 / 2012-09-22
 
 * Make objects and interfaces wrap poiners in the class that matches
-their GType.
+  their GType.
 
 ## 0.4.1 / 2012-09-18
 
@@ -516,7 +529,7 @@ their GType.
 ## 0.3.2 / 2012-08-24
 
 * Correctly set FFI return type when callbacks that return GObjects have
-incomplete type specification.
+  incomplete type specification.
 
 ## 0.3.1 / 2012-05-13
 
@@ -544,15 +557,15 @@ incomplete type specification.
 
 ## 0.2.2 / 2011-12-07
 
-* Fix issue #19: Check if a GLib::PtrArray.add method was generated
-before attempting to remove it.
+* Fix issue #19: Check if a GLib::PtrArray.add method was generated before
+  attempting to remove it.
 * Fix two issues with pretty printing that made output for GLib have syntax
-errors.
+  errors.
 
 ## 0.2.1 / 2011-11-20
 
-* Fix handling of output parameters that are arrays of pointers to
-structures (i.e., of type `Foo***`).
+* Fix handling of output parameters that are arrays of pointers to structures
+  (i.e., of type `Foo***`).
 
 ## 0.2.0 / 2011-11-19
 
@@ -562,9 +575,9 @@ structures (i.e., of type `Foo***`).
   - Get rid of `#[]` and `#[]=`.
 * Explicitely load `libgirepository` with ABI version 1.
 * Improve implementation of GLib container classes (GList etc.):
-- Real constructors.
-- `#append` and friends are instance methods now.
-- Conversion methods to cast Ruby containers to GLib containers.
+  - Real constructors.
+  - `#append` and friends are instance methods now.
+  - Conversion methods to cast Ruby containers to GLib containers.
 * Start implementing pretty printing.
 * Various refactorings.
 
@@ -577,10 +590,10 @@ structures (i.e., of type `Foo***`).
 ## 0.0.14 / 2011-10-28
 
 * Support GObject Introspection version 1.30:
-- Add support for layouts with fixed-length arrays.
-- Handle type names starting with underscores.
-- Call `g_signal_emitv` directly to avoid conflict in introspection info
-  with earlier versions of GObject Introspection.
+  - Add support for layouts with fixed-length arrays.
+  - Handle type names starting with underscores.
+  - Call `g_signal_emitv` directly to avoid conflict in introspection info
+    with earlier versions of GObject Introspection.
 
 ## 0.0.13 / 2011-09-09
 
