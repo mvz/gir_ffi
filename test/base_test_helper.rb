@@ -25,8 +25,8 @@ module BaseTestExtensions
     method = method.to_sym
     methods = klass.singleton_methods(false).map(&:to_sym)
     msg = message(msg) do
-      "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}, " \
-        "but only found #{mu_pp(methods)}"
+      "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}," \
+        " but only found #{mu_pp(methods)}"
     end
     assert_includes methods, method, msg
   end
@@ -44,8 +44,8 @@ module BaseTestExtensions
     method = method.to_sym
     methods = klass.instance_methods(false).map(&:to_sym)
     msg = message(msg) do
-      "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}, " \
-        "but only found #{mu_pp(methods)}"
+      "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}," \
+        " but only found #{mu_pp(methods)}"
     end
     assert_includes methods, method, msg
   end
