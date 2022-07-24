@@ -179,7 +179,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it "has the correct value for #post_conversion" do
           _(builder.post_conversion)
-            .must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy("\
+            .must_equal ["_v2 = GIMarshallingTests::BoxedStruct.wrap_copy(" \
                          "_v1.get_pointer(0))"]
         end
       end
