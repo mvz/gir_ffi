@@ -23,35 +23,41 @@ Ruby bindings for GNOME using the GObject Introspection Repository.
 
 ## Usage
 
-    require 'gir_ffi'
+```ruby
+require 'gir_ffi'
 
-    # Set up the namespace you wish to use
-    GirFFI.setup :Gio
+# Set up the namespace you wish to use
+GirFFI.setup :Gio
 
-    # Create an object
-    inet_address = Gio::InetAddress.new_from_string "127.0.0.1"
+# Create an object
+inet_address = Gio::InetAddress.new_from_string "127.0.0.1"
 
-    # Call some methods on the object
-    inet_address.is_loopback    # => true
-    inet_address.is_multicast   # => false
+# Call some methods on the object
+inet_address.is_loopback    # => true
+inet_address.is_multicast   # => false
 
-    # Call a function in the namespace
-    Gio.dbus_is_name "foo"   # => false
+# Call a function in the namespace
+Gio.dbus_is_name "foo"   # => false
+```
 
 See the [documentation](docs/Documentation.md) for more usage information.
 
 ## Examples
 
 Have a look in the `examples/` directory for some simple examples. More
-examples can be found in `gir_ffi-gtk` and `gir_ffi-gst`.
+examples can be found in the repositories for
+[`gir_ffi-gtk`](https://github.com/mvz/gir_ffi-gtk) and
+[`gir_ffi-gst`](https://github.com/mvz/gir_ffi-gst/).
 
 ## Install
 
-    gem install gir_ffi
+```bash
+gem install gir_ffi
+```
 
 ## Requirements
 
-GirFFI is supported on CRuby 2.6, 2.7, 3.0 and 3.1.
+GirFFI is supported on CRuby 2.7, 3.0 and 3.1.
 
 You will also need gobject-introspection installed with some
 introspection data.
@@ -104,7 +110,7 @@ The following people have contributed to GirFFI over the years:
 
 ## License
 
-Copyright &copy; 2009&ndash;2021 [Matijs van Zuijlen](http://www.matijs.net)
+Copyright &copy; 2009&ndash;2022 [Matijs van Zuijlen](http://www.matijs.net)
 
 GirFFI is free software, distributed under the terms of the GNU Lesser
 General Public License, version 2.1 or later. See the file COPYING.LIB for
