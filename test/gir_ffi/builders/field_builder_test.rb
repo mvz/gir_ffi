@@ -91,7 +91,7 @@ describe GirFFI::Builders::FieldBuilder do
       expected = <<~CODE
         def some_union= value
           _v1 = @struct.to_ptr
-          GirFFI::ArgHelper.check_fixed_array_size 2, value, \"value\"
+          GirFFI::ArgHelper.check_fixed_array_size 2, value, "value"
           _v2 = GirFFI::SizedArray.copy_from(Regress::TestStructE__some_union__union, 2, value)
           GirFFI::SizedArray.copy_value_to_pointer(_v2, _v1, #{field_info.offset})
         end
