@@ -299,7 +299,7 @@ describe GirFFI::Builders::FunctionBuilder do
         _(code).must_equal <<~CODE
           def self.has_parameter_named_attrs(foo, attributes)
             _v1 = foo
-            GirFFI::ArgHelper.check_fixed_array_size 32, attributes, \"attributes\"
+            GirFFI::ArgHelper.check_fixed_array_size 32, attributes, "attributes"
             _v2 = GirFFI::SizedArray.from([:pointer, :guint32], 32, attributes)
             Regress::Lib.regress_has_parameter_named_attrs _v1, _v2
           end
