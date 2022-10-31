@@ -47,6 +47,7 @@ describe GLib::Bytes do
     it "returns its argument if given a GLib::Bytes object" do
       bytes = GLib::Bytes.new [1, 2, 3]
       result = GLib::Bytes.from bytes
+
       assert result.equal?(bytes)
     end
 

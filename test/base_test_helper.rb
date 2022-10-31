@@ -28,6 +28,7 @@ module BaseTestExtensions
       "Expected #{mu_pp(klass)} to define singleton method #{mu_pp(method)}," \
         " but only found #{mu_pp(methods)}"
     end
+
     assert_includes methods, method, msg
   end
 
@@ -37,6 +38,7 @@ module BaseTestExtensions
     msg = message(msg) do
       "Expected #{mu_pp(klass)} not to define singleton method #{mu_pp(method)}"
     end
+
     refute_includes methods, method, msg
   end
 
@@ -47,6 +49,7 @@ module BaseTestExtensions
       "Expected #{mu_pp(klass)} to define instance method #{mu_pp(method)}," \
         " but only found #{mu_pp(methods)}"
     end
+
     assert_includes methods, method, msg
   end
 
@@ -56,6 +59,7 @@ module BaseTestExtensions
     msg = message(msg) do
       "Expected #{mu_pp(klass)} not to define instance method #{mu_pp(method)}"
     end
+
     refute_includes methods, method, msg
   end
 end

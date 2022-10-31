@@ -5,6 +5,7 @@ require "gir_ffi_test_helper"
 describe GLib::List do
   it "knows its element type" do
     arr = GLib::List.new :gint32
+
     assert_equal :gint32, arr.element_type
   end
 
@@ -67,20 +68,24 @@ describe GLib::List do
   describe "::from" do
     it "creates a GList from a Ruby array" do
       lst = GLib::List.from :gint32, [3, 2, 1]
+
       assert_equal [3, 2, 1], lst.to_a
     end
 
     it "return its argument if given a GList" do
       lst = GLib::List.from :gint32, [3, 2, 1]
       lst2 = GLib::List.from :gint32, lst
+
       assert lst2.equal? lst
     end
 
     it "wraps its argument if given a pointer" do
       lst = GLib::List.from :gint32, [3, 2, 1]
       pointer = lst.to_ptr
+
       assert_instance_of FFI::Pointer, pointer
       lst2 = GLib::List.from :gint32, pointer
+
       assert_instance_of GLib::List, lst2
       refute lst2.equal? lst
       _(lst2.to_a).must_equal lst.to_a
@@ -88,6 +93,7 @@ describe GLib::List do
 
     it "creates a GList from a Ruby range" do
       lst = GLib::List.from :gint32, (1..3)
+
       assert_equal [1, 2, 3], lst.to_a
     end
   end

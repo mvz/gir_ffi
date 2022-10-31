@@ -7,6 +7,7 @@ describe GirFFI::SizedArray do
     it "takes a type, size and pointer and returns a GirFFI::SizedArray wrapping them" do
       expect(ptr = Object.new).to receive(:null?).and_return false
       sarr = GirFFI::SizedArray.wrap :gint32, 3, ptr
+
       assert_instance_of GirFFI::SizedArray, sarr
       assert_equal ptr, sarr.to_ptr
       assert_equal 3, sarr.size
@@ -33,6 +34,7 @@ describe GirFFI::SizedArray do
       sarr.each do |str|
         arr << str
       end
+
       assert_equal %w[one two three], arr
     end
   end
@@ -42,6 +44,7 @@ describe GirFFI::SizedArray do
       it "creates a GirFFI::SizedArray with the same elements" do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
         _(arr).must_be_instance_of GirFFI::SizedArray
+
         assert_equal [3, 2, 1], arr.to_a
       end
 
@@ -59,6 +62,7 @@ describe GirFFI::SizedArray do
       it "creates a GirFFI::SizedArray with elements corresponding to the string's bytes" do
         arr = GirFFI::SizedArray.from :guint8, 3, "foo"
         _(arr).must_be_instance_of GirFFI::SizedArray
+
         assert_equal "foo".bytes, arr.to_a
       end
     end
@@ -67,6 +71,7 @@ describe GirFFI::SizedArray do
       it "return its argument" do
         arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
         arr2 = GirFFI::SizedArray.from :gint32, 3, arr
+
         assert_equal arr, arr2
       end
 
@@ -84,6 +89,7 @@ describe GirFFI::SizedArray do
     it "wraps its argument if given a pointer" do
       arr = GirFFI::SizedArray.from :gint32, 3, [3, 2, 1]
       arr2 = GirFFI::SizedArray.from :gint32, 3, arr.to_ptr
+
       assert_instance_of GirFFI::SizedArray, arr2
       refute arr2.equal? arr
       _(arr2.to_ptr).must_equal arr.to_ptr
@@ -95,6 +101,7 @@ describe GirFFI::SizedArray do
       it "creates an unowned GirFFI::SizedArray with the same elements" do
         arr = GirFFI::SizedArray.copy_from :gint32, 3, [3, 2, 1]
         _(arr).must_be_instance_of GirFFI::SizedArray
+
         assert_equal [3, 2, 1], arr.to_a
         _(arr.to_ptr).wont_be :autorelease?
       end

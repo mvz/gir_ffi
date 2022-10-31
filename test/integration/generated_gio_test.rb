@@ -47,6 +47,7 @@ describe Gio do
 
       it "has a working #get_attribute_type method" do
         type = @fileinfo.get_attribute_type "standard::display-name"
+
         assert_equal :string, type
       end
     end
@@ -63,6 +64,7 @@ describe Gio do
         a = action_name
       end
       GObject.signal_emit @grp, "action-added", "foo"
+
       assert_equal "foo", a
     end
   end
@@ -78,6 +80,7 @@ describe Gio do
         a = result
       end
       GObject.signal_emit @mo, "reply", :unhandled
+
       assert_equal :unhandled, a
     end
   end

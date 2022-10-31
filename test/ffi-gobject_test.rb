@@ -15,6 +15,7 @@ describe GObject do
       callback = GObject::Callback.from prc
       ::GObject::Lib.g_signal_connect_data o, "test", callback, nil, nil, 0
       GObject.signal_emit o, "test"
+
       assert_equal 2, a
     end
 
@@ -25,6 +26,7 @@ describe GObject do
       callback = FFI::Function.new(:bool, argtypes) { |_a, _b, _c, _d| true }
       ::GObject::Lib.g_signal_connect_data s, "incoming", callback, nil, nil, 0
       rv = GObject.signal_emit s, "incoming"
+
       assert rv
     end
 
@@ -45,6 +47,7 @@ describe GObject do
       GObject.signal_emit o, "test-with-static-scope-arg", sb
 
       sb2 = Regress::TestSimpleBoxedA.wrap b2
+
       assert sb.equals(sb2)
     end
 
@@ -77,6 +80,7 @@ describe GObject do
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "test") { a = 2 }
       GObject.signal_emit o, "test"
+
       assert_equal 2, a
     end
 
@@ -85,6 +89,7 @@ describe GObject do
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "test", 2) { |_i, d| a = d }
       GObject.signal_emit o, "test"
+
       assert_equal 2, a
     end
 
@@ -93,6 +98,7 @@ describe GObject do
       o2 = nil
       GObject.signal_connect(o, "test") { |i, _d| o2 = i }
       GObject.signal_emit o, "test"
+
       assert_instance_of Regress::TestSubObj, o2
       assert_equal o.to_ptr, o2.to_ptr
     end
@@ -107,6 +113,7 @@ describe GObject do
       s = Gio::SocketService.new
       GObject.signal_connect(s, "incoming") { true }
       rv = GObject.signal_emit s, "incoming"
+
       assert rv
     end
 
@@ -120,6 +127,7 @@ describe GObject do
       o = Regress::TestSubObj.new
       GObject.signal_connect(o, "notify::detail", 2) { |_i, _, d| a = d }
       GObject.signal_emit o, "notify::detail"
+
       assert_equal 2, a
     end
 
@@ -156,6 +164,7 @@ describe GObject do
       o = Regress::TestSubObj.new
       GObject.signal_connect_after(o, "test") { a = 2 }
       GObject.signal_emit o, "test"
+
       assert_equal 2, a
     end
   end

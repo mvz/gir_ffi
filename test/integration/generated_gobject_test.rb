@@ -9,6 +9,7 @@ describe GObject do
     it "works, showing that returning an array of GType works" do
       klass = GObject::TypeModule
       ifcs = GObject.type_interfaces klass.gtype
+
       assert_equal 1, ifcs.size
     end
   end
@@ -42,6 +43,7 @@ describe GObject do
   describe GObject::TypePlugin do
     it "is implemented as a module" do
       mod = GObject::TypePlugin
+
       assert_instance_of Module, mod
       refute_instance_of Class, mod
     end
@@ -50,6 +52,7 @@ describe GObject do
   describe GObject::TypeModule do
     it "has the GObject::TypePlugin module as an ancestor" do
       klass = GObject::TypeModule
+
       assert_includes klass.registered_ancestors, GObject::TypePlugin
     end
   end

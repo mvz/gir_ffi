@@ -8,6 +8,7 @@ describe GirFFI::InPointer do
   describe ".from_array" do
     it "returns nil when passed nil" do
       result = GirFFI::InPointer.from_array :gint32, nil
+
       assert_nil result
     end
 
@@ -82,6 +83,7 @@ describe GirFFI::InPointer do
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
+
       assert_equal %w[foo bar baz], ary.map(&:read_string)
     end
   end
@@ -93,6 +95,7 @@ describe GirFFI::InPointer do
 
     it "returns an array of pointers to strings" do
       ary = @result.read_array_of_pointer(3)
+
       assert_equal %w[foo bar baz], ary.map(&:read_string)
     end
   end
@@ -138,31 +141,37 @@ describe GirFFI::InPointer do
   describe ".from" do
     it "returns nil when passed nil" do
       result = GirFFI::InPointer.from :foo, nil
+
       assert_nil result
     end
 
     it "sets the pointer's address to the passed value for type :gint8" do
       result = GirFFI::InPointer.from :gint8, 23
+
       assert_equal 23, result.address
     end
 
     it "returns a pointer to the value for type :gint64" do
       result = GirFFI::InPointer.from :gint64, -0x90000000
+
       assert_equal(-0x90000000, result.get_int64(0))
     end
 
     it "returns a pointer to the value for type :guint64" do
       result = GirFFI::InPointer.from :guint64, 0xf0000000
+
       assert_equal 0xf0000000, result.get_uint64(0)
     end
 
     it "returns a pointer to the value for type :gdouble" do
       result = GirFFI::InPointer.from :gdouble, 0.1
+
       assert_in_epsilon 0.1, result.read_double
     end
 
     it "returns a pointer to the value for type :gfloat" do
       result = GirFFI::InPointer.from :gfloat, 0.1
+
       assert_in_epsilon 0.1, result.read_float
     end
 

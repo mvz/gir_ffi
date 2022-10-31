@@ -33,6 +33,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.to_ffi_type
+
       assert_equal [:foo, 2], result
     end
 

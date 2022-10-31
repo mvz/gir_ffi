@@ -5,6 +5,7 @@ require "gir_ffi_test_helper"
 describe GLib::PtrArray do
   it "knows its element type" do
     arr = GLib::PtrArray.new :utf8
+
     assert_equal :utf8, arr.element_type
   end
 
@@ -66,6 +67,7 @@ describe GLib::PtrArray do
   it "has #add as an instance method too" do
     arr = GLib::PtrArray.new :utf8
     arr.add "test1"
+
     assert_equal ["test1"], arr.to_a
   end
 
