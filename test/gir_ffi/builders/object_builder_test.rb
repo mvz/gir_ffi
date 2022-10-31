@@ -82,6 +82,7 @@ describe GirFFI::Builders::ObjectBuilder do
       builder = GirFFI::Builders::ObjectBuilder.new info
 
       spec = builder.send :layout_specification
+
       assert_equal [:parent, GObject::Object::Struct, 0], spec
     end
   end

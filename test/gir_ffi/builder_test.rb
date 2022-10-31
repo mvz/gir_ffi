@@ -30,18 +30,21 @@ describe GirFFI::Builder do
       #
       gir = GObjectIntrospection::IRepository.default
       expected = [gir.shared_library("Regress")]
+
       assert_equal expected, Regress::Lib.ffi_libraries.map(&:name)
     end
 
     it "does not replace an existing module" do
       oldmodule = Regress
       GirFFI::Builder.build_module "Regress"
+
       assert_equal oldmodule, Regress
     end
 
     it "does not replace the an existing module's Lib module" do
       oldmodule = Regress::Lib
       GirFFI::Builder.build_module "Regress"
+
       assert_equal oldmodule, Regress::Lib
     end
 

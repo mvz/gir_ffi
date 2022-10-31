@@ -12,6 +12,7 @@ describe GObject::RubyClosure do
 
     it "returns a kind of Closure" do
       c = GObject::RubyClosure.new { nil }
+
       assert_kind_of GObject::Closure, c
     end
   end
@@ -22,6 +23,7 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::RubyClosure.wrap(c.to_ptr)
       c2.invoke_block
+
       assert_equal 2, a
     end
   end
@@ -31,6 +33,7 @@ describe GObject::RubyClosure do
       a = 0
       c = GObject::RubyClosure.new { a = 2 }
       GObject::RubyClosure.marshaller(c, nil, nil, nil, nil)
+
       assert_equal 2, a
     end
 
@@ -39,6 +42,7 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::Closure.wrap(c.to_ptr)
       GObject::RubyClosure.marshaller(c2, nil, nil, nil, nil)
+
       assert_equal 2, a
     end
 
@@ -46,6 +50,7 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new { 2 }
       gv = GObject::Value.new.init GObject::TYPE_INT
       GObject::RubyClosure.marshaller(c, gv, nil, nil, nil)
+
       assert_equal 2, gv.get_value
     end
   end
@@ -56,6 +61,7 @@ describe GObject::RubyClosure do
       c = GObject::RubyClosure.new { a = 2 }
       c2 = GObject::Closure.wrap(c.to_ptr)
       c2.invoke nil, []
+
       assert_equal 2, a
     end
   end

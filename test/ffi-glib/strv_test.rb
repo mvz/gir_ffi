@@ -13,6 +13,7 @@ describe GLib::Strv do
     it "return its argument if given a Strv" do
       strv = GLib::Strv.from %w[1 2 3]
       strv2 = GLib::Strv.from strv
+
       assert strv2.equal? strv
     end
 
@@ -25,6 +26,7 @@ describe GLib::Strv do
       strv2 = GLib::Strv.from pointer
 
       _(strv2).must_be_kind_of GLib::Strv
+
       refute strv2.equal? strv
       _(strv2.to_a).must_equal strv.to_a
     end

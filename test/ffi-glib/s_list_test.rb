@@ -5,6 +5,7 @@ require "gir_ffi_test_helper"
 describe GLib::SList do
   it "knows its element type" do
     arr = GLib::SList.new :gint32
+
     assert_equal :gint32, arr.element_type
   end
 
@@ -68,17 +69,20 @@ describe GLib::SList do
   describe "::from" do
     it "creates a GSList from a Ruby array" do
       lst = GLib::SList.from :gint32, [3, 2, 1]
+
       assert_equal [3, 2, 1], lst.to_a
     end
 
     it "return its argument if given a GSList" do
       lst = GLib::SList.from :gint32, [3, 2, 1]
       lst2 = GLib::SList.from :gint32, lst
+
       assert_equal lst, lst2
     end
 
     it "creates a GSList from a Ruby range" do
       lst = GLib::SList.from :gint32, (1..3)
+
       assert_equal [1, 2, 3], lst.to_a
     end
   end

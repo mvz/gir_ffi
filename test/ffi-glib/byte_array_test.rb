@@ -5,6 +5,7 @@ require "gir_ffi_test_helper"
 describe GLib::ByteArray do
   it "can succesfully be created with GLib::ByteArray.new" do
     ba = GLib::ByteArray.new
+
     assert_instance_of GLib::ByteArray, ba
   end
 
@@ -25,6 +26,7 @@ describe GLib::ByteArray do
   it "has a working #to_string method" do
     ba = GLib::ByteArray.new
     ba.append "abdc"
+
     assert_equal "abdc", ba.to_string
   end
 

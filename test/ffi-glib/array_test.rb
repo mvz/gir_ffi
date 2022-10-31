@@ -5,6 +5,7 @@ require "gir_ffi_test_helper"
 describe GLib::Array do
   it "knows its element type" do
     arr = GLib::Array.new :gint32
+
     assert_equal :gint32, arr.element_type
   end
 
@@ -41,6 +42,7 @@ describe GLib::Array do
       arr = GLib::Array.new :gint32
       arr.append_vals [1, 2, 3]
       arr2 = GLib::Array.wrap :gint32, arr.to_ptr
+
       assert_equal arr.to_a, arr2.to_a
     end
 
@@ -66,6 +68,7 @@ describe GLib::Array do
   it "has a working #to_a method" do
     arr = GLib::Array.new :gint32
     arr.append_vals [1, 2, 3]
+
     assert_equal [1, 2, 3], arr.to_a
   end
 
@@ -101,6 +104,7 @@ describe GLib::Array do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]
       arr2 = GLib::Array.from :gint32, arr
+
       assert arr2.equal? arr
     end
 
@@ -108,8 +112,10 @@ describe GLib::Array do
       arr = GLib::Array.new :gint32
       arr.append_vals [3, 2, 1]
       pointer = arr.to_ptr
+
       assert_instance_of FFI::Pointer, pointer
       arr2 = GLib::Array.from :gint32, pointer
+
       assert_instance_of GLib::Array, arr2
       refute arr2.equal? arr
       _(arr2.to_a).must_equal arr.to_a

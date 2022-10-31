@@ -1179,23 +1179,27 @@ describe Regress do
 
     it "creates an instance using #new" do
       tb = Regress::TestBoxed.new
+
       assert_instance_of Regress::TestBoxed, tb
     end
 
     it "creates an instance using #new_alternative_constructor1" do
       tb = Regress::TestBoxed.new_alternative_constructor1 1
+
       assert_instance_of Regress::TestBoxed, tb
       assert_equal 1, tb.some_int8
     end
 
     it "creates an instance using #new_alternative_constructor2" do
       tb = Regress::TestBoxed.new_alternative_constructor2 1, 2
+
       assert_instance_of Regress::TestBoxed, tb
       assert_equal 1 + 2, tb.some_int8
     end
 
     it "creates an instance using #new_alternative_constructor3" do
       tb = Regress::TestBoxed.new_alternative_constructor3 "54"
+
       assert_instance_of Regress::TestBoxed, tb
       assert_equal 54, tb.some_int8
     end
@@ -1212,14 +1216,17 @@ describe Regress do
 
     it "has a working method #copy" do
       tb2 = instance.copy
+
       assert_instance_of Regress::TestBoxed, tb2
       assert_equal 123, tb2.some_int8
       instance.some_int8 = 89
+
       assert_equal 123, tb2.some_int8
     end
 
     it "has a working method #equals" do
       tb2 = Regress::TestBoxed.new_alternative_constructor2 120, 3
+
       assert instance.equals(tb2)
     end
   end
@@ -1241,6 +1248,7 @@ describe Regress do
 
     it "creates an instance using #new" do
       tb = Regress::TestBoxedB.new 8, 42
+
       assert_instance_of Regress::TestBoxedB, tb
     end
 
@@ -1271,6 +1279,7 @@ describe Regress do
 
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
+
       assert_instance_of Regress::TestBoxedC, tb
     end
   end
@@ -1636,6 +1645,7 @@ describe Regress do
     it "creates an instance using #new_callback" do
       a = 1
       o = Regress::TestObj.new_callback { a = 2 }
+
       assert_instance_of Regress::TestObj, o
       _(a).must_equal 2
 
@@ -1648,6 +1658,7 @@ describe Regress do
 
     it "creates an instance using #new_from_file" do
       o = Regress::TestObj.new_from_file("foo")
+
       assert_instance_of Regress::TestObj, o
     end
 
@@ -1658,12 +1669,14 @@ describe Regress do
 
     it "has a working function #static_method" do
       rv = Regress::TestObj.static_method 623
+
       assert_in_delta(623.0, rv)
     end
 
     it "has a working function #static_method_callback" do
       a = 1
       Regress::TestObj.static_method_callback { a = 2 }
+
       assert_equal 2, a
     end
 
@@ -1673,6 +1686,7 @@ describe Regress do
       it "can be found through gtype and GObject.type_from_instance" do
         gtype = Regress::TestObj.gtype
         r = GObject.type_from_instance instance
+
         assert_equal gtype, r
       end
     end
@@ -1730,6 +1744,7 @@ describe Regress do
         _(cr).must_be_instance_of Cairo::Context
       end
       instance.emit_sig_with_foreign_struct
+
       assert has_fired
     end
 
@@ -1772,6 +1787,7 @@ describe Regress do
         _(obj.int).must_equal 3
       end
       instance.emit_sig_with_obj
+
       assert has_fired
     end
 
@@ -1794,12 +1810,14 @@ describe Regress do
 
     it "has a working method #instance_method" do
       rv = instance.instance_method
+
       assert_equal(-1, rv)
     end
 
     it "has a working method #instance_method_callback" do
       a = 1
       instance.instance_method_callback { a = 2 }
+
       assert_equal 2, a
     end
 
@@ -1894,6 +1912,7 @@ describe Regress do
 
     it "has a working method #torture_signature_0" do
       y, z, q = instance.torture_signature_0(-21, "hello", 13)
+
       assert_equal [-21, 2 * -21, "hello".length + 13],
                    [y, z, q]
     end
@@ -2095,11 +2114,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "int", 42
+
         assert_equal 42, instance.get_property("int")
       end
 
       it "can be set with #int=" do
         instance.int = 41
+
         assert_equal 41, instance.get_property("int")
         assert_equal 41, instance.int
       end
@@ -2208,11 +2229,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "string", "foobar"
+
         assert_equal "foobar", instance.get_property("string")
       end
 
       it "can be set with #string=" do
         instance.string = "foobar"
+
         assert_equal "foobar", instance.string
         assert_equal "foobar", instance.get_property("string")
       end
@@ -2413,6 +2436,7 @@ describe Regress do
         b = i
       end
       GObject.signal_emit o, "test"
+
       assert_equal [2, o], [a, b]
     end
 
@@ -2531,6 +2555,7 @@ describe Regress do
   describe "Regress::TestSimpleBoxedA" do
     it "creates an instance using #new" do
       obj = Regress::TestSimpleBoxedA.new
+
       assert_instance_of Regress::TestSimpleBoxedA, obj
     end
 
@@ -2893,6 +2918,7 @@ describe Regress do
   describe "Regress::TestSubObj" do
     it "creates an instance using #new" do
       tso = Regress::TestSubObj.new
+
       assert_instance_of Regress::TestSubObj, tso
     end
 
@@ -2904,6 +2930,7 @@ describe Regress do
 
     it "has a working method #instance_method" do
       res = instance.instance_method
+
       assert_equal 0, res
     end
 
@@ -2942,6 +2969,7 @@ describe Regress do
   describe "Regress::TestWi8021x" do
     it "creates an instance using #new" do
       o = Regress::TestWi8021x.new
+
       assert_instance_of Regress::TestWi8021x, o
     end
 
@@ -3279,6 +3307,7 @@ describe Regress do
   it "has a working function #test_array_gtype_in" do
     t1 = GObject.type_from_name "gboolean"
     t2 = GObject.type_from_name "gint64"
+
     assert_equal "[gboolean,gint64,]", Regress.test_array_gtype_in([t1, t2])
   end
 
@@ -3414,6 +3443,7 @@ describe Regress do
 
   it "has a working function #test_cairo_context_full_return" do
     ct = Regress.test_cairo_context_full_return
+
     assert_instance_of Cairo::Context, ct
   end
 
@@ -3424,11 +3454,13 @@ describe Regress do
 
   it "has a working function #test_cairo_surface_full_out" do
     cs = Regress.test_cairo_surface_full_out
+
     assert_instance_of Cairo::Surface, cs
   end
 
   it "has a working function #test_cairo_surface_full_return" do
     cs = Regress.test_cairo_surface_full_return
+
     assert_instance_of Cairo::Surface, cs
   end
 
@@ -3439,11 +3471,13 @@ describe Regress do
 
   it "has a working function #test_cairo_surface_none_return" do
     cs = Regress.test_cairo_surface_none_return
+
     assert_instance_of Cairo::Surface, cs
   end
 
   it "has a working function #test_callback" do
     result = Regress.test_callback { 5 }
+
     assert_equal 5, result
   end
 
@@ -3546,12 +3580,14 @@ describe Regress do
   it "has a working function #test_closure" do
     c = GObject::RubyClosure.new { 5235 }
     r = Regress.test_closure c
+
     assert_equal 5235, r
   end
 
   it "has a working function #test_closure_one_arg" do
     c = GObject::RubyClosure.new { |a| a * 2 }
     r = Regress.test_closure_one_arg c, 2
+
     assert_equal 4, r
   end
 
@@ -3583,6 +3619,7 @@ describe Regress do
 
   it "has a working function #test_date_in_gvalue" do
     date = Regress.test_date_in_gvalue
+
     assert_equal [1984, :december, 5],
                  [date.get_year, date.get_month, date.get_day]
   end
@@ -3594,11 +3631,13 @@ describe Regress do
 
   it "has a working function #test_double" do
     r = Regress.test_double 5435.32
+
     assert_in_delta(5435.32, r)
   end
 
   it "has a working function #test_enum_param" do
     r = Regress.test_enum_param :value3
+
     assert_equal "value3", r
   end
 
@@ -3614,6 +3653,7 @@ describe Regress do
 
   it "has a working function #test_float" do
     r = Regress.test_float 5435.32
+
     assert_in_delta 5435.32, r, 0.001
   end
 
@@ -3740,6 +3780,7 @@ describe Regress do
 
   it "has a working function #test_glist_container_return" do
     list = Regress.test_glist_container_return
+
     assert_instance_of GLib::List, list
     _(list).must_be :==, %w[1 2 3]
   end
@@ -3787,6 +3828,7 @@ describe Regress do
 
   it "has a working function #test_gslist_container_return" do
     slist = Regress.test_gslist_container_return
+
     assert_instance_of GLib::SList, slist
     _(slist).must_be :==, %w[1 2 3]
   end
@@ -3828,6 +3870,7 @@ describe Regress do
 
   it "has a working function #test_gtype" do
     result = Regress.test_gtype 23
+
     assert_equal 23, result
   end
 
@@ -3862,31 +3905,37 @@ describe Regress do
 
   it "has a working function #test_int" do
     result = Regress.test_int 23
+
     assert_equal 23, result
   end
 
   it "has a working function #test_int16" do
     result = Regress.test_int16 23
+
     assert_equal 23, result
   end
 
   it "has a working function #test_int32" do
     result = Regress.test_int32 23
+
     assert_equal 23, result
   end
 
   it "has a working function #test_int64" do
     result = Regress.test_int64 2_300_000_000_000
+
     assert_equal 2_300_000_000_000, result
   end
 
   it "has a working function #test_int8" do
     result = Regress.test_int8 23
+
     assert_equal 23, result
   end
 
   it "has a working function #test_int_out_utf8" do
     len = Regress.test_int_out_utf8 "How long?"
+
     assert_equal 9, len
   end
 
@@ -3895,12 +3944,14 @@ describe Regress do
     gv.init GObject.type_from_name "gint"
     gv.set_int 343
     result = Regress.test_int_value_arg gv
+
     assert_equal 343, result
   end
 
   it "has a working function #test_long" do
     long_val = FFI.type_size(:long) == 8 ? 2_300_000_000_000 : 2_000_000_000
     result = Regress.test_long long_val
+
     assert_equal long_val, result
   end
 
@@ -3910,12 +3961,14 @@ describe Regress do
       a += 1
       23
     end
+
     assert_equal 2 * 23, result
     assert_equal 3, a
   end
 
   it "has a working function #test_multi_double_args" do
     one, two = Regress.test_multi_double_args 23.1
+
     assert_equal 2 * 23.1, one
     assert_equal 3 * 23.1, two
   end
@@ -3967,17 +4020,20 @@ describe Regress do
 
   it "has a working function #test_short" do
     result = Regress.test_short 23
+
     assert_equal 23, result
   end
 
   it "has a working function #test_simple_boxed_a_const_return" do
     result = Regress.test_simple_boxed_a_const_return
+
     assert_equal [5, 6, 7.0], [result.some_int, result.some_int8, result.some_double]
   end
 
   it "has a working function #test_simple_callback" do
     a = 0
     Regress.test_simple_callback { a = 1 }
+
     assert_equal 1, a
   end
 
@@ -4028,11 +4084,13 @@ describe Regress do
     # Time rounded to seconds.
     t = Time.at(Time.now.to_i)
     result = Regress.test_timet(t.to_i)
+
     assert_equal t, Time.at(result)
   end
 
   it "has a working function #test_torture_signature_0" do
     y, z, q = Regress.test_torture_signature_0 86, "foo", 2
+
     assert_equal [86, 2 * 86, 3 + 2], [y, z, q]
   end
 
@@ -4049,6 +4107,7 @@ describe Regress do
     y, z, q = Regress.test_torture_signature_2 244, "foofoo", 31 do |u|
       a = u
     end
+
     assert_equal [244, 2 * 244, 6 + 31], [y, z, q]
     _(a).must_be_instance_of Regress::TestCallbackUserData
   end
@@ -4103,16 +4162,19 @@ describe Regress do
 
   it "has a working function #test_utf8_const_return" do
     result = Regress.test_utf8_const_return
+
     assert_equal "const \xe2\x99\xa5 utf8", result
   end
 
   it "has a working function #test_utf8_inout" do
     result = Regress.test_utf8_inout "const \xe2\x99\xa5 utf8"
+
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
   it "has a working function #test_utf8_nonconst_return" do
     result = Regress.test_utf8_nonconst_return
+
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
@@ -4127,16 +4189,19 @@ describe Regress do
 
   it "has a working function #test_utf8_out" do
     result = Regress.test_utf8_out
+
     assert_equal "nonconst \xe2\x99\xa5 utf8", result
   end
 
   it "has a working function #test_utf8_out_nonconst_return" do
     r, out = Regress.test_utf8_out_nonconst_return
+
     assert_equal %w[first second], [r, out]
   end
 
   it "has a working function #test_utf8_out_out" do
     out0, out1 = Regress.test_utf8_out_nonconst_return
+
     assert_equal %w[first second], [out0, out1]
   end
 

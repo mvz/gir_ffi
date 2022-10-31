@@ -24,8 +24,10 @@ describe GIMarshallingTests do
 
     it "has a writable field long_" do
       instance.long_ = 42
+
       assert_equal 42, instance.long_
       instance.long_ = 43
+
       assert_equal 43, instance.long_
     end
 
@@ -42,6 +44,7 @@ describe GIMarshallingTests do
 
     it "creates an instance using #new" do
       bx = GIMarshallingTests::BoxedStruct.new
+
       assert_instance_of GIMarshallingTests::BoxedStruct, bx
       _(bx.struct).must_be :owned?
     end
@@ -67,12 +70,14 @@ describe GIMarshallingTests do
     it "has a working function #out" do
       res = GIMarshallingTests::BoxedStruct.out
       _(res.struct).must_be :owned?
+
       assert_equal 42, res.long_
     end
 
     it "has a working function #returnv" do
       res = GIMarshallingTests::BoxedStruct.returnv
       _(res.struct).must_be :owned?
+
       assert_equal 42, res.long_
       _(res.g_strv).must_be :==, %w[0 1 2]
     end
@@ -284,6 +289,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::Object" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::Object.new 42
+
       assert_instance_of GIMarshallingTests::Object, ob
       assert_equal 42, ob.int
     end
@@ -547,6 +553,7 @@ describe GIMarshallingTests do
 
     it "has a working method #method_with_default_implementation" do
       instance.method_with_default_implementation 104
+
       assert_equal 104, instance.int
 
       derived_instance = make_derived_instance do |klass|
@@ -555,6 +562,7 @@ describe GIMarshallingTests do
           proc { |obj, num| obj.int = num * 2 })
       end
       derived_instance.method_with_default_implementation 16
+
       assert_equal 32, derived_instance.int
     end
 
@@ -769,10 +777,12 @@ describe GIMarshallingTests do
       end
       it "can be set with #set_property" do
         instance.set_property("int", 13)
+
         assert_equal 13, instance.get_property("int")
       end
       it "can be set with #int=" do
         instance.int = 1
+
         assert_equal 1, instance.int
       end
     end
@@ -781,11 +791,13 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::OverridesObject" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesObject.new
+
       assert_instance_of GIMarshallingTests::OverridesObject, ob
     end
 
     it "has a working function #returnv" do
       ob = GIMarshallingTests::OverridesObject.returnv
+
       assert_instance_of GIMarshallingTests::OverridesObject, ob
     end
 
@@ -812,6 +824,7 @@ describe GIMarshallingTests do
 
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesStruct.new
+
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
     end
 
@@ -821,6 +834,7 @@ describe GIMarshallingTests do
 
     it "has a working function #returnv" do
       ob = GIMarshallingTests::OverridesStruct.returnv
+
       assert_instance_of GIMarshallingTests::OverridesStruct, ob
     end
   end
@@ -828,6 +842,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::PointerStruct" do
     it "creates an instance using #new" do
       ps = GIMarshallingTests::PointerStruct.new
+
       assert_instance_of GIMarshallingTests::PointerStruct, ps
     end
 
@@ -836,6 +851,7 @@ describe GIMarshallingTests do
     it "has a writable field long_" do
       assert_equal 0, instance.long_
       instance.long_ = 1056
+
       assert_equal 1056, instance.long_
     end
 
@@ -847,6 +863,7 @@ describe GIMarshallingTests do
 
     it "has a working function #returnv" do
       ob = GIMarshallingTests::PointerStruct.returnv
+
       assert_instance_of GIMarshallingTests::PointerStruct, ob
     end
   end
@@ -854,6 +871,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::PropertiesObject" do
     it "creates an instance using #new" do
       ob = GIMarshallingTests::PropertiesObject.new
+
       assert_instance_of GIMarshallingTests::PropertiesObject, ob
     end
 
@@ -1387,6 +1405,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::SimpleStruct" do
     it "creates an instance using #new" do
       ss = GIMarshallingTests::SimpleStruct.new
+
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
     end
 
@@ -1420,6 +1439,7 @@ describe GIMarshallingTests do
 
     it "has a working function #returnv" do
       ss = GIMarshallingTests::SimpleStruct.returnv
+
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
     end
   end
@@ -1453,6 +1473,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::SubSubObject" do
     it "creates an instance using #new" do
       so = GIMarshallingTests::SubSubObject.new
+
       assert_instance_of GIMarshallingTests::SubSubObject, so
       _(GObject.type_name_from_instance(so))
         .must_equal "GIMarshallingTestsSubSubObject"
@@ -1469,6 +1490,7 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::Union" do
     it "creates an instance with #new" do
       u = GIMarshallingTests::Union.new
+
       assert_instance_of GIMarshallingTests::Union, u
     end
 
@@ -1477,6 +1499,7 @@ describe GIMarshallingTests do
     it "has a writable field long_" do
       assert_equal 0, instance.long_
       instance.long_ = 1056
+
       assert_equal 1056, instance.long_
     end
 
@@ -1502,6 +1525,7 @@ describe GIMarshallingTests do
 
     it "has a working function #returnv" do
       u = GIMarshallingTests::Union.returnv
+
       assert_instance_of GIMarshallingTests::Union, u
     end
   end
@@ -1543,6 +1567,7 @@ describe GIMarshallingTests do
 
   it "has a working function #array_fixed_out_struct" do
     res = GIMarshallingTests.array_fixed_out_struct
+
     assert_equal [[7, 6], [6, 7]], res.map { |s| [s.long_, s.int8] }
   end
 
@@ -1831,6 +1856,7 @@ describe GIMarshallingTests do
 
   it "has a working function #bytearray_full_return" do
     ret = GIMarshallingTests.bytearray_full_return
+
     assert_instance_of GLib::ByteArray, ret
     assert_includes(
       ["0123".bytes.to_a, "\x001\xFF3".bytes.to_a],
@@ -1898,6 +1924,7 @@ describe GIMarshallingTests do
 
   it "has a working function #double_inout" do
     ret = GIMarshallingTests.double_inout Float::MAX
+
     assert_in_epsilon 2.225e-308, ret
   end
 
@@ -1972,16 +1999,19 @@ describe GIMarshallingTests do
     # float_return returns MAX_FLT
     flt = GIMarshallingTests.float_return
     res = GIMarshallingTests.float_inout flt
+
     assert_in_epsilon 1.175e-38, res
   end
 
   it "has a working function #float_out" do
     flt = GIMarshallingTests.float_out
+
     assert_in_epsilon 3.402e+38, flt
   end
 
   it "has a working function #float_return" do
     flt = GIMarshallingTests.float_return
+
     assert_in_epsilon 3.402e+38, flt
   end
 
@@ -2129,6 +2159,7 @@ describe GIMarshallingTests do
 
   it "has a working function #gerror" do
     GIMarshallingTests.gerror
+
     flunk "Error should have been raised"
   rescue GirFFI::GLibError => e
     _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
@@ -2138,6 +2169,7 @@ describe GIMarshallingTests do
 
   it "has a working function #gerror_array_in" do
     GIMarshallingTests.gerror_array_in [1, 2, 3]
+
     flunk "Error should have been raised"
   rescue GirFFI::GLibError => e
     _(e.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
@@ -2187,6 +2219,7 @@ describe GIMarshallingTests do
 
   it "has a working function #ghashtable_int_none_return" do
     gh = GIMarshallingTests.ghashtable_int_none_return
+
     assert_equal({ -1 => 1, 0 => 0, 1 => -1, 2 => -2 }, gh.to_hash)
   end
 
@@ -2203,17 +2236,20 @@ describe GIMarshallingTests do
   it "has a working function #ghashtable_utf8_container_inout" do
     hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_container_inout hsh
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_container_out" do
     res = GIMarshallingTests.ghashtable_utf8_container_out
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_container_return" do
     res = GIMarshallingTests.ghashtable_utf8_container_return
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
@@ -2225,17 +2261,20 @@ describe GIMarshallingTests do
   it "has a working function #ghashtable_utf8_full_inout" do
     hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_full_inout hsh
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_full_out" do
     res = GIMarshallingTests.ghashtable_utf8_full_out
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_full_return" do
     res = GIMarshallingTests.ghashtable_utf8_full_return
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
@@ -2249,17 +2288,20 @@ describe GIMarshallingTests do
   it "has a working function #ghashtable_utf8_none_inout" do
     hsh = { "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" }
     res = GIMarshallingTests.ghashtable_utf8_none_inout hsh
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "1" }, res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_none_out" do
     res = GIMarshallingTests.ghashtable_utf8_none_out
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
 
   it "has a working function #ghashtable_utf8_none_return" do
     res = GIMarshallingTests.ghashtable_utf8_none_return
+
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
   end
@@ -2616,31 +2658,37 @@ describe GIMarshallingTests do
 
   it "has a working function #int16_inout_max_min" do
     res = GIMarshallingTests.int16_inout_max_min 0x7fff
+
     assert_equal(-0x8000, res)
   end
 
   it "has a working function #int16_inout_min_max" do
     res = GIMarshallingTests.int16_inout_min_max(-0x8000)
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_out_max" do
     res = GIMarshallingTests.int16_out_max
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_out_min" do
     res = GIMarshallingTests.int16_out_min
+
     assert_equal(-0x8000, res)
   end
 
   it "has a working function #int16_return_max" do
     res = GIMarshallingTests.int16_return_max
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #int16_return_min" do
     res = GIMarshallingTests.int16_return_min
+
     assert_equal(-0x8000, res)
   end
 
@@ -2656,31 +2704,37 @@ describe GIMarshallingTests do
 
   it "has a working function #int32_inout_max_min" do
     res = GIMarshallingTests.int32_inout_max_min 0x7fffffff
+
     assert_equal(-0x80000000, res)
   end
 
   it "has a working function #int32_inout_min_max" do
     res = GIMarshallingTests.int32_inout_min_max(-0x80000000)
+
     assert_equal 0x7fffffff, res
   end
 
   it "has a working function #int32_out_max" do
     res = GIMarshallingTests.int32_out_max
+
     assert_equal 0x7fffffff, res
   end
 
   it "has a working function #int32_out_min" do
     res = GIMarshallingTests.int32_out_min
+
     assert_equal(-0x80000000, res)
   end
 
   it "has a working function #int32_return_max" do
     res = GIMarshallingTests.int32_return_max
+
     assert_equal 0x7fffffff, res
   end
 
   it "has a working function #int32_return_min" do
     res = GIMarshallingTests.int32_return_min
+
     assert_equal(-0x80000000, res)
   end
 
@@ -2696,31 +2750,37 @@ describe GIMarshallingTests do
 
   it "has a working function #int64_inout_max_min" do
     res = GIMarshallingTests.int64_inout_max_min 0x7fffffffffffffff
+
     assert_equal(-0x8000000000000000, res)
   end
 
   it "has a working function #int64_inout_min_max" do
     res = GIMarshallingTests.int64_inout_min_max(-0x8000000000000000)
+
     assert_equal 0x7fffffffffffffff, res
   end
 
   it "has a working function #int64_out_max" do
     res = GIMarshallingTests.int64_out_max
+
     assert_equal 0x7fffffffffffffff, res
   end
 
   it "has a working function #int64_out_min" do
     res = GIMarshallingTests.int64_out_min
+
     assert_equal(-0x8000000000000000, res)
   end
 
   it "has a working function #int64_return_max" do
     res = GIMarshallingTests.int64_return_max
+
     assert_equal 0x7fffffffffffffff, res
   end
 
   it "has a working function #int64_return_min" do
     res = GIMarshallingTests.int64_return_min
+
     assert_equal(-0x8000000000000000, res)
   end
 
@@ -2736,31 +2796,37 @@ describe GIMarshallingTests do
 
   it "has a working function #int8_inout_max_min" do
     res = GIMarshallingTests.int8_inout_max_min 0x7f
+
     assert_equal(-0x80, res)
   end
 
   it "has a working function #int8_inout_min_max" do
     res = GIMarshallingTests.int8_inout_min_max(-0x80)
+
     assert_equal 0x7f, res
   end
 
   it "has a working function #int8_out_max" do
     res = GIMarshallingTests.int8_out_max
+
     assert_equal 0x7f, res
   end
 
   it "has a working function #int8_out_min" do
     res = GIMarshallingTests.int8_out_min
+
     assert_equal(-0x80, res)
   end
 
   it "has a working function #int8_return_max" do
     res = GIMarshallingTests.int8_return_max
+
     assert_equal 0x7f, res
   end
 
   it "has a working function #int8_return_min" do
     res = GIMarshallingTests.int8_return_min
+
     assert_equal(-0x80, res)
   end
 
@@ -2776,11 +2842,13 @@ describe GIMarshallingTests do
 
   it "has a working function #int_inout_max_min" do
     res = GIMarshallingTests.int_inout_max_min 0x7fffffff
+
     assert_equal(-0x80000000, res)
   end
 
   it "has a working function #int_inout_min_max" do
     res = GIMarshallingTests.int_inout_min_max(-0x80000000)
+
     assert_equal 0x7fffffff, res
   end
 
@@ -2792,36 +2860,43 @@ describe GIMarshallingTests do
 
   it "has a working function #int_out_max" do
     res = GIMarshallingTests.int_out_max
+
     assert_equal 0x7fffffff, res
   end
 
   it "has a working function #int_out_min" do
     res = GIMarshallingTests.int_out_min
+
     assert_equal(-0x80000000, res)
   end
 
   it "has a working function #int_out_out" do
     res = GIMarshallingTests.int_out_out
+
     assert_equal [6, 7], res
   end
 
   it "has a working function #int_return_max" do
     res = GIMarshallingTests.int_return_max
+
     assert_equal 0x7fffffff, res
   end
 
   it "has a working function #int_return_min" do
     res = GIMarshallingTests.int_return_min
+
     assert_equal(-0x80000000, res)
   end
 
   it "has a working function #int_return_out" do
     res = GIMarshallingTests.int_return_out
+
     assert_equal [6, 7], res
   end
 
   it "has a working function #int_three_in_three_out" do
     res = GIMarshallingTests.int_three_in_three_out 4, 5, 6
+
     assert_equal [4, 5, 6], res
   end
 
@@ -2843,31 +2918,37 @@ describe GIMarshallingTests do
 
   it "has a working function #long_inout_max_min" do
     res = GIMarshallingTests.long_inout_max_min max_long
+
     assert_equal min_long, res
   end
 
   it "has a working function #long_inout_min_max" do
     res = GIMarshallingTests.long_inout_min_max min_long
+
     assert_equal max_long, res
   end
 
   it "has a working function #long_out_max" do
     res = GIMarshallingTests.long_out_max
+
     assert_equal max_long, res
   end
 
   it "has a working function #long_out_min" do
     res = GIMarshallingTests.long_out_min
+
     assert_equal min_long, res
   end
 
   it "has a working function #long_return_max" do
     res = GIMarshallingTests.long_return_max
+
     assert_equal max_long, res
   end
 
   it "has a working function #long_return_min" do
     res = GIMarshallingTests.long_return_min
+
     assert_equal min_long, res
   end
 
@@ -2928,17 +3009,20 @@ describe GIMarshallingTests do
   it "has a working function #pointer_in_return" do
     ptr = FFI::MemoryPointer.new 1
     res = GIMarshallingTests.pointer_in_return ptr
+
     assert_equal ptr.address, res.address
   end
 
   it "has a working function #pointer_struct_get_type" do
     res = GIMarshallingTests.pointer_struct_get_type
     gtype = GObject.type_from_name "GIMarshallingTestsPointerStruct"
+
     assert_equal gtype, res
   end
 
   it "has a working function #pointer_struct_returnv" do
     res = GIMarshallingTests.pointer_struct_returnv
+
     assert_instance_of GIMarshallingTests::PointerStruct, res
     assert_equal 42, res.long_
   end
@@ -2963,36 +3047,43 @@ describe GIMarshallingTests do
 
   it "has a working function #short_inout_max_min" do
     res = GIMarshallingTests.short_inout_max_min 0x7fff
+
     assert_equal(-0x8000, res)
   end
 
   it "has a working function #short_inout_min_max" do
     res = GIMarshallingTests.short_inout_min_max(-0x8000)
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #short_out_max" do
     res = GIMarshallingTests.short_out_max
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #short_out_min" do
     res = GIMarshallingTests.short_out_min
+
     assert_equal(-0x8000, res)
   end
 
   it "has a working function #short_return_max" do
     res = GIMarshallingTests.short_return_max
+
     assert_equal 0x7fff, res
   end
 
   it "has a working function #short_return_min" do
     res = GIMarshallingTests.short_return_min
+
     assert_equal(-0x8000, res)
   end
 
   it "has a working function #simple_struct_returnv" do
     res = GIMarshallingTests.simple_struct_returnv
+
     assert_instance_of GIMarshallingTests::SimpleStruct, res
     assert_equal 6, res.long_
     assert_equal 7, res.int8
@@ -3004,16 +3095,19 @@ describe GIMarshallingTests do
 
   it "has a working function #size_inout" do
     res = GIMarshallingTests.size_inout max_size_t
+
     assert_equal 0, res
   end
 
   it "has a working function #size_out" do
     res = GIMarshallingTests.size_out
+
     assert_equal max_size_t, res
   end
 
   it "has a working function #size_return" do
     res = GIMarshallingTests.size_return
+
     assert_equal max_size_t, res
   end
 
@@ -3029,31 +3123,37 @@ describe GIMarshallingTests do
 
   it "has a working function #ssize_inout_max_min" do
     res = GIMarshallingTests.ssize_inout_max_min max_ssize_t
+
     assert_equal min_ssize_t, res
   end
 
   it "has a working function #ssize_inout_min_max" do
     res = GIMarshallingTests.ssize_inout_min_max min_ssize_t
+
     assert_equal max_ssize_t, res
   end
 
   it "has a working function #ssize_out_max" do
     res = GIMarshallingTests.ssize_out_max
+
     assert_equal max_ssize_t, res
   end
 
   it "has a working function #ssize_out_min" do
     res = GIMarshallingTests.ssize_out_min
+
     assert_equal min_ssize_t, res
   end
 
   it "has a working function #ssize_return_max" do
     res = GIMarshallingTests.ssize_return_max
+
     assert_equal max_ssize_t, res
   end
 
   it "has a working function #ssize_return_min" do
     res = GIMarshallingTests.ssize_return_min
+
     assert_equal min_ssize_t, res
   end
 
@@ -3074,16 +3174,19 @@ describe GIMarshallingTests do
 
   it "has a working function #time_t_inout" do
     res = GIMarshallingTests.time_t_inout 1_234_567_890
+
     assert_equal 0, res
   end
 
   it "has a working function #time_t_out" do
     res = GIMarshallingTests.time_t_out
+
     assert_equal 1_234_567_890, res
   end
 
   it "has a working function #time_t_return" do
     res = GIMarshallingTests.time_t_return
+
     assert_equal 1_234_567_890, res
   end
 
@@ -3094,16 +3197,19 @@ describe GIMarshallingTests do
 
   it "has a working function #uint16_inout" do
     res = GIMarshallingTests.uint16_inout 0xffff
+
     assert_equal 0, res
   end
 
   it "has a working function #uint16_out" do
     res = GIMarshallingTests.uint16_out
+
     assert_equal 0xffff, res
   end
 
   it "has a working function #uint16_return" do
     res = GIMarshallingTests.uint16_return
+
     assert_equal 0xffff, res
   end
 
@@ -3113,16 +3219,19 @@ describe GIMarshallingTests do
 
   it "has a working function #uint32_inout" do
     res = GIMarshallingTests.uint32_inout 0xffffffff
+
     assert_equal 0, res
   end
 
   it "has a working function #uint32_out" do
     res = GIMarshallingTests.uint32_out
+
     assert_equal 0xffffffff, res
   end
 
   it "has a working function #uint32_return" do
     res = GIMarshallingTests.uint32_return
+
     assert_equal 0xffffffff, res
   end
 
@@ -3133,16 +3242,19 @@ describe GIMarshallingTests do
 
   it "has a working function #uint64_inout" do
     res = GIMarshallingTests.uint64_inout 0xffff_ffff_ffff_ffff
+
     assert_equal 0, res
   end
 
   it "has a working function #uint64_out" do
     res = GIMarshallingTests.uint64_out
+
     assert_equal 0xffff_ffff_ffff_ffff, res
   end
 
   it "has a working function #uint64_return" do
     res = GIMarshallingTests.uint64_return
+
     assert_equal 0xffff_ffff_ffff_ffff, res
   end
 
@@ -3152,16 +3264,19 @@ describe GIMarshallingTests do
 
   it "has a working function #uint8_inout" do
     res = GIMarshallingTests.uint8_inout 0xff
+
     assert_equal 0, res
   end
 
   it "has a working function #uint8_out" do
     res = GIMarshallingTests.uint8_out
+
     assert_equal 0xff, res
   end
 
   it "has a working function #uint8_return" do
     res = GIMarshallingTests.uint8_return
+
     assert_equal 0xff, res
   end
 
@@ -3172,16 +3287,19 @@ describe GIMarshallingTests do
 
   it "has a working function #uint_inout" do
     res = GIMarshallingTests.uint_inout max_uint
+
     assert_equal 0, res
   end
 
   it "has a working function #uint_out" do
     res = GIMarshallingTests.uint_out
+
     assert_equal max_uint, res
   end
 
   it "has a working function #uint_return" do
     res = GIMarshallingTests.uint_return
+
     assert_equal max_uint, res
   end
 
@@ -3191,16 +3309,19 @@ describe GIMarshallingTests do
 
   it "has a working function #ulong_inout" do
     res = GIMarshallingTests.ulong_inout max_ulong
+
     assert_equal 0, res
   end
 
   it "has a working function #ulong_out" do
     res = GIMarshallingTests.ulong_out
+
     assert_equal max_ulong, res
   end
 
   it "has a working function #ulong_return" do
     res = GIMarshallingTests.ulong_return
+
     assert_equal max_ulong, res
   end
 
@@ -3214,6 +3335,7 @@ describe GIMarshallingTests do
 
   it "has a working function #union_returnv" do
     res = GIMarshallingTests.union_returnv
+
     assert_instance_of GIMarshallingTests::Union, res
     assert_equal 42, res.long_
   end
@@ -3225,16 +3347,19 @@ describe GIMarshallingTests do
 
   it "has a working function #ushort_inout" do
     res = GIMarshallingTests.ushort_inout max_ushort
+
     assert_equal 0, res
   end
 
   it "has a working function #ushort_out" do
     res = GIMarshallingTests.ushort_out
+
     assert_equal max_ushort, res
   end
 
   it "has a working function #ushort_return" do
     res = GIMarshallingTests.ushort_return
+
     assert_equal max_ushort, res
   end
 
@@ -3245,6 +3370,7 @@ describe GIMarshallingTests do
 
   it "has a working function #utf8_dangling_out" do
     res = GIMarshallingTests.utf8_dangling_out
+
     assert_nil res
   end
 
@@ -3254,16 +3380,19 @@ describe GIMarshallingTests do
 
   it "has a working function #utf8_full_inout" do
     res = GIMarshallingTests.utf8_full_inout "const ♥ utf8"
+
     assert_equal "", res
   end
 
   it "has a working function #utf8_full_out" do
     res = GIMarshallingTests.utf8_full_out
+
     assert_equal "const ♥ utf8", res
   end
 
   it "has a working function #utf8_full_return" do
     res = GIMarshallingTests.utf8_full_return
+
     assert_equal "const ♥ utf8", res
   end
 
@@ -3274,16 +3403,19 @@ describe GIMarshallingTests do
 
   it "has a working function #utf8_none_inout" do
     res = GIMarshallingTests.utf8_none_inout "const ♥ utf8"
+
     assert_equal "", res
   end
 
   it "has a working function #utf8_none_out" do
     res = GIMarshallingTests.utf8_none_out
+
     assert_equal "const ♥ utf8", res
   end
 
   it "has a working function #utf8_none_return" do
     res = GIMarshallingTests.utf8_none_return
+
     assert_equal "const ♥ utf8", res
   end
 end

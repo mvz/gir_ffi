@@ -18,6 +18,7 @@ describe GObjectIntrospection::IRepository do
 
     it "is a singleton" do
       gir2 = GObjectIntrospection::IRepository.default
+
       assert_equal gir, gir2
     end
   end
@@ -49,6 +50,7 @@ describe GObjectIntrospection::IRepository do
   describe "#n_infos" do
     it "yields more than one object for the GObject namespace" do
       gir.require "GObject", "2.0"
+
       assert_operator gir.n_infos("GObject"), :>, 0
     end
   end
@@ -56,6 +58,7 @@ describe GObjectIntrospection::IRepository do
   describe "#info" do
     it "yields IBaseInfo objects" do
       gir.require "GObject", "2.0"
+
       assert_kind_of GObjectIntrospection::IBaseInfo, gir.info("GObject", 0)
     end
   end

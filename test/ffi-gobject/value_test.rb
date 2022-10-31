@@ -34,12 +34,14 @@ describe GObject::Value do
   describe "::wrap_ruby_value" do
     it "wraps a boolean false" do
       gv = GObject::Value.wrap_ruby_value false
+
       assert_instance_of GObject::Value, gv
       _(gv.get_boolean).must_equal false
     end
 
     it "wraps a boolean true" do
       gv = GObject::Value.wrap_ruby_value true
+
       assert_instance_of GObject::Value, gv
       _(gv.get_boolean).must_equal true
     end
@@ -56,6 +58,7 @@ describe GObject::Value do
 
     it "wraps nil" do
       gv = GObject::Value.wrap_ruby_value nil
+
       assert_instance_of GObject::Value, gv
       _(gv.get_value).must_be_nil
     end

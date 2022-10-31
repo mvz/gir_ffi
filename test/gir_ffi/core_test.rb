@@ -7,12 +7,14 @@ GirFFI.setup :GIMarshallingTests
 describe GirFFI::Core do
   it "sets up cairo as Cairo" do
     GirFFI.setup :cairo
+
     assert Object.const_defined?(:Cairo)
   end
 
   it "sets up xlib, which has no shared library" do
     gir = GObjectIntrospection::IRepository.default
     gir.require "xlib"
+
     assert_nil gir.shared_library("xlib"), "Precondition for test failed"
     GirFFI.setup :xlib
   end

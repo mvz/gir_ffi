@@ -28,6 +28,7 @@ describe GirFFI::Builders::StructBuilder do
       it "creates the correct layout specification" do
         expect(@field).to receive(:layout_specification).and_return [:bar, :int32, 0]
         spec = @builder.layout_specification
+
         assert_equal [:bar, :int32, 0], spec
       end
     end
@@ -46,6 +47,7 @@ describe GirFFI::Builders::StructBuilder do
 
         builder = GirFFI::Builders::StructBuilder.new struct
         spec = builder.layout_specification
+
         assert_equal [:bar, :foo, 0, :baz, [:qux, 2], 0], spec
       end
     end
