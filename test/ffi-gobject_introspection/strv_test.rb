@@ -37,6 +37,7 @@ describe GObjectIntrospection::Strv do
 
     it "yields zero times for a Strv wrapping a null pointer" do
       strv = GObjectIntrospection::Strv.new FFI::Pointer.new(0)
+
       strv.each do |_str|
         flunk
       end
