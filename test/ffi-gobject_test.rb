@@ -13,7 +13,7 @@ describe GObject do
       o = Regress::TestSubObj.new
       prc = proc { a = 2 }
       callback = GObject::Callback.from prc
-      ::GObject::Lib.g_signal_connect_data o, "test", callback, nil, nil, 0
+      GObject::Lib.g_signal_connect_data o, "test", callback, nil, nil, 0
       GObject.signal_emit o, "test"
 
       assert_equal 2, a
@@ -24,7 +24,7 @@ describe GObject do
 
       argtypes = [:pointer, :pointer, :pointer, :pointer]
       callback = FFI::Function.new(:bool, argtypes) { |_a, _b, _c, _d| true }
-      ::GObject::Lib.g_signal_connect_data s, "incoming", callback, nil, nil, 0
+      GObject::Lib.g_signal_connect_data s, "incoming", callback, nil, nil, 0
       rv = GObject.signal_emit s, "incoming"
 
       assert rv
@@ -42,8 +42,8 @@ describe GObject do
       callback = FFI::Function.new(:void, argtypes) do |_a, b, _c|
         b2 = b
       end
-      ::GObject::Lib.g_signal_connect_data(o, "test-with-static-scope-arg",
-                                           callback, nil, nil, 0)
+      GObject::Lib.g_signal_connect_data(o, "test-with-static-scope-arg",
+                                         callback, nil, nil, 0)
       GObject.signal_emit o, "test-with-static-scope-arg", sb
 
       sb2 = Regress::TestSimpleBoxedA.wrap b2
@@ -56,7 +56,7 @@ describe GObject do
       o = Regress::TestSubObj.new
 
       callback = FFI::Function.new(:void, [:pointer, :pointer, :pointer]) { a = 2 }
-      ::GObject::Lib.g_signal_connect_data o, "notify::detail", callback, nil, nil, 0
+      GObject::Lib.g_signal_connect_data o, "notify::detail", callback, nil, nil, 0
 
       GObject.signal_emit o, "notify::detail"
 
