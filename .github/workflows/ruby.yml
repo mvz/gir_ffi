@@ -47,6 +47,8 @@ jobs:
           sudo apt-get install gir1.2-secret-1
           sudo apt-get install gir1.2-gstreamer-1.0
           sudo apt-get install gir1.2-gtksource-3.0
+          # BUG: Missing dependency of gir1.2-harfbuzz-0.0
+          sudo apt-get install libharfbuzz-gobject0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
