@@ -22,7 +22,7 @@ describe GLib::HashTable do
       hsh = GLib::HashTable.from [:utf8, :gint32], "foo" => 23, "bar" => 32
       hsh2 = GLib::HashTable.from [:utf8, :gint32], hsh
 
-      assert hsh2.equal? hsh
+      assert_same hsh2, hsh
     end
 
     it "wraps its argument if given a pointer" do

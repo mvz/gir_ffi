@@ -76,7 +76,7 @@ describe GLib::List do
       lst = GLib::List.from :gint32, [3, 2, 1]
       lst2 = GLib::List.from :gint32, lst
 
-      assert lst2.equal? lst
+      assert_same lst2, lst
     end
 
     it "wraps its argument if given a pointer" do

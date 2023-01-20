@@ -105,7 +105,7 @@ describe GLib::Array do
       arr.append_vals [3, 2, 1]
       arr2 = GLib::Array.from :gint32, arr
 
-      assert arr2.equal? arr
+      assert_same arr2, arr
     end
 
     it "wraps its argument if given a pointer" do

@@ -14,7 +14,7 @@ describe GLib::Strv do
       strv = GLib::Strv.from %w[1 2 3]
       strv2 = GLib::Strv.from strv
 
-      assert strv2.equal? strv
+      assert_same strv2, strv
     end
 
     it "wraps its argument if given a pointer" do

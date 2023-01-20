@@ -48,7 +48,7 @@ describe GLib::Bytes do
       bytes = GLib::Bytes.new [1, 2, 3]
       result = GLib::Bytes.from bytes
 
-      assert result.equal?(bytes)
+      assert_same result, bytes
     end
 
     it "wraps its argument if given a pointer" do
