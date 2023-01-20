@@ -23,7 +23,7 @@ module GirFFI
         when Module
           args = [value_exp, ptr_exp]
           args << offset unless offset == 0
-          "#{ffi_type_spec}.copy_value_to_pointer(#{args.join(', ')})"
+          "#{ffi_type_spec}.copy_value_to_pointer(#{args.join(", ")})"
         when Symbol
           "#{ptr_exp}.put_#{ffi_type_spec} #{offset}, #{value_exp}"
         end

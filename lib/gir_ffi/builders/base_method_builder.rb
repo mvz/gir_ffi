@@ -28,7 +28,7 @@ module GirFFI
       # Methods used by MethodTemplate
 
       def invocation
-        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(', ')}".strip
+        "#{lib_name}.#{@info.symbol} #{function_call_arguments.join(", ")}".strip
       end
 
       def method_arguments

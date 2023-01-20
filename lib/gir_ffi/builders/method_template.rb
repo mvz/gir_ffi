@@ -19,7 +19,7 @@ module GirFFI
 
       def method_definition
         code = +"def #{qualified_method_name}"
-        code << "(#{method_arguments.join(', ')})" if method_arguments.any?
+        code << "(#{method_arguments.join(", ")})" if method_arguments.any?
         method_lines.each { |line| code << "\n  #{line}" }
         code << "\nend\n"
       end
@@ -27,7 +27,7 @@ module GirFFI
       private
 
       def qualified_method_name
-        "#{@builder.singleton_method? ? 'self.' : ''}#{@builder.method_name}"
+        "#{@builder.singleton_method? ? "self." : ""}#{@builder.method_name}"
       end
 
       def method_arguments
