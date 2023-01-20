@@ -117,7 +117,7 @@ describe GLib::Array do
       arr2 = GLib::Array.from :gint32, pointer
 
       assert_instance_of GLib::Array, arr2
-      refute arr2.equal? arr
+      refute_same arr2, arr
       _(arr2.to_a).must_equal arr.to_a
     end
   end

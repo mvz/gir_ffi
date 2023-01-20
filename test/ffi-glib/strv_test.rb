@@ -27,7 +27,7 @@ describe GLib::Strv do
 
       _(strv2).must_be_kind_of GLib::Strv
 
-      refute strv2.equal? strv
+      refute_same strv2, strv
       _(strv2.to_a).must_equal strv.to_a
     end
   end

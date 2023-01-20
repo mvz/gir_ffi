@@ -33,7 +33,7 @@ describe GLib::HashTable do
       hsh2 = GLib::HashTable.from [:utf8, :gint32], pointer
 
       assert_instance_of GLib::HashTable, hsh2
-      refute hsh2.equal? hsh
+      refute_same hsh2, hsh
       _(hsh2.to_hash).must_equal hsh.to_hash
     end
   end

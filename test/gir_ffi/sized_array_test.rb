@@ -91,7 +91,7 @@ describe GirFFI::SizedArray do
       arr2 = GirFFI::SizedArray.from :gint32, 3, arr.to_ptr
 
       assert_instance_of GirFFI::SizedArray, arr2
-      refute arr2.equal? arr
+      refute_same arr2, arr
       _(arr2.to_ptr).must_equal arr.to_ptr
     end
   end
