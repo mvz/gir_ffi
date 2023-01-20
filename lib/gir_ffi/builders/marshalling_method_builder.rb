@@ -39,7 +39,7 @@ module GirFFI
         if param_names.size == 1
           ["#{param_names.first} = param_values.first.get_value_plain"]
         else
-          ["#{param_names.join(', ')} = param_values.map(&:get_value_plain)"]
+          ["#{param_names.join(", ")} = param_values.map(&:get_value_plain)"]
         end
       end
 

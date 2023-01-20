@@ -18,7 +18,7 @@ module GirFFI
 
       def result
         if argument_builder_collection.has_return_values?
-          ["return #{argument_builder_collection.return_value_names.join(', ')}"]
+          ["return #{argument_builder_collection.return_value_names.join(", ")}"]
         else
           []
         end
