@@ -52,7 +52,7 @@ module IntrospectionTestExtensions
   end
 
   def skip_below(introduction_version)
-    unless LATEST_VERSION >= introduction_version
+    if introduction_version > LATEST_VERSION
       raise "Version #{introduction_version} is too new and would always be skipped"
     end
 
