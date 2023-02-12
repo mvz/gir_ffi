@@ -100,7 +100,7 @@ describe Gio do
 
   describe "Gio::SocketSourceFunc" do
     it "can be cast to a native function" do
-      Gio::SocketSourceFunc.new { |*args| p args }.to_native
+      Gio::SocketSourceFunc.new { |*args| puts args }.to_native
     end
   end
 
