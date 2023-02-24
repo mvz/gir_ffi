@@ -1,5 +1,7 @@
 --hide-api private
 --load yard-plugin/setup.rb
+lib/ffi-gobject_introspection
+lib
 -
 *.md
 docs/*.md
