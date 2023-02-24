@@ -23,9 +23,10 @@ module GirFFI
   end
 end
 
-FFI::Pointer.prepend GirFFI::FFIExt::Pointer
+# @api private
+class FFI::Pointer # rubocop:disable Style/ClassAndModuleChildren
+  prepend GirFFI::FFIExt::Pointer
 
-FFI::Pointer.class_eval do
   size_t_getter = case FFI.type_size(:size_t)
                   when 4
                     :get_uint32
