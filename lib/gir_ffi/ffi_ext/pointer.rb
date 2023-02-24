@@ -27,13 +27,17 @@ end
 class FFI::Pointer # rubocop:disable Style/ClassAndModuleChildren
   prepend GirFFI::FFIExt::Pointer
 
-  size_t_getter = case FFI.type_size(:size_t)
-                  when 4
-                    :get_uint32
-                  when 8
-                    :get_uint64
-                  end
+  size_t_getter =
+    case (size = FFI.type_size(:size_t))
+    when 4
+      :get_uint32
+    when 8
+      :get_uint64
+    else
+      raise NotImplementedError, "Don't know how to handle size_t types of size #{size}"
+    end
 
   alias_method :get_size_t, size_t_getter
+
   alias_method :get_gtype, :get_size_t
 end
