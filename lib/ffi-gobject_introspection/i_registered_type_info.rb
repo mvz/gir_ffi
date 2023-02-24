@@ -16,6 +16,6 @@ module GObjectIntrospection
       Lib.g_registered_type_info_get_g_type self
     end
 
-    alias gtype g_type
+    alias_method :gtype, :g_type
   end
 end

@@ -109,11 +109,11 @@ class Listener
     @class_stack << [tag, obj_name]
   end
 
-  alias start_bitfield start_type
-  alias start_enumeration start_type
-  alias start_interface start_type
-  alias start_record start_type
-  alias start_union start_type
+  alias_method :start_bitfield, :start_type
+  alias_method :start_enumeration, :start_type
+  alias_method :start_interface, :start_type
+  alias_method :start_record, :start_type
+  alias_method :start_union, :start_type
 
   def start_constructor(_tag, obj_name, _attrs)
     emit_indented 4, "it \"creates an instance using ##{obj_name}\" do"
@@ -136,7 +136,7 @@ class Listener
     emit_indented 2, "#{spaces}it \"has a working #{tag} ##{obj_name}\" do"
   end
 
-  alias start_method start_function
+  alias_method :start_method, :start_function
 
   def start_member(_tag, obj_name, _attrs)
     emit_indented 4, "it \"has the member :#{obj_name}\" do"
@@ -183,12 +183,12 @@ class Listener
     emit_indented 2, "end" unless @class_stack.any?
   end
 
-  alias end_record end_object
-  alias end_class end_object
-  alias end_enumeration end_object
-  alias end_bitfield end_object
-  alias end_interface end_object
-  alias end_union end_object
+  alias_method :end_record, :end_object
+  alias_method :end_class, :end_object
+  alias_method :end_enumeration, :end_object
+  alias_method :end_bitfield, :end_object
+  alias_method :end_interface, :end_object
+  alias_method :end_union, :end_object
 
   def end_function
     if @class_stack.any?
@@ -198,11 +198,11 @@ class Listener
     end
   end
 
-  alias end_constructor end_function
-  alias end_method end_function
-  alias end_member end_function
-  alias end_property end_function
-  alias end_signal end_function
+  alias_method :end_constructor, :end_function
+  alias_method :end_method, :end_function
+  alias_method :end_member, :end_function
+  alias_method :end_property, :end_function
+  alias_method :end_signal, :end_function
 
   def end_field
     emit_indented 4, "end" if current_object_type != "class"
