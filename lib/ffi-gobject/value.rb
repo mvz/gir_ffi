@@ -81,7 +81,7 @@ module GObject
         send set_method, val
       end
 
-      alias value= set_value
+      alias_method :value=, :set_value
 
       def current_gtype
         struct[:g_type]

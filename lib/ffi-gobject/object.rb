@@ -33,8 +33,8 @@ module GObject
       store_pointer ptr
     end
 
-    alias old_initialze initialize
-    alias initialize initialize_with_properties
+    alias_method :old_initialze, :initialize
+    alias_method :initialize, :initialize_with_properties
     remove_method :old_initialze
 
     def self.new(*args, &block)
@@ -43,7 +43,7 @@ module GObject
       obj
     end
 
-    alias base_initialize initialize
+    alias_method :base_initialize, :initialize
 
     private :base_initialize
 
@@ -82,7 +82,7 @@ module GObject
     setup_instance_method! "get_property"
     setup_instance_method! "set_property"
     setup_instance_method! "is_floating"
-    alias floating? is_floating
+    alias_method :floating?, :is_floating
 
     private
 

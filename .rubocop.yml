@@ -66,6 +66,10 @@ Naming/VariableNumber:
 Performance/StartWith:
   AutoCorrect: true
 
+# Use alias_method since it is more versatile
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
 # Allow and/or for control flow only
 Style/AndOr:
   EnforcedStyle: conditionals
