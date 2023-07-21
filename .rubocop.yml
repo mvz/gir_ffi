@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 inherit_mode:
   merge:
     - Exclude
+    - CountAsOne
 
 require:
   - rubocop-minitest
@@ -62,6 +63,11 @@ Metrics/BlockLength:
     - 'test/**/*'
     - 'tasks/*.rake'
     - '*.gemspec'
+
+# Count certain literals as only one line of code
+Metrics/MethodLength:
+  CountAsOne:
+    - heredoc
 
 # Allow semantic variation in and/or external determination of symbols
 Naming/VariableNumber:
