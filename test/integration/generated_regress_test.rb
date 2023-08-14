@@ -1453,9 +1453,10 @@ describe Regress do
     end
 
     it "has a working method #unref" do
-      _(base_struct[:refcount]).must_equal 1
+      derived_instance.ref
+      _(base_struct[:refcount]).must_equal 2
       derived_instance.unref
-      _(base_struct[:refcount]).must_equal 0
+      _(base_struct[:refcount]).must_equal 1
     end
   end
 
