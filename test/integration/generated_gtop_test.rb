@@ -11,7 +11,7 @@ describe GTop do
     it "is a valid struct class" do
       # Superclass is either BoxedBase or StructBase, depending on library
       # versions. This means StructLikeBase is always one of the ancestors.
-      assert GTop::Glibtop < GirFFI::StructLikeBase
+      assert_descendant_of GirFFI::StructLikeBase, GTop::Glibtop
     end
 
     it "can be created using Glibtop.init" do

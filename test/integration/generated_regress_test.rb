@@ -1436,7 +1436,7 @@ describe Regress do
 
   describe "Regress::TestFundamentalObject" do
     it "does not have GObject::Object as an ancestor" do
-      refute(Regress::TestFundamentalObject < GObject::Object)
+      refute_descendant_of GObject::Object, Regress::TestFundamentalObject
     end
 
     it "cannot be instantiated" do
@@ -1466,7 +1466,7 @@ describe Regress do
     end
 
     it "does not have GObject::Object as an ancestor" do
-      refute(Regress::TestFundamentalObjectNoGetSetFunc < GObject::Object)
+      refute_descendant_of GObject::Object, Regress::TestFundamentalObjectNoGetSetFunc
     end
 
     it "creates an instance using #new" do
@@ -1487,7 +1487,7 @@ describe Regress do
 
   describe "Regress::TestFundamentalSubObject" do
     it "does not have GObject::Object as an ancestor" do
-      refute(Regress::TestFundamentalSubObject < GObject::Object)
+      refute_descendant_of GObject::Object, Regress::TestFundamentalSubObject
     end
 
     it "creates an instance using #new" do
@@ -1512,7 +1512,7 @@ describe Regress do
     end
 
     it "does not have GObject::Object as an ancestor" do
-      refute(Regress::TestFundamentalSubObjectNoGetSetFunc < GObject::Object)
+      refute_descendant_of GObject::Object, Regress::TestFundamentalSubObjectNoGetSetFunc
     end
 
     it "creates an instance using #new" do
