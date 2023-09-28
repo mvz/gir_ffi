@@ -62,6 +62,22 @@ module BaseTestExtensions
 
     refute_includes methods, method, msg
   end
+
+  def assert_descendant_of(ancestor, klass, msg = nil)
+    msg = message(msg) do
+      "Expected #{mu_pp(klass)} to be a descendant of #{mu_pp(ancestor)}"
+    end
+
+    assert_operator klass, :<, ancestor, msg
+  end
+
+  def refute_descendant_of(ancestor, klass, msg = nil)
+    msg = message(msg) do
+      "Expected #{mu_pp(klass)} not to be a descendant of #{mu_pp(ancestor)}"
+    end
+
+    refute_operator klass, :<, ancestor, msg
+  end
 end
 
 Minitest::Test.include BaseTestExtensions
