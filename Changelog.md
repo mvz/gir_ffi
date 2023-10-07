@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.16.1 / 2023-10-07
+
+* Support Ruby 3.2 ([#331] by [mvz])
+* Require at least ffi 1.16.3 to avoid 'Can't modify frozen Hash' error ([#350]
+  by [mvz])
+
+[mvz]: https://github.com/mvz
+
+[#331]: https://github.com/mvz/gir_ffi/pull/331
+[#350]: https://github.com/mvz/gir_ffi/pull/350
+
 ## 0.16.0 / 2022-05-21
 
 * Support Ruby 3.1
