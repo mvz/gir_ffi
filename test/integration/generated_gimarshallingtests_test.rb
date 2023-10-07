@@ -1358,13 +1358,13 @@ describe GIMarshallingTests do
     it "has a working method #emit_boxed_gptrarray_boxed_struct" do
       result = nil
       instance.signal_connect "some-boxed-gptrarray-boxed-struct" do |_obj, arr, _user_data|
-        # Conversion to array must happen in the block since the array is
-        # emptied out after the signal emitter is done.
-        result = arr.to_a
+        # Conversion must happen in the block since the array is emptied out
+        # and the boxed structs are deallocated after the signal emitter is done.
+        result = arr.to_a.map(&:long_)
       end
 
       instance.emit_boxed_gptrarray_boxed_struct
-      _(result.map(&:long_)).must_equal [42, 43, 44]
+      _(result).must_equal [42, 43, 44]
     end
 
     it "has a working method #emit_boxed_gptrarray_utf8" do
