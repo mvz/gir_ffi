@@ -26,7 +26,7 @@ jobs:
         ruby: ["2.7", "3.0", "3.1", "3.2"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install non-ruby dependencies
         run: |
           # Ensure all packages can be found
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
