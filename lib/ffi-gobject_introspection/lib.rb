@@ -258,7 +258,7 @@ module GObjectIntrospection
 
     # Union type representing an argument value
     class GIArgument < FFI::Union
-      signed_size_t = "int#{FFI.type_size(:size_t) * 8}".to_sym
+      signed_size_t = :"int#{FFI.type_size(:size_t) * 8}"
 
       layout :v_boolean, :int,
              :v_int8, :int8,
