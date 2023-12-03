@@ -78,6 +78,8 @@ module IntrospectionTestExtensions
 
   LATEST_VERSION = VERSION_GUARDS.keys.first
 
+  # RuboCop 1.58.0 has a false positive here
+  # rubocop:disable Style/HashEachMethods
   def calculate_version
     VERSION_GUARDS.each do |version, (namespace, class_or_function, method_name)|
       result = if method_name
@@ -90,6 +92,7 @@ module IntrospectionTestExtensions
 
     "1.56.0" # Minimum supported version
   end
+  # rubocop:enable Style/HashEachMethods
 end
 
 Minitest::Test.include IntrospectionTestExtensions
