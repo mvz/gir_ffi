@@ -108,6 +108,10 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
 
+# Disable to allow free choice
+Style/SuperWithArgsParentheses:
+  Enabled: false
+
 # Prefer symbols to look like symbols
 Style/SymbolArray:
   EnforcedStyle: brackets

@@ -172,7 +172,7 @@ module GirFFI
       end
 
       def has_ingoing_component?
-        (direction == :inout || direction == :in)
+        direction == :inout || direction == :in
       end
 
       def array_length_assignment

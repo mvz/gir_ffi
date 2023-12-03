@@ -7,7 +7,7 @@ module GirFFI
   # Maps GObject type tags and type specification to types FFI can handle.
   module TypeMap
     sz = FFI.type_size(:size_t) * 8
-    gsize_type = "uint#{sz}".to_sym
+    gsize_type = :"uint#{sz}"
 
     TAG_TYPE_MAP = {
       enum: :int32,
