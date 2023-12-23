@@ -927,7 +927,7 @@ describe Regress do
 
   describe "Regress::FooSubInterface" do
     let(:derived_klass) do
-      Object.const_set("DerivedClass#{Sequence.next}",
+      Object.const_set(:"DerivedClass#{Sequence.next}",
                        Class.new(Regress::FooObject))
     end
 

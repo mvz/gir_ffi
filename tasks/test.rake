@@ -37,7 +37,7 @@ class Listener
     obj_name = attrs["name"]
     case tag
     when *HANDLED_TAGS
-      send "start_#{tag}", tag, obj_name, attrs
+      send :"start_#{tag}", tag, obj_name, attrs
     when "glib:signal"
       start_signal(tag, obj_name, attrs)
     when *SILENT_TAGS
@@ -54,7 +54,7 @@ class Listener
 
     case tag
     when *HANDLED_TAGS
-      send "end_#{tag}"
+      send :"end_#{tag}"
     when "glib:signal"
       end_signal
     end

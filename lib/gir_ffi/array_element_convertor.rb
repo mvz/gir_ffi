@@ -32,7 +32,7 @@ module GirFFI
       when Module
         value_ffi_type.get_value_from_pointer(pointer, 0)
       when Symbol
-        pointer.send("get_#{value_ffi_type}", 0)
+        pointer.send(:"get_#{value_ffi_type}", 0)
       else
         raise NotImplementedError
       end
