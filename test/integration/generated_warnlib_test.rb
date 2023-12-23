@@ -7,7 +7,7 @@ GirFFI.setup :WarnLib
 describe WarnLib do
   describe "WarnLib::Whatever" do
     let(:derived_klass) do
-      Object.const_set("DerivedClass#{Sequence.next}", Class.new(GObject::Object))
+      Object.const_set(:"DerivedClass#{Sequence.next}", Class.new(GObject::Object))
     end
 
     before do

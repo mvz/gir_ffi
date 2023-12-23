@@ -128,7 +128,7 @@ module GirFFI
 
       def property_setter_func
         setter = proc do |object, _property_id, value, pspec|
-          object.send("#{pspec.accessor_name}=", value.get_value)
+          object.send(:"#{pspec.accessor_name}=", value.get_value)
         end
         GObject::ObjectSetPropertyFunc.from setter
       end
