@@ -7,11 +7,11 @@ module GirFFI
   module ModuleBase
     include MethodSetup
 
-    def method_missing(method, *arguments, &block)
+    def method_missing(method, ...)
       result = setup_method method.to_s
       return super unless result
 
-      send method, *arguments, &block
+      send(method, ...)
     end
 
     def respond_to_missing?(method, *)

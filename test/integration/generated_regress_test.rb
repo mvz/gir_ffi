@@ -4219,7 +4219,7 @@ describe Regress do
 
   it "raises an appropriate NoMethodError when a function is not found" do
     result = _(proc { Regress.this_method_does_not_exist }).must_raise(NoMethodError)
-    _(result.message)
-      .must_equal "undefined method `this_method_does_not_exist' for Regress:Module"
+    _(result.name).must_equal :this_method_does_not_exist
+    _(result.receiver).must_equal Regress
   end
 end
