@@ -11,9 +11,9 @@ module GObject
                                  [:size_t, :uint32, :pointer, :pointer],
                                  :pointer)
 
-    def self.new_with_properties(*args, &block)
+    def self.new_with_properties(...)
       obj = allocate
-      obj.__send__ :initialize_with_properties, *args, &block
+      obj.__send__(:initialize_with_properties, ...)
       obj
     end
 
@@ -37,9 +37,9 @@ module GObject
     alias_method :initialize, :initialize_with_properties
     remove_method :old_initialze
 
-    def self.new(*args, &block)
+    def self.new(...)
       obj = allocate
-      obj.__send__ :initialize, *args, &block
+      obj.__send__(:initialize, ...)
       obj
     end
 
