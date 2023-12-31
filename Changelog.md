@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.17.0 / 2023-12-31
+
+* Support Ruby 3.0 and up, dropping support for Ruby 2.7 ([#356] by [mvz])
+
+[#356]: https://github.com/mvz/gir_ffi/pull/356
+
 ## 0.16.1 / 2023-10-07
 
 * Support Ruby 3.2 ([#331] by [mvz])
