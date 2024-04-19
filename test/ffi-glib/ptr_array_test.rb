@@ -28,7 +28,7 @@ describe GLib::PtrArray do
       GLib::PtrArray.add arr, "test3"
 
       a = []
-      arr.each { |v| a << v }
+      arr.each { |v| a << v } # rubocop:disable Style/MapIntoArray
 
       assert_equal %w[test1 test2 test3], a
     end

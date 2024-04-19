@@ -43,7 +43,7 @@ describe GirFFI::ZeroTerminated do
     it "yields each element" do
       zt = GirFFI::ZeroTerminated.from :int32, [1, 2, 3]
       arr = []
-      zt.each do |int|
+      zt.each do |int| # rubocop:disable Style/MapIntoArray
         arr << int
       end
       _(arr).must_equal [1, 2, 3]
@@ -60,7 +60,7 @@ describe GirFFI::ZeroTerminated do
     it "works for :int8" do
       zt = GirFFI::ZeroTerminated.from :int8, [1, 2, 3]
       arr = []
-      zt.each do |int|
+      zt.each do |int| # rubocop:disable Style/MapIntoArray
         arr << int
       end
       _(arr).must_equal [1, 2, 3]

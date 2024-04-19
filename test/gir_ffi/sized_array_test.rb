@@ -31,7 +31,7 @@ describe GirFFI::SizedArray do
 
       sarr = GirFFI::SizedArray.new :utf8, 3, block
       arr = []
-      sarr.each do |str|
+      sarr.each do |str| # rubocop:disable Style/MapIntoArray
         arr << str
       end
 
