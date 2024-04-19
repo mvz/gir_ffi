@@ -28,7 +28,7 @@ describe GObjectIntrospection::Strv do
 
       strv = GObjectIntrospection::Strv.new block
       arr = []
-      strv.each do |str|
+      strv.each do |str| # rubocop:disable Style/MapIntoArray
         arr << str
       end
 

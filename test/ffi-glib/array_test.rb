@@ -31,7 +31,7 @@ describe GLib::Array do
 
     it "iterates over the values" do
       a = []
-      @arr.each { |v| a << v }
+      @arr.each { |v| a << v } # rubocop:disable Style/MapIntoArray
 
       assert_equal [1, 2, 3], a
     end
