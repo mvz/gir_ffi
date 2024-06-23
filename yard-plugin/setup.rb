@@ -8,8 +8,7 @@ module LocalLinkHelper
   # Rewrites links to (assumed local) markdown files so they're processed as
   # {file: } directives.
   def resolve_links(text)
-    text = text.gsub(%r{<a href="([^"]*.md)">([^<]*)</a>}, '{file:\1 \2}')
-    super text
+    super text.gsub(%r{<a href="([^"]*.md)">([^<]*)</a>}, '{file:\1 \2}')
   end
 end
 
