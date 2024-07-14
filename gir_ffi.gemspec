@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
   spec.rdoc_options = ["--main", "README.md"]
   spec.extra_rdoc_files = ["DESIGN.md", "Changelog.md", "README.md", "TODO.md"]
 
-  spec.add_runtime_dependency "ffi", ["~> 1.16", ">= 1.16.3"]
-  spec.add_runtime_dependency "ffi-bit_masks", "~> 0.1.1"
+  spec.add_dependency "ffi", ["~> 1.16", ">= 1.16.3"]
+  spec.add_dependency "ffi-bit_masks", "~> 0.1.1"
 
   spec.add_development_dependency "aruba", "~> 2.0"
   spec.add_development_dependency "minitest", "~> 5.12"
