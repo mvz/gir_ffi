@@ -8,7 +8,7 @@ module GObject
     extend FFI::Library
     extend FFI::BitMasks
 
-    ffi_lib "gobject-2.0"
+    ffi_lib "gobject-2.0.so.0"
 
     attach_function :g_type_from_name, [:string], :size_t
     attach_function :g_type_fundamental, [:size_t], :size_t
