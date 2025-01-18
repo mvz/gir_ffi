@@ -14,8 +14,8 @@ module GirFFI
       GObject.signal_name signal_id
     end
 
-    def wrap_in_closure(&block)
-      GObject::RubyClosure.new(&block)
+    def wrap_in_closure(&)
+      GObject::RubyClosure.new(&)
     end
 
     def arguments_to_gvalues(instance, arguments)

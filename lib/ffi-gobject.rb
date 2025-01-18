@@ -60,8 +60,8 @@ module GObject
     signal_connect_closure object, detailed_signal, closure, after
   end
 
-  def self.signal_connect_after(object, detailed_signal, data = nil, &block)
-    signal_connect object, detailed_signal, data, true, &block
+  def self.signal_connect_after(object, detailed_signal, data = nil, &)
+    signal_connect(object, detailed_signal, data, true, &)
   end
 
   load_class :Callback
