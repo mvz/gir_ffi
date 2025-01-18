@@ -30,12 +30,12 @@ module GirFFI
       from_native pointer.get_int32(offset), nil
     end
 
-    def setup_and_call(method, arguments, &block)
+    def setup_and_call(method, arguments, &)
       result = setup_method method.to_s
 
       raise "Unable to set up method #{method} in #{self}" unless result
 
-      send method, *arguments, &block
+      send(method, *arguments, &)
     end
 
     def to_ffi_type

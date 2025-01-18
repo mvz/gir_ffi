@@ -16,8 +16,9 @@ Gem::Specification.new do |spec|
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
   spec.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
+
   spec.license = "LGPL-2.1+"
-  spec.required_ruby_version = ">= 3.0.0"
+  spec.required_ruby_version = ">= 3.1.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/mvz/gir_ffi"
@@ -34,6 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "ffi-bit_masks", "~> 0.1.1"
 
   spec.add_development_dependency "aruba", "~> 2.0"
+  spec.add_development_dependency "cucumber", "~> 9.2", ">= 9.2.1"
   spec.add_development_dependency "minitest", "~> 5.12"
   spec.add_development_dependency "minitest-focus", ["~> 1.3", ">= 1.3.1"]
   spec.add_development_dependency "rake", "~> 13.0"

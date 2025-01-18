@@ -7,8 +7,8 @@ module GLib
   class Bytes
     include Enumerable
 
-    def each(&block)
-      data.each(&block)
+    def each(&)
+      data.each(&)
     end
 
     def self.from(obj)

@@ -164,7 +164,7 @@ module GirFFI
       end
 
       def has_output_value?
-        (direction == :inout || direction == :out) && !skipped_out?
+        [:inout, :out].include?(direction) && !skipped_out?
       end
 
       def has_input_value?
@@ -172,7 +172,7 @@ module GirFFI
       end
 
       def has_ingoing_component?
-        direction == :inout || direction == :in
+        [:inout, :in].include?(direction)
       end
 
       def array_length_assignment

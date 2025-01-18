@@ -11,11 +11,11 @@ module GirFFI
     include MethodSetup
     include InstanceMethodSetup
 
-    def setup_and_call(method, arguments, &block)
+    def setup_and_call(method, arguments, &)
       method_name = setup_method method.to_s
       raise NoMethodError, "undefined method `#{method}' for #{self}" unless method_name
 
-      send method_name, *arguments, &block
+      send(method_name, *arguments, &)
     end
 
     # TODO: Unify with implementation in ObjectBase
