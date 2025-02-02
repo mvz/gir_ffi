@@ -407,6 +407,11 @@ describe Regress do
       skip "Anonymous union fields are not exposed in the GIR data"
     end
   end
+
+  it "has the constant BAD_EXPR_CONSTANT" do
+    skip "Needs testing"
+  end
+
   it "has the constant BOOL_CONSTANT" do
     _(Regress::BOOL_CONSTANT).must_equal true
   end
@@ -787,6 +792,10 @@ describe Regress do
 
     it "has a working method #read" do
       _(instance.read(12, 13)).must_be_nil
+    end
+
+    it "has a working method #seek" do
+      skip "Needs testing"
     end
 
     it "has a working method #various" do
@@ -1657,10 +1666,20 @@ describe Regress do
       _(result).must_equal 2
     end
 
+    it "creates an instance using #new_finish" do
+      skip_below "1.80.1"
+      skip "Needs testing"
+    end
+
     it "creates an instance using #new_from_file" do
       o = Regress::TestObj.new_from_file("foo")
 
       assert_instance_of Regress::TestObj, o
+    end
+
+    it "has a working function #new_async" do
+      skip_below "1.80.1"
+      skip "Needs testing"
     end
 
     it "has a working function #null_out" do
@@ -1749,6 +1768,11 @@ describe Regress do
       assert has_fired
     end
 
+    it "has a working method #emit_sig_with_gstrv_full" do
+      skip_below "1.78.0"
+      skip "Needs testing"
+    end
+
     it "has a working method #emit_sig_with_inout_int" do
       skip_below "1.57.2"
       instance.signal_connect "sig-with-inout-int" do |_obj, i, _ud|
@@ -1792,6 +1816,11 @@ describe Regress do
       assert has_fired
     end
 
+    it "has a working method #emit_sig_with_obj_full" do
+      skip_below "1.78.0"
+      skip "Needs testing"
+    end
+
     it "has a working method #emit_sig_with_uint64" do
       instance.signal_connect "sig-with-uint64-prop" do |_obj, i, _ud|
         i
@@ -1802,6 +1831,21 @@ describe Regress do
     it "has a working method #forced_method" do
       instance.forced_method
       pass
+    end
+
+    it "has a working method #function_async" do
+      skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
+    it "has a working method #function_finish" do
+      skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
+    it "has a working method #function_sync" do
+      skip_below "1.80.0"
+      skip "Needs testing"
     end
 
     it "has a working method #get_string" do
@@ -2404,6 +2448,11 @@ describe Regress do
       _(a).must_equal object
     end
 
+    it "handles the 'sig-with-obj-full' signal" do
+      skip_below "1.78.0"
+      skip "Needs testing"
+    end
+
     it "handles the 'sig-with-strv' signal" do
       a = nil
 
@@ -2414,6 +2463,11 @@ describe Regress do
       GObject.signal_emit instance, "sig-with-strv", GLib::Strv.from(%w[foo bar])
 
       _(a.to_a).must_equal %w[foo bar]
+    end
+
+    it "handles the 'sig-with-strv-full' signal" do
+      skip_below "1.78.0"
+      skip "Needs testing"
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
@@ -3658,6 +3712,21 @@ describe Regress do
     assert_in_delta 5435.32, r, 0.001
   end
 
+  it "has a working function #test_function_async" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #test_function_finish" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #test_function_sync" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #test_garray_container_return" do
     arr = Regress.test_garray_container_return
     _(arr).must_be_instance_of GLib::PtrArray
@@ -3999,6 +4068,11 @@ describe Regress do
     skip_below "1.53.1"
     result = Regress.test_null_strv_in_gvalue
     _(result.to_a).must_be :empty?
+  end
+
+  it "has a working function #test_offt" do
+    skip_below "1.80.1"
+    skip "Needs testing"
   end
 
   it "has a working function #test_owned_gerror_callback" do
