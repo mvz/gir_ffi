@@ -74,6 +74,11 @@ describe GIMarshallingTests do
       assert_equal 42, res.long_
     end
 
+    it "has a working function #out_uninitialized" do
+      skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
     it "has a working function #returnv" do
       res = GIMarshallingTests::BoxedStruct.returnv
       _(res.struct).must_be :owned?
@@ -163,6 +168,11 @@ describe GIMarshallingTests do
       _(result).must_equal(value2: true)
     end
 
+    it "has a working function #out_uninitialized" do
+      skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
     it "has a working function #returnv" do
       result = GIMarshallingTests::Flags.returnv
       _(result).must_equal(value2: true)
@@ -194,6 +204,11 @@ describe GIMarshallingTests do
     it "has a working function #out" do
       result = GIMarshallingTests::GEnum.out
       _(result).must_equal :value3
+    end
+
+    it "has a working function #out_uninitialized" do
+      skip_below "1.80.0"
+      skip "Needs testing"
     end
 
     it "has a working function #returnv" do
@@ -256,15 +271,19 @@ describe GIMarshallingTests do
     it "has the member :value1" do
       assert_equal 1, GIMarshallingTests::NoTypeFlags[:value1]
     end
+
     it "has the member :value2" do
       assert_equal 2, GIMarshallingTests::NoTypeFlags[:value2]
     end
+
     it "has the member :value3" do
       assert_equal 4, GIMarshallingTests::NoTypeFlags[:value3]
     end
+
     it "has the member :mask" do
       assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask]
     end
+
     it "has the member :mask2" do
       assert_equal 3, GIMarshallingTests::NoTypeFlags[:mask2]
     end
@@ -317,6 +336,11 @@ describe GIMarshallingTests do
       _(object_ref_count(res)).must_equal 1
     end
 
+    it "has a working function #full_out_uninitialized" do
+      skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
     it "has a working function #full_return" do
       res = GIMarshallingTests::Object.full_return
       _(res).must_be_instance_of GIMarshallingTests::Object
@@ -341,6 +365,11 @@ describe GIMarshallingTests do
       res = GIMarshallingTests::Object.none_out
       _(res).must_be_instance_of GIMarshallingTests::Object
       _(object_ref_count(res)).must_equal 2
+    end
+
+    it "has a working function #none_out_uninitialized" do
+      skip_below "1.80.0"
+      skip "Needs testing"
     end
 
     it "has a working function #none_return" do
@@ -772,14 +801,17 @@ describe GIMarshallingTests do
       it "can be retrieved with #get_property" do
         assert_equal 42, instance.get_property("int")
       end
+
       it "can be retrieved with #int" do
         assert_equal 42, instance.int
       end
+
       it "can be set with #set_property" do
         instance.set_property("int", 13)
 
         assert_equal 13, instance.get_property("int")
       end
+
       it "can be set with #int=" do
         instance.int = 1
 
@@ -1340,6 +1372,7 @@ describe GIMarshallingTests do
     it "has the member :secondvalue1" do
       assert_equal 0, GIMarshallingTests::SecondEnum[:secondvalue1]
     end
+
     it "has the member :secondvalue2" do
       assert_equal 1, GIMarshallingTests::SecondEnum[:secondvalue2]
     end
@@ -1367,6 +1400,14 @@ describe GIMarshallingTests do
       _(result).must_equal [42, 43, 44]
     end
 
+    it "has a working method #emit_boxed_gptrarray_boxed_struct_container" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_boxed_gptrarray_boxed_struct_full" do
+      skip "Needs testing"
+    end
+
     it "has a working method #emit_boxed_gptrarray_utf8" do
       result = nil
       instance.signal_connect "some-boxed-gptrarray-utf8" do |_obj, arr, _user_data|
@@ -1377,6 +1418,34 @@ describe GIMarshallingTests do
 
       instance.emit_boxed_gptrarray_utf8
       _(result).must_equal %w[0 1 2]
+    end
+
+    it "has a working method #emit_boxed_gptrarray_utf8_container" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_boxed_gptrarray_utf8_full" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_boxed_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_boxed_struct_full" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_hash_table_utf8_int" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_hash_table_utf8_int_container" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #emit_hash_table_utf8_int_full" do
+      skip "Needs testing"
     end
 
     it "handles the 'some-boxed-gptrarray-boxed-struct' signal" do
@@ -1390,6 +1459,14 @@ describe GIMarshallingTests do
       _(result.map(&:long_)).must_equal [42, 43, 44]
     end
 
+    it "handles the 'some-boxed-gptrarray-boxed-struct-container' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-boxed-gptrarray-boxed-struct-full' signal" do
+      skip "Needs testing"
+    end
+
     it "handles the 'some-boxed-gptrarray-utf8' signal" do
       result = nil
       instance.signal_connect "some-boxed-gptrarray-utf8" do |_obj, arr, _user_data|
@@ -1399,6 +1476,34 @@ describe GIMarshallingTests do
       ptrarr = GLib::PtrArray.from_enumerable :utf8, %w[foo bar]
       GObject.signal_emit instance, "some-boxed-gptrarray-utf8", ptrarr
       _(result.to_a).must_equal %w[foo bar]
+    end
+
+    it "handles the 'some-boxed-gptrarray-utf8-container' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-boxed-gptrarray-utf8-full' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-boxed-struct' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-boxed-struct-full' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-hash-table-utf8-int' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-hash-table-utf8-int-container' signal" do
+      skip "Needs testing"
+    end
+
+    it "handles the 'some-hash-table-utf8-int-full' signal" do
+      skip "Needs testing"
     end
   end
 
@@ -1441,6 +1546,154 @@ describe GIMarshallingTests do
       ss = GIMarshallingTests::SimpleStruct.returnv
 
       assert_instance_of GIMarshallingTests::SimpleStruct, ss
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnion" do
+    it "has a private field type" do
+      skip "Needs testing"
+    end
+
+    it "has a private field simple_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a private field nested_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a private field pointer_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a private field boxed_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a private field boxed_struct_ptr" do
+      skip "Needs testing"
+    end
+
+    it "has a private field single_union" do
+      skip "Needs testing"
+    end
+
+    it "creates an instance using #new" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #type" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionBoxedStruct" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionBoxedStructPtr" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionNestedStruct" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionPointerStruct" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionSimpleStruct" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionSingleType" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field simple_struct1" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field simple_struct2" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionSingleUnion" do
+    it "has a writable field parent" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionType" do
+    it "has the member :none" do
+      skip "Needs testing"
+    end
+
+    it "has the member :simple_struct" do
+      skip "Needs testing"
+    end
+
+    it "has the member :nested_struct" do
+      skip "Needs testing"
+    end
+
+    it "has the member :pointer_struct" do
+      skip "Needs testing"
+    end
+
+    it "has the member :boxed_struct" do
+      skip "Needs testing"
+    end
+
+    it "has the member :boxed_struct_ptr" do
+      skip "Needs testing"
+    end
+
+    it "has the member :single_union" do
+      skip "Needs testing"
+    end
+  end
+
+  describe "GIMarshallingTests::StructuredUnionUnionStruct" do
+    it "has a writable field type" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field union_" do
+      skip "Needs testing"
     end
   end
 
@@ -1515,18 +1768,28 @@ describe GIMarshallingTests do
       pass
     end
 
-    it "has a working function #inout" do
-      skip "This function is defined in the header but not implemented"
-    end
-
-    it "has a working function #out" do
-      skip "This function is defined in the header but not implemented"
-    end
-
     it "has a working function #returnv" do
       u = GIMarshallingTests::Union.returnv
 
       assert_instance_of GIMarshallingTests::Union, u
+    end
+  end
+
+  describe "GIMarshallingTests::UnregisteredUnion" do
+    before do
+      skip_below "1.75.2"
+    end
+
+    it "has a writable field long_" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field size" do
+      skip "Needs testing"
+    end
+
+    it "has a writable field str" do
+      skip "Needs testing"
     end
   end
 
@@ -1543,6 +1806,14 @@ describe GIMarshallingTests do
 
   it "has a working function #array_enum_in" do
     GIMarshallingTests.array_enum_in [:value1, :value2, :value3]
+  end
+
+  it "has a working function #array_fixed_caller_allocated_out" do
+    skip "Needs testing"
+  end
+
+  it "has a working function #array_fixed_caller_allocated_struct_out" do
+    skip "Needs testing"
   end
 
   it "has a working function #array_fixed_inout" do
@@ -1569,6 +1840,16 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.array_fixed_out_struct
 
     assert_equal [[7, 6], [6, 7]], res.map { |s| [s.long_, s.int8] }
+  end
+
+  it "has a working function #array_fixed_out_struct_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #array_fixed_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #array_fixed_short_in" do
@@ -1684,6 +1965,11 @@ describe GIMarshallingTests do
     _(sum).must_equal 42 + 24
   end
 
+  it "has a working function #array_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #array_return" do
     res = GIMarshallingTests.array_return
     _(res).must_be :==, [-1, 0, 1, 2]
@@ -1773,6 +2059,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #array_zero_terminated_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #array_zero_terminated_return" do
     res = GIMarshallingTests.array_zero_terminated_return
     _(res).must_be :==, %w[0 1 2]
@@ -1826,6 +2117,11 @@ describe GIMarshallingTests do
     _(res).must_equal true
   end
 
+  it "has a working function #boolean_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #boolean_return_false" do
     res = GIMarshallingTests.boolean_return_false
     _(res).must_equal false
@@ -1846,6 +2142,11 @@ describe GIMarshallingTests do
   it "has a working function #boxed_struct_out" do
     res = GIMarshallingTests.boxed_struct_out
     _(res.long_).must_equal 42
+  end
+
+  it "has a working function #boxed_struct_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #boxed_struct_returnv" do
@@ -1917,6 +2218,31 @@ describe GIMarshallingTests do
     _(result).must_equal 42
   end
 
+  it "has a working function #dev_t_in" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #dev_t_inout" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #dev_t_out" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #dev_t_out_uninitialized" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #dev_t_return" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #double_in" do
     GIMarshallingTests.double_in Float::MAX
     pass
@@ -1928,9 +2254,19 @@ describe GIMarshallingTests do
     assert_in_epsilon 2.225e-308, ret
   end
 
+  it "has a working function #double_noncanonical_nan_out" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #double_out" do
     ret = GIMarshallingTests.double_out
     _(ret).must_equal Float::MAX
+  end
+
+  it "has a working function #double_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #double_return" do
@@ -1951,6 +2287,11 @@ describe GIMarshallingTests do
   it "has a working function #enum_out" do
     e = GIMarshallingTests.enum_out
     _(e).must_equal :value3
+  end
+
+  it "has a working function #enum_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #enum_returnv" do
@@ -1983,6 +2324,11 @@ describe GIMarshallingTests do
     _(res).must_equal(value2: true)
   end
 
+  it "has a working function #flags_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #flags_returnv" do
     res = GIMarshallingTests.flags_returnv
     _(res).must_equal(value2: true)
@@ -2003,10 +2349,20 @@ describe GIMarshallingTests do
     assert_in_epsilon 1.175e-38, res
   end
 
+  it "has a working function #float_noncanonical_nan_out" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #float_out" do
     flt = GIMarshallingTests.float_out
 
     assert_in_epsilon 3.402e+38, flt
+  end
+
+  it "has a working function #float_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #float_return" do
@@ -2065,6 +2421,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #garray_utf8_container_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #garray_utf8_container_return" do
     res = GIMarshallingTests.garray_utf8_container_return
     _(res).must_be :==, %w[0 1 2]
@@ -2084,6 +2445,11 @@ describe GIMarshallingTests do
   it "has a working function #garray_utf8_full_out_caller_allocated" do
     res = GIMarshallingTests.garray_utf8_full_out_caller_allocated
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #garray_utf8_full_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #garray_utf8_full_return" do
@@ -2106,6 +2472,11 @@ describe GIMarshallingTests do
   it "has a working function #garray_utf8_none_out" do
     res = GIMarshallingTests.garray_utf8_none_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #garray_utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #garray_utf8_none_return" do
@@ -2152,6 +2523,11 @@ describe GIMarshallingTests do
     _(res).must_equal :value3
   end
 
+  it "has a working function #genum_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #genum_returnv" do
     res = GIMarshallingTests.genum_returnv
     _(res).must_equal :value3
@@ -2187,6 +2563,16 @@ describe GIMarshallingTests do
     error, debug = GIMarshallingTests.gerror_out_transfer_none
     _(debug).must_equal GIMarshallingTests::CONSTANT_GERROR_DEBUG_MESSAGE
     _(error.message).must_equal GIMarshallingTests::CONSTANT_GERROR_MESSAGE
+  end
+
+  it "has a working function #gerror_out_transfer_none_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gerror_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gerror_return" do
@@ -2247,6 +2633,11 @@ describe GIMarshallingTests do
                  res.to_hash)
   end
 
+  it "has a working function #ghashtable_utf8_container_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #ghashtable_utf8_container_return" do
     res = GIMarshallingTests.ghashtable_utf8_container_return
 
@@ -2270,6 +2661,11 @@ describe GIMarshallingTests do
 
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
+  end
+
+  it "has a working function #ghashtable_utf8_full_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #ghashtable_utf8_full_return" do
@@ -2299,11 +2695,41 @@ describe GIMarshallingTests do
                  res.to_hash)
   end
 
+  it "has a working function #ghashtable_utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #ghashtable_utf8_none_return" do
     res = GIMarshallingTests.ghashtable_utf8_none_return
 
     assert_equal({ "-1" => "1", "0" => "0", "1" => "-1", "2" => "-2" },
                  res.to_hash)
+  end
+
+  it "has a working function #gid_t_in" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gid_t_inout" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gid_t_out" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gid_t_out_uninitialized" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gid_t_return" do
+    skip_below "1.81.2"
+    skip "Needs testing"
   end
 
   it "has a working function #glist_int_none_in" do
@@ -2336,6 +2762,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #glist_utf8_container_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #glist_utf8_container_return" do
     res = GIMarshallingTests.glist_utf8_container_return
     _(res).must_be :==, %w[0 1 2]
@@ -2349,6 +2780,11 @@ describe GIMarshallingTests do
   it "has a working function #glist_utf8_full_out" do
     res = GIMarshallingTests.glist_utf8_full_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #glist_utf8_full_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #glist_utf8_full_return" do
@@ -2368,6 +2804,11 @@ describe GIMarshallingTests do
   it "has a working function #glist_utf8_none_out" do
     res = GIMarshallingTests.glist_utf8_none_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #glist_utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #glist_utf8_none_return" do
@@ -2391,6 +2832,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #gptrarray_utf8_container_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #gptrarray_utf8_container_return" do
     res = GIMarshallingTests.gptrarray_utf8_container_return
     _(res).must_be :==, %w[0 1 2]
@@ -2404,6 +2850,11 @@ describe GIMarshallingTests do
   it "has a working function #gptrarray_utf8_full_out" do
     res = GIMarshallingTests.gptrarray_utf8_full_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #gptrarray_utf8_full_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gptrarray_utf8_full_return" do
@@ -2423,6 +2874,11 @@ describe GIMarshallingTests do
   it "has a working function #gptrarray_utf8_none_out" do
     res = GIMarshallingTests.gptrarray_utf8_none_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #gptrarray_utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gptrarray_utf8_none_return" do
@@ -2450,6 +2906,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #gslist_utf8_container_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #gslist_utf8_container_return" do
     res = GIMarshallingTests.gslist_utf8_container_return
     _(res).must_be :==, %w[0 1 2]
@@ -2463,6 +2924,11 @@ describe GIMarshallingTests do
   it "has a working function #gslist_utf8_full_out" do
     res = GIMarshallingTests.gslist_utf8_full_out
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #gslist_utf8_full_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gslist_utf8_full_return" do
@@ -2485,6 +2951,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #gslist_utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #gslist_utf8_none_return" do
     res = GIMarshallingTests.gslist_utf8_none_return
     _(res).must_be :==, %w[0 1 2]
@@ -2505,6 +2976,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #gstrv_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #gstrv_return" do
     res = GIMarshallingTests.gstrv_return
     _(res).must_be :==, %w[0 1 2]
@@ -2523,6 +2999,11 @@ describe GIMarshallingTests do
   it "has a working function #gtype_out" do
     res = GIMarshallingTests.gtype_out
     _(res).must_equal GObject::TYPE_NONE
+  end
+
+  it "has a working function #gtype_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gtype_return" do
@@ -2619,6 +3100,16 @@ describe GIMarshallingTests do
     _(gv).must_equal 0x7fff_ffff_ffff_ffff
   end
 
+  it "has a working function #gvalue_noncanonical_nan_double" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #gvalue_noncanonical_nan_float" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #gvalue_out" do
     res = GIMarshallingTests.gvalue_out
     _(res).must_equal 42
@@ -2627,6 +3118,11 @@ describe GIMarshallingTests do
   it "has a working function #gvalue_out_caller_allocates" do
     res = GIMarshallingTests.gvalue_out_caller_allocates
     _(res).must_equal 42
+  end
+
+  it "has a working function #gvalue_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #gvalue_return" do
@@ -2680,6 +3176,11 @@ describe GIMarshallingTests do
     assert_equal(-0x8000, res)
   end
 
+  it "has a working function #int16_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #int16_return_max" do
     res = GIMarshallingTests.int16_return_max
 
@@ -2724,6 +3225,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.int32_out_min
 
     assert_equal(-0x80000000, res)
+  end
+
+  it "has a working function #int32_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #int32_return_max" do
@@ -2772,6 +3278,11 @@ describe GIMarshallingTests do
     assert_equal(-0x8000000000000000, res)
   end
 
+  it "has a working function #int64_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #int64_return_max" do
     res = GIMarshallingTests.int64_return_max
 
@@ -2816,6 +3327,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.int8_out_min
 
     assert_equal(-0x80, res)
+  end
+
+  it "has a working function #int8_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #int8_return_max" do
@@ -2874,6 +3390,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.int_out_out
 
     assert_equal [6, 7], res
+  end
+
+  it "has a working function #int_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #int_return_max" do
@@ -2940,6 +3461,11 @@ describe GIMarshallingTests do
     assert_equal min_long, res
   end
 
+  it "has a working function #long_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #long_return_max" do
     res = GIMarshallingTests.long_return_max
 
@@ -2978,9 +3504,39 @@ describe GIMarshallingTests do
     _(res).must_equal(value2: true)
   end
 
+  it "has a working function #no_type_flags_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #no_type_flags_returnv" do
     res = GIMarshallingTests.no_type_flags_returnv
     _(res).must_equal(value2: true)
+  end
+
+  it "has a working function #off_t_in" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #off_t_inout" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #off_t_out" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #off_t_out_uninitialized" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #off_t_return" do
+    skip_below "1.80.1"
+    skip "Needs testing"
   end
 
   it "has a working function #overrides_struct_returnv" do
@@ -3000,10 +3556,40 @@ describe GIMarshallingTests do
     _(res.get_name).must_equal "test-param"
   end
 
+  it "has a working function #param_spec_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #param_spec_return" do
     res = GIMarshallingTests.param_spec_return
     _(res.value_type).must_equal GObject::TYPE_STRING
     _(res.get_name).must_equal "test-param"
+  end
+
+  it "has a working function #pid_t_in" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #pid_t_inout" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #pid_t_out" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #pid_t_out_uninitialized" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #pid_t_return" do
+    skip_below "1.81.2"
+    skip "Needs testing"
   end
 
   it "has a working function #pointer_in_return" do
@@ -3014,7 +3600,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #pointer_struct_get_type" do
-    skip_above "1.80.1", "This get_type ¸function is no longer exposed separately"
+    skip_above "1.80.1", "This get_type function is no longer exposed separately"
     res = GIMarshallingTests.pointer_struct_get_type
     gtype = GObject.type_from_name "GIMarshallingTestsPointerStruct"
 
@@ -3034,6 +3620,11 @@ describe GIMarshallingTests do
     _(arr[0].get_value).must_equal 42
     _(arr[1].get_value).must_equal "42"
     _(arr[2].get_value).must_equal true
+  end
+
+  it "has a working function #return_gvalue_zero_terminated_array" do
+    skip_below "1.78.0"
+    skip "Needs testing"
   end
 
   it "has a working function #short_in_max" do
@@ -3068,6 +3659,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.short_out_min
 
     assert_equal(-0x8000, res)
+  end
+
+  it "has a working function #short_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #short_return_max" do
@@ -3106,10 +3702,40 @@ describe GIMarshallingTests do
     assert_equal max_size_t, res
   end
 
+  it "has a working function #size_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #size_return" do
     res = GIMarshallingTests.size_return
 
     assert_equal max_size_t, res
+  end
+
+  it "has a working function #socklen_t_in" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #socklen_t_inout" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #socklen_t_out" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #socklen_t_out_uninitialized" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #socklen_t_return" do
+    skip_below "1.81.2"
+    skip "Needs testing"
   end
 
   it "has a working function #ssize_in_max" do
@@ -3144,6 +3770,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.ssize_out_min
 
     assert_equal min_ssize_t, res
+  end
+
+  it "has a working function #ssize_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #ssize_return_max" do
@@ -3185,10 +3816,40 @@ describe GIMarshallingTests do
     assert_equal 1_234_567_890, res
   end
 
+  it "has a working function #time_t_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #time_t_return" do
     res = GIMarshallingTests.time_t_return
 
     assert_equal 1_234_567_890, res
+  end
+
+  it "has a working function #uid_t_in" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #uid_t_inout" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #uid_t_out" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #uid_t_out_uninitialized" do
+    skip_below "1.81.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #uid_t_return" do
+    skip_below "1.81.2"
+    skip "Needs testing"
   end
 
   it "has a working function #uint16_in" do
@@ -3206,6 +3867,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.uint16_out
 
     assert_equal 0xffff, res
+  end
+
+  it "has a working function #uint16_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #uint16_return" do
@@ -3228,6 +3894,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.uint32_out
 
     assert_equal 0xffffffff, res
+  end
+
+  it "has a working function #uint32_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #uint32_return" do
@@ -3253,6 +3924,11 @@ describe GIMarshallingTests do
     assert_equal 0xffff_ffff_ffff_ffff, res
   end
 
+  it "has a working function #uint64_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #uint64_return" do
     res = GIMarshallingTests.uint64_return
 
@@ -3273,6 +3949,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.uint8_out
 
     assert_equal 0xff, res
+  end
+
+  it "has a working function #uint8_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #uint8_return" do
@@ -3298,6 +3979,11 @@ describe GIMarshallingTests do
     assert_equal max_uint, res
   end
 
+  it "has a working function #uint_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #uint_return" do
     res = GIMarshallingTests.uint_return
 
@@ -3318,6 +4004,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.ulong_out
 
     assert_equal max_ulong, res
+  end
+
+  it "has a working function #ulong_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #ulong_return" do
@@ -3356,6 +4047,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.ushort_out
 
     assert_equal max_ushort, res
+  end
+
+  it "has a working function #ushort_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #ushort_return" do
@@ -3412,6 +4108,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.utf8_none_out
 
     assert_equal "const ♥ utf8", res
+  end
+
+  it "has a working function #utf8_none_out_uninitialized" do
+    skip_below "1.80.0"
+    skip "Needs testing"
   end
 
   it "has a working function #utf8_none_return" do
