@@ -53,10 +53,20 @@ module IntrospectionTestExtensions
 
   def skip_below(introduction_version)
     if introduction_version > LATEST_VERSION
-      raise "Version #{introduction_version} is too new and would always be skipped"
+      raise "Version #{introduction_version} is too new causing test to always be skipped"
     end
 
-    skip "Introduced in #{introduction_version}" if introduction_version > version
+    skip "Introduced in #{introduction_version}" if version < introduction_version
+  end
+
+  def skip_above(last_available_version, message = nil)
+    if last_available_version < EARLIEST_VERSION
+      raise "Version #{last_available_version} is too old causing test to always be skipped"
+    end
+
+    if version > last_available_version
+      skip message || "Removed after #{last_available_version}"
+    end
   end
 
   def version
@@ -64,6 +74,8 @@ module IntrospectionTestExtensions
   end
 
   VERSION_GUARDS = {
+    "1.81.2" => %w[GIMarshallingTests dev_t_in],
+    "1.80.1" => %w[Everything const_return_off_t],
     "1.71.0" => %w[Regress TestFundamentalObjectNoGetSetFunc],
     "1.69.0" => %w[Regress TestObj get_string],
     "1.67.1" => %w[GIMarshallingTests SignalsObject],
@@ -77,6 +89,7 @@ module IntrospectionTestExtensions
   }.freeze
 
   LATEST_VERSION = VERSION_GUARDS.keys.first
+  EARLIEST_VERSION = "1.56.0"
 
   def calculate_version
     VERSION_GUARDS.each do |version, (namespace, class_or_function, method_name)|
@@ -88,7 +101,7 @@ module IntrospectionTestExtensions
       return version if result
     end
 
-    "1.56.0" # Minimum supported version
+    EARLIEST_VERSION # Minimum supported version
   end
 end
 

@@ -16,6 +16,7 @@ describe GObject do
 
   describe ".signal_set_va_marshaller" do
     it "can be set up" do
+      skip_above "1.80.1", "This function is no longer introspectable"
       result = GObject.setup_method "signal_set_va_marshaller"
       _(result).must_equal true
     end

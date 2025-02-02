@@ -3014,6 +3014,7 @@ describe GIMarshallingTests do
   end
 
   it "has a working function #pointer_struct_get_type" do
+    skip_above "1.80.1", "This get_type ¸function is no longer exposed separately"
     res = GIMarshallingTests.pointer_struct_get_type
     gtype = GObject.type_from_name "GIMarshallingTestsPointerStruct"
 
