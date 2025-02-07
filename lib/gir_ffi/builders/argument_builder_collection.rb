@@ -76,6 +76,7 @@ module GirFFI
         @base_argument_builders.each do |bldr|
           if (idx = bldr.closure_idx) >= 0
             target_bldr = @base_argument_builders[idx]
+            # NOTE: Only needed for GObjectIntrospection versions 1.67.1 through 1.80.1
             unless target_bldr.specialized_type_tag == :void
               target_bldr, bldr = bldr, target_bldr
             end

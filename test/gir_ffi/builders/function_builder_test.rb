@@ -194,12 +194,17 @@ describe GirFFI::Builders::FunctionBuilder do
     # NOTE: The closure annotation should normally point at the user data, but
     # for this function, from gobject-introspection 1.67.1, the annotation points
     # from the user data to the closure.
+    #
+    # Starting from gobject-introspection 1.80.1, invalid closure info is
+    # warned about and dropped. To make this function work again, we have to
+    # wait for GObject to be updated.
     describe "for functions that have swapped closure annotation" do
       let(:function_info) do
         get_introspection_data "GObject", "signal_handlers_unblock_matched"
       end
       it "builds a correct definition" do
         skip_below "1.67.1"
+        skip_above "1.80.1", "Closure info is no longer emitted for invalid annotations"
         _(code).must_equal <<~CODE
           def self.signal_handlers_unblock_matched(instance, mask, signal_id, detail, closure = nil, func = nil)
             _v1 = GObject::Object.from(instance)
