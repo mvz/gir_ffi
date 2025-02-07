@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.18.0 / 2025-02-07
+
+* Update contribution guidelines ([#360] by [mvz])
+* Support Ruby 3.1 through 3.4, dripping support for Ruby 3.0 ([#366] by [mvz])
+* Load gobject-2.0 library in a way that does not require the dev package
+  ([#367] by [mvz])
+* Update tests for compatibility with GObjectIntrospection 1.81.2 ([#378] by [mvz])
+
+[#360]: https://github.com/mvz/gir_ffi/pull/360
+[#366]: https://github.com/mvz/gir_ffi/pull/366
+[#367]: https://github.com/mvz/gir_ffi/pull/367
+[#378]: https://github.com/mvz/gir_ffi/pull/378
+
 ## 0.17.0 / 2023-12-31
 
 * Support Ruby 3.0 and up, dropping support for Ruby 2.7 ([#356] by [mvz])
