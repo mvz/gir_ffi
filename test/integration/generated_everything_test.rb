@@ -110,6 +110,16 @@ describe Everything do
     _(Everything.const_return_gushort).must_equal 0
   end
 
+  it "has a working function #const_return_off_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #const_return_time_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
   it "has a working function #const_return_utf8" do
     _(Everything.const_return_utf8).must_equal ""
   end
@@ -225,6 +235,16 @@ describe Everything do
     _(Everything.one_outparam_gushort).must_equal 0
   end
 
+  it "has a working function #one_outparam_off_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #one_outparam_time_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
   it "has a working function #one_outparam_utf8" do
     # NOTE: This function stores a null pointer in its output parameter.
     _(Everything.one_outparam_utf8).must_be_nil
@@ -333,6 +353,16 @@ describe Everything do
 
   it "has a working function #oneparam_gushort" do
     _(Everything.oneparam_gushort(0)).must_be_nil
+  end
+
+  it "has a working function #oneparam_off_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #oneparam_time_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
   end
 
   it "has a working function #oneparam_utf8" do
@@ -445,6 +475,16 @@ describe Everything do
 
   it "has a working function #passthrough_one_gushort" do
     _(Everything.passthrough_one_gushort(42)).must_equal 42
+  end
+
+  it "has a working function #passthrough_one_off_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
+  end
+
+  it "has a working function #passthrough_one_time_t" do
+    skip_below "1.80.1"
+    skip "Needs testing"
   end
 
   it "has a working function #passthrough_one_utf8" do

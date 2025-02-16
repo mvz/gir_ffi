@@ -7,13 +7,14 @@ require "rexml/document"
 require "rexml/streamlistener"
 
 # Listener class used to process GIR xml data, for creating test stubs.
-class Listener
+class Listener # rubocop:disable Metrics/ClassLength
   include REXML::StreamListener
 
   def initialize
     @class_stack = []
     @stack = []
     @skip_state = []
+    @last_indentation = -2
   end
 
   attr_accessor :result, :namespace
@@ -132,8 +133,8 @@ class Listener
   end
 
   def start_function(tag, obj_name, _attrs)
-    spaces = @class_stack.any? ? "  " : ""
-    emit_indented 2, "#{spaces}it \"has a working #{tag} ##{obj_name}\" do"
+    indent = @class_stack.any? ? 4 : 2
+    emit_indented indent, "it \"has a working #{tag} ##{obj_name}\" do"
   end
 
   alias_method :start_method, :start_function
@@ -156,6 +157,9 @@ class Listener
     emit_indented 6, <<~RUBY
       it "#{can} be retrieved with #get_property" do
       end
+    RUBY
+
+    emit_indented 6, <<~RUBY
       it "#{can} be retrieved with ##{accessor_name}" do
       end
     RUBY
@@ -165,6 +169,9 @@ class Listener
     emit_indented 6, <<~RUBY
       it "can be set with #set_property" do
       end
+    RUBY
+
+    emit_indented 6, <<~RUBY
       it "can be set with ##{accessor_name}=" do
       end
     RUBY
@@ -175,12 +182,12 @@ class Listener
   end
 
   def end_constant
-    emit_indented 2, "end"
+    emit_indented 2, "end", separate: false
   end
 
   def end_object
     @class_stack.pop
-    emit_indented 2, "end" unless @class_stack.any?
+    emit_indented 2, "end", separate: false unless @class_stack.any?
   end
 
   alias_method :end_record, :end_object
@@ -192,9 +199,9 @@ class Listener
 
   def end_function
     if @class_stack.any?
-      emit_indented 4, "end"
+      emit_indented 4, "end", separate: false
     else
-      emit_indented 2, "end"
+      emit_indented 2, "end", separate: false
     end
   end
 
@@ -205,18 +212,20 @@ class Listener
   alias_method :end_signal, :end_function
 
   def end_field
-    emit_indented 4, "end" if current_object_type != "class"
+    emit_indented 4, "end", separate: false if current_object_type != "class"
   end
 
   def end_namespace
-    emit_indented 0, "end"
+    emit_indented 0, "end", separate: false
   end
 
-  def emit_indented(indentation, string)
+  def emit_indented(indentation, string, separate: true)
+    result.puts if separate && @last_indentation == indentation
     prefix = " " * indentation
     string.split("\n").each do |line|
       result.puts "#{prefix}#{line}"
     end
+    @last_indentation = indentation
   end
 
   def skippable?(attrs)
