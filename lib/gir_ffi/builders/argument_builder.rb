@@ -203,13 +203,11 @@ module GirFFI
           arginfo.caller_allocates?
       end
 
-      DESTROY_NOTIFIER = "GLib::DestroyNotify.default"
-
       def ingoing_convertor
         if skipped_in?
           NullConvertor.new("0")
         elsif destroy_notifier?
-          NullConvertor.new(DESTROY_NOTIFIER)
+          NullConvertor.new("GLib::DestroyNotify.default")
         elsif user_data?
           ClosureToPointerConvertor.new(callback_argument_name)
         elsif needs_ruby_to_c_conversion?
