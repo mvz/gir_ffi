@@ -5,10 +5,12 @@ inherit_mode:
     - Exclude
     - CountAsOne
 
-require:
+plugins:
   - rubocop-minitest
-  - rubocop-packaging
   - rubocop-performance
+
+require:
+  - rubocop-packaging
 
 AllCops:
   Exclude:
