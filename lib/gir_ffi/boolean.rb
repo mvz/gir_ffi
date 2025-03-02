@@ -8,15 +8,16 @@ module GirFFI
     extend FFI::DataConverter
     native_type FFI::Type::INT
 
-    FROM_NATIVE = { 0 => false, 1 => true }.freeze
-    TO_NATIVE = FROM_NATIVE.invert
+    NATIVE_TRUE = 1
+    NATIVE_FALSE = 0
+    FROM_NATIVE = { NATIVE_FALSE => false, NATIVE_TRUE => true }.freeze
 
     def self.from_native(value, _context)
       FROM_NATIVE.fetch(value)
     end
 
     def self.to_native(value, _context)
-      TO_NATIVE.fetch(value ? true : false)
+      value ? NATIVE_TRUE : NATIVE_FALSE
     end
 
     def self.size
