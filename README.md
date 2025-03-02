@@ -57,7 +57,7 @@ gem install gir_ffi
 
 ## Requirements
 
-GirFFI is supported on CRuby 2.7, 3.0 and 3.1.
+GirFFI is supported on CRuby 3.1 through 3.4.
 
 You will also need gobject-introspection installed with some
 introspection data.

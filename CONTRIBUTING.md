@@ -1,8 +1,7 @@
 # Contributing to GirFFI
 
-I welcome contributions to GirFFI. Please follow the guidelines below to help the
-process of handling issues and pull requests
-go smoothly.
+I welcome contributions to GirFFI. Please follow the guidelines below to help
+the process of handling issues and pull requests go smoothly.
 
 ## Issues
 
@@ -20,7 +19,7 @@ ticket.
 - Use [code blocks](https://github.github.com/gfm/#fenced-code-blocks) to
   format any code and output in your ticket to make it readable.
 
-## Pull Requests
+## Pull requests
 
 If you have an idea for a particular feature, it's probably best to create a
 GitHub issue for it before trying to implement it yourself. That way, we can
@@ -31,8 +30,8 @@ When sending a pull request, please follow **all of** the instructions below:
 
 - Make sure `bundle exec rake` runs without reporting any failures. See
   *Testing your changes* below for more details.
-- Add tests for your feature. Otherwise, I can't see if it works or if I break
-  it later.
+- Add tests for your feature. Otherwise, I can't see if it works or if
+  I break it later.
 - Create a separate branch for your feature based off of latest master.
 - Write [good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 - Do not include changes that are irrelevant to your feature in the same
@@ -46,9 +45,11 @@ the best approach.
 
 ### Testing your changes
 
-You can run the test suite with the latest version of all dependencies by running the following:
+You can run the test suite with the latest version of all dependencies by
+running the following:
 
-- Run `bundle install` if you haven't done so already, or `bundle update` to update the dependencies
+- Run `bundle install` if you haven't done so already, or `bundle update` to
+  update the dependencies
 - Run `bundle exec rake` to run the tests
 
 ### The review process
@@ -63,7 +64,8 @@ You can run the test suite with the latest version of all dependencies by runnin
   that just fix a mistake in a previous commit, I will ask you to clean up the
   history.
   Again, [the git-rebase guide](https://git-rebase.io/) should help out.
-  Note that I will not squash-merge pull requests, since that results in a loss of history.
+  Note that I will not squash-merge pull requests, since that results in a loss
+  of history.
 - **At the end of the review process I may still choose not to merge your pull
   request.** For example, this could happen if I decide the proposed feature
   should not be part of GirFFI, or if the technical implementation does not
