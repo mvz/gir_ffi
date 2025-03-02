@@ -17,7 +17,10 @@ module GirFFI
         return unless method_info
 
         remove_old_method method_info, meta_class
-        attach_and_define_method method_info
+        attach_method method_info
+        define_class_method method_info
+
+        method_info.safe_name
       end
 
       def setup_instance_method(method)
@@ -25,7 +28,10 @@ module GirFFI
         return unless method_info
 
         remove_old_method method_info, build_class
-        attach_and_define_method method_info
+        attach_method method_info
+        define_simple_method method_info
+
+        method_info.safe_name
       end
 
       def target_gtype
@@ -38,17 +44,15 @@ module GirFFI
         (class << build_class; self; end)
       end
 
-      def attach_and_define_method(method_info)
-        attach_method method_info
+      def define_class_method(method_info)
         if method_info.constructor?
           define_construction_methods method_info
         else
-          define_method method_info
+          define_simple_method method_info
         end
-        method_info.safe_name
       end
 
-      def define_method(method_info)
+      def define_simple_method(method_info)
         method_definition = FunctionBuilder.new(method_info).method_definition
         build_class.class_eval(method_definition, __FILE__, __LINE__)
       end
