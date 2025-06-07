@@ -20,6 +20,7 @@ describe GirFFI::UserDefinedObjectInfo do
 
     it "adds the passed in property to the list of properties" do
       info.install_property foo_spec
+
       _(info.properties).must_equal [foo_spec]
     end
   end
@@ -31,18 +32,21 @@ describe GirFFI::UserDefinedObjectInfo do
     it "adds to the list of vfunc implementations" do
       _(info.vfunc_implementations).must_equal []
       info.install_vfunc_implementation :foo, implementation
+
       _(info.vfunc_implementations.map(&:name)).must_equal [:foo]
     end
 
     it "stores the passed-in implementation in the implementation object" do
       info.install_vfunc_implementation :foo, implementation
       impl = info.vfunc_implementations.first
+
       _(impl.implementation).must_equal implementation
     end
 
     it "provides a default implementation" do
       info.install_vfunc_implementation :foo
       impl = info.vfunc_implementations.first
+
       _(impl.implementation.class).must_equal Proc
     end
   end
@@ -61,6 +65,7 @@ describe GirFFI::UserDefinedObjectInfo do
 
     it "returns the the name set by #g_name= if present" do
       info.g_name = "bar"
+
       _(info.g_name).must_equal "bar"
     end
   end

@@ -7,6 +7,7 @@ describe GirFFI::UnintrospectableTypeInfo do
   describe "#info_type" do
     it "returns :unintrospectable" do
       info = GirFFI::UnintrospectableTypeInfo.new :some_type
+
       _(info.info_type).must_equal :unintrospectable
     end
   end
@@ -72,6 +73,7 @@ describe GirFFI::UnintrospectableTypeInfo do
   describe "#g_type" do
     it "returns the passed-in gtype" do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
+
       _(info.g_type).must_equal :some_type
     end
   end
@@ -79,6 +81,7 @@ describe GirFFI::UnintrospectableTypeInfo do
   describe "#fields" do
     it "returns an empty array" do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
+
       _(info.fields).must_equal []
     end
   end
@@ -115,6 +118,7 @@ describe GirFFI::UnintrospectableTypeInfo do
     it "indicates that no signals can be found" do
       info = GirFFI::UnintrospectableTypeInfo.new(:some_type)
       result = info.find_signal "any"
+
       _(result).must_be_nil
     end
   end

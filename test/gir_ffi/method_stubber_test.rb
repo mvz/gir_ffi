@@ -56,6 +56,7 @@ describe GirFFI::MethodStubber do
 
       it "creates a method stub with a safe name that sets up the unsafe method" do
         allow(method_info).to receive(:name).and_return ""
+
         _(result).must_equal <<~STUB
           def _ *args, &block
             setup_and_call "", args, &block

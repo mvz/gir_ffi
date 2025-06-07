@@ -27,7 +27,7 @@ module GirFFI
       private
 
       def qualified_method_name
-        "#{@builder.singleton_method? ? "self." : ""}#{@builder.method_name}"
+        "#{"self." if @builder.singleton_method?}#{@builder.method_name}"
       end
 
       def method_arguments

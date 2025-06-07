@@ -34,6 +34,7 @@ describe "An exception in a callback" do
         GLib.timeout_add GLib::PRIORITY_DEFAULT, 500 do
           main_loop.quit
         end
+
         _(proc { main_loop.run }).must_raise CallbackTestException
       end
     end

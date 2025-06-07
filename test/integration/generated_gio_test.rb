@@ -10,6 +10,7 @@ describe Gio do
     describe "#new_for_path, a method returning an interface," do
       it "returns an object of a more specific class" do
         file = Gio::File.new_for_path("/")
+
         _(file.class.registered_ancestors)
           .must_equal [file.class, Gio::File, GObject::Object]
 
@@ -34,6 +35,7 @@ describe Gio do
 
     it "returns an object that knows its GType" do
       instance_gtype = GObject.type_from_instance @it
+
       _(@it.class.gtype).must_equal instance_gtype
     end
   end
@@ -88,6 +90,7 @@ describe Gio do
   describe "Gio::CharsetConverter" do
     it "includes two interfaces" do
       klass = Gio::CharsetConverter
+
       _(klass.included_interfaces).must_equal [Gio::Initable, Gio::Converter]
     end
 

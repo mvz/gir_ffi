@@ -16,6 +16,7 @@ describe GTop do
 
     it "can be created using Glibtop.init" do
       instance = GTop::Glibtop.init
+
       _(instance).must_be_kind_of GTop::Glibtop
     end
   end

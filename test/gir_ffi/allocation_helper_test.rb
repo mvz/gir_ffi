@@ -24,12 +24,14 @@ describe GirFFI::AllocationHelper do
       ptr = double("pointer", null?: false)
       foo = nil
       GirFFI::AllocationHelper.free_after(ptr) { |it| foo = it }
+
       _(foo).must_equal ptr
     end
 
     it "returns the result of the block" do
       ptr = double("pointer", null?: false)
       result = GirFFI::AllocationHelper.free_after(ptr) { "bar" }
+
       _(result).must_equal "bar"
     end
   end

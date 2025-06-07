@@ -24,6 +24,7 @@ describe GObjectIntrospection::ITypeInfo do
         # TODO: Find another way to test this
         skip_above "1.80.1", "This function is no longer introspectable"
         result = type_info.interface
+
         _(result.info_type).must_equal :unresolved
         _(result).must_be_kind_of GObjectIntrospection::IUnresolvedInfo
       end

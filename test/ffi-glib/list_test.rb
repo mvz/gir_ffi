@@ -13,18 +13,21 @@ describe GLib::List do
     it "updates the list object itself" do
       lst = GLib::List.new :gint32
       res = lst.append 1
+
       _(res.to_ptr).must_equal lst.to_ptr
     end
 
     it "appends integer values" do
       lst = GLib::List.new :gint32
       lst.append 1
+
       _(lst.data).must_equal 1
     end
 
     it "appends string values" do
       lst = GLib::List.new :utf8
       lst.append "bla"
+
       _(lst.data).must_equal "bla"
     end
 
@@ -41,18 +44,21 @@ describe GLib::List do
     it "updates the list object itself" do
       lst = GLib::List.new :gint32
       res = lst.prepend 1
+
       _(res.to_ptr).must_equal lst.to_ptr
     end
 
     it "prepends integer values" do
       lst = GLib::List.new :gint32
       lst.prepend 1
+
       _(lst.data).must_equal 1
     end
 
     it "prepends string values" do
       lst = GLib::List.new :utf8
       lst.prepend "bla"
+
       _(lst.data).must_equal "bla"
     end
 

@@ -19,6 +19,7 @@ describe GLib::ByteArray do
     it "returns self" do
       ba = GLib::ByteArray.new
       result = ba.append "abdc"
+
       _(result.object_id).must_equal ba.object_id
     end
   end
@@ -33,6 +34,7 @@ describe GLib::ByteArray do
   it "can be created from a string" do
     str = "cdba"
     ba = GLib::ByteArray.from str
+
     _(ba.to_string).must_equal str
   end
 end

@@ -29,6 +29,7 @@ describe GObjectIntrospection::IBaseInfo do
       GObjectIntrospection::Lib.g_base_info_ref info.to_ptr
       old_ref_count = info.to_ptr.get_int32(4)
       described_class.send :finalize, info.to_ptr
+
       _(info.to_ptr.get_int32(4)).must_equal old_ref_count - 1
     end
   end

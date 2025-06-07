@@ -12,6 +12,7 @@ describe GirFFI::Builders::SignalClosureBuilder do
 
     it "builds a descendant of RubyClosure" do
       klass = builder.build_class
+
       _(klass.superclass).must_equal GObject::RubyClosure
     end
   end

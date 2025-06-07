@@ -10,7 +10,7 @@ module GirFFI
 
     def method_stub
       <<~STUB
-        def #{@info.method? ? "" : "self."}#{@info.safe_name} *args, &block
+        def #{"self." unless @info.method?}#{@info.safe_name} *args, &block
           setup_and_call "#{@info.name}", args, &block
         end
       STUB

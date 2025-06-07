@@ -12,6 +12,7 @@ describe GirFFI::Builder do
     it "does not replace existing classes" do
       oldclass = GObject::Object
       GirFFI::Builder.build_class get_introspection_data("GObject", "Object")
+
       _(GObject::Object).must_equal oldclass
     end
   end
@@ -61,6 +62,7 @@ describe GirFFI::Builder do
   describe ".build_by_gtype" do
     it "returns the class types known to the GIR" do
       result = GirFFI::Builder.build_by_gtype GObject::Object.gtype
+
       _(result).must_equal GObject::Object
     end
 
@@ -70,6 +72,7 @@ describe GirFFI::Builder do
       gtype = GirFFI.define_type klass
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
+
       _(found_klass).must_equal klass
     end
 
@@ -79,6 +82,7 @@ describe GirFFI::Builder do
       gtype = GirFFI.define_type klass
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
+
       _(found_klass).must_equal klass
     end
 
@@ -90,6 +94,7 @@ describe GirFFI::Builder do
       _(gtype).wont_equal GObject::TYPE_NONE
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
+
       _(found_klass.name).must_be_nil
       _(found_klass.superclass).must_equal GirFFI::BoxedBase
     end

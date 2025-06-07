@@ -16,6 +16,7 @@ describe GObject::ParamSpec do
     it "increases the ref count" do
       old = pspec_struct[:ref_count]
       pspec.ref
+
       _(pspec_struct[:ref_count]).must_equal old + 1
     end
   end

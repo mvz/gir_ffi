@@ -11,6 +11,7 @@ describe GirFFI::ObjectBase do
   describe ".wrap" do
     it "delegates conversion to the wrapped pointer" do
       expect(ptr = Object.new).to receive(:to_object).and_return "good-result"
+
       _(derived_class.wrap(ptr)).must_equal "good-result"
     end
   end
@@ -29,6 +30,7 @@ describe GirFFI::ObjectBase do
     it "caches its result" do
       first = Regress::TestObj.class_struct
       second = Regress::TestObj.class_struct
+
       _(second).must_be :eql?, first
     end
   end

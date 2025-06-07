@@ -22,6 +22,7 @@ describe GirFFI::InPointer do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
       end
       ptr = GirFFI::InPointer.from_array e, [:bar, :foo, :baz]
+
       _(ptr.read_array_of_int32(3)).must_equal [1, 0, 2]
     end
 
@@ -35,8 +36,10 @@ describe GirFFI::InPointer do
       struct[:foo] = 42
       struct[:bar] = 24
       ptr = GirFFI::InPointer.from_array e, [struct]
+
       _(ptr).wont_be :==, struct.to_ptr
       new_struct = e::Struct.new ptr
+
       _(new_struct[:foo]).must_equal 42
       _(new_struct[:bar]).must_equal 24
     end
@@ -181,6 +184,7 @@ describe GirFFI::InPointer do
         self::Enum = FFI::Enum.new [:foo, :bar, :baz], :qux
       end
       ptr = GirFFI::InPointer.from e, :bar
+
       _(ptr.address).must_equal 1
     end
 
@@ -190,6 +194,7 @@ describe GirFFI::InPointer do
         def obj.to_ptr
           :test_value
         end
+
         _(GirFFI::InPointer.from(:void, obj)).must_equal :test_value
       end
 
@@ -205,6 +210,7 @@ describe GirFFI::InPointer do
         def obj.to_ptr
           :test_value
         end
+
         _(GirFFI::InPointer.from(klass, obj)).must_equal :test_value
       end
     end

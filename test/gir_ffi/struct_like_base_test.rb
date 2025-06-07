@@ -9,6 +9,7 @@ describe GirFFI::StructLikeBase do
     it "returns a wrapped owned copy of structs" do
       original = GIMarshallingTests::SimpleStruct.new
       copy = GIMarshallingTests::SimpleStruct.wrap_copy(original.to_ptr)
+
       _(copy.to_ptr).wont_be :==, original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
       _(copy.struct).must_be :owned?
@@ -17,6 +18,7 @@ describe GirFFI::StructLikeBase do
     it "returns a wrapped owned copy of unions" do
       original = GIMarshallingTests::Union.new
       copy = GIMarshallingTests::Union.wrap_copy(original.to_ptr)
+
       _(copy.to_ptr).wont_be :==, original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
       _(copy.struct).must_be :owned?
@@ -26,8 +28,10 @@ describe GirFFI::StructLikeBase do
       original = GIMarshallingTests::BoxedStruct.new
       copy = GIMarshallingTests::BoxedStruct.wrap_copy(original.to_ptr)
       ptr = copy.to_ptr
+
       _(ptr).wont_be :==, original.to_ptr
       _(ptr).wont_be :autorelease? if ptr.respond_to? :autorelease
+
       _(copy.struct).must_be :owned?
     end
 
@@ -41,6 +45,7 @@ describe GirFFI::StructLikeBase do
       original = GIMarshallingTests::Union.new
       original.long_ = 42
       copy = GIMarshallingTests::Union.copy_from(original)
+
       _(copy.long_).must_equal 42
       _(copy.to_ptr).wont_be :==, original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
@@ -50,6 +55,7 @@ describe GirFFI::StructLikeBase do
     it "returns an unowned copy of structs" do
       original = GIMarshallingTests::SimpleStruct.new
       copy = GIMarshallingTests::SimpleStruct.copy_from(original)
+
       _(copy.to_ptr).wont_be :==, original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
       _(copy.struct).wont_be :owned?
@@ -70,6 +76,7 @@ describe GirFFI::StructLikeBase do
       original.struct.owned = false
 
       copy = GIMarshallingTests::SimpleStruct.wrap_own(original.to_ptr)
+
       _(copy.to_ptr).must_equal original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
       _(copy.struct).must_be :owned?
@@ -80,6 +87,7 @@ describe GirFFI::StructLikeBase do
       original.struct.owned = false
 
       copy = GIMarshallingTests::Union.wrap_own(original.to_ptr)
+
       _(copy.to_ptr).must_equal original.to_ptr
       _(copy.to_ptr).wont_be :autorelease?
       _(copy.struct).must_be :owned?
@@ -106,6 +114,7 @@ describe GirFFI::StructLikeBase do
     it "returns the supplied value's struct" do
       object = GIMarshallingTests::SimpleStruct.new
       result = object.class.to_native(object, "some-context")
+
       _(result).must_equal object.struct
     end
   end
@@ -114,6 +123,7 @@ describe GirFFI::StructLikeBase do
     it "returns the class itself" do
       struct_class = GIMarshallingTests::SimpleStruct
       ffi_type = struct_class.to_ffi_type
+
       _(ffi_type).must_equal struct_class
     end
   end
@@ -125,6 +135,7 @@ describe GirFFI::StructLikeBase do
       object = struct_class.new
       ptr = object.to_ptr
       result = struct_class.get_value_from_pointer(ptr, 0)
+
       _(result).must_be :==, ptr
     end
 
@@ -134,6 +145,7 @@ describe GirFFI::StructLikeBase do
       array_ptr = GirFFI::InPointer.from_array(struct_class, [struct1, struct2])
       ptr = struct_class.get_value_from_pointer(array_ptr, struct_class.size)
       result = struct_class.wrap(ptr)
+
       _(result.long_).must_equal 24
     end
   end
@@ -147,6 +159,7 @@ describe GirFFI::StructLikeBase do
       target = FFI::MemoryPointer.new struct_class.size
       struct_class.copy_value_to_pointer(struct, target)
       result = struct_class.wrap(target)
+
       _(result.long_).must_equal 42
     end
 
@@ -155,6 +168,7 @@ describe GirFFI::StructLikeBase do
       target = FFI::MemoryPointer.new struct_class.size + 10
       struct_class.copy_value_to_pointer(struct, target, 10)
       result = struct_class.wrap(target + 10)
+
       _(result.long_).must_equal 42
     end
   end

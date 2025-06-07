@@ -61,6 +61,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:param_type).with(0).and_return elmtype_info
 
       result = type_info.element_type
+
       _(result).must_equal :foo
     end
 
@@ -75,6 +76,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:param_type).with(1).and_return valtype_info
 
       result = type_info.element_type
+
       _(result).must_equal [:foo, :bar]
     end
 
@@ -82,6 +84,7 @@ describe GirFFI::InfoExt::ITypeInfo do
       expect(type_info).to receive(:tag).and_return :foo
 
       result = type_info.element_type
+
       _(result).must_be_nil
     end
 
@@ -428,6 +431,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe "for :struct" do
         let(:interface_type) { :struct }
+
         it "equals the struct class name" do
           _(type_info.argument_class_name).must_equal "Bar::Foo"
         end
@@ -435,6 +439,7 @@ describe GirFFI::InfoExt::ITypeInfo do
 
       describe "for :union" do
         let(:interface_type) { :union }
+
         it "equals the union class name" do
           _(type_info.argument_class_name).must_equal "Bar::Foo"
         end

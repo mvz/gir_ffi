@@ -14,12 +14,14 @@ describe GirFFI::Builders::RegisteredTypeBuilder do
       builder.setup_instance_method "instance_method"
 
       obj = Regress::TestObj.constructor
+
       _(obj).must_respond_to "instance_method"
     end
 
     it "returns the name of the generated method" do
       builder = Regress::TestObj.gir_ffi_builder
       result = builder.setup_instance_method "instance_method"
+
       _(result).must_equal "instance_method"
     end
 
@@ -31,22 +33,26 @@ describe GirFFI::Builders::RegisteredTypeBuilder do
   describe "#stub_methods" do
     it "adds getter method aliases" do
       instance = Regress::TestWi8021x.new
+
       _(instance).must_respond_to :testbool
     end
 
     it "adds setter method aliases" do
       instance = Regress::TestWi8021x.new
+
       _(instance).must_respond_to :testbool=
     end
 
     it "adds getter alias for method with arguments" do
       instance = Regress::TestObj.constructor
+
       _(instance).must_respond_to :get_qdata
       _(instance).must_respond_to :qdata
     end
 
     it "does not add setter alias for method with more than one argument" do
       instance = Regress::TestObj.constructor
+
       _(instance).must_respond_to :set_data
       _(instance).wont_respond_to :data=
     end

@@ -25,6 +25,7 @@ describe GirFFI::InfoExt::ISignalInfo do
 
     it "correctly wraps :struct" do
       result_boxed = result[1].get_value
+
       _(result_boxed.some_int8).must_equal boxed.some_int8
       _(result_boxed.some_int).must_equal boxed.some_int
     end

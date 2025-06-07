@@ -9,6 +9,7 @@ describe GirFFI::Builders::ConstructorBuilder do
 
     describe "for constructors with the default name" do
       let(:function_info) { get_method_introspection_data "Regress", "TestObj", "new" }
+
       it "builds a constructor" do
         _(code).must_equal <<~CODE
           def self.new(*args, &block)
@@ -24,6 +25,7 @@ describe GirFFI::Builders::ConstructorBuilder do
       let(:function_info) do
         get_method_introspection_data "Regress", "TestObj", "new_from_file"
       end
+
       it "builds a custom constructor" do
         _(code).must_equal <<~CODE
           def self.new_from_file(*args, &block)

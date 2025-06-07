@@ -13,6 +13,7 @@ describe GObject::Object do
 
     it "can be used to create objects with properties" do
       obj = GIMarshallingTests::SubObject.new(int: 13)
+
       _(obj.int).must_equal 13
     end
 
@@ -32,11 +33,13 @@ describe GObject::Object do
 
     it "raises an error for a property that does not exist" do
       instance = GObject::Object.new
+
       _(proc { instance.get_property "foo-bar" }).must_raise GirFFI::PropertyNotFoundError
     end
 
     it "raises an error for a property that does not exist" do
       instance = GObject::Object.new
+
       _(proc { instance.get_property "foo-bar" })
         .must_raise GirFFI::PropertyNotFoundError
     end
@@ -45,6 +48,7 @@ describe GObject::Object do
   describe "#set_property" do
     it "raises an error for a property that does not exist" do
       instance = GObject::Object.new
+
       _(proc { instance.set_property "foo-bar", 123 })
         .must_raise GirFFI::PropertyNotFoundError
     end
@@ -90,8 +94,10 @@ describe GObject::Object do
     it "lowers the reference count" do
       obj = GObject::Object.new
       GObject::Lib.g_object_ref obj.to_ptr
+
       _(object_ref_count(obj)).must_equal 2
       GObject::Object.send :finalize, obj.to_ptr
+
       _(object_ref_count(obj)).must_equal 1
     end
   end

@@ -7,6 +7,7 @@ describe GirFFI::Builders::StructBuilder do
     it "returns the correct layout for Regress::TestStructA" do
       info = get_introspection_data "Regress", "TestStructA"
       builder = GirFFI::Builders::StructBuilder.new info
+
       _(builder.layout_specification).must_equal [:some_int, :int32, 0,
                                                   :some_int8, :int8, 4,
                                                   :some_double, :double, 8,
@@ -57,18 +58,21 @@ describe GirFFI::Builders::StructBuilder do
     it "returns StructBase for a normal struct" do
       info = get_introspection_data "Regress", "TestStructA"
       builder = GirFFI::Builders::StructBuilder.new info
+
       _(builder.superclass).must_equal GirFFI::StructBase
     end
 
     it "returns BoxedBase for a boxed type" do
       info = get_introspection_data "Regress", "TestSimpleBoxedB"
       builder = GirFFI::Builders::StructBuilder.new info
+
       _(builder.superclass).must_equal GirFFI::BoxedBase
     end
 
     it "returns the parent type class for a type class" do
       info = get_introspection_data "GIMarshallingTests", "SubSubObjectClass"
       builder = GirFFI::Builders::StructBuilder.new info
+
       _(builder.superclass).must_equal GIMarshallingTests::SubObjectClass
     end
   end
