@@ -69,6 +69,10 @@ Metrics/MethodLength:
   CountAsOne:
     - heredoc
 
+# Most methods that return a boolean are not predicate methods
+Naming/PredicateMethod:
+  Enabled: false
+
 # Allow semantic variation in and/or external determination of symbols
 Naming/VariableNumber:
   CheckSymbols: false
@@ -133,7 +137,7 @@ Naming/FileName:
   Enabled: false
 
 # TODO: See about has_ and have_
-Naming/PredicateName:
+Naming/PredicatePrefix:
   ForbiddenPrefixes:
     - is_
 
