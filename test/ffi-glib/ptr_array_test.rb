@@ -102,11 +102,13 @@ describe GLib::PtrArray do
   describe "#index" do
     it "returns the correct element" do
       arr = GLib::PtrArray.from :utf8, %w[1 2 3]
+
       _(arr.index(1)).must_equal "2"
     end
 
     it "raises an error if the index is out of bounds" do
       arr = GLib::PtrArray.from :utf8, %w[1 2 3]
+
       _(proc { arr.index(16) }).must_raise IndexError
       _(proc { arr.index(-1) }).must_raise IndexError
     end

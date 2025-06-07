@@ -69,6 +69,7 @@ describe GObject do
       obj.signal_connect "sig-with-inout-int" do |_obj, i, _ud|
         i + 1
       end
+
       _(proc { GObject.signal_emit obj, "sig-with-inout-int", 0 })
         .must_raise NotImplementedError
     end
@@ -105,6 +106,7 @@ describe GObject do
 
     it "does not allow connecting an invalid signal" do
       o = Regress::TestSubObj.new
+
       _(proc { GObject.signal_connect(o, "not-really-a-signal") { nil } })
         .must_raise GirFFI::SignalNotFoundError
     end
@@ -119,6 +121,7 @@ describe GObject do
 
     it "requires a block" do
       o = Regress::TestSubObj.new
+
       _(proc { GObject.signal_connect o, "test" }).must_raise ArgumentError
     end
 

@@ -12,11 +12,13 @@ describe GirFFI::StructBase do
   describe "new" do
     it "creates an instance with an owned struct" do
       instance = GIMarshallingTests::SimpleStruct.new
+
       _(instance.struct).must_be :owned?
     end
 
     it "ensures the wrapped pointer is not autoreleased" do
       instance = GIMarshallingTests::SimpleStruct.new
+
       _(instance.to_ptr).wont_be :autorelease?
     end
   end

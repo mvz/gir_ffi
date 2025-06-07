@@ -41,6 +41,7 @@ describe GLib::HashTable do
   it "allows key-value pairs to be inserted" do
     h = GLib::HashTable.new :utf8, :utf8
     h.insert "foo", "bar"
+
     _(h.to_hash).must_equal "foo" => "bar"
   end
 
@@ -57,6 +58,7 @@ describe GLib::HashTable do
     it "has a working #each method" do
       a = {}
       @hash.each { |k, v| a[k] = v }
+
       _(a).must_be :==,
                    "foo" => "bar",
                    "baz" => "bat",

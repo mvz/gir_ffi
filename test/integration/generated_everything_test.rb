@@ -59,6 +59,7 @@ describe Everything do
 
   it "has a working function #const_return_gpointer" do
     skip_below "1.47.1"
+
     _(Everything.const_return_gpointer).must_be :null?
   end
 
@@ -143,6 +144,7 @@ describe Everything do
 
   it "has a working function #one_outparam_gchar" do
     skip "GIR gives the incorrect type: utf8 instead of gchar"
+
     _(Everything.one_outparam_gchar).must_equal 0
   end
 
@@ -184,6 +186,7 @@ describe Everything do
 
   it "has a working function #one_outparam_gpointer" do
     skip_below "1.47.1"
+
     _(Everything.one_outparam_gpointer).must_be :null?
   end
 
@@ -304,6 +307,7 @@ describe Everything do
 
   it "has a working function #oneparam_gpointer" do
     skip_below "1.47.1"
+
     _(Everything.oneparam_gpointer(FFI::MemoryPointer.new(:int))).must_be_nil
   end
 
@@ -426,6 +430,7 @@ describe Everything do
     skip_below "1.47.1"
     ptr = FFI::MemoryPointer.new(:int)
     result = Everything.passthrough_one_gpointer(ptr)
+
     _(result).must_be :==, ptr
   end
 

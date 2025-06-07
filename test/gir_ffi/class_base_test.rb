@@ -15,6 +15,7 @@ describe GirFFI::ClassBase do
 
     it "has #from as a pass-through method" do
       result = class_struct.from :foo
+
       _(result).must_equal :foo
     end
 
@@ -98,6 +99,7 @@ describe GirFFI::ClassBase do
       klass.const_set :GIR_FFI_BUILDER, builder
 
       result = klass.setup_and_call :foo, []
+
       _(result).must_equal "correct-result"
     end
 
@@ -143,6 +145,7 @@ describe GirFFI::ClassBase do
       obj = klass.new
 
       result = obj.setup_and_call :foo, []
+
       _(result).must_equal "correct-result"
     end
 

@@ -7,6 +7,7 @@ describe GirFFI::CallbackBase do
     it "stores the passed in proc in CALLBACKS" do
       dummy_proc = "some-callback"
       GirFFI::CallbackBase.store_callback dummy_proc
+
       _(GirFFI::CallbackBase::CALLBACKS).must_include dummy_proc
     end
   end
@@ -16,6 +17,7 @@ describe GirFFI::CallbackBase do
       dummy_proc = "some-callback"
       GirFFI::CallbackBase.store_callback dummy_proc
       GirFFI::CallbackBase.drop_callback dummy_proc
+
       _(GirFFI::CallbackBase::CALLBACKS).wont_include dummy_proc
     end
   end

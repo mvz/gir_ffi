@@ -18,6 +18,7 @@ describe GObject do
     it "can be set up" do
       skip_above "1.80.1", "This function is no longer introspectable"
       result = GObject.setup_method "signal_set_va_marshaller"
+
       _(result).must_equal true
     end
   end
@@ -36,6 +37,7 @@ describe GObject do
         # nothing
       end
       result = instance.class_init
+
       _(result).wont_be_nil
       _(result).must_be_instance_of FFI::Function
     end
@@ -61,6 +63,7 @@ describe GObject do
   describe GObject::ValueArray do
     it "uses the constructor provided by GObject" do
       instance = GObject::ValueArray.new 16
+
       _(instance.n_prealloced).must_equal 16
       _(instance.n_values).must_equal 0
     end
@@ -76,6 +79,7 @@ describe GObject do
       gtype = GObject::Object.gtype
       signals = GObject.signal_list_ids gtype
       signal_query = GObject.signal_query signals.first
+
       _(signal_query.n_params).must_equal 1
       _(signal_query.param_types.size).must_equal 1
     end
@@ -86,6 +90,7 @@ describe GObject do
       source = Regress::TestObj.constructor
       target = Regress::TestObj.constructor
       binding = source.bind_property "double", target, "double", :default
+
       _(binding).must_be_kind_of GObject::Binding
     end
 
@@ -114,6 +119,7 @@ describe GObject do
                                      "The Foo Bar Property",
                                      10, 20, 15,
                                      3)
+
       _(pspec).wont_respond_to :get_flags
       _(pspec.method(:flags).original_name).must_equal :flags
     end
@@ -123,6 +129,7 @@ describe GObject do
                                      "The Foo Bar Property",
                                      10, 20, 15,
                                      3)
+
       _(pspec).must_respond_to :get_name
       _(pspec.method(:name).original_name).must_equal :get_name
     end

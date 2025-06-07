@@ -9,6 +9,7 @@ describe GirFFI::Builders::InitializerBuilder do
 
     describe "for constructors with the default name" do
       let(:function_info) { get_method_introspection_data "Regress", "TestObj", "new" }
+
       it "builds an initializer" do
         _(code).must_equal <<~CODE
           def initialize(obj)
@@ -24,6 +25,7 @@ describe GirFFI::Builders::InitializerBuilder do
       let(:function_info) do
         get_method_introspection_data "Regress", "TestObj", "new_from_file"
       end
+
       it "builds a custom initializer" do
         _(code).must_equal <<~CODE
           def initialize_from_file(x)

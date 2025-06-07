@@ -8,6 +8,7 @@ describe GirFFI::ZeroTerminated do
 
     it "converts the passed array into a zero-terminated c array" do
       ptr = result.to_ptr
+
       _(ptr.read_array_of_int32(4)).must_equal [1, 2, 3, 0]
     end
 
@@ -19,6 +20,7 @@ describe GirFFI::ZeroTerminated do
       GirFFI.setup :Regress
       enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [1, -1, 48]
       ptr = enum_arr.to_ptr
+
       _(ptr.read_array_of_int32(4)).must_equal [1, -1, 48, 0]
     end
 
@@ -26,6 +28,7 @@ describe GirFFI::ZeroTerminated do
       GirFFI.setup :Regress
       enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [:value2, :value3, :value4]
       ptr = enum_arr.to_ptr
+
       _(ptr.read_array_of_int32(4)).must_equal [1, -1, 48, 0]
     end
   end
@@ -34,6 +37,7 @@ describe GirFFI::ZeroTerminated do
     it "wraps the given type and pointer" do
       ptr = GirFFI::InPointer.from_array :int32, [1, 2, 3, 0]
       zt = GirFFI::ZeroTerminated.wrap :foo, ptr
+
       _(zt.element_type).must_equal :foo
       _(zt.to_ptr).must_equal ptr
     end
@@ -46,6 +50,7 @@ describe GirFFI::ZeroTerminated do
       zt.each do |int| # rubocop:disable Style/MapIntoArray
         arr << int
       end
+
       _(arr).must_equal [1, 2, 3]
     end
 
@@ -63,6 +68,7 @@ describe GirFFI::ZeroTerminated do
       zt.each do |int| # rubocop:disable Style/MapIntoArray
         arr << int
       end
+
       _(arr).must_equal [1, 2, 3]
     end
   end
@@ -103,6 +109,7 @@ describe GirFFI::ZeroTerminated do
     it "works for Regress::TestEnum" do
       GirFFI.setup :Regress
       enum_arr = GirFFI::ZeroTerminated.from Regress::TestEnum, [1, 48, -1]
+
       _(enum_arr.to_a).must_equal [:value2, :value4, :value3]
     end
   end

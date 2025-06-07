@@ -16,11 +16,13 @@ describe Regress do
       _(Regress::Lib.singleton_class).must_be :include?, FFI::Library
     end
   end
+
   it "has the constant ANNOTATION_CALCULATED_DEFINE" do
     _(Regress::ANNOTATION_CALCULATED_DEFINE).must_equal 100
   end
   it "has the constant ANNOTATION_CALCULATED_LARGE" do
     skip "Constant is marked with the wrong type"
+
     _(Regress::ANNOTATION_CALCULATED_LARGE).must_equal 10_000_000_000
   end
   it "has the constant ANNOTATION_CALCULATED_LARGE_DIV" do
@@ -46,6 +48,7 @@ describe Regress do
     it "has a writable field x" do
       _(instance.x).must_equal 0
       instance.x = 42
+
       _(instance.x).must_equal 42
     end
 
@@ -69,6 +72,7 @@ describe Regress do
 
     it "has the member :foobar" do
       skip_below "1.66.0"
+
       _(Regress::AnnotationBitfield[:foobar]).must_equal 3
     end
   end
@@ -79,6 +83,7 @@ describe Regress do
     it "has a writable field field1" do
       _(instance.field1).must_equal 0
       instance.field1 = 42
+
       _(instance.field1).must_equal 42
     end
 
@@ -87,6 +92,7 @@ describe Regress do
       instance.arr = [1, 2, 3]
       # TODO: len should be set automatically
       instance.len = 3
+
       _(instance.arr.to_a).must_equal [1, 2, 3]
       _(instance.len).must_equal 3
     end
@@ -97,8 +103,10 @@ describe Regress do
 
     it "has a writable field field4" do
       skip_below "1.66.0"
+
       _(instance.field4).must_equal 0
       instance.field4 = 326
+
       _(instance.field4).must_equal 326
     end
   end
@@ -108,6 +116,7 @@ describe Regress do
 
     it "has an attribute org.example.Test" do
       info = get_introspection_data("Regress", "AnnotationObject")
+
       _(info.attribute("org.example.Test")).must_equal "cows"
     end
 
@@ -119,12 +128,14 @@ describe Regress do
 
     it "has a working method #calleeowns" do
       result, object = instance.calleeowns
+
       _(result).must_equal 1
       _(object).must_be_nil
     end
 
     it "has a working method #calleesowns" do
       result, toown1, toown2 = instance.calleesowns
+
       _(result).must_equal 1
       _(toown1).must_be_nil
       _(toown2).must_be_nil
@@ -147,6 +158,7 @@ describe Regress do
 
     it "has a working method #create_object" do
       result = instance.create_object
+
       _(result).must_equal instance
     end
 
@@ -157,6 +169,7 @@ describe Regress do
 
     it "has a working method #extra_annos" do
       info = get_method_introspection_data("Regress", "AnnotationObject", "extra_annos")
+
       _(info.attribute("org.foobar")).must_equal "testvalue"
 
       _(instance.extra_annos).must_be_nil
@@ -165,23 +178,27 @@ describe Regress do
     it "has a working method #foreach" do
       a = 1
       instance.foreach { a += 1 }
+
       _(a).must_equal 1
     end
 
     it "has a working method #get_hash" do
       result = instance.get_hash
       hash = result.to_hash
+
       _(hash["one"]).must_equal instance
       _(hash["two"]).must_equal instance
     end
 
     it "has a working method #get_objects" do
       list = instance.get_objects
+
       _(list.to_a).must_equal [instance]
     end
 
     it "has a working method #get_strings" do
       list = instance.get_strings
+
       _(list.to_a).must_equal %w[bar regress_annotation]
     end
 
@@ -193,6 +210,7 @@ describe Regress do
       # TODO: Automatically convert to pointer argument
       ptr = FFI::MemoryPointer.new(:int, 1)
       ptr.put_int 0, 2342
+
       _(instance.in(ptr)).must_equal 2342
     end
 
@@ -243,6 +261,7 @@ describe Regress do
 
     it "has a working method #use_buffer" do
       skip "Ingoing pointer argument conversion is not implemented yet"
+
       _(instance.use_buffer(FFI::MemoryPointer.new(:void, 1))).must_be_nil
     end
 
@@ -253,6 +272,7 @@ describe Regress do
     it "has a working method #with_voidp" do
       # NOTE: Anything implementing #to_ptr could be passed in here
       obj = Regress::AnnotationObject.new
+
       _(instance.with_voidp(obj)).must_be_nil
     end
 
@@ -327,6 +347,7 @@ describe Regress do
                                                   "AnnotationObject",
                                                   "attribute-signal")
       argument_infos = signal_info.args
+
       _(argument_infos.first.attribute("some.annotation.foo1")).must_equal "val1"
       _(argument_infos.last.attribute("some.annotation.foo2")).must_equal "val2"
 
@@ -337,6 +358,7 @@ describe Regress do
       end
 
       GObject.signal_emit instance, "attribute-signal", "foo", "bar"
+
       _(result).must_equal "hello"
     end
 
@@ -347,6 +369,7 @@ describe Regress do
       end
 
       result = GObject.signal_emit instance, "doc-empty-arg-parsing", FFI::Pointer.new(123)
+
       _(result).must_be_nil
       _(test.address).must_equal 123
     end
@@ -359,6 +382,7 @@ describe Regress do
 
       # TODO: Automatically convert to GLib::List
       GObject.signal_emit instance, "list-signal", GLib::List.from(:utf8, %w[foo bar])
+
       _(result.to_a).must_equal %w[foo bar]
     end
 
@@ -369,6 +393,7 @@ describe Regress do
       end
 
       GObject.signal_emit instance, "string-signal", "foo"
+
       _(result).must_equal "foo"
     end
   end
@@ -381,6 +406,7 @@ describe Regress do
 
       obj = Regress::AnnotationObject.new
       instance.objects = [nil] * 5 + [obj] + [nil] * 4
+
       _(instance.objects.to_a[5]).must_equal obj
     end
   end
@@ -392,6 +418,7 @@ describe Regress do
 
     it "has a writable field x" do
       instance.x = 42
+
       _(instance.x).must_equal 42
     end
 
@@ -426,6 +453,7 @@ describe Regress do
 
   it "has the constant FOO_FLAGS_SECOND_AND_THIRD" do
     skip_below "1.55.2"
+
     _(Regress::FOO_FLAGS_SECOND_AND_THIRD).must_equal 6
   end
 
@@ -463,12 +491,14 @@ describe Regress do
     it "has a writable field x" do
       _(instance.x).must_equal 0.0
       instance.x = 23.42
+
       _(instance.x).must_equal 23.42
     end
 
     it "has a writable field y" do
       _(instance.y).must_equal 0.0
       instance.y = 23.42
+
       _(instance.y).must_equal 23.42
     end
 
@@ -487,12 +517,14 @@ describe Regress do
     it "has a writable field type" do
       _(instance.type).must_equal 0
       instance.type = 42
+
       _(instance.type).must_equal 42
     end
 
     it "has a writable field v" do
       _(instance.v).must_equal 0.0
       instance.v = 23.42
+
       _(instance.v).must_equal 23.42
     end
 
@@ -503,6 +535,7 @@ describe Regress do
       rect.y = 23
       skip "Cannot copy FooBRect structs"
       instance.rect = rect
+
       _(instance.rect.x).must_equal 42.0
       _(instance.rect.y).must_equal 23.0
     end
@@ -621,6 +654,7 @@ describe Regress do
 
     it "has a working function #quark" do
       quark = Regress::FooError.quark
+
       _(GLib.quark_to_string(quark)).must_equal "regress_foo-error-quark"
     end
   end
@@ -631,6 +665,7 @@ describe Regress do
     it "has a writable field type" do
       _(instance.type).must_equal 0
       instance.type = 23
+
       _(instance.type).must_equal 23
     end
 
@@ -639,6 +674,7 @@ describe Regress do
       any = Regress::FooEventAny.new
       any.send_event = 42
       instance.any = any
+
       _(instance.any.send_event).must_equal 42
     end
 
@@ -649,6 +685,7 @@ describe Regress do
       expose.send_event = 23
       expose.count = 14
       instance.expose = expose
+
       _(instance.expose.send_event).must_equal 23
       _(instance.expose.count).must_equal 14
     end
@@ -660,6 +697,7 @@ describe Regress do
     it "has a writable field send_event" do
       _(instance.send_event).must_equal 0
       instance.send_event = 23
+
       _(instance.send_event).must_equal 23
     end
   end
@@ -670,12 +708,14 @@ describe Regress do
     it "has a writable field send_event" do
       _(instance.send_event).must_equal 0
       instance.send_event = 23
+
       _(instance.send_event).must_equal 23
     end
 
     it "has a writable field count" do
       _(instance.count).must_equal 0
       instance.count = 42
+
       _(instance.count).must_equal 42
     end
   end
@@ -714,6 +754,7 @@ describe Regress do
     it "has a writable field regress_foo" do
       _(instance.regress_foo).must_equal 0
       instance.regress_foo = 143
+
       _(instance.regress_foo).must_equal 143
     end
 
@@ -725,6 +766,7 @@ describe Regress do
       instance.regress_foo = 585
       result = instance.copy
       instance.regress_foo = 0
+
       _(result.regress_foo).must_equal 585
     end
   end
@@ -736,6 +778,7 @@ describe Regress do
 
     it "has a working method #do_regress_foo" do
       instance = Regress::FooObject.new
+
       _(instance).must_be_kind_of Regress::FooInterface
       _(instance.do_regress_foo(42)).must_be_nil
     end
@@ -750,6 +793,7 @@ describe Regress do
 
     it "creates an instance using #new_as_super" do
       other_instance = Regress::FooObject.new_as_super
+
       _(other_instance).must_be_instance_of Regress::FooObject
     end
 
@@ -775,6 +819,7 @@ describe Regress do
 
     it "has a working method #external_type" do
       result = instance.external_type
+
       _(result).must_be_nil
     end
 
@@ -836,6 +881,7 @@ describe Regress do
       end
 
       result = GObject.signal_emit instance, "signal"
+
       _(result).must_equal "hello"
     end
   end
@@ -852,24 +898,28 @@ describe Regress do
     it "has a writable field x" do
       _(instance.x).must_equal 0
       instance.x = 23
+
       _(instance.x).must_equal 23
     end
 
     it "has a writable field y" do
       _(instance.y).must_equal 0
       instance.y = 23
+
       _(instance.y).must_equal 23
     end
 
     it "has a writable field width" do
       _(instance.width).must_equal 0
       instance.width = 23
+
       _(instance.width).must_equal 23
     end
 
     it "has a writable field height" do
       _(instance.height).must_equal 0
       instance.height = 23
+
       _(instance.height).must_equal 23
     end
 
@@ -930,6 +980,7 @@ describe Regress do
     it "has a writable field member" do
       _(instance.member).must_equal 0
       instance.member = 23
+
       _(instance.member).must_equal 23
     end
   end
@@ -953,6 +1004,7 @@ describe Regress do
         klass.install_vfunc_implementation :do_bar, proc { |obj| result = obj.get_name }
       end
       instance.do_bar
+
       _(result).must_equal "regress_foo"
     end
 
@@ -968,6 +1020,7 @@ describe Regress do
       end
       b = nil
       instance.do_baz { b = "hello" }
+
       _(a).must_equal "regress_foo"
       _(b).must_equal "hello"
     end
@@ -979,6 +1032,7 @@ describe Regress do
         a = "hello"
       end
       GObject.signal_emit instance, "destroy-event"
+
       _(a).must_equal "hello"
     end
   end
@@ -986,6 +1040,7 @@ describe Regress do
   describe "Regress::FooSubobject" do
     it "cannot be instantiated" do
       skip "Not yet implemented"
+
       _(proc { Regress::FooSubobject.new }).must_raise NoMethodError
     end
 
@@ -1000,24 +1055,28 @@ describe Regress do
     it "has a writable field x" do
       _(instance.x).must_equal 0
       instance.x = 23
+
       _(instance.x).must_equal 23
     end
 
     it "has a writable field y" do
       _(instance.y).must_equal 0
       instance.y = 23
+
       _(instance.y).must_equal 23
     end
 
     it "has a writable field lines" do
       _(instance.lines).must_be :==, [0] * 80
       instance.lines = (1..80).to_a
+
       _(instance.lines).must_be :==, (1..80).to_a
     end
 
     it "has a writable field data" do
       _(instance.data).must_equal FFI::Pointer::NULL
       instance.data = FFI::Pointer.new(23)
+
       _(instance.data).must_equal FFI::Pointer.new(23)
     end
   end
@@ -1028,6 +1087,7 @@ describe Regress do
     it "has a writable field regress_foo" do
       _(instance.regress_foo).must_equal 0
       instance.regress_foo = 23
+
       _(instance.regress_foo).must_equal 23
     end
   end
@@ -1041,6 +1101,7 @@ describe Regress do
 
       _(instance.bar.field).must_equal 0
       instance.bar = struct
+
       _(instance.bar.field).must_equal 23
     end
   end
@@ -1086,6 +1147,7 @@ describe Regress do
   describe "Regress::LikeGnomeKeyringPasswordSchema" do
     it "creates an instance using #new" do
       obj = Regress::LikeGnomeKeyringPasswordSchema.new
+
       _(obj).must_be_instance_of Regress::LikeGnomeKeyringPasswordSchema
     end
 
@@ -1094,6 +1156,7 @@ describe Regress do
     it "has a writable field dummy" do
       _(instance.dummy).must_equal 0
       instance.dummy = 42
+
       _(instance.dummy).must_equal 42
     end
 
@@ -1104,6 +1167,7 @@ describe Regress do
     it "has a writable field dummy2" do
       _(instance.dummy2).must_equal 0.0
       instance.dummy2 = 42.42
+
       _(instance.dummy2).must_equal 42.42
     end
   end
@@ -1116,11 +1180,13 @@ describe Regress do
       # TODO: Should an array of gint8 be more string-like?
       _(instance.name.to_a).must_equal [0] * 32
       instance.name = name_array
+
       _(instance.name.to_a).must_equal name_array
     end
 
     it "has a working method #set_name" do
       instance.set_name "foo"
+
       _(instance.name.to_a).must_equal name_array
     end
   end
@@ -1160,6 +1226,7 @@ describe Regress do
 
     it "has a working function #quark" do
       quark = Regress::TestABCError.quark
+
       _(GLib.quark_to_string(quark)).must_equal "regress-test-abc-error"
     end
   end
@@ -1170,6 +1237,7 @@ describe Regress do
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 123
       instance.some_int8 = -43
+
       _(instance.some_int8).must_equal(-43)
     end
 
@@ -1178,6 +1246,7 @@ describe Regress do
       nested = Regress::TestSimpleBoxedA.new
       nested.some_int = 12_345
       instance.nested_a = nested
+
       _(instance.nested_a.some_int).must_equal 12_345
     end
 
@@ -1246,12 +1315,14 @@ describe Regress do
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 8
       instance.some_int8 = -43
+
       _(instance.some_int8).must_equal(-43)
     end
 
     it "has a writable field some_long" do
       _(instance.some_long).must_equal 42
       instance.some_long = -4342
+
       _(instance.some_long).must_equal(-4342)
     end
 
@@ -1263,10 +1334,12 @@ describe Regress do
 
     it "has a working method #copy" do
       cp = instance.copy
+
       _(cp).must_be_instance_of Regress::TestBoxedB
       _(cp.some_int8).must_equal 8
       _(cp.some_long).must_equal 42
       instance.some_int8 = 2
+
       _(cp.some_int8).must_equal 8
     end
   end
@@ -1277,12 +1350,14 @@ describe Regress do
     it "has a writable field refcount" do
       _(instance.refcount).must_equal 1
       instance.refcount = 2
+
       _(instance.refcount).must_equal 2
     end
 
     it "has a writable field another_thing" do
       _(instance.another_thing).must_equal 42
       instance.another_thing = 4342
+
       _(instance.another_thing).must_equal 4342
     end
 
@@ -1302,6 +1377,7 @@ describe Regress do
 
     it "has a working method #copy" do
       copy = instance.copy
+
       _(copy).must_be_instance_of Regress::TestBoxedD
       _(instance.get_magic).must_equal copy.get_magic
       _(instance).wont_equal copy
@@ -1351,6 +1427,7 @@ describe Regress do
 
     it "has the member :value5" do
       skip_below "1.55.2"
+
       _(Regress::TestEnum[:value5]).must_equal 49
     end
 
@@ -1406,6 +1483,7 @@ describe Regress do
 
     it "has a working function #quark" do
       quark = Regress::TestError.quark
+
       _(GLib.quark_to_string(quark)).must_equal "regress-test-error"
     end
   end
@@ -1425,6 +1503,7 @@ describe Regress do
   describe "Regress::TestFloating" do
     it "creates an instance using #new" do
       o = Regress::TestFloating.new
+
       _(o).must_be_instance_of Regress::TestFloating
     end
 
@@ -1458,13 +1537,16 @@ describe Regress do
     it "has a working method #ref" do
       _(base_struct[:refcount]).must_equal 1
       derived_instance.ref
+
       _(base_struct[:refcount]).must_equal 2
     end
 
     it "has a working method #unref" do
       derived_instance.ref
+
       _(base_struct[:refcount]).must_equal 2
       derived_instance.unref
+
       _(base_struct[:refcount]).must_equal 1
     end
   end
@@ -1480,6 +1562,7 @@ describe Regress do
 
     it "creates an instance using #new" do
       obj = Regress::TestFundamentalObjectNoGetSetFunc.new "foo"
+
       _(obj).must_be_instance_of Regress::TestFundamentalObjectNoGetSetFunc
     end
 
@@ -1490,6 +1573,7 @@ describe Regress do
 
     it "has a working method #get_data" do
       obj = Regress::TestFundamentalObjectNoGetSetFunc.new "foo"
+
       _(obj.get_data).must_equal "foo"
     end
   end
@@ -1501,6 +1585,7 @@ describe Regress do
 
     it "creates an instance using #new" do
       obj = Regress::TestFundamentalSubObject.new "foo"
+
       _(obj).must_be_instance_of Regress::TestFundamentalSubObject
     end
 
@@ -1526,6 +1611,7 @@ describe Regress do
 
     it "creates an instance using #new" do
       obj = Regress::TestFundamentalSubObjectNoGetSetFunc.new "foo"
+
       _(obj).must_be_instance_of Regress::TestFundamentalSubObjectNoGetSetFunc
     end
   end
@@ -1544,6 +1630,7 @@ describe Regress do
 
     it "has a working method #do_foo_maybe_throw" do
       derived_instance.do_foo_maybe_throw 42
+
       _(proc { derived_instance.do_foo_maybe_throw 41 }).must_raise GirFFI::GLibError
     end
 
@@ -1599,6 +1686,7 @@ describe Regress do
         a = "hello"
       end
       instance.emit_signal
+
       _(a).must_equal "hello"
     end
 
@@ -1617,6 +1705,7 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property("number", 10)
+
         _(instance.get_property("number")).must_equal 10
       end
 
@@ -1636,6 +1725,7 @@ describe Regress do
         a = "hello"
       end
       GObject.signal_emit instance, "interface-signal"
+
       _(a).must_equal "hello"
     end
   end
@@ -1643,12 +1733,14 @@ describe Regress do
   describe "Regress::TestObj" do
     it "creates an instance using #constructor" do
       obj = Regress::TestObj.constructor
+
       _(obj).must_be_instance_of Regress::TestObj
     end
 
     it "creates an instance using #new" do
       o1 = Regress::TestObj.constructor
       o2 = Regress::TestObj.new o1
+
       _(o2).must_be_instance_of Regress::TestObj
     end
 
@@ -1663,6 +1755,7 @@ describe Regress do
       # callbacks. Thaw the callbacks to make sure the list is cleared for
       # later tests.
       result = Regress.test_callback_thaw_notifications
+
       _(result).must_equal 2
     end
 
@@ -1684,6 +1777,7 @@ describe Regress do
 
     it "has a working function #null_out" do
       obj = Regress::TestObj.null_out
+
       _(obj).must_be_nil
     end
 
@@ -1744,6 +1838,7 @@ describe Regress do
         array = ary.to_a
       end
       instance.emit_sig_with_array_len_prop
+
       _(array.to_a).must_equal [0, 1, 2, 3, 4]
     end
 
@@ -1754,6 +1849,7 @@ describe Regress do
         error = err
       end
       instance.emit_sig_with_error
+
       _(error).must_be_instance_of GLib::Error
     end
 
@@ -1761,6 +1857,7 @@ describe Regress do
       has_fired = false
       instance.signal_connect "sig-with-foreign-struct" do |_obj, cr|
         has_fired = true
+
         _(cr).must_be_instance_of Cairo::Context
       end
       instance.emit_sig_with_foreign_struct
@@ -1791,6 +1888,7 @@ describe Regress do
     it "defines signal type Sig_with_int64_prop in the class namespace" do
       instance.signal_connect("sig-with-int64-prop") { |_obj, i, _ud| i }
       instance.emit_sig_with_int64
+
       _(Regress::TestObj.const_defined?(:Sig_with_int64_prop)).must_equal true
       _(Regress.const_defined?(:Sig_with_int64_prop)).must_equal false
     end
@@ -1802,6 +1900,7 @@ describe Regress do
         error = err
       end
       instance.emit_sig_with_null_error
+
       _(error).must_be_nil
     end
 
@@ -1809,6 +1908,7 @@ describe Regress do
       has_fired = false
       instance.signal_connect "sig-with-obj" do |_it, obj|
         has_fired = true
+
         _(obj.int).must_equal 3
       end
       instance.emit_sig_with_obj
@@ -1869,11 +1969,13 @@ describe Regress do
     it "has a working method #instance_method_full" do
       _(object_ref_count(instance)).must_equal 1
       instance.instance_method_full
+
       _(object_ref_count(instance)).must_equal 1
     end
 
     it "has a working method #name_conflict" do
       skip_below "1.53.4"
+
       _(instance.name_conflict).must_be_nil
     end
 
@@ -1893,6 +1995,7 @@ describe Regress do
     it "has a working method #set_bare" do
       obj = Regress::TestObj.new_from_file("bar")
       instance.set_bare obj
+
       _(instance.bare).must_equal obj
     end
 
@@ -1907,6 +2010,7 @@ describe Regress do
       num1 = 3
       num2 = 4
       result, out_b, sum = instance.skip_inout_param a, c, num1, num2
+
       _(result).must_equal true
       _(out_b).must_equal a + 1
       _(sum).must_equal num1 + 10 * num2
@@ -1919,6 +2023,7 @@ describe Regress do
       num1 = 4
       num2 = 5
       result, out_d, sum = instance.skip_out_param a, c, d, num1, num2
+
       _(result).must_equal true
       _(out_d).must_equal d + 1
       _(sum).must_equal num1 + 10 * num2
@@ -1930,6 +2035,7 @@ describe Regress do
       num1 = 4
       num2 = 5
       result, out_b, out_d, sum = instance.skip_param a, d, num1, num2
+
       _(result).must_equal true
       _(out_b).must_equal a + 1
       _(out_d).must_equal d + 1
@@ -1943,6 +2049,7 @@ describe Regress do
       num1 = 4
       num2 = 5
       out_b, out_d, out_sum = instance.skip_return_val a, c, d, num1, num2
+
       _(out_b).must_equal a + 1
       _(out_d).must_equal d + 1
       _(out_sum).must_equal num1 + 10 * num2
@@ -1950,6 +2057,7 @@ describe Regress do
 
     it "has a working method #skip_return_val_no_out" do
       result = instance.skip_return_val_no_out 1
+
       _(result).must_be_nil
 
       _(proc { instance.skip_return_val_no_out 0 }).must_raise GirFFI::GLibError
@@ -1964,6 +2072,7 @@ describe Regress do
 
     it "has a working method #torture_signature_1" do
       ret, y, z, q = instance.torture_signature_1(-21, "hello", 12)
+
       _([ret, y, z, q]).must_equal [true, -21, 2 * -21, "hello".length + 12]
 
       _(proc { instance.torture_signature_1(-21, "hello", 11) })
@@ -1982,6 +2091,7 @@ describe Regress do
       it "can be set with #set_property" do
         obj = Regress::TestObj.new_from_file("bar")
         instance.set_property "bare", obj
+
         _(instance.get_property("bare")).must_equal obj
       end
 
@@ -2006,12 +2116,14 @@ describe Regress do
       it "can be set with #set_property" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
         instance.set_property "boxed", tb
+
         _(instance.get_property("boxed").some_int8).must_equal 75
       end
 
       it "can be set with #boxed=" do
         tb = Regress::TestBoxed.new_alternative_constructor1 75
         instance.boxed = tb
+
         _(instance.boxed.some_int8).must_equal tb.some_int8
         _(instance.get_property("boxed").some_int8).must_equal tb.some_int8
       end
@@ -2030,13 +2142,16 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "byte-array", "hello"
+
         _(instance.get_property("byte-array").to_string).must_equal "hello"
       end
 
       it "can be set with #byte_array=" do
         instance.byte_array = "bye"
+
         _(instance.byte_array.to_string).must_equal "bye"
         instance.byte_array = GLib::ByteArray.from("byebye")
+
         _(instance.get_property("byte-array").to_string).must_equal "byebye"
       end
     end
@@ -2052,11 +2167,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "double", 3.14
+
         _(instance.get_property("double")).must_equal 3.14
       end
 
       it "can be set with #double=" do
         instance.double = 3.14
+
         _(instance.double).must_equal 3.14
         _(instance.get_property("double")).must_equal 3.14
       end
@@ -2073,11 +2190,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "float", 3.14
+
         _(instance.get_property("float")).must_be_close_to 3.14
       end
 
       it "can be set with #float=" do
         instance.float = 3.14
+
         _(instance.float).must_be_close_to 3.14
         _(instance.get_property("float")).must_be_close_to 3.14
       end
@@ -2094,11 +2213,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "gtype", GObject::TYPE_INT64
+
         _(instance.get_property("gtype")).must_equal GObject::TYPE_INT64
       end
 
       it "can be set with #gtype=" do
         instance.gtype = GObject::TYPE_STRING
+
         _(instance.gtype).must_equal GObject::TYPE_STRING
         _(instance.get_property("gtype")).must_equal GObject::TYPE_STRING
       end
@@ -2115,11 +2236,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "hash-table", "foo" => -4, "bar" => 83
+
         _(instance.hash_table.to_hash).must_equal("foo" => -4, "bar" => 83)
       end
 
       it "can be set with #hash_table=" do
         instance.hash_table = { "foo" => -4, "bar" => 83 }
+
         _(instance.hash_table.to_hash).must_equal("foo" => -4, "bar" => 83)
         _(instance.get_property("hash-table").to_hash).must_equal("foo" => -4,
                                                                   "bar" => 83)
@@ -2137,11 +2260,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "hash-table-old", "foo" => 34, "bar" => -3
+
         _(instance.hash_table_old.to_hash).must_equal("foo" => 34, "bar" => -3)
       end
 
       it "can be set with #hash_table_old=" do
         instance.hash_table_old = { "foo" => 34, "bar" => -3 }
+
         _(instance.hash_table_old.to_hash).must_equal("foo" => 34, "bar" => -3)
         _(instance.get_property("hash-table-old").to_hash).must_equal("foo" => 34,
                                                                       "bar" => -3)
@@ -2182,11 +2307,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "list", %w[foo bar]
+
         _(instance.list.to_a).must_equal %w[foo bar]
       end
 
       it "can be set with #list=" do
         instance.list = %w[foo bar]
+
         _(instance.list.to_a).must_equal %w[foo bar]
         _(instance.get_property("list")).must_be :==, %w[foo bar]
       end
@@ -2203,11 +2330,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "list-old", %w[foo bar]
+
         _(instance.list_old).must_be :==, %w[foo bar]
       end
 
       it "can be set with #list_old=" do
         instance.list_old = %w[foo bar]
+
         _(instance.list_old).must_be :==, %w[foo bar]
         _(instance.get_property("list-old")).must_be :==, %w[foo bar]
       end
@@ -2228,11 +2357,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property("name-conflict", 23)
+
         _(instance.get_property("name-conflict")).must_equal 23
       end
 
       it "can be set with #name_conflict=" do
         instance.name_conflict = 23
+
         _(instance.get_property("name-conflict")).must_equal 23
       end
     end
@@ -2252,12 +2383,14 @@ describe Regress do
       it "can be set with #set_property" do
         arr = Regress.test_garray_container_return
         instance.set_property "pptrarray", arr
+
         _(instance.pptrarray).must_be :==, arr
       end
 
       it "can be set with #pptrarray=" do
         arr = Regress.test_garray_container_return
         instance.pptrarray = arr
+
         _(instance.pptrarray).must_be :==, arr
         _(instance.get_property("pptrarray")).must_be :==, arr
       end
@@ -2291,27 +2424,33 @@ describe Regress do
 
       it "cannot be retrieved with #get_property" do
         skip "Not implemented yet"
+
         _(proc { instance.get_property("write-only") }).must_raise GirFFI::GLibError
       end
 
       it "cannot be retrieved with #write_only" do
         skip "Not implemented yet"
+
         _(proc { instance.write_only }).must_raise NoMethodError
       end
 
       it "can be set with #set_property" do
         instance.int = 42
         instance.set_property("write-only", false)
+
         _(instance.int).must_equal 42
         instance.set_property("write-only", true)
+
         _(instance.int).must_equal 0
       end
 
       it "can be set with #write_only=" do
         instance.int = 42
         instance.write_only = false
+
         _(instance.int).must_equal 42
         instance.write_only = true
+
         _(instance.int).must_equal 0
       end
     end
@@ -2319,6 +2458,7 @@ describe Regress do
       a = nil
       GObject.signal_connect(instance, "all") { a = 4 }
       GObject.signal_emit instance, "all"
+
       _(a).must_equal 4
     end
 
@@ -2326,6 +2466,7 @@ describe Regress do
       a = nil
       GObject.signal_connect(instance, "cleanup") { a = 4 }
       GObject.signal_emit instance, "cleanup"
+
       _(a).must_equal 4
     end
 
@@ -2333,6 +2474,7 @@ describe Regress do
       a = nil
       GObject.signal_connect(instance, "first") { a = 4 }
       GObject.signal_emit instance, "first"
+
       _(a).must_equal 4
     end
 
@@ -2354,6 +2496,7 @@ describe Regress do
       GObject.signal_connect(instance, "sig-with-array-prop") { |_, arr, _| a = arr }
       GObject.signal_emit instance, "sig-with-array-prop",
                           GLib::Array.from(:uint, [1, 2, 3])
+
       _(a.to_a).must_equal [1, 2, 3]
     end
 
@@ -2378,6 +2521,7 @@ describe Regress do
         a = err
       end
       GObject.signal_emit instance, "sig-with-gerror", GLib::Error.new
+
       _(a).must_be_instance_of GLib::Error
     end
 
@@ -2404,6 +2548,7 @@ describe Regress do
         i + 2
       end
       result = GObject.signal_emit instance, "sig-with-inout-int", 65
+
       _(result).must_equal 67
     end
 
@@ -2525,6 +2670,7 @@ describe Regress do
 
     it "has a working function #quark" do
       quark = Regress::TestOtherError.quark
+
       _(GLib.quark_to_string(quark)).must_equal "regress-test-other-error"
     end
   end
@@ -2547,11 +2693,13 @@ describe Regress do
     it "has a writable field this_is_public_before" do
       _(instance.this_is_public_before).must_equal 0
       instance.this_is_public_before = 42
+
       _(instance.this_is_public_before).must_equal 42
     end
 
     it "has a private field this_is_private" do
       skip "This field is identified as readable in the typelib"
+
       _(instance).wont_respond_to :this_is_private
       _(instance).wont_respond_to :this_is_private=
     end
@@ -2559,6 +2707,7 @@ describe Regress do
     it "has a writable field this_is_public_after" do
       _(instance.this_is_public_after).must_equal 0
       instance.this_is_public_after = 42
+
       _(instance.this_is_public_after).must_equal 42
     end
   end
@@ -2571,12 +2720,14 @@ describe Regress do
     it "has a writable field refcount" do
       _(instance.refcount).must_equal 0
       instance.refcount = 42
+
       _(instance.refcount).must_equal 42
     end
 
     it "has a writable field atomicrefcount" do
       _(instance.atomicrefcount).must_equal 0
       instance.atomicrefcount = 42
+
       _(instance.atomicrefcount).must_equal 42
     end
   end
@@ -2619,24 +2770,28 @@ describe Regress do
     it "has a writable field some_int" do
       _(instance.some_int).must_equal 0
       instance.some_int = 42
+
       _(instance.some_int).must_equal 42
     end
 
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 0
       instance.some_int8 = 42
+
       _(instance.some_int8).must_equal 42
     end
 
     it "has a writable field some_double" do
       _(instance.some_double).must_equal 0.0
       instance.some_double = 42.0
+
       _(instance.some_double).must_equal 42.0
     end
 
     it "has a writable field some_enum" do
       _(instance.some_enum).must_equal :value1
       instance.some_enum = :value4
+
       _(instance.some_enum).must_equal :value4
     end
 
@@ -2644,10 +2799,12 @@ describe Regress do
       instance.some_int = 4236
 
       obj2 = instance.copy
+
       _(obj2).must_be_instance_of Regress::TestSimpleBoxedA
       _(obj2.some_int).must_equal instance.some_int
 
       instance.some_int = 89
+
       _(obj2.some_int).wont_equal instance.some_int
     end
 
@@ -2656,15 +2813,19 @@ describe Regress do
 
       ob2 = Regress::TestSimpleBoxedA.new
       ob2.some_int = 4236
+
       _(ob2.equals(instance)).must_equal true
       ob2.some_enum = :value3
+
       _(ob2.equals(instance)).must_equal true
       ob2.some_int = 42
+
       _(ob2.equals(instance)).wont_equal true
     end
 
     it "has a working function #const_return" do
       result = Regress::TestSimpleBoxedA.const_return
+
       _([result.some_int, result.some_int8, result.some_double]).must_equal [5, 6, 7.0]
     end
   end
@@ -2674,12 +2835,14 @@ describe Regress do
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 0
       instance.some_int8 = 42
+
       _(instance.some_int8).must_equal 42
     end
 
     it "has a writable field nested_a" do
       _(instance.nested_a.some_int).must_equal 0
       instance.nested_a = Regress::TestSimpleBoxedA.const_return
+
       _(instance.nested_a.some_int).must_equal 5
     end
 
@@ -2688,9 +2851,11 @@ describe Regress do
       instance.nested_a.some_int = 4242
 
       copy = instance.copy
+
       _([copy.some_int8, copy.nested_a.some_int]).must_equal [-42, 4242]
 
       instance.some_int8 = 103
+
       _(copy.some_int8).must_equal(-42)
     end
   end
@@ -2700,24 +2865,28 @@ describe Regress do
     it "has a writable field some_int" do
       _(instance.some_int).must_equal 0
       instance.some_int = 2556
+
       _(instance.some_int).must_equal 2556
     end
 
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 0
       instance.some_int8 = -10
+
       _(instance.some_int8).must_equal(-10)
     end
 
     it "has a writable field some_double" do
       _(instance.some_double).must_equal 0.0
       instance.some_double = 1.03455e20
+
       _(instance.some_double).must_equal 1.03455e20
     end
 
     it "has a writable field some_enum" do
       _(instance.some_enum).must_equal :value1
       instance.some_enum = :value2
+
       _(instance.some_enum).must_equal :value2
     end
 
@@ -2738,6 +2907,7 @@ describe Regress do
 
     it "has a working function #parse" do
       a = Regress::TestStructA.parse("this string is actually ignored")
+
       _(a.some_int).must_equal 23
     end
   end
@@ -2747,6 +2917,7 @@ describe Regress do
     it "has a writable field some_int8" do
       _(instance.some_int8).must_equal 0
       instance.some_int8 = 42
+
       _(instance.some_int8).must_equal 42
     end
 
@@ -2757,6 +2928,7 @@ describe Regress do
       nested.some_int = -4321
 
       instance.nested_a = nested
+
       _(instance.nested_a.some_int).must_equal(-4321)
     end
 
@@ -2783,13 +2955,16 @@ describe Regress do
     it "has a writable field another_int" do
       _(instance.another_int).must_equal 0
       instance.another_int = 42
+
       _(instance.another_int).must_equal 42
     end
 
     it "has a writable field obj" do
       o = Regress::TestSubObj.new
+
       _(instance.obj).must_be_nil
       instance.obj = o
+
       _(instance.obj).must_equal o
     end
   end
@@ -2800,6 +2975,7 @@ describe Regress do
       _(instance.array1).must_be :==, []
       struct = Regress::TestStructA.new
       instance.array1 = [struct]
+
       _(instance.array1).must_be :==, [struct]
     end
 
@@ -2807,6 +2983,7 @@ describe Regress do
       _(instance.array2).must_be :==, []
       o = Regress::TestSubObj.new
       instance.array2 = [o]
+
       _(instance.array2).must_be :==, [o]
     end
 
@@ -2814,6 +2991,7 @@ describe Regress do
       _(instance.field).must_be_nil
       o = Regress::TestSubObj.new
       instance.field = o
+
       _(instance.field).must_equal o
     end
 
@@ -2821,6 +2999,7 @@ describe Regress do
       _(instance.list).must_be_nil
       o = Regress::TestSubObj.new
       instance.list = [o]
+
       _(instance.list).must_be :==, [o]
     end
 
@@ -2828,6 +3007,7 @@ describe Regress do
       _(instance.garray).must_be_nil
       o = Regress::TestSubObj.new
       instance.garray = [o]
+
       _(instance.garray).must_be :==, [o]
     end
   end
@@ -2837,6 +3017,7 @@ describe Regress do
     it "has a writable field some_type" do
       _(instance.some_type).must_equal 0
       instance.some_type = GObject::TYPE_STRING
+
       _(instance.some_type).must_equal GObject::TYPE_STRING
     end
 
@@ -2858,50 +3039,59 @@ describe Regress do
     it "has a writable field v_int" do
       _(instance.v_int).must_equal 0
       instance.v_int = -54_321
+
       _(instance.v_int).must_equal(-54_321)
     end
 
     it "has a writable field v_uint" do
       _(instance.v_uint).must_equal 0
       instance.v_uint = 54_321
+
       _(instance.v_uint).must_equal 54_321
     end
 
     it "has a writable field v_long" do
       _(instance.v_long).must_equal 0
       instance.v_long = -54_321
+
       _(instance.v_long).must_equal(-54_321)
     end
 
     it "has a writable field v_ulong" do
       _(instance.v_long).must_equal 0
       instance.v_long = 54_321
+
       _(instance.v_long).must_equal 54_321
     end
 
     it "has a writable field v_int64" do
       _(instance.v_int64).must_equal 0
       instance.v_int64 = -54_321_000_000_000
+
       _(instance.v_int64).must_equal(-54_321_000_000_000)
     end
     it "has a writable field v_uint64" do
       _(instance.v_uint64).must_equal 0
       instance.v_uint64 = 54_321_000_000_000
+
       _(instance.v_uint64).must_equal 54_321_000_000_000
     end
     it "has a writable field v_float" do
       _(instance.v_float).must_equal 0
       instance.v_float = 3.1415
+
       _(instance.v_float).must_be_close_to 3.1415
     end
     it "has a writable field v_double" do
       _(instance.v_double).must_equal 0
       instance.v_double = 3.1415
+
       _(instance.v_double).must_equal 3.1415
     end
     it "has a writable field v_pointer" do
       _(instance.v_pointer).must_be :null?
       instance.v_pointer = FFI::Pointer.new 54_321
+
       _(instance.v_pointer.address).must_equal 54_321
     end
   end
@@ -2911,12 +3101,14 @@ describe Regress do
     it "has a writable field ref_count" do
       _(instance.ref_count).must_equal 0
       instance.ref_count = 1
+
       _(instance.ref_count).must_equal 1
     end
 
     it "has a writable field data1" do
       _(instance.data1).must_be :null?
       instance.data1 = FFI::MemoryPointer.new(:int32).tap { |it| it.put_int(0, 42) }
+
       _(instance.data1.read_int).must_equal 42
     end
 
@@ -2944,6 +3136,7 @@ describe Regress do
     it "has a writable field data7" do
       skip_below "1.59.3"
       instance.data7 = 42
+
       _(instance.data7).must_equal 42
     end
   end
@@ -2953,18 +3146,21 @@ describe Regress do
     it "has a writable field just_int" do
       _(instance.just_int).must_equal 0
       instance.just_int = 42
+
       _(instance.just_int).must_equal 42
     end
 
     it "has a writable field array" do
       _(instance.array).must_be :==, [0] * 10
       instance.array = (1..10).to_a
+
       _(instance.array).must_be :==, (1..10).to_a
     end
 
     it "has a working method #frob" do
       instance.array = (0..9).to_a
       instance.frob
+
       _(instance.array).must_be :==, (42..(42 + 9)).to_a
       _(instance.just_int).must_equal 7
     end
@@ -3007,11 +3203,13 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property("boolean", false)
+
         _(instance.get_property("boolean")).must_equal false
       end
 
       it "can be set with #boolean=" do
         instance.boolean = false
+
         _(instance.get_property("boolean")).must_equal false
       end
     end
@@ -3040,8 +3238,10 @@ describe Regress do
 
     it "has a working method #set_testbool" do
       instance.set_testbool true
+
       _(instance.get_testbool).must_equal true
       instance.set_testbool false
+
       _(instance.get_testbool).must_equal false
     end
 
@@ -3056,21 +3256,25 @@ describe Regress do
 
       it "can be set with #set_property" do
         instance.set_property "testbool", true
+
         _(instance.get_testbool).must_equal true
         _(instance.get_property("testbool")).must_equal true
 
         instance.set_property "testbool", false
+
         _(instance.get_testbool).must_equal false
         _(instance.get_property("testbool")).must_equal false
       end
 
       it "can be set with #testbool=" do
         instance.testbool = true
+
         _(instance.testbool).must_equal true
         _(instance.get_testbool).must_equal true
         _(instance.get_property("testbool")).must_equal true
 
         instance.testbool = false
+
         _(instance.testbool).must_equal false
         _(instance.get_testbool).must_equal false
         _(instance.get_property("testbool")).must_equal false
@@ -3084,21 +3288,25 @@ describe Regress do
 
   it "has a working function #aliased_caller_alloc" do
     result = Regress.aliased_caller_alloc
+
     _(result).must_be_instance_of Regress::TestBoxed
   end
 
   it "has a working function #annotation_attribute_func" do
     info = get_introspection_data("Regress", "annotation_attribute_func")
     param = info.args.last
+
     _(param.attribute("some.annotation")).must_equal "value"
     _(param.attribute("another.annotation")).must_equal "blahvalue"
 
     obj = Regress::AnnotationObject.new
+
     _(Regress.annotation_attribute_func(obj, "hello")).must_equal 42
   end
 
   it "has a working function #annotation_custom_destroy" do
     result = Regress.annotation_custom_destroy { nil }
+
     _(result).must_be_nil
   end
 
@@ -3108,6 +3316,7 @@ describe Regress do
 
   it "has a working function #annotation_init" do
     result = Regress.annotation_init %w[foo bar]
+
     _(result.to_a).must_equal %w[foo bar]
   end
 
@@ -3119,6 +3328,7 @@ describe Regress do
     # TODO: Automatically convert array elements to correct type
     val1 = GObject::Value.from 1
     val2 = GObject::Value.from "a"
+
     _(Regress.annotation_ptr_array([val1, val2])).must_be_nil
   end
 
@@ -3128,6 +3338,7 @@ describe Regress do
 
   it "has a working function #annotation_return_filename" do
     skip "This function is wrongly annotated as transfer-ownership: full"
+
     _(Regress.annotation_return_filename).must_equal "a utf-8 filename"
   end
 
@@ -3162,6 +3373,7 @@ describe Regress do
     # NOTE: The arity of this method was changed in GObjectIntrospection 1.53.2
     if method.arity == 1
       object = GObject::Object.new
+
       _(Regress.annotation_transfer_floating(object)).must_be_nil
     else
       _(Regress.annotation_transfer_floating).must_be_nil
@@ -3174,6 +3386,7 @@ describe Regress do
 
   it "has a working function #atest_error_quark" do
     result = Regress.atest_error_quark
+
     _(GLib.quark_to_string(result)).must_equal "regress-atest-error"
   end
 
@@ -3195,6 +3408,7 @@ describe Regress do
 
   it "has a working function #foo_error_quark" do
     result = Regress.foo_error_quark
+
     _(GLib.quark_to_string(result)).must_equal("regress_foo-error-quark")
   end
 
@@ -3265,12 +3479,14 @@ describe Regress do
   it "has a working function #get_variant" do
     skip_below "1.47.92"
     var = Regress.get_variant
+
     _(var.get_int32).must_equal 42
     # TODO: Make var not floating
   end
 
   it "has a working function #global_get_flags_out" do
     result = Regress.global_get_flags_out
+
     _(result).must_equal(flag1: true, flag3: true)
   end
 
@@ -3292,6 +3508,7 @@ describe Regress do
 
   it "has a working function #test_abc_error_quark" do
     quark = Regress.test_abc_error_quark
+
     _(GLib.quark_to_string(quark)).must_equal "regress-test-abc-error"
   end
 
@@ -3430,6 +3647,7 @@ describe Regress do
   it "has a working function #test_array_struct_out" do
     skip_below "1.47.92"
     result = Regress.test_array_struct_out
+
     _(result.map(&:some_int)).must_equal [22, 33, 44]
   end
 
@@ -3437,24 +3655,28 @@ describe Regress do
     skip_below "1.59.4"
     skip "Not implemented yet"
     result = Regress.test_array_struct_out_caller_alloc 3
+
     _(result.map(&:some_int)).must_equal [22, 33, 44]
   end
 
   it "has a working function #test_array_struct_out_container" do
     skip_below "1.59.4"
     result = Regress.test_array_struct_out_container
+
     _(result.map(&:some_int)).must_equal [11, 13, 17, 19, 23]
   end
 
   it "has a working function #test_array_struct_out_full_fixed" do
     skip_below "1.59.4"
     result = Regress.test_array_struct_out_full_fixed
+
     _(result.map(&:some_int)).must_equal [2, 3, 5, 7]
   end
 
   it "has a working function #test_array_struct_out_none" do
     skip_below "1.59.4"
     result = Regress.test_array_struct_out_none
+
     _(result.map(&:some_int)).must_equal [111, 222, 333]
   end
 
@@ -3544,6 +3766,7 @@ describe Regress do
       a = 2
     end
     result = Regress.test_callback_thaw_async
+
     _(a).must_equal 2
     _(stored_proc).wont_be_nil
     _(result).must_equal 2
@@ -3558,11 +3781,13 @@ describe Regress do
       stored_proc = user_data
       a = 2
     end
+
     _(a).must_equal 2
     _(GirFFI::CallbackBase::CALLBACKS).must_include stored_proc
 
     a = 3
     r2 = Regress.test_callback_thaw_notifications
+
     _(a).must_equal 2
     _(r1).must_equal r2
     _(GirFFI::CallbackBase::CALLBACKS).wont_include stored_proc
@@ -3592,6 +3817,7 @@ describe Regress do
   it "has a working function #test_callback_return_full" do
     obj = Regress::TestObj.constructor
     Regress.test_callback_return_full { obj }
+
     _(object_ref_count(obj)).must_equal 1
   end
 
@@ -3610,6 +3836,7 @@ describe Regress do
       3
     end
     result = Regress.test_callback_thaw_async
+
     _(invoked).must_equal [3, 2, 1]
     _(result).must_equal 1
   end
@@ -3618,6 +3845,7 @@ describe Regress do
     Regress.test_callback_destroy_notify { 42 }
     Regress.test_callback_destroy_notify { 24 }
     result = Regress.test_callback_thaw_notifications
+
     _(result).must_equal 66
   end
 
@@ -3667,8 +3895,10 @@ describe Regress do
   it "has a working function #test_create_fundamental_hidden_class_instance" do
     skip_below "1.51.2"
     instance = Regress.test_create_fundamental_hidden_class_instance
+
     _(instance).must_be_kind_of Regress::TestFundamentalObject
     g_type = instance.class_struct.g_type
+
     _(GObject.type_name(g_type)).must_equal "RegressTestFundamentalHiddenSubObject"
   end
 
@@ -3681,6 +3911,7 @@ describe Regress do
 
   it "has a working function #test_def_error_quark" do
     quark = Regress.test_def_error_quark
+
     _(GLib.quark_to_string(quark)).must_equal "regress-test-def-error"
   end
 
@@ -3698,11 +3929,13 @@ describe Regress do
 
   it "has a working function #test_error_quark" do
     quark = Regress.test_error_quark
+
     _(GLib.quark_to_string(quark)).must_equal "regress-test-error"
   end
 
   it "has a working function #test_filename_return" do
     arr = Regress.test_filename_return
+
     _(arr).must_be :==, ["åäö", "/etc/fstab"]
   end
 
@@ -3729,6 +3962,7 @@ describe Regress do
 
   it "has a working function #test_garray_container_return" do
     arr = Regress.test_garray_container_return
+
     _(arr).must_be_instance_of GLib::PtrArray
     _(arr.len).must_equal 1
     _(arr.to_a).must_equal ["regress"]
@@ -3736,17 +3970,20 @@ describe Regress do
 
   it "has a working function #test_garray_full_return" do
     result = Regress.test_garray_full_return
+
     _(result.to_a).must_equal ["regress"]
   end
 
   it "has a working function #test_gerror_callback" do
     result = nil
     Regress.test_gerror_callback { |err| result = err.message }
+
     _(result).must_equal "regression test error"
   end
 
   it "has a working function #test_ghash_container_return" do
     hash = Regress.test_ghash_container_return
+
     _(hash).must_be_instance_of GLib::HashTable
     _(hash.to_hash).must_equal("foo" => "bar",
                                "baz" => "bat",
@@ -3755,6 +3992,7 @@ describe Regress do
 
   it "has a working function #test_ghash_everything_return" do
     ghash = Regress.test_ghash_everything_return
+
     _(ghash.to_hash).must_be :==, "foo" => "bar",
                                   "baz" => "bat",
                                   "qux" => "quux"
@@ -3793,6 +4031,7 @@ describe Regress do
   it "has a working function #test_ghash_nested_everything_return" do
     result = Regress.test_ghash_nested_everything_return
     hash = result.to_hash
+
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
                                          "baz" => "bat",
@@ -3802,6 +4041,7 @@ describe Regress do
   it "has a working function #test_ghash_nested_everything_return2" do
     result = Regress.test_ghash_nested_everything_return2
     hash = result.to_hash
+
     _(hash.keys).must_equal ["wibble"]
     _(hash["wibble"].to_hash).must_equal("foo" => "bar",
                                          "baz" => "bat",
@@ -3822,6 +4062,7 @@ describe Regress do
 
   it "has a working function #test_ghash_nothing_return" do
     ghash = Regress.test_ghash_nothing_return
+
     _(ghash.to_hash).must_be :==, "foo" => "bar",
                                   "baz" => "bat",
                                   "qux" => "quux"
@@ -3829,6 +4070,7 @@ describe Regress do
 
   it "has a working function #test_ghash_nothing_return2" do
     ghash = Regress.test_ghash_nothing_return2
+
     _(ghash.to_hash).must_be :==, "foo" => "bar",
                                   "baz" => "bat",
                                   "qux" => "quux"
@@ -3840,11 +4082,13 @@ describe Regress do
 
   it "has a working function #test_ghash_null_out" do
     ghash = Regress.test_ghash_null_out
+
     _(ghash).must_be_nil
   end
 
   it "has a working function #test_ghash_null_return" do
     ghash = Regress.test_ghash_null_return
+
     _(ghash).must_be_nil
   end
 
@@ -3857,6 +4101,7 @@ describe Regress do
 
   it "has a working function #test_glist_everything_return" do
     list = Regress.test_glist_everything_return
+
     _(list).must_be :==, %w[1 2 3]
   end
 
@@ -3878,11 +4123,13 @@ describe Regress do
 
   it "has a working function #test_glist_nothing_return" do
     list = Regress.test_glist_nothing_return
+
     _(list).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_glist_nothing_return2" do
     list = Regress.test_glist_nothing_return2
+
     _(list).must_be :==, %w[1 2 3]
   end
 
@@ -3893,6 +4140,7 @@ describe Regress do
 
   it "has a working function #test_glist_null_out" do
     result = Regress.test_glist_null_out
+
     _(result).must_be_nil
   end
 
@@ -3905,6 +4153,7 @@ describe Regress do
 
   it "has a working function #test_gslist_everything_return" do
     slist = Regress.test_gslist_everything_return
+
     _(slist).must_be :==, %w[1 2 3]
   end
 
@@ -3920,11 +4169,13 @@ describe Regress do
 
   it "has a working function #test_gslist_nothing_return" do
     slist = Regress.test_gslist_nothing_return
+
     _(slist).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_gslist_nothing_return2" do
     slist = Regress.test_gslist_nothing_return2
+
     _(slist).must_be :==, %w[1 2 3]
   end
 
@@ -3935,6 +4186,7 @@ describe Regress do
 
   it "has a working function #test_gslist_null_out" do
     result = Regress.test_gslist_null_out
+
     _(result).must_be_nil
   end
 
@@ -3950,6 +4202,7 @@ describe Regress do
 
   it "has a working function #test_gvariant_asv" do
     result = Regress.test_gvariant_asv
+
     _(result.n_children).must_equal 2
     _(result.lookup_value("name").get_string).must_equal "foo"
     _(result.lookup_value("timeout").get_int32).must_equal 10
@@ -3970,6 +4223,7 @@ describe Regress do
   it "has a working function #test_hash_table_callback" do
     value = nil
     Regress.test_hash_table_callback("foo" => 42) { |hash| value = hash }
+
     _(value.to_hash).must_equal("foo" => 42)
   end
 
@@ -4055,18 +4309,21 @@ describe Regress do
     skip_below "1.47.1"
     a = 0
     Regress.test_noptr_callback { a = 1 }
+
     _(a).must_equal 1
   end
 
   it "has a working function #test_null_gerror_callback" do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
+
     _(value.message).must_equal "regression test owned error"
   end
 
   it "has a working function #test_null_strv_in_gvalue" do
     skip_below "1.53.1"
     result = Regress.test_null_strv_in_gvalue
+
     _(result.to_a).must_be :empty?
   end
 
@@ -4078,18 +4335,21 @@ describe Regress do
   it "has a working function #test_owned_gerror_callback" do
     value = nil
     Regress.test_owned_gerror_callback { |err| value = err }
+
     _(value.message).must_equal "regression test owned error"
   end
 
   it "has a working function #test_return_allow_none" do
     skip_below "1.47.1"
     result = Regress.test_return_allow_none
+
     _(result).must_be_nil
   end
 
   it "has a working function #test_return_nullable" do
     skip_below "1.47.1"
     result = Regress.test_return_nullable
+
     _(result).must_be_nil
   end
 
@@ -4122,6 +4382,7 @@ describe Regress do
 
   it "has a working function #test_struct_a_parse" do
     a = Regress.test_struct_a_parse("this string is actually ignored")
+
     _(a).must_be_instance_of Regress::TestStructA
     _(a.some_int).must_equal 23
   end
@@ -4132,26 +4393,31 @@ describe Regress do
 
   it "has a working function #test_strv_in_gvalue" do
     arr = Regress.test_strv_in_gvalue
+
     _(arr).must_be :==, %w[one two three]
   end
 
   it "has a working function #test_strv_out" do
     arr = Regress.test_strv_out
+
     _(arr).must_be :==, %w[thanks for all the fish]
   end
 
   it "has a working function #test_strv_out_c" do
     arr = Regress.test_strv_out_c
+
     _(arr).must_be :==, %w[thanks for all the fish]
   end
 
   it "has a working function #test_strv_out_container" do
     arr = Regress.test_strv_out_container
+
     _(arr).must_be :==, %w[1 2 3]
   end
 
   it "has a working function #test_strv_outarg" do
     arr = Regress.test_strv_outarg
+
     _(arr).must_be :==, %w[1 2 3]
   end
 
@@ -4171,6 +4437,7 @@ describe Regress do
 
   it "has a working function #test_torture_signature_1" do
     ret, y, z, q = Regress.test_torture_signature_1(-21, "hello", 12)
+
     _([ret, y, z, q]).must_equal [true, -21, 2 * -21, "hello".length + 12]
 
     _(proc { Regress.test_torture_signature_1(-21, "hello", 11) })
@@ -4213,6 +4480,7 @@ describe Regress do
 
   it "has a working function #test_unconventional_error_quark" do
     result = Regress.test_unconventional_error_quark
+
     _(GLib.quark_to_string(result)).must_equal "regress-test-other-error"
   end
 
@@ -4282,6 +4550,7 @@ describe Regress do
 
   it "has a working function #test_value_return" do
     result = Regress.test_value_return 3423
+
     _(result).must_equal 3423
   end
 

@@ -6,6 +6,7 @@ describe GLib::Strv do
   describe "::from" do
     it "creates a Strv from a Ruby array" do
       strv = GLib::Strv.from %w[1 2 3]
+
       _(strv).must_be_instance_of GLib::Strv
       _(strv.to_a).must_equal %w[1 2 3]
     end
@@ -21,6 +22,7 @@ describe GLib::Strv do
       strv = GLib::Strv.from %w[1 2 3]
 
       pointer = strv.to_ptr
+
       _(pointer).must_be_kind_of FFI::Pointer
 
       strv2 = GLib::Strv.from pointer

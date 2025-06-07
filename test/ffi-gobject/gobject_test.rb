@@ -55,6 +55,7 @@ describe GObject do
                                       "The Foo Bar Property",
                                       10, 20, 15,
                                       3)
+
         _(spec).must_be_instance_of GObject::ParamSpecInt
         _(spec.struct[:minimum]).must_equal 10
         _(spec.struct[:maximum]).must_equal 20

@@ -67,6 +67,7 @@ describe GObjectIntrospection::IRepository do
     it "returns a list of dependencies of the given namespace" do
       gir.require "GObject", "2.0"
       result = gir.dependencies("GObject")
+
       _(result).must_equal ["GLib-2.0"]
     end
 

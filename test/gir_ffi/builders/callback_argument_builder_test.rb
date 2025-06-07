@@ -100,6 +100,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
       it "has the correct value for #post_conversion" do
         array_arg_builder.pre_conversion
+
         _(array_arg_builder.post_conversion)
           .must_equal ["_v1.put_pointer 0, GirFFI::SizedArray.from(:gint32, -1, _v4)"]
       end
@@ -122,6 +123,7 @@ describe GirFFI::Builders::CallbackArgumentBuilder do
 
       it "has the correct value for #post_conversion" do
         length_arg_builder.pre_conversion
+
         _(length_arg_builder.post_conversion)
           .must_equal ["_v1.put_int32 0, _v3.length"]
       end

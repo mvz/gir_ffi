@@ -377,6 +377,7 @@ describe GirFFI::Builders::ArgumentBuilder do
 
         it "has the correct value for #return_value_name" do
           builder.post_conversion
+
           _(builder.return_value_name).must_equal "_v2"
         end
       end

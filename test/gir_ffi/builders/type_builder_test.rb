@@ -9,6 +9,7 @@ describe GirFFI::Builders::TypeBuilder do
     it "returns StructBuilder for metaclasses" do
       info = get_introspection_data("GObject", "InitiallyUnownedClass")
       builder = GirFFI::Builders::TypeBuilder.builder_for(info)
+
       _(builder).must_be_instance_of GirFFI::Builders::StructBuilder
     end
   end

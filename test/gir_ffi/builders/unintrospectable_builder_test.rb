@@ -42,6 +42,7 @@ describe GirFFI::Builders::UnintrospectableBuilder do
 
       it "finds signals in ancestor classes" do
         signal = @bldr.find_signal "notify"
+
         _(signal.name).must_equal "notify"
       end
     end
@@ -65,6 +66,7 @@ describe GirFFI::Builders::UnintrospectableBuilder do
     describe "its #find_signal method" do
       it "finds signals that are not defined in the GIR" do
         signal = builder.find_signal "handoff"
+
         _(signal).wont_be_nil
         _(signal.name).must_equal "handoff"
       end
@@ -77,6 +79,7 @@ describe GirFFI::Builders::UnintrospectableBuilder do
 
       it "finds properies in ancestor classes" do
         property = builder.find_property "name"
+
         _(property.name).must_equal "name"
       end
     end

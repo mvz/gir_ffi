@@ -25,6 +25,7 @@ describe GObject::ObjectClass do
     it "returns the correct GType" do
       obj = GIMarshallingTests::OverridesObject.new
       class_struct = obj.class_struct
+
       _(class_struct.gtype).must_equal GIMarshallingTests::OverridesObject.gtype
     end
   end

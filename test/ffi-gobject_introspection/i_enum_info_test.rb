@@ -12,6 +12,7 @@ describe GObjectIntrospection::IEnumInfo do
 
     it "finds a method by name" do
       result = @info.find_method("param")
+
       _(result.name).must_equal "param"
     end
   end

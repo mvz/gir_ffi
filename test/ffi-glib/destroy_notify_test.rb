@@ -7,6 +7,7 @@ describe GLib::DestroyNotify do
     it "removes the passed-in key from the callback store" do
       dummy_proc = "some-callback"
       GirFFI::CallbackBase.store_callback dummy_proc
+
       _(GirFFI::CallbackBase::CALLBACKS).must_include dummy_proc
 
       user_data = GirFFI::ArgHelper.store dummy_proc

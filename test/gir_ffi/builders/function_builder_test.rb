@@ -15,6 +15,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "returns the same result when called twice" do
         original = builder.method_definition
         copy = builder.method_definition
+
         _(copy).must_equal original
       end
     end
@@ -23,6 +24,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_introspection_data "Regress", "test_array_fixed_out_objects"
       end
+
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.test_array_fixed_out_objects
@@ -37,6 +39,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions having a linked length argument" do
       let(:function_info) { get_introspection_data "Regress", "test_array_gint16_in" }
+
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.test_array_gint16_in(ints)
@@ -54,6 +57,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_method_introspection_data "Regress", "AnnotationObject", "parse_args"
       end
+
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def parse_args(argv)
@@ -74,6 +78,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_introspection_data "Regress", "test_callback_destroy_notify"
       end
+
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.test_callback_destroy_notify(&callback)
@@ -89,6 +94,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions that take a GValue" do
       let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_in" }
+
       it "creates a call to GObject::Value#from" do
         _(code).must_equal <<~CODE
           def self.gvalue_in(value)
@@ -101,6 +107,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions that return a GValue" do
       let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_return" }
+
       it "creates a call to #get_value" do
         _(code).must_equal <<~CODE
           def self.gvalue_return
@@ -114,6 +121,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions that have a GValue out argument" do
       let(:function_info) { get_introspection_data "GIMarshallingTests", "gvalue_out" }
+
       it "creates a call to #get_value" do
         _(code).must_equal <<~CODE
           def self.gvalue_out
@@ -163,6 +171,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions with a nullable input array" do
       let(:function_info) { get_introspection_data "Regress", "test_array_int_null_in" }
+
       it "builds correct definition" do
         _(code).must_equal <<~CODE
           def self.test_array_int_null_in(arr = nil)
@@ -177,6 +186,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions with a nullable output array" do
       let(:function_info) { get_introspection_data "Regress", "test_array_int_null_out" }
+
       it "builds correct definition" do
         _(code).must_equal <<~CODE
           def self.test_array_int_null_out
@@ -205,6 +215,7 @@ describe GirFFI::Builders::FunctionBuilder do
       it "builds a correct definition" do
         skip_below "1.67.1"
         skip_above "1.80.1", "Closure info is no longer emitted for invalid annotations"
+
         _(code).must_equal <<~CODE
           def self.signal_handlers_unblock_matched(instance, mask, signal_id, detail, closure = nil, func = nil)
             _v1 = GObject::Object.from(instance)
@@ -231,6 +242,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_introspection_data "GObject", "signal_add_emission_hook"
       end
+
       it "builds a correct definition" do
         _(code).must_equal <<~CODE
           def self.signal_add_emission_hook(signal_id, detail, &hook_func)
@@ -250,6 +262,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_method_introspection_data "GIMarshallingTests", "Object", "method_array_inout"
       end
+
       it "builds the correct definition" do
         _(code).must_equal <<~CODE
           def method_array_inout(ints)
@@ -286,6 +299,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) { get_method_introspection_data "GLib", "Variant", "get_strv" }
       it "builds a correct definition" do
         size_type = ":uint#{FFI.type_size(:size_t) * 8}"
+
         _(code).must_equal <<~CODE
           def get_strv
             _v1 = FFI::MemoryPointer.new #{size_type}
@@ -577,6 +591,7 @@ describe GirFFI::Builders::FunctionBuilder do
 
     describe "for functions with an allow-none ingoing parameter" do
       let(:function_info) { get_introspection_data "Regress", "test_utf8_null_in" }
+
       it "builds correct definition with default parameter value" do
         _(code).must_equal <<~CODE
           def self.test_utf8_null_in(in_ = nil)
@@ -591,6 +606,7 @@ describe GirFFI::Builders::FunctionBuilder do
       let(:function_info) do
         get_introspection_data "GIMarshallingTests", "array_in_utf8_two_in_out_of_order"
       end
+
       it "builds correct definition with default parameter value on the later arguments" do
         _(code).must_equal <<~CODE
           def self.array_in_utf8_two_in_out_of_order(a, ints, b = nil)

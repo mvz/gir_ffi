@@ -36,6 +36,7 @@ describe GirFFI::Core do
 
       it "returns a GType for the derived class" do
         parent_gtype = GIMarshallingTests::OverridesObject.gtype
+
         _(@gtype).wont_equal parent_gtype
         _(GObject.type_name(@gtype)).must_equal @klass.name
       end
@@ -46,6 +47,7 @@ describe GirFFI::Core do
 
       it "registers a type with the same size as the parent" do
         q = GObject.type_query @gtype
+
         _(q.instance_size).must_equal GIMarshallingTests::OverridesObject::Struct.size
       end
 
@@ -56,6 +58,7 @@ describe GirFFI::Core do
       it "allows the new class to be instantiated" do
         obj = @klass.new
         type = GObject.type_from_instance obj
+
         _(type).must_equal @gtype
       end
     end
@@ -74,6 +77,7 @@ describe GirFFI::Core do
 
       it "registers a type that is bigger than the parent" do
         q = GObject.type_query @gtype
+
         _(q.instance_size).must_be :>, GIMarshallingTests::OverridesObject::Struct.size
       end
 
@@ -84,6 +88,7 @@ describe GirFFI::Core do
       it "creates accessor functions for the property" do
         obj = @klass.new
         obj.foo = 13
+
         _(obj.foo).must_equal 13
       end
     end

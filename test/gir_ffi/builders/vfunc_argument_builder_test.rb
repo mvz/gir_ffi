@@ -67,6 +67,7 @@ describe GirFFI::Builders::VFuncArgumentBuilder do
 
     it "has the correct value for #post_conversion" do
       builder.pre_conversion
+
       _(builder.post_conversion)
         .must_equal ["_v2.ref", "_v1.put_pointer 0, GObject::Object.from(_v2)"]
     end

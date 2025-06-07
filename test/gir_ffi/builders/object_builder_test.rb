@@ -19,17 +19,20 @@ describe GirFFI::Builders::ObjectBuilder do
   describe "#find_signal" do
     it "finds a signal defined on the class itself" do
       sig = obj_builder.find_signal "test"
+
       _(sig.name).must_equal "test"
     end
 
     it "finds a signal defined on a superclass" do
       sig = sub_obj_builder.find_signal "test"
+
       _(sig.name).must_equal "test"
     end
 
     it "finds signals defined on interfaces" do
       skip_below "1.57.2"
       sig = sub_obj_builder.find_signal "interface-signal"
+
       _(sig.name).must_equal "interface-signal"
     end
 
@@ -41,11 +44,13 @@ describe GirFFI::Builders::ObjectBuilder do
   describe "#find_property" do
     it "finds a property specified on the class itself" do
       prop = obj_builder.find_property("int")
+
       _(prop.name).must_equal "int"
     end
 
     it "finds a property specified on the parent class" do
       prop = sub_obj_builder.find_property("int")
+
       _(prop.name).must_equal "int"
     end
 
@@ -62,6 +67,7 @@ describe GirFFI::Builders::ObjectBuilder do
     it "returns the parent struct type for classes without their own struct" do
       binding_info = get_introspection_data "GObject", "Binding"
       builder = GirFFI::Builders::ObjectBuilder.new binding_info
+
       _(builder.class_struct_class).must_equal GObject::ObjectClass
     end
 
@@ -95,11 +101,13 @@ describe GirFFI::Builders::ObjectBuilder do
 
     it "includes properties that do not have a matching getter method" do
       result = obj_builder.eligible_properties
+
       _(result.map(&:name)).must_include "double"
     end
 
     it "skips properties that have a matching getter method" do
       result = wi_builder.eligible_properties
+
       _(result.map(&:name)).wont_include "testbool"
     end
   end
