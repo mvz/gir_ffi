@@ -201,16 +201,16 @@
 ## 0.10.1 / 2016-03-28
 
 * Restore JRuby compatibility.
-  - Introduce #owned to flag unions and structs for release at garbage collection time.
-    In JRuby's implementation, FFI::Pointer does not implement #autorelease=
-    and #autorelease?, so this different technique is used to free pointers
-    allocated by GLib. It is in fact doubtful that setting autorelease had any
-    actual effect even on CRuby.
-  - Immediately free string pointers whose ownership is transfered. Again, the
-    #autorelease technique doesn't work on JRuby.
-  - Fix handling of callee-allocated out parameters in vfuncs. The `put_pointer`
-    method was wrongly called, and JRuby is more picky about what types that
-    method expects, exposing the bug.
+   * Introduce `#owned` to flag unions and structs for release at garbage
+     collection time. In JRuby's implementation, FFI::Pointer does not
+     implement `#autorelease=` and `#autorelease?`, so this different technique
+     is used to free pointers allocated by GLib. It is in fact doubtful that
+     setting autorelease had any actual effect even on CRuby.
+   * Immediately free string pointers whose ownership is transfered. Again, the
+     #autorelease technique doesn't work on JRuby.
+   * Fix handling of callee-allocated out parameters in vfuncs. The `put_pointer`
+     method was wrongly called, and JRuby is more picky about what types that
+     method expects, exposing the bug.
 
 ## 0.10.0 / 2016-03-23
 
@@ -283,16 +283,16 @@
 ## 0.8.6 / 2015-12-09
 
 * Change handling of initializers in subclasses
-  * Subclasses with their own GType revert to the default GObject constructor
-  * Subclasses cannot use their parent classes' non-default contructors
+   * Subclasses with their own GType revert to the default GObject constructor
+   * Subclasses cannot use their parent classes' non-default contructors
 * Find signals in ancestor classes of unintrospectable types
 
 ## 0.8.5 / 2015-12-04
 
 * Improve GObject::Value
-  * Make `#wrap_ruby_value` work for object classes
-  * Use non-deprecated methods for getting and setting char values
-  * Make `set_value` and `get_value` work for interface types
+   * Make `#wrap_ruby_value` work for object classes
+   * Use non-deprecated methods for getting and setting char values
+   * Make `set_value` and `get_value` work for interface types
 
 ## 0.8.4 / 2015-12-03
 
@@ -312,14 +312,14 @@
 
 * Use inherited constructor for boxed types
 * Make `InOutPointer` work correctly for boxed types
-  * Make `.for` work with boxed types
-  * Make `#set_value` work with boxed types
+   * Make `.for` work with boxed types
+   * Make `#set_value` work with boxed types
 * Make GObject::Value support nil type:
-  * Make `.wrap_ruby_value(nil)` work
-  * Make `#set_value` and `#get_value` work when the type is `TYPE_INVALID`
-  * Make `.for_gtype` work with `TYPE_INVALID` and `TYPE_NONE`
-  * Make `.from(nil)` return a `GObject::Value` instead of nil
-  * Make `#set_ruby_value` private
+   * Make `.wrap_ruby_value(nil)` work
+   * Make `#set_value` and `#get_value` work when the type is `TYPE_INVALID`
+   * Make `.for_gtype` work with `TYPE_INVALID` and `TYPE_NONE`
+   * Make `.from(nil)` return a `GObject::Value` instead of nil
+   * Make `#set_ruby_value` private
 * Make `GObject::Object.signal_emit` work with gobject-introspection 1.46
 * Replace or remove all custom `.new` methods
 * Make `setup_method` and `setup_instance_method` handle symbol arguments
@@ -386,8 +386,8 @@
 * Provide constant `TYPE_BYTE_ARRAY`
 * Don't recurse looking for signals and properties
 * Clean up generated code:
-  * Avoid use of an ignored dummy argument
-  * Clean up trailing whitespace
+   * Avoid use of an ignored dummy argument
+   * Clean up trailing whitespace
 * Drop support for Ruby 1.9.2
 * Allow data argument for `GObject::Object#signal_connect`
 * Let Ruby threads run during GLib's main loop
@@ -432,25 +432,25 @@
 ## 0.7.0 / 2014-01-11
 
 * Type handling:
-  * Handle c arrays with separate length argument for signals
-  * Handle GHashTable values of type `:gint8` and `:guint32`
-  * Handle signals with int64, Strv, uint64 arguments
-  * Handle arrays of integers cast as pointers
-  * Handle fields of callback type
-  * Handle nested GHashTable
+   * Handle c arrays with separate length argument for signals
+   * Handle GHashTable values of type `:gint8` and `:guint32`
+   * Handle signals with int64, Strv, uint64 arguments
+   * Handle arrays of integers cast as pointers
+   * Handle fields of callback type
+   * Handle nested GHashTable
 * Argument handling:
-  * Refactor argument builder system
-  * Improve handling of user data arguments
-  * Handle signal and callback arguments with direction :out
-  * Handle aliases of container types by making the element type optional
-  * Handle signal and callback return values that need conversion
+   * Refactor argument builder system
+   * Improve handling of user data arguments
+   * Handle signal and callback arguments with direction :out
+   * Handle aliases of container types by making the element type optional
+   * Handle signal and callback return values that need conversion
 * User defined types:
-  * Pass explicit receiver to initialization block for UserDefinedTypeInfo
-  * Allow user defined types that are anonymous Ruby classes
-  * Register defined properties in a subclass
-  * Support setting virtual function implementations in a subclass
-  * Support adding an interface to a subclass
-  * Support implementing an interface's virtual functions in a subclass
+   * Pass explicit receiver to initialization block for UserDefinedTypeInfo
+   * Allow user defined types that are anonymous Ruby classes
+   * Register defined properties in a subclass
+   * Support setting virtual function implementations in a subclass
+   * Support adding an interface to a subclass
+   * Support implementing an interface's virtual functions in a subclass
 * Use FFI's DataConvertor system to handle enums and callbacks
 * Stop using deprecated GValueArray to construct argument array for `signal_emit`
 * Make `ITypeInfo#g_type` return correct value for c arrays
@@ -601,13 +601,13 @@
 
 * Add support for properties, with `#get_property` and `#set_property`.
 * Add support for fields.
-  - Create field accessor methods.
-  - Get rid of `#[]` and `#[]=`.
+   * Create field accessor methods.
+   * Get rid of `#[]` and `#[]=`.
 * Explicitely load `libgirepository` with ABI version 1.
 * Improve implementation of GLib container classes (GList etc.):
-  - Real constructors.
-  - `#append` and friends are instance methods now.
-  - Conversion methods to cast Ruby containers to GLib containers.
+   * Real constructors.
+   * `#append` and friends are instance methods now.
+   * Conversion methods to cast Ruby containers to GLib containers.
 * Start implementing pretty printing.
 * Various refactorings.
 
@@ -620,10 +620,10 @@
 ## 0.0.14 / 2011-10-28
 
 * Support GObject Introspection version 1.30:
-  - Add support for layouts with fixed-length arrays.
-  - Handle type names starting with underscores.
-  - Call `g_signal_emitv` directly to avoid conflict in introspection info
-    with earlier versions of GObject Introspection.
+   * Add support for layouts with fixed-length arrays.
+   * Handle type names starting with underscores.
+   * Call `g_signal_emitv` directly to avoid conflict in introspection info
+     with earlier versions of GObject Introspection.
 
 ## 0.0.13 / 2011-09-09
 
@@ -675,8 +675,8 @@
 ## 0.0.7 / 2011-04-01
 
 * Support gobject-introspection 0.10, drop support for earlier versions.
-  - Use Regress, not Everything, for testing.
-  - Deal with functions that are no longer introspectable.
+   * Use Regress, not Everything, for testing.
+   * Deal with functions that are no longer introspectable.
 * Correctly handle constructors that declare their return type different
   from their class.
 * Implement `RubyClosure`, a `GObject::Closure` for handling ruby callbacks.
