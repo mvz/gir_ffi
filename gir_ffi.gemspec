@@ -34,8 +34,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "ffi", ["~> 1.16", ">= 1.16.3"]
   spec.add_dependency "ffi-bit_masks", "~> 0.1.1"
 
-  spec.add_development_dependency "aruba", "~> 2.0"
-  spec.add_development_dependency "cucumber", "~> 9.2", ">= 9.2.1"
+  spec.add_development_dependency "aruba", "~> 2.3"
+  spec.add_development_dependency "cucumber", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.12"
   spec.add_development_dependency "minitest-focus", ["~> 1.3", ">= 1.3.1"]
   spec.add_development_dependency "rake", "~> 13.0"
