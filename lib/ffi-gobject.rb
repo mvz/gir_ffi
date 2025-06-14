@@ -36,6 +36,7 @@ module GObject
   end
 
   def self.signal_emit(object, detailed_signal, *args)
+    detailed_signal = detailed_signal.to_s.tr("_", "-") if detailed_signal.is_a?(Symbol)
     signal, detail = detailed_signal.split("::")
     signal_id = signal_lookup_from_instance signal, object
     detail_quark = GLib.quark_from_string(detail)
@@ -50,6 +51,7 @@ module GObject
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
     block or raise ArgumentError, "Block needed"
 
+    detailed_signal = detailed_signal.to_s.tr("_", "-") if detailed_signal.is_a?(Symbol)
     signal_name, = detailed_signal.split("::")
     sig_info = object.class.find_signal signal_name
 

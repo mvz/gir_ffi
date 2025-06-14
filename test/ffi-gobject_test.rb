@@ -73,6 +73,15 @@ describe GObject do
       _(proc { GObject.signal_emit obj, "sig-with-inout-int", 0 })
         .must_raise NotImplementedError
     end
+
+    it "allows specifying the signal as a symbol" do
+      a = 1
+      o = Regress::TestSubObj.new
+      GObject.signal_connect(o, "sig-with-uint64-prop") { |_, uint64, _| a = uint64 }
+      GObject.signal_emit o, :sig_with_uint64_prop, 0xffff_ffff_ffff_ffff
+
+      _(a).must_equal 0xffff_ffff_ffff_ffff
+    end
   end
 
   describe "::signal_connect" do
@@ -158,6 +167,15 @@ describe GObject do
         assert_instance_of Regress::TestSimpleBoxedA, @b
         assert_equal 23, @b.some_int
       end
+    end
+
+    it "allows specifying the signal as a symbol" do
+      a = 1
+      o = Regress::TestSubObj.new
+      GObject.signal_connect(o, :sig_with_uint64_prop) { |_, uint64, _| a = uint64 }
+      GObject.signal_emit o, "sig-with-uint64-prop", 0xffff_ffff_ffff_ffff
+
+      _(a).must_equal 0xffff_ffff_ffff_ffff
     end
   end
 
