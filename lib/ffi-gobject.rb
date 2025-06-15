@@ -36,12 +36,12 @@ module GObject
   end
 
   def self.signal_emit(object, detailed_signal, *args)
-    detailed_signal = detailed_signal.to_s.tr("_", "-") if detailed_signal.is_a?(Symbol)
-    signal, detail = detailed_signal.split("::")
-    signal_id = signal_lookup_from_instance signal, object
+    _, signal_name, detail = process_detailed_signal detailed_signal
+
+    signal_id = signal_lookup_from_instance signal_name, object
     detail_quark = GLib.quark_from_string(detail)
 
-    sig_info = object.class.find_signal signal
+    sig_info = object.class.find_signal signal_name
     argument_gvalues = sig_info.arguments_to_gvalues object, args
     return_gvalue = sig_info.gvalue_for_return_value
 
@@ -51,10 +51,9 @@ module GObject
   def self.signal_connect(object, detailed_signal, data = nil, after = false, &block)
     block or raise ArgumentError, "Block needed"
 
-    detailed_signal = detailed_signal.to_s.tr("_", "-") if detailed_signal.is_a?(Symbol)
-    signal_name, = detailed_signal.split("::")
-    sig_info = object.class.find_signal signal_name
+    detailed_signal, signal_name, = process_detailed_signal detailed_signal
 
+    sig_info = object.class.find_signal signal_name
     closure = sig_info.wrap_in_closure do |*args|
       yield(*args << data)
     end
@@ -64,6 +63,16 @@ module GObject
 
   def self.signal_connect_after(object, detailed_signal, data = nil, &)
     signal_connect(object, detailed_signal, data, true, &)
+  end
+
+  class << self
+    private
+
+    def process_detailed_signal(detailed_signal)
+      detailed_signal = detailed_signal.to_s.tr("_", "-") if detailed_signal.is_a?(Symbol)
+      signal_name, detail = detailed_signal.split("::")
+      return detailed_signal, signal_name, detail
+    end
   end
 
   load_class :Callback
