@@ -2734,27 +2734,75 @@ describe Regress do
 
   describe "Regress::TestReferenceEnum" do
     it "has the member :0" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"0"]).must_equal 4
     end
 
     it "has the member :1" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"1"]).must_equal 2
     end
 
     it "has the member :2" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"2"]).must_equal 54
     end
 
     it "has the member :3" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"3"]).must_equal 4
     end
 
     it "has the member :4" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"4"]).must_equal 216
     end
 
     it "has the member :5" do
+      skip_above "1.82.0", "This member was renamed"
+
       _(Regress::TestReferenceEnum[:"5"]).must_equal(-217)
+    end
+
+    it "has the member :zero" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:zero]).must_equal 4
+    end
+
+    it "has the member :one" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:one]).must_equal 2
+    end
+
+    it "has the member :two" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:two]).must_equal 54
+    end
+
+    it "has the member :three" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:three]).must_equal 4
+    end
+
+    it "has the member :four" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:four]).must_equal 216
+    end
+
+    it "has the member :five" do
+      skip_below "1.83.2"
+
+      _(Regress::TestReferenceEnum[:five]).must_equal(-217)
     end
   end
 
@@ -3501,6 +3549,7 @@ describe Regress do
   end
 
   it "has a working function #set_abort_on_error" do
+    skip_above "1.82.0", "This function's implementation was removed"
     Regress.set_abort_on_error false
     Regress.set_abort_on_error true
     pass
