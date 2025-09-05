@@ -3155,7 +3155,7 @@ describe Regress do
 
     it "has a writable field data1" do
       _(instance.data1).must_be :null?
-      instance.data1 = FFI::MemoryPointer.new(:int32).tap { |it| it.put_int(0, 42) }
+      instance.data1 = FFI::MemoryPointer.new(:int32).tap { _1.put_int(0, 42) }
 
       _(instance.data1.read_int).must_equal 42
     end
@@ -3679,17 +3679,17 @@ describe Regress do
   it "has a working function #test_array_struct_in_full" do
     skip_below "1.59.4"
     # FIXME: Allow passing field values to .new
-    arr = [Regress::TestStructA.new.tap { |it| it.some_int = 201 },
-           Regress::TestStructA.new.tap { |it| it.some_int = 202 }]
+    arr = [Regress::TestStructA.new.tap { _1.some_int = 201 },
+           Regress::TestStructA.new.tap { _1.some_int = 202 }]
     Regress.test_array_struct_in_full(arr)
   end
 
   it "has a working function #test_array_struct_in_none" do
     skip_below "1.59.4"
     # FIXME: Allow passing field values to .new
-    arr = [Regress::TestStructA.new.tap { |it| it.some_int = 301 },
-           Regress::TestStructA.new.tap { |it| it.some_int = 302 },
-           Regress::TestStructA.new.tap { |it| it.some_int = 303 }]
+    arr = [Regress::TestStructA.new.tap { _1.some_int = 301 },
+           Regress::TestStructA.new.tap { _1.some_int = 302 },
+           Regress::TestStructA.new.tap { _1.some_int = 303 }]
     Regress.test_array_struct_in_none(arr)
   end
 

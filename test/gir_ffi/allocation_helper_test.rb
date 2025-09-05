@@ -23,7 +23,7 @@ describe GirFFI::AllocationHelper do
     it "yields ptr to the block" do
       ptr = double("pointer", null?: false)
       foo = nil
-      GirFFI::AllocationHelper.free_after(ptr) { |it| foo = it }
+      GirFFI::AllocationHelper.free_after(ptr) { foo = _1 }
 
       _(foo).must_equal ptr
     end

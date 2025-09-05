@@ -48,16 +48,16 @@ module GObject
     end
 
     def self.for_gtype(gtype)
-      new.tap do |it|
-        it.init gtype
+      new.tap do |val|
+        val.init gtype
       end
     end
 
     # TODO: Combine with wrap_ruby_value
     def self.wrap_instance(instance)
-      new.tap do |it|
-        it.init GObject.type_from_instance instance
-        it.set_instance instance
+      new.tap do |val|
+        val.init GObject.type_from_instance instance
+        val.set_instance instance
       end
     end
 

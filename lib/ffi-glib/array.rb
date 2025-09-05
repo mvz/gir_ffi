@@ -22,7 +22,7 @@ module GLib
 
     # @api private
     def self.from_enumerable(elmtype, arr)
-      new(elmtype).tap { |it| it.append_vals arr }
+      new(elmtype).tap { _1.append_vals arr }
     end
 
     # @api private

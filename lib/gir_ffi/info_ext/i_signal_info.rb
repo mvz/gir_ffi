@@ -21,7 +21,7 @@ module GirFFI
           case arg_info.direction
           when :in
             type = arg_info.argument_type
-            type.make_g_value.tap { |it| it.set_value arg }
+            type.make_g_value.tap { _1.set_value arg }
           else
             raise NotImplementedError
           end

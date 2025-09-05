@@ -6,6 +6,7 @@ module GirFFI
   # Class representing an array with a determined size
   class SizedArray
     include Enumerable
+
     attr_reader :element_type, :size
 
     def initialize(element_type, size, pointer)
@@ -81,7 +82,7 @@ module GirFFI
         case element_type
         when Array
           _main_type, sub_type = *element_type
-          arr = arr.map { |it| sub_type.copy_from it }
+          arr = arr.map { sub_type.copy_from _1 }
         end
 
         from_enumerable element_type, size, arr

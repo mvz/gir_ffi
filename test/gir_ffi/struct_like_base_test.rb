@@ -140,8 +140,8 @@ describe GirFFI::StructLikeBase do
     end
 
     it "uses offset correctly" do
-      struct1 = struct_class.new.tap { |it| it.long_ = 42 }
-      struct2 = struct_class.new.tap { |it| it.long_ = 24 }
+      struct1 = struct_class.new.tap { _1.long_ = 42 }
+      struct2 = struct_class.new.tap { _1.long_ = 24 }
       array_ptr = GirFFI::InPointer.from_array(struct_class, [struct1, struct2])
       ptr = struct_class.get_value_from_pointer(array_ptr, struct_class.size)
       result = struct_class.wrap(ptr)

@@ -12,6 +12,7 @@ module GObjectIntrospection
     # Module for attaching g_type_init from the gobject library.
     module Lib
       extend FFI::Library
+
       ffi_lib "gobject-2.0.so.0"
       attach_function :g_type_init, [], :void
     end
