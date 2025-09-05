@@ -41,8 +41,8 @@ module GObject
 
     # @api private
     # TODO: Re-structure so invoke_block can become a private method
-    def invoke_block(*args)
-      block.call(*args)
+    def invoke_block(*)
+      block.call(*)
     end
 
     private

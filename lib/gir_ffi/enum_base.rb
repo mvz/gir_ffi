@@ -11,12 +11,12 @@ module GirFFI
       self::Enum.native_type
     end
 
-    def to_native(*args)
-      self::Enum.to_native(*args)
+    def to_native(*)
+      self::Enum.to_native(*)
     end
 
-    def from_native(*args)
-      self::Enum.from_native(*args)
+    def from_native(*)
+      self::Enum.from_native(*)
     end
 
     def [](arg)
