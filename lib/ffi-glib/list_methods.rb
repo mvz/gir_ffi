@@ -6,6 +6,7 @@ module GLib
   # Common methods for List and SList.
   module ListMethods
     include Enumerable
+
     attr_reader :element_type
 
     def self.included(base)

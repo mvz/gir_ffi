@@ -8,6 +8,7 @@ module GObjectIntrospection
   module Lib
     extend FFI::Library
     extend FFI::BitMasks
+
     ffi_lib "girepository-1.0.so.1"
 
     # IRepository

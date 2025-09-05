@@ -6,6 +6,7 @@ module GirFFI
   # Class representing an array with a determined size
   class SizedArray
     include Enumerable
+
     attr_reader :element_type, :size
 
     def initialize(element_type, size, pointer)

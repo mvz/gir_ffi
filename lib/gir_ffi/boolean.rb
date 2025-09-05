@@ -6,6 +6,7 @@ module GirFFI
   # Class representing a boolean (natively, an int).
   class Boolean
     extend FFI::DataConverter
+
     native_type FFI::Type::INT
 
     NATIVE_TRUE = 1
