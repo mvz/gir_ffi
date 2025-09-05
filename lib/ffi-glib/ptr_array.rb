@@ -27,7 +27,7 @@ module GLib
     end
 
     def self.from_enumerable(type, arr)
-      new(type).tap { |it| it.add_array arr }
+      new(type).tap { _1.add_array arr }
     end
 
     def self.add(array, data)

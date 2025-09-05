@@ -98,7 +98,7 @@ describe GLib::Array do
 
     it "creates a GArray from an array of struct values" do
       values = [1, 2, 3].map do |val|
-        GObject::EnumValue.new.tap { |it| it.value = val }
+        GObject::EnumValue.new.tap { _1.value = val }
       end
       arr = GLib::Array.from GObject::EnumValue, values
 

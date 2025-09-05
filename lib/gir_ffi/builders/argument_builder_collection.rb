@@ -150,9 +150,9 @@ module GirFFI
 
       def base_argument_names(arguments)
         required_found = false
-        arguments.reverse.filter_map do |it|
-          name = it.method_argument_name
-          if it.allow_none? && !required_found
+        arguments.reverse.filter_map do |arg|
+          name = arg.method_argument_name
+          if arg.allow_none? && !required_found
             "#{name} = nil"
           else
             required_found = true

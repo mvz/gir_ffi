@@ -105,11 +105,11 @@ module GirFFI
       end
 
       def from_gvalue_array(type, ary)
-        ary = ary.map do |it|
-          if it.is_a? GObject::Value
-            it
+        ary = ary.map do |elem|
+          if elem.is_a? GObject::Value
+            elem
           else
-            GObject::Value.wrap_ruby_value it
+            GObject::Value.wrap_ruby_value elem
           end
         end
         from_struct_array type, ary

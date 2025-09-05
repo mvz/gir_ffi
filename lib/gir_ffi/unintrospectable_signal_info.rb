@@ -22,7 +22,7 @@ module GirFFI
       param_gtypes = signal_query.param_types || []
 
       argument_gvalues = param_gtypes.zip(arguments).map do |gtype, arg|
-        GObject::Value.for_gtype(gtype).tap { |it| it.set_value arg }
+        GObject::Value.for_gtype(gtype).tap { _1.set_value arg }
       end
 
       argument_gvalues.unshift GObject::Value.wrap_instance(instance)

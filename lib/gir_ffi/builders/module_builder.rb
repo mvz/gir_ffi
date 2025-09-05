@@ -113,8 +113,8 @@ module GirFFI
       end
 
       def gir
-        @gir ||= GObjectIntrospection::IRepository.default.tap do |it|
-          it.require @namespace, @version
+        @gir ||= GObjectIntrospection::IRepository.default.tap do |repo|
+          repo.require @namespace, @version
         end
       end
     end
