@@ -15,9 +15,9 @@ Gem::Specification.new do |spec|
     at runtime and use FFI to interface with the C libraries. In cases where the GIR does not
     provide enough or correct information to create sane bindings, overrides may be created.
   DESC
-  spec.homepage = "http://www.github.com/mvz/ruby-gir-ffi"
+  spec.homepage = "https://github.com/mvz/gir_ffi"
 
-  spec.license = "LGPL-2.1+"
+  spec.license = "LGPL-2.1-or-later"
   spec.required_ruby_version = ">= 3.2.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
