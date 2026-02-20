@@ -60,7 +60,7 @@ module GirFFI
       def define_construction_methods(method_info)
         initializer_builder = InitializerBuilder.new(method_info)
         initializer_name = initializer_builder.method_name.to_sym
-        unless build_class.private_instance_methods(false).include? initializer_name
+        unless build_class.private_method_defined?(initializer_name, false)
           build_class.class_eval initializer_builder.method_definition, __FILE__, __LINE__
         end
         constructor_definition = ConstructorBuilder.new(method_info).method_definition
