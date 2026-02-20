@@ -33,18 +33,4 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "ffi", ["~> 1.16", ">= 1.16.3"]
   spec.add_dependency "ffi-bit_masks", "~> 0.1.1"
-
-  spec.add_development_dependency "aruba", "~> 2.3"
-  spec.add_development_dependency "cucumber", "~> 10.0"
-  spec.add_development_dependency "minitest", "~> 6.0"
-  spec.add_development_dependency "minitest-focus", ["~> 1.3", ">= 1.3.1"]
-  spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "rake-manifest", "~> 0.2.0"
-  spec.add_development_dependency "rexml", "~> 3.0"
-  spec.add_development_dependency "rspec-mocks", "~> 3.5"
-  spec.add_development_dependency "rubocop", "~> 1.80"
-  spec.add_development_dependency "rubocop-minitest", "~> 0.38.2"
-  spec.add_development_dependency "rubocop-packaging", "~> 0.6.0"
-  spec.add_development_dependency "rubocop-performance", "~> 1.25"
-  spec.add_development_dependency "simplecov", "~> 0.22.0"
 end
