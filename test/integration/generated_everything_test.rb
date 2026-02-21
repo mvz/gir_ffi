@@ -113,12 +113,14 @@ describe Everything do
 
   it "has a working function #const_return_off_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.const_return_off_t).must_equal 0
   end
 
   it "has a working function #const_return_time_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.const_return_time_t).must_equal 0
   end
 
   it "has a working function #const_return_utf8" do
@@ -240,12 +242,14 @@ describe Everything do
 
   it "has a working function #one_outparam_off_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.one_outparam_off_t).must_equal 0
   end
 
   it "has a working function #one_outparam_time_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.one_outparam_time_t).must_equal 0
   end
 
   it "has a working function #one_outparam_utf8" do
@@ -361,12 +365,14 @@ describe Everything do
 
   it "has a working function #oneparam_off_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.oneparam_off_t(0)).must_be_nil
   end
 
   it "has a working function #oneparam_time_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.oneparam_time_t(0)).must_be_nil
   end
 
   it "has a working function #oneparam_utf8" do
@@ -484,12 +490,14 @@ describe Everything do
 
   it "has a working function #passthrough_one_off_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.passthrough_one_off_t(42)).must_equal 42
   end
 
   it "has a working function #passthrough_one_time_t" do
     skip_below "1.80.1"
-    skip "Needs testing"
+
+    _(Everything.passthrough_one_time_t(42)).must_equal 42
   end
 
   it "has a working function #passthrough_one_utf8" do
