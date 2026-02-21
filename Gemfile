@@ -8,6 +8,7 @@ gemspec
 group :development, :test do
   gem "aruba", "~> 2.3"
   gem "cucumber", "~> 10.0"
+  gem "irb", "~> 1.17"
   gem "minitest", "~> 6.0"
   gem "minitest-focus", ["~> 1.3", ">= 1.3.1"]
   gem "rake", "~> 13.0"
