@@ -10,6 +10,8 @@ module GirFFI
     end
 
     def self.copy(val)
+      return if val.to_ptr.null?
+
       ptr = GObject.boxed_copy(gtype, val)
       wrap(ptr)
     end

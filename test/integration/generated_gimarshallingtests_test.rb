@@ -81,7 +81,11 @@ describe GIMarshallingTests do
 
     it "has a working function #out_uninitialized" do
       skip_below "1.80.0"
-      skip "Needs testing"
+
+      flag, res = GIMarshallingTests::BoxedStruct.out_uninitialized
+
+      _(flag).must_equal false
+      _(res).must_be_nil
     end
 
     it "has a working function #returnv" do

@@ -64,12 +64,12 @@ module GirFFI
       private
 
       def own(val)
-        val.struct.owned = true
+        val.struct.owned = true if val
         val
       end
 
       def disown(val)
-        val.struct.owned = nil
+        val.struct.owned = nil if val
         val
       end
 
