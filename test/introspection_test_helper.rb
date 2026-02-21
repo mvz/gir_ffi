@@ -73,6 +73,7 @@ module IntrospectionTestExtensions
     "1.83.2" => %w[Regress foo_init_argv],
     "1.81.2" => %w[GIMarshallingTests dev_t_in],
     "1.80.1" => %w[Everything const_return_off_t],
+    "1.78.0" => %w[GIMarshallingTests return_gvalue_zero_terminated_array],
     "1.71.0" => %w[Regress TestFundamentalObjectNoGetSetFunc],
     "1.69.0" => %w[Regress TestObj get_string],
     "1.67.1" => %w[GIMarshallingTests SignalsObject],
