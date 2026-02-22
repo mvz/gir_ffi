@@ -126,6 +126,10 @@ module GirFFI
       param_spec.flags[:writable]
     end
 
+    def readable?
+      param_spec.flags[:readable]
+    end
+
     def ffi_type
       field_type.ffi_type
     end

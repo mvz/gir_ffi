@@ -124,7 +124,9 @@ class Listener # rubocop:disable Metrics/ClassLength
     return if current_object_type == "class"
 
     if attrs["private"] == "1"
-      emit_indented 4, "it \"has a private field #{obj_name}\" do"
+      raise "Private field is unexpectedly writable" if attrs["writable"] == 1
+
+      emit_indented 4, "it \"has a 'private' field #{obj_name}\" do"
     elsif attrs["writable"] == "1"
       emit_indented 4, "it \"has a writable field #{obj_name}\" do"
     else

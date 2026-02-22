@@ -242,19 +242,21 @@ module GirFFI
       end
 
       def setup_getter
-        return if container_defines_getter_method?
-        return if hidden_struct_type?
+        # The typelib does not pass along information on whether a field is
+        # readble or private. This means that in practice, info.readable? is
+        # always true, even for private fields.
+        #
+        # We include this check here in case this practice changes.
+        return unless info.readable?
+        return if field_type.hidden_struct_type?
+        return if container_info.find_instance_method(info.name)
 
         container_class.class_eval getter_def, __FILE__, __LINE__
       end
 
-      def container_defines_getter_method?
-        container_info.find_instance_method info.name
-      end
-
       def setup_setter
         return unless info.writable?
-        return if hidden_struct_type?
+        return if field_type.hidden_struct_type?
 
         container_class.class_eval setter_def, __FILE__, __LINE__
       end
