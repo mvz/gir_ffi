@@ -1659,40 +1659,67 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::StructuredUnion" do
-    it "has a private field type" do
-      skip "Needs testing"
+    before { skip_below("1.75.2") }
+
+    it "has a 'private' field type" do
+      instance = GIMarshallingTests::StructuredUnion.new(:pointer_struct)
+
+      # NOTE: #type is implemented as a method
+      _(instance).wont_respond_to :type=
     end
 
-    it "has a private field simple_struct" do
-      skip "Needs testing"
+    it "has a 'private' field simple_struct" do
+      instance = GIMarshallingTests::StructuredUnion.new(:simple_struct)
+
+      _(instance.simple_struct.parent.long_).must_equal 6
+      _(instance).wont_respond_to :simple_struct=
     end
 
-    it "has a private field nested_struct" do
-      skip "Needs testing"
+    it "has a 'private' field nested_struct" do
+      instance = GIMarshallingTests::StructuredUnion.new(:nested_struct)
+
+      _(instance.nested_struct.parent.simple_struct.long_).must_equal 6
+      _(instance).wont_respond_to :nested_struct=
     end
 
-    it "has a private field pointer_struct" do
-      skip "Needs testing"
+    it "has a 'private' field pointer_struct" do
+      instance = GIMarshallingTests::StructuredUnion.new(:pointer_struct)
+
+      _(instance.pointer_struct.parent.long_).must_equal 42
+      _(instance).wont_respond_to :pointer_struct=
     end
 
-    it "has a private field boxed_struct" do
-      skip "Needs testing"
+    it "has a 'private' field boxed_struct" do
+      instance = GIMarshallingTests::StructuredUnion.new(:boxed_struct)
+
+      _(instance.boxed_struct.parent.long_).must_equal 42
+      _(instance).wont_respond_to :boxed_struct=
     end
 
-    it "has a private field boxed_struct_ptr" do
-      skip "Needs testing"
+    it "has a 'private' field boxed_struct_ptr" do
+      instance = GIMarshallingTests::StructuredUnion.new(:boxed_struct_ptr)
+
+      _(instance.boxed_struct_ptr.parent.long_).must_equal 42
+      _(instance).wont_respond_to :boxed_struct_ptr=
     end
 
-    it "has a private field single_union" do
-      skip "Needs testing"
+    it "has a 'private' field single_union" do
+      instance = GIMarshallingTests::StructuredUnion.new(:single_union)
+
+      _(instance.single_union.parent.union_.long_).must_equal 42
+      _(instance).wont_respond_to :single_union=
     end
 
     it "creates an instance using #new" do
-      skip "Needs testing"
+      instance = GIMarshallingTests::StructuredUnion.new(:simple_struct)
+
+      _(instance).must_be_instance_of GIMarshallingTests::StructuredUnion
     end
 
     it "has a working method #type" do
-      skip "Needs testing"
+      instance = GIMarshallingTests::StructuredUnion.new(:pointer_struct)
+
+      _(instance.type).must_equal :pointer_struct
     end
   end
 

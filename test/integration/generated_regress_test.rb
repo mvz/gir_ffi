@@ -2697,10 +2697,8 @@ describe Regress do
       _(instance.this_is_public_before).must_equal 42
     end
 
-    it "has a private field this_is_private" do
-      skip "This field is identified as readable in the typelib"
-
-      _(instance).wont_respond_to :this_is_private
+    it "has a 'private' field this_is_private" do
+      _(instance.this_is_private).must_equal 0
       _(instance).wont_respond_to :this_is_private=
     end
 
