@@ -9,7 +9,7 @@ GirFFI.setup :GIMarshallingTests
 # Tests generated methods and functions in the GIMarshallingTests namespace.
 describe GIMarshallingTests do
   let(:derived_klass) do
-    Object.const_set(:"DerivedClass#{Sequence.next}",
+    Object.const_set(:"DerivedClass#{sequence_next}",
                      Class.new(GIMarshallingTests::Object))
   end
 

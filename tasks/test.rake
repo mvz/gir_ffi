@@ -305,10 +305,12 @@ namespace :test do
 
   def make_stub_file(libname)
     file = File.new "test/lib/#{libname}-1.0.gir"
-    listener = Listener.new
-    listener.result = File.open("tmp/#{libname.downcase}_lines.rb", "w")
-    listener.namespace = libname
-    REXML::Document.parse_stream file, listener
+    File.open("tmp/#{libname.downcase}_lines.rb", "w") do |output|
+      listener = Listener.new
+      listener.result = output
+      listener.namespace = libname
+      REXML::Document.parse_stream file, listener
+    end
   end
 
   desc "Create stubs for integration tests"

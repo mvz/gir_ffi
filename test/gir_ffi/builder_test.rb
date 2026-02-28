@@ -68,7 +68,7 @@ describe GirFFI::Builder do
 
     it "returns the class for user-defined types" do
       klass = Class.new GIMarshallingTests::OverridesObject
-      Object.const_set :"Derived#{Sequence.next}", klass
+      Object.const_set :"Derived#{sequence_next}", klass
       gtype = GirFFI.define_type klass
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
@@ -78,7 +78,7 @@ describe GirFFI::Builder do
 
     it "returns the class for user-defined types not derived from GObject" do
       klass = Class.new Regress::TestFundamentalObject
-      Object.const_set :"Derived#{Sequence.next}", klass
+      Object.const_set :"Derived#{sequence_next}", klass
       gtype = GirFFI.define_type klass
 
       found_klass = GirFFI::Builder.build_by_gtype gtype
