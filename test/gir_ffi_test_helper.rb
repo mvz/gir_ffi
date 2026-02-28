@@ -4,15 +4,15 @@ require "introspection_test_helper"
 
 require "gir_ffi"
 
-# Global sequence provider. Needed to make unique class names.
-class Sequence
-  def self.next
-    @seq ||= 0
-    @seq += + 1
-  end
-end
-
 module GirFFITestExtensions
+  # Global sequence provider. Needed to make unique class names.
+  class Sequence
+    def self.next
+      @seq ||= 0
+      @seq += + 1
+    end
+  end
+
   def object_ref_count(ptr)
     GObject::Object::Struct.new(ptr.to_ptr)[:ref_count]
   end
@@ -60,6 +60,10 @@ module GirFFITestExtensions
 
   def max_ulong
     max_for_unsigned_type :ulong
+  end
+
+  def sequence_next
+    Sequence.next
   end
 end
 

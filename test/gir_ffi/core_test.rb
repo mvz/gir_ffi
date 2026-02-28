@@ -30,7 +30,7 @@ describe GirFFI::Core do
     describe "with a class with no extra properties added" do
       before do
         @klass = Class.new GIMarshallingTests::OverridesObject
-        Object.const_set :"DerivedA#{Sequence.next}", @klass
+        Object.const_set :"DerivedA#{sequence_next}", @klass
         @gtype = GirFFI.define_type @klass
       end
 
@@ -71,7 +71,7 @@ describe GirFFI::Core do
                                                   10, 20, 15,
                                                   3)
         end
-        Object.const_set :"DerivedB#{Sequence.next}", @klass
+        Object.const_set :"DerivedB#{sequence_next}", @klass
         @gtype = GirFFI.define_type @klass
       end
 
@@ -96,7 +96,7 @@ describe GirFFI::Core do
     describe "with a type that is not a GObject" do
       let(:klass) { Class.new GObject::RubyClosure }
       before do
-        Object.const_set :"DerivedB#{Sequence.next}", klass
+        Object.const_set :"DerivedB#{sequence_next}", klass
       end
 
       it "raises a friendly error" do

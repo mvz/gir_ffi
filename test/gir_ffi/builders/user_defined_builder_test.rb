@@ -8,7 +8,7 @@ GirFFI.setup :Regress
 describe GirFFI::Builders::UserDefinedBuilder do
   let(:base_class) { GIMarshallingTests::Object }
   let(:derived_class) do
-    Object.const_set(:"DerivedClass#{Sequence.next}", Class.new(base_class))
+    Object.const_set(:"DerivedClass#{sequence_next}", Class.new(base_class))
   end
   let(:builder) { GirFFI::Builders::UserDefinedBuilder.new info }
   let(:info) { derived_class.gir_info }
@@ -439,7 +439,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
         GObject.type_query(parent_class.gtype).instance_size
       end
       let(:derived_class) do
-        Object.const_set(:"DerivedClass#{Sequence.next}", Class.new(parent_class))
+        Object.const_set(:"DerivedClass#{sequence_next}", Class.new(parent_class))
       end
       before do
         derived_class
@@ -465,7 +465,7 @@ describe GirFFI::Builders::UserDefinedBuilder do
 
     describe "with type info containing an overridden g_name" do
       before do
-        info.g_name = "OtherName#{Sequence.next}"
+        info.g_name = "OtherName#{sequence_next}"
         builder.build_class
       end
 

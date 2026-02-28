@@ -43,6 +43,4 @@ module GirFFI
 end
 
 # @api private
-class FFI::Pointer # rubocop:disable Style/ClassAndModuleChildren
-  prepend GirFFI::FFIExt::Pointer
-end
+FFI::Pointer.prepend GirFFI::FFIExt::Pointer

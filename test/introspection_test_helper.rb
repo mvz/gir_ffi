@@ -4,23 +4,18 @@ require "base_test_helper"
 
 require "ffi-gobject_introspection"
 
-GObjectIntrospection::IRepository
-  .prepend_search_path File.join(File.dirname(__FILE__), "lib")
-
-module LocalSharedLibrary
-  def shared_library(namespace)
-    case namespace
-    when "Everything", "GIMarshallingTests", "Regress", "Utility", "WarnLib"
-      File.join(File.dirname(__FILE__), "lib", "lib#{namespace.downcase}.so")
-    else
-      super
+module IntrospectionTestExtensions
+  module LocalSharedLibrary
+    def shared_library(namespace)
+      case namespace
+      when "Everything", "GIMarshallingTests", "Regress", "Utility", "WarnLib"
+        File.join(File.dirname(__FILE__), "lib", "lib#{namespace.downcase}.so")
+      else
+        super
+      end
     end
   end
-end
 
-GObjectIntrospection::IRepository.prepend LocalSharedLibrary
-
-module IntrospectionTestExtensions
   class << self
     attr_accessor :version
   end
@@ -106,4 +101,7 @@ module IntrospectionTestExtensions
   end
 end
 
+GObjectIntrospection::IRepository
+  .prepend_search_path File.join(File.dirname(__FILE__), "lib")
+GObjectIntrospection::IRepository.prepend IntrospectionTestExtensions::LocalSharedLibrary
 Minitest::Test.include IntrospectionTestExtensions
