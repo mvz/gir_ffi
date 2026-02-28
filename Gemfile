@@ -15,10 +15,10 @@ group :development, :test do
   gem "rake-manifest", "~> 0.2.0"
   gem "rexml", "~> 3.0"
   gem "rspec-mocks", "~> 3.5"
-  gem "rubocop", "~> 1.84"
-  gem "rubocop-minitest", "~> 0.38.2"
+  gem "rubocop", "~> 1.85"
+  gem "rubocop-minitest", "~> 0.39.1"
   gem "rubocop-packaging", "~> 0.6.0"
-  gem "rubocop-performance", "~> 1.26"
+  gem "rubocop-performance", "~> 1.26.1"
   gem "simplecov", "~> 0.22.0"
 
   gem "ruby-prof", platform: :mri
