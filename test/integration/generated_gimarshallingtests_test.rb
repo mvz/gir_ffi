@@ -338,6 +338,11 @@ describe GIMarshallingTests do
       _(proc { GIMarshallingTests::Object.new_fail 42 }).must_raise GirFFI::GLibError
     end
 
+    it "creates an instance using #vfunc_static_create_new" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+
     it "has a working function #full_inout" do
       ob = GIMarshallingTests::Object.new 42
 
@@ -408,6 +413,21 @@ describe GIMarshallingTests do
     it "has a working function #static_method" do
       GIMarshallingTests::Object.static_method
       pass
+    end
+
+    it "has a working function #vfunc_static_create_new_out" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+
+    it "has a working function #vfunc_static_name" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+
+    it "has a working function #vfunc_static_typed_name" do
+      skip_below "1.83.2"
+      skip "Needs testing"
     end
 
     let(:instance) { GIMarshallingTests::Object.new 42 }
@@ -879,6 +899,8 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::OverridesObject" do
+    let(:instance) { GIMarshallingTests::OverridesObject.new }
+
     it "creates an instance using #new" do
       ob = GIMarshallingTests::OverridesObject.new
 
@@ -890,8 +912,6 @@ describe GIMarshallingTests do
 
       assert_instance_of GIMarshallingTests::OverridesObject, ob
     end
-
-    let(:instance) { GIMarshallingTests::OverridesObject.new }
 
     it "has a working method #method" do
       result = instance.method
@@ -932,13 +952,13 @@ describe GIMarshallingTests do
   end
 
   describe "GIMarshallingTests::PointerStruct" do
+    let(:instance) { GIMarshallingTests::PointerStruct.new }
+
     it "creates an instance using #new" do
       ps = GIMarshallingTests::PointerStruct.new
 
       assert_instance_of GIMarshallingTests::PointerStruct, ps
     end
-
-    let(:instance) { GIMarshallingTests::PointerStruct.new }
 
     it "has a writable field long_" do
       assert_equal 0, instance.long_
@@ -957,6 +977,600 @@ describe GIMarshallingTests do
       ob = GIMarshallingTests::PointerStruct.returnv
 
       assert_instance_of GIMarshallingTests::PointerStruct, ob
+    end
+  end
+
+  describe "GIMarshallingTests::PropertiesAccessorsObject" do
+    before { skip_below("1.83.2") }
+
+    it "creates an instance using #new" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_boolean" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_boxed_glist" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_boxed_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_byte_array" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_char" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_deprecated_int" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_double" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_enum" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_flags" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_float" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_gvalue" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_int" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_int64" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_long" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_object" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_readonly" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_string" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_strv" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_uchar" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_uint" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_uint64" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_ulong" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #get_variant" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_boolean" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_boxed_glist" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_boxed_struct" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_byte_array" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_char" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_deprecated_int" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_double" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_enum" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_flags" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_float" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_gvalue" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_int" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_int64" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_long" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_object" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_string" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_strv" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_uchar" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_uint" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_uint64" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_ulong" do
+      skip "Needs testing"
+    end
+
+    it "has a working method #set_variant" do
+      skip "Needs testing"
+    end
+
+    describe "its 'some-boolean' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_boolean" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_boolean=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-boxed-glist' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_boxed_glist" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_boxed_glist=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-boxed-struct' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_boxed_struct" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_boxed_struct=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-byte-array' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_byte_array" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_byte_array=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-char' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_char" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_char=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-deprecated-int' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_deprecated_int" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_deprecated_int=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-double' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_double" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_double=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-enum' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_enum" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_enum=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-flags' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_flags" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_flags=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-float' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_float" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_float=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-gvalue' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_gvalue" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_gvalue=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-int' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_int" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_int=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-int64' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_int64" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_int64=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-long' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_long" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_long=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-object' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_object" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_object=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-readonly' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_readonly" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-string' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_string" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_string=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-strv' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_strv" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_strv=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-uchar' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_uchar" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_uchar=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-uint' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_uint" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_uint=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-uint64' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_uint64" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_uint64=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-ulong' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_ulong" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_ulong=" do
+        skip "Needs testing"
+      end
+    end
+
+    describe "its 'some-variant' property" do
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_variant" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_variant=" do
+        skip "Needs testing"
+      end
     end
   end
 
@@ -1083,6 +1697,26 @@ describe GIMarshallingTests do
         instance.some_char = 43
 
         _(instance.some_char).must_equal 43
+      end
+    end
+
+    describe "its 'some-deprecated-int' property" do
+      before { skip_below("1.83.2") }
+
+      it "can be retrieved with #get_property" do
+        skip "Needs testing"
+      end
+
+      it "can be retrieved with #some_deprecated_int" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #set_property" do
+        skip "Needs testing"
+      end
+
+      it "can be set with #some_deprecated_int=" do
+        skip "Needs testing"
       end
     end
 
@@ -1988,8 +2622,18 @@ describe GIMarshallingTests do
     skip "Needs testing"
   end
 
+  it "has a working function #array_fixed_out_unaligned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #array_fixed_out_uninitialized" do
     skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #array_fixed_return_unaligned" do
+    skip_below "1.83.2"
     skip "Needs testing"
   end
 
@@ -2114,6 +2758,11 @@ describe GIMarshallingTests do
     _(sum).must_equal 42 + 24
   end
 
+  it "has a working function #array_out_unaligned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #array_out_uninitialized" do
     skip_below "1.80.0"
     skip "Needs testing"
@@ -2130,6 +2779,11 @@ describe GIMarshallingTests do
 
     _(arr).must_be :==, [42, 0, 1, 24]
     _(sum).must_equal 42 + 24
+  end
+
+  it "has a working function #array_return_unaligned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #array_simple_struct_in" do
@@ -2213,6 +2867,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #array_zero_terminated_out_unaligned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #array_zero_terminated_out_uninitialized" do
     skip_below "1.80.0"
     skip "Needs testing"
@@ -2234,6 +2893,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.array_zero_terminated_return_struct
 
     _(res.to_a.map(&:long_)).must_equal [42, 43, 44]
+  end
+
+  it "has a working function #array_zero_terminated_return_unaligned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #array_zero_terminated_return_unichar" do
@@ -2322,6 +2986,16 @@ describe GIMarshallingTests do
     _(res.g_strv).must_be :==, %w[0 1 2]
   end
 
+  it "has a working function #bytearray_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #bytearray_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #bytearray_full_return" do
     ret = GIMarshallingTests.bytearray_full_return
 
@@ -2390,6 +3064,11 @@ describe GIMarshallingTests do
     result = GIMarshallingTests.callback_return_value_only { 42 }
 
     _(result).must_equal 42
+  end
+
+  it "has a working function #cleanup_unaligned_buffer" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #dev_t_in" do
@@ -2482,6 +3161,126 @@ describe GIMarshallingTests do
     fl = GIMarshallingTests.filename_list_return
 
     _(fl).must_be_nil
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_of_gstrv_transfer_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #fixed_array_utf8_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #flags_in" do
@@ -2597,6 +3396,11 @@ describe GIMarshallingTests do
     GIMarshallingTests.garray_unichar_none_in arr
   end
 
+  it "has a working function #garray_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #garray_utf8_container_inout" do
     res = GIMarshallingTests.garray_utf8_container_inout %w[0 1 2]
 
@@ -2618,6 +3422,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.garray_utf8_container_return
 
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #garray_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #garray_utf8_full_inout" do
@@ -2958,6 +3767,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, [0, 0xffff_ffff]
   end
 
+  it "has a working function #glist_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #glist_utf8_container_inout" do
     res = GIMarshallingTests.glist_utf8_container_inout %w[0 1 2]
 
@@ -2979,6 +3793,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.glist_utf8_container_return
 
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #glist_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #glist_utf8_full_inout" do
@@ -3038,6 +3857,11 @@ describe GIMarshallingTests do
     _(result.map(&:long_)).must_equal [42, 43, 44]
   end
 
+  it "has a working function #gptrarray_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #gptrarray_utf8_container_inout" do
     res = GIMarshallingTests.gptrarray_utf8_container_inout %w[0 1 2]
 
@@ -3059,6 +3883,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.gptrarray_utf8_container_return
 
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #gptrarray_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #gptrarray_utf8_full_inout" do
@@ -3122,6 +3951,11 @@ describe GIMarshallingTests do
     _(res).must_be :==, [-1, 0, 1, 2]
   end
 
+  it "has a working function #gslist_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #gslist_utf8_container_inout" do
     res = GIMarshallingTests.gslist_utf8_container_inout %w[0 1 2]
 
@@ -3143,6 +3977,11 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.gslist_utf8_container_return
 
     _(res).must_be :==, %w[0 1 2]
+  end
+
+  it "has a working function #gslist_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #gslist_utf8_full_inout" do
@@ -3679,6 +4518,126 @@ describe GIMarshallingTests do
     GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, "3", "4"
     GIMarshallingTests.int_two_in_utf8_two_in_with_allow_none 1, 2, nil, nil
     pass
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_of_gstrv_transfer_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #length_array_utf8_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #long_in_max" do
@@ -4382,5 +5341,125 @@ describe GIMarshallingTests do
     res = GIMarshallingTests.utf8_none_return
 
     assert_equal "const ♥ utf8", res
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_of_gstrv_transfer_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_container_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_container_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_container_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_container_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_full_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_full_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_full_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_full_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_none_in" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_none_inout" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_none_out" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #zero_terminated_array_utf8_none_return" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 end
