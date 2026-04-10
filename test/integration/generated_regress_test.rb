@@ -436,6 +436,7 @@ describe Regress do
   end
 
   it "has the constant BAD_EXPR_CONSTANT" do
+    skip_below "1.75.2"
     skip "Needs testing"
   end
 
@@ -1114,6 +1115,11 @@ describe Regress do
     _(Regress::GI_SCANNER_IFDEF).must_equal 3
   end
 
+  it "has the constant GOOD_EXPR_CONSTANT" do
+    skip_below "1.75.2"
+    skip "Needs testing"
+  end
+
   it "has the constant GUINT64_CONSTANT" do
     _(Regress::GUINT64_CONSTANT).must_equal 18_446_744_073_709_551_615
   end
@@ -1361,10 +1367,20 @@ describe Regress do
       _(instance.another_thing).must_equal 4342
     end
 
+    it "has a writable field name_conflict" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+
     it "creates an instance using #new" do
       tb = Regress::TestBoxedC.new
 
       assert_instance_of Regress::TestBoxedC, tb
+    end
+
+    it "has a working method #name_conflict" do
+      skip_below "1.83.2"
+      skip "Needs testing"
     end
   end
 
@@ -1405,6 +1421,18 @@ describe Regress do
 
     it "has the member :code2" do
       _(Regress::TestDEFError[:code2]).must_equal 2
+    end
+  end
+
+  describe "Regress::TestDiscontinuousFlags" do
+    it "has the member :discontinuous1" do
+      skip_below "1.86.0"
+      skip "Needs testing"
+    end
+
+    it "has the member :discontinuous2" do
+      skip_below "1.86.0"
+      skip "Needs testing"
     end
   end
 
@@ -1770,6 +1798,11 @@ describe Regress do
       assert_instance_of Regress::TestObj, o
     end
 
+    it "has a working function #constructor_thaw_async" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+
     it "has a working function #new_async" do
       skip_below "1.80.1"
       skip "Needs testing"
@@ -1945,6 +1978,11 @@ describe Regress do
 
     it "has a working method #function_sync" do
       skip_below "1.80.0"
+      skip "Needs testing"
+    end
+
+    it "has a working method #function_thaw_async" do
+      skip_below "1.83.2"
       skip "Needs testing"
     end
 
@@ -2454,6 +2492,7 @@ describe Regress do
         _(instance.int).must_equal 0
       end
     end
+
     it "handles the 'all' signal" do
       a = nil
       GObject.signal_connect(instance, "all") { a = 4 }
@@ -3116,24 +3155,28 @@ describe Regress do
 
       _(instance.v_int64).must_equal(-54_321_000_000_000)
     end
+
     it "has a writable field v_uint64" do
       _(instance.v_uint64).must_equal 0
       instance.v_uint64 = 54_321_000_000_000
 
       _(instance.v_uint64).must_equal 54_321_000_000_000
     end
+
     it "has a writable field v_float" do
       _(instance.v_float).must_equal 0
       instance.v_float = 3.1415
 
       _(instance.v_float).must_be_close_to 3.1415
     end
+
     it "has a writable field v_double" do
       _(instance.v_double).must_equal 0
       instance.v_double = 3.1415
 
       _(instance.v_double).must_equal 3.1415
     end
+
     it "has a writable field v_pointer" do
       _(instance.v_pointer).must_be :null?
       instance.v_pointer = FFI::Pointer.new 54_321
@@ -3356,6 +3399,11 @@ describe Regress do
     _(result).must_be_nil
   end
 
+  it "has a working function #annotation_custom_destroy_cleanup" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #annotation_get_source_file" do
     _(Regress.annotation_get_source_file).must_be_nil
   end
@@ -3444,6 +3492,11 @@ describe Regress do
     skip "This function is defined in the header but not implemented"
   end
 
+  it "has a working function #foo_enum_method" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
   it "has a working function #foo_enum_type_method" do
     skip "This function is defined in the header but not implemented"
   end
@@ -3460,6 +3513,16 @@ describe Regress do
 
   it "has a working function #foo_init" do
     _(Regress.foo_init).must_equal 0x1138
+  end
+
+  it "has a working function #foo_init_argv" do
+    skip_below "1.83.2"
+    skip "Needs testing"
+  end
+
+  it "has a working function #foo_init_argv_address" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #foo_interface_static_method" do
@@ -3502,8 +3565,9 @@ describe Regress do
     _(Regress.foo_test_string_array_with_g(%w[foo bar])).must_be_nil
   end
 
-  it "has a working function #foo_test_unsigned_qualifier" do
-    skip "This function is defined in the header but not implemented"
+  it "has a working function #foo_test_unsigned" do
+    skip_below "1.83.2"
+    skip "Needs testing"
   end
 
   it "has a working function #foo_test_unsigned_type" do
@@ -3962,6 +4026,16 @@ describe Regress do
     _(GLib.quark_to_string(quark)).must_equal "regress-test-def-error"
   end
 
+  it "has a working function #test_discontinuous_1_with_private_values" do
+    skip_below "1.86.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #test_discontinuous_2_with_private_values" do
+    skip_below "1.86.0"
+    skip "Needs testing"
+  end
+
   it "has a working function #test_double" do
     r = Regress.test_double 5435.32
 
@@ -4003,6 +4077,11 @@ describe Regress do
   end
 
   it "has a working function #test_function_sync" do
+    skip_below "1.80.0"
+    skip "Needs testing"
+  end
+
+  it "has a working function #test_function_thaw_async" do
     skip_below "1.80.0"
     skip "Needs testing"
   end
