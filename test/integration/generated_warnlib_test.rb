@@ -5,6 +5,13 @@ require "gir_ffi_test_helper"
 GirFFI.setup :WarnLib
 
 describe WarnLib do
+  describe "WarnLib::NumericEnum" do
+    it "has the member :1st" do
+      skip_below "1.83.2"
+      skip "Needs testing"
+    end
+  end
+
   describe "WarnLib::Whatever" do
     let(:derived_klass) do
       Object.const_set(:"DerivedClass#{sequence_next}", Class.new(GObject::Object))
