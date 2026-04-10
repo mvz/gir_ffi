@@ -437,7 +437,8 @@ describe Regress do
 
   it "has the constant BAD_EXPR_CONSTANT" do
     skip_below "1.75.2"
-    skip "Needs testing"
+
+    _(Regress::BAD_EXPR_CONSTANT).must_equal 1
   end
 
   it "has the constant BOOL_CONSTANT" do
@@ -841,7 +842,7 @@ describe Regress do
     end
 
     it "has a working method #seek" do
-      skip "Needs testing"
+      _(instance.seek(0)).must_be_nil
     end
 
     it "has a working method #various" do
@@ -1117,7 +1118,8 @@ describe Regress do
 
   it "has the constant GOOD_EXPR_CONSTANT" do
     skip_below "1.75.2"
-    skip "Needs testing"
+
+    _(Regress::GOOD_EXPR_CONSTANT).must_equal 1408
   end
 
   it "has the constant GUINT64_CONSTANT" do
@@ -1369,7 +1371,11 @@ describe Regress do
 
     it "has a writable field name_conflict" do
       skip_below "1.83.2"
-      skip "Needs testing"
+
+      _(instance.name_conflict).must_equal false
+      instance.name_conflict = true
+
+      _(instance.name_conflict).must_equal true
     end
 
     it "creates an instance using #new" do
@@ -1380,7 +1386,10 @@ describe Regress do
 
     it "has a working method #name_conflict" do
       skip_below "1.83.2"
-      skip "Needs testing"
+
+      # NOTE: This method just returns the writable field so cannot in effect
+      # be distinguished from the generated getter.
+      _(instance.name_conflict).must_equal false
     end
   end
 
@@ -1427,12 +1436,14 @@ describe Regress do
   describe "Regress::TestDiscontinuousFlags" do
     it "has the member :discontinuous1" do
       skip_below "1.86.0"
-      skip "Needs testing"
+
+      _(Regress::TestDiscontinuousFlags[:discontinuous1]).must_equal(1 << 9)
     end
 
     it "has the member :discontinuous2" do
       skip_below "1.86.0"
-      skip "Needs testing"
+
+      _(Regress::TestDiscontinuousFlags[:discontinuous2]).must_equal(1 << 29)
     end
   end
 
@@ -1788,8 +1799,20 @@ describe Regress do
     end
 
     it "creates an instance using #new_finish" do
-      skip_below "1.80.1"
-      skip "Needs testing"
+      # The .new_async and .new_finish functions were introduced in 1.80.1, but
+      # tying it together needs constructor_thaw_async, introduced in 1.83.2.
+      skip_below "1.83.2"
+      main_loop = GLib::MainLoop.new nil, false
+      result = nil
+      Regress::TestObj.new_async("foo", nil) do |_obj, res|
+        result = Regress::TestObj.new_finish(res)
+        main_loop.quit
+      end
+      count = Regress::TestObj.constructor_thaw_async
+      main_loop.run
+
+      _(result).must_be_instance_of Regress::TestObj
+      _(count).must_equal 1
     end
 
     it "creates an instance using #new_from_file" do
@@ -1799,13 +1822,11 @@ describe Regress do
     end
 
     it "has a working function #constructor_thaw_async" do
-      skip_below "1.83.2"
-      skip "Needs testing"
+      pass "See test for .new_finish"
     end
 
     it "has a working function #new_async" do
-      skip_below "1.80.1"
-      skip "Needs testing"
+      pass "See test for .new_finish"
     end
 
     it "has a working function #null_out" do
@@ -1900,7 +1921,17 @@ describe Regress do
 
     it "has a working method #emit_sig_with_gstrv_full" do
       skip_below "1.78.0"
-      skip "Needs testing"
+      result = nil
+      instance.signal_connect "sig-with-strv-full" do |_obj, strs, _ud|
+        # Conversion must happen in the block since the strings are deallocated
+        # after the signal emitter is done.
+        #
+        # TODO: Check if this can be avoided.
+        result = strs.to_a
+      end
+      instance.emit_sig_with_gstrv_full
+
+      _(result).must_equal %w[foo bar baz]
     end
 
     it "has a working method #emit_sig_with_inout_int" do
@@ -1951,7 +1982,15 @@ describe Regress do
 
     it "has a working method #emit_sig_with_obj_full" do
       skip_below "1.78.0"
-      skip "Needs testing"
+      has_fired = false
+      instance.signal_connect "sig-with-obj-full" do |_it, obj|
+        has_fired = true
+
+        _(obj.int).must_equal 5
+      end
+      instance.emit_sig_with_obj_full
+
+      assert has_fired
     end
 
     it "has a working method #emit_sig_with_uint64" do
@@ -1967,28 +2006,42 @@ describe Regress do
     end
 
     it "has a working method #function_async" do
-      skip_below "1.80.0"
-      skip "Needs testing"
+      # The #function_async and #function_finish methods were introduced in 1.80.1, but
+      # tying it together needs #function_thaw_async, introduced in 1.83.2.
+      skip_below "1.83.2"
+      main_loop = GLib::MainLoop.new nil, false
+      result = nil
+      instance.function_async(0, nil) do |_obj, res|
+        result = instance.function_finish(res)
+        main_loop.quit
+      end
+      count = instance.function_thaw_async
+      main_loop.run
+
+      _(result).must_equal true
+      _(count).must_equal 1
     end
 
     it "has a working method #function_finish" do
-      skip_below "1.80.0"
-      skip "Needs testing"
+      pass "See test for #function_async"
     end
 
     it "has a working method #function_sync" do
       skip_below "1.80.0"
-      skip "Needs testing"
+      result = instance.function_sync(0)
+
+      _(result).must_equal true
     end
 
     it "has a working method #function_thaw_async" do
-      skip_below "1.83.2"
-      skip "Needs testing"
+      pass "See test for #function_async"
     end
 
     it "has a working method #get_string" do
       skip_below "1.69.0"
-      skip "Needs testing"
+      instance.set_string "hello"
+
+      _(instance.get_string).must_equal "hello"
     end
 
     it "has a working method #instance_method" do
@@ -2039,7 +2092,9 @@ describe Regress do
 
     it "has a working method #set_string" do
       skip_below "1.69.0"
-      skip "Needs testing"
+      instance.set_string "hello"
+
+      _(instance.string).must_equal "hello"
     end
 
     it "has a working method #skip_inout_param" do
@@ -2634,7 +2689,14 @@ describe Regress do
 
     it "handles the 'sig-with-obj-full' signal" do
       skip_below "1.78.0"
-      skip "Needs testing"
+      a = nil
+      GObject.signal_connect(instance, "sig-with-obj-full") do |_, obj, _|
+        a = obj
+      end
+      object = Regress::TestObj.constructor
+      GObject.signal_emit instance, "sig-with-obj-full", object
+
+      _(a).must_equal object
     end
 
     it "handles the 'sig-with-strv' signal" do
@@ -2651,7 +2713,13 @@ describe Regress do
 
     it "handles the 'sig-with-strv-full' signal" do
       skip_below "1.78.0"
-      skip "Needs testing"
+      a = nil
+      GObject.signal_connect(instance, "sig-with-strv-full") do |_, strs, _|
+        a = strs
+      end
+      GObject.signal_emit instance, "sig-with-strv-full", GLib::Strv.from(%w[foo bar])
+
+      _(a.to_a).must_equal %w[foo bar]
     end
 
     it "handles the 'sig-with-uint64-prop' signal" do
@@ -3401,7 +3469,8 @@ describe Regress do
 
   it "has a working function #annotation_custom_destroy_cleanup" do
     skip_below "1.83.2"
-    skip "Needs testing"
+
+    _(Regress.annotation_custom_destroy_cleanup).must_be_nil
   end
 
   it "has a working function #annotation_get_source_file" do
@@ -3494,7 +3563,8 @@ describe Regress do
 
   it "has a working function #foo_enum_method" do
     skip_below "1.83.2"
-    skip "Needs testing"
+
+    _(Regress.foo_enum_method(:alpha)).must_equal 0
   end
 
   it "has a working function #foo_enum_type_method" do
@@ -3517,12 +3587,18 @@ describe Regress do
 
   it "has a working function #foo_init_argv" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = Regress.foo_init_argv(%w[foo bar])
+
+    _(result).must_equal 0x1138
   end
 
   it "has a working function #foo_init_argv_address" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    arr = %w[foo bar]
+    success, result = Regress.foo_init_argv_address(arr)
+
+    _(success).must_equal 0x1138
+    _(result.to_a).must_equal %w[foo bar]
   end
 
   it "has a working function #foo_interface_static_method" do
@@ -3567,7 +3643,8 @@ describe Regress do
 
   it "has a working function #foo_test_unsigned" do
     skip_below "1.83.2"
-    skip "Needs testing"
+
+    _(Regress.foo_test_unsigned(42)).must_be_nil
   end
 
   it "has a working function #foo_test_unsigned_type" do
@@ -4028,12 +4105,16 @@ describe Regress do
 
   it "has a working function #test_discontinuous_1_with_private_values" do
     skip_below "1.86.0"
-    skip "Needs testing"
+    result = Regress.test_discontinuous_1_with_private_values
+
+    _(result).must_equal({ discontinuous1: true })
   end
 
   it "has a working function #test_discontinuous_2_with_private_values" do
     skip_below "1.86.0"
-    skip "Needs testing"
+    result = Regress.test_discontinuous_2_with_private_values
+
+    _(result).must_equal({ discontinuous2: true })
   end
 
   it "has a working function #test_double" do
@@ -4067,23 +4148,36 @@ describe Regress do
   end
 
   it "has a working function #test_function_async" do
-    skip_below "1.80.0"
-    skip "Needs testing"
+    # The .test_function_async and .test_function_finish methods were introduced
+    # in 1.80.1, but tying it together needs .test_function_thaw_async, introduced
+    # in 1.83.2.
+    skip_below "1.83.2"
+    main_loop = GLib::MainLoop.new nil, false
+    result = nil
+    Regress.test_function_async(0, nil) do |_obj, res|
+      result = Regress.test_function_finish(res)
+      main_loop.quit
+    end
+    count = Regress.test_function_thaw_async
+    main_loop.run
+
+    _(result).must_equal true
+    _(count).must_equal 1
   end
 
   it "has a working function #test_function_finish" do
-    skip_below "1.80.0"
-    skip "Needs testing"
+    pass "See test for .test_function_async"
   end
 
   it "has a working function #test_function_sync" do
     skip_below "1.80.0"
-    skip "Needs testing"
+    result = Regress.test_function_sync(0)
+
+    _(result).must_equal true
   end
 
   it "has a working function #test_function_thaw_async" do
-    skip_below "1.80.0"
-    skip "Needs testing"
+    pass "See test for .test_function_async"
   end
 
   it "has a working function #test_garray_container_return" do
@@ -4455,7 +4549,9 @@ describe Regress do
 
   it "has a working function #test_offt" do
     skip_below "1.80.1"
-    skip "Needs testing"
+    result = Regress.test_offt 1_234_567_890
+
+    _(result).must_equal 1_234_567_890
   end
 
   it "has a working function #test_owned_gerror_callback" do
