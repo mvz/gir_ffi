@@ -114,7 +114,7 @@ module GirFFI
 
       def outgoing_convertor(base)
         FullCToRubyConvertor.new(type_info, base, length_argument_name,
-                                 ownership_transfer: arginfo.ownership_transfer)
+                                 ownership_transfer: ownership_transfer)
       end
 
       def sub_type_spec
