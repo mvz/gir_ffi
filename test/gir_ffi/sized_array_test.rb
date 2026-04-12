@@ -268,6 +268,13 @@ describe GirFFI::SizedArray do
       _(arr).must_be_instance_of GirFFI::SizedArray
       _(arr.to_a).must_equal [value]
     end
+
+    it "works for an array of null-terminated arrays of strings" do
+      arr = GirFFI::SizedArray.from [:pointer, :strv], 3, [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+      _(arr).must_be_instance_of GirFFI::SizedArray
+      _(arr.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+    end
   end
 
   it "includes Enumerable" do
