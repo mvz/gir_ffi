@@ -190,6 +190,13 @@ describe GirFFI::InPointer do
       _(ptr.address).must_equal 1
     end
 
+    it "handles :strv" do
+      ptr = GirFFI::InPointer.from :strv, %w[a b c]
+      strv = GLib::Strv.wrap ptr
+
+      _(strv).must_be :==, %w[a b c]
+    end
+
     describe "for type :void" do
       it "returns the result of to_ptr" do
         obj = Object.new

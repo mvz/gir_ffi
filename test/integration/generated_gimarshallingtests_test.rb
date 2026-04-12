@@ -3165,7 +3165,9 @@ describe GIMarshallingTests do
 
   it "has a working function #fixed_array_of_gstrv_transfer_container_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests
+      .fixed_array_of_gstrv_transfer_container_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+    pass
   end
 
   it "has a working function #fixed_array_of_gstrv_transfer_container_inout" do

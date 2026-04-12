@@ -23,6 +23,8 @@ module GirFFI
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/MethodLength
     def self.from(type, val)
       return unless val
 
@@ -31,6 +33,8 @@ module GirFFI
         from_utf8 val
       when :gfloat, :gdouble, :gint64, :guint64
         from_basic_type type, val
+      when :strv
+        from_array :utf8, val
       when :gint32, :guint32, :gint8, :GType
         FFI::Pointer.new val
       when GirFFI::EnumLikeBase
@@ -41,6 +45,8 @@ module GirFFI
         raise NotImplementedError, type
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
+    # rubocop:enable Metrics/MethodLength
 
     def self.from_utf8(str)
       return unless str
