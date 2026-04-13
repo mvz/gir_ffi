@@ -153,7 +153,7 @@ describe GirFFI::InfoExt::ITypeInfo do
     end
 
     describe "for a GLib array" do
-      it "returns :c" do
+      it "returns :array" do
         expect(type_info).to receive(:tag).and_return :array
         expect(type_info).to receive(:zero_terminated?).and_return false
         expect(type_info).to receive(:array_type).and_return :array
