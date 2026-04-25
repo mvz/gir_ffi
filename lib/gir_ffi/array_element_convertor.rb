@@ -17,7 +17,9 @@ module GirFFI
       when :utf8, :filename
         bare_value.to_utf8
       when Array
-        value_type[1].wrap bare_value
+        element_type = value_type[1]
+        element_type = GLib::Strv if element_type == :strv
+        element_type.wrap bare_value
       when Module
         value_type.wrap bare_value
       else
