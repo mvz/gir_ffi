@@ -30,7 +30,7 @@ module GirFFI
       offset = 0
       while (val = read_value(offset))
         offset += ffi_type_size
-        yield wrap_value(val)
+        yield val
       end
     end
 
@@ -41,34 +41,8 @@ module GirFFI
     private
 
     def read_value(offset)
-      val = fetch_value(offset)
+      val = ArrayElementConvertor.new(element_type, @ptr + offset).to_ruby_value
       val unless null_value? val
-    end
-
-    def getter_method
-      @getter_method ||= "get_#{ffi_type}"
-    end
-
-    def fetch_value(offset)
-      case ffi_type
-      when Module
-        ffi_type.get_value_from_pointer(@ptr, offset)
-      when Symbol
-        @ptr.send(getter_method, offset)
-      else
-        raise NotImplementedError
-      end
-    end
-
-    def wrap_value(val)
-      case element_type
-      when Array
-        element_type.last.wrap val
-      when Class
-        element_type.wrap val
-      else
-        val
-      end
     end
 
     def ffi_type
@@ -82,11 +56,11 @@ module GirFFI
     def null_check_strategy
       @null_check_strategy ||=
         if ffi_type == :pointer
-          :pointer
+          :nil
         elsif ffi_type.is_a? Symbol
           :numeric
         elsif ffi_type < GirFFI::ClassBase # rubocop:disable Lint/DuplicateBranch
-          :pointer
+          :nil
         elsif ffi_type.singleton_class.include? GirFFI::EnumBase
           :enum
         end
@@ -94,10 +68,10 @@ module GirFFI
 
     def null_value?(val)
       case null_check_strategy
-      when :pointer
-        val.null?
       when :enum
         ffi_type.to_native(val, nil) == 0
+      when :nil
+        val.nil?
       else
         val == 0
       end
