@@ -3167,6 +3167,10 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     GIMarshallingTests
       .fixed_array_of_gstrv_transfer_container_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    GIMarshallingTests.fixed_array_of_gstrv_transfer_container_in arr
+
     pass
   end
 
@@ -3174,6 +3178,11 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     result = GIMarshallingTests
       .fixed_array_of_gstrv_transfer_container_inout [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    GIMarshallingTests.fixed_array_of_gstrv_transfer_container_inout arr
 
     _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
   end
@@ -3196,6 +3205,10 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     GIMarshallingTests
       .fixed_array_of_gstrv_transfer_full_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    GIMarshallingTests.fixed_array_of_gstrv_transfer_full_in arr
+
     pass
   end
 
@@ -3203,6 +3216,11 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     result = GIMarshallingTests
       .fixed_array_of_gstrv_transfer_full_inout [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    result = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_inout arr
 
     _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
   end
@@ -3225,6 +3243,10 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     GIMarshallingTests
       .fixed_array_of_gstrv_transfer_none_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    GIMarshallingTests.fixed_array_of_gstrv_transfer_none_in arr
+
     pass
   end
 
@@ -3232,6 +3254,11 @@ describe GIMarshallingTests do
     skip_below "1.83.2"
     result = GIMarshallingTests
       .fixed_array_of_gstrv_transfer_none_inout [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
+
+    arr = GIMarshallingTests.fixed_array_of_gstrv_transfer_full_return
+    result = GIMarshallingTests.fixed_array_of_gstrv_transfer_none_inout arr
 
     _(result.map(&:to_a)).must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8]]
   end
