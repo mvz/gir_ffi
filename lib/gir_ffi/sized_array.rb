@@ -82,7 +82,7 @@ module GirFFI
         case element_type
         when Array
           _main_type, sub_type = *element_type
-          arr = arr.map { sub_type.copy_from _1 }
+          arr = arr.map { sub_type.copy_from _1 } unless sub_type == :strv
         end
 
         from_enumerable element_type, size, arr
