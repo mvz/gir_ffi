@@ -8,7 +8,8 @@ describe WarnLib do
   describe "WarnLib::NumericEnum" do
     it "has the member :1st" do
       skip_below "1.83.2"
-      skip "Needs testing"
+
+      _(WarnLib::NumericEnum[:"1st"]).must_equal 1
     end
   end
 

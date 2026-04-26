@@ -4928,7 +4928,6 @@ describe GIMarshallingTests do
 
   it "has a working function #gvalue_out_uninitialized" do
     skip_below "1.80.0"
-    skip "Raises NoMethodError in implementation"
     res, val = GIMarshallingTests.gvalue_out_uninitialized
 
     _(res).must_equal false

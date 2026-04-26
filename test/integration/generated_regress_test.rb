@@ -20,14 +20,17 @@ describe Regress do
   it "has the constant ANNOTATION_CALCULATED_DEFINE" do
     _(Regress::ANNOTATION_CALCULATED_DEFINE).must_equal 100
   end
+
   it "has the constant ANNOTATION_CALCULATED_LARGE" do
     skip "Constant is marked with the wrong type"
 
     _(Regress::ANNOTATION_CALCULATED_LARGE).must_equal 10_000_000_000
   end
+
   it "has the constant ANNOTATION_CALCULATED_LARGE_DIV" do
     _(Regress::ANNOTATION_CALCULATED_LARGE_DIV).must_equal 1_000_000
   end
+
   describe "Regress::ATestError" do
     it "has the member :code0" do
       _(Regress::ATestError[:code0]).must_equal 0
@@ -260,8 +263,6 @@ describe Regress do
     end
 
     it "has a working method #use_buffer" do
-      skip "Ingoing pointer argument conversion is not implemented yet"
-
       _(instance.use_buffer(FFI::MemoryPointer.new(:void, 1))).must_be_nil
     end
 
@@ -505,11 +506,21 @@ describe Regress do
     end
 
     it "creates an instance using #new" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      inst = Regress::FooBRect.new(12.3, 23.4)
+
+      _(inst).must_be_instance_of Regress::FooBRect
+      _(inst.x).must_equal 12.3
+      _(inst.y).must_equal 23.4
     end
 
     it "has a working method #add" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+      other = Regress::FooBRect.new(12.3, 23.4)
+      instance.add other
+
+      pass
     end
   end
 
@@ -535,7 +546,6 @@ describe Regress do
       rect = Regress::FooBRect.wrap(Regress::FooBRect::Struct.new.to_ptr)
       rect.x = 42
       rect.y = 23
-      skip "Cannot copy FooBRect structs"
       instance.rect = rect
 
       _(instance.rect.x).must_equal 42.0
@@ -543,7 +553,11 @@ describe Regress do
     end
 
     it "creates an instance using #new" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      inst = Regress::FooBUnion.new
+
+      _(inst).must_be_instance_of Regress::FooBUnion
     end
 
     it "has a working method #get_contained_type" do
@@ -633,11 +647,15 @@ describe Regress do
     end
 
     it "has a working function #method" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      _(Regress::FooEnumType.method(:beta)).must_equal 2
     end
 
     it "has a working function #returnv" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      _(Regress::FooEnumType.method(4)).must_equal 2
     end
   end
 
@@ -800,7 +818,10 @@ describe Regress do
     end
 
     it "has a working function #a_global_method" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+      Regress::FooObject.a_global_method(Utility::Object.new)
+
+      pass
     end
 
     it "has a working function #get_default" do
@@ -808,7 +829,9 @@ describe Regress do
     end
 
     it "has a working function #static_meth" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      _(Regress::FooObject.static_meth).must_equal 77
     end
 
     it "has a working method #append_new_stack_layer" do
@@ -830,7 +853,9 @@ describe Regress do
     end
 
     it "has a working method #handle_glyph" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+
+      instance.handle_glyph(32)
     end
 
     it "has a working method #is_it_time_yet" do
@@ -846,11 +871,17 @@ describe Regress do
     end
 
     it "has a working method #various" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+      instance.various("data", 0)
+
+      pass
     end
 
     it "has a working method #virtual_method" do
-      skip "This function is defined in the header but not implemented"
+      skip_below "1.83.2"
+      result = instance.virtual_method(23)
+
+      _(result).must_equal false
     end
 
     describe "its 'string' property" do
@@ -1041,13 +1072,13 @@ describe Regress do
 
   describe "Regress::FooSubobject" do
     it "cannot be instantiated" do
-      skip "Not yet implemented"
+      # Before version 1.83.2, the header defined a constructor but this wasn't
+      # implemented. This constructor definition was removed and now the status
+      # of this class as an abstract class prevents the default constructor
+      # from being used.
+      skip_below "1.83.2"
 
       _(proc { Regress::FooSubobject.new }).must_raise NoMethodError
-    end
-
-    it "creates an instance using #new" do
-      skip "This function is defined in the header but not implemented"
     end
   end
 
@@ -3606,7 +3637,14 @@ describe Regress do
   end
 
   it "has a working function #foo_method_external_references" do
-    skip "This function is defined in the header but not implemented"
+    skip_below "1.83.2"
+
+    Regress.foo_method_external_references(Utility::Object.new,
+                                           :a,
+                                           :b,
+                                           Utility::Struct.new)
+
+    pass
   end
 
   it "has a working function #foo_not_a_constructor_new" do

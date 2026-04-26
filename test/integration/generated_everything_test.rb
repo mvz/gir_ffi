@@ -145,9 +145,7 @@ describe Everything do
   end
 
   it "has a working function #one_outparam_gchar" do
-    skip "GIR gives the incorrect type: utf8 instead of gchar"
-
-    _(Everything.one_outparam_gchar).must_equal 0
+    _(Everything.one_outparam_gchar).must_be_nil
   end
 
   it "has a working function #one_outparam_gdouble" do
