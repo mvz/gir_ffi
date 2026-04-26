@@ -11,10 +11,17 @@ describe GObjectIntrospection::Strv do
 
   describe "::wrap" do
     it "takes a pointer and returns a GObjectIntrospection::Strv wrapping it" do
-      strv = GObjectIntrospection::Strv.wrap :some_pointer
+      ptr = instance_double FFI::Pointer, null?: false
+      strv = GObjectIntrospection::Strv.wrap ptr
 
       assert_instance_of GObjectIntrospection::Strv, strv
-      assert_equal :some_pointer, strv.to_ptr
+      assert_equal ptr, strv.to_ptr
+    end
+
+    it "returns nil when passed a null pointer" do
+      strv = GObjectIntrospection::Strv.wrap FFI::Pointer::NULL
+
+      _(strv).must_be_nil
     end
   end
 
@@ -33,6 +40,17 @@ describe GObjectIntrospection::Strv do
       end
 
       assert_equal %w[one two three], arr
+    end
+
+    it "yields zero times for a Strv wrapping an empty block of strings" do
+      ptrs = [nil]
+      block = FFI::MemoryPointer.new(:pointer, ptrs.length)
+      block.write_array_of_pointer ptrs
+      strv = GObjectIntrospection::Strv.new block
+
+      strv.each do |_str|
+        flunk
+      end
     end
 
     it "yields zero times for a Strv wrapping a null pointer" do
