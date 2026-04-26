@@ -24,7 +24,7 @@ module GObjectIntrospection
       offset = 0
       while (ptr = fetch_ptr offset)
         offset += POINTER_SIZE
-        yield ptr.to_utf8
+        yield ptr.read_string.force_encoding(Encoding::UTF_8)
       end
     end
 
