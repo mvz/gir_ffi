@@ -5491,61 +5491,82 @@ describe GIMarshallingTests do
 
   it "has a working function #zero_terminated_array_utf8_container_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests.zero_terminated_array_utf8_container_in %w[🅰 β c d]
+    pass
   end
 
   it "has a working function #zero_terminated_array_utf8_container_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_container_inout %w[🅰 β c d]
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_container_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_container_out
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_container_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_container_return
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_full_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests.zero_terminated_array_utf8_full_in %w[🅰 β c d]
+    pass
   end
 
   it "has a working function #zero_terminated_array_utf8_full_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_full_inout %w[🅰 β c d]
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_full_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_full_out
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_full_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_full_return
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_none_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests.zero_terminated_array_utf8_none_in %w[🅰 β c d]
+    pass
   end
 
   it "has a working function #zero_terminated_array_utf8_none_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_none_inout %w[🅰 β c d]
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_none_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_none_out
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 
   it "has a working function #zero_terminated_array_utf8_none_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_utf8_none_return
+
+    _(result).must_be :==, ["a", "b", "¢", "🔠"]
   end
 end

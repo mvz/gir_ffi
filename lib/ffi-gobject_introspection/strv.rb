@@ -4,8 +4,9 @@ require "ffi"
 
 module GObjectIntrospection
   # Represents a null-terminated array of strings.
-  # GLib uses this
-  # construction, but does not provide any actual functions for this class.
+  # GLib uses this construction, but does not provide any actual functions for
+  # this class.
+  # In a sense, this is a specialization of GirFFI::ZeroTerminated.
   class Strv
     include Enumerable
 
@@ -23,7 +24,7 @@ module GObjectIntrospection
       offset = 0
       while (ptr = fetch_ptr offset)
         offset += POINTER_SIZE
-        yield ptr.read_string
+        yield ptr.to_utf8
       end
     end
 
