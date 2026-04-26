@@ -983,6 +983,8 @@ describe GIMarshallingTests do
   describe "GIMarshallingTests::PropertiesAccessorsObject" do
     before { skip_below("1.83.2") }
 
+    let(:instance) { GIMarshallingTests::PropertiesAccessorsObject.new }
+
     it "creates an instance using #new" do
       skip "Needs testing"
     end
@@ -1028,7 +1030,7 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #get_gvalue" do
-      skip "Needs testing"
+      _(instance.get_gvalue).must_be_nil
     end
 
     it "has a working method #get_int" do
@@ -1120,7 +1122,13 @@ describe GIMarshallingTests do
     end
 
     it "has a working method #set_gvalue" do
-      skip "Needs testing"
+      instance.set_gvalue "foo bar"
+
+      _(instance.get_gvalue).must_equal "foo bar"
+
+      instance.set_gvalue 42
+
+      _(instance.get_gvalue).must_equal 42
     end
 
     it "has a working method #set_int" do
