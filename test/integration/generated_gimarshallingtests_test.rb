@@ -38,7 +38,7 @@ describe GIMarshallingTests do
     end
 
     it "has a writable field g_strv" do
-      _(instance.g_strv).must_be :==, []
+      _(instance.g_strv).must_be_nil
       instance.g_strv = %w[foo bar]
 
       _(instance.g_strv).must_be :==, %w[foo bar]
@@ -1971,11 +1971,11 @@ describe GIMarshallingTests do
 
     describe "its 'some-strv' property" do
       it "can be retrieved with #get_property" do
-        _(instance.get_property("some-strv")).must_be :==, []
+        _(instance.get_property("some-strv")).must_be_nil
       end
 
       it "can be retrieved with #some_strv" do
-        _(instance.some_strv).must_be :==, []
+        _(instance.some_strv).must_be_nil
       end
 
       it "can be set with #set_property" do
@@ -2886,7 +2886,7 @@ describe GIMarshallingTests do
   it "has a working function #array_zero_terminated_return_null" do
     res = GIMarshallingTests.array_zero_terminated_return_null
 
-    _(res).must_be :==, []
+    _(res).must_be_nil
   end
 
   it "has a working function #array_zero_terminated_return_struct" do

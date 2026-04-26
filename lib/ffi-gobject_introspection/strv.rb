@@ -28,7 +28,7 @@ module GObjectIntrospection
     end
 
     def self.wrap(ptr)
-      new ptr
+      new ptr unless ptr.null?
     end
 
     private
