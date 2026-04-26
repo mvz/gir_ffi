@@ -5399,62 +5399,94 @@ describe GIMarshallingTests do
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_container_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_container_in [
+      %w[0 1 2], %w[3 4 5], %w[6 7 8]
+    ]
+    pass
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_container_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_container_inout [
+      %w[0 1 2], %w[3 4 5], %w[6 7 8]
+    ]
+
+    _(result.map(&:to_a))
+      .must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8], %w[-1 9 10 11]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_container_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_container_out
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_container_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_container_return
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_full_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests
+      .zero_terminated_array_of_gstrv_transfer_full_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+    pass
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_full_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests
+      .zero_terminated_array_of_gstrv_transfer_full_inout [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    _(result.map(&:to_a))
+      .must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8], %w[-1 9 10 11]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_full_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_full_out
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_full_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_full_return
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_none_in" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    GIMarshallingTests
+      .zero_terminated_array_of_gstrv_transfer_none_in [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+    pass
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_none_inout" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests
+      .zero_terminated_array_of_gstrv_transfer_none_inout [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
+
+    _(result.map(&:to_a))
+      .must_equal [%w[-1 0 1 2], %w[-1 3 4 5], %w[-1 6 7 8], %w[-1 9 10 11]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_none_out" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_none_out
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_of_gstrv_transfer_none_return" do
     skip_below "1.83.2"
-    skip "Needs testing"
+    result = GIMarshallingTests.zero_terminated_array_of_gstrv_transfer_none_return
+
+    _(result.map(&:to_a)).must_equal [%w[0 1 2], %w[3 4 5], %w[6 7 8]]
   end
 
   it "has a working function #zero_terminated_array_utf8_container_in" do
