@@ -43,7 +43,7 @@ describe GirFFI::BoxedBase do
 
   describe "upon garbage collection" do
     it "frees and disowns the underlying struct if it is owned" do
-      allow(GObject).to receive(:boxed_free)
+      allow(GObject).to receive(:boxed_free).and_call_original
       gtype = GIMarshallingTests::BoxedStruct.gtype
 
       owned_struct = GIMarshallingTests::BoxedStruct.new.struct
