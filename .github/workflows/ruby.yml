@@ -54,8 +54,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Run tests
-        run: bundle exec rake test:all
+      - name: Run test suites
+        run: bundle exec rake test:suites
       - name: Run features
         run: bundle exec rake test:features
 
