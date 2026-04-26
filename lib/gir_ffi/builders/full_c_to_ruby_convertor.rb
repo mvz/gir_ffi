@@ -9,7 +9,7 @@ module GirFFI
     class FullCToRubyConvertor < CToRubyConvertor
       def conversion
         if @type_info.gvalue?
-          "GObject::Value.wrap(#{@argument}).get_value"
+          "GObject::Value.wrap(#{@argument})&.get_value"
         else
           super
         end
