@@ -815,7 +815,6 @@ describe GIMarshallingTests do
 
     it "has a working method #vfunc_return_flags" do
       skip_below "1.66.1"
-      skip "Not implemented yet"
       derived_instance = make_derived_instance do |klass|
         klass.install_vfunc_implementation :vfunc_return_flags,
                                            proc { |_obj| { value2: true } }

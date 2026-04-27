@@ -33,7 +33,7 @@ module GirFFI
           else
             "from"
           end
-        when :enum
+        when :enum, :flags
           "to_int"
         else
           "from"
