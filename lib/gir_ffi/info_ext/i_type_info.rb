@@ -156,7 +156,7 @@ module GirFFI
       end
 
       def needs_ruby_to_c_conversion_for_callbacks?
-        [:enum].include?(flattened_tag) ||
+        [:enum, :flags].include?(flattened_tag) ||
           needs_ruby_to_c_conversion_for_functions?
       end
 
