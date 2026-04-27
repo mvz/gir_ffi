@@ -65,7 +65,7 @@ module GirFFI
       end
 
       def build
-        setup_getter
+        setup_getter if getting_allowed
         setup_setter if setting_allowed
       end
 
@@ -145,6 +145,10 @@ module GirFFI
       # TODO: Inject container_info on initialization
       def container_info
         @container_info ||= @info.container
+      end
+
+      def getting_allowed
+        @info.readable?
       end
 
       def setting_allowed
