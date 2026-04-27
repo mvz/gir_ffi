@@ -2547,14 +2547,11 @@ describe Regress do
       before { skip_below "1.59.1" }
 
       it "cannot be retrieved with #get_property" do
-        skip "Not implemented yet"
-
-        _(proc { instance.get_property("write-only") }).must_raise GirFFI::GLibError
+        _(proc { instance.get_property("write-only") })
+          .must_raise ArgumentError, "Property write-only is not readable"
       end
 
       it "cannot be retrieved with #write_only" do
-        skip "Not implemented yet"
-
         _(proc { instance.write_only }).must_raise NoMethodError
       end
 

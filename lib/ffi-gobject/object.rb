@@ -124,7 +124,12 @@ module GObject
     # Overrides for GObject, GObject's generic base class.
     module Overrides
       def get_property(property_name)
-        gvalue = gvalue_for_property property_name
+        spec = property_param_spec(property_name)
+        unless spec.flags[:readable]
+          raise ArgumentError, "Property #{property_name} is not readable"
+        end
+
+        gvalue = GObject::Value.for_gtype spec.value_type
         super property_name, gvalue
         value = gvalue.get_value
 
