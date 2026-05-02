@@ -1,9 +1,37 @@
 # Changelog
 
+## 0.19.0 / 2026-05-02
+
+* Allow specifying signals as symbols ([#382] by [mvz])
+* Support Ruby 3.2 through 4.0, dropping support for Ruby 3.1
+  ([#383] and [#390] by [mvz])
+* Handle uninitialized Boxed out parameter ([#396] by [mvz])
+* Handle fixed size arrays of GStrv ([#403] by [mvz])
+* Return nil when wrapping a null pointer with GStrv ([#404] by [mvz])
+* Handle zero-terminated arrays of GStrv ([#405] by [mvz])
+* Read elements of GStrv as UTF8 strings ([#406] by [mvz])
+* Handle null GValue return values and out parameters ([#407] by [mvz])
+* Support vfuncs returning a value of type flags ([#412] by [mvz])
+* Block reading of write-only properties ([#413] by [mvz])
+* Ensure class structs are initialized ([#415] by [mvz])
+
+[#382]: https://github.com/mvz/gir_ffi/pull/382
+[#383]: https://github.com/mvz/gir_ffi/pull/383
+[#390]: https://github.com/mvz/gir_ffi/pull/390
+[#396]: https://github.com/mvz/gir_ffi/pull/396
+[#403]: https://github.com/mvz/gir_ffi/pull/403
+[#404]: https://github.com/mvz/gir_ffi/pull/404
+[#405]: https://github.com/mvz/gir_ffi/pull/405
+[#406]: https://github.com/mvz/gir_ffi/pull/406
+[#407]: https://github.com/mvz/gir_ffi/pull/407
+[#412]: https://github.com/mvz/gir_ffi/pull/412
+[#413]: https://github.com/mvz/gir_ffi/pull/413
+[#415]: https://github.com/mvz/gir_ffi/pull/415
+
 ## 0.18.0 / 2025-02-07
 
 * Update contribution guidelines ([#360] by [mvz])
-* Support Ruby 3.1 through 3.4, dripping support for Ruby 3.0 ([#366] by [mvz])
+* Support Ruby 3.1 through 3.4, dropping support for Ruby 3.0 ([#366] by [mvz])
 * Load gobject-2.0 library in a way that does not require the dev package
   ([#367] by [mvz])
 * Update tests for compatibility with GObjectIntrospection 1.81.2 ([#378] by [mvz])
