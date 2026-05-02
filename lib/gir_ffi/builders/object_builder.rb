@@ -64,6 +64,7 @@ module GirFFI
         setup_layout
         setup_constants
         stub_methods
+        ensure_class_struct_initialized
         setup_property_accessors
         setup_vfunc_invokers
         setup_interfaces
@@ -97,6 +98,13 @@ module GirFFI
 
       def parent_ancestor_infos
         @parent_ancestor_infos ||= parent_builder.ancestor_infos
+      end
+
+      # If the class struct is not initialized, calling some functions may lead
+      # to a segfault (for example, for GIMarshallingTests::Object.vfunc_static_name),
+      # or an incorrect return value (for example, for Regress::TestBoxedC#name_conflict).
+      def ensure_class_struct_initialized
+        klass.class_struct
       end
 
       def setup_property_accessors
