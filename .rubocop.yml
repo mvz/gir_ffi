@@ -14,7 +14,7 @@ AllCops:
   Exclude:
     - 'examples/*'
   NewCops: enable
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.3
 
 # Make BeginEndAlignment behavior match EndAlignment
 Layout/BeginEndAlignment:
