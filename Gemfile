@@ -16,7 +16,7 @@ group :development, :test do
   gem "rexml", "~> 3.0"
   gem "rspec-mocks", "~> 3.5"
   gem "rubocop", "~> 1.85"
-  gem "rubocop-minitest", "~> 0.39.1"
+  gem "rubocop-minitest", "~> 0.40.0"
   gem "rubocop-packaging", "~> 0.6.0"
   gem "rubocop-performance", "~> 1.26.1"
   gem "simplecov", "~> 1.0.0"
