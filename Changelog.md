@@ -234,7 +234,7 @@
      implement `#autorelease=` and `#autorelease?`, so this different technique
      is used to free pointers allocated by GLib. It is in fact doubtful that
      setting autorelease had any actual effect even on CRuby.
-   * Immediately free string pointers whose ownership is transfered. Again, the
+   * Immediately free string pointers whose ownership is transferred. Again, the
      #autorelease technique doesn't work on JRuby.
    * Fix handling of callee-allocated out parameters in vfuncs. The `put_pointer`
      method was wrongly called, and JRuby is more picky about what types that
