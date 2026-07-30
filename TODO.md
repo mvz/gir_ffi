@@ -14,7 +14,7 @@ memory use**
 
 ## Refactorings
 
-These in the order they occured to me, and may therefore be fixed in any order.
+These in the order they occurred to me, and may therefore be fixed in any order.
 
 - Create Type objects for all FFI types, including the ones currently
   represented by a single symbol, so we can always do stuff like
