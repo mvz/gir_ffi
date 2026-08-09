@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
-SimpleCov.start do
-  add_group "Main", "lib"
-  add_group "Tests", "test"
-  add_group "Cuke support", "features"
+SimpleCov.configure do
+  # Remove the "test_frameworks" filter
+  clear_filters
+  load_profile "bundler_filter"
+  load_profile "hidden_filter"
+  load_profile "root_filter"
+
+  group "Main", "lib"
+  group "Tests", "test"
+  group "Cuke support", "features"
+
   enable_coverage :branch
 end

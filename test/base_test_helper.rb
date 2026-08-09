@@ -13,6 +13,8 @@ rescue LoadError
 end
 $VERBOSE = old_verbose
 
+SimpleCov.start if defined? SimpleCov
+
 require "minitest/autorun"
 require "minitest/focus"
 require "rspec/mocks/minitest_integration"
