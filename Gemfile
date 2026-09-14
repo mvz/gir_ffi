@@ -19,7 +19,7 @@ group :development, :test do
   gem "rubocop-minitest", "~> 0.40.0"
   gem "rubocop-packaging", "~> 0.6.0"
   gem "rubocop-performance", "~> 1.27.0"
-  gem "simplecov", "~> 1.1.1"
+  gem "simplecov", "~> 1.2.0"
 
   gem "ruby-prof", platform: :mri
   gem "test-prof", platform: :mri
