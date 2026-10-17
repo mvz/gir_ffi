@@ -11,7 +11,7 @@ Feature: Interrupting a program
       puts 'done'
       """
     When I wait some time for a command to start up
-    And I run `ruby interrupt_me.rb` in background
+    And I run `ruby interrupt_me.rb` in the background
     And I send the signal "INT" to the command started last
     Then the output should contain "doing"
     And the exit status should not be 0
